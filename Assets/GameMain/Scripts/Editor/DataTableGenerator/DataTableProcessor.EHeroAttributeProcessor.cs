@@ -1,0 +1,53 @@
+﻿using System;
+using System.IO;
+
+namespace RoundHero.Editor.DataTableTools
+{
+    public sealed partial class DataTableProcessor
+    {
+        private sealed class EHeroAttributeProcessor : GenericDataProcessor<EHeroAttribute>
+        {
+            public override bool IsSystem
+            {
+                get
+                {
+                    return false;
+                }
+            }
+            
+            public override bool IsEnum
+            {
+                get
+                {
+                    return true;
+                }
+            }
+
+            public override string LanguageKeyword
+            {
+                get
+                {
+                    return "EHeroAttribute";
+                }
+            }
+
+            public override string[] GetTypeStrings()
+            {
+                return new string[]
+                {
+                    "EHeroAttribute",
+                };
+            }
+
+            public override EHeroAttribute Parse(string value)
+            {
+                return Enum.Parse<EHeroAttribute>(value);
+            }
+
+            public override void WriteToStream(DataTableProcessor dataTableProcessor, BinaryWriter binaryWriter, string value)
+            {
+                binaryWriter.Write((int)Parse(value));
+            }
+        }
+    }
+}

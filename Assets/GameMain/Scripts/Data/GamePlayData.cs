@@ -1,0 +1,1667 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace RoundHero
+{
+    public class Data_Block
+    {
+        public int ID;
+        public int RandomSeed;
+        public int PosIdx;
+        public EBlockType BlockType;
+        public bool IsCurse = false;
+
+        public Data_Block()
+        {
+        }
+
+        public Data_Block(int id, int posIdx, EBlockType blockType, int randomSeed)
+        {
+            ID = id;
+            PosIdx = posIdx;
+            BlockType = blockType;
+            RandomSeed = randomSeed;
+        }
+
+        public virtual Data_Block Copy()
+        {
+            var dataItem = new Data_Block();
+            dataItem.BlockType = BlockType;
+            dataItem.PosIdx = PosIdx;
+            dataItem.IsCurse = IsCurse;
+            return dataItem;
+        }
+
+    }
+
+    public class Data_BlockEnemy : Data_Block
+    {
+        public int EnemyID;
+
+        public Data_BlockEnemy()
+        {
+        }
+
+        public Data_BlockEnemy(int posIdx, int id, int enemyID, int randomSeed) : base(id, posIdx, EBlockType.Enemy,
+            randomSeed)
+        {
+            EnemyID = enemyID;
+        }
+
+        public override Data_Block Copy()
+        {
+            var dataBlockEnemy = new Data_BlockEnemy(PosIdx, ID, EnemyID, RandomSeed);
+
+            return dataBlockEnemy;
+        }
+
+    }
+
+    // public class Data_FightCard : Data_Card
+    // {
+    //     public EBuffID BuffID { get; }
+    //
+    //     public Data_FightCard(int id, EBuffID buffID) : base(id)
+    //     {
+    //         ID = id;
+    //         BuffID = buffID;
+    //     }
+    //     
+    //     public Data_FightCard Copy()
+    //     {
+    //         var dataCard = new Data_FightCard(ID, BuffID);
+    //
+    //         return dataCard;
+    //     }
+    //     
+    // }
+
+    // public class Data_TacticCard : Data_Card
+    // {
+    //     public ETacticCardID TacticCardID { get; }
+    //
+    //     public Data_TacticCard(int id, ETacticCardID tacticCardID) : base(id)
+    //     {
+    //         ID = id;
+    //         TacticCardID = tacticCardID;
+    //     }
+    //     
+    //     public Data_TacticCard Copy()
+    //     {
+    //         var dataCard = new Data_TacticCard(ID, TacticCardID);
+    //
+    //         return dataCard;
+    //     }
+    //
+    // }
+
+    public class Data_Card
+    {
+        public int ID;
+        public int CardID;
+        public List<int> FuneIDs = new();
+        public int RoundEnergyDelta = 0;
+        public List<ELinkID> RoundLinkIDs = new();
+        public int UseCardDamageRatio = 0;
+        public bool UnUse = false;
+        public bool IsUseConsume = false;
+        public ECardUseType CardUseType;
+
+        public Data_Card()
+        {
+
+        }
+
+        public Data_Card(int id, int cardID, List<int> funeIDs)
+        {
+            ID = id;
+            CardID = cardID;
+            FuneIDs = funeIDs;
+
+        }
+
+        public virtual Data_Card Copy()
+        {
+            var dataCard = new Data_Card(ID, CardID, FuneIDs);
+
+            return dataCard;
+        }
+
+        public int FuneCount(EBuffID funeID, bool unUse = false)
+        {
+            var count = 0;
+            foreach (var _funeID in FuneIDs)
+            {
+                var funeData = FuneManager.Instance.GetFuneData(_funeID);
+                if (funeData.FuneID == funeID)
+                {
+                    if (unUse && funeData.Value > 0 || !unUse)
+                    {
+                        count += 1;
+                    }
+                }
+
+            }
+
+            return count;
+        }
+
+        
+        
+
+        public void RoundClear()
+        {
+            RoundEnergyDelta = 0;
+            RoundLinkIDs.Clear();
+            UnUse = false;
+        }
+
+    }
+
+    public class Data_Hero
+    {
+        public int PosIdx;
+        public Attribute Attribute = new();
+        
+        public Data_Hero()
+        {
+
+
+        }
+
+        public Data_Hero Copy()
+        {
+            var dataHero = new Data_Hero();
+            dataHero.PosIdx = PosIdx;
+            dataHero.Attribute = Attribute.Copy();
+            
+            
+            return dataHero;
+
+        }
+    }
+
+    public class Data_GridItem
+    {
+        public int ID;
+        public int GridPosIdx;
+
+        //public EUnitCamp UnitCamp;
+        public EUnitCamp UnitCamp;
+        //public EGridType TargetGridType;
+
+        public Data_GridItem()
+        {
+
+        }
+
+        //, EGridType gridType
+        public Data_GridItem(int id, int gridPosIdx, EUnitCamp unitCamp)
+        {
+            ID = id;
+            GridPosIdx = gridPosIdx;
+            UnitCamp = unitCamp;
+            //TargetGridType = gridType;
+        }
+
+        public Data_GridItem Copy()
+        {
+            var dataGridItem = new Data_GridItem();
+            dataGridItem.ID = ID;
+            dataGridItem.GridPosIdx = GridPosIdx;
+            dataGridItem.UnitCamp = UnitCamp;
+            //dataGridItem.TargetGridType = TargetGridType;
+
+            return dataGridItem;
+        }
+
+    }
+
+    public class Data_Fune
+    {
+        public int ID;
+        public EBuffID FuneID;
+        public int Value;
+        
+        public Data_Fune()
+        {
+
+        }
+
+        public Data_Fune(int id, EBuffID funeID, int value = 0)
+        {
+            ID = id;
+            FuneID = funeID;
+            Value = value;
+        }
+        
+        public Data_Fune(int id, int funeID, int value = 0)
+        {
+            var drBuff = GameEntry.DataTable.GetBuff(funeID);
+            
+            ID = id;
+            FuneID = Enum.Parse<EBuffID>(drBuff.BuffID);
+            Value = value;
+        }
+    }
+
+    public class UnitStateData
+    {
+        public Dictionary<EUnitState, int> UnitStates = new();
+        
+        public void AddState(EUnitState state, int count = 1)
+        {
+            if (UnitStates.ContainsKey(state))
+            {
+                UnitStates[state] += count;
+            }
+            else
+            {
+                UnitStates.Add(state, count);
+            }
+            CheckStateCount(state);
+        }
+
+        public void RemoveState(EUnitState state, int count = 1)
+        {
+            if (!UnitStates.ContainsKey(state))
+                return;
+
+            // if (isAll)
+            // {
+            //     UnitStates[state] = 0;
+            // }
+            // else
+            // {
+            //     
+            // }
+            UnitStates[state] -= count;
+            CheckStateCount(state);
+
+        }
+
+        private void CheckStateCount(EUnitState state)
+        {
+            UnitStates[state] = UnitStates[state] < 0 ? 0 : UnitStates[state];
+
+            if (UnitStates[state] <= 0)
+            {
+                UnitStates.Remove(state);
+            }
+        }
+
+        public int GetStateCount(EUnitState state)
+        {
+            if (UnitStates.ContainsKey(state))
+            {
+                return UnitStates[state];
+            }
+
+            return 0;
+        }
+        
+        public UnitStateData Copy()
+        {
+            var unitStateData = new UnitStateData();
+            unitStateData.UnitStates = new Dictionary<EUnitState, int>(UnitStates);
+
+            return unitStateData;
+        }
+    }
+    
+    
+    
+    public class Data_BattleUnit : Data_GridItem
+    {
+        public virtual int CurHP { get; set; }
+        public virtual int MaxHP { get => BaseMaxHP + FuneCount(EBuffID.Spec_AddMaxHP);}
+        public int BaseMaxHP { get; set; }
+        public UnitStateData UnitState = new();
+        public bool AttackInRound;
+        public EUnitRole UnitRole;
+        public int BaseDamage;
+        public int HurtTimes;
+        public int LastCurHP;
+        public int LastCurHPDelta;
+        public List<int> FuneIDs = new();
+        public List<ELinkID> LinkIDs = new();
+        public List<ELinkID> BattleLinkIDs = new List<ELinkID>();
+        public List<int> Links = new();
+        public int RoundMoveCount = 0;
+        public UnitStateData RoundUnitState = new();
+        public int AddHeroHP = 0;
+        public int RoundMoveTimes = 0;
+        public int RoundAttackTimes = 0;
+
+        //, EGridType.Unit
+        public Data_BattleUnit(int id, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIDs) : base(id, gridPosIdx,
+            unitCamp)
+        {
+            ID = id;
+            GridPosIdx = gridPosIdx;
+            UnitCamp = unitCamp;
+            FuneIDs = funeIDs;
+        }
+
+        public Data_BattleUnit()
+        {
+
+        }
+
+        public new Data_BattleUnit Copy()
+        {
+            var dataBattleUnit = new Data_BattleUnit();
+            dataBattleUnit.ID = ID;
+            dataBattleUnit.GridPosIdx = GridPosIdx;
+
+            return dataBattleUnit;
+        }
+
+        public void ChangeState(EUnitState state, int count = 1)
+        {
+            // if(BuffCount(EBuffID.UnGetDebuff) > 0 && Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(state))
+            //     return;
+
+
+            if (GetStateCount(EUnitState.DeBuffUnEffect) > 0  && Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(state))
+            {
+                RemoveState(EUnitState.DeBuffUnEffect, -1);
+                return;
+            }
+
+            UnitState.AddState(state, count);
+        }
+
+        public void RemoveState(EUnitState state, int count = 1)
+        {
+            if (RoundUnitState.GetStateCount(state) > 0)
+            {
+                RoundUnitState.RemoveState(state, count);
+            }
+            else if (UnitState.GetStateCount(state) > 0)
+            {
+                UnitState.RemoveState(state, count);
+            }
+
+        }
+        
+        public void RemoveAllState(List<EUnitStateEffectType> buffEffectTypes = null)
+        {
+            RemoveAllState(RoundUnitState, buffEffectTypes);
+            RemoveAllState(UnitState, buffEffectTypes);
+
+        }
+
+        private void RemoveAllState(UnitStateData unitStateData, List<EUnitStateEffectType> buffEffectTypes = null)
+        {
+            foreach (var unitState in unitStateData.UnitStates.Keys.ToList())
+            {
+                if (buffEffectTypes != null)
+                {
+                    foreach (var buffEffectType in buffEffectTypes)
+                    {
+                        if (Constant.Battle.EffectUnitStates[buffEffectType].Contains(unitState))
+                        {
+                            unitStateData.RemoveState(unitState, unitStateData.GetStateCount(unitState));
+                        }
+                    }
+                }
+                else
+                {
+                    unitStateData.RemoveState(unitState, unitStateData.GetStateCount(unitState));
+                }
+            }
+        }
+
+        public int GetAllStateCount(EUnitState state)
+        {
+            return UnitState.GetStateCount(state) + RoundUnitState.GetStateCount(state);
+        }
+        
+        public int GetStateCount(EUnitState state)
+        {
+            return UnitState.GetStateCount(state);
+        }
+        
+        public int GetRoundStateCount(EUnitState state)
+        {
+            return RoundUnitState.GetStateCount(state);
+        }
+        
+        public void ChangeRoundState(EUnitState state, int count = 1)
+        {
+            RoundUnitState.AddState(state, count);
+        }
+
+        public void RoundRemoveState(EUnitState state, int count = 1)
+        {
+            RoundUnitState.RemoveState(state, count);
+        }
+
+        public int RoundGetStateCount(EUnitState state)
+        {
+            return RoundUnitState.GetStateCount(state);
+        }
+
+        public virtual void ChangeHP(int changeHP)
+        {
+            // useDefenseCount = 0;
+            // if (changeHP < 0 && useDefense)
+            // {
+            //     var defenseCount = GetAllStateCount(EUnitState.AddDefense);
+            //     if (defenseCount > 0)
+            //     {
+            //         if (Math.Abs(changeHP) >= defenseCount)
+            //         {
+            //             useDefenseCount = defenseCount;
+            //             changeHP += defenseCount;
+            //         }
+            //         else
+            //         {
+            //             useDefenseCount = defenseCount + changeHP;
+            //             changeHP = 0;
+            //         }
+            //         RemoveState(EUnitState.AddDefense, useDefenseCount);
+            //     }
+            //     
+            //     
+            //
+            // }
+
+            IntervalChangeHP(changeHP);
+
+        }
+
+        protected void IntervalChangeHP(int changeHP)
+        {
+            CurHP += changeHP;
+            CurHP = CurHP < 0 ? 0 : CurHP;
+            CurHP = CurHP > MaxHP ? MaxHP : CurHP;
+        }
+
+        public void RoundClear()
+        {
+            RoundMoveTimes = 0;
+            HurtTimes = 0;
+            RoundUnitState.UnitStates.Clear();
+            LastCurHPDelta = CurHP - LastCurHP;
+            LastCurHP = CurHP;
+        }
+
+        public void RoundInit()
+        {
+            
+        }
+
+        public int TargetBuffCount(EUnitStateEffectType effectType)
+        {
+            var targetBuffCount = 0;
+            foreach (var kv in UnitState.UnitStates)
+            {
+                if (kv.Value > 0 && Constant.Battle.EffectUnitStates[effectType].Contains(kv.Key))
+                {
+                    targetBuffCount += kv.Value;
+                }
+            }
+
+            return targetBuffCount;
+        }
+        
+        public int FuneCount(EBuffID funeID, bool unUse = false)
+        {
+            var count = 0;
+            foreach (var _funeID in FuneIDs)
+            {
+                var funeData = FuneManager.Instance.GetFuneData(_funeID);
+                if (funeData.FuneID == funeID)
+                {
+                    if (unUse && funeData.Value > 0 || !unUse)
+                    {
+                        count += 1;
+                    }
+                }
+                    
+            }
+
+            return count;
+        }
+        
+        public Data_Fune GetFune(EBuffID funeID, bool unUse = false)
+        {
+            foreach (var _funeID in FuneIDs)
+            {
+                var funeData = FuneManager.Instance.GetFuneData(_funeID);
+                if (funeData.FuneID == funeID)
+                {
+                    if (unUse && funeData.Value > 0 || !unUse)
+                    {
+                        return funeData;
+                    }
+                }
+                    
+                    
+            }
+
+            return null;
+        }
+
+        // public virtual int BuffCount(int buffID)
+        // {
+        //     return 0;
+        // }
+        //
+        // public virtual int BuffCount(EBuffID buffID)
+        // {
+        //     return 0;
+        // }
+        
+        public virtual int BuffCount(string buffStr)
+        {
+            return 0;
+        }
+    }
+
+    public class Data_BattleHero : Data_BattleUnit
+    {
+        public EHeroID HeroID;
+
+        public Attribute Attribute = new();
+
+        //public int RoundHeroHPDelta;
+        
+        public override int CurHP
+        {
+            get => (int) Attribute.GetAttribute(EHeroAttribute.CurHP);
+            set => Attribute.SetAttribute(EHeroAttribute.CurHP, value);
+        }
+
+        public override int MaxHP
+        {
+            // + GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.AddHeroMaxHP, BattleManager.Instance.CurUnitCamp);
+            get => (int) BaseMaxHP + FuneCount(EBuffID.Spec_AddMaxHP);
+            //set => Attribute.SetAttribute(EHeroAttribute.MaxHP, value);
+        }
+
+        public Data_BattleHero()
+        {
+        }
+
+        public Data_BattleHero(int id, EHeroID heroID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIDs) :
+            base(id, gridPosIdx, unitCamp, funeIDs)
+        {
+            var drHero = GameEntry.DataTable.GetHero(heroID);
+            
+            HeroID = heroID;
+            BaseMaxHP = drHero.HP;
+            CurHP = MaxHP;
+            LastCurHP = CurHP;
+            UnitRole = EUnitRole.Hero;
+            
+
+            Attribute.SetAttribute(EHeroAttribute.MaxHeart, drHero.Heart);
+            Attribute.SetAttribute(EHeroAttribute.CurHeart, drHero.Heart);
+            // Attribute.SetAttribute(EHeroAttribute.MaxEnergy, Constant.Hero.MaxEnergy);
+            // Attribute.SetAttribute(EHeroAttribute.CurEnergy, Constant.Hero.RecoverEnergy);
+            //Attribute.SetAttribute(EHeroAttribute.RecoverEnergy, Constant.Hero.RecoverEnergy);
+            FuneIDs = funeIDs;
+        }
+
+        public new Data_BattleHero Copy()
+        {
+            var dataBattleHero = new Data_BattleHero();
+            dataBattleHero.ID = ID;
+            dataBattleHero.BaseDamage = BaseDamage;
+            dataBattleHero.HeroID = HeroID;
+            dataBattleHero.GridPosIdx = GridPosIdx;
+            dataBattleHero.CurHP = CurHP;
+            dataBattleHero.LastCurHP = LastCurHP;
+            dataBattleHero.LastCurHPDelta = LastCurHPDelta;
+            dataBattleHero.BaseMaxHP = BaseMaxHP;
+            dataBattleHero.Attribute = Attribute.Copy();
+            dataBattleHero.UnitCamp = UnitCamp;
+            dataBattleHero.UnitState = UnitState.Copy();
+            dataBattleHero.AttackInRound = AttackInRound;
+            dataBattleHero.UnitRole = UnitRole;
+            dataBattleHero.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleHero.FuneIDs = new List<int>(FuneIDs);
+            dataBattleHero.Links = new List<int>(Links);
+            dataBattleHero.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleHero.RoundMoveCount = RoundMoveCount;
+            dataBattleHero.RoundMoveTimes = RoundMoveTimes;
+            dataBattleHero.RoundAttackTimes = RoundAttackTimes;
+            dataBattleHero.RoundUnitState = RoundUnitState.Copy();
+            dataBattleHero.HurtTimes = HurtTimes;
+            dataBattleHero.UnitCamp = UnitCamp;
+            //dataBattleHero.RoundHeroHPDelta = RoundHeroHPDelta;
+            return dataBattleHero;
+
+        }
+
+
+
+        public override void ChangeHP(int changeHP)
+        {
+            //useDefenseCount = 0;
+            if (changeHP < 0)
+            {
+                // var defenseCount = GetAllStateCount(EUnitState.AddDefense);
+                // if (defenseCount > 0)
+                // {
+                //     if (Math.Abs(changeHP) >= defenseCount)
+                //     {
+                //         useDefenseCount = defenseCount;
+                //         changeHP += defenseCount;
+                //     }
+                //     else
+                //     {
+                //         useDefenseCount = defenseCount + changeHP;
+                //         changeHP = 0;
+                //     }
+                //     RemoveState(EUnitState.AddDefense, useDefenseCount);
+                // }
+
+
+                var deltaHeart = changeHP / MaxHP;
+                var deltaHP = changeHP % MaxHP;
+
+                if (CurHP + deltaHP <= 0)
+                {
+                    deltaHeart -= 1;
+                    // if (deltaHeart > 0)
+                    // {
+                    //     CurHP += MaxHP + deltaHP;
+                    // }
+                    // else
+                    // {
+                    //     CurHP = MaxHP;
+                    // }
+                    CurHP += MaxHP + deltaHP;
+                }
+                else
+                {
+                    IntervalChangeHP(deltaHP);
+                }
+
+                Attribute.SetAttribute(EHeroAttribute.CurHeart,
+                    Attribute.GetAttribute(EHeroAttribute.CurHeart) + deltaHeart);
+
+                if (Attribute.GetAttribute(EHeroAttribute.CurHeart) <= 0)
+                {
+                    CurHP = 0;
+                }
+
+            }
+            else
+            {
+                IntervalChangeHP(changeHP);
+
+            }
+
+            
+        }
+    }
+
+    public class Data_BattleSolider : Data_BattleUnit
+    {
+        public int CardID;
+        //public List<BuffData> FuneDatas;
+        public int Energy;
+       
+
+
+        public Data_BattleSolider()
+        {
+
+        }
+
+        public Data_BattleSolider(int id, int cardID, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIDs) : base(
+            id, gridPosIdx, unitCamp, funeIDs)
+        {
+            CardID = cardID;
+            Energy = energy;
+            var card = BattleManager.Instance.GetCard(cardID);
+            var drCard = CardManager.Instance.GetCardTable(cardID);
+            BaseMaxHP = drCard.HP;
+            CurHP = MaxHP;
+            LastCurHP = CurHP;
+            UnitRole = EUnitRole.Staff;
+            FuneIDs = funeIDs;
+            BattleLinkIDs = new List<ELinkID>(card.RoundLinkIDs);
+        }
+
+        public new Data_BattleSolider Copy()
+        {
+            var dataBattleUnit = new Data_BattleSolider();
+            dataBattleUnit.ID = ID;
+            dataBattleUnit.BaseDamage = BaseDamage;
+            dataBattleUnit.CardID = CardID;
+            dataBattleUnit.GridPosIdx = GridPosIdx;
+            dataBattleUnit.UnitCamp = UnitCamp;
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.CurHP = CurHP;
+            dataBattleUnit.LastCurHP = LastCurHP;
+            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
+            dataBattleUnit.BaseMaxHP = BaseMaxHP;
+            dataBattleUnit.UnitState = UnitState.Copy();
+            dataBattleUnit.AttackInRound = AttackInRound;
+            dataBattleUnit.UnitRole = UnitRole;
+            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleUnit.FuneIDs = new List<int>(FuneIDs);
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
+            dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
+            dataBattleUnit.RoundMoveCount = RoundMoveCount;
+            dataBattleUnit.Energy = Energy;
+            dataBattleUnit.HurtTimes = HurtTimes;
+            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
+            dataBattleUnit.UnitCamp = UnitCamp;
+            return dataBattleUnit;
+
+        }
+        
+        public override int BuffCount(string buffStr)
+        {
+            var count = 0;
+            var drCard = CardManager.Instance.GetCardTable(CardID);
+            foreach (var buffIDStr in drCard.BuffIDs)
+            {
+                //var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
+                if (buffStr == buffIDStr)
+                    count++;
+            }
+
+            return count;
+        }
+
+        // public bool Contain(EBuffID buffID)
+        // {
+        //     var drBuffs = CardManager.Instance.GetBuffTable(CardID);
+        //     if (drBuffs.Any(buff => buff.BuffID == buffID))
+        //     {
+        //         return true;
+        //     }
+        //
+        //     foreach (var buffData in FuneDatas)
+        //     {
+        //         if (buffData.BuffID == buffID)
+        //             return true;
+        //     }
+        //
+        //     return false;
+        //
+        // }
+
+        public override void ChangeHP(int changeHP)
+        {
+            // useDefenseCount = 0;
+            // if (changeHP < 0 && useDefense)
+            // {
+            //     var defenseCount = GetAllStateCount(EUnitState.AddDefense);
+            //     if (defenseCount > 0)
+            //     {
+            //         if (Math.Abs(changeHP) >= defenseCount)
+            //         {
+            //             useDefenseCount = defenseCount;
+            //             changeHP += defenseCount;
+            //         }
+            //         else
+            //         {
+            //             useDefenseCount = defenseCount + changeHP;
+            //             changeHP = 0;
+            //         }
+            //         RemoveState(EUnitState.AddDefense, useDefenseCount);
+            //         
+            //     }
+            //
+            // }
+
+            IntervalChangeHP(changeHP);
+
+
+        }
+    }
+
+    public class Data_BattleMonster : Data_BattleUnit
+    {
+        public int MonsterID;
+
+        public bool IsCalculateAction = false;
+        //public int EnemyTypeID;
+
+        public Data_BattleMonster()
+        {
+        }
+
+        public Data_BattleMonster(int id, int monsterID, int gridPosIdx, EUnitCamp unitCamp,
+            List<int> funeIDs) : base(id, gridPosIdx, unitCamp, funeIDs)
+        {
+            MonsterID = monsterID;
+            //EnemyTypeID = enemyTypeID;
+
+            var drEnemy = GameEntry.DataTable.GetEnemy(monsterID);
+
+            BaseMaxHP = drEnemy.HP;
+            CurHP = MaxHP;
+            LastCurHP = CurHP;
+            BaseDamage = 0;//BattleEnemyManager.Instance.GetDamage(monsterID);
+            UnitRole = EUnitRole.Staff;
+            FuneIDs = funeIDs;
+        }
+
+
+
+        public new Data_BattleMonster Copy()
+        {
+            var dataBattleEnemy = new Data_BattleMonster();
+            dataBattleEnemy.ID = ID;
+            dataBattleEnemy.BaseDamage = BaseDamage;
+            dataBattleEnemy.MonsterID = MonsterID;
+            //dataBattleEnemy.EnemyTypeID = EnemyTypeID;
+            dataBattleEnemy.GridPosIdx = GridPosIdx;
+
+            dataBattleEnemy.CurHP = CurHP;
+            dataBattleEnemy.LastCurHP = LastCurHP;
+            dataBattleEnemy.LastCurHPDelta = LastCurHPDelta;
+            dataBattleEnemy.BaseMaxHP = BaseMaxHP;
+            dataBattleEnemy.UnitCamp = UnitCamp;
+            dataBattleEnemy.UnitState = UnitState.Copy();
+            dataBattleEnemy.AttackInRound = AttackInRound;
+            dataBattleEnemy.UnitRole = UnitRole;
+            dataBattleEnemy.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleEnemy.FuneIDs = new List<int>(FuneIDs);
+            dataBattleEnemy.Links = new List<int>(Links);
+            dataBattleEnemy.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleEnemy.RoundMoveTimes = RoundMoveTimes;
+            dataBattleEnemy.RoundAttackTimes = RoundAttackTimes;
+            dataBattleEnemy.RoundMoveCount = RoundMoveCount;
+            dataBattleEnemy.RoundUnitState = RoundUnitState.Copy();
+            dataBattleEnemy.HurtTimes = HurtTimes;
+            dataBattleEnemy.UnitCamp = UnitCamp;
+            return dataBattleEnemy;
+
+        }
+        
+        public override int BuffCount(string buffStr)
+        {
+            var count = 0;
+            var drBuffs = BattleEnemyManager.Instance.GetBuffData(MonsterID);
+            foreach (var buffData in drBuffs)
+            {
+                if (buffStr == buffData.BuffStr)
+                    count++;
+            }
+
+            return count;
+        }
+    }
+    
+    // public class Data_GridItemCard : Data_GridItem
+    // {
+    //     public ECardID CardID;
+    //     
+    //     
+    // }
+    
+    public class Data_GridItemUnitState : Data_GridItem
+    {
+        public EUnitState UnitState;
+    }
+    
+    public class Data_GridProp : Data_GridItem
+    {
+        public int GridPropID;
+        
+        public Data_GridProp()
+        {
+            
+        }
+        
+        public Data_GridProp(int gridPropID, int id, int gridPosIdx, EUnitCamp unitCamp) : base(id, gridPosIdx, unitCamp)
+        {
+            GridPropID = gridPropID;
+        }
+        
+        public new Data_GridProp Copy()
+        {
+            var dataGridProp = new Data_GridProp();
+            dataGridProp.GridPropID = GridPropID;
+            dataGridProp.ID = ID;
+            dataGridProp.GridPosIdx = GridPosIdx;
+            dataGridProp.UnitCamp = UnitCamp;
+            //dataGridProp.TargetGridType = TargetGridType;
+            
+
+
+            return dataGridProp;
+        }
+    }
+
+    public class Data_GridPropLink : Data_GridProp
+    {
+        public ELinkID LinkID;
+        
+        public Data_GridPropLink()
+        {
+            
+        }
+
+        public Data_GridPropLink(int gridPropID, ELinkID linkID, int id, int gridPosIdx) : base(gridPropID, id,
+            gridPosIdx, EUnitCamp.Third)
+
+        {
+            LinkID = linkID;
+        }
+        
+        public new Data_GridPropLink Copy()
+        {
+            var dataGridProp = new Data_GridPropLink();
+            dataGridProp.GridPropID = GridPropID;
+
+            dataGridProp.ID = ID;
+            dataGridProp.GridPosIdx = GridPosIdx;
+            dataGridProp.UnitCamp = UnitCamp;
+            dataGridProp.LinkID = LinkID;
+
+            return dataGridProp;
+        }
+    }
+    
+    public class Data_GridPropMoveDirect : Data_GridProp
+    {
+        public ERelativePos Direct;
+        public bool UseInRound = false;
+        public Data_GridPropMoveDirect()
+        {
+            
+        }
+
+        public Data_GridPropMoveDirect(int gridPropID, ERelativePos direct, int id, int gridPosIdx, EUnitCamp unitCamp) : base(gridPropID, id,
+            gridPosIdx, unitCamp)
+
+        {
+            Direct = direct;
+        }
+        
+        public new Data_GridPropMoveDirect Copy()
+        {
+            var dataGridProp = new Data_GridPropMoveDirect();
+            dataGridProp.GridPropID = GridPropID;
+            dataGridProp.Direct = Direct;
+            dataGridProp.UseInRound = UseInRound;
+
+            dataGridProp.ID = ID;
+            dataGridProp.GridPosIdx = GridPosIdx;
+            dataGridProp.UnitCamp = UnitCamp;
+            //dataGridProp.TargetGridType = TargetGridType;
+
+            return dataGridProp;
+        }
+    }
+    
+    
+    public class Data_Area
+    {
+        public int AreaIndex;
+        public int AreaID;
+        public int RandomSeed;
+        
+        public Dictionary<int, Data_Block> BlockDatas = new ();
+        
+        public Data_Area Copy()
+        {
+            var dataArea = new Data_Area();
+            dataArea.AreaID = AreaID;
+            dataArea.RandomSeed = RandomSeed;
+            
+            foreach (var kv in BlockDatas)
+            {
+                dataArea.BlockDatas.Add(kv.Key, kv.Value.Copy());
+            }
+
+            return dataArea;
+        }
+    }
+
+    public class Data_Bless
+    {
+        public int ID;
+        public EBlessID BlessID;
+        public float Value;
+
+        public Data_Bless()
+        {
+
+        }
+        
+        public Data_Bless(int id, EBlessID blessID)
+        {
+            ID = id;
+            BlessID = blessID;
+            
+            var drBless = GameEntry.DataTable.GetBless(blessID);
+            Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]);
+        }
+
+        public Data_Bless Copy()
+        {
+            var dataBless = new Data_Bless();
+            dataBless.ID = ID;
+            dataBless.BlessID = BlessID;
+            dataBless.Value = Value;
+
+            return dataBless;
+        }
+    }
+    
+    public class Data_EnergyBuff
+    {
+        public int Heart = -1;
+        public int HP = -1;
+        public int EnergyBuffIdx = -1;
+        public int EffectCount = 0;
+        public string BuffStr = string.Empty;
+        
+        public Data_EnergyBuff Copy()
+        {
+            var energyBuffData = new Data_EnergyBuff();
+            energyBuffData.Heart = Heart;
+            energyBuffData.HP = HP;
+            energyBuffData.EnergyBuffIdx = EnergyBuffIdx;
+            energyBuffData.EffectCount = EffectCount;
+            energyBuffData.BuffStr = BuffStr;
+
+            return energyBuffData;
+        }
+        
+        public void Clear()
+        {
+            Heart = -1;
+            HP = -1;
+            EnergyBuffIdx = -1;
+            EffectCount = 0;
+            BuffStr = String.Empty;
+        }
+    }
+    
+    public class Data_Player
+    {
+        public int CardIDIdx;
+        public int TmpCardIDIdx;
+        public int FuneIDIdx;
+        public int BlessIDIdx;
+        public ulong PlayerID;
+        public EUnitCamp UnitCamp;
+        
+        public Data_BattleHero BattleHero = new();
+        public Dictionary<int, Data_Card> CardDatas = new ();
+        public Dictionary<int, Data_Fune> FuneDatas = new();
+        public Dictionary<int, Data_Bless> BlessDatas = new ();
+        public Dictionary<int, Data_EnergyBuff> EnergyBuffDatas = new ();
+        
+        public Data_Player()
+        {
+            
+        }
+
+        
+        
+        public Data_Player Copy()
+        {
+            var data = new Data_Player();
+
+            data.CardIDIdx = CardIDIdx;
+            data.FuneIDIdx = FuneIDIdx;
+            data.BlessIDIdx = BlessIDIdx;
+            data.BattleHero = BattleHero.Copy();
+            data.PlayerID = PlayerID;
+            data.UnitCamp = UnitCamp;
+            data.EnergyBuffDatas = new Dictionary<int, Data_EnergyBuff>(EnergyBuffDatas);
+            
+            data.CardDatas.Clear();
+            foreach (var kv in CardDatas)
+            {
+                data.CardDatas.Add(kv.Key, kv.Value.Copy());
+            }
+            
+            foreach (var kv in BlessDatas)
+            {
+                data.BlessDatas.Add(kv.Key, kv.Value.Copy());
+            }
+
+            return data;
+        }
+        
+        public void RoundClear()
+        {
+            foreach (var kv in FuneDatas)
+            {
+                var drFune = GameEntry.DataTable.GetBuff(kv.Value.FuneID);
+                if(drFune == null)
+                    continue;
+                FuneDatas[kv.Key].Value = BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
+            }
+
+            foreach (var kv in CardDatas)
+            {
+                kv.Value.RoundClear();
+            }
+
+            foreach (var kv in BlessDatas)
+            {
+                if (kv.Value.BlessID == EBlessID.EachRoundUseUnitCardAddDefense ||
+                    kv.Value.BlessID == EBlessID.EachRoundUseFightCardAttackAllEnemy ||
+                    kv.Value.BlessID == EBlessID.EachRoundUseTacticCardAttackAllEnemy)
+                {
+                    var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
+                    kv.Value.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]);
+                }
+            }
+        }
+        
+        public bool Contain(EBlessID blessID)
+        {
+            foreach (var kv in BlessDatas)
+            {
+                if (kv.Value.BlessID == blessID)
+                    return true;
+            }
+            
+            return false;
+        }
+        
+        public int BlessCount(EBlessID blessID)
+        {
+            var idx = 0;
+            foreach (var kv in BlessDatas)
+            {
+                if (kv.Value.BlessID == blessID)
+                    idx++;
+            }
+            
+            return idx;
+        }
+        
+        public Data_Bless GetUsefulBless(EBlessID blessID)
+        {
+            foreach (var kv in BlessDatas)
+            {
+                if (kv.Value.BlessID == blessID && kv.Value.Value >= 0)
+                    return kv.Value;
+            }
+            
+            return null;
+        }
+    }
+
+    public class Data_Enemy
+    {
+        public Data_BattleCurse BattleCurseData = new ();
+
+        public Data_Enemy Copy()
+        {
+            var data = new Data_Enemy();
+            
+            data.BattleCurseData = BattleCurseData.Copy();
+
+            return data;
+        }
+        
+        public void RoundClear()
+        {
+            BattleCurseData.RoundClear();
+        }
+    }
+
+    public class Data_MapStage
+    {
+        public int MapIdx;
+        public int StageIdx;
+        public int SelectRouteIdx;
+        public int StageRandomSeed;
+    }
+    
+    public class Data_MapStep
+    {
+        public Data_MapRoute MapRoute;
+        public int StepIdx;
+        public int RandomSeed;
+    }
+    
+    public class Data_MapRoute
+    {
+        public int MapIdx;
+        public int StageIdx;
+        public int RouteIdx;
+        
+    }
+
+
+    public class Data_Map
+    {
+        public Dictionary<int, Data_MapStage> MapStageDataDict = new ();
+        
+        public MapStageIdx CurMapStageIdx = new MapStageIdx();
+
+        public Data_Map Copy()
+        {
+            var data = new Data_Map();
+            
+            data.CurMapStageIdx = CurMapStageIdx.Copy();
+
+            return data;
+        }
+        
+    }
+
+    public class MapStageIdx
+    {
+        public int MapIdx;
+        public int StageIdx;
+        public int RouteIdx;
+        public int StepIdx = -1;
+        public bool IsSelectRoute = false;
+        
+        public MapStageIdx Copy()
+        {
+            var mapStageIdx = new MapStageIdx();
+            
+            mapStageIdx.MapIdx = MapIdx;
+            mapStageIdx.StageIdx = StageIdx;
+            mapStageIdx.RouteIdx = RouteIdx;
+            mapStageIdx.StepIdx = StepIdx;
+
+            return mapStageIdx;
+        }
+    }
+
+    public class Data_GamePlay
+    {
+        public Data_Map MapData = new ();
+        public Data_Area AreaData = new ();
+        public Data_Battle BattleData = new ();
+        public Data_Battle LastBattleData = new ();
+        public Dictionary<EUnitCamp, Data_Player> PlayerDatas = new();
+        public Dictionary<ulong, Data_Player> PlayerDataIDDict = new ();
+        public Dictionary<EUnitCamp, Data_Player> PlayerDataCampDict = new ();
+        public Data_Enemy EnemyData = new ();
+        public EGamMode GameMode;
+        public int RandomSeed = -1;
+
+        public Data_GamePlay()
+        {
+            
+        }
+
+        public bool Contain(ulong playerID)
+        {
+            return PlayerDataIDDict.ContainsKey(playerID);
+        }
+
+        public void AddPlayerData(Data_Player playerData)
+        {
+            PlayerDatas.Add(playerData.UnitCamp, playerData);
+            PlayerDataCampDict.Add(playerData.UnitCamp, playerData);
+            PlayerDataIDDict.Add(playerData.PlayerID, playerData);
+
+        }
+        
+        public Data_Player GetPlayerData(ulong userID)
+        {
+            if (!PlayerDataIDDict.ContainsKey(userID))
+                return null;
+
+            return PlayerDataIDDict[userID];
+        }
+
+
+        public Data_Player GetPlayerData(EUnitCamp unitCamp)
+        {
+            if (!PlayerDataCampDict.ContainsKey(unitCamp))
+                return null;
+
+            return PlayerDataCampDict[unitCamp];
+        }
+        
+        public Data_GamePlay Copy()
+        {
+            var data = new Data_GamePlay();
+            
+            data.AreaData = AreaData.Copy();
+            data.BattleData = BattleData.Copy();
+            data.LastBattleData = LastBattleData.Copy();
+            data.EnemyData = EnemyData.Copy();
+            data.MapData = MapData.Copy();
+
+            data.PlayerDatas.Clear();
+            data.PlayerDataCampDict.Clear();
+            data.PlayerDataIDDict.Clear();
+            
+            foreach (var kv in PlayerDatas)
+            {
+                data.AddPlayerData(kv.Value.Copy());
+            }
+
+            return data;
+        }
+
+        public void RoundInit()
+        {
+            BattleData.RoundInit();
+        }
+
+        public void RoundClear()
+        {
+            LastBattleData = BattleData.Copy();
+            BattleData.RoundClear();
+
+            EnemyData.RoundClear();
+            foreach (var kv in PlayerDatas)
+            {
+                kv.Value.RoundClear();
+            }
+        }
+        
+        public bool Contain(EBlessID blessID, EUnitCamp unitCamp)
+        {
+            if (PlayerDataCampDict.ContainsKey(unitCamp))
+                return false;
+            
+            return PlayerDataCampDict[unitCamp].Contain(blessID);
+        }
+        
+        public int BlessCount(EBlessID blessID, EUnitCamp unitCamp)
+        {
+            if (PlayerDataCampDict.ContainsKey(unitCamp))
+                return 0;
+            
+            return PlayerDataCampDict[unitCamp].BlessCount(blessID);
+        }
+        
+        public Data_Bless GetUsefulBless(EBlessID blessID, EUnitCamp unitCamp)
+        {
+            if (PlayerDataCampDict.ContainsKey(unitCamp))
+                return null;
+            
+            return PlayerDataCampDict[unitCamp].GetUsefulBless(blessID);
+        }
+        
+    }
+
+    public class Data_BattleCurse
+    {
+        //public int RandomUnitUnRecover_UnitID = -1;
+        public List<ECurseID> CurseIDs = new ();
+        public Dictionary<int, int> AllUnitDodgeSubHeartDamage_Dict = new ();
+        public List<int> AttackRowOrCol_PosIdxs = new List<int>();
+        public Dictionary<ECurseID, int> RandomUnitIDs = new ();
+        
+        public Data_BattleCurse Copy()
+        {
+            var data = new Data_BattleCurse();
+
+            //data.RandomUnitUnRecover_UnitID = RandomUnitUnRecover_UnitID;
+            data.AllUnitDodgeSubHeartDamage_Dict = new Dictionary<int, int>(AllUnitDodgeSubHeartDamage_Dict);
+            data.CurseIDs = new List<ECurseID>(CurseIDs);
+
+            return data;
+        }
+        
+        public void RoundClear()
+        {
+            RandomUnitIDs.Clear();
+        }
+
+    }
+
+    public class Data_BattlePlayer
+    {
+        public List<int> StandByCards = new ();
+        public List<int> PassCards = new ();
+        public List<int> HandCards = new ();
+        public List<int> ConsumeCards = new();
+        public int RoundUseCardCount;
+        public int LastRoundUseCardCount;
+        public bool RoundIsAttack;
+        
+        
+        public List<EBuffID> RoundBuffs = new ();
+
+        public Data_BattlePlayer Copy()
+        {
+            var data = new Data_BattlePlayer();
+            
+            data.StandByCards = new List<int>(StandByCards);
+            data.PassCards = new List<int>(PassCards);
+            data.HandCards = new List<int>(HandCards);
+            data.ConsumeCards = new List<int>(ConsumeCards);
+            data.RoundUseCardCount = RoundUseCardCount;
+            data.LastRoundUseCardCount = LastRoundUseCardCount;
+            data.RoundIsAttack = RoundIsAttack;
+            data.RoundBuffs = new List<EBuffID>(RoundBuffs);
+            
+
+            return data;
+        }
+        
+        public List<int> GetAllCards()
+        {
+            var allCards = new List<int>();
+            foreach (var handCard in HandCards)
+            {
+                allCards.Add(handCard);
+            }
+            foreach (var standByCard in StandByCards)
+            {
+                allCards.Add(standByCard);
+            }
+            foreach (var passCard in PassCards)
+            {
+                allCards.Add(passCard);
+            }
+            foreach (var removeCard in ConsumeCards)
+            {
+                allCards.Add(removeCard);
+            }
+
+            return allCards;
+        }
+        
+        public void RoundClear()
+        {
+
+            LastRoundUseCardCount = RoundUseCardCount;
+            RoundUseCardCount = 0;
+            RoundIsAttack = false;
+            RoundBuffs.Clear();
+            
+        }
+    }
+
+    public class Data_Battle
+    {
+        public int Round;
+        public int UnitID;
+        public EEnemyType EnemyType;
+        public Dictionary<EUnitCamp, Data_BattlePlayer> BattlePlayerDatas = new ();
+
+        public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new();
+        public Dictionary<int, Data_GridProp> GridPropDatas = new();
+        public Dictionary<int, EGridType> GridTypes = new ();
+        
+
+        public Data_Battle()
+        {
+            BattlePlayerDatas.Add(EUnitCamp.Player1, new Data_BattlePlayer());
+            BattlePlayerDatas.Add(EUnitCamp.Player2, new Data_BattlePlayer());
+
+        }
+        
+        public Data_BattlePlayer GetBattlePlayerData(EUnitCamp unitCamp)
+        {
+            if (!BattlePlayerDatas.ContainsKey(unitCamp))
+                return null;
+
+            return BattlePlayerDatas[unitCamp];
+        }
+
+        public List<Data_BattleUnit> ContainUnit(int cardID)
+        {
+            var units = new List<Data_BattleUnit>();
+            foreach (var kv in BattleUnitDatas)
+            {
+                if (kv.Value is Data_BattleSolider solider)
+                {
+                    var card = BattleManager.Instance.GetCard(solider.CardID);
+                    if (card.CardID == cardID)
+                    {
+                        units.Add(kv.Value);
+                    }
+                }
+            }
+
+            return units;
+        }
+
+        public Data_Battle Copy()
+        {
+            var dataBattle = new Data_Battle();
+
+            dataBattle.Round = Round;
+
+            foreach (var kv in BattleUnitDatas)
+            {
+                if (kv.Value is Data_BattleSolider solider)
+                {
+                    dataBattle.BattleUnitDatas.Add(kv.Key, solider.Copy());
+                }
+                else if (kv.Value is Data_BattleHero hero)
+                {
+                    dataBattle.BattleUnitDatas.Add(kv.Key, hero.Copy());
+                }
+                else if (kv.Value is Data_BattleMonster monster)
+                {
+                    dataBattle.BattleUnitDatas.Add(kv.Key, monster.Copy());
+                }
+                else
+                {
+                    dataBattle.BattleUnitDatas.Add(kv.Key, kv.Value.Copy());
+                }
+                
+            }
+            
+            foreach (var kv in GridTypes)
+            {
+                dataBattle.GridTypes.Add(kv.Key, kv.Value);
+            }
+
+            foreach (var kv in GridPropDatas)
+            {
+                if (kv.Value is Data_GridPropMoveDirect moveDirect)
+                {
+                    dataBattle.GridPropDatas.Add(kv.Key, moveDirect.Copy());
+                }
+                else
+                {
+                    dataBattle.GridPropDatas.Add(kv.Key, kv.Value.Copy());
+                }
+            }
+
+            dataBattle.BattlePlayerDatas.Clear();
+            foreach (var kv in BattlePlayerDatas)
+            {
+                dataBattle.BattlePlayerDatas.Add(kv.Key, kv.Value.Copy());
+            }
+            
+            //dataBattle.BattlePlayerDatas = new Dictionary<EUnitCamp, Data_BattlePlayer>(BattlePlayerDatas);
+
+            return dataBattle;
+
+        }
+        
+        public Data_GridProp Contain(int gridPropID, int gridPosIdx)
+        {
+            foreach (var kv in GridPropDatas)
+            {
+                if (kv.Value.GridPropID == gridPropID && kv.Value.GridPosIdx == gridPosIdx)
+                    return kv.Value;
+            }
+
+            return null;
+
+        }
+        
+        public Data_GridProp Contain(EGridPropID gridPropID, int gridPosIdx)
+        {
+
+            if (!FightManager.Instance.CacheGridPorpIDStr.ContainsKey(gridPropID))
+            {
+                FightManager.Instance.CacheGridPorpIDStr.Add(gridPropID, gridPropID.ToString());    
+            }
+            
+            
+
+            return Contain(FightManager.Instance.CacheGridPorpIDStr[gridPropID], gridPosIdx);
+
+        }
+        
+        public Data_GridProp Contain(string gridPropIDStr, int gridPosIdx)
+        {
+            foreach (var kv in GridPropDatas)
+            {
+                var drGridProp = GameEntry.DataTable.GetGridProp(kv.Value.GridPropID);
+                if (drGridProp.GridPropIDs.Contains(gridPropIDStr) && kv.Value.GridPosIdx == gridPosIdx)
+                    return kv.Value;
+            }
+
+            return null;
+
+        }
+        
+        public int GetUnitCount(EUnitCamp selfCamp, List<ERelativeCamp> targetCamps, List<EUnitRole> roles)
+        {
+            var unitCount = 0;
+            foreach (var kv in BattleUnitDatas)
+            {
+                if (kv.Value.CurHP > 0 &&
+                    ((targetCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == selfCamp) ||
+                     (targetCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != selfCamp)) && 
+                    roles.Contains(kv.Value.UnitRole))
+                {
+                    unitCount += 1;
+                }
+
+            }
+
+            return unitCount;
+        }
+
+        public void RoundClear()
+        {
+            foreach (var kv in BattleUnitDatas)
+            {
+                kv.Value.RoundClear();
+            }
+
+            foreach (var kv in BattlePlayerDatas)
+            {
+                kv.Value.RoundClear();
+            }
+
+        }
+
+        public void RoundInit()
+        {
+            foreach (var kv in BattleUnitDatas)
+            {
+                kv.Value.RoundInit();
+            }
+        }
+
+
+    }
+    
+    
+
+}

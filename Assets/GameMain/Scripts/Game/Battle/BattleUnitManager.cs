@@ -1,0 +1,636 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using GameFramework.Event;
+using UnityEngine;
+using Random = System.Random;
+
+namespace RoundHero
+{
+    // public class UnitSelection
+    // {
+    //     public EUnitCamp UnitCamp;
+    //     public Type UnitType;
+    //
+    //     public UnitSelection(EUnitCamp unitCamp, Type unitType)
+    //     {
+    //         UnitCamp = unitCamp;
+    //         UnitType = unitType;
+    //     }
+    // }
+    
+    public class TempTriggerData
+    {
+        public int TargetGridPosIdx = -1;
+        public ETempUnitType TriggerType = ETempUnitType.Null;
+        public Data_BattleUnit UnitData;
+        public int UnitOriGridPosIdx = -1;
+        public List<int> TempUnitMovePaths = new ();
+        public int CardEffectUnitID = -1;
+        public TriggerBuffData TriggerBuffData = new ();
+
+        public void Reset()
+        {
+            TargetGridPosIdx = -1;
+            TriggerType = ETempUnitType.Null;
+            UnitData = null;
+            UnitOriGridPosIdx = -1;
+            TempUnitMovePaths.Clear();
+            CardEffectUnitID = -1;
+            TriggerBuffData.Clear();
+            
+        }
+
+        public TempTriggerData Copy()
+        {
+            var tempTriggerData = new TempTriggerData();
+            tempTriggerData.TriggerType = TriggerType;
+            if (TriggerType == ETempUnitType.Null)
+            {
+                return tempTriggerData;
+            }
+
+            tempTriggerData.TargetGridPosIdx = TargetGridPosIdx;
+            
+            if (UnitData is Data_BattleSolider solider)
+            {
+                tempTriggerData.UnitData = solider.Copy();
+            }
+            else if (UnitData is Data_BattleHero hero)
+            {
+                tempTriggerData.UnitData = hero.Copy();
+            }
+            else if (UnitData is Data_BattleMonster monster)
+            {
+                tempTriggerData.UnitData = monster.Copy();
+            }
+            
+            tempTriggerData.UnitOriGridPosIdx = UnitOriGridPosIdx;
+            tempTriggerData.TempUnitMovePaths = new List<int>(TempUnitMovePaths);
+            tempTriggerData.CardEffectUnitID = CardEffectUnitID;
+            tempTriggerData.TriggerBuffData = TriggerBuffData.Copy();
+
+            return tempTriggerData;
+
+        }
+    }
+
+    public class BuffValue
+    {
+        public BuffData BuffData;
+        public List<float> ValueList;
+        public int UnitID;
+    }
+
+    
+    public class BattleUnitManager : Singleton<BattleUnitManager>
+    {
+        public Dictionary<int, BattleUnitEntity>  BattleUnitEntities = new ();
+        
+        
+        public Random Random;
+        private int randomSeed;
+        
+        public void Init(int randomSeed)
+        {
+            this.randomSeed = randomSeed;
+            Random = new System.Random(this.randomSeed);
+            GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+        }
+        public void Destory()
+        {
+            GameEntry.Event.Unsubscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+            foreach (var kv in BattleUnitEntities)
+            {
+                GameEntry.Entity.HideEntity(kv.Value);
+                
+            }
+            BattleUnitEntities.Clear();
+        }
+
+        public int GetID()
+        {
+            return DataManager.Instance.CurUser.GamePlayData.BattleData.UnitID++;
+        }
+
+        public int GetTempID()
+        {
+            return 999999;
+        }
+        
+        public Dictionary<int, Data_BattleUnit> BattleUnitDatas => DataManager.Instance.CurUser.GamePlayData.BattleData.BattleUnitDatas;
+        
+        public BattleUnitEntity GetUnitByGridPosIdxMoreCamps(int gridPosIdx, EUnitCamp? selfUnitCamp = null, List<ERelativeCamp> unitCamps = null)
+        {
+            if (unitCamps == null)
+                return null;
+            
+            foreach (var unitCamp in unitCamps)
+            {
+                var unit = GetUnitByGridPosIdx(gridPosIdx, selfUnitCamp, unitCamp);
+                if (unit != null)
+                {
+                    return unit;
+                }
+            }
+        
+            return null;
+        }
+        
+        public BattleUnitEntity GetUnitByGridPosIdx(int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null)
+        {
+            foreach (var kv in BattleUnitEntities)
+            {
+                if (kv.Value is BattleUnitEntity unit)
+                {
+                    if(unitRole != null && unit.UnitRole != unitRole)
+                        continue;
+                }
+                
+                if (kv.Value is IMoveGrid moveGrid && moveGrid.GridPosIdx == gridPosIdx)
+                {
+                    if (unitCamp == ERelativeCamp.Us && kv.Value.UnitCamp == selfUnitCamp ||
+                        unitCamp == ERelativeCamp.Enemy && kv.Value.UnitCamp != selfUnitCamp || 
+                        unitCamp == null)
+                    {
+                        return kv.Value;
+                    }
+                }
+            }
+            
+            return null;
+            
+            // foreach (var kv in BattleUnitEntities)
+            // {
+            //     if (attackType != null)
+            //     {
+            //         if (kv.Value is BattleSoliderEntity battleSoliderEntity)
+            //         {
+            //             var drBuff =
+            //                 CardManager.Instance.GetBuffTable(battleSoliderEntity.BattleSoliderEntityData.BattleSoliderData
+            //                     .CardID);
+            //             var soliderAttackType = GameUtility.GetEnum<EActionType>(drBuff.TriggerRange);
+            //             if (soliderAttackType != attackType)
+            //             {
+            //                 continue;
+            //             }
+            //         }
+            //         else if (kv.Value is BattleMonsterEntity battleEnemyEntity)
+            //         {
+            //             var drEnemy = GameEntry.DataTable.GetEnemy(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.EnemyTypeID);
+            //             var drBuff = GameEntry.DataTable.GetBuff(GameUtility.GetEnum<EBuffID>(drEnemy.OwnBuff));
+            //             var enemyAttackType = GameUtility.GetEnum<EActionType>(drBuff.TriggerRange);
+            //             if (enemyAttackType != attackType)
+            //             {
+            //                 continue;
+            //             }
+            //         }
+            //         
+            //     }
+            //     
+            //     if (kv.Value is IMoveGrid moveGrid && moveGrid.GridPosIdx == gridPosIdx &&
+            //         (unitCamp == null || unitCamp == kv.Value.UnitCamp))
+            //     {
+            //         return kv.Value;
+            //     }
+            // }
+            
+        }
+        
+        // public IUnit GetUnitByIDMoreCamps(int id, List<EUnitCamp> unitCamps = null,
+        //     EActionType? attackType = null)
+        // {
+        //     foreach (var unitCamp in unitCamps)
+        //     {
+        //         var unit = GetUnitByID(id, unitCamp, attackType);
+        //         if (unit != null)
+        //         {
+        //             return unit;
+        //         }
+        //     }
+        //
+        //     return null;
+        // }
+        
+        public BattleUnitEntity GetUnitByID(int id)
+        {
+            // foreach (var kv in BattleUnitEntities)
+            // {
+            //     if (attackType != null)
+            //     {
+            //         if (kv.Value is BattleSoliderEntity battleSoliderEntity)
+            //         {
+            //             var drBuff =
+            //                 CardManager.Instance.GetBuffTable(battleSoliderEntity.BattleSoliderEntityData.BattleSoliderData
+            //                     .CardID);
+            //             var soliderAttackType = GameUtility.GetEnum<EActionType>(drBuff.TriggerRange);
+            //             if (soliderAttackType != attackType)
+            //             {
+            //                 continue;
+            //             }
+            //         }
+            //         else if (kv.Value is BattleMonsterEntity battleEnemyEntity)
+            //         {
+            //             var drEnemy = GameEntry.DataTable.GetEnemy(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.EnemyTypeID);
+            //             var drBuff = GameEntry.DataTable.GetBuff(GameUtility.GetEnum<EBuffID>(drEnemy.OwnBuff));
+            //             var enemyAttackType = GameUtility.GetEnum<EActionType>(drBuff.TriggerRange);
+            //             if (enemyAttackType != attackType)
+            //             {
+            //                 continue;
+            //             }
+            //         }
+            //         
+            //     }
+            //     
+            //     if (kv.Value.ID == id &&
+            //         (unitType == null || unitType == kv.Value.UnitCamp))
+            //     {
+            //         return kv.Value;
+            //     }
+            // }
+            
+            foreach (var kv in BattleUnitEntities)
+            {
+                if (kv.Value.ID == id)
+                {
+                    return kv.Value;
+                }
+                
+                
+            }
+            
+            return null;
+        }
+
+        public int GetUnitID(int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null)
+        {
+            var unit = GetUnitByGridPosIdx(gridPosIdx, selfUnitCamp, unitCamp, unitRole);
+            if(unit != null) 
+                return unit.ID;
+
+            return -1;
+        }
+
+        public int GetUnitHP(int cardID)
+        {
+            return BattleCurseManager.Instance.SameUnitSameCurHP_GetUnitHP(cardID);
+        }
+
+
+        public void RoundStartTrigger()
+        {
+            RefreshRoundStates();
+            
+            foreach (var kv in BattleUnitEntities)
+            {
+                if (kv.Value.BattleUnit is Data_BattleMonster monster)
+                {
+                    monster.IsCalculateAction = false;
+                }
+                
+                if (kv.Value.BattleUnit is Data_BattleSolider solider)
+                {
+                    solider.RoundMoveTimes = 0;
+                    solider.RoundAttackTimes = 0;
+
+                }
+                
+            }
+        }
+
+        public void RefreshRoundStates()
+        {
+            foreach (var kv in BattleUnitEntities)
+            {
+                var keys = kv.Value.BattleUnit.UnitState.UnitStates.Keys.ToList();
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    //kv.Value.BattleUnit.RemoveState(keys[i]);
+                }
+  
+            }
+        }
+        
+        
+        
+        public void RefreshDamageState()
+        {
+            foreach (var kv in BattleUnitEntities)
+            {
+                kv.Value.RefreshDamageState();
+            }
+        }
+        
+        public void OnRefreshUnitData(object sender, GameEventArgs e)
+        {
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                // if (kv.Value.UnitCamp == EUnitCamp.Third)
+                // {
+                //     (kv.Value as BattleMonsterEntity).RefreshData();
+                // }
+                kv.Value.RefreshData();
+            }
+        }
+        
+        public List<BuffData> GetBuffDatas(Data_BattleUnit battleUnit)
+        {
+            if (battleUnit is Data_BattleSolider soliderData)
+            {
+                return CardManager.Instance.GetBuffData(soliderData.CardID);
+            }
+            else if (battleUnit is Data_BattleMonster monsterData)
+            {
+                return BattleEnemyManager.Instance.GetBuffData(monsterData.MonsterID);
+            }
+            else if (battleUnit is Data_BattleHero heroData)
+            {
+                return BattleHeroManager.Instance.GetBuffData(heroData.HeroID);
+            }
+            
+            return null;
+        }
+
+        // public void RoundEnd()
+        // {
+        //     
+        //     foreach (var kv in GamePlayManager.Instance.GamePlayData.BattleData.BattleUnitDatas)
+        //     {
+        //         BattleUnitManager.Instance.GetBuffValue(GamePlayManager.Instance.GamePlayData, kv.Value, out List<DRBuff> drBuffs, out List<List<float>> valueList);
+        //
+        //         if (drBuffs != null)
+        //         {
+        //             var idx = 0;
+        //             foreach (var drBuff in drBuffs)
+        //             {
+        //                 var range = GameUtility.GetRange(kv.Value.GridPosIdx, drBuff.TriggerRange, kv.Value.UnitCamp,
+        //                     drBuff.TriggerUnitCamps, drBuff.HeroInRangeTrigger, false, false);
+        //
+        //                 var isSubCurHP = false;
+        //                 foreach (var rangeGridPosIdx in range)
+        //                 {
+        //                     var unit = GameUtility.GetUnitByGridPosIdx(rangeGridPosIdx);
+        //                     if (unit == null)
+        //                         continue;
+        //
+        //                     var triggerData = BattleBuffManager.Instance.UsActionEndTrigger(drBuff.BuffID, valueList[idx], kv.Value.ID, kv.Value.ID, unit.ID);
+        //                     if (triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+        //                           triggerData.BattleUnitAttribute == EUnitAttribute.CurHP &&
+        //                           triggerData.Value + triggerData.DeltaValue < 0)
+        //                     {
+        //                         isSubCurHP = true;
+        //                     }
+        //                 }
+        //                 idx++;
+        //                 BattleUnitStateManager.Instance.CheckUnitState(kv.Value.ID);
+        //             }
+        //         }
+        //         
+        //
+        //         
+        //     }
+        // }
+
+        
+        
+        public void GetBuffValue(Data_GamePlay gamePlayData, int unitID, out List<BuffValue> triggerBuffDatas)
+        {
+            if (BattleUnitManager.Instance.BattleUnitDatas.ContainsKey(unitID))
+            {
+                var unit  = BattleUnitManager.Instance.BattleUnitDatas[unitID];
+                GetBuffValue(gamePlayData, unit, out triggerBuffDatas);
+            }
+            else
+            {
+                triggerBuffDatas = null;
+            }
+
+        }
+
+        public void GetBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit,out List<BuffValue> triggerBuffDatas)
+        {
+            triggerBuffDatas = new List<BuffValue>();
+            
+            if(unit == null)
+                return;
+
+            InternalGetBuffValue(gamePlayData, unit, out List<BuffData> buffDatas, out List<List<float>> valueList);
+            var idx = 0;
+            foreach (var buffData in buffDatas)
+            {
+                triggerBuffDatas.Add(new BuffValue()
+                {
+                    BuffData = buffData,
+                    ValueList = valueList[idx++],
+                    UnitID = unit.ID,
+                });
+            };
+            
+
+            
+            // idx = 0;
+            // foreach (var unitID in unit.Links)
+            // {
+            //     var linkUnit = GameUtility.GetUnitByID(gamePlayData, unitID);
+            //     InternalGetBuffValue(gamePlayData, linkUnit, out List<BuffData> linkDrBuffs, out List<List<float>> linkValueList);    
+            //     
+            //     foreach (var drBuff in linkDrBuffs)
+            //     {
+            //         idx = 0;
+            //         triggerBuffDatas.Add(new BuffValue()
+            //         {
+            //             DrBuff = drBuff,
+            //             ValueList = linkValueList[idx++],
+            //             UnitID = linkUnit.ID,
+            //         });
+            //     };
+            // }
+            
+           
+            
+        }
+
+        private void InternalGetBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit, out  List<BuffData> buffDatas, out List<List<float>> valueList)
+        {
+
+            if (unit is Data_BattleSolider solider)
+            {
+                buffDatas = CardManager.Instance.GetBuffData(solider.CardID);
+                valueList = CardManager.Instance.GetBuffValues(solider.CardID);
+            }
+            else if (unit is Data_BattleMonster monster)
+            {
+                buffDatas = BattleEnemyManager.Instance.GetBuffData(monster.MonsterID);
+                valueList = BattleEnemyManager.Instance.GetBuffValues(monster.MonsterID);
+            }
+            else if (unit is Data_BattleHero hero)
+            {
+                buffDatas = BattleHeroManager.Instance.GetBuffData(hero.HeroID);
+                valueList = BattleHeroManager.Instance.GetBuffValues(hero.HeroID);
+
+
+            }
+            else
+            {
+                buffDatas = new List<BuffData>();
+                valueList = new List<List<float>>();
+            }
+
+        }
+        
+        public void GetSecondaryBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit, out List<BuffValue> triggerBuffDatas)
+        {
+            triggerBuffDatas = new List<BuffValue>();
+            
+            var buffStrs = new List<string>();;
+            List<List<float>> valueList = new List<List<float>>();
+            
+            if (unit is Data_BattleMonster monster)
+            {
+                buffStrs = BattleEnemyManager.Instance.GetSecondaryBuff(monster.MonsterID);
+                valueList = BattleEnemyManager.Instance.GetSecondaryBuffValues(monster.MonsterID);
+            }
+
+            var idx = 0;
+            foreach (var buffStr in buffStrs)
+            {
+                idx = 0;
+                triggerBuffDatas.Add(new BuffValue()
+                {
+                    BuffData = BattleBuffManager.Instance.GetBuffData(buffStr),
+                    ValueList = valueList[idx++],
+                    UnitID = unit.ID,
+                });
+            };
+
+        }
+
+
+        public bool OnGridUnitContainCard(int cardID)
+        {
+            foreach (var kv in BattleUnitDatas)
+            {
+                if (kv.Value is Data_BattleSolider solider)
+                {
+                    var soliderDrCard = CardManager.Instance.GetCardTable(solider.CardID);
+                    var drCard = CardManager.Instance.GetCardTable(cardID);
+                    
+                    return soliderDrCard?.Id == drCard?.Id;
+                }
+            }
+
+            return false;
+        }
+        
+        public Data_BattleUnit GetBattleUnitData(BattleUnitEntity unit)
+        {
+            if (unit is BattleSoliderEntity soliderEntity)
+            {
+                return soliderEntity.BattleSoliderEntityData.BattleSoliderData;
+
+            }
+            else if (unit is BattleHeroEntity heroEntity)
+            {
+                return heroEntity.BattleHeroEntityData.BattleHeroData;
+            }
+            else if (unit is BattleMonsterEntity monsterEntity)
+            {
+                return monsterEntity.BattleMonsterEntityData.BattleMonsterData;
+            }
+
+            return null;
+        }
+
+        public EActionType GetMoveType(int unitID)
+        {
+            
+            var unit = GetUnitByID(unitID);
+            if (unit is BattleSoliderEntity soliderEntity)
+            {
+                var cardTable = CardManager.Instance.GetCardTable(soliderEntity.BattleSoliderEntityData.BattleSoliderData.CardID);
+                return cardTable.MoveType;
+            }
+            else if (unit is BattleMonsterEntity monsterEntity)
+            {
+                var drEnemy = GameEntry.DataTable.GetEnemy(monsterEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
+                return drEnemy.MoveType;
+            }
+            else if (unit is BattleHeroEntity heroEntity)
+            {
+                var drHero = GameEntry.DataTable.GetHero(heroEntity.BattleHeroEntityData.BattleHeroData.HeroID);
+                return drHero.ActionType;
+            }
+
+            return EActionType.Empty;
+        }
+        
+        public List<int> GetMoveRanges(int unitID, int gridPosIdx)
+        {
+            var rangeList = new List<int>();
+            var actionType = BattleUnitManager.Instance.GetMoveType(unitID);
+            
+            var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
+            foreach (var points in Constant.Battle.ActionTypePoints[actionType])
+            {
+                foreach (var point in points)
+                {
+                    if(point == Vector2Int.zero)
+                        continue;
+                    
+                    var targetCoord = coord + point;
+                    if (!GameUtility.InGridRange(targetCoord))
+                        break;
+
+                    var targetGridPosIdx = GameUtility.GridCoordToPosIdx(targetCoord);
+                    if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Obstacle)
+                        break;
+                    
+                    if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Unit)
+                        continue;
+
+                    rangeList.Add(GameUtility.GridCoordToPosIdx(targetCoord));
+                }
+
+            }
+
+            return rangeList;
+        }
+        
+        public List<int> GetAttackRanges(int unitID, int gridPosIdx)
+        {
+            var rangeList = new List<int>();
+            var battleUnitData = GetUnitByID(unitID)?.BattleUnit;
+            if(battleUnitData == null)
+                return rangeList;
+            
+            BattleUnitManager.Instance.GetBuffValue(GamePlayManager.Instance.GamePlayData,
+                battleUnitData, out List<BuffValue> triggerBuffDatas);
+            if (triggerBuffDatas.Count > 0)
+            {
+                var drBuff = triggerBuffDatas[0].BuffData;
+                rangeList = GameUtility.GetRange(gridPosIdx,
+                    drBuff.TriggerRange,
+                    battleUnitData.UnitCamp, drBuff.TriggerUnitCamps,
+                    false);
+            
+               
+            }
+            
+            // var triggerBuffData = triggerBuffDatas.Find(data => data.DrBuff.FlyType != EFlyType.Empty);
+            // if (triggerBuffData != null)
+            // {
+            //     var drBuff = triggerBuffData.DrBuff;
+            //     rangeList = GameUtility.GetRange(gridPosIdx,
+            //         drBuff.TriggerRange,
+            //         battleUnitData.UnitCamp, drBuff.TriggerUnitCamps,
+            //         drBuff.HeroInRangeTrigger,
+            //         drBuff.InclueCenter, false);
+            //
+            //    
+            // }
+            return rangeList;
+
+           
+        }
+ 
+    }
+}

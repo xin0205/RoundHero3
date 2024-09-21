@@ -1,0 +1,36 @@
+﻿using UnityEngine;
+
+namespace RoundHero
+{
+    public static partial class GameUtility
+    {
+        public static Vector2Int GridPosIdxToCoord(int posIdx)
+        {
+            return new Vector2Int( posIdx % Constant.Area.GridSize.x, posIdx / Constant.Area.GridSize.y);
+            
+        }
+
+        public static Vector3 GridPosIdxToPos(int posIdx)
+        {
+            var coord = GridPosIdxToCoord(posIdx);
+
+            return GridCoordToPos(coord);
+        }
+        
+        public static Vector3 GridCoordToPos(Vector2Int coord)
+        {
+            return AreaController.Instance.GridRoot.position + new Vector3(coord.x * Constant.Area.GridRange.x, 0, coord.y * Constant.Area.GridRange.y);
+        }
+        
+        public static Vector2Int GridPosToCoord(Vector3 pos)
+        {
+            return new Vector2Int((int)((pos.x - AreaController.Instance.GridRoot.position.x + Constant.Area.GridLength.x / 2) / Constant.Area.GridRange.x),
+                (int)((pos.z - AreaController.Instance.GridRoot.position.z + Constant.Area.GridLength.y / 2) / Constant.Area.GridRange.y));
+        }
+        
+        public static int GridCoordToPosIdx(Vector2Int coord)
+        {
+            return coord.x + coord.y * Constant.Area.GridSize.x;
+        }
+    }
+}
