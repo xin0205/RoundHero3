@@ -332,7 +332,7 @@ namespace FishNet.Editing.PrefabCollectionGenerator
             //If searching the entire project.
             if (settings.SearchScope == (int)SearchScopeType.EntireProject)
             {
-                foreach (string path in GetPrefabFiles("Assets", excludedPaths, true))
+                foreach (string path in GetPrefabFiles("Assets/FishNet", excludedPaths, true))
                 {
                     NetworkObject nob = AssetDatabase.LoadAssetAtPath<NetworkObject>(path);
                     if (CanAddNetworkObject(nob, settings))
