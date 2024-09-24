@@ -149,6 +149,11 @@ namespace RoundHero
             return "Assets/GameMain/Entities/Areas/GridEntity.prefab";
         }
         
+        public static string GetScenePrefab(string sceneName)
+        {
+            return Utility.Text.Format("Assets/GameMain/Entities/Scenes/{0}.prefab", sceneName);
+        }
+        
         public static string GetBattleRoutePrefab()
         {
             return "Assets/GameMain/Entities/Areas/RouteEntity.prefab";

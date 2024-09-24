@@ -28,6 +28,16 @@ namespace RoundHero
                 AssetUtility.GetBattleCardPrefab(), Constant.EntityGroup.Card, 0, data);
         }
         
+        public static async Task<SceneEntity> ShowSceneEntityAsync(this EntityComponent entityComponent, string sceneName)
+        {
+            var data = ReferencePool.Acquire<EntityData>();
+            
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(SceneEntity),
+                AssetUtility.GetScenePrefab(sceneName), Constant.EntityGroup.Scene, 0, data);
+            
+            return (SceneEntity)task.Logic;
+        }
+        
         public static async Task<BattleGridEntity> ShowGridEntityAsync(this EntityComponent entityComponent, int gridPosIdx, EGridType gridType)
         {
             var data = ReferencePool.Acquire<BattleGridEntityData>();

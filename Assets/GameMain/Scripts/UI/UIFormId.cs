@@ -80,6 +80,8 @@ namespace RoundHero
         RestForm = 127,
         
         BattleEventForm = 128,
+        
+        StartSelectForm = 129,
 
     }
 }

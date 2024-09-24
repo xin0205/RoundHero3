@@ -46,12 +46,16 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             
         }
-        
-        public void OnLoadSceneSuccess(object sender, GameEventArgs e)
+
+        public SceneEntity SceneEntity;
+        public async void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
+            SceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
             GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
 
         }
+
+        
     }
 
 }

@@ -12,6 +12,7 @@ namespace RoundHero
             public const string Grid = "Grid";
             public const string Card = "Card";
             public const string Unit = "Unit";
+            public const string Scene = "Scene";
         }
 
     }
