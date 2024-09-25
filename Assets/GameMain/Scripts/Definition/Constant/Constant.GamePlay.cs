@@ -39,7 +39,7 @@ namespace RoundHero
                 ERelativeCamp.Us
             };
             
-            public static float CardPosInterval = 150f;
+            public static float CardPosInterval = 165;
             public static float ViewMaxHandCardCount = 10;
             public static int EachHardCardCount = 5;
 
@@ -1001,7 +1001,21 @@ namespace RoundHero
                     {
                         new()
                         {
-                            CardID = 10000,
+                            CardID = 0,
+                            FuneIDs = new List<int>()
+                            {
+                            }
+                        },
+                        new()
+                        {
+                            CardID = 0,
+                            FuneIDs = new List<int>()
+                            {
+                            }
+                        },
+                        new()
+                        {
+                            CardID = 0,
                             FuneIDs = new List<int>()
                             {
                             }
@@ -1009,20 +1023,6 @@ namespace RoundHero
                         new()
                         {
                             CardID = 10000,
-                            FuneIDs = new List<int>()
-                            {
-                            }
-                        },
-                        new()
-                        {
-                            CardID = 10000,
-                            FuneIDs = new List<int>()
-                            {
-                            }
-                        },
-                        new()
-                        {
-                            CardID = 1001,
                             FuneIDs = new List<int>()
                             {
                             }
@@ -1030,14 +1030,14 @@ namespace RoundHero
 
                         new()
                         {
-                            CardID = 1001,
+                            CardID = 10000,
                             FuneIDs = new List<int>()
                             {
                             }
                         },
                         new()
                         {
-                            CardID = 1001,
+                            CardID = 10000,
                             FuneIDs = new List<int>()
                             {
                             }
@@ -1045,21 +1045,21 @@ namespace RoundHero
                         
                         new()
                         {
-                            CardID = 4000,
+                            CardID = 1,
                             FuneIDs = new List<int>()
                             {
                             }
                         },
                         new()
                         {
-                            CardID = 4000,
+                            CardID = 1,
                             FuneIDs = new List<int>()
                             {
                             }
                         },
                         new()
                         {
-                            CardID = 4000,
+                            CardID = 1,
                             FuneIDs = new List<int>()
                             {
                             }

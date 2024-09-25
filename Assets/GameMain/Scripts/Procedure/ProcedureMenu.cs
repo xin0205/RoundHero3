@@ -21,7 +21,7 @@ namespace RoundHero
             base.OnEnter(procedureOwner);
             
             
-            GameEntry.Event.Subscribe(GamePlayInitGameEventArgs.EventId, OnGamePlayInitGame);
+            
             
             GameEntry.Sound.PlayMusic(0);
 
@@ -45,31 +45,10 @@ namespace RoundHero
 
             base.OnLeave(procedureOwner, isShutdown);
             
-            GameEntry.Event.Unsubscribe(GamePlayInitGameEventArgs.EventId, OnGamePlayInitGame);
+            
         }
 
-        public void OnGamePlayInitGame(object sender, GameEventArgs e)
-        {
-            var ne = e as GamePlayInitGameEventArgs;
-            var data = new VarGamePlayInitData();
-            data.SetValue(ne.GamePlayInitData);
-            
-            procedureOwner.SetData("GamePlayInitData", data);
-            GamePlayManager.Instance.Init(ne.GamePlayInitData);
-            
-            if (data.Value.GameMode == EGamMode.PVE)
-            {
-                ChangeState<ProcedureGamePlay>(procedureOwner);
-            }
-            else if (data.Value.GameMode == EGamMode.PVP)
-            {
-                ChangeState<ProcedureBattle>(procedureOwner);
-            }
-            
-            
-            
-
-        }
+        
 
 
     }

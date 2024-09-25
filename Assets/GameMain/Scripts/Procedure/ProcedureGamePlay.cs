@@ -23,6 +23,10 @@ namespace RoundHero
 
             GamePlayManager.Instance.SetProcedureGamePlay(this);
             GameEntry.UI.OpenUIForm(UIFormId.MapForm, this);
+            
+            DRScene drScene = GameEntry.DataTable.GetScene(2);
+
+            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
 
         }
 

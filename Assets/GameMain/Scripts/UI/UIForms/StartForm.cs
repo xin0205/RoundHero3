@@ -26,11 +26,13 @@ namespace RoundHero
             
         }
         
-        public void ShowStartSelect()
+        public async void ShowStartSelect()
         {
-            GameEntry.Entity.HideEntity(procedureStart.SceneEntity);
-            GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
-            GameEntry.UI.OpenUIForm(UIFormId.StartSelectForm,this);
+            GameEntry.Entity.HideEntity(procedureStart.StartEntity);
+            GameEntry.UI.CloseUIForm(this);
+            
+            procedureStart.StartSelectEntity = await GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
+            GameEntry.UI.OpenUIForm(UIFormId.StartSelectForm, procedureStart);
         }
 
         

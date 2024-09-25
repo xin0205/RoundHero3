@@ -2,6 +2,7 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RoundHero
 {
@@ -13,6 +14,14 @@ namespace RoundHero
         private TextMeshProUGUI desc;
         [SerializeField]
         private TextMeshProUGUI energy;
+        
+        [SerializeField]
+        private TextMeshProUGUI hp;
+        
+        [SerializeField]
+        private GameObject hpGO;
+
+        [SerializeField] private Image Icon;
 
         public GameObject ActionGO;
         
@@ -30,14 +39,10 @@ namespace RoundHero
 
         public void RefreshCardUI()
         {
-            //var card = CardManager.Instance.GetCard(CardID);
-            //var drCard = GameEntry.DataTable.GetCard(card.CardID);
-            
+
             var card = BattleManager.Instance.GetCard(CardID);
             
-            
-            //var drCard = GameEntry.DataTable.GetCard(card.CardID);
-            
+
             var cardName = "";
             var cardDesc = "";
             GameUtility.GetCardText(card, ref cardName, ref cardDesc);
@@ -56,8 +61,10 @@ namespace RoundHero
             // {
             //     cardEnergy -= 1;
             // }
-            
             var drCard = CardManager.Instance.GetCardTable(CardID);
+            
+            hpGO.SetActive(drCard.CardType == ECardType.Unit);
+            
             var maxHP = BattleUnitManager.Instance.GetUnitHP(CardID);
 
             var cardEnergy = BattleCardManager.Instance.GetCardEnergy(CardID);
@@ -68,9 +75,10 @@ namespace RoundHero
             {
                 cardEnergy = 0;
             }
-
             
-            energy.text = cardEnergy < 0 ? "X" : cardEnergy.ToString() + "-" + maxHP;
+            energy.text = cardEnergy < 0 ? "X" : cardEnergy.ToString();
+
+            hp.text = maxHP.ToString();
         }
 
         

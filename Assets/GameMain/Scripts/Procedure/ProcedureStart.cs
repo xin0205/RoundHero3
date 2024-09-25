@@ -19,12 +19,14 @@ namespace RoundHero
             base.OnEnter(procedureOwner);
 
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+            GameEntry.Event.Subscribe(GamePlayInitGameEventArgs.EventId, OnGamePlayInitGame);
 
             GameEntry.Sound.PlayMusic(0);
 
             InitSuccess = false;
 
             DRScene drScene = GameEntry.DataTable.GetScene(2);
+            
             GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
         }
 
@@ -44,18 +46,40 @@ namespace RoundHero
 
             base.OnLeave(procedureOwner, isShutdown);
             GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
-            
+            GameEntry.Event.Unsubscribe(GamePlayInitGameEventArgs.EventId, OnGamePlayInitGame);
         }
 
-        public SceneEntity SceneEntity;
+        public SceneEntity StartEntity;
+        public SceneEntity StartSelectEntity;
         public async void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
-            SceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
+            StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
             GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
 
         }
 
-        
+        public void OnGamePlayInitGame(object sender, GameEventArgs e)
+        {
+            var ne = e as GamePlayInitGameEventArgs;
+            var data = new VarGamePlayInitData();
+            data.SetValue(ne.GamePlayInitData);
+            
+            procedureOwner.SetData("GamePlayInitData", data);
+            GamePlayManager.Instance.Init(ne.GamePlayInitData);
+            
+            if (data.Value.GameMode == EGamMode.PVE)
+            {
+                ChangeState<ProcedureGamePlay>(procedureOwner);
+            }
+            else if (data.Value.GameMode == EGamMode.PVP)
+            {
+                ChangeState<ProcedureBattle>(procedureOwner);
+            }
+            
+            
+            
+
+        }
     }
 
 }
