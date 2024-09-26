@@ -59,6 +59,8 @@ namespace UGFExtensions.Await
 
             eventComponent.Subscribe(DownloadSuccessEventArgs.EventId, OnDownloadSuccess);
             eventComponent.Subscribe(DownloadFailureEventArgs.EventId, OnDownloadFailure);
+
+            
 #if UNITY_EDITOR
             s_IsSubscribeEvent = true;
 #endif

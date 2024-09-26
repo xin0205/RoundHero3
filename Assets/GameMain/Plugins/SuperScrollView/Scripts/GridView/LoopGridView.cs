@@ -362,7 +362,7 @@ namespace SuperScrollView
             LoopGridViewItem item = pool.GetItem();
             RectTransform rf = item.GetComponent<RectTransform>();
             rf.SetParent(mContainerTrans);
-            rf.localScale = Vector3.one;
+            //rf.localScale = Vector3.one;
             rf.anchoredPosition3D = Vector3.zero;
             rf.localEulerAngles = Vector3.zero;
             item.ParentGridView = this;

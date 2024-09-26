@@ -6,7 +6,11 @@
 //------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
 using GameFramework;
+using GameFramework.Resource;
+using UGFExtensions.Await;
+using UnityEngine;
 
 namespace RoundHero
 {
@@ -163,6 +167,26 @@ namespace RoundHero
         {
             return "Assets/GameMain/Entities/Soliders/BattleSoliderEntity_OnTheWay_Attack.prefab";
             
+        }
+        
+        public static string GetHeroIconName(int heroID)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Heros/{0}.png", heroID);
+            
+        }
+        
+        public static Task<Sprite> GetHeroIcon(int heroID)
+        {
+            var assetName = GetHeroIconName(heroID);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetHeroIconName(0));
+            }
+
         }
 
     }

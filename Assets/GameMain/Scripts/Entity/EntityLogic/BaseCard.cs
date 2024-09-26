@@ -22,15 +22,13 @@ namespace RoundHero
         private GameObject hpGO;
 
         [SerializeField] private Image Icon;
-
-        public GameObject ActionGO;
         
         private int CardID;
 
         
         public void SetCardUI(int cardID)
         {
-            ActionGO.SetActive(false);
+
             CardID = cardID;
             
 
@@ -41,7 +39,9 @@ namespace RoundHero
         {
 
             var card = BattleManager.Instance.GetCard(CardID);
-            
+            var drCard = CardManager.Instance.GetCardTable(CardID);
+            //if(drCard.CardType == ECardType.Unit)
+            //Icon.sprite = AreaController.Instance.HeroIcon[]
 
             var cardName = "";
             var cardDesc = "";
@@ -61,7 +61,7 @@ namespace RoundHero
             // {
             //     cardEnergy -= 1;
             // }
-            var drCard = CardManager.Instance.GetCardTable(CardID);
+            
             
             hpGO.SetActive(drCard.CardType == ECardType.Unit);
             

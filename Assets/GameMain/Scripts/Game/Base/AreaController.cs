@@ -1,4 +1,5 @@
 ﻿
+using UGFExtensions.Await;
 using UnityEngine;
 
 namespace RoundHero
@@ -11,6 +12,9 @@ namespace RoundHero
 
         public Camera UICamera;
 
+        [SerializeField] public HeroIcon HeroIcon;
+        
+
         public void Awake() 
         {
         }
@@ -18,7 +22,7 @@ namespace RoundHero
         public void RefreshCameraPlane()
         {
             CameraPlane = new Plane(Camera.main.transform.forward, Camera.main.transform.position);
-  
+            var a= GameEntry.Resource.LoadAssetAsync<Sprite>("");
         }
 
         public float GetDistanceToPoint(Vector3 point)

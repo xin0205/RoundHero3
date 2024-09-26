@@ -77,7 +77,7 @@ namespace SuperScrollView
             GameObject go = GameObject.Instantiate<GameObject>(mPrefabObj, Vector3.zero, Quaternion.identity, mItemParent);
             go.SetActive(true);
             RectTransform rf = go.GetComponent<RectTransform>();
-            rf.localScale = Vector3.one;
+            //rf.localScale = Vector3.one;
             rf.anchoredPosition3D = Vector3.zero;
             rf.localEulerAngles = Vector3.zero;
             LoopGridViewItem tViewItem = go.GetComponent<LoopGridViewItem>();

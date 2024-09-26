@@ -26,6 +26,8 @@ namespace RoundHero
 
         [SerializeField]
         private RectTransform cardRect;
+        
+        public GameObject ActionGO;
 
         private Rect rect;
         private bool isInside;
@@ -127,7 +129,7 @@ namespace RoundHero
             BattleCardManager.Instance.PointerCardID = BattleCardEntityData.CardID;
             
             isShow = true;
-            BaseCard.ActionGO.SetActive(true);
+            ActionGO.SetActive(true);
             transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 50f, 0);
             transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             BattleCardManager.Instance.RefreshSelectCard(BattleCardEntityData.CardData.ID);
@@ -145,7 +147,7 @@ namespace RoundHero
             
             BattleCardManager.Instance.PointerCardID = -1;
             isShow = false;
-            BaseCard.ActionGO.SetActive(false);
+            ActionGO.SetActive(false);
             transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0);
             transform.localScale = new Vector3(1f, 1f, 1f);
             BattleCardManager.Instance.RefreshSelectCard(-1);

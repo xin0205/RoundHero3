@@ -67,6 +67,16 @@ namespace RoundHero
 
         }
         
+        public static DRHero GetHero(this DataTableComponent dataTableComponent, int id)
+        {
+            var drHeros = GameEntry.DataTable.GetDataTable<DRHero>();
+            return drHeros.GetDataRow((t) =>
+            {
+                return t.Id == id;
+            });
+
+        }
+
         
         // public static DRCard GetCard(this DataTableComponent dataTableComponent, ETacticCardID tacticCardID)
         // {

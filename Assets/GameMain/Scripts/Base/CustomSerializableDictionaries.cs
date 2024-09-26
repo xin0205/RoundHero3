@@ -18,4 +18,14 @@ namespace RoundHero
     public class MapSiteSpriteDictionary : SerializableDictionary<EMapSite, Sprite>
     {
     }
+    
+    [Serializable]
+    public class HeroIconSpriteDictionary : SerializableDictionary<EHeroID, Sprite>
+    {
+    }
+    
+    [Serializable]
+    public class FollowerIconSpriteDictionary : SerializableDictionary<EHeroID, Sprite>
+    {
+    }
 }
