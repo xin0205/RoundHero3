@@ -60,7 +60,7 @@ namespace RoundHero
             
             var item = view.NewListViewItem("CardItem");
         
-            var itemScript = item.GetComponent<CardItem>();
+            var itemScript = item.GetComponent<OldCardItem>();
             if (item.IsInitHandlerCalled == false)
             {
                 item.IsInitHandlerCalled = true;

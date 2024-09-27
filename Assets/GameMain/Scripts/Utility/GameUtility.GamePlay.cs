@@ -11,15 +11,15 @@ namespace RoundHero
 {
     public static partial class GameUtility
     {
-        public static void GetCardText(Data_Card cardData, ref string name, ref string desc)
+        public static void GetCardText(int cardID, ref string name, ref string desc)
         {
             var cardName =
-                Utility.Text.Format(Constant.Localization.CardName, cardData.CardID); 
+                Utility.Text.Format(Constant.Localization.CardName, cardID); 
 
             name = GameEntry.Localization.GetString(cardName);
 
             // var drBuff = GameEntry.DataTable.GetBuff(buffID);
-            var drCard = GameEntry.DataTable.GetCard(cardData.CardID);
+            var drCard = GameEntry.DataTable.GetCard(cardID);
 
             var values = new List<float>();
             foreach (var value in drCard.Values1)
@@ -42,7 +42,7 @@ namespace RoundHero
             }
             
             var cardDesc =
-                Utility.Text.Format(Constant.Localization.CardDesc, cardData.CardID);
+                Utility.Text.Format(Constant.Localization.CardDesc, cardID);
 
             if (values.Count == 0)
             {

@@ -319,6 +319,11 @@ namespace FishNet.Editing.PrefabCollectionGenerator
             }
 #endif
 
+#if FISHNET_UNGENERATEPREFAB
+            return;
+#endif
+
+
             if (settings == null)
                 settings = Configuration.Configurations.PrefabGenerator;
             if (!forced && !settings.Enabled)

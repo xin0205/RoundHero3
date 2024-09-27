@@ -99,6 +99,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取是否初始卡。
+        /// </summary>
+        public bool InitCard
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -118,6 +127,7 @@ namespace RoundHero
             Energy = int.Parse(columnStrings[index++]);
             HP = int.Parse(columnStrings[index++]);
 			MoveType = Enum.Parse<EActionType>(columnStrings[index++]);
+            InitCard = bool.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -137,6 +147,7 @@ namespace RoundHero
                     Energy = binaryReader.Read7BitEncodedInt32();
                     HP = binaryReader.Read7BitEncodedInt32();
                     MoveType = Enum.Parse<EActionType>(binaryReader.ReadString());
+                    InitCard = binaryReader.ReadBoolean();
                 }
             }
 

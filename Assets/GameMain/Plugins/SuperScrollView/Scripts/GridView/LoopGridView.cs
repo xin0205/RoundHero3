@@ -987,7 +987,7 @@ namespace SuperScrollView
                 {
                     break;
                 }
-                mItemSize = rtf.rect.size;
+                mItemSize = rtf.rect.size * rtf.localScale;
                 mItemSizeWithPadding = mItemSize + mItemPadding;
 
             } while (false);

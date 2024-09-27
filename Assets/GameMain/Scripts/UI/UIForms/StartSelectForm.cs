@@ -1,7 +1,6 @@
-﻿using GameFramework.Event;
+﻿using System.Collections.Generic;
+using GameFramework.Event;
 using SuperScrollView;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.Serialization;
 using UnityGameFramework.Runtime;
 
@@ -11,13 +10,17 @@ namespace RoundHero
     {
         private ProcedureStart procedureStart;
         public LoopGridView heroIconGridView;
-
+        public LoopGridView selectCardGridView;
+        public LoopGridView inBattleGridView;
+        private List<int> selectInitCards = new List<int>();
 
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
             
-            heroIconGridView.InitGridView(0, OnGetItemByRowColumn);
+            heroIconGridView.InitGridView(0, OnHeroIconGetItemByRowColumn);
+            selectCardGridView.InitGridView(0, OnSelectCardGetItemByRowColumn);
+            inBattleGridView.InitGridView(0, OnInBattleCardGetItemByRowColumn);
         }
 
         protected override void OnOpen(object userData)
@@ -31,13 +34,29 @@ namespace RoundHero
                 return;
             }
             
+            GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
+            
             GameManager.Instance.StartSelect_HeroID = EHeroID.Normal;
             
             var drHero = GameEntry.DataTable.GetDataTable<DRHero>();
             heroIconGridView.SetListItemCount(drHero.Count);
             heroIconGridView.RefreshAllShownItem();
+ 
+            var drCards = GameEntry.DataTable.GetDataTable<DRCard>().GetDataRows((t) =>
+            {
+                return t.InitCard;
+            });
+
+            foreach (var drCard in drCards)
+            {
+                selectInitCards.Add(drCard.Id);
+            }
             
-            GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
+            selectCardGridView.SetListItemCount(selectInitCards.Count);
+            selectCardGridView.RefreshAllShownItem();
+            
+            inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
+            selectCardGridView.RefreshAllShownItem();
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -66,7 +85,7 @@ namespace RoundHero
             GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(randomSeed, EEnemyType.Normal));
         }
 
-        LoopGridViewItem OnGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
+        LoopGridViewItem OnHeroIconGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
         {
 
             var drHero = GameEntry.DataTable.GetHero(itemIndex);
@@ -86,6 +105,76 @@ namespace RoundHero
             
             itemScript.SetItemData(drHero, itemIndex, row, column);
             return item;
+        }
+        
+        LoopGridViewItem OnSelectCardGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
+        {
+
+            var drHero = GameEntry.DataTable.GetHero(itemIndex);
+            if (drHero == null)
+            {
+                return null;
+            }
+
+            var item = gridView.NewListViewItem("SelectCardItem");
+
+            var itemScript = item.GetComponent<SelectCardItem>();
+            if (item.IsInitHandlerCalled == false)
+            {
+                item.IsInitHandlerCalled = true;
+                itemScript.Init();
+                itemScript.ClickAction = CardAddBattle;
+            }
+            
+            itemScript.SetItemData(selectInitCards[itemIndex], itemIndex, row, column);
+            return item;
+        }
+        
+        LoopGridViewItem OnInBattleCardGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
+        {
+
+            var drHero = GameEntry.DataTable.GetHero(itemIndex);
+            if (drHero == null)
+            {
+                return null;
+            }
+
+            var item = gridView.NewListViewItem("HalfCardItem");
+
+            var itemScript = item.GetComponent<HalfCardItem>();
+            if (item.IsInitHandlerCalled == false)
+            {
+                item.IsInitHandlerCalled = true;
+                itemScript.Init();
+                itemScript.ClickAction = CardRemoveBattle;
+            }
+            
+            itemScript.SetItemData(GameManager.Instance.Cards[itemIndex], itemIndex, row, column);
+            return item;
+        }
+
+        public void CardAddBattle(int cardID)
+        {
+            if (GameManager.Instance.Cards.Contains(cardID))
+            {
+                return;
+            }
+            
+            for (int i = 0; i < 3; i++)
+            {
+                GameManager.Instance.Cards.Add(cardID);
+            }
+            
+            inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
+            inBattleGridView.RefreshAllShownItem();
+        }
+
+        public void CardRemoveBattle(int cardID)
+        {
+            GameManager.Instance.Cards.RemoveAll((BattleCardID) => BattleCardID == cardID);
+            
+            inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
+            inBattleGridView.RefreshAllShownItem();
         }
         
         // //public Material[] TextMaterials;//所有FontAsset的材质球

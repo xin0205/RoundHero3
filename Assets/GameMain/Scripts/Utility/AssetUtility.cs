@@ -175,6 +175,8 @@ namespace RoundHero
             
         }
         
+        
+        
         public static Task<Sprite> GetHeroIcon(int heroID)
         {
             var assetName = GetHeroIconName(heroID);
@@ -185,6 +187,46 @@ namespace RoundHero
             else
             {
                 return GameEntry.Resource.LoadSpriteAsync(GetHeroIconName(0));
+            }
+
+        }
+        
+        public static string GetTacticIconName(int tacticID)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Tactics/{0}.png", tacticID);
+            
+        }
+        
+        public static Task<Sprite> GetTacticIcon(int tacticID)
+        {
+            var assetName = GetTacticIconName(tacticID);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetTacticIconName(10000));
+            }
+
+        }
+        
+        public static string GetFollowerIconName(int fllowerID)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Followers/{0}.png", fllowerID);
+            
+        }
+        
+        public static Task<Sprite> GetFollowerIcon(int tacticID)
+        {
+            var assetName = GetFollowerIconName(tacticID);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetFollowerIconName(0));
             }
 
         }

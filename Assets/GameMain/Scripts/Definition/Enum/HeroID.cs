@@ -16,6 +16,7 @@
         UnitSubHP,
         HurtAcquireCard,
         HurtComsumeCard,
+        Empty,
     }
 
     public enum EEnergyBuffType

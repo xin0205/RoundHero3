@@ -38,8 +38,8 @@ namespace SuperScrollView
             if (mTmpPooledItemList.Count > 0)
             {
                 int count = mTmpPooledItemList.Count;
-                tItem = mTmpPooledItemList[count - 1];
-                mTmpPooledItemList.RemoveAt(count - 1);
+                tItem = mTmpPooledItemList[0];
+                mTmpPooledItemList.RemoveAt(0);
                 tItem.gameObject.SetActive(true);
             }
             else
@@ -51,8 +51,8 @@ namespace SuperScrollView
                 }
                 else
                 {
-                    tItem = mPooledItemList[count - 1];
-                    mPooledItemList.RemoveAt(count - 1);
+                    tItem = mPooledItemList[0];
+                    mPooledItemList.RemoveAt(0);
                     tItem.gameObject.SetActive(true);
                 }
             }

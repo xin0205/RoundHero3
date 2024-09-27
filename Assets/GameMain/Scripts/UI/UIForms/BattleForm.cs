@@ -89,7 +89,7 @@ namespace RoundHero
 
                 var name = "";
                 var desc = "";
-                GameUtility.GetCardText(card, ref name, ref desc);
+                GameUtility.GetCardText(card.CardID, ref name, ref desc);
 
                 test.text = solider.ID + "-" + name + "\n";
                 var list = fightSoliderData.Links;
