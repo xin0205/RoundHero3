@@ -9,7 +9,9 @@ namespace RoundHero
         [SerializeField] private Button addHeart;
         [SerializeField] private Button addMaxHP;
         
-        protected override void OnOpen(object userData)
+        private SceneEntity restSceneEntity;
+        
+        protected override async void OnOpen(object userData)
         {
             base.OnOpen(userData);
 
@@ -18,7 +20,7 @@ namespace RoundHero
             var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
             addHeart.interactable = curHeart < maxHeart;
 
-
+            restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Rest");
 
         }
 
@@ -26,6 +28,8 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             BattleMapManager.Instance.NextStep();
+            
+            GameEntry.Entity.HideEntity(restSceneEntity);
         }
         
         public void AddHeart()

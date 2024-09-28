@@ -11,8 +11,10 @@ namespace RoundHero
         [SerializeField]
         private List<MapStageRouteItem> MapStageRouteItems;
         private ProcedureGamePlay procedureGamePlay;
+        
+        private SceneEntity restSceneEntity;
     
-        protected override void OnOpen(object userData)
+        protected async override void OnOpen(object userData)
         {
             base.OnOpen(userData);
 
@@ -27,6 +29,8 @@ namespace RoundHero
                 GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
 
             }
+            
+            restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Rest");
 
         }
 
@@ -35,6 +39,8 @@ namespace RoundHero
             base.OnClose(isShutdown, userData);
             GameEntry.Event.Unsubscribe(RefreshMapStageEventArgs.EventId, OnRefreshMapStage);
             GameEntry.Event.Unsubscribe(ClickMapStageStepItemEventArgs.EventId, OnClickMapStageStepItem);
+            
+            GameEntry.Entity.HideEntity(restSceneEntity);
         }
 
         private void OnRefreshMapStage(object sender, GameEventArgs e)

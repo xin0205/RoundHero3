@@ -22,7 +22,7 @@ namespace RoundHero
         public void RefreshCameraPlane()
         {
             CameraPlane = new Plane(Camera.main.transform.forward, Camera.main.transform.position);
-            var a= GameEntry.Resource.LoadAssetAsync<Sprite>("");
+            
         }
 
         public float GetDistanceToPoint(Vector3 point)
