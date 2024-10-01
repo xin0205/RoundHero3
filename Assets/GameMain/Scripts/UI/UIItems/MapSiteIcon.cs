@@ -19,11 +19,11 @@ namespace RoundHero
         [SerializeField] public bool TriggerEnter;
 
 
-        public void Init(EMapSite mapSite)
+        public async void Init(EMapSite mapSite)
         {
             MapSite = mapSite;
             
-            MapSiteImage.overrideSprite = MapSiteSprite.MapSiteSpriteDict[mapSite];
+            MapSiteImage.overrideSprite = await AssetUtility.GetMapSiteIcon(mapSite);
         }
 
         public void Enter()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameFramework.Event;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -9,8 +10,16 @@ namespace RoundHero
     public class MapForm : UGuiForm
     {
         [SerializeField]
-        private List<MapStageRouteItem> MapStageRouteItems;
+        private List<MapStageRoute> MapStageRoutes;
         private ProcedureGamePlay procedureGamePlay;
+        
+        [SerializeField]
+        private ScrollView mapStageScrollView;
+
+        private MapStageRoute MapStageRoute;
+
+
+        [SerializeField] private GameObject SelectRouteGO;
         
         private SceneEntity restSceneEntity;
     
@@ -24,14 +33,29 @@ namespace RoundHero
             
             GameEntry.Event.Fire(null, RefreshMapStageEventArgs.Create());
             
-            if (!BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute)
-            {
-                GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
-
-            }
+            // if (!BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute)
+            // {
+            //     GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
+            //
+            // }
             
             restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Rest");
 
+            InitMapStageRoute();
+
+            
+            
+            GameEntry.Event.Fire(null, RefreshMapStageEventArgs.Create());
+
+        }
+
+        public void InitMapStageRoute()
+        {
+            for (int i = 0; i < MapStageRoutes.Count; i++)
+            {
+                MapStageRoutes[i].Init(BattleMapManager.Instance.MapData.MapStageDataDict[i].StageRandomSeed,
+                    BattleMapManager.Instance.MapData.MapStageDataDict[i].SelectRouteIdx);
+            }
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -45,26 +69,36 @@ namespace RoundHero
 
         private void OnRefreshMapStage(object sender, GameEventArgs e)
         {
-            for (int i = 0; i < MapStageRouteItems.Count; i++)
+            MapStageRoute = MapStageRoutes[BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx];
+            
+            for (int i = 0; i < MapStageRoutes.Count; i++)
             {
-                if (i < BattleMapManager.Instance.MapData.MapStageDataDict.Count)
-                {
-                    var mapStageData = BattleMapManager.Instance.MapData.MapStageDataDict[i];
-                    
-                    if(mapStageData.MapIdx != BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx)
-                        continue;
-                    
-                    var stage = BattleMapManager.Instance.GenerateStage(BattleMapManager.Instance.MapData
-                        .MapStageDataDict[i].StageRandomSeed);
-                    MapStageRouteItems[i].Init(new Data_MapRoute()
-                    {
-                        MapIdx = mapStageData.MapIdx,
-                        StageIdx = mapStageData.StageIdx,
-                        RouteIdx = mapStageData.SelectRouteIdx,
-
-                    }, stage[mapStageData.SelectRouteIdx], i, null);
-                }
+                MapStageRoutes[i].gameObject.SetActive(i <= BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx);
             }
+            
+            var isSelectRoute = BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute;
+            SelectRouteGO.SetActive(!isSelectRoute);
+
+            // for (int i = 0; i < MapStageRouteItems.Count; i++)
+            // {
+            //     if (i < BattleMapManager.Instance.MapData.MapStageDataDict.Count)
+            //     {
+            //         var mapStageData = BattleMapManager.Instance.MapData.MapStageDataDict[i];
+            //         
+            //         if(mapStageData.MapIdx != BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx)
+            //             continue;
+            //         
+            //         var stage = BattleMapManager.Instance.GenerateStage(BattleMapManager.Instance.MapData
+            //             .MapStageDataDict[i].StageRandomSeed);
+            //     //     MapStageRouteItems[i].Init(new Data_MapRoute()
+            //     //     {
+            //     //         MapIdx = mapStageData.MapIdx,
+            //     //         StageIdx = mapStageData.StageIdx,
+            //     //         RouteIdx = mapStageData.SelectRouteIdx,
+            //     //
+            //     //     }, stage[mapStageData.SelectRouteIdx], i, null);
+            //     }
+            // }
 
         }
 
@@ -117,6 +151,17 @@ namespace RoundHero
             {
                 Log.Debug("Un Current StepIdx");
             }
+        }
+        
+        public void Confirm()
+        {
+
+            BattleMapManager.Instance.MapData.CurMapStageIdx.RouteIdx = selectRouteIdx;
+            BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute = true;
+            
+            GameEntry.Event.Fire(null, RefreshMapStageEventArgs.Create());
+
+
         }
     }
 }

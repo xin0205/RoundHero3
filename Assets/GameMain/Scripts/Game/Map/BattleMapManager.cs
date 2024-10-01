@@ -5,9 +5,7 @@ namespace RoundHero
 {
     public class BattleMapManager : Singleton<BattleMapManager>
     {
-        
         public Data_Map MapData => GamePlayManager.Instance.GamePlayData.MapData;
-        
         
         public System.Random Random;
         private int randomSeed;
@@ -15,8 +13,27 @@ namespace RoundHero
         public void Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
+            MapData.RandomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
 
+            for (int i = 0; i < Constant.Map.StageCount; i++)
+            {
+                randomSeed = BattleMapManager.Instance.Random.Next(0, Constant.Game.RandomRange);
+                
+                MapData.MapStageDataDict.Add(i, new Data_MapStage()
+                {
+                    StageRandomSeed = randomSeed,
+                    SelectRouteIdx = -1,
+                    StageIdx = i,
+                });
+            }
+            
+        }
+
+        public void  RefreshMapData()
+        {
+            
+            
         }
 
         private void ChangeStageMapSite(List<List<EMapSite>> stage, int stepIdx, EMapSite mapSite)
@@ -49,21 +66,22 @@ namespace RoundHero
                 }
             }
             
-            var stepRangeRatios = new List<int>();
-            foreach (var kv in Constant.Map.StepRangeRatio)
-            {
-                for (int i = 0; i < kv.Value; i++)
-                {
-                    stepRangeRatios.Add(kv.Key);
-                }
-            }
+            // var stepRangeRatios = new List<int>();
+            // foreach (var kv in Constant.Map.StepRangeRatio)
+            // {
+            //     for (int i = 0; i < kv.Value; i++)
+            //     {
+            //         stepRangeRatios.Add(kv.Key);
+            //     }
+            // }
 
             var stepCount = 0;
-            for (int i = 0; i < Constant.Map.StepRouteCount; i++)
+            for (int i = 0; i < Constant.Map.RouteCount; i++)
             {
                 var mapSites = new List<EMapSite>();
-                var stepIdx = random.Next(0, 100);
-                for (int j = 0; j < stepRangeRatios[stepIdx]; j++)
+                //var stepIdx = random.Next(0, 100);
+                //stepRangeRatios[stepIdx]
+                for (int j = 0; j < Constant.Map.StepCount; j++)
                 {
                     mapSites.Add(EMapSite.Empty);
                     stepCount++;
@@ -122,9 +140,10 @@ namespace RoundHero
             
             if (!BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute && BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx != -1)
             {
-                GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
+                //GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
 
             }
         }
+
     }
 }

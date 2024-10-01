@@ -230,6 +230,26 @@ namespace RoundHero
             }
 
         }
+        
+        public static string GetMapSiteIconName(EMapSite mapSite)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Map/{0}.png", mapSite.ToString());
+            
+        }
+        
+        public static Task<Sprite> GetMapSiteIcon(EMapSite mapSite)
+        {
+            var assetName = GetMapSiteIconName(mapSite);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetMapSiteIconName(EMapSite.Empty));
+            }
+
+        }
 
     }
 }

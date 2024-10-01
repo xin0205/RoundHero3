@@ -14,11 +14,17 @@ namespace RoundHero
 
         private Action<int> TagCallBack;
 
+        private int randomSeed;
+        private System.Random random;
+
         public void Init(Data_MapRoute mapRoute, List<EMapSite> mapSites, int tag, Action<int> tagCallBack)
         {
             MapSites = mapSites;
             this.tag = tag;
             TagCallBack = tagCallBack;
+
+            randomSeed = BattleMapManager.Instance.MapData
+                .MapStageDataDict[tag].StageRandomSeed;
 
             for (int i = 0; i < mapStageStepItems.Count; i++)
             {
@@ -28,7 +34,8 @@ namespace RoundHero
                     {
                         MapRoute = mapRoute,
                         StepIdx = i,
-                    }, EMapSite.Empty);
+                    }, EMapSite.Empty, random);
+                    
                 }
                 else
                 {
@@ -36,9 +43,10 @@ namespace RoundHero
                     {
                         MapRoute = mapRoute,
                         StepIdx = i,
-                    }, MapSites[i]);
+                    }, MapSites[i], random);
                 }
                 
+                //mapStageStepItems[i].RandomPosition();
             }
 
         }

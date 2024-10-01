@@ -1226,7 +1226,6 @@ namespace RoundHero
     {
         public Data_MapRoute MapRoute;
         public int StepIdx;
-        public int RandomSeed;
     }
     
     public class Data_MapRoute
@@ -1234,14 +1233,37 @@ namespace RoundHero
         public int MapIdx;
         public int StageIdx;
         public int RouteIdx;
-        
+
+    }
+    
+    public class MapStageIdx
+    {
+        public int MapIdx;
+        public int StageIdx;
+        public int RouteIdx;
+        public int StepIdx = -1;
+        public bool IsSelectRoute = false;
+        public int RadomSeed;
+
+        public MapStageIdx Copy()
+        {
+            var mapStageIdx = new MapStageIdx();
+            
+            mapStageIdx.MapIdx = MapIdx;
+            mapStageIdx.StageIdx = StageIdx;
+            mapStageIdx.RouteIdx = RouteIdx;
+            mapStageIdx.StepIdx = StepIdx;
+
+            return mapStageIdx;
+        }
     }
 
 
     public class Data_Map
     {
-        public Dictionary<int, Data_MapStage> MapStageDataDict = new ();
+        public int RandomSeed;
         
+        public Dictionary<int, Data_MapStage> MapStageDataDict = new ();
         public MapStageIdx CurMapStageIdx = new MapStageIdx();
 
         public Data_Map Copy()
@@ -1255,26 +1277,7 @@ namespace RoundHero
         
     }
 
-    public class MapStageIdx
-    {
-        public int MapIdx;
-        public int StageIdx;
-        public int RouteIdx;
-        public int StepIdx = -1;
-        public bool IsSelectRoute = false;
-        
-        public MapStageIdx Copy()
-        {
-            var mapStageIdx = new MapStageIdx();
-            
-            mapStageIdx.MapIdx = MapIdx;
-            mapStageIdx.StageIdx = StageIdx;
-            mapStageIdx.RouteIdx = RouteIdx;
-            mapStageIdx.StepIdx = StepIdx;
-
-            return mapStageIdx;
-        }
-    }
+    
 
     public class Data_GamePlay
     {

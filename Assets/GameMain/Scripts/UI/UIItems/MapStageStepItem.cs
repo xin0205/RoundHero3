@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 namespace RoundHero
 {
@@ -11,12 +12,20 @@ namespace RoundHero
         
         private Data_MapStep mapStep;
 
-        public void Init(Data_MapStep mapStep, EMapSite mapSite)
+        private System.Random random;
+
+        public void Init(Data_MapStep mapStep, EMapSite mapSite, System.Random random)
         {
             this.mapSite = mapSite;
             this.mapStep = mapStep;
+            this.random = random;
             
             mapSiteIcon.Init(this.mapSite);
+        }
+
+        public void RandomPosition()
+        {
+            gameObject.transform.SetLocalPositionX(random.Next(-50, 50));
         }
 
         public void Click()
