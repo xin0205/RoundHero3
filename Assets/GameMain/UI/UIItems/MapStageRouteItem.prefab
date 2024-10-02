@@ -76,6 +76,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6452788997695685432}
     m_Modifications:
+    - target: {fileID: 4780786206661342409, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
+      propertyPath: allowClick
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6452788997695685432, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -201,6 +205,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6452788997695685432}
     m_Modifications:
+    - target: {fileID: 4780786206661342409, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
+      propertyPath: allowClick
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6452788997695685432, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -326,6 +334,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6452788997695685432}
     m_Modifications:
+    - target: {fileID: 4780786206661342409, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
+      propertyPath: allowClick
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6452788997695685432, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -451,6 +463,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6452788997695685432}
     m_Modifications:
+    - target: {fileID: 4780786206661342409, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
+      propertyPath: allowClick
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6452788997695685432, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -576,6 +592,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6452788997695685432}
     m_Modifications:
+    - target: {fileID: 4780786206661342409, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
+      propertyPath: allowClick
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6452788997695685432, guid: b8f59ef0c1e3c774e8c0783b20d7da77, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

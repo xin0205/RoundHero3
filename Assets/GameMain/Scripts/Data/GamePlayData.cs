@@ -1240,7 +1240,7 @@ namespace RoundHero
     {
         public int MapIdx;
         public int StageIdx;
-        public int RouteIdx;
+        //public int RouteIdx;
         public int StepIdx = -1;
         public bool IsSelectRoute = false;
         public int RadomSeed;
@@ -1251,7 +1251,7 @@ namespace RoundHero
             
             mapStageIdx.MapIdx = MapIdx;
             mapStageIdx.StageIdx = StageIdx;
-            mapStageIdx.RouteIdx = RouteIdx;
+            //mapStageIdx.RouteIdx = RouteIdx;
             mapStageIdx.StepIdx = StepIdx;
 
             return mapStageIdx;

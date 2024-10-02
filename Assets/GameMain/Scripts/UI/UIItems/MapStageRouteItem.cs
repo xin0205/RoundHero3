@@ -19,6 +19,7 @@ namespace RoundHero
 
         public void Init(Data_MapRoute mapRoute, List<EMapSite> mapSites, int tag, Action<int> tagCallBack)
         {
+            gameObject.SetActive(true);
             MapSites = mapSites;
             this.tag = tag;
             TagCallBack = tagCallBack;

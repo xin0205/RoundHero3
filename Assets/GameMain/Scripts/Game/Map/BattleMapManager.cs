@@ -120,7 +120,7 @@ namespace RoundHero
             var mapStageData = BattleMapManager.Instance.MapData.MapStageDataDict[stageIdx];
             var stage = BattleMapManager.Instance.GenerateStage(mapStageData.StageRandomSeed);
 
-            if (BattleMapManager.Instance.MapData.CurMapStageIdx.StepIdx >= stage[mapStageData.SelectRouteIdx].Count)
+            if (BattleMapManager.Instance.MapData.CurMapStageIdx.StepIdx >= stage[mapStageData.SelectRouteIdx].Count - 1)
             {
                 BattleMapManager.Instance.MapData.CurMapStageIdx.StepIdx = -1;
                 BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx += 1;
@@ -141,7 +141,7 @@ namespace RoundHero
             if (!BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute && BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx != -1)
             {
                 //GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
-
+                GameEntry.Event.Fire(null, RefreshMapStageEventArgs.Create());
             }
         }
 
