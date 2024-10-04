@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 namespace RoundHero
 {
@@ -9,23 +10,24 @@ namespace RoundHero
         [SerializeField] private List<MapStageStepItem> mapStageStepItems = new ();
 
         private List<EMapSite> MapSites;
-
-        private int tag;
+        private Data_MapRoute mapRoute;
 
         private Action<int> TagCallBack;
 
         private int randomSeed;
         private System.Random random;
 
-        public void Init(Data_MapRoute mapRoute, List<EMapSite> mapSites, int tag, Action<int> tagCallBack)
+        public void Init(Data_MapRoute mapRoute, List<EMapSite> mapSites, Action<int> tagCallBack)
         {
             gameObject.SetActive(true);
+            this.mapRoute = mapRoute;
             MapSites = mapSites;
-            this.tag = tag;
+            
             TagCallBack = tagCallBack;
 
             randomSeed = BattleMapManager.Instance.MapData
-                .MapStageDataDict[tag].StageRandomSeed;
+                .MapStageDataDict[mapRoute.StageIdx].StageRandomSeed;
+            this.random = new Random(randomSeed);
 
             for (int i = 0; i < mapStageStepItems.Count; i++)
             {
@@ -35,7 +37,7 @@ namespace RoundHero
                     {
                         MapRoute = mapRoute,
                         StepIdx = i,
-                    }, EMapSite.Empty, random);
+                    }, EMapSite.Empty, this.random.Next(0, Constant.Game.RandomRange));
                     
                 }
                 else
@@ -44,7 +46,7 @@ namespace RoundHero
                     {
                         MapRoute = mapRoute,
                         StepIdx = i,
-                    }, MapSites[i], random);
+                    }, MapSites[i], this.random.Next(0, Constant.Game.RandomRange));
                 }
                 
                 //mapStageStepItems[i].RandomPosition();
@@ -57,7 +59,7 @@ namespace RoundHero
             if(!valueChanged)
                 return;
             
-            TagCallBack?.Invoke(tag);
+            TagCallBack?.Invoke(mapRoute.RouteIdx);
         }
 
     }

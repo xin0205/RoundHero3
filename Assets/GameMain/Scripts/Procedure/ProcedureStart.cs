@@ -25,9 +25,8 @@ namespace RoundHero
 
             InitSuccess = false;
 
-            DRScene drScene = GameEntry.DataTable.GetScene(2);
-            
-            GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
+            // DRScene drScene = GameEntry.DataTable.GetScene(2);
+            // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -47,6 +46,9 @@ namespace RoundHero
             base.OnLeave(procedureOwner, isShutdown);
             GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             GameEntry.Event.Unsubscribe(GamePlayInitGameEventArgs.EventId, OnGamePlayInitGame);
+            
+            // DRScene drScene = GameEntry.DataTable.GetScene(2);
+            // GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
         }
 
         public SceneEntity StartEntity;

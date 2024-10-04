@@ -6,8 +6,10 @@ namespace RoundHero
     public class StartForm : UGuiForm
     {
         private ProcedureStart procedureStart;
+        
+        private SceneEntity startSceneEntity;
 
-        protected override void OnOpen(object userData)
+        protected override async void OnOpen(object userData)
         {
             base.OnOpen(userData);
             
@@ -17,13 +19,15 @@ namespace RoundHero
                 Log.Warning("ProcedureStart is null.");
                 return;
             }
+            
+            startSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
 
         }
 
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
-            
+            GameEntry.Entity.HideEntity(startSceneEntity);
         }
         
         public async void ShowStartSelect()

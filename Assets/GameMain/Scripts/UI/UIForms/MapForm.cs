@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using UnityGameFramework.Runtime;
+using Image = UnityEngine.UI.Image;
 
 namespace RoundHero
 {
@@ -26,6 +27,8 @@ namespace RoundHero
         
         [SerializeField] private ScrollRect scrollRect;
         
+        [SerializeField] private Image bg;
+
         private SceneEntity restSceneEntity;
     
         protected async override void OnOpen(object userData)
@@ -44,7 +47,7 @@ namespace RoundHero
             //
             // }
             
-            restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Rest");
+            restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Map");
 
             InitMapStageRoute();
 
@@ -145,11 +148,11 @@ namespace RoundHero
                         
                     case EMapSite.EliteBattle:
                         //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Elite);
-                        // Close();
-                        // procedureGamePlay.StartBattle();
+                         Close();
+                         procedureGamePlay.StartBattle();
+                         break;
+                        // GameEntry.UI.OpenUIForm(UIFormId.RestForm);
                         // break;
-                        GameEntry.UI.OpenUIForm(UIFormId.RestForm);
-                        break;
                     
                     case EMapSite.BossBattle:
                         //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Boss);
@@ -192,6 +195,11 @@ namespace RoundHero
             
             GameEntry.Event.Fire(null, RefreshMapStageEventArgs.Create());
 
+        }
+
+        public void ShowBG(bool isShow)
+        {
+            bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, isShow ? 1 : 0.1f);
         }
     }
 }

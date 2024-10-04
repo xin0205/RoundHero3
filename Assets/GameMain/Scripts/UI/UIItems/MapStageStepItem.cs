@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Random = System.Random;
 
 namespace RoundHero
 {
@@ -12,13 +13,15 @@ namespace RoundHero
         
         private Data_MapStep mapStep;
 
+        private int randomSeed;
         private System.Random random;
 
-        public void Init(Data_MapStep mapStep, EMapSite mapSite, System.Random random)
+        public void Init(Data_MapStep mapStep, EMapSite mapSite, int randomSeed)
         {
             this.mapSite = mapSite;
             this.mapStep = mapStep;
-            this.random = random;
+            this.randomSeed = randomSeed;
+            this.random = new Random(this.randomSeed);
             
             mapSiteIcon.Init(this.mapSite);
         }

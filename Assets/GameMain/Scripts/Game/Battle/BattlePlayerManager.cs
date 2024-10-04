@@ -19,7 +19,7 @@ namespace RoundHero
             var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
             foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
             {
-                var funeIDIdx = playerData.FuneIDIdx++;
+                var funeIDIdx = playerData.FuneIdx++;
                 var drFune = GameEntry.DataTable.GetBuff(funeID);
                 var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
                 playerData.FuneDatas.Add(funeIDIdx, new Data_Fune(funeIDIdx, funeID, (int)value));
@@ -27,8 +27,8 @@ namespace RoundHero
             
             foreach (var card in Constant.Hero.InitDatas[unitCamp].InitCards)
             {
-                var cardID = playerData.CardIDIdx++;
-                playerData.CardDatas.Add(cardID, new Data_Card(cardID, card.CardID, card.FuneIDs));
+                var cardIdx = playerData.CardIdx++;
+                playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, card.CardID, card.FuneIDs));
             }
 
             var energyBuffDict = new Dictionary<int, string>();

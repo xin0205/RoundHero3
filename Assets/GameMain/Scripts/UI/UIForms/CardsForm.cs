@@ -1,50 +1,66 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using TMPro;
+
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
-
-    public class CardsFormData
-    {
-        public List<int> Cards;
-        public Action<List<int>> SelectAction;
-        public Action CloseAction;
-        public int SelectCount;
-        public string Tips;
-    }
-
+    
     public class CardsForm : UGuiForm
     {
-        private CardsFormData cardsFormData;
 
         [SerializeField]
         private CardsView cardsViews;
         
-        [SerializeField]
-        private TextMeshProUGUI tips;
+        private List<int> cardIdxs = new List<int>();
 
+        private ECardType cardType = ECardType.Unit;
+        
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
 
-            cardsFormData = (CardsFormData)userData;
-            if (cardsFormData == null)
-            {
-                Log.Warning("CardsFormData is null.");
-                return;
-            }
+        }
 
-            tips.text = cardsFormData.Tips;
-            cardsViews.Init(cardsFormData);
+        public void SelectUnit(bool isSelect)
+        {
+            if (isSelect)
+            {
+                SelectCardType(ECardType.Unit);
+            }
+            
+        }
+        
+        public void SelectTactic(bool isSelect)
+        {
+            if (isSelect)
+            {
+                SelectCardType(ECardType.Tactic);
+            }
+            
+        }
+
+        public void SelectCardType(ECardType cardType)
+        {
+            
+            foreach (var kv in CardManager.Instance.CardDatas)
+            {
+                var drCard = CardManager.Instance.GetCardTable(kv.Key);
+                if (drCard.CardType == cardType)
+                {
+                    cardIdxs.Add(drCard.Id);
+                }
+                
+            }
+            
+            cardsViews.Init(cardIdxs);
         }
 
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
-            cardsFormData.CloseAction?.Invoke();
+            
         }
 
     }

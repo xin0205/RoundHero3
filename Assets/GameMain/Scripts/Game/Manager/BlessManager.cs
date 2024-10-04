@@ -18,7 +18,7 @@ namespace RoundHero
 
         public int GetID()
         {
-            return BattlePlayerManager.Instance.PlayerData.BlessIDIdx++;
+            return BattlePlayerManager.Instance.PlayerData.BlessIdx++;
         }
 
         public void AddBless(EBlessID blessID)

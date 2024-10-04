@@ -421,7 +421,7 @@ namespace RoundHero
             {
                 foreach (var kv2 in kv.Value.CardDatas)
                 {
-                    if (kv2.Value.ID == cardID)
+                    if (kv2.Value.Idx == cardID)
                         return kv2.Value;
                 }
             }

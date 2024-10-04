@@ -31,7 +31,7 @@ namespace RoundHero
         public static async Task<SceneEntity> ShowSceneEntityAsync(this EntityComponent entityComponent, string sceneName)
         {
             var data = ReferencePool.Acquire<EntityData>();
-            
+            data.Init(entityComponent.GenerateSerialId(), Vector2.zero);
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(SceneEntity),
                 AssetUtility.GetScenePrefab(sceneName), Constant.EntityGroup.Scene, 0, data);
             

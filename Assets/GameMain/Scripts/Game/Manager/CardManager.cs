@@ -12,12 +12,12 @@ namespace RoundHero
         private int id;
         public int GetID()
         {
-            return BattlePlayerManager.Instance.PlayerData.CardIDIdx++;
+            return BattlePlayerManager.Instance.PlayerData.CardIdx++;
         }
         
-        public int GetTempID()
+        public int GetTempIdx()
         {
-            return BattlePlayerManager.Instance.PlayerData.CardIDIdx++;
+            return BattlePlayerManager.Instance.PlayerData.CardIdx++;
         }
         
         public Data_Card GetCard(int cardID)

@@ -20,7 +20,7 @@ namespace RoundHero
             var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
             addHeart.interactable = curHeart < maxHeart;
 
-            //restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Rest");
+            restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Rest");
 
         }
 
@@ -29,7 +29,7 @@ namespace RoundHero
             base.OnClose(isShutdown, userData);
             BattleMapManager.Instance.NextStep();
             
-            //GameEntry.Entity.HideEntity(restSceneEntity);
+            GameEntry.Entity.HideEntity(restSceneEntity);
         }
         
         public void AddHeart()

@@ -401,7 +401,7 @@ namespace RoundHero
                 //     return false;
                 // }
 
-                if (buffData.BuffTriggerType == EBuffTriggerType.SelectUnit || CardManager.Instance.Contain(card.ID, EBuffID.Spec_MoveUs))
+                if (buffData.BuffTriggerType == EBuffTriggerType.SelectUnit || CardManager.Instance.Contain(card.Idx, EBuffID.Spec_MoveUs))
                 {
                     BattleManager.Instance.BattleState = EBattleState.TacticSelectUnit;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
@@ -410,7 +410,7 @@ namespace RoundHero
                     
                     return false;
                 }
-                else if (CardManager.Instance.Contain(card.ID, EBuffID.Spec_MoveGrid) || CardManager.Instance.Contain(card.ID, EBuffID.Spec_MoveAllGrid) )
+                else if (CardManager.Instance.Contain(card.Idx, EBuffID.Spec_MoveGrid) || CardManager.Instance.Contain(card.Idx, EBuffID.Spec_MoveAllGrid) )
                 {
                     BattleManager.Instance.BattleState = EBattleState.MoveGrid;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
@@ -420,7 +420,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID = cardID;
                     return false;
                 }
-                else if (CardManager.Instance.Contain(card.ID, EBuffID.Spec_ExchangeGrid))
+                else if (CardManager.Instance.Contain(card.Idx, EBuffID.Spec_ExchangeGrid))
                 {
                     //BattleManager.Instance.BattleState = EBattleState.TacticSelectGrid;
                     BattleManager.Instance.BattleState = EBattleState.ExchangeSelectGrid;
@@ -830,59 +830,59 @@ namespace RoundHero
         
         public void ConsumeCardForms()
         {
-            var cards = new List<int>();
-            cards.AddRange(BattlePlayerData.HandCards);
-            cards.AddRange(BattlePlayerData.StandByCards);
-            cards.AddRange(BattlePlayerData.PassCards);
-            
-            GameEntry.UI.OpenUIForm(UIFormId.CardsForm, new CardsFormData()
-            {
-                Cards = cards,
-                SelectAction = (list) =>
-                {
-                    foreach (var consumeCardID in list)
-                    {
-                        ConsumeCard(consumeCardID);
-                    }
-                    
-                    ResetCardsPos(true);
-                    GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
-                },
-                
-                
-                SelectCount = 1,
-                Tips = "",
-            });
+            // var cards = new List<int>();
+            // cards.AddRange(BattlePlayerData.HandCards);
+            // cards.AddRange(BattlePlayerData.StandByCards);
+            // cards.AddRange(BattlePlayerData.PassCards);
+            //
+            // GameEntry.UI.OpenUIForm(UIFormId.CardsForm, new CardsFormData()
+            // {
+            //     Cards = cards,
+            //     SelectAction = (list) =>
+            //     {
+            //         foreach (var consumeCardID in list)
+            //         {
+            //             ConsumeCard(consumeCardID);
+            //         }
+            //         
+            //         ResetCardsPos(true);
+            //         GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+            //     },
+            //     
+            //     
+            //     SelectCount = 1,
+            //     Tips = "",
+            // });
         }
         
         public void AddNewCardForms()
         {
-            var cards = new List<int>();
-            CardManager.Instance.TempCards.Clear();
-            for (int i = 0; i < 3; i++)
-            {
-                var tempID = CardManager.Instance.GetTempID();
-                var randomCardID = 0;//(ECardID) Random.Next(0, Enum.GetNames(typeof(ECardID)).Length);
-                CardManager.Instance.TempCards.Add(tempID, new Data_Card(tempID, randomCardID, new List<int>()));
-            }
-            
-            cards.AddRange(CardManager.Instance.TempCards.Keys);
-
-            GameEntry.UI.OpenUIForm(UIFormId.CardsForm, new CardsFormData()
-            {
-                Cards = cards,
-                SelectAction = (list) =>
-                {
-                    foreach (var cardID in list)
-                    {
-                        NewCardToHand(cardID);
-                    }
-                    GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
-                },
-                
-                SelectCount = 1,
-                Tips = "",
-            });
+            // var cards = new List<int>();
+            // CardManager.Instance.TempCards.Clear();
+            // for (int i = 0; i < 3; i++)
+            // {
+            //     var tempID = CardManager.Instance.GetTempIdx();
+            //     var randomCardID = 0;//(ECardID) Random.Next(0, Enum.GetNames(typeof(ECardID)).Length);
+            //     CardManager.Instance.TempCards.Add(tempID, new Data_Card(tempID, randomCardID, new List<int>()));
+            // }
+            //
+            // cards.AddRange(CardManager.Instance.TempCards.Keys);
+            //
+            // GameEntry.UI.OpenUIForm(UIFormId.CardsForm, new CardsFormData()
+            // {
+            //     Cards = cards,
+            //     SelectAction = (list) =>
+            //     {
+            //         foreach (var cardID in list)
+            //         {
+            //             NewCardToHand(cardID);
+            //         }
+            //         GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+            //     },
+            //     
+            //     SelectCount = 1,
+            //     Tips = "",
+            // });
         }
 
         public List<int> AddRandomCard(int newCardCount)
@@ -913,9 +913,9 @@ namespace RoundHero
 
         public int AddTempNewCard(int tempCardID)
         {
-            var tempID = CardManager.Instance.GetTempID();
-            CardManager.Instance.CardDatas.Add(tempID, new Data_Card(tempID,tempCardID, new List<int>()));
-            return tempID;
+            var tempIdx = CardManager.Instance.GetTempIdx();
+            CardManager.Instance.CardDatas.Add(tempIdx, new Data_Card(tempIdx, tempCardID, new List<int>()));
+            return tempIdx;
         }
 
         public BattleCardEntity GetCardEntity(int cardID)

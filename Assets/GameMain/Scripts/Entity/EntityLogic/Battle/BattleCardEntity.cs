@@ -132,7 +132,7 @@ namespace RoundHero
             ActionGO.SetActive(true);
             transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 50f, 0);
             transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-            BattleCardManager.Instance.RefreshSelectCard(BattleCardEntityData.CardData.ID);
+            BattleCardManager.Instance.RefreshSelectCard(BattleCardEntityData.CardData.Idx);
             
             RefreshCardRect();
             BattleManager.Instance.Refresh();

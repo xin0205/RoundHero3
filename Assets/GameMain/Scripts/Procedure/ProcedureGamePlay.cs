@@ -9,50 +9,53 @@ namespace RoundHero
     public class ProcedureGamePlay : ProcedureBase
     {
 
-        private bool InitSuccess = false;
+        private bool IsStartBattle = false;
+        public SceneEntity StartSelectEntity;
         
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
             
-            InitSuccess = false;
+            IsStartBattle = false;
             
-            GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+            //GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             
             GameEntry.Sound.PlayMusic(0);
 
             GamePlayManager.Instance.SetProcedureGamePlay(this);
             GameEntry.UI.OpenUIForm(UIFormId.MapForm, this);
-            
-            DRScene drScene = GameEntry.DataTable.GetScene(2);
 
-            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
+            
+            var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
+            PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
+
+            
 
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-            if (InitSuccess)
-            {
-                BattleManager.Instance.Update();
-            }
+            // if (IsStartBattle)
+            // {
+            //     BattleManager.Instance.Update();
+            // }
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             GameEntry.Sound.StopMusic();
             base.OnLeave(procedureOwner, isShutdown);
-            GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+            //GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
         }
 
 
         public void StartBattle()
         {
-            DRScene drScene = GameEntry.DataTable.GetScene(1);
-            GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
+            // DRScene drScene = GameEntry.DataTable.GetScene(1);
+            // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             
-            //ChangeState<ProcedureBattle>(procedureOwner);
+            ChangeState<ProcedureBattle>(procedureOwner);
         }
         
         
@@ -79,8 +82,13 @@ namespace RoundHero
             }
             
             
-            InitSuccess = true;
+            IsStartBattle = true;
 
+        }
+
+        public void StartBattle(bool isStartBattle)
+        {
+            IsStartBattle = isStartBattle;
         }
 
     }

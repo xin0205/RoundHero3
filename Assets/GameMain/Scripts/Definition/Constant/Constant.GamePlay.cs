@@ -927,27 +927,8 @@ namespace RoundHero
         {
             public static int MapCount = 3;
             public static int StageCount = 3;
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            public static int RouteCount = 3;
+
+            public static int RouteCount = 4;
             public static int StepCount = 5;
             
             // public static Dictionary<int, int> StepRangeRatio = new ()

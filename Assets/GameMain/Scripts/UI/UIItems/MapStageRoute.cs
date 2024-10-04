@@ -35,7 +35,7 @@ namespace RoundHero
                     StageIdx = stageIdx,
                     RouteIdx = i,
 
-                }, stage[i], i, RefreshSelectRouteIdx);
+                }, stage[i], RefreshSelectRouteIdx);
             }
 
             ToggleEnable(true);

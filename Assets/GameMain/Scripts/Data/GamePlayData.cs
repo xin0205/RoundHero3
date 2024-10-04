@@ -98,7 +98,7 @@ namespace RoundHero
 
     public class Data_Card
     {
-        public int ID;
+        public int Idx;
         public int CardID;
         public List<int> FuneIDs = new();
         public int RoundEnergyDelta = 0;
@@ -113,9 +113,9 @@ namespace RoundHero
 
         }
 
-        public Data_Card(int id, int cardID, List<int> funeIDs)
+        public Data_Card(int idx, int cardID, List<int> funeIDs)
         {
-            ID = id;
+            Idx = idx;
             CardID = cardID;
             FuneIDs = funeIDs;
 
@@ -123,7 +123,7 @@ namespace RoundHero
 
         public virtual Data_Card Copy()
         {
-            var dataCard = new Data_Card(ID, CardID, FuneIDs);
+            var dataCard = new Data_Card(Idx, CardID, FuneIDs);
 
             return dataCard;
         }
@@ -1087,10 +1087,10 @@ namespace RoundHero
     
     public class Data_Player
     {
-        public int CardIDIdx;
-        public int TmpCardIDIdx;
-        public int FuneIDIdx;
-        public int BlessIDIdx;
+        public int CardIdx;
+        public int TmpCardIdx;
+        public int FuneIdx;
+        public int BlessIdx;
         public ulong PlayerID;
         public EUnitCamp UnitCamp;
         
@@ -1111,9 +1111,9 @@ namespace RoundHero
         {
             var data = new Data_Player();
 
-            data.CardIDIdx = CardIDIdx;
-            data.FuneIDIdx = FuneIDIdx;
-            data.BlessIDIdx = BlessIDIdx;
+            data.CardIdx = CardIdx;
+            data.FuneIdx = FuneIdx;
+            data.BlessIdx = BlessIdx;
             data.BattleHero = BattleHero.Copy();
             data.PlayerID = PlayerID;
             data.UnitCamp = UnitCamp;

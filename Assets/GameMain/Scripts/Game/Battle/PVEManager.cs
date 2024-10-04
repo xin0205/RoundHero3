@@ -59,8 +59,8 @@ namespace RoundHero
 
             BattleManager.Instance.Init(randomSeed);
 
-             BattleCardManager.Instance.InitCards();
-             BattleEnemyManager.Instance.Init(Random.Next(), enemyType);
+            BattleCardManager.Instance.InitCards();
+            BattleEnemyManager.Instance.Init(Random.Next(), enemyType);
             
             GameEntry.UI.OpenUIForm(UIFormId.BattleForm);
 

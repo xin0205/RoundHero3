@@ -16,7 +16,7 @@ namespace RoundHero
         [SerializeField]
         private GameObject mask;
         
-        private CardShowData _cardShowData;
+        private OldCardShowData _cardShowData;
 
         private Action<int> selectAction;
 
@@ -27,7 +27,7 @@ namespace RoundHero
             
         }
         
-        public void SetItemData(CardShowData cardShowData, Action<int> selectAction)
+        public void SetItemData(OldCardShowData cardShowData, Action<int> selectAction)
         {
             this._cardShowData = cardShowData;
             

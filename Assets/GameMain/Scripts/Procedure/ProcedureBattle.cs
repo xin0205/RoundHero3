@@ -52,16 +52,16 @@ namespace RoundHero
         public void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
             AreaController.Instance.RefreshCameraPlane();
-            var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
+            // var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
             
-            if (initData.Value.GameMode == EGamMode.PVP)
-            {
-                PVPManager.Instance.Init(initData.Value.RandomSeed, initData.Value.PlayerDatas);
-            }
-            else if (initData.Value.GameMode == EGamMode.PVE)
-            {
-                PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
-            }
+            // if (initData.Value.GameMode == EGamMode.PVP)
+            // {
+            //     PVPManager.Instance.Init(initData.Value.RandomSeed, initData.Value.PlayerDatas);
+            // }
+            // else if (initData.Value.GameMode == EGamMode.PVE)
+            // {
+            //     PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
+            // }
             
             
             InitSuccess = true;
