@@ -6,8 +6,6 @@ namespace RoundHero
     public class StartForm : UGuiForm
     {
         private ProcedureStart procedureStart;
-        
-        private SceneEntity startSceneEntity;
 
         protected override async void OnOpen(object userData)
         {
@@ -20,14 +18,11 @@ namespace RoundHero
                 return;
             }
             
-            startSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
-
         }
 
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
-            GameEntry.Entity.HideEntity(startSceneEntity);
         }
         
         public async void ShowStartSelect()

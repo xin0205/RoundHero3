@@ -13,6 +13,8 @@ namespace RoundHero
         public LoopGridView selectCardGridView;
         public LoopGridView inBattleGridView;
         private List<int> selectInitCards = new List<int>();
+        
+        private SceneEntity roleEntity;
 
         protected override void OnInit(object userData)
         {
@@ -23,7 +25,7 @@ namespace RoundHero
             inBattleGridView.InitGridView(0, OnInBattleCardGetItemByRowColumn);
         }
 
-        protected override void OnOpen(object userData)
+        protected override async void OnOpen(object userData)
         {
             base.OnOpen(userData);
             
@@ -33,6 +35,8 @@ namespace RoundHero
                 Log.Warning("ProcedureStart is null.");
                 return;
             }
+            
+            roleEntity = await GameEntry.Entity.ShowSceneEntityAsync("Role");
             
             GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
             
@@ -62,6 +66,8 @@ namespace RoundHero
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
+            GameEntry.Entity.HideEntity(roleEntity);
+            
             GameEntry.Event.Unsubscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
         }
         

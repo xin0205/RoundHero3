@@ -957,6 +957,12 @@ namespace RoundHero
             };
         }
 
+        public static class Store
+        {
+            public static Vector2 CardPriceRange = new Vector2(85, 115);
+        }
+        
+
         public static class GridProp
         {
             public static int GridPropRoundEffectCount = 2;

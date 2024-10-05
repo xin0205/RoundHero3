@@ -216,8 +216,8 @@ namespace RoundHero
             Text[] texts = GetComponentsInChildren<Text>(true);
             for (int i = 0; i < texts.Length; i++)
             {
-                texts[i].font = s_MainFont;
-                texts[i].fontStyle = FontStyle.Bold;
+                // texts[i].font = s_MainFont;
+                // texts[i].fontStyle = FontStyle.Bold;
                 var localizationTag = texts[i].GetComponent<LocalizationTag>();
                 if (localizationTag != null && !string.IsNullOrEmpty(localizationTag.Localization))
                 {

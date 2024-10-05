@@ -60,8 +60,9 @@ namespace RoundHero
             transform.position = Vector3.one * 100; 
             transform.localScale = Vector3.one;
             //GetComponent<Canvas>().sortingOrder = 1000;
+            var drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
             
-            BaseCard.SetCardUI(BattleCardEntityData.CardID);
+            BaseCard.SetCardUI(BattleCardEntityData.CardData.CardID);
             
         }
 
@@ -98,7 +99,7 @@ namespace RoundHero
             
             if (!isInside)
             {
-                if(BattleCardManager.Instance.PointerCardID != -1)
+                if(BattleCardManager.Instance.PointerCardIdx != -1)
                     return;
                 
                 isInside = rect.Contains(Input.mousePosition);
@@ -126,7 +127,7 @@ namespace RoundHero
             
             
             
-            BattleCardManager.Instance.PointerCardID = BattleCardEntityData.CardID;
+            BattleCardManager.Instance.PointerCardIdx = BattleCardEntityData.CardIdx;
             
             isShow = true;
             ActionGO.SetActive(true);
@@ -145,7 +146,7 @@ namespace RoundHero
                 return;
             
             
-            BattleCardManager.Instance.PointerCardID = -1;
+            BattleCardManager.Instance.PointerCardIdx = -1;
             isShow = false;
             ActionGO.SetActive(false);
             transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0);
@@ -197,7 +198,7 @@ namespace RoundHero
                 return;
 
             BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
-            if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardID))
+            if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
                 return;
 
             UseCardAnimation();
@@ -209,7 +210,7 @@ namespace RoundHero
         {
             isInside = false;
             isHand = false;
-            BattleCardManager.Instance.PointerCardID = -1;
+            BattleCardManager.Instance.PointerCardIdx = -1;
             // switch (BattleCardEntityData.CardData.CardUseType)
             // {
             //     case ECardUseType.Raw:
@@ -438,7 +439,7 @@ namespace RoundHero
 
         public void RefreshInfo()
         {
-            BaseCard.SetCardUI(BattleCardEntityData.CardID);
+            BaseCard.SetCardUI(BattleCardEntityData.CardData.CardID);
         }
 
         public void OnRefreshInfo(object sender, GameEventArgs e)
@@ -469,7 +470,7 @@ namespace RoundHero
             
             BattleManager.Instance.BattleState = EBattleState.TacticSelectUnit;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
-            BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID = BattleCardEntityData.CardID;
+            BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID = BattleCardEntityData.CardIdx;
             
         }
     }

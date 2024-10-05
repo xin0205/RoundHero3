@@ -20,10 +20,10 @@ namespace RoundHero
             return BattlePlayerManager.Instance.PlayerData.CardIdx++;
         }
         
-        public Data_Card GetCard(int cardID)
+        public Data_Card GetCard(int cardIdx)
         {
-            if (CardDatas.ContainsKey(cardID))
-                return CardDatas[cardID];
+            if (CardDatas.ContainsKey(cardIdx))
+                return CardDatas[cardIdx];
             
             // if(TempCards.ContainsKey(cardID))
             //     return TempCards[cardID];
@@ -31,9 +31,9 @@ namespace RoundHero
             return null;
         }
         
-        public DRCard GetCardTable(int cardID)
+        public DRCard GetCardTable(int cardIdx)
         {
-            var cardData = BattleManager.Instance.GetCard(cardID);
+            var cardData = BattleManager.Instance.GetCard(cardIdx);
             if (cardData == null)
                 return null;
 

@@ -4,7 +4,7 @@ using FishNet.Connection;
 using FishNet.Transporting;
 using GameFramework;
 using GameFramework.Event;
-
+using UGFExtensions.Await;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -16,7 +16,7 @@ namespace RoundHero
     {
         private bool InitSuccess = false;
 
-        protected override void OnEnter(ProcedureOwner procedureOwner)
+        protected override async void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
 
@@ -28,6 +28,23 @@ namespace RoundHero
 
             DRScene drScene = GameEntry.DataTable.GetScene(1);
             GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
+            
+            await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm);
+            
+            await BattleAreaManager.Instance.InitArea();
+            await BattleHeroManager.Instance.GenerateHero();
+                
+            await BattleEnemyManager.Instance.GenerateNewEnemies();
+                
+
+            PVEManager.Instance.BattleState = EBattleState.UseCard;
+            BattleCardManager.Instance.RoundAcquireCards(true);
+                
+                
+            BattleManager.Instance.RoundStartTrigger();
+            BattleManager.Instance.Refresh();
+            
+            
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)

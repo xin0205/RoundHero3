@@ -7,8 +7,8 @@ namespace RoundHero
 {
     public class CardShowData
     {
+        public int CardIdx;
         public int CardID;
-        
     }
 
     public class CardsView : MonoBehaviour
@@ -19,7 +19,7 @@ namespace RoundHero
         private Dictionary<int, int>  cardDict = new Dictionary<int, int>();
         private List<CardShowData> cards = new List<CardShowData>();
 
-        private List<int> cardIDs = new List<int>();
+        //private List<int> cardIdxs = new List<int>();
 
 
         private void Awake()
@@ -27,20 +27,21 @@ namespace RoundHero
             cardView.InitGridView(0, OnGetCardItemByRowColumn);
         }
 
-        public void Init(List<int> cardIDs)
+        public void Init(List<int> cardIdxs)
         {
-            this.cardIDs = cardIDs;
+            //this.cardIdxs = cardIdxs;
             this.cards.Clear();
             this.cardDict.Clear();
             var idx = 0;
-            foreach (var card in this.cardIDs)
+            foreach (var cardIdx in cardIdxs)
             {
+                var drCard = CardManager.Instance.GetCardTable(cardIdx);
                 this.cards.Add(new CardShowData()
                 {
-                    CardID = card,
-
+                    CardIdx = cardIdx,
+                    CardID = drCard.Id,
                 });
-                cardDict.Add(card, idx++);
+                cardDict.Add(cardIdx, idx++);
             }
 
             cardView.SetListItemCount(this.cards.Count);
@@ -63,6 +64,8 @@ namespace RoundHero
                 item.IsInitHandlerCalled = true;
                 itemScript.Init();
             }
+            
+            
         
             itemScript.SetItemData(cards[itemIndex]);
             

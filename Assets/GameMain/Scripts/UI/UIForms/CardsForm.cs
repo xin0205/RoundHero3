@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -12,6 +13,8 @@ namespace RoundHero
 
         [SerializeField]
         private CardsView cardsViews;
+
+        [SerializeField] private Toggle unitToggle;
         
         private List<int> cardIdxs = new List<int>();
 
@@ -20,7 +23,8 @@ namespace RoundHero
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
-
+            unitToggle.isOn = false;
+            unitToggle.isOn = true;
         }
 
         public void SelectUnit(bool isSelect)
@@ -43,13 +47,13 @@ namespace RoundHero
 
         public void SelectCardType(ECardType cardType)
         {
-            
+            cardIdxs.Clear();
             foreach (var kv in CardManager.Instance.CardDatas)
             {
                 var drCard = CardManager.Instance.GetCardTable(kv.Key);
                 if (drCard.CardType == cardType)
                 {
-                    cardIdxs.Add(drCard.Id);
+                    cardIdxs.Add(kv.Key);
                 }
                 
             }

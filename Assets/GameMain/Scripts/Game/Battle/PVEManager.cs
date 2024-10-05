@@ -62,11 +62,16 @@ namespace RoundHero
             BattleCardManager.Instance.InitCards();
             BattleEnemyManager.Instance.Init(Random.Next(), enemyType);
             
+            
+
+            
+
+            
+        }
+
+        public void StartBattle()
+        {
             GameEntry.UI.OpenUIForm(UIFormId.BattleForm);
-
-            
-
-            
         }
 
         public void SetCurPlayer()
@@ -102,26 +107,26 @@ namespace RoundHero
         
         private async void OnOpenUIFormSuccess(object sender, GameEventArgs e)
         {
-            OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
-            if (ne.UIForm.Logic is BattleForm)
-            {
-                
-                await BattleAreaManager.Instance.InitArea();
-                await BattleHeroManager.Instance.GenerateHero();
-                
-                await BattleEnemyManager.Instance.GenerateNewEnemies();
-                
-                //await BattleThirdUnitManager.Instance.GenerateNewThirdUnits();
-                
-                //await BattleGridPropManager.Instance.GenerateGridItems(EGridPropID.Action_AcquireCard_Prop);
-                BattleState = EBattleState.UseCard;
-                BattleCardManager.Instance.RoundAcquireCards(true);
-                
-                
-                BattleManager.Instance.RoundStartTrigger();
-                BattleManager.Instance.Refresh();
-                
-            }
+            // OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
+            // if (ne.UIForm.Logic is BattleForm)
+            // {
+            //     
+            //     await BattleAreaManager.Instance.InitArea();
+            //     await BattleHeroManager.Instance.GenerateHero();
+            //     
+            //     await BattleEnemyManager.Instance.GenerateNewEnemies();
+            //     
+            //     //await BattleThirdUnitManager.Instance.GenerateNewThirdUnits();
+            //     
+            //     //await BattleGridPropManager.Instance.GenerateGridItems(EGridPropID.Action_AcquireCard_Prop);
+            //     BattleState = EBattleState.UseCard;
+            //     BattleCardManager.Instance.RoundAcquireCards(true);
+            //     
+            //     
+            //     BattleManager.Instance.RoundStartTrigger();
+            //     BattleManager.Instance.Refresh();
+            //     
+            // }
 
         }
         

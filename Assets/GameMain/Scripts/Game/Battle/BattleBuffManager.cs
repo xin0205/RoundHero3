@@ -624,7 +624,7 @@ namespace RoundHero
             //GameEntry.Event.FireNow(null, RefreshCardUseTipsEventArgs.Create(false));
             BattleManager.Instance.BattleState = EBattleState.UseCard;
             BattleAreaManager.Instance.IsMoveGrid = false;
-            BattleCardManager.Instance.PointerCardID = -1;
+            BattleCardManager.Instance.PointerCardIdx = -1;
             //CardUseLine.gameObject.SetActive(false);
 
 
@@ -929,7 +929,8 @@ namespace RoundHero
 
         public int GetBuffValue(string value)
         {
-            return int.Parse(value);
+            int.TryParse(value, out int resValue);
+            return resValue;
         }
 
     }

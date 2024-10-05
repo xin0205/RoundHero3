@@ -392,14 +392,14 @@ namespace RoundHero
 
         public void CacheUseCardTriggerDatas()
         {
-            if (BattleCardManager.Instance.PointerCardID == -1)
+            if (BattleCardManager.Instance.PointerCardIdx == -1)
                 return;
 
             var unitID = BattleManager.Instance.TempTriggerData.UnitData != null
                 ? BattleManager.Instance.TempTriggerData.UnitData.ID
                 : -1;
 
-            FightManager.Instance.CacheConsumeCardEnergy(BattleCardManager.Instance.PointerCardID, unitID);
+            FightManager.Instance.CacheConsumeCardEnergy(BattleCardManager.Instance.PointerCardIdx, unitID);
             //CacheUseCardTriggerAttack();
             CacheUseCardTrigger();
         }

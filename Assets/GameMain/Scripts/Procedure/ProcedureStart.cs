@@ -13,8 +13,10 @@ namespace RoundHero
     public class ProcedureStart : ProcedureBase
     {
         private bool InitSuccess = false;
-
-        protected override void OnEnter(ProcedureOwner procedureOwner)
+        public SceneEntity StartEntity;
+        public SceneEntity StartSelectEntity;
+        
+        protected override async void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
 
@@ -27,6 +29,9 @@ namespace RoundHero
 
             // DRScene drScene = GameEntry.DataTable.GetScene(2);
             // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
+            
+            StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
+            GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -51,12 +56,12 @@ namespace RoundHero
             // GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
         }
 
-        public SceneEntity StartEntity;
-        public SceneEntity StartSelectEntity;
+        
+        
         public async void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
-            StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
-            GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
+            // StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
+            // GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
 
         }
 
@@ -77,9 +82,6 @@ namespace RoundHero
             {
                 ChangeState<ProcedureBattle>(procedureOwner);
             }
-            
-            
-            
 
         }
     }
