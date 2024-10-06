@@ -16,7 +16,11 @@
             public const string CardName = "CardName.{0}";
             public const string CardDesc = "CardDesc.{0}";
             
+            public const string BuffName = "BuffName.{0}";
+            public const string BuffDesc = "BuffDesc.{0}";
             
+            public const string BlessName = "BlessName.{0}";
+            public const string BlessDesc = "BlessDesc.{0}";
         }
     }
 }

@@ -11,6 +11,58 @@ namespace RoundHero
 {
     public static partial class GameUtility
     {
+        public static void GetItemText(EItemType itemType, EBuffID buffID, ref string name, ref string desc)
+        {
+            var buffName =
+                Utility.Text.Format(Constant.Localization.BuffName, buffID); 
+            
+            name = GameEntry.Localization.GetString(buffName);
+            
+            var drBuff = GameEntry.DataTable.GetBuff(buffID);
+            
+            var values = new List<float>();
+            foreach (var value in drBuff.BuffValues)
+            {
+                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+                if (val != 0)
+                {
+                    values.Add(val);
+                }
+               
+            }
+            
+            var buffDesc =
+                Utility.Text.Format(Constant.Localization.BuffDesc, buffID.ToString());
+
+            desc = GetStrByValues(GameEntry.Localization.GetString(buffDesc), values);
+        }
+        
+        public static void GetItemText(EItemType itemType, EBlessID blessID, ref string name, ref string desc)
+        {
+            var blessName =
+                Utility.Text.Format(Constant.Localization.BlessName, blessID); 
+            
+            name = GameEntry.Localization.GetString(blessName);
+            
+            var drBless = GameEntry.DataTable.GetBless(blessID);
+            
+            var values = new List<float>();
+            foreach (var value in drBless.Values1)
+            {
+                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+                if (val != 0)
+                {
+                    values.Add(val);
+                }
+               
+            }
+            
+            var blessDesc =
+                Utility.Text.Format(Constant.Localization.BlessDesc, blessID.ToString());
+
+            desc = GetStrByValues(GameEntry.Localization.GetString(blessDesc), values);
+        }
+        
         public static void GetCardText(int cardID, ref string name, ref string desc)
         {
             var cardName =
@@ -44,31 +96,45 @@ namespace RoundHero
             var cardDesc =
                 Utility.Text.Format(Constant.Localization.CardDesc, cardID);
 
+            desc = GetStrByValues(GameEntry.Localization.GetString(cardDesc), values);
+
+            
+            
+        }
+
+        public static string GetStrByValues(string str, List<float> values)
+        {
             if (values.Count == 0)
             {
-                desc = GameEntry.Localization.GetString(cardDesc);
+                return str;
             }
             else if (values.Count == 1)
             {
-                desc = Utility.Text.Format(GameEntry.Localization.GetString(cardDesc),
+                return Utility.Text.Format(str,
                     values[0]);
             }
             else if (values.Count == 2)
             {
-                desc = Utility.Text.Format(GameEntry.Localization.GetString(cardDesc),
+                return Utility.Text.Format(str,
                     values[0],values[1]);
             }
             else if (values.Count == 3)
             {
-                desc = Utility.Text.Format(GameEntry.Localization.GetString(cardDesc),
+                return Utility.Text.Format(str,
                     values[0],values[1],values[2]);
             }
             else if (values.Count == 4)
             {
-                desc = Utility.Text.Format(GameEntry.Localization.GetString(cardDesc),
+                return Utility.Text.Format(str,
                     values[0],values[1],values[2],values[3]);
             }
+            else if (values.Count == 5)
+            {
+                return Utility.Text.Format(str,
+                    values[0],values[1],values[2],values[3], values[4]);
+            }
             
+            return str;
         }
         
         public static int GetDis(Vector2Int coord1, Vector2Int coord2)
