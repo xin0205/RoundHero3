@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RoundHero
@@ -14,7 +15,7 @@ namespace RoundHero
     {
         public EItemType ItemType { get; set; }
         
-        public EBuffID BuffID { get; set; }
+        public int FuneID { get; set; }
         public int CardID { get; set; }
         public EBlessID BlessID { get; set; }
     }
@@ -23,6 +24,8 @@ namespace RoundHero
     {
         public ItemData ItemData;
         public int Price { get; set; }
+        public int StoreIdx { get;set; }
+        public bool IsSale { get; set; }
         
     }
     
@@ -32,30 +35,44 @@ namespace RoundHero
         [SerializeField] private Text desc;
         [SerializeField] private CoinItem coinItem;
         [SerializeField] private Image icon;
-        private StoreItemData storeItemData;  
+        private StoreItemData storeItemData;
 
+        public void Init()
+        {
+            
+        }
+        
         public void SetItemData(StoreItemData storeItemData)
         {
             this.storeItemData = storeItemData;
-            
-            var name = "";
-            var desc = "";
-            switch (storeItemData.ItemData.ItemType)
-            {
-                
-            }
-            GameUtility.GetCardText(card.CardID, ref name, ref desc);
-
-            title.text = name;
-            desc.text = desc;
-
             Refresh();
         }
 
 
-        public void Refresh()
+        public async void Refresh()
         {
+            var name = "";
+            var desc = "";
+            switch (storeItemData.ItemData.ItemType)
+            {
+                // case EItemType.Card:
+                //     GameUtility.GetCardText(storeItemData.ItemData.CardID, ref name, ref desc);
+                //     break;
+                case EItemType.Bless:
+                    GameUtility.GetItemText(storeItemData.ItemData.BlessID, ref name, ref desc);
+                    icon.sprite = await AssetUtility.GetBlessIcon(storeItemData.ItemData.BlessID);
+                    break;
+                case EItemType.Fune:
+                    GameUtility.GetItemText(storeItemData.ItemData.FuneID, ref name, ref desc);
+                    icon.sprite = await AssetUtility.GetFuneIcon(storeItemData.ItemData.FuneID);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             
+            coinItem.SetPrice(storeItemData.Price);
+            title.text = name; 
+            this.desc.text = desc;
             
         }
 

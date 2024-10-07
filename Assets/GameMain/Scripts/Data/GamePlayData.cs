@@ -1099,6 +1099,7 @@ namespace RoundHero
         public Dictionary<int, Data_Fune> FuneDatas = new();
         public Dictionary<int, Data_Bless> BlessDatas = new ();
         public Dictionary<int, Data_EnergyBuff> EnergyBuffDatas = new ();
+        public int Coin;
         
         public Data_Player()
         {
@@ -1118,6 +1119,7 @@ namespace RoundHero
             data.PlayerID = PlayerID;
             data.UnitCamp = UnitCamp;
             data.EnergyBuffDatas = new Dictionary<int, Data_EnergyBuff>(EnergyBuffDatas);
+            data.Coin = Coin;
             
             data.CardDatas.Clear();
             foreach (var kv in CardDatas)
@@ -1220,12 +1222,16 @@ namespace RoundHero
         public int StageIdx;
         public int SelectRouteIdx;
         public int StageRandomSeed;
+        
+        public Dictionary<int, Dictionary<int, Data_MapStep>> MapSteps = new ();
+        
     }
     
     public class Data_MapStep
     {
         public Data_MapRoute MapRoute;
         public int StepIdx;
+        public int RandomSeed;
     }
     
     public class Data_MapRoute
@@ -1265,6 +1271,7 @@ namespace RoundHero
         
         public Dictionary<int, Data_MapStage> MapStageDataDict = new ();
         public MapStageIdx CurMapStageIdx = new MapStageIdx();
+
 
         public Data_Map Copy()
         {

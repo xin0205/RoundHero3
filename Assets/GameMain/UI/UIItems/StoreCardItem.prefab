@@ -85,6 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4334850076508384442}
   - component: {fileID: 7952053274208775666}
+  - component: {fileID: 782950678333791186}
   m_Layer: 0
   m_Name: StoreCardItem
   m_TagString: Untagged
@@ -121,6 +122,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5864479316299124180}
   m_CullTransparentMesh: 1
+--- !u!114 &782950678333791186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5864479316299124180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c103b0f07746f297f5623edca003a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseCard: {fileID: 5920292827298803139}
+  CardPrice: {fileID: 2083158817905510026}
 --- !u!1 &5980964392525873390
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,15 +164,15 @@ RectTransform:
   m_GameObject: {fileID: 5980964392525873390}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
+  m_LocalScale: {x: 0.13, y: 0.13, z: 0.13}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2771596504281514835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 55.635002, y: -25}
-  m_SizeDelta: {x: 732, y: 150}
+  m_AnchoredPosition: {x: 75.76501, y: -25}
+  m_SizeDelta: {x: 366, y: 150}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &310187254875846013
 CanvasRenderer:
@@ -214,7 +229,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 111111
+  m_Text: 111
 --- !u!1 &8216466437798181925
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,3 +396,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4559589956139492282, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
   m_PrefabInstance: {fileID: 3708924045640096082}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5920292827298803139 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7012566626599466129, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
+  m_PrefabInstance: {fileID: 3708924045640096082}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a91253a517471fbd2077a3356f97b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

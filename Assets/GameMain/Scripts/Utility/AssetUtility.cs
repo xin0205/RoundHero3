@@ -250,6 +250,52 @@ namespace RoundHero
             }
 
         }
+        
+        public static string GetFuneIconName(int funeID)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icon/Fune/{0}.png", funeID.ToString());
+            
+        }
+        
+        public static string GetEmptyIconName()
+        {
+            return "Assets/GameMain/UI/UISprites/Icons/Empty.png";
+            
+        }
+        
+        public static Task<Sprite> GetFuneIcon(int funeID)
+        {
+            var assetName = GetFuneIconName(funeID);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetEmptyIconName());
+            }
+
+        }
+        
+        public static string GetBlessIconName(EBlessID blessID)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icon/Bless/{0}.png", blessID.ToString());
+            
+        }
+        
+        public static Task<Sprite> GetBlessIcon(EBlessID blessID)
+        {
+            var assetName = GetBlessIconName(blessID);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetEmptyIconName());
+            }
+
+        }
 
     }
 }

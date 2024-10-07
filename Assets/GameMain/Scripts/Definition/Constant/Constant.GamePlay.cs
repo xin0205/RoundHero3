@@ -959,7 +959,9 @@ namespace RoundHero
 
         public static class Store
         {
-            public static Vector2 CardPriceRange = new Vector2(85, 115);
+            public static Vector2Int CardPriceRange = new Vector2Int(85, 115);
+            public static Vector2Int BlessPriceRange = new Vector2Int(85, 115);
+            public static Vector2Int FunePriceRange = new Vector2Int(85, 115);
         }
         
 

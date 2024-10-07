@@ -11,14 +11,14 @@ namespace RoundHero
 {
     public static partial class GameUtility
     {
-        public static void GetItemText(EItemType itemType, EBuffID buffID, ref string name, ref string desc)
+        public static void GetItemText(int funeID, ref string name, ref string desc)
         {
-            var buffName =
-                Utility.Text.Format(Constant.Localization.BuffName, buffID); 
+            var funeName =
+                Utility.Text.Format(Constant.Localization.FuneName, funeID); 
             
-            name = GameEntry.Localization.GetString(buffName);
+            name = GameEntry.Localization.GetString(funeName);
             
-            var drBuff = GameEntry.DataTable.GetBuff(buffID);
+            var drBuff = GameEntry.DataTable.GetBuff(funeID);
             
             var values = new List<float>();
             foreach (var value in drBuff.BuffValues)
@@ -32,12 +32,12 @@ namespace RoundHero
             }
             
             var buffDesc =
-                Utility.Text.Format(Constant.Localization.BuffDesc, buffID.ToString());
+                Utility.Text.Format(Constant.Localization.FuneDesc, funeID.ToString());
 
             desc = GetStrByValues(GameEntry.Localization.GetString(buffDesc), values);
         }
         
-        public static void GetItemText(EItemType itemType, EBlessID blessID, ref string name, ref string desc)
+        public static void GetItemText(EBlessID blessID, ref string name, ref string desc)
         {
             var blessName =
                 Utility.Text.Format(Constant.Localization.BlessName, blessID); 

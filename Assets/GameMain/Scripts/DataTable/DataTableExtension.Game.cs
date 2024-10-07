@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using GameKit.Dependencies.Utilities;
 using UnityGameFramework.Runtime;
 
@@ -105,6 +106,15 @@ namespace RoundHero
             return drBuffs.GetDataRow((t) =>
             {
                 return t.Id == buffID;
+            });
+        }
+        
+        public static DRBuff[] GetBuffs(this DataTableComponent dataTableComponent, EBuffType buffType)
+        {
+            var drBuffs = GameEntry.DataTable.GetDataTable<DRBuff>();
+            return drBuffs.GetDataRows((t) =>
+            {
+                return t.BuffTypes.Contains(buffType);
             });
         }
         

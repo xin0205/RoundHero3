@@ -14,8 +14,8 @@ namespace RoundHero
 
         private Action<int> TagCallBack;
 
-        private int randomSeed;
-        private System.Random random;
+        // private int randomSeed;
+        // private System.Random random;
 
         public void Init(Data_MapRoute mapRoute, List<EMapSite> mapSites, Action<int> tagCallBack)
         {
@@ -25,19 +25,23 @@ namespace RoundHero
             
             TagCallBack = tagCallBack;
 
-            randomSeed = BattleMapManager.Instance.MapData
-                .MapStageDataDict[mapRoute.StageIdx].StageRandomSeed;
-            this.random = new Random(randomSeed);
-
+            // randomSeed = BattleMapManager.Instance.MapData
+            //     .MapStageDataDict[mapRoute.StageIdx].StageRandomSeed;
+            // this.random = new Random(randomSeed);
+            var stageIdx = BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx;
+            
+            
             for (int i = 0; i < mapStageStepItems.Count; i++)
             {
+                var randomSeed = BattleMapManager.Instance.MapData.MapStageDataDict[stageIdx]
+                    .MapSteps[mapRoute.RouteIdx][i].RandomSeed;
                 if (i >= MapSites.Count)
                 {
                     mapStageStepItems[i].Init(new Data_MapStep()
                     {
                         MapRoute = mapRoute,
                         StepIdx = i,
-                    }, EMapSite.Empty, this.random.Next(0, Constant.Game.RandomRange));
+                    }, EMapSite.Empty, randomSeed);
                     
                 }
                 else
@@ -46,7 +50,7 @@ namespace RoundHero
                     {
                         MapRoute = mapRoute,
                         StepIdx = i,
-                    }, MapSites[i], this.random.Next(0, Constant.Game.RandomRange));
+                    }, MapSites[i], randomSeed);
                 }
                 
                 //mapStageStepItems[i].RandomPosition();

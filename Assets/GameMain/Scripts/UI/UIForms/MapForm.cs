@@ -100,10 +100,6 @@ namespace RoundHero
             GameUtility.DelayExcute(0.1f, () => {
                 scrollRect.verticalNormalizedPosition = 1;
             });
-            
-
-
-
 
             // for (int i = 0; i < MapStageRouteItems.Count; i++)
             // {
@@ -137,6 +133,11 @@ namespace RoundHero
                     .MapStageDataDict[BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx].SelectRouteIdx &&
                 ne.MapStep.StepIdx == BattleMapManager.Instance.MapData.CurMapStageIdx.StepIdx + 1)
             {
+                var stageIdx = BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx;
+                var routeIdx = BattleMapManager.Instance.MapData.MapStageDataDict[stageIdx].SelectRouteIdx;
+                var randomSeed = BattleMapManager.Instance.MapData.MapStageDataDict[stageIdx]
+                    .MapSteps[routeIdx][ne.MapStep.StepIdx].RandomSeed;
+                
                 switch (ne.MapSite)
                 {
                     case EMapSite.NormalBattle:
@@ -148,11 +149,14 @@ namespace RoundHero
                         
                     case EMapSite.EliteBattle:
                         //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Elite);
-                         Close();
-                         procedureGamePlay.StartBattle();
-                         break;
-                        // GameEntry.UI.OpenUIForm(UIFormId.RestForm);
-                        // break;
+                         // Close();
+                         // procedureGamePlay.StartBattle();
+                         // break;
+                        GameEntry.UI.OpenUIForm(UIFormId.StoreForm, new StoreFormData()
+                        {
+                            RandomSeed = randomSeed,
+                        });
+                        break;
                     
                     case EMapSite.BossBattle:
                         //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Boss);
