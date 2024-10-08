@@ -74,13 +74,14 @@ namespace RoundHero
             {
                 storeCards.Add(new StoreItemData()
                 {
-                    ItemData = new ItemData()
+                    CommonItemData = new CommonItemData()
                     {
                         CardID = cardIDs[sequence],
                         ItemType = EItemType.Card,
                     },
                     Price = random.Next(Constant.Store.CardPriceRange.x, Constant.Store.CardPriceRange.y),
                     StoreIdx = idx++,
+                    IsSaleOut = false,
                 });
             }
 
@@ -90,16 +91,19 @@ namespace RoundHero
             var drBlesses = GameEntry.DataTable.GetDataTable<DRBless>();
             var blessIDs = drBlesses.Select(t => t.BlessID).ToList();
             var randomBlessSequence = MathUtility.GetRandomNum(3, 0, blessIDs.Count, random);
+            idx = 0;
             foreach (var sequence in randomBlessSequence)
             {
                 storeBlesses.Add(new StoreItemData()
                 {
-                    ItemData = new ItemData()
+                    CommonItemData = new CommonItemData()
                     {
                         BlessID = blessIDs[sequence],
                         ItemType = EItemType.Bless,
                     },
                     Price = random.Next(Constant.Store.BlessPriceRange.x, Constant.Store.BlessPriceRange.y),
+                    StoreIdx = idx++,
+                    IsSaleOut = false,
                 });
             }
 
@@ -109,16 +113,19 @@ namespace RoundHero
             var drFunes = GameEntry.DataTable.GetBuffs(EBuffType.Fune);
             var funeIDs = drFunes.Select(t => t.Id).ToList();
             var randomFuneSequence = MathUtility.GetRandomNum(3, 0, funeIDs.Count, random);
+            idx = 0;
             foreach (var sequence in randomFuneSequence)
             {
                 storeFunes.Add(new StoreItemData()
                 {
-                    ItemData = new ItemData()
+                    CommonItemData = new CommonItemData()
                     {
                         FuneID = funeIDs[sequence],
                         ItemType = EItemType.Fune,
                     },
                     Price = random.Next(Constant.Store.FunePriceRange.x, Constant.Store.FunePriceRange.y),
+                    StoreIdx = idx++,
+                    IsSaleOut = false,
                 });
             }
 
@@ -128,7 +135,48 @@ namespace RoundHero
 
         public void PurseCard(int cardStoreIdx, int price)
         {
-            storeCards[cardStoreIdx].IsSale = true;
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                IsShowCancel = true,
+                OnConfirm = () =>
+                {
+                    storeCards[cardStoreIdx].IsSaleOut = true;
+                    cardView.RefreshAllShownItem();
+                    
+                    var cardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
+                    PlayerManager.Instance.PlayerData.CardDatas.Add(cardIdx,
+                        new Data_Card(cardIdx, storeCards[cardStoreIdx].CommonItemData.CardID, new List<int>()));
+
+                }
+            });
+            
+        }
+        
+        public void PurseBless(int blessStoreIdx, int price)
+        {
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                IsShowCancel = true,
+                OnConfirm = () =>
+                {
+                    storeBlesses[blessStoreIdx].IsSaleOut = true;
+                    blessView.RefreshAllShownItem();
+                }
+            });
+            
+        }
+        
+        public void PurseFune(int funeStoreIdx, int price)
+        {
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                IsShowCancel = true,
+                OnConfirm = () =>
+                {
+                    storeFunes[funeStoreIdx].IsSaleOut = true;
+                    funeView.RefreshAllShownItem();
+                }
+            });
             
         }
         
@@ -147,10 +195,8 @@ namespace RoundHero
                 item.IsInitHandlerCalled = true;
                 itemScript.Init();
             }
-            
-            
-        
-            itemScript.SetItemData(storeCards[itemIndex], PurseCard());
+
+            itemScript.SetItemData(storeCards[itemIndex], PurseCard);
             
             return item;
         }
@@ -172,7 +218,7 @@ namespace RoundHero
                 itemScript.Init();
             }
 
-            itemScript.SetItemData(storeFunes[itemIndex]);
+            itemScript.SetItemData(storeFunes[itemIndex], PurseFune);
             
             return item;
         }
@@ -193,7 +239,7 @@ namespace RoundHero
                 itemScript.Init();
             }
 
-            itemScript.SetItemData(storeBlesses[itemIndex]);
+            itemScript.SetItemData(storeBlesses[itemIndex], PurseBless);
             
             return item;
         }

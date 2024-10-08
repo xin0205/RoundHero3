@@ -24,7 +24,7 @@ namespace RoundHero
 
             GamePlayManager.Instance.SetProcedureGamePlay(this);
             GameEntry.UI.OpenUIForm(UIFormId.MapForm, this);
-
+            GameEntry.UI.OpenUIForm(UIFormId.PlayerInfoForm, this);
             
             var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
             PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);

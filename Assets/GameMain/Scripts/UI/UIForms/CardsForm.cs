@@ -20,11 +20,25 @@ namespace RoundHero
 
         private ECardType cardType = ECardType.Unit;
         
+        [SerializeField]
+        private GameObject cardGO;
+        
+        [SerializeField]
+        private GameObject funeGO;
+        
+        [SerializeField]
+        private GameObject funeTag;
+
+        [SerializeField]
+        private Toggle switchViewToggle;
+        
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
             unitToggle.isOn = false;
             unitToggle.isOn = true;
+
+            switchViewToggle.isOn = false;
         }
 
         public void SelectUnit(bool isSelect)
@@ -67,5 +81,12 @@ namespace RoundHero
             
         }
 
+        public void SwitchView(bool isOn)
+        {
+            cardGO.SetActive(!isOn);
+            funeGO.SetActive(isOn);
+            funeTag.SetActive(isOn);
+        }
+        
     }
 }

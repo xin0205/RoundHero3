@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace RoundHero
 {
@@ -113,7 +114,7 @@ namespace RoundHero
 
         }
 
-        public Data_Card(int idx, int cardID, List<int> funeIDs)
+        public Data_Card(int idx, int cardID, [CanBeNull] List<int> funeIDs = null)
         {
             Idx = idx;
             CardID = cardID;

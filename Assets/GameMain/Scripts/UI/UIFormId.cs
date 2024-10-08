@@ -82,6 +82,8 @@ namespace RoundHero
         BattleEventForm = 128,
         
         StartSelectForm = 129,
+        
+        PlayerInfoForm = 130,
 
     }
 }
