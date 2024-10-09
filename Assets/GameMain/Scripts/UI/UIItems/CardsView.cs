@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RoundHero
 {
-    public class CardShowData
+    public class PlayerCardData
     {
         public int CardIdx;
         public int CardID;
@@ -17,7 +17,7 @@ namespace RoundHero
         private LoopGridView cardView;
 
         private Dictionary<int, int>  cardDict = new Dictionary<int, int>();
-        private List<CardShowData> cards = new List<CardShowData>();
+        private List<PlayerCardData> cards = new List<PlayerCardData>();
 
         //private List<int> cardIdxs = new List<int>();
 
@@ -36,7 +36,7 @@ namespace RoundHero
             foreach (var cardIdx in cardIdxs)
             {
                 var drCard = CardManager.Instance.GetCardTable(cardIdx);
-                this.cards.Add(new CardShowData()
+                this.cards.Add(new PlayerCardData()
                 {
                     CardIdx = cardIdx,
                     CardID = drCard.Id,
@@ -56,9 +56,9 @@ namespace RoundHero
                 return null;
             }
             
-            var item = view.NewListViewItem("CardItem");
+            var item = view.NewListViewItem("PlayerCardItem");
         
-            var itemScript = item.GetComponent<CardItem>();
+            var itemScript = item.GetComponent<PlayerCardItem>();
             if (item.IsInitHandlerCalled == false)
             {
                 item.IsInitHandlerCalled = true;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RoundHero
 {
@@ -373,10 +374,11 @@ namespace RoundHero
                             //     }
                             // }
 
-                            foreach (var funeID in card.FuneIDs)
+                            foreach (var funeIdx in card.FuneIdxs)
                             {
-                                var buffData = BattleBuffManager.Instance.GetBuffData(funeID);
-                                if (buffData.UnitAttribute == EUnitAttribute.HP)
+                                var funeData = FuneManager.Instance.GetFuneData(funeIdx);
+                                var buffDatas = BattleBuffManager.Instance.GetBuffData(funeData.FuneID);
+                                if (buffDatas.Exists(buffData => buffData.UnitAttribute == EUnitAttribute.HP))
                                 {
                                     card.UseCardDamageRatio += 1;
                                 }

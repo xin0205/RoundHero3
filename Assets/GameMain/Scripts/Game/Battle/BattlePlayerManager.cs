@@ -17,12 +17,12 @@ namespace RoundHero
         public void InitData(EUnitCamp unitCamp)
         {
             var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
-            foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
+            foreach (var funeIdx in Constant.Hero.InitDatas[unitCamp].InitFunes)
             {
                 var funeIDIdx = playerData.FuneIdx++;
-                var drFune = GameEntry.DataTable.GetBuff(funeID);
+                var drFune = GameEntry.DataTable.GetBuff(funeIdx);
                 var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
-                playerData.FuneDatas.Add(funeIDIdx, new Data_Fune(funeIDIdx, funeID, (int)value));
+                playerData.FuneDatas.Add(funeIDIdx, new Data_Fune(funeIDIdx, funeIdx, (int)value));
             }
             
             foreach (var card in Constant.Hero.InitDatas[unitCamp].InitCards)

@@ -297,20 +297,20 @@ namespace RoundHero
             return buffDatas;
         }
         
-        public List<DRBuff> GetSecondaryBuffTable(int monsterID)
-        {
-            var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
-            
-            var drBuffs = new List<DRBuff>();
-
-            foreach (var buffID in drEnemy.SecondaryBuffs)
-            {
-                var drBuff = GameEntry.DataTable.GetBuff(buffID);
-                drBuffs.Add(drBuff);
-            }
-
-            return drBuffs;
-        }
+        // public List<DRBuff> GetSecondaryBuffTable(int monsterID)
+        // {
+        //     var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
+        //     
+        //     var drBuffs = new List<DRBuff>();
+        //
+        //     foreach (var buffID in drEnemy.SecondaryBuffs)
+        //     {
+        //         var drBuff = GameEntry.DataTable.GetBuff(buffID);
+        //         drBuffs.Add(drBuff);
+        //     }
+        //
+        //     return drBuffs;
+        // }
         
         public List<string> GetSecondaryBuff(int monsterID)
         {

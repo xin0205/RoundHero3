@@ -1001,6 +1001,10 @@ namespace RoundHero
                 {
                     InitFunes = new List<int>()
                     {
+                        0,
+                        1,
+                        2,
+                        2,
                         // EFuneID.EachRound_AddCurHP, //0
                         // EFuneID.AddCurHP, //1
                         // EFuneID.EachRound_AddCurHP, //2
@@ -1012,6 +1016,7 @@ namespace RoundHero
                             CardID = 0,
                             FuneIDs = new List<int>()
                             {
+                                0
                             }
                         },
                         new()
@@ -1019,6 +1024,7 @@ namespace RoundHero
                             CardID = 0,
                             FuneIDs = new List<int>()
                             {
+                                1,2
                             }
                         },
                         new()
@@ -1026,6 +1032,7 @@ namespace RoundHero
                             CardID = 0,
                             FuneIDs = new List<int>()
                             {
+                                3
                             }
                         },
                         new()

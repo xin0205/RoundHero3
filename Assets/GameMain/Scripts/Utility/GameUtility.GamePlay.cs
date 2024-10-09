@@ -1226,6 +1226,19 @@ namespace RoundHero
             return retPaths;
 
         }
+
+        public static List<T> StringToEnum<T>(List<string> strs)
+        {
+            var ret = new List<T>();
+            foreach (var str in strs)
+            {
+                var t = (T)Enum.Parse(typeof(T), str);
+                ret.Add(t);
+
+            }
+
+            return ret;
+        }
         
     }
 }

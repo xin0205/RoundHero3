@@ -118,19 +118,19 @@ namespace RoundHero
             });
         }
         
-        public static DRBuff GetBuff(this DataTableComponent dataTableComponent, string buffID)
-        {
-            var drBuffs = GameEntry.DataTable.GetDataTable<DRBuff>();
-            return drBuffs.GetDataRow((t) =>
-            {
-                return t.BuffID == buffID;
-            });
-        }
+        // public static DRBuff GetBuff(this DataTableComponent dataTableComponent, string buffID)
+        // {
+        //     var drBuffs = GameEntry.DataTable.GetDataTable<DRBuff>();
+        //     return drBuffs.GetDataRow((t) =>
+        //     {
+        //         return t.BuffID == buffID;
+        //     });
+        // }
         
-        public static DRBuff GetBuff(this DataTableComponent dataTableComponent, EBuffID buffID)
-        {
-            return GetBuff(dataTableComponent, buffID.ToString());
-        }
+        // public static DRBuff GetBuff(this DataTableComponent dataTableComponent, EBuffID buffID)
+        // {
+        //     return GetBuff(dataTableComponent, buffID.ToString());
+        // }
         
         // public static DRFune GetFune(this DataTableComponent dataTableComponent, int funeID)
         // {

@@ -101,7 +101,7 @@ namespace RoundHero
     {
         public int Idx;
         public int CardID;
-        public List<int> FuneIDs = new();
+        public List<int> FuneIdxs = new();
         public int RoundEnergyDelta = 0;
         public List<ELinkID> RoundLinkIDs = new();
         public int UseCardDamageRatio = 0;
@@ -114,34 +114,35 @@ namespace RoundHero
 
         }
 
-        public Data_Card(int idx, int cardID, [CanBeNull] List<int> funeIDs = null)
+        public Data_Card(int idx, int cardID, [CanBeNull] List<int> funeIdxs = null)
         {
             Idx = idx;
             CardID = cardID;
-            FuneIDs = funeIDs;
+            FuneIdxs = funeIdxs;
 
         }
 
         public virtual Data_Card Copy()
         {
-            var dataCard = new Data_Card(Idx, CardID, FuneIDs);
+            var dataCard = new Data_Card(Idx, CardID, FuneIdxs);
 
             return dataCard;
         }
 
-        public int FuneCount(EBuffID funeID, bool unUse = false)
+        public int FuneCount(EBuffID funeBuffID, bool unUse = false)
         {
             var count = 0;
-            foreach (var _funeID in FuneIDs)
+            foreach (var funeIdx in FuneIdxs)
             {
-                var funeData = FuneManager.Instance.GetFuneData(_funeID);
-                if (funeData.FuneID == funeID)
-                {
-                    if (unUse && funeData.Value > 0 || !unUse)
-                    {
-                        count += 1;
-                    }
-                }
+                var funeData = FuneManager.Instance.GetFuneData(funeIdx);
+                var drBuff = GameEntry.DataTable.GetBuff(funeData.FuneID);
+                // if (GameUtility.StringToEnum<EBuffID>(drBuff.BuffID).Contains(funeBuffID)）
+                // {
+                //     if (unUse && funeData.Value > 0 || !unUse)
+                //     {
+                //         count += 1;
+                //     }
+                // }
 
             }
 
@@ -221,8 +222,8 @@ namespace RoundHero
 
     public class Data_Fune
     {
-        public int ID;
-        public EBuffID FuneID;
+        public int Idx;
+        public int FuneID;
         public int Value;
         
         public Data_Fune()
@@ -230,21 +231,21 @@ namespace RoundHero
 
         }
 
-        public Data_Fune(int id, EBuffID funeID, int value = 0)
+        public Data_Fune(int idx, int funeID, int value = 0)
         {
-            ID = id;
+            Idx = idx;
             FuneID = funeID;
             Value = value;
         }
         
-        public Data_Fune(int id, int funeID, int value = 0)
-        {
-            var drBuff = GameEntry.DataTable.GetBuff(funeID);
-            
-            ID = id;
-            FuneID = Enum.Parse<EBuffID>(drBuff.BuffID);
-            Value = value;
-        }
+        // public Data_Fune(int idx, int funeID, int value = 0)
+        // {
+        //     var drBuff = GameEntry.DataTable.GetBuff(funeID);
+        //     
+        //     Idx = idx;
+        //     FuneID = Enum.Parse<EBuffID>(drBuff.BuffID);
+        //     Value = value;
+        // }
     }
 
     public class UnitStateData
@@ -325,7 +326,7 @@ namespace RoundHero
         public int HurtTimes;
         public int LastCurHP;
         public int LastCurHPDelta;
-        public List<int> FuneIDs = new();
+        public List<int> FuneIdxs = new();
         public List<ELinkID> LinkIDs = new();
         public List<ELinkID> BattleLinkIDs = new List<ELinkID>();
         public List<int> Links = new();
@@ -336,13 +337,13 @@ namespace RoundHero
         public int RoundAttackTimes = 0;
 
         //, EGridType.Unit
-        public Data_BattleUnit(int id, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIDs) : base(id, gridPosIdx,
+        public Data_BattleUnit(int id, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) : base(id, gridPosIdx,
             unitCamp)
         {
             ID = id;
             GridPosIdx = gridPosIdx;
             UnitCamp = unitCamp;
-            FuneIDs = funeIDs;
+            FuneIdxs = funeIdxs;
         }
 
         public Data_BattleUnit()
@@ -512,40 +513,40 @@ namespace RoundHero
         public int FuneCount(EBuffID funeID, bool unUse = false)
         {
             var count = 0;
-            foreach (var _funeID in FuneIDs)
+            foreach (var _funeID in FuneIdxs)
             {
                 var funeData = FuneManager.Instance.GetFuneData(_funeID);
-                if (funeData.FuneID == funeID)
-                {
-                    if (unUse && funeData.Value > 0 || !unUse)
-                    {
-                        count += 1;
-                    }
-                }
+                // if (funeData.FuneID == funeID)
+                // {
+                //     if (unUse && funeData.Value > 0 || !unUse)
+                //     {
+                //         count += 1;
+                //     }
+                // }
                     
             }
 
             return count;
         }
         
-        public Data_Fune GetFune(EBuffID funeID, bool unUse = false)
-        {
-            foreach (var _funeID in FuneIDs)
-            {
-                var funeData = FuneManager.Instance.GetFuneData(_funeID);
-                if (funeData.FuneID == funeID)
-                {
-                    if (unUse && funeData.Value > 0 || !unUse)
-                    {
-                        return funeData;
-                    }
-                }
-                    
-                    
-            }
-
-            return null;
-        }
+        // public Data_Fune GetFune(EBuffID funeID, bool unUse = false)
+        // {
+        //     foreach (var funeIdx in FuneIdxs)
+        //     {
+        //         var funeData = FuneManager.Instance.GetFuneData(funeIdx);
+        //         if (funeData.FuneID == funeID)
+        //         {
+        //             if (unUse && funeData.Value > 0 || !unUse)
+        //             {
+        //                 return funeData;
+        //             }
+        //         }
+        //             
+        //             
+        //     }
+        //
+        //     return null;
+        // }
 
         // public virtual int BuffCount(int buffID)
         // {
@@ -588,8 +589,8 @@ namespace RoundHero
         {
         }
 
-        public Data_BattleHero(int id, EHeroID heroID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIDs) :
-            base(id, gridPosIdx, unitCamp, funeIDs)
+        public Data_BattleHero(int id, EHeroID heroID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) :
+            base(id, gridPosIdx, unitCamp, funeIdxs)
         {
             var drHero = GameEntry.DataTable.GetHero(heroID);
             
@@ -605,7 +606,7 @@ namespace RoundHero
             // Attribute.SetAttribute(EHeroAttribute.MaxEnergy, Constant.Hero.MaxEnergy);
             // Attribute.SetAttribute(EHeroAttribute.CurEnergy, Constant.Hero.RecoverEnergy);
             //Attribute.SetAttribute(EHeroAttribute.RecoverEnergy, Constant.Hero.RecoverEnergy);
-            FuneIDs = funeIDs;
+            FuneIdxs = funeIdxs;
         }
 
         public new Data_BattleHero Copy()
@@ -625,7 +626,7 @@ namespace RoundHero
             dataBattleHero.AttackInRound = AttackInRound;
             dataBattleHero.UnitRole = UnitRole;
             dataBattleHero.LinkIDs = new List<ELinkID>(LinkIDs);
-            dataBattleHero.FuneIDs = new List<int>(FuneIDs);
+            dataBattleHero.FuneIdxs = new List<int>(FuneIdxs);
             dataBattleHero.Links = new List<int>(Links);
             dataBattleHero.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
             dataBattleHero.RoundMoveCount = RoundMoveCount;
@@ -716,8 +717,8 @@ namespace RoundHero
 
         }
 
-        public Data_BattleSolider(int id, int cardID, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIDs) : base(
-            id, gridPosIdx, unitCamp, funeIDs)
+        public Data_BattleSolider(int id, int cardID, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIdxs) : base(
+            id, gridPosIdx, unitCamp, funeIdxs)
         {
             CardID = cardID;
             Energy = energy;
@@ -727,7 +728,7 @@ namespace RoundHero
             CurHP = MaxHP;
             LastCurHP = CurHP;
             UnitRole = EUnitRole.Staff;
-            FuneIDs = funeIDs;
+            FuneIdxs = funeIdxs;
             BattleLinkIDs = new List<ELinkID>(card.RoundLinkIDs);
         }
 
@@ -748,7 +749,7 @@ namespace RoundHero
             dataBattleUnit.AttackInRound = AttackInRound;
             dataBattleUnit.UnitRole = UnitRole;
             dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
-            dataBattleUnit.FuneIDs = new List<int>(FuneIDs);
+            dataBattleUnit.FuneIdxs = new List<int>(FuneIdxs);
             dataBattleUnit.Links = new List<int>(Links);
             dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
@@ -836,7 +837,7 @@ namespace RoundHero
         }
 
         public Data_BattleMonster(int id, int monsterID, int gridPosIdx, EUnitCamp unitCamp,
-            List<int> funeIDs) : base(id, gridPosIdx, unitCamp, funeIDs)
+            List<int> funeIdxs) : base(id, gridPosIdx, unitCamp, funeIdxs)
         {
             MonsterID = monsterID;
             //EnemyTypeID = enemyTypeID;
@@ -848,7 +849,7 @@ namespace RoundHero
             LastCurHP = CurHP;
             BaseDamage = 0;//BattleEnemyManager.Instance.GetDamage(monsterID);
             UnitRole = EUnitRole.Staff;
-            FuneIDs = funeIDs;
+            FuneIdxs = funeIdxs;
         }
 
 
@@ -871,7 +872,7 @@ namespace RoundHero
             dataBattleEnemy.AttackInRound = AttackInRound;
             dataBattleEnemy.UnitRole = UnitRole;
             dataBattleEnemy.LinkIDs = new List<ELinkID>(LinkIDs);
-            dataBattleEnemy.FuneIDs = new List<int>(FuneIDs);
+            dataBattleEnemy.FuneIdxs = new List<int>(FuneIdxs);
             dataBattleEnemy.Links = new List<int>(Links);
             dataBattleEnemy.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
             dataBattleEnemy.RoundMoveTimes = RoundMoveTimes;

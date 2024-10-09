@@ -37,9 +37,9 @@ namespace RoundHero
         }
 
         /// <summary>
-        /// 获取BuffID。
+        /// 获取BuffIDs。
         /// </summary>
-        public string BuffID
+        public List<string> BuffIDs
         {
             get;
             private set;
@@ -75,7 +75,7 @@ namespace RoundHero
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-            BuffID = columnStrings[index++];
+			BuffIDs = DataTableExtension.ParseStringList(columnStrings[index++]);
 			BuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
 			BuffTypes = DataTableExtension.ParseEBuffTypeList(columnStrings[index++]);
 
@@ -90,7 +90,7 @@ namespace RoundHero
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-                    BuffID = binaryReader.ReadString();
+					BuffIDs = binaryReader.ReadStringList();
 					BuffValues = binaryReader.ReadStringList();
 					BuffTypes = binaryReader.ReadEBuffTypeList();
                 }

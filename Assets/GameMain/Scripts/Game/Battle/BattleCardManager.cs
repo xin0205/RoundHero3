@@ -193,7 +193,7 @@ namespace RoundHero
 
                 passCards.Add(BattlePlayerData.HandCards[i]);
                 BattlePlayerData.HandCards.RemoveAt(i);
-                //BattleData.PassCards.Add(BattleData.HandCards[i]);
+                //BattlePlayerData.PassCards.Add(BattlePlayerData.HandCards[i]);
             }
 
             BattlePlayerData.PassCards.AddRange(passCards);

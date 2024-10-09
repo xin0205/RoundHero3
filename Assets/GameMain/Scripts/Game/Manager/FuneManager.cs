@@ -7,11 +7,13 @@ namespace RoundHero
     public class FuneManager : Singleton<FuneManager>
     {
 
-        public Data_Fune GetFuneData(int funeID)
+        public Dictionary<int, Data_Fune> FuneDatas => BattlePlayerManager.Instance.PlayerData.FuneDatas;
+        
+        public Data_Fune GetFuneData(int funeIdx)
         {
-            if (BattlePlayerManager.Instance.PlayerData.FuneDatas.ContainsKey(funeID))
+            if (BattlePlayerManager.Instance.PlayerData.FuneDatas.ContainsKey(funeIdx))
             {
-                return BattlePlayerManager.Instance.PlayerData.FuneDatas[funeID];
+                return BattlePlayerManager.Instance.PlayerData.FuneDatas[funeIdx];
             }
 
             return null;
@@ -24,21 +26,21 @@ namespace RoundHero
 
         }
         
-        public EBuffID GetFuneID(int funeID)
-        {
-            if (BattlePlayerManager.Instance.PlayerData.FuneDatas.ContainsKey(funeID))
-            {
-                return BattlePlayerManager.Instance.PlayerData.FuneDatas[funeID].FuneID;
-            }
-
-            return EBuffID.Empty;
-        }
+        // public EBuffID GetFuneID(int funeIdx)
+        // {
+        //     if (BattlePlayerManager.Instance.PlayerData.FuneDatas.ContainsKey(funeID))
+        //     {
+        //         return BattlePlayerManager.Instance.PlayerData.FuneDatas[funeID].FuneID;
+        //     }
+        //
+        //     return EBuffID.Empty;
+        // }
         
         public void CacheUnitUseData(int ownUnitID, int actionUnitID, int cardID, EUnitCamp unitCamp, int gridPosIdx)
         {
             FightManager.Instance.RoundFightData.UseCardDatas.Clear();
             var card = BattleManager.Instance.GetCard(cardID);
-            foreach (var funeID in card.FuneIDs)
+            foreach (var funeID in card.FuneIdxs)
             {
                 FuneManager.Instance.UseTrigger(funeID, ownUnitID, actionUnitID, unitCamp, gridPosIdx,
                     FightManager.Instance.RoundFightData.UseCardDatas);
@@ -54,7 +56,7 @@ namespace RoundHero
             if (unit is Data_BattleSolider solider)
             {
                 var card = BattleManager.Instance.GetCard(solider.CardID);
-                foreach (var funeID in card.FuneIDs)
+                foreach (var funeID in card.FuneIdxs)
                 {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                     FuneManager.Instance.KillTrigger(funeID, ownUnitID, actionUnitID,
                         triggerDatas);

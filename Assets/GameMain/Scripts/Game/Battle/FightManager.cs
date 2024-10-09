@@ -2472,7 +2472,7 @@ namespace RoundHero
                     continue;
 
 
-                foreach (var funeID in kv.Value.FuneIDs)
+                foreach (var funeID in kv.Value.FuneIdxs)
                 {
                     var buffData = BattleBuffManager.Instance.GetBuffData(funeID);
                     if (buffData == null)

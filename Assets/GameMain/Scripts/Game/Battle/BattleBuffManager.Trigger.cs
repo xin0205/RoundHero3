@@ -569,23 +569,23 @@ namespace RoundHero
             BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[triggerData.EffectUnitID]);
         }
         
-        private void AddStates(int buffID, Data_BattleUnit effectUnit, List<float> value1s)
-        {
-            var drBuff = BattleBuffManager.Instance.GetBuffData(buffID);
-
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
-
-            var triggerData = new TriggerData()
-            {
-                TriggerDataType = ETriggerDataType.RoleState,
-                EffectUnitID = effectUnit.ID,
-                UnitState = drBuff.UnitState,
-                Value = value1s[0],
-            };
-                
-            useCardData.AddEmptyTriggerDataList(triggerData.EffectUnitID);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[triggerData.EffectUnitID]);
-        }
+        // private void AddStates(int buffID, Data_BattleUnit effectUnit, List<float> value1s)
+        // {
+        //     var drBuff = BattleBuffManager.Instance.GetBuffData(buffID);
+        //
+        //     var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+        //
+        //     var triggerData = new TriggerData()
+        //     {
+        //         TriggerDataType = ETriggerDataType.RoleState,
+        //         EffectUnitID = effectUnit.ID,
+        //         UnitState = drBuff.UnitState,
+        //         Value = value1s[0],
+        //     };
+        //         
+        //     useCardData.AddEmptyTriggerDataList(triggerData.EffectUnitID);
+        //     BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[triggerData.EffectUnitID]);
+        // }
 
         // private void TacticCard_UnAttackHeroUnit(int cardID, EUnitCamp unitCamp, Data_BattleUnit effectUnit)
         // {

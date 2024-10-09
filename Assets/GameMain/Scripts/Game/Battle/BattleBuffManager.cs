@@ -667,10 +667,16 @@ namespace RoundHero
         public Dictionary<string, BuffData> CacheBuffDatas = new Dictionary<string, BuffData>();
 
 
-        public BuffData GetBuffData(int buffID)
+        public List<BuffData> GetBuffData(int buffID)
         {
             var drBuff = GameEntry.DataTable.GetBuff(buffID);
-            return GetBuffData(drBuff.BuffID.ToString());
+            var buffDatas = new List<BuffData>();
+            foreach (var buffStr in drBuff.BuffIDs)
+            {
+                buffDatas.Add(GetBuffData(buffStr));
+            }
+
+            return buffDatas;
         }
         
         public BuffData GetBuffData(string buffKey)
