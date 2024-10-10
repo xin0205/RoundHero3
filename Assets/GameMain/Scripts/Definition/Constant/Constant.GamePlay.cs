@@ -1016,7 +1016,7 @@ namespace RoundHero
                             CardID = 0,
                             FuneIDs = new List<int>()
                             {
-                                0
+                                //0
                             }
                         },
                         new()
@@ -1024,7 +1024,7 @@ namespace RoundHero
                             CardID = 0,
                             FuneIDs = new List<int>()
                             {
-                                1,2
+                                //1,2
                             }
                         },
                         new()
@@ -1032,7 +1032,7 @@ namespace RoundHero
                             CardID = 0,
                             FuneIDs = new List<int>()
                             {
-                                3
+                                //3
                             }
                         },
                         new()

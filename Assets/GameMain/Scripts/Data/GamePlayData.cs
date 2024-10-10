@@ -238,6 +238,16 @@ namespace RoundHero
             Value = value;
         }
         
+        public Data_Fune Copy()
+        {
+            var dataBless = new Data_Fune();
+            dataBless.Idx = Idx;
+            dataBless.FuneID = FuneID;
+            dataBless.Value = Value;
+
+            return dataBless;
+        }
+        
         // public Data_Fune(int idx, int funeID, int value = 0)
         // {
         //     var drBuff = GameEntry.DataTable.GetBuff(funeID);
@@ -1095,6 +1105,7 @@ namespace RoundHero
         public int BlessIdx;
         public ulong PlayerID;
         public EUnitCamp UnitCamp;
+        public List<int> UnusedFuneIdxs = new List<int>();
         
         public Data_BattleHero BattleHero = new();
         public Dictionary<int, Data_Card> CardDatas = new ();
@@ -1122,6 +1133,7 @@ namespace RoundHero
             data.UnitCamp = UnitCamp;
             data.EnergyBuffDatas = new Dictionary<int, Data_EnergyBuff>(EnergyBuffDatas);
             data.Coin = Coin;
+            data.UnusedFuneIdxs = UnusedFuneIdxs;
             
             data.CardDatas.Clear();
             foreach (var kv in CardDatas)
@@ -1132,6 +1144,11 @@ namespace RoundHero
             foreach (var kv in BlessDatas)
             {
                 data.BlessDatas.Add(kv.Key, kv.Value.Copy());
+            }
+            
+            foreach (var kv in FuneDatas)
+            {
+                data.FuneDatas.Add(kv.Key, kv.Value.Copy());
             }
 
             return data;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SuperScrollView;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -20,15 +21,17 @@ namespace RoundHero
         private List<PlayerCardData> cards = new List<PlayerCardData>();
 
         //private List<int> cardIdxs = new List<int>();
-
+        private GameObject parentForm;
 
         private void Awake()
         {
             cardView.InitGridView(0, OnGetCardItemByRowColumn);
         }
 
-        public void Init(List<int> cardIdxs)
+        public void Init(List<int> cardIdxs, GameObject parentForm)
         {
+            this.parentForm = parentForm;
+            
             //this.cardIdxs = cardIdxs;
             this.cards.Clear();
             this.cardDict.Clear();
@@ -49,6 +52,11 @@ namespace RoundHero
 
         }
         
+        public void Refresh()
+        {
+            cardView.RefreshAllShownItem();
+        }
+        
         LoopGridViewItem OnGetCardItemByRowColumn(LoopGridView view, int itemIndex,int row,int column)
         {
             if (itemIndex < 0)
@@ -67,11 +75,34 @@ namespace RoundHero
             
             
         
-            itemScript.SetItemData(cards[itemIndex]);
+            itemScript.SetItemData(cards[itemIndex], OnPointEnter, OnPointUp);
             
             return item;
         }
 
+        public void OnPointEnter()
+        {
+            
+        }
+        
+        public void OnPointUp(int cardIdx)
+        {
+ 
+            if(parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem == null)
+                return;
+            
 
+            var cardData = CardManager.Instance.GetCard(cardIdx);
+            var runeIdx = parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem.PlayerCommonItemData
+                .ItemIdx;
+            
+            GameObject.DestroyImmediate(parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem.gameObject);
+            parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem = null;
+            
+            cardData.FuneIdxs.Add(runeIdx);
+            BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(runeIdx);
+
+            parentForm.GetComponent<CardsForm>().RefreshView();
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -16,23 +19,30 @@ namespace RoundHero
         
         [SerializeField] private List<GameObject> FuneGOs = new List<GameObject>();
 
+        public Action OnPointEnterAction;
+        
+        public Action<int> OnPointUpAction;
+        
         public void Init()
         {
             
         }
         
-        public void SetItemData(PlayerCardData playerCardData)
+        public void SetItemData(PlayerCardData playerCardData, Action onPointEnterAction, Action<int> onPointUpAction)
         {
             this.playerCardData = playerCardData;
+            OnPointEnterAction = onPointEnterAction;
+            OnPointUpAction = onPointUpAction;
             
-
+            BaseCard.SetCardUI(this.playerCardData.CardID);
             Refresh();
+            
         }
 
 
         public async void Refresh()
         {
-            BaseCard.SetCardUI(this.playerCardData.CardID);
+            
             var cardData = CardManager.Instance.GetCard(this.playerCardData.CardIdx);
 
             foreach (var funeGO in FuneGOs)
@@ -52,5 +62,23 @@ namespace RoundHero
 
         }
         
+        public void OnPointEnter()
+        {
+            OnPointEnterAction?.Invoke();
+            
+
+        }
+        
+        public void OnPointUp()
+        {
+            
+
+            
+        }
+        
+        public void OnDrop()
+        {
+            OnPointUpAction?.Invoke(playerCardData.CardIdx);
+        }
     }
 }
