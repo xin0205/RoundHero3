@@ -511,20 +511,33 @@ namespace RoundHero
         Store,
         Rest,
         Treasure,
-        Random,
+        Event,
         Empty,
+    }
+
+    public enum EEventSubType
+    {
+        Random,
+        Appoint,
+        Value,
     }
 
     public enum EEventType
     {
         Card_Remove,
         Card_Change,
-        Card_Upgrade,
         Card_Copy,
-        RandomUnitCard,
-        RandomTacticCard,
-        RandomFune,
-        RandomBless,
+        
+        Random_UnitCard,
+        Random_TacticCard,
+        Random_Fune,
+        Random_Bless,
+        
+        Appoint_UnitCard,
+        Appoint_TacticCard,
+        Appoint_Fune,
+        Appoint_Bless,
+        
         AddCoin,
         AddHeroMaxHP,
         AddHeroCurHP,
@@ -579,7 +592,7 @@ namespace RoundHero
         QuickSelect_Y_N,
         QuickSelect_O_N,
         
-        Select_Y_Y,
+        Select_Y_Y_O,
         Select_YN_YN_O,
         Select_N_N,
     }
@@ -637,8 +650,7 @@ namespace RoundHero
         Dynamic,
         Lock,
     }
-    
-    
-    
+
+
 
 }

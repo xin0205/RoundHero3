@@ -943,7 +943,7 @@ namespace RoundHero
                 [EMapSite.Store] = 8,
                 [EMapSite.Rest] = 4,
                 [EMapSite.Treasure] = 15,
-                [EMapSite.Random] = 15,
+                [EMapSite.Event] = 15,
             };
 
             public static Dictionary<EMapSite, int> MapSiteGuarantee = new()
@@ -953,7 +953,7 @@ namespace RoundHero
                 [EMapSite.Store] = 1,
                 [EMapSite.Rest] = 1,
                 [EMapSite.Treasure] = 2,
-                [EMapSite.Random] = 2,
+                [EMapSite.Event] = 2,
             };
         }
 
@@ -1399,14 +1399,14 @@ namespace RoundHero
             // };
         }
 
-        public static class BattleRandom
+        public static class BattleEvent
         {
             public static int RandomItemCount = 3;
             
             public static Dictionary<EBattleEventExpressionType, int> EventExpressionTypes = new()
             {
-                [EBattleEventExpressionType.Selection] = 10,
-                [EBattleEventExpressionType.Game] = 90,
+                [EBattleEventExpressionType.Selection] = 100,
+                [EBattleEventExpressionType.Game] = 0,
 
             };
             
@@ -1460,7 +1460,7 @@ namespace RoundHero
                 [EBattleEventYNType.Y] = new List<EBattleEvent>()
                 {
 
-                    EBattleEvent.Select_Y_Y,
+                    EBattleEvent.Select_Y_Y_O,
                 },
                 [EBattleEventYNType.N] = new List<EBattleEvent>()
                 {
@@ -1473,6 +1473,35 @@ namespace RoundHero
 
                 },
             };
+
+            public static Dictionary<EBattleEventYNType, Dictionary<EEventType, Vector2Int>> BattleEventValues =
+                new ()
+                {
+                    [EBattleEventYNType.Y] = new ()
+                    {
+                        [EEventType.AddCoin] = new Vector2Int(50, 100),
+                        [EEventType.AddHeroMaxHP] = new Vector2Int(1, 2),
+                        [EEventType.AddHeroCurHP] = new Vector2Int(2, 4),
+                    },
+
+                    [EBattleEventYNType.N] = new ()
+                    {
+                        [EEventType.SubCoin] = new Vector2Int(-100, -50),
+                        [EEventType.AddHeroMaxHP] = new Vector2Int(-1, -2),
+                        [EEventType.AddHeroCurHP] = new Vector2Int(-2, -4),
+                    },
+
+                    [EBattleEventYNType.YN] = new ()
+                    {
+                        [EEventType.AddCoin] = new Vector2Int(100, 150),
+                        [EEventType.AddHeroMaxHP] = new Vector2Int(2, 4),
+                        [EEventType.AddHeroCurHP] = new Vector2Int(4, 8),
+
+                        [EEventType.SubCoin] = new Vector2Int(-150, -100),
+                        [EEventType.AddHeroMaxHP] = new Vector2Int(-4, -2),
+                        [EEventType.AddHeroCurHP] = new Vector2Int(-8, -4),
+                    }
+                };
             
             public static Dictionary<EBattleEventYNType, List<EEventType>> BattleEventYNTypes = new()
             {
@@ -1480,12 +1509,18 @@ namespace RoundHero
                 {
                     EEventType.Card_Remove,
                     EEventType.Card_Change,
-                    EEventType.Card_Upgrade,
                     EEventType.Card_Copy,
-                    EEventType.RandomUnitCard,
-                    EEventType.RandomTacticCard,
-                    EEventType.RandomFune,
-                    EEventType.RandomBless,
+                    
+                    EEventType.Random_UnitCard,
+                    EEventType.Random_TacticCard,
+                    EEventType.Random_Fune,
+                    EEventType.Random_Bless,
+                    
+                    EEventType.Appoint_UnitCard,
+                    EEventType.Appoint_TacticCard,
+                    EEventType.Appoint_Fune,
+                    EEventType.Appoint_Bless,
+                    
                     EEventType.AddCoin,
                     EEventType.AddHeroMaxHP,
                     EEventType.AddHeroCurHP,
@@ -1497,7 +1532,63 @@ namespace RoundHero
                     EEventType.SubHeroMaxHP,
                     EEventType.SubHeroCurHP,
                 },
+                [EBattleEventYNType.YN] = new List<EEventType>()
+                {
+                    EEventType.Card_Remove,
+                    EEventType.Card_Change,
+                    EEventType.Card_Copy,
+                    
+                    EEventType.Random_UnitCard,
+                    EEventType.Random_TacticCard,
+                    EEventType.Random_Fune,
+                    EEventType.Random_Bless,
+                    
+                    EEventType.Appoint_UnitCard,
+                    EEventType.Appoint_TacticCard,
+                    EEventType.Appoint_Fune,
+                    EEventType.Appoint_Bless,
+                    
+                    EEventType.AddCoin,
+                    EEventType.AddHeroMaxHP,
+                    EEventType.AddHeroCurHP,
+                    
+                    EEventType.NegativeCard,
+                    EEventType.SubCoin,
+                    EEventType.SubHeroMaxHP,
+                    EEventType.SubHeroCurHP,
+                },
 
+            };
+            
+            public static Dictionary<EEventSubType, List<EEventType>> BattleEventSubTypes = new()
+            {
+                [EEventSubType.Random] = new List<EEventType>()
+                {
+                    EEventType.Random_UnitCard,
+                    EEventType.Random_TacticCard,
+                    EEventType.Random_Fune,
+                    EEventType.Random_Bless,
+
+                    
+                },
+                [EEventSubType.Appoint] = new List<EEventType>()
+                {
+
+                    EEventType.Appoint_UnitCard,
+                    EEventType.Appoint_TacticCard,
+                    EEventType.Appoint_Fune,
+                    EEventType.Appoint_Bless,
+
+                },
+                [EEventSubType.Value] = new List<EEventType>()
+                {
+                    EEventType.AddCoin,
+                    EEventType.AddHeroMaxHP,
+                    EEventType.AddHeroCurHP,
+                    EEventType.SubCoin,
+                    EEventType.SubHeroMaxHP,
+                    EEventType.SubHeroCurHP,
+                },
             };
         }
 

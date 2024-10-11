@@ -97,12 +97,36 @@ namespace RoundHero
         
         public void OnPointUp()
         {
-            //GameObject.DestroyImmediate(TempPlayerCommonItem.gameObject);
-            if (TempPlayerCommonItem != null)
+            var cardForm = parentForm.GetComponent<CardsForm>();
+            var cardsViews = cardForm.CardsViews;
+
+            if (cardsViews.CurSelectCardIdx == -1)
             {
-                GameObject.DestroyImmediate(TempPlayerCommonItem.gameObject);
-                TempPlayerCommonItem = null;
+                ClearDrop();
+                return;
             }
+                
+
+            var cardData = CardManager.Instance.GetCard(cardsViews.CurSelectCardIdx);
+            var runeIdx = TempPlayerCommonItem.PlayerCommonItemData
+                .ItemIdx;
+            
+            ClearDrop();
+            
+            cardData.FuneIdxs.Add(runeIdx);
+            BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(runeIdx);
+
+            cardForm.RefreshView();
+        }
+
+        private void ClearDrop()
+        {
+            var cardForm = parentForm.GetComponent<CardsForm>();
+            var cardsViews = cardForm.CardsViews;
+            
+            GameObject.DestroyImmediate(TempPlayerCommonItem.gameObject);
+            TempPlayerCommonItem = null;
+            cardsViews.CurSelectCardIdx = -1;
         }
         
         private void Update()

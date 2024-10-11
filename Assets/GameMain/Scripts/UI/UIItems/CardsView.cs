@@ -22,6 +22,8 @@ namespace RoundHero
 
         //private List<int> cardIdxs = new List<int>();
         private GameObject parentForm;
+        
+        public int CurSelectCardIdx;
 
         private void Awake()
         {
@@ -72,37 +74,26 @@ namespace RoundHero
                 item.IsInitHandlerCalled = true;
                 itemScript.Init();
             }
-            
-            
-        
-            itemScript.SetItemData(cards[itemIndex], OnPointEnter, OnPointUp);
+
+            itemScript.SetItemData(cards[itemIndex], OnPointEnter, OnPointExit);
             
             return item;
         }
 
-        public void OnPointEnter()
+        public void OnPointEnter(int cardIdx)
         {
-            
+            CurSelectCardIdx = cardIdx;
         }
         
-        public void OnPointUp(int cardIdx)
+        public void OnPointExit()
+        {
+            CurSelectCardIdx = -1;
+        }
+        
+        public void OnDrop(int cardIdx)
         {
  
-            if(parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem == null)
-                return;
             
-
-            var cardData = CardManager.Instance.GetCard(cardIdx);
-            var runeIdx = parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem.PlayerCommonItemData
-                .ItemIdx;
-            
-            GameObject.DestroyImmediate(parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem.gameObject);
-            parentForm.GetComponent<CardsForm>().FunesViews.TempPlayerCommonItem = null;
-            
-            cardData.FuneIdxs.Add(runeIdx);
-            BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(runeIdx);
-
-            parentForm.GetComponent<CardsForm>().RefreshView();
         }
     }
 }

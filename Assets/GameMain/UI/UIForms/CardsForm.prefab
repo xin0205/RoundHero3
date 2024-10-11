@@ -3171,6 +3171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardView: {fileID: 6823474101546856796}
+  CurSelectCardIdx: 0
 --- !u!1 &8174265821130712181
 GameObject:
   m_ObjectHideFlags: 0
@@ -3871,13 +3872,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 6
+  - eventID: 0
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2935950716449547077}
           m_TargetAssemblyTypeName: RoundHero.PlayerCardItem, Assembly-CSharp
-          m_MethodName: OnDrop
+          m_MethodName: OnPointEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2935950716449547077}
+          m_TargetAssemblyTypeName: RoundHero.PlayerCardItem, Assembly-CSharp
+          m_MethodName: OnPointExit
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

@@ -19,20 +19,22 @@ namespace RoundHero
         
         [SerializeField] private List<GameObject> FuneGOs = new List<GameObject>();
 
-        public Action OnPointEnterAction;
+        public Action<int> OnPointEnterAction;
+        public Action OnPointExitAction;
         
-        public Action<int> OnPointUpAction;
+        public Action<int> OnDropAction;
         
         public void Init()
         {
             
         }
         
-        public void SetItemData(PlayerCardData playerCardData, Action onPointEnterAction, Action<int> onPointUpAction)
+        public void SetItemData(PlayerCardData playerCardData, Action<int> onPointEnterAction, Action onPointExitAction)
         {
             this.playerCardData = playerCardData;
             OnPointEnterAction = onPointEnterAction;
-            OnPointUpAction = onPointUpAction;
+            OnPointExitAction = onPointExitAction;
+            //OnDropAction = onPointUpAction;
             
             BaseCard.SetCardUI(this.playerCardData.CardID);
             Refresh();
@@ -64,7 +66,14 @@ namespace RoundHero
         
         public void OnPointEnter()
         {
-            OnPointEnterAction?.Invoke();
+            OnPointEnterAction?.Invoke(playerCardData.CardIdx);
+            
+
+        }
+        
+        public void OnPointExit()
+        {
+            OnPointExitAction?.Invoke();
             
 
         }
@@ -78,7 +87,7 @@ namespace RoundHero
         
         public void OnDrop()
         {
-            OnPointUpAction?.Invoke(playerCardData.CardIdx);
+            OnDropAction?.Invoke(playerCardData.CardIdx);
         }
     }
 }

@@ -1,9 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
+    public class BattleEventFormData
+    {
+        public int RandomSeed;
+    }
+    
     public class BattleEventForm : UGuiForm
     {
         public BattleEventData battleEventData;
@@ -14,11 +20,20 @@ namespace RoundHero
         [SerializeField]
         private TextMeshProUGUI text;
         
+        private BattleEventFormData battleEventFormData;
+        
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
+            
+            battleEventFormData = (BattleEventFormData)userData;
+            if (battleEventFormData == null)
+            {
+                Log.Warning("BattleEventFormData is null.");
+                return;
+            }
 
-            battleEventData = BattleEventManager.Instance.GenerateEvent();
+            battleEventData = BattleEventManager.Instance.GenerateEvent(battleEventFormData.RandomSeed);
 
             text.text = battleEventData.BattleEventExpressionType + "-" + battleEventData.BattleEvent;
 

@@ -24,7 +24,7 @@ namespace RoundHero
                 BattlePlayerManager.Instance.InitData(EUnitCamp.Player1);
 
                 BattleMapManager.Instance.Init(random.Next());
-                BattleEventManager.Instance.Init(random.Next());
+                //BattleEventManager.Instance.Init(random.Next());
                 BattleAreaManager.Instance.Init(random.Next());
                 BattleUnitManager.Instance.Init(random.Next());
                 BattleHeroManager.Instance.Init(random.Next());

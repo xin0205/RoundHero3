@@ -172,8 +172,11 @@ namespace RoundHero
                     case EMapSite.Treasure:
                         GameEntry.UI.OpenUIForm(UIFormId.RestForm);
                         break;
-                    case EMapSite.Random:
-                        GameEntry.UI.OpenUIForm(UIFormId.BattleEventForm);
+                    case EMapSite.Event:
+                        GameEntry.UI.OpenUIForm(UIFormId.BattleEventForm, new BattleEventFormData()
+                        {
+                            RandomSeed = randomSeed,
+                        });
                         break;
                     case EMapSite.Empty:
                         GameEntry.UI.OpenUIForm(UIFormId.RestForm);

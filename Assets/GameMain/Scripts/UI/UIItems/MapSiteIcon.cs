@@ -42,7 +42,7 @@ namespace RoundHero
                     break;
                 case EMapSite.Treasure:
                     break;
-                case EMapSite.Random:
+                case EMapSite.Event:
                     break;
                 case EMapSite.Empty:
                     break;
