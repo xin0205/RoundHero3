@@ -313,6 +313,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 22498214}
     m_Modifications:
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 6534083925864844654}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: RoundHero.UGuiForm, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3291034918889894961, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
       propertyPath: m_Name
       value: BattleEventItem (1)
@@ -426,6 +454,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 22498214}
     m_Modifications:
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 6534083925864844654}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: RoundHero.UGuiForm, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3291034918889894961, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
       propertyPath: m_Name
       value: BattleEventItem (4)
@@ -539,6 +595,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 22498214}
     m_Modifications:
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 6534083925864844654}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: RoundHero.UGuiForm, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3291034918889894961, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
       propertyPath: m_Name
       value: BattleEventItem (3)
@@ -652,6 +736,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 22498214}
     m_Modifications:
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 6534083925864844654}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: RoundHero.UGuiForm, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3291034918889894961, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
       propertyPath: m_Name
       value: BattleEventItem (2)
@@ -765,6 +877,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 22498214}
     m_Modifications:
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 6534083925864844654}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: RoundHero.UGuiForm, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 762263718863886787, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3291034918889894961, guid: 48d5b30959b9ce641bd3a0895ab89284, type: 3}
       propertyPath: m_Name
       value: BattleEventItem

@@ -118,7 +118,11 @@ namespace RoundHero
         {
             Idx = idx;
             CardID = cardID;
-            FuneIdxs = funeIdxs;
+            if (funeIdxs != null)
+            {
+                FuneIdxs = funeIdxs;
+            }
+            
 
         }
 
@@ -1038,8 +1042,10 @@ namespace RoundHero
 
     public class Data_Bless
     {
-        public int ID;
-        public EBlessID BlessID;
+        public int Idx;
+
+        public int BlessID;
+        //public EBlessID BlessID;
         public float Value;
 
         public Data_Bless()
@@ -1047,9 +1053,9 @@ namespace RoundHero
 
         }
         
-        public Data_Bless(int id, EBlessID blessID)
+        public Data_Bless(int idx, int blessID)
         {
-            ID = id;
+            Idx = idx;
             BlessID = blessID;
             
             var drBless = GameEntry.DataTable.GetBless(blessID);
@@ -1059,7 +1065,7 @@ namespace RoundHero
         public Data_Bless Copy()
         {
             var dataBless = new Data_Bless();
-            dataBless.ID = ID;
+            dataBless.Idx = Idx;
             dataBless.BlessID = BlessID;
             dataBless.Value = Value;
 
@@ -1169,13 +1175,15 @@ namespace RoundHero
                 kv.Value.RoundClear();
             }
 
+            
             foreach (var kv in BlessDatas)
             {
-                if (kv.Value.BlessID == EBlessID.EachRoundUseUnitCardAddDefense ||
-                    kv.Value.BlessID == EBlessID.EachRoundUseFightCardAttackAllEnemy ||
-                    kv.Value.BlessID == EBlessID.EachRoundUseTacticCardAttackAllEnemy)
+                var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
+                if (drBless.BlessID == EBlessID.EachRoundUseUnitCardAddDefense ||
+                    drBless.BlessID == EBlessID.EachRoundUseFightCardAttackAllEnemy ||
+                    drBless.BlessID == EBlessID.EachRoundUseTacticCardAttackAllEnemy)
                 {
-                    var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
+                    
                     kv.Value.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]);
                 }
             }
@@ -1183,9 +1191,10 @@ namespace RoundHero
         
         public bool Contain(EBlessID blessID)
         {
+            var drBless = GameEntry.DataTable.GetBless(blessID);
             foreach (var kv in BlessDatas)
             {
-                if (kv.Value.BlessID == blessID)
+                if (kv.Value.BlessID == drBless.Id)
                     return true;
             }
             
@@ -1195,9 +1204,10 @@ namespace RoundHero
         public int BlessCount(EBlessID blessID)
         {
             var idx = 0;
+            var drBless = GameEntry.DataTable.GetBless(blessID);
             foreach (var kv in BlessDatas)
             {
-                if (kv.Value.BlessID == blessID)
+                if (kv.Value.BlessID == drBless.Id)
                     idx++;
             }
             
@@ -1206,9 +1216,10 @@ namespace RoundHero
         
         public Data_Bless GetUsefulBless(EBlessID blessID)
         {
+            var drBless = GameEntry.DataTable.GetBless(blessID);
             foreach (var kv in BlessDatas)
             {
-                if (kv.Value.BlessID == blessID && kv.Value.Value >= 0)
+                if (kv.Value.BlessID == drBless.Id && kv.Value.Value >= 0)
                     return kv.Value;
             }
             

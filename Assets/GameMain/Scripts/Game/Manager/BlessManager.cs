@@ -6,7 +6,7 @@ namespace RoundHero
 {
     public class BlessManager : Singleton<BlessManager>
     {
-        private Dictionary<int, Data_Bless> BlessDatas => BattlePlayerManager.Instance.PlayerData.BlessDatas;
+        public Dictionary<int, Data_Bless> BlessDatas => BattlePlayerManager.Instance.PlayerData.BlessDatas;
         
         public System.Random Random;
         private int randomSeed;
@@ -22,11 +22,11 @@ namespace RoundHero
             return BattlePlayerManager.Instance.PlayerData.BlessIdx++;
         }
 
-        public void AddBless(EBlessID blessID)
-        {
-            var id = GetID();
-            BlessDatas.Add(id, new Data_Bless(id, blessID));
-        }
+        // public void AddBless(EBlessID blessID)
+        // {
+        //     var id = GetID();
+        //     BlessDatas.Add(id, new Data_Bless(id, blessID));
+        // }
 
         public Data_Bless GetBless(int blessID)
         {
@@ -40,9 +40,10 @@ namespace RoundHero
         {
             foreach (var kv in BlessDatas)
             {
-                if (blessIDs.Contains(kv.Value.BlessID) && FightManager.Instance.RoundFightData.BlessTriggerDatas.ContainsKey(kv.Value.ID))
+                var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
+                if (blessIDs.Contains(drBless.BlessID) && FightManager.Instance.RoundFightData.BlessTriggerDatas.ContainsKey(kv.Value.Idx))
                 {
-                    foreach (var kv2 in FightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.ID].TriggerDatas)
+                    foreach (var kv2 in FightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.Idx].TriggerDatas)
                     {
                         foreach (var triggerData in kv2.Value)
                         {
@@ -76,14 +77,14 @@ namespace RoundHero
             {
                 var actionData = new ActionData();
                 actionData.ActionDataType = EActionDataType.Bless;
-                FightManager.Instance.RoundFightData.RoundStartBuffDatas.Add(unUseCardAddHeroHP.ID, actionData);
+                FightManager.Instance.RoundFightData.RoundStartBuffDatas.Add(unUseCardAddHeroHP.Idx, actionData);
                 
                 var triggerBlessData = FightManager.Instance.BattleRoleAttribute(-1, -1, playerData.BattleHero.ID,
                     EUnitAttribute.HP, 1, ETriggerDataSubType.Bless);
                 
                 actionData.AddTriggerData(playerData.BattleHero.ID, triggerBlessData, playerData.BattleHero);
                 BattleBuffManager.Instance.CacheTriggerData(triggerBlessData,
-                    FightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.ID]
+                    FightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.Idx]
                         .TriggerDatas[playerData.BattleHero.ID]);
 
             }

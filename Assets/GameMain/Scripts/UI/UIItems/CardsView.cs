@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SuperScrollView;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -19,15 +20,23 @@ namespace RoundHero
 
         private Dictionary<int, int>  cardDict = new Dictionary<int, int>();
         private List<PlayerCardData> cards = new List<PlayerCardData>();
+        
+        private List<int> cardIdxs = new List<int>();
+
+        private ECardType cardType = ECardType.Unit;
 
         //private List<int> cardIdxs = new List<int>();
         private GameObject parentForm;
         
         public int CurSelectCardIdx;
+        
+        [SerializeField] private Toggle unitToggle;
 
         private void Awake()
         {
             cardView.InitGridView(0, OnGetCardItemByRowColumn);
+            unitToggle.isOn = false;
+            unitToggle.isOn = true;
         }
 
         public void Init(List<int> cardIdxs, GameObject parentForm)
@@ -94,6 +103,49 @@ namespace RoundHero
         {
  
             
+        }
+        
+        public void SelectUnit(bool isSelect)
+        {
+            if (isSelect)
+            {
+                SelectCardType(ECardType.Unit);
+            }
+            
+        }
+        
+        public void SelectTactic(bool isSelect)
+        {
+            if (isSelect)
+            {
+                SelectCardType(ECardType.Tactic);
+            }
+            
+        }
+        
+        public void SelectState(bool isSelect)
+        {
+            if (isSelect)
+            {
+                SelectCardType(ECardType.State);
+            }
+            
+        }
+
+        public void SelectCardType(ECardType cardType)
+        {
+            cardIdxs.Clear();
+            foreach (var kv in CardManager.Instance.CardDatas)
+            {
+                var drCard = CardManager.Instance.GetCardTable(kv.Key);
+                if (drCard.CardType == cardType)
+                {
+                    cardIdxs.Add(kv.Key);
+                }
+                
+            }
+            
+            Init(cardIdxs, this.gameObject);
         }
     }
 }

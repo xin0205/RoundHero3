@@ -136,6 +136,7 @@ namespace RoundHero
 
         public void NextStep()
         {
+            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
             BattleMapManager.Instance.MapData.CurMapStageIdx.StepIdx += 1;
             
             var stageIdx = BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx;

@@ -167,6 +167,15 @@ namespace RoundHero
                 return t.LinkID == linkID;
             });
         }
+        
+        public static DRBless GetBless(this DataTableComponent dataTableComponent, int ID)
+        {
+            var drLinks = GameEntry.DataTable.GetDataTable<DRBless>();
+            return drLinks.GetDataRow((t) =>
+            {
+                return t.Id == ID;
+            });
+        }
 
         public static DRBless GetBless(this DataTableComponent dataTableComponent, EBlessID blessID)
         {
