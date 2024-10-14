@@ -15,7 +15,7 @@ public class PointerTag : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ShowPointerTag(false);
     }
 
     // Update is called once per frame

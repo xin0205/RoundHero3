@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using GameFramework;
 using GameFramework.Event;
 using SuperScrollView;
+using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -13,6 +16,13 @@ namespace RoundHero
         public LoopGridView selectCardGridView;
         public LoopGridView inBattleGridView;
         private List<int> selectInitCards = new List<int>();
+
+        [SerializeField] private Text heroDesc;
+        
+        [SerializeField] private Text energy;
+        
+        
+        [SerializeField] private List<GameObject> heroHPs;
         
         private SceneEntity roleEntity;
 
@@ -40,7 +50,9 @@ namespace RoundHero
             
             GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
             
-            GameManager.Instance.StartSelect_HeroID = EHeroID.Normal;
+            
+            
+            GameManager.Instance.StartSelect_HeroID = 0;
             
             var drHero = GameEntry.DataTable.GetDataTable<DRHero>();
             heroIconGridView.SetListItemCount(drHero.Count);
@@ -76,6 +88,27 @@ namespace RoundHero
             var ne = (StartSelect_SelectHeroEventArgs)e;
             GameManager.Instance.StartSelect_HeroID = ne.HeroID;
             heroIconGridView.RefreshAllShownItem();
+
+            var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.StartSelect_HeroID);
+            
+            var heroDescStr =
+                Utility.Text.Format(Constant.Localization.HeroDesc, GameManager.Instance.StartSelect_HeroID); 
+            heroDesc.text = GameEntry.Localization.GetString(heroDescStr);
+
+            energy.text = drHero.HP.ToString();
+
+            for (int i = 0; i < heroHPs.Count; i++)
+            {
+                if (i < drHero.Heart)
+                {
+                    heroHPs[i].SetActive(true);
+                }
+                else
+                {
+                    heroHPs[i].SetActive(false);
+                }
+            }
+
 
         }
         

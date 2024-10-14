@@ -38,6 +38,7 @@ namespace RoundHero
             "GridProp",
             //"EnergyBuff",
             "Hero",
+
             
         };
         

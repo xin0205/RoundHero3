@@ -9,7 +9,7 @@ namespace RoundHero
     public class HeroIconItem : MonoBehaviour
     {
         [SerializeField] private Image HeroIcon;
-        private EHeroID heroID = EHeroID.Empty;
+        private int heroID = -1;
         [SerializeField] 
         private GameObject SelectGO;
         
@@ -20,16 +20,16 @@ namespace RoundHero
         
         public async void SetItemData(DRHero drHero, int itemIndex,int row,int column)
         {
-            if (heroID != drHero.HeroID)
+            if (heroID != drHero.Id)
             {
-                heroID = drHero.HeroID;
+                heroID = drHero.Id;
 
                 HeroIcon.sprite = await AssetUtility.GetHeroIcon(drHero.Id);
                 
             }
             
             
-            SelectGO.SetActive(GameManager.Instance.StartSelect_HeroID == heroID);
+            SelectGO.SetActive(GameManager.Instance.StartSelect_HeroID == drHero.Id);
         }
 
 

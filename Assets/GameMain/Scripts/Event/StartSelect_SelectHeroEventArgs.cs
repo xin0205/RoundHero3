@@ -8,10 +8,10 @@ namespace RoundHero
         public static readonly int EventId = typeof(StartSelect_SelectHeroEventArgs).GetHashCode();
         public override int Id => EventId;
 
-        public EHeroID HeroID;
+        public int HeroID;
 
         
-        public static StartSelect_SelectHeroEventArgs Create(EHeroID heroID)
+        public static StartSelect_SelectHeroEventArgs Create(int heroID)
         {
             var args = ReferencePool.Acquire<StartSelect_SelectHeroEventArgs>();
             args.HeroID = heroID;
