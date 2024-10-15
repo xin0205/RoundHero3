@@ -102,36 +102,63 @@ namespace RoundHero
             
         }
 
-        public static string GetStrByValues(string str, List<float> values)
+        public static string GetStrByValues(string str, List<string> values, bool showSign = false)
         {
-            if (values.Count == 0)
+            var fValues = new List<float>();
+            foreach (var value in values)
+            {
+                fValues.Add(GetBuffValue(value));
+            }
+
+            return GetStrByValues(str, fValues, showSign);
+        }
+
+        public static string GetStrByValues(string str, List<float> values, bool showSign = false)
+        {
+            var strValues = new List<string>();
+            foreach (var value in values)
+            {
+                strValues.Add(value > 0 ? showSign ? "+" + value : value.ToString() : value.ToString());
+            }
+            
+            if (strValues.Count == 0)
             {
                 return str;
             }
-            else if (values.Count == 1)
+            else if (strValues.Count == 1)
             {
                 return Utility.Text.Format(str,
-                    values[0]);
+                    strValues[0]);
             }
-            else if (values.Count == 2)
+            else if (strValues.Count == 2)
             {
                 return Utility.Text.Format(str,
-                    values[0],values[1]);
+                    strValues[0],strValues[1]);
             }
-            else if (values.Count == 3)
+            else if (strValues.Count == 3)
             {
                 return Utility.Text.Format(str,
-                    values[0],values[1],values[2]);
+                    strValues[0],strValues[1],strValues[2]);
             }
-            else if (values.Count == 4)
+            else if (strValues.Count == 4)
             {
                 return Utility.Text.Format(str,
-                    values[0],values[1],values[2],values[3]);
+                    strValues[0],strValues[1],strValues[2],strValues[3]);
             }
-            else if (values.Count == 5)
+            else if (strValues.Count == 5)
             {
                 return Utility.Text.Format(str,
-                    values[0],values[1],values[2],values[3], values[4]);
+                    strValues[0],strValues[1],strValues[2],strValues[3], strValues[4]);
+            }
+            else if (strValues.Count == 6)
+            {
+                return Utility.Text.Format(str,
+                    strValues[0],strValues[1],strValues[2],strValues[3], strValues[4], strValues[5]);
+            }
+            else if (strValues.Count == 7)
+            {
+                return Utility.Text.Format(str,
+                    strValues[0],strValues[1],strValues[2],strValues[3], strValues[4], strValues[5], strValues[6]);
             }
             
             return str;

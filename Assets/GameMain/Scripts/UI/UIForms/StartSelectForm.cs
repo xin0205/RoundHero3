@@ -3,7 +3,6 @@ using GameFramework;
 using GameFramework.Event;
 using SuperScrollView;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
@@ -49,10 +48,7 @@ namespace RoundHero
             roleEntity = await GameEntry.Entity.ShowSceneEntityAsync("Role");
             
             GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
-            
-            
-            
-            GameManager.Instance.StartSelect_HeroID = 0;
+
             
             var drHero = GameEntry.DataTable.GetDataTable<DRHero>();
             heroIconGridView.SetListItemCount(drHero.Count);
@@ -73,6 +69,8 @@ namespace RoundHero
             
             inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
             selectCardGridView.RefreshAllShownItem();
+            
+            GameEntry.Event.Fire(null, StartSelect_SelectHeroEventArgs.Create(0));
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -93,7 +91,10 @@ namespace RoundHero
             
             var heroDescStr =
                 Utility.Text.Format(Constant.Localization.HeroDesc, GameManager.Instance.StartSelect_HeroID); 
-            heroDesc.text = GameEntry.Localization.GetString(heroDescStr);
+            
+            heroDescStr = GameEntry.Localization.GetString(heroDescStr);
+
+            heroDesc.text = GameUtility.GetStrByValues(heroDescStr, drHero.Values1, true);
 
             energy.text = drHero.HP.ToString();
 
@@ -232,6 +233,15 @@ namespace RoundHero
         //     // }
         //     AssetDatabase.Refresh();
         // }
+
+        public async void Back()
+        {
+            GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
+            GameEntry.UI.CloseUIForm(this);
+            
+            procedureStart.StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
+            GameEntry.UI.OpenUIForm(UIFormId.StartForm, procedureStart);
+        }
 
         
     }

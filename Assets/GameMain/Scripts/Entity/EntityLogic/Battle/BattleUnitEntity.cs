@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
+using RPGCharacterAnims;
+using RPGCharacterAnims.Lookups;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -10,9 +13,10 @@ namespace RoundHero
     {
         [SerializeField] protected Animator Animator;
         [SerializeField] protected Transform roleRoot;
-        [SerializeField] protected TextMeshPro hp;
-        [SerializeField] protected TextMeshPro damage;
+        [SerializeField] protected TextMesh hp;
+        [SerializeField] protected TextMesh damage;
         [SerializeField] protected GameObject uiNode;
+        [SerializeField] protected RPGCharacterController Controller;
         
         protected Quaternion cameraQuaternion = Quaternion.identity;
         
@@ -195,6 +199,7 @@ namespace RoundHero
         
         public void Idle()
         {
+            
             SetAction(EUnitActionState.Idle);
         }
         
