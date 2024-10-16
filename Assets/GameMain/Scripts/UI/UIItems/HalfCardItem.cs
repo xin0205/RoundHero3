@@ -8,34 +8,28 @@ namespace RoundHero
     public class HalfCardItem : MonoBehaviour
     {
         [SerializeField]
-        private TextMeshProUGUI cardName;
+        private Text cardName;
 
 
         [SerializeField] private Image Icon;
         
-        private int CardID;
+        private int CardID = -1;
 
         public Action<int> ClickAction;
 
         
         public void SetCardUI(int cardID)
         {
-
             CardID = cardID;
-            
-
             RefreshCardUI();
         }
 
         public async void RefreshCardUI()
         {
-
             var drCard = GameEntry.DataTable.GetCard(CardID);
             if (drCard.CardType == ECardType.Unit)
             {
                 Icon.sprite = await AssetUtility.GetFollowerIcon(CardID);
-
-                
             }
             else if (drCard.CardType == ECardType.Tactic)
             {

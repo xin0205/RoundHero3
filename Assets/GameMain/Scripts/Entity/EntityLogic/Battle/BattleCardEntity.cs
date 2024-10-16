@@ -45,9 +45,7 @@ namespace RoundHero
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
-            
-            
-            
+
             GameEntry.Event.Subscribe(RefreshCardInfoEventArgs.EventId, OnRefreshInfo);
             
             BattleCardEntityData = userData as BattleCardEntityData;

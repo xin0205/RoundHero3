@@ -9,21 +9,21 @@ namespace RoundHero
     public class BaseCard : MonoBehaviour
     {
         [SerializeField]
-        private TextMeshProUGUI cardName;
+        private Text cardName;
         [SerializeField]
-        private TextMeshProUGUI desc;
+        private Text desc;
         [SerializeField]
-        private TextMeshProUGUI energy;
+        private Text energy;
         
         [SerializeField]
-        private TextMeshProUGUI hp;
+        private Text hp;
         
         [SerializeField]
         private GameObject hpGO;
 
         [SerializeField] private Image Icon;
         
-        private int CardID;
+        private int CardID = -1;
 
         
         public void SetCardUI(int cardID)
@@ -43,8 +43,6 @@ namespace RoundHero
             if (drCard.CardType == ECardType.Unit)
             {
                 Icon.sprite = await AssetUtility.GetFollowerIcon(CardID);
-                
-                
                 hp.text = drCard.HP.ToString();
             }
             else if (drCard.CardType == ECardType.Tactic)
@@ -75,7 +73,7 @@ namespace RoundHero
             // }
             
             
-            hpGO.SetActive(drCard.CardType == ECardType.Unit);
+            //hpGO.SetActive(drCard.CardType == ECardType.Unit);
             energy.text = drCard.Energy < 0 ? "X" : drCard.Energy.ToString();
 
             //var maxHP = BattleUnitManager.Instance.GetUnitHP(CardID);

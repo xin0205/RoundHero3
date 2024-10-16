@@ -158,6 +158,22 @@ namespace RoundHero
             return Utility.Text.Format("Assets/GameMain/Entities/Scenes/{0}.prefab", sceneName);
         }
         
+        public static string GetDisplayHeroPrefab(int heroID)
+        {
+            var assetPath = "Assets/GameMain/Entities/DisplayHeros/DisplayHero_{0}.prefab";
+            var assetName = Utility.Text.Format(assetPath, heroID);
+            
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return assetName;
+            }
+            else
+            {
+                return Utility.Text.Format(assetPath, 0);
+            }
+
+        }
+        
         public static string GetBattleRoutePrefab()
         {
             return "Assets/GameMain/Entities/Areas/RouteEntity.prefab";
@@ -217,9 +233,9 @@ namespace RoundHero
             
         }
         
-        public static Task<Sprite> GetFollowerIcon(int tacticID)
+        public static Task<Sprite> GetFollowerIcon(int unitID)
         {
-            var assetName = GetFollowerIconName(tacticID);
+            var assetName = GetFollowerIconName(unitID);
             if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
             {
                 return GameEntry.Resource.LoadSpriteAsync(assetName);

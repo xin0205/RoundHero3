@@ -183,6 +183,24 @@ namespace RoundHero
             return (GridPropMoveDirectEntity)task.Logic;
         }
         
+        public static async Task<HeroSceneEntity> ShowHeroSceneEntityAsync(this EntityComponent entityComponent)
+        {
+            var data = ReferencePool.Acquire<EntityData>();
+            data.Init(entityComponent.GenerateSerialId(), Vector2.zero);
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(HeroSceneEntity),
+                AssetUtility.GetScenePrefab("HeroScene"), Constant.EntityGroup.Scene, 0, data);
+            
+            return (HeroSceneEntity)task.Logic;
+        }
         
+        public static async Task<DisplayHeroEntity> ShowDisplayHeroEntityAsync(this EntityComponent entityComponent, int heroID)
+        {
+            var data = ReferencePool.Acquire<EntityData>();
+            data.Init(entityComponent.GenerateSerialId(), Vector2.zero);
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(DisplayHeroEntity),
+                AssetUtility.GetDisplayHeroPrefab(heroID), Constant.EntityGroup.Scene, 0, data);
+            
+            return (DisplayHeroEntity)task.Logic;
+        }
     }
 }

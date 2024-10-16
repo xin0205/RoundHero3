@@ -23,7 +23,7 @@ namespace RoundHero
         
         [SerializeField] private List<GameObject> heroHPs;
         
-        private SceneEntity roleEntity;
+        private HeroSceneEntity heroSceneEntity;
 
         protected override void OnInit(object userData)
         {
@@ -45,7 +45,7 @@ namespace RoundHero
                 return;
             }
             
-            roleEntity = await GameEntry.Entity.ShowSceneEntityAsync("Role");
+            heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
             
             GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
 
@@ -76,7 +76,7 @@ namespace RoundHero
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
-            GameEntry.Entity.HideEntity(roleEntity);
+            GameEntry.Entity.HideEntity(heroSceneEntity);
             
             GameEntry.Event.Unsubscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
         }
@@ -86,6 +86,8 @@ namespace RoundHero
             var ne = (StartSelect_SelectHeroEventArgs)e;
             GameManager.Instance.StartSelect_HeroID = ne.HeroID;
             heroIconGridView.RefreshAllShownItem();
+            
+            heroSceneEntity.ShowDisplayHeroEntity(GameManager.Instance.StartSelect_HeroID);
 
             var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.StartSelect_HeroID);
             
@@ -150,12 +152,6 @@ namespace RoundHero
         LoopGridViewItem OnSelectCardGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
         {
 
-            var drHero = GameEntry.DataTable.GetHero(itemIndex);
-            if (drHero == null)
-            {
-                return null;
-            }
-
             var item = gridView.NewListViewItem("SelectCardItem");
 
             var itemScript = item.GetComponent<SelectCardItem>();
@@ -172,13 +168,6 @@ namespace RoundHero
         
         LoopGridViewItem OnInBattleCardGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
         {
-
-            var drHero = GameEntry.DataTable.GetHero(itemIndex);
-            if (drHero == null)
-            {
-                return null;
-            }
-
             var item = gridView.NewListViewItem("HalfCardItem");
 
             var itemScript = item.GetComponent<HalfCardItem>();
@@ -207,6 +196,7 @@ namespace RoundHero
             
             inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
             inBattleGridView.RefreshAllShownItem();
+            inBattleGridView.GetComponent<ScrollRect>().normalizedPosition = Vector2.zero;
         }
 
         public void CardRemoveBattle(int cardID)

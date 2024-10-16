@@ -6,11 +6,11 @@ namespace RoundHero
 {
     public class SelectCardItem : MonoBehaviour
     {
-        [SerializeField] private BaseCard BaseCard;
+        [SerializeField] private CardItem CardItem;
 
-        [SerializeField] private GameObject SelectFrame;
+        //[SerializeField] private GameObject SelectFrame;
 
-        private int cardID;
+        private int cardID = -1;
         
         public Action<int> ClickAction;
         
@@ -26,7 +26,7 @@ namespace RoundHero
             if (this.cardID != cardID)
             {
                 this.cardID = cardID;
-                BaseCard.SetCardUI(cardID);
+                CardItem.SetCardUI(cardID);
             }
             
         }

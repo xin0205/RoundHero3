@@ -427,5 +427,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c344c208d9c4d8fb761877382068b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardName: {fileID: 0}
+  cardName: {fileID: 8442858983859976068}
   Icon: {fileID: 7563079782834432089}
