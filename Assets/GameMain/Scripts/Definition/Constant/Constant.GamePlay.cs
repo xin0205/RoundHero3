@@ -43,6 +43,8 @@ namespace RoundHero
             public static float ViewMaxHandCardCount = 10;
             public static int EachHardCardCount = 5;
 
+            public static int InitCardMaxCount = 12;
+
             public static Dictionary<EUnitStateEffectType, List<EUnitState>> EffectUnitStates =
                 new ()
                 {

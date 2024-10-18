@@ -1,5 +1,4 @@
 ﻿using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +10,8 @@ namespace RoundHero
         private Text cardName;
 
 
-        [SerializeField] private Image Icon;
+        [SerializeField] private Image UnitIcon;
+        [SerializeField] private Image TacticIcon;
         
         private int CardID = -1;
 
@@ -27,14 +27,25 @@ namespace RoundHero
         public async void RefreshCardUI()
         {
             var drCard = GameEntry.DataTable.GetCard(CardID);
+            
+            UnitIcon.gameObject.SetActive(drCard.CardType == ECardType.Unit);
+            TacticIcon.gameObject.SetActive(drCard.CardType == ECardType.Tactic);
+
             if (drCard.CardType == ECardType.Unit)
             {
-                Icon.sprite = await AssetUtility.GetFollowerIcon(CardID);
+                UnitIcon.sprite = await AssetUtility.GetFollowerIcon(CardID);
             }
             else if (drCard.CardType == ECardType.Tactic)
             {
-                Icon.sprite = await AssetUtility.GetTacticIcon(CardID);
+                TacticIcon.sprite = await AssetUtility.GetTacticIcon(CardID);
             }
+            
+            var cardName = "";
+            var cardDesc = "";
+            GameUtility.GetCardText(CardID, ref cardName, ref cardDesc);
+
+            this.cardName.text = cardName;
+
         }
         
         public void Init()

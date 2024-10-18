@@ -21,7 +21,10 @@
             
             public const string BlessName = "BlessName.{0}";
             public const string BlessDesc = "BlessDesc.{0}";
+            public const string HeroName = "HeroName.{0}";
             public const string HeroDesc = "HeroDesc.{0}";
+
+            public const string InitCardMaxCount = "InitCardMaxCount";
         }
     }
 }

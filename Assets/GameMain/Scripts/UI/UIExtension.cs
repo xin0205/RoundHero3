@@ -159,10 +159,10 @@ namespace RoundHero
         
         public static void OpenMessage(this UIComponent uiComponent, string message)
         {
-            // uiComponent.OpenUIForm(UIFormId.MessageForm, new MessageFormParams()
-            // {
-            //     Message = message,
-            // });
+            uiComponent.OpenUIForm(UIFormId.MessageForm, new MessageFormParams()
+            {
+                Message = message,
+            });
         }
 
         

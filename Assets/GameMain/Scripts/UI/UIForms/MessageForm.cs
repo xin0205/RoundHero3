@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace RoundHero
 {
@@ -11,7 +12,7 @@ namespace RoundHero
     
     public class MessageForm : UGuiForm
     {
-        [SerializeField] private TextMeshProUGUI message;
+        [SerializeField] private Text message;
 
         private MessageFormParams messageFormParams;
         private CanvasGroup canvasGroup;
@@ -29,11 +30,11 @@ namespace RoundHero
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
-            root.Play();
+            //root.Play();
             
             messageFormParams = userData as MessageFormParams;
 
-            message.text = messageFormParams.Message;
+            //message.text = messageFormParams.Message;
 
             canvasGroup.alpha = 1;
             canvasGroup.DOFade(0f, 2f).SetEase(Ease.InBack).OnComplete(() =>

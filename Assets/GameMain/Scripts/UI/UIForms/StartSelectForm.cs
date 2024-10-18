@@ -20,6 +20,7 @@ namespace RoundHero
         
         [SerializeField] private Text energy;
         
+        [SerializeField] private Text heroName;
         
         [SerializeField] private List<GameObject> heroHPs;
         
@@ -99,6 +100,11 @@ namespace RoundHero
             heroDesc.text = GameUtility.GetStrByValues(heroDescStr, drHero.Values1, true);
 
             energy.text = drHero.HP.ToString();
+            
+            var heroNameStr =
+                Utility.Text.Format(Constant.Localization.HeroName, GameManager.Instance.StartSelect_HeroID); 
+            
+            heroName.text = GameEntry.Localization.GetString(heroNameStr);
 
             for (int i = 0; i < heroHPs.Count; i++)
             {
@@ -188,11 +194,23 @@ namespace RoundHero
             {
                 return;
             }
+
+            if (GameManager.Instance.Cards.Count >= Constant.Battle.InitCardMaxCount)
+            {
+                var message = GameEntry.Localization.GetString(Constant.Localization.InitCardMaxCount);
+                message =
+                    Utility.Text.Format(message, Constant.Battle.InitCardMaxCount);
+                
+                GameEntry.UI.OpenMessage(message);
+                return;
+            }
             
             for (int i = 0; i < 3; i++)
             {
                 GameManager.Instance.Cards.Add(cardID);
             }
+            
+            
             
             inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
             inBattleGridView.RefreshAllShownItem();
@@ -205,6 +223,7 @@ namespace RoundHero
             
             inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
             inBattleGridView.RefreshAllShownItem();
+            inBattleGridView.GetComponent<ScrollRect>().normalizedPosition = Vector2.zero;
         }
         
         // //public Material[] TextMaterials;//所有FontAsset的材质球
