@@ -1225,6 +1225,16 @@ namespace RoundHero
             
             return null;
         }
+
+        public void Clear()
+        {
+            UnusedFuneIdxs.Clear();
+            CardDatas.Clear();
+            FuneDatas.Clear();
+            BlessDatas.Clear();
+            EnergyBuffDatas.Clear();
+        
+        }
     }
 
     public class Data_Enemy
@@ -1311,6 +1321,11 @@ namespace RoundHero
 
             return data;
         }
+
+        public void Clear()
+        {
+            MapStageDataDict.Clear();
+        }
         
     }
 
@@ -1345,6 +1360,13 @@ namespace RoundHero
             PlayerDataCampDict.Add(playerData.UnitCamp, playerData);
             PlayerDataIDDict.Add(playerData.PlayerID, playerData);
 
+        }
+
+        public void Clear()
+        {
+            PlayerDatas.Clear();
+            PlayerDataCampDict.Clear();
+            PlayerDataIDDict.Clear();
         }
         
         public Data_Player GetPlayerData(ulong userID)

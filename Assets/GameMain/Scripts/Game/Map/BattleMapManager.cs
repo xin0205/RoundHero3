@@ -12,6 +12,8 @@ namespace RoundHero
 
         public void Init(int randomSeed)
         {
+            MapData.Clear();
+            
             this.randomSeed = randomSeed;
             MapData.RandomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);

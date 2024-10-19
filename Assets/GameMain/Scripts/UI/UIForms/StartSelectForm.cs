@@ -26,6 +26,8 @@ namespace RoundHero
         
         private HeroSceneEntity heroSceneEntity;
 
+        private int startGameRandomSeed;
+
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -47,6 +49,7 @@ namespace RoundHero
             }
             
             heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
+            procedureStart.StartSelectEntity = await GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
             
             GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
 
@@ -67,11 +70,14 @@ namespace RoundHero
             
             selectCardGridView.SetListItemCount(selectInitCards.Count);
             selectCardGridView.RefreshAllShownItem();
+
             
-            inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
+            inBattleGridView.SetListItemCount(GameManager.Instance.TmpInitCards.Count);
             selectCardGridView.RefreshAllShownItem();
             
             GameEntry.Event.Fire(null, StartSelect_SelectHeroEventArgs.Create(0));
+            
+            startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -123,14 +129,23 @@ namespace RoundHero
         
         public void PVEStartGame()
         {
+            if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
+            {
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
+                    Constant.Battle.InitCardMaxCount);
+                return;
+            }
+            
             GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
             GameEntry.UI.CloseUIForm(this);
             
-            var randomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
-            randomSeed = 94204398;//2198030
-            Log.Debug("randomSeed:" + randomSeed);
-            GamePlayManager.Instance.GamePlayData.RandomSeed = randomSeed;
-            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(randomSeed, EEnemyType.Normal));
+            
+            startGameRandomSeed = 94204398;//2198030
+            Log.Debug("randomSeed:" + startGameRandomSeed);
+            GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
+            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EEnemyType.Normal));
+            
+            
         }
 
         LoopGridViewItem OnHeroIconGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
@@ -165,10 +180,11 @@ namespace RoundHero
             {
                 item.IsInitHandlerCalled = true;
                 itemScript.Init();
-                itemScript.ClickAction = CardAddBattle;
+                itemScript.ClickAction = CardAddOrRemoveBattle;
             }
             
             itemScript.SetItemData(selectInitCards[itemIndex], itemIndex, row, column);
+            
             return item;
         }
         
@@ -184,46 +200,56 @@ namespace RoundHero
                 itemScript.ClickAction = CardRemoveBattle;
             }
             
-            itemScript.SetItemData(GameManager.Instance.Cards[itemIndex], itemIndex, row, column);
+            itemScript.SetItemData(GameManager.Instance.TmpInitCards[itemIndex], itemIndex, row, column);
             return item;
+        }
+
+        public void CardAddOrRemoveBattle(int cardID)
+        {
+            if (GameManager.Instance.TmpInitCards.Contains(cardID))
+            {
+                CardRemoveBattle(cardID);
+            }
+            else
+            {
+                CardAddBattle(cardID);
+            }
         }
 
         public void CardAddBattle(int cardID)
         {
-            if (GameManager.Instance.Cards.Contains(cardID))
+            if (GameManager.Instance.TmpInitCards.Contains(cardID))
             {
                 return;
             }
 
-            if (GameManager.Instance.Cards.Count >= Constant.Battle.InitCardMaxCount)
+            if (GameManager.Instance.TmpInitCards.Count >= Constant.Battle.InitCardMaxCount)
             {
-                var message = GameEntry.Localization.GetString(Constant.Localization.InitCardMaxCount);
-                message =
-                    Utility.Text.Format(message, Constant.Battle.InitCardMaxCount);
-                
-                GameEntry.UI.OpenMessage(message);
+
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardMaxCount,
+                    Constant.Battle.InitCardMaxCount);
                 return;
             }
             
             for (int i = 0; i < 3; i++)
             {
-                GameManager.Instance.Cards.Add(cardID);
+                GameManager.Instance.TmpInitCards.Add(cardID);
             }
             
-            
-            
-            inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
+            inBattleGridView.SetListItemCount(GameManager.Instance.TmpInitCards.Count);
             inBattleGridView.RefreshAllShownItem();
             inBattleGridView.GetComponent<ScrollRect>().normalizedPosition = Vector2.zero;
         }
 
         public void CardRemoveBattle(int cardID)
         {
-            GameManager.Instance.Cards.RemoveAll((BattleCardID) => BattleCardID == cardID);
+            GameManager.Instance.TmpInitCards.RemoveAll((BattleCardID) => BattleCardID == cardID);
             
-            inBattleGridView.SetListItemCount(GameManager.Instance.Cards.Count);
+            inBattleGridView.SetListItemCount(GameManager.Instance.TmpInitCards.Count);
             inBattleGridView.RefreshAllShownItem();
             inBattleGridView.GetComponent<ScrollRect>().normalizedPosition = Vector2.zero;
+            
+            selectCardGridView.RefreshAllShownItem();
         }
         
         // //public Material[] TextMaterials;//所有FontAsset的材质球
@@ -247,9 +273,8 @@ namespace RoundHero
         {
             GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
             GameEntry.UI.CloseUIForm(this);
-            
-            procedureStart.StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
-            GameEntry.UI.OpenUIForm(UIFormId.StartForm, procedureStart);
+
+            procedureStart.Start();
         }
 
         

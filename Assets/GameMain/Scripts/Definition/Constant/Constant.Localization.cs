@@ -24,7 +24,8 @@
             public const string HeroName = "HeroName.{0}";
             public const string HeroDesc = "HeroDesc.{0}";
 
-            public const string InitCardMaxCount = "InitCardMaxCount";
+            public const string Message_InitCardMaxCount = "Message.InitCardMaxCount";
+            public const string Message_InitCardCount = "Message.InitCardCount";
         }
     }
 }

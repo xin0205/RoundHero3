@@ -24,6 +24,8 @@ namespace RoundHero
         [SerializeField] private TextMeshProUGUI coin;
         
         [SerializeField] private EnergyBuffBarUItem energyBuffBarUItem;
+        
+        private ProcedureBattle procedureBattle;
 
         private bool isEndRound = false;
         // private List<A> As = new ();
@@ -31,6 +33,8 @@ namespace RoundHero
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
+            procedureBattle = (ProcedureBattle)userData;
+            
             GameEntry.Event.Subscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
 
             RefreshEnergy();
@@ -201,7 +205,7 @@ namespace RoundHero
         {
             Close();
             BattleMapManager.Instance.NextStep();
-            GamePlayManager.Instance.ProcedureGamePlay.EndBattle();
+            procedureBattle.EndBattle();
         }
     }
 }

@@ -16,7 +16,8 @@ namespace RoundHero
         public SceneEntity StartEntity;
         public SceneEntity StartSelectEntity;
         
-        protected override async void OnEnter(ProcedureOwner procedureOwner)
+        
+        protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
 
@@ -30,7 +31,12 @@ namespace RoundHero
             // DRScene drScene = GameEntry.DataTable.GetScene(2);
             // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             
-            StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
+            
+        }
+
+        public async void Start()
+        {
+            
             GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
         }
 
@@ -72,17 +78,32 @@ namespace RoundHero
             data.SetValue(ne.GamePlayInitData);
             
             procedureOwner.SetData("GamePlayInitData", data);
+            
             GamePlayManager.Instance.Init(ne.GamePlayInitData);
             
             if (data.Value.GameMode == EGamMode.PVE)
             {
                 ChangeState<ProcedureGamePlay>(procedureOwner);
+                
+                var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
+                gamePlayProcedure.ShowMap();
+                
             }
             else if (data.Value.GameMode == EGamMode.PVP)
             {
-                ChangeState<ProcedureBattle>(procedureOwner);
+                //ChangeState<ProcedureBattle>(procedureOwner);
             }
 
+        }
+
+        private void StartGamePlay()
+        {
+            
+        }
+
+        public void StartSelect()
+        {
+            GameEntry.UI.OpenUIForm(UIFormId.StartSelectForm, this);
         }
     }
 

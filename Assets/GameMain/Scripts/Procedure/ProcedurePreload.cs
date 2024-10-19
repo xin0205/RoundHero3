@@ -117,7 +117,8 @@ namespace RoundHero
             PlayerManager.Instance.Init();
             
             ChangeState<ProcedureStart>(procedureOwner);
-            
+            var startProcedure = procedureOwner.CurrentState as ProcedureStart;
+            startProcedure.Start();
         }
 
         private void PreloadResources()

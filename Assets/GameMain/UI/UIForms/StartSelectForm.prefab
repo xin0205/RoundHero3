@@ -3138,6 +3138,18 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 710654657598656205, guid: eca66f77d1091aa42a811f251cd6f471, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2430837555591777591}
+    - target: {fileID: 710654657598656205, guid: eca66f77d1091aa42a811f251cd6f471, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PVEStartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 710654657598656205, guid: eca66f77d1091aa42a811f251cd6f471, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RoundHero.StartSelectForm, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 3404286453209277832, guid: eca66f77d1091aa42a811f251cd6f471, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -3240,6 +3252,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 22498214}
     m_Modifications:
+    - target: {fileID: 2271400685664710927, guid: a7303a7217f912d49aa447f0526db802, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2430837555591777591}
+    - target: {fileID: 2271400685664710927, guid: a7303a7217f912d49aa447f0526db802, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 2271400685664710927, guid: a7303a7217f912d49aa447f0526db802, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RoundHero.StartSelectForm, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 4136299216539228746, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3938,6 +3962,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 753293560380806648}
     m_Modifications:
     - target: {fileID: 962694414983365338, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 962694414983365338, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 962694414983365338, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
@@ -4009,6 +4041,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3518094533685406194, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: Scroll
+      value: 
+      objectReference: {fileID: 3899163197231229429}
     - target: {fileID: 4905353502174006129, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
       propertyPath: m_Name
       value: SelectCardItem

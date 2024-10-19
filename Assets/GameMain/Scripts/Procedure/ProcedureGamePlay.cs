@@ -1,6 +1,7 @@
 ﻿using System;
 using GameFramework;
 using GameFramework.Event;
+using UGFExtensions.Await;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -10,7 +11,9 @@ namespace RoundHero
     {
 
         private bool IsStartBattle = false;
-        public SceneEntity StartSelectEntity;
+        public SceneEntity MapEntity;
+        private PlayerInfoForm playerInfoForm;
+        private MapForm mapForm;
         
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
@@ -22,15 +25,18 @@ namespace RoundHero
             
             GameEntry.Sound.PlayMusic(0);
 
+        }
+
+        public async void ShowMap()
+        {
             GamePlayManager.Instance.SetProcedureGamePlay(this);
-            GameEntry.UI.OpenUIForm(UIFormId.MapForm, this);
-            GameEntry.UI.OpenUIForm(UIFormId.PlayerInfoForm, this);
-            
+            var mapFormResult = await GameEntry.UI.OpenUIFormAsync(UIFormId.MapForm, this);
+            mapForm = mapFormResult.Logic as MapForm;
+            var playerInfoFormResult = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
+            playerInfoForm = playerInfoFormResult.Logic as PlayerInfoForm;
+                
             var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
             PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
-
-            
-
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -49,6 +55,19 @@ namespace RoundHero
             //GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
         }
 
+        public void BackToStartSelect()
+        {
+            GamePlayManager.Instance.Destory(EGamMode.PVE);
+            
+            GameEntry.Entity.HideEntity(MapEntity);
+            GameEntry.UI.CloseUIForm(playerInfoForm);
+            GameEntry.UI.CloseUIForm(mapForm);
+            
+            ChangeState<ProcedureStart>(procedureOwner);
+            var gamePlayProcedure = procedureOwner.CurrentState as ProcedureStart;
+            gamePlayProcedure.StartSelect();
+        }
+
 
         public void StartBattle()
         {
@@ -59,13 +78,13 @@ namespace RoundHero
         }
         
         
-        public void EndBattle()
-        {
-            BattleManager.Instance.BattleTypeManager.Destory();
-            DRScene drScene = GameEntry.DataTable.GetScene(1);
-            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
-            ChangeState<ProcedureGamePlay>(procedureOwner);
-        }
+        // public void EndBattle()
+        // {
+        //     BattleManager.Instance.BattleTypeManager.Destory();
+        //     DRScene drScene = GameEntry.DataTable.GetScene(1);
+        //     GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
+        //     ChangeState<ProcedureGamePlay>(procedureOwner);
+        //}
         
         public void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {

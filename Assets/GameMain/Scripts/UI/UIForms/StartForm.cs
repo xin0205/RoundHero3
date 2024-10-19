@@ -18,6 +18,8 @@ namespace RoundHero
                 return;
             }
             
+            procedureStart.StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
+            
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -29,9 +31,8 @@ namespace RoundHero
         {
             GameEntry.Entity.HideEntity(procedureStart.StartEntity);
             GameEntry.UI.CloseUIForm(this);
-            
-            procedureStart.StartSelectEntity = await GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
-            GameEntry.UI.OpenUIForm(UIFormId.StartSelectForm, procedureStart);
+
+            procedureStart.StartSelect();
         }
 
         

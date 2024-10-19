@@ -34,7 +34,7 @@ namespace RoundHero
             
             messageFormParams = userData as MessageFormParams;
 
-            //message.text = messageFormParams.Message;
+            message.text = messageFormParams.Message;
 
             canvasGroup.alpha = 1;
             canvasGroup.DOFade(0f, 2f).SetEase(Ease.InBack).OnComplete(() =>

@@ -7,6 +7,7 @@ namespace RoundHero
     public class PlayerInfoForm : UGuiForm
     {
         public Text coinText;
+        [SerializeField] private Image heroIcon;
         
         public void ShowCards()
         {
@@ -26,9 +27,11 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshPlayerInfoEventArgs.EventId, OnRefreshPlayerInfo);
         }
 
-        private void OnRefreshPlayerInfo(object sender, GameEventArgs e)
+        private async void OnRefreshPlayerInfo(object sender, GameEventArgs e)
         {
             coinText.text = BattlePlayerManager.Instance.PlayerData.Coin.ToString();
+            var drHero = GameEntry.DataTable.GetHero(BattlePlayerManager.Instance.PlayerData.BattleHero.HeroID);
+            heroIcon.sprite = await AssetUtility.GetHeroIcon(drHero.Id);
         }
     }
 }

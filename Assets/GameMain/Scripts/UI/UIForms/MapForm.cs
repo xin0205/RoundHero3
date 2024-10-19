@@ -47,7 +47,7 @@ namespace RoundHero
             //
             // }
             
-            restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Map");
+            procedureGamePlay.MapEntity = await GameEntry.Entity.ShowSceneEntityAsync("Map");
 
             InitMapStageRoute();
 
@@ -75,7 +75,7 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshMapStageEventArgs.EventId, OnRefreshMapStage);
             GameEntry.Event.Unsubscribe(ClickMapStageStepItemEventArgs.EventId, OnClickMapStageStepItem);
             
-            GameEntry.Entity.HideEntity(restSceneEntity);
+            
         }
 
         private void OnRefreshMapStage(object sender, GameEventArgs e)
@@ -211,6 +211,11 @@ namespace RoundHero
         public void ShowBG(bool isShow)
         {
             bg.color = new Color(bg.color.r, bg.color.g, bg.color.b, isShow ? 1 : 0.1f);
+        }
+        
+        public void Back()
+        {
+            procedureGamePlay.BackToStartSelect();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace RoundHero
             DRScene drScene = GameEntry.DataTable.GetScene(1);
             GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             
-            await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm);
+            await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
             
             await BattleAreaManager.Instance.InitArea();
             await BattleHeroManager.Instance.GenerateHero();
@@ -85,6 +85,16 @@ namespace RoundHero
 
         }
         
+        public void EndBattle()
+        {
+            BattleManager.Instance.BattleTypeManager.Destory();
+            DRScene drScene = GameEntry.DataTable.GetScene(1);
+            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
+            ChangeState<ProcedureGamePlay>(procedureOwner);
+            
+            var procedureGamePlay = procedureOwner.CurrentState as ProcedureGamePlay;
+            procedureGamePlay.ShowMap();
+        }
 
     }
 }

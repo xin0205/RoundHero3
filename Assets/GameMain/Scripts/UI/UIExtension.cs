@@ -8,6 +8,7 @@
 using GameFramework.DataTable;
 using GameFramework.UI;
 using System.Collections;
+using GameFramework;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -165,7 +166,23 @@ namespace RoundHero
             });
         }
 
+        public static void OpenLocalizationMessage(this UIComponent uiComponent, string localizationMessage)
+        {
+
+            GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(localizationMessage));
+
+        }
         
+        public static void OpenLocalizationMessage<T>(this UIComponent uiComponent, string localizationMessage, T t1)
+        {
+            var message = GameEntry.Localization.GetString(localizationMessage);
+            
+            message =
+                Utility.Text.Format(message, t1);
+                
+            GameEntry.UI.OpenMessage(message);
+
+        }
 
     }
 }

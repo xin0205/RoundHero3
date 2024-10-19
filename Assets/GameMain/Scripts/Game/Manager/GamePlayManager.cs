@@ -5,7 +5,7 @@ namespace RoundHero
     public class GamePlayManager : Singleton<GamePlayManager>
     {
         public Data_GamePlay GamePlayData => DataManager.Instance.CurUser.GamePlayData;
-        public ProcedureGamePlay ProcedureGamePlay;
+        //public ProcedureGamePlay ProcedureGamePlay;
         
         public void Init(GamePlayInitData gamePlayInitData)
         {
@@ -36,9 +36,25 @@ namespace RoundHero
             
         }
 
+        public void Destory(EGamMode gameMode)
+        {
+            if (gameMode == EGamMode.PVE)
+            {
+                GamePlayManager.Instance.GamePlayData.Clear();
+                BattleAreaManager.Instance.Destory();
+                PVEManager.Instance.Destory();
+                //BattleMapManager.Instance.Destory();
+
+                BattleUnitManager.Instance.Destory();
+                BattleHeroManager.Instance.Destory();
+                //BattleEnergyBuffManager.Instance.Destory();
+                
+            }
+        }
+
         public void SetProcedureGamePlay(ProcedureGamePlay procedureGamePlay)
         {
-            ProcedureGamePlay = procedureGamePlay;
+            //ProcedureGamePlay = procedureGamePlay;
         }
 
     }
