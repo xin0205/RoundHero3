@@ -4,17 +4,17 @@ namespace RoundHero
 {
     public class PlayerManager : Singleton<PlayerManager>
     {
-        public Data_Player PlayerData;
+        public Data_Player PlayerData => DataManager.Instance.DataGame.User.CurGamePlayData.PlayerData;
 
         public void Init()
         {
-            PlayerData = DataManager.Instance.CurUser.PlayerData;
+            
         }
 
         public ulong GetPlayerID(EUnitCamp unitCamp)
         {
-            if (GamePlayManager.Instance.GamePlayData.PlayerDatas.ContainsKey(unitCamp))
-                return GamePlayManager.Instance.GamePlayData.PlayerDatas[unitCamp].PlayerID;
+            if (GamePlayManager.Instance.GamePlayData.PlayerDataCampDict.ContainsKey(unitCamp))
+                return GamePlayManager.Instance.GamePlayData.PlayerDataCampDict[unitCamp].PlayerID;
             
             return 0;
 

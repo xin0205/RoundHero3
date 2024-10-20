@@ -27,7 +27,7 @@ namespace RoundHero
 
         
 
-        public void Init(int randomSeed, EEnemyType enemyType)
+        public void Init(int randomSeed)
         {
             GameEntry.Event.Subscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
             //GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
@@ -35,7 +35,7 @@ namespace RoundHero
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
             
-            BattleManager.Instance.BattleData.EnemyType = enemyType;
+            //BattleManager.Instance.BattleData.EnemyType = enemyType;
             
             //id = 0;
 

@@ -26,8 +26,15 @@ namespace RoundHero
         {
             lightGO.SetActive(isOn);
         }
-        
-        
-        
+
+        protected override void OnHide(bool isShutdown, object userData)
+        {
+            base.OnHide(isShutdown, userData);
+            if (DisplayHeroEntity != null)
+            {
+                GameEntry.Entity.HideEntity(DisplayHeroEntity);
+                DisplayHeroEntity = null;
+            }
+        }
     }
 }

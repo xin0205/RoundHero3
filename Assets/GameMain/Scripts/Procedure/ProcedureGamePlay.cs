@@ -35,8 +35,8 @@ namespace RoundHero
             var playerInfoFormResult = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
             playerInfoForm = playerInfoFormResult.Logic as PlayerInfoForm;
                 
-            var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
-            PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
+            // var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
+            // PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -54,18 +54,32 @@ namespace RoundHero
             base.OnLeave(procedureOwner, isShutdown);
             //GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
         }
-
-        public void BackToStartSelect()
+        
+        public void Back()
         {
             GamePlayManager.Instance.Destory(EGamMode.PVE);
             
             GameEntry.Entity.HideEntity(MapEntity);
             GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(mapForm);
+        }
+
+        public void BackToStartSelect()
+        {
+            Back();
             
             ChangeState<ProcedureStart>(procedureOwner);
             var gamePlayProcedure = procedureOwner.CurrentState as ProcedureStart;
             gamePlayProcedure.StartSelect();
+        }
+        
+        public void BackToStart()
+        {
+            Back();
+            
+            ChangeState<ProcedureStart>(procedureOwner);
+            var gamePlayProcedure = procedureOwner.CurrentState as ProcedureStart;
+            gamePlayProcedure.Start();
         }
 
 
@@ -86,24 +100,24 @@ namespace RoundHero
         //     ChangeState<ProcedureGamePlay>(procedureOwner);
         //}
         
-        public void OnLoadSceneSuccess(object sender, GameEventArgs e)
-        {
-            AreaController.Instance.RefreshCameraPlane();
-            var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
-            
-            if (initData.Value.GameMode == EGamMode.PVP)
-            {
-                //PVPManager.Instance.Init(initData.Value.RandomSeed, initData.Value.PlayerDatas);
-            }
-            else if (initData.Value.GameMode == EGamMode.PVE)
-            {
-                PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
-            }
-            
-            
-            IsStartBattle = true;
-
-        }
+        // public void OnLoadSceneSuccess(object sender, GameEventArgs e)
+        // {
+        //     AreaController.Instance.RefreshCameraPlane();
+        //     var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
+        //     
+        //     if (initData.Value.GameMode == EGamMode.PVP)
+        //     {
+        //         //PVPManager.Instance.Init(initData.Value.RandomSeed, initData.Value.PlayerDatas);
+        //     }
+        //     else if (initData.Value.GameMode == EGamMode.PVE)
+        //     {
+        //         PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
+        //     }
+        //     
+        //     
+        //     IsStartBattle = true;
+        //
+        // }
 
         public void StartBattle(bool isStartBattle)
         {

@@ -113,6 +113,8 @@ namespace RoundHero
             // DataManager.Instance.Init(steamID);
             // PlayerManager.Instance.Init();
             
+            
+            
             DataManager.Instance.Init("123");
             PlayerManager.Instance.Init();
             

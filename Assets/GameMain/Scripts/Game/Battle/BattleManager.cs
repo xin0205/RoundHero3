@@ -64,6 +64,7 @@ namespace RoundHero
 
         public void Destory()
         {
+            
             BattleAreaManager.Instance.Destory();
             BattleCardManager.Instance.Destory();
             BattleEnemyManager.Instance.Destory();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,15 @@ public class PointerTag : MonoBehaviour
         PointerTagGO.SetActive(isShow);
     }
 
+    private void OnEnable()
+    {
+        ShowPointerTag(false);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        ShowPointerTag(false);
+        
     }
 
     // Update is called once per frame

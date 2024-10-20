@@ -48,6 +48,11 @@ namespace RoundHero
                 return;
             }
             
+            selectInitCards.Clear();
+            GameManager.Instance.TmpHeroID = 0;
+            GameManager.Instance.TmpInitCards.Clear();
+            
+            
             heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
             procedureStart.StartSelectEntity = await GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
             
@@ -91,15 +96,15 @@ namespace RoundHero
         private void OnSelectHero(object sender, GameEventArgs e)
         {
             var ne = (StartSelect_SelectHeroEventArgs)e;
-            GameManager.Instance.StartSelect_HeroID = ne.HeroID;
+            GameManager.Instance.TmpHeroID = ne.HeroID;
             heroIconGridView.RefreshAllShownItem();
             
-            heroSceneEntity.ShowDisplayHeroEntity(GameManager.Instance.StartSelect_HeroID);
+            heroSceneEntity.ShowDisplayHeroEntity(GameManager.Instance.TmpHeroID);
 
-            var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.StartSelect_HeroID);
+            var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.TmpHeroID);
             
             var heroDescStr =
-                Utility.Text.Format(Constant.Localization.HeroDesc, GameManager.Instance.StartSelect_HeroID); 
+                Utility.Text.Format(Constant.Localization.HeroDesc, GameManager.Instance.TmpHeroID); 
             
             heroDescStr = GameEntry.Localization.GetString(heroDescStr);
 
@@ -108,7 +113,7 @@ namespace RoundHero
             energy.text = drHero.HP.ToString();
             
             var heroNameStr =
-                Utility.Text.Format(Constant.Localization.HeroName, GameManager.Instance.StartSelect_HeroID); 
+                Utility.Text.Format(Constant.Localization.HeroName, GameManager.Instance.TmpHeroID); 
             
             heroName.text = GameEntry.Localization.GetString(heroNameStr);
 
@@ -269,7 +274,7 @@ namespace RoundHero
         //     AssetDatabase.Refresh();
         // }
 
-        public async void Back()
+        public void Back()
         {
             GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
             GameEntry.UI.CloseUIForm(this);

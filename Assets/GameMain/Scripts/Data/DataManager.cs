@@ -6,11 +6,10 @@ namespace RoundHero
     public class DataManager : Singleton<DataManager>
     {
         public Data_Game DataGame;
-        public Data_User CurUser;
+        
         
         public DataManager()
         {
-            GameEntry.Setting.RemoveAllSettings();
             // var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
             //
             // if (hasSetting)
@@ -22,15 +21,19 @@ namespace RoundHero
             //     DataGame = new Data_Game();
             // }
             
+            GameEntry.Setting.RemoveAllSettings();
             DataGame = new Data_Game();
             
         }
         
         public void  Init(string userID)
         {
-            CurUser = DataGame.GetUserData(userID);
-            
-            
+            if (DataGame.User == null || DataGame.User.UserID != userID)
+            {
+                DataGame = new Data_Game();
+                DataGame.User = new Data_User(userID);
+            }
+
             // var hasVersion = GameEntry.Setting.HasSetting(Constant.Game.VersionKey);
             // if (hasVersion)
             // {
@@ -57,16 +60,7 @@ namespace RoundHero
             // }
 
             GameEntry.Setting.SetString(Constant.Game.VersionKey, Application.version);
-            
-            CurUser.GamePlayData = new Data_GamePlay();
-            
-            CurUser.PlayerData = new Data_Player()
-            {
-                PlayerID = 123//SteamUser.GetSteamID().m_SteamID,
-            };
-            
-            
-            
+
             //BlessManager.Instance.AddBless(EBlessID.EachRoundFightCardAddLinkReceive);
             Save();
 

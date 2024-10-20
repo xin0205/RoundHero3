@@ -215,7 +215,7 @@ namespace RoundHero
         
         public void Back()
         {
-            procedureGamePlay.BackToStartSelect();
+            procedureGamePlay.BackToStart();
         }
     }
 }

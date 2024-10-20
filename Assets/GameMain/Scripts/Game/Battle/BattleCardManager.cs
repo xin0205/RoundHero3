@@ -12,7 +12,7 @@ namespace RoundHero
         public Dictionary<int, BattleCardEntity> CardEntities = new();
         public int PointerCardIdx = -1;
 
-        public Data_Battle BattleData => DataManager.Instance.CurUser.GamePlayData.BattleData;
+        public Data_Battle BattleData => DataManager.Instance.DataGame.User.CurGamePlayData.BattleData;
 
         public Data_BattlePlayer BattlePlayerData => BattlePlayerManager.Instance.BattlePlayerData;
 

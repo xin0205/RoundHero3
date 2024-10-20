@@ -12,7 +12,7 @@ namespace RoundHero
 {
     public class ProcedureStart : ProcedureBase
     {
-        private bool InitSuccess = false;
+        //private bool InitSuccess = false;
         public SceneEntity StartEntity;
         public SceneEntity StartSelectEntity;
         
@@ -26,7 +26,7 @@ namespace RoundHero
 
             GameEntry.Sound.PlayMusic(0);
 
-            InitSuccess = false;
+            //InitSuccess = false;
 
             // DRScene drScene = GameEntry.DataTable.GetScene(2);
             // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
@@ -36,17 +36,21 @@ namespace RoundHero
 
         public async void Start()
         {
-            
             GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
+        }
+        
+        public void StartSelect()
+        {
+            StartGame();
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-            if (InitSuccess)
-            {
-                BattleManager.Instance.Update();
-            }
+            // if (InitSuccess)
+            // {
+            //     BattleManager.Instance.Update();
+            // }
 
         }
 
@@ -74,37 +78,56 @@ namespace RoundHero
         public void OnGamePlayInitGame(object sender, GameEventArgs e)
         {
             var ne = e as GamePlayInitGameEventArgs;
-            var data = new VarGamePlayInitData();
-            data.SetValue(ne.GamePlayInitData);
+            // var data = new VarGamePlayInitData();
+            // data.SetValue(ne.GamePlayInitData);
+            //
+            // procedureOwner.SetData("GamePlayInitData", data);
             
-            procedureOwner.SetData("GamePlayInitData", data);
             
-            GamePlayManager.Instance.Init(ne.GamePlayInitData);
             
-            if (data.Value.GameMode == EGamMode.PVE)
+            if (ne.GamePlayInitData.GameMode == EGamMode.PVE)
             {
+                GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
+                GamePlayManager.Instance.Start();
+                GamePlayManager.Instance.Contitnue();
+                
                 ChangeState<ProcedureGamePlay>(procedureOwner);
                 
                 var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
                 gamePlayProcedure.ShowMap();
                 
             }
-            else if (data.Value.GameMode == EGamMode.PVP)
+            else if (ne.GamePlayInitData.GameMode == EGamMode.PVP)
             {
                 //ChangeState<ProcedureBattle>(procedureOwner);
             }
 
         }
 
-        private void StartGamePlay()
+        private void StartGame()
         {
             
-        }
-
-        public void StartSelect()
-        {
             GameEntry.UI.OpenUIForm(UIFormId.StartSelectForm, this);
         }
+
+        public void ContinueGame()
+        {
+            GamePlayManager.Instance.Contitnue();
+            
+            ChangeState<ProcedureGamePlay>(procedureOwner);
+                
+            var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
+            gamePlayProcedure.ShowMap();
+        }
+
+        public void RestartGame()
+        {
+            DataManager.Instance.DataGame.Clear();
+            DataManager.Instance.Save();
+            StartSelect();
+        }
+
+        
     }
 
 }

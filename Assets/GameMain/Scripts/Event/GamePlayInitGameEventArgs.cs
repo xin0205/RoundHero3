@@ -10,7 +10,7 @@ namespace RoundHero
         public int RandomSeed;
         public EGamMode GameMode;
         public List<Data_Player> PlayerDatas;
-        public EEnemyType EnemyType;
+        //public EEnemyType EnemyType;
 
         public GamePlayInitData(int randomSeed, List<Data_Player> playerDatas)
         {

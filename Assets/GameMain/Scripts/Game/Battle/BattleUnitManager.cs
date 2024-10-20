@@ -109,7 +109,7 @@ namespace RoundHero
 
         public int GetID()
         {
-            return DataManager.Instance.CurUser.GamePlayData.BattleData.UnitID++;
+            return DataManager.Instance.DataGame.User.CurGamePlayData.BattleData.UnitID++;
         }
 
         public int GetTempID()
@@ -117,7 +117,7 @@ namespace RoundHero
             return 999999;
         }
         
-        public Dictionary<int, Data_BattleUnit> BattleUnitDatas => DataManager.Instance.CurUser.GamePlayData.BattleData.BattleUnitDatas;
+        public Dictionary<int, Data_BattleUnit> BattleUnitDatas => DataManager.Instance.DataGame.User.CurGamePlayData.BattleData.BattleUnitDatas;
         
         public BattleUnitEntity GetUnitByGridPosIdxMoreCamps(int gridPosIdx, EUnitCamp? selfUnitCamp = null, List<ERelativeCamp> unitCamps = null)
         {

@@ -10,9 +10,9 @@ namespace RoundHero
         public Random Random;
         private int randomSeed;
 
-        public List<ECurseID> CurseIDs => DataManager.Instance.CurUser.GamePlayData.EnemyData.BattleCurseData.CurseIDs;
+        public List<ECurseID> CurseIDs => DataManager.Instance.DataGame.User.CurGamePlayData.EnemyData.BattleCurseData.CurseIDs;
         
-        public Data_BattleCurse BattleCurseData => DataManager.Instance.CurUser.GamePlayData.EnemyData.BattleCurseData;
+        public Data_BattleCurse BattleCurseData => DataManager.Instance.DataGame.User.CurGamePlayData.EnemyData.BattleCurseData;
         
         public void Init(int randomSeed)
         {

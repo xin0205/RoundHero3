@@ -580,11 +580,17 @@ namespace RoundHero
 
     public class Data_BattleHero : Data_BattleUnit
     {
-        public EHeroID HeroID;
+        public EHeroID HeroID = EHeroID.Empty;
 
         public Attribute Attribute = new();
 
         //public int RoundHeroHPDelta;
+
+        public void Clear()
+        {
+            HeroID = EHeroID.Empty;
+            Attribute.Clear();
+        }
         
         public override int CurHP
         {
@@ -1120,6 +1126,21 @@ namespace RoundHero
         public Dictionary<int, Data_EnergyBuff> EnergyBuffDatas = new ();
         public int Coin;
         
+        public void Clear()
+        {
+            CardIdx = 0;
+            TmpCardIdx = 0;
+            FuneIdx = 0;
+            BlessIdx = 0;
+            BattleHero.Clear();
+            UnusedFuneIdxs.Clear();
+            CardDatas.Clear();
+            FuneDatas.Clear();
+            BlessDatas.Clear();
+            EnergyBuffDatas.Clear();
+        
+        }
+        
         public Data_Player()
         {
             
@@ -1159,6 +1180,8 @@ namespace RoundHero
 
             return data;
         }
+        
+        
         
         public void RoundClear()
         {
@@ -1226,15 +1249,7 @@ namespace RoundHero
             return null;
         }
 
-        public void Clear()
-        {
-            UnusedFuneIdxs.Clear();
-            CardDatas.Clear();
-            FuneDatas.Clear();
-            BlessDatas.Clear();
-            EnergyBuffDatas.Clear();
         
-        }
     }
 
     public class Data_Enemy
@@ -1302,6 +1317,7 @@ namespace RoundHero
 
             return mapStageIdx;
         }
+
     }
 
 
@@ -1333,11 +1349,13 @@ namespace RoundHero
 
     public class Data_GamePlay
     {
+        public string GamePlayFileName;
+        public Data_Player PlayerData = new ();
         public Data_Map MapData = new ();
         public Data_Area AreaData = new ();
         public Data_Battle BattleData = new ();
         public Data_Battle LastBattleData = new ();
-        public Dictionary<EUnitCamp, Data_Player> PlayerDatas = new();
+        public List<Data_Player> PlayerDatas = new();
         public Dictionary<ulong, Data_Player> PlayerDataIDDict = new ();
         public Dictionary<EUnitCamp, Data_Player> PlayerDataCampDict = new ();
         public Data_Enemy EnemyData = new ();
@@ -1356,7 +1374,7 @@ namespace RoundHero
 
         public void AddPlayerData(Data_Player playerData)
         {
-            PlayerDatas.Add(playerData.UnitCamp, playerData);
+            PlayerDatas.Add(playerData);
             PlayerDataCampDict.Add(playerData.UnitCamp, playerData);
             PlayerDataIDDict.Add(playerData.PlayerID, playerData);
 
@@ -1402,7 +1420,7 @@ namespace RoundHero
             
             foreach (var kv in PlayerDatas)
             {
-                data.AddPlayerData(kv.Value.Copy());
+                data.AddPlayerData(kv.Copy());
             }
 
             return data;
@@ -1421,7 +1439,7 @@ namespace RoundHero
             EnemyData.RoundClear();
             foreach (var kv in PlayerDatas)
             {
-                kv.Value.RoundClear();
+                kv.RoundClear();
             }
         }
         

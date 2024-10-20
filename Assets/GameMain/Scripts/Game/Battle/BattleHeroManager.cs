@@ -50,10 +50,10 @@ namespace RoundHero
         //     return id++;
         // }
 
-        public void InitHeroData()
+        public void InitHeroData(EHeroID heroID)
         {
             BattleHeroData = new Data_BattleHero(BattleUnitManager.Instance.GetID(),
-                EHeroID.HurtAcquireCard, 0, BattleManager.Instance.CurUnitCamp, new List<int>());
+                heroID, 0, BattleManager.Instance.CurUnitCamp, new List<int>());
             BattleHeroData.UnitRole = EUnitRole.Hero;
             BattleUnitManager.Instance.BattleUnitDatas.Add(BattleHeroData.ID, BattleHeroData);
         }

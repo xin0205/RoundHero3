@@ -1,4 +1,5 @@
 ﻿
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -6,6 +7,10 @@ namespace RoundHero
     public class StartForm : UGuiForm
     {
         private ProcedureStart procedureStart;
+
+        [SerializeField] private GameObject startGame;
+        [SerializeField] private GameObject continueGame;
+        [SerializeField] private GameObject restartGame;
 
         protected override async void OnOpen(object userData)
         {
@@ -19,6 +24,13 @@ namespace RoundHero
             }
             
             procedureStart.StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
+
+            var isStartGame = DataManager.Instance.DataGame.User.CurGamePlayData.PlayerData.BattleHero.HeroID !=
+                              EHeroID.Empty;
+            
+            startGame.SetActive(!isStartGame);
+            continueGame.SetActive(isStartGame);
+            restartGame.SetActive(isStartGame);
             
         }
 
@@ -26,17 +38,31 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
         }
-        
-        public async void ShowStartSelect()
+
+        private void CloseForm()
         {
             GameEntry.Entity.HideEntity(procedureStart.StartEntity);
             GameEntry.UI.CloseUIForm(this);
-
+        }
+        
+        public void StartGame()
+        {
+            CloseForm();
             procedureStart.StartSelect();
         }
 
-        
-        
+
+        public void ContinueGame()
+        {
+            CloseForm();
+            procedureStart.ContinueGame();
+        }
+
+        public void RestartGame()
+        {
+            CloseForm();
+            procedureStart.RestartGame();
+        }
 
         
     }

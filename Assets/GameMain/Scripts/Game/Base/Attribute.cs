@@ -15,6 +15,14 @@ namespace RoundHero
             }
         }
 
+        public void Clear()
+        {
+            foreach (EHeroAttribute attribute in Enum.GetValues(typeof(EHeroAttribute)))
+            {
+                Value[attribute] = 0;
+            }
+        }
+
         public void SetAttribute(EHeroAttribute heroAttribute, float value)
         { 
             Value[heroAttribute] = (int)value;

@@ -17,16 +17,15 @@ namespace RoundHero
         public void InitData(EUnitCamp unitCamp)
         {
             var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
-            playerData.Clear();
-            
-            foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
-            {
-                var funeIdx = playerData.FuneIdx++;
-                var drFune = GameEntry.DataTable.GetBuff(funeID);
-                var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
-                playerData.FuneDatas.Add(funeIdx, new Data_Fune(funeIdx, funeID, (int)value));
-                playerData.UnusedFuneIdxs.Add(funeIdx);
-            }
+
+            // foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
+            // {
+            //     var funeIdx = playerData.FuneIdx++;
+            //     var drFune = GameEntry.DataTable.GetBuff(funeID);
+            //     var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
+            //     playerData.FuneDatas.Add(funeIdx, new Data_Fune(funeIdx, funeID, (int)value));
+            //     playerData.UnusedFuneIdxs.Add(funeIdx);
+            // }
             
             foreach (var cardID in GameManager.Instance.TmpInitCards)
             {
@@ -34,48 +33,48 @@ namespace RoundHero
                 playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
             }
 
-            var energyBuffDict = new Dictionary<int, string>();
-            var energyBuffIdx = 0;
-            var drHero = GameEntry.DataTable.GetHero(playerData.BattleHero.HeroID);
-            foreach (var buffStr in drHero.EnergyBuffIDs)
-            {
-                var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
-                
-                // var cardID = playerData.CardIDIdx++;
-                // playerData.EnergyBuffDatas.Add(cardID, new Data_EnergyBuff(cardID, buffData.DrBuff.Id, new List<int>()));
-                
-                energyBuffDict.Add(energyBuffIdx++, buffData.BuffStr);
-            }
-            
-            var idx = 0;
-            for (int i = drHero.Heart; i > 0 ; i--)
-            {
-                energyBuffIdx = 0;
-                for (int j = drHero.HP; j > 0 ; j--)
-                {
-                    if (energyBuffIdx < drHero.EnergyBuffIntervals.Count && drHero.EnergyBuffIntervals[energyBuffIdx] == idx)
-                    {
-                        playerData.EnergyBuffDatas.Add(i * 100 + j, new Data_EnergyBuff()
-                        {
-                            Heart = i,
-                            HP = j,
-                            EnergyBuffIdx = energyBuffIdx,
-                            BuffStr = energyBuffDict[energyBuffIdx],
-                        });
-                        energyBuffIdx++;
-                        idx = 0;
-                    }
-                    
-                    if (j == 1)
-                    {
-                        idx = 0;
-                    }
-                    else
-                    {
-                        idx += 1;
-                    }
-                }
-            }
+            // var energyBuffDict = new Dictionary<int, string>();
+            // var energyBuffIdx = 0;
+            // var drHero = GameEntry.DataTable.GetHero(playerData.BattleHero.HeroID);
+            // foreach (var buffStr in drHero.EnergyBuffIDs)
+            // {
+            //     var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+            //     
+            //     // var cardID = playerData.CardIDIdx++;
+            //     // playerData.EnergyBuffDatas.Add(cardID, new Data_EnergyBuff(cardID, buffData.DrBuff.Id, new List<int>()));
+            //     
+            //     energyBuffDict.Add(energyBuffIdx++, buffData.BuffStr);
+            // }
+            //
+            // var idx = 0;
+            // for (int i = drHero.Heart; i > 0 ; i--)
+            // {
+            //     energyBuffIdx = 0;
+            //     for (int j = drHero.HP; j > 0 ; j--)
+            //     {
+            //         if (energyBuffIdx < drHero.EnergyBuffIntervals.Count && drHero.EnergyBuffIntervals[energyBuffIdx] == idx)
+            //         {
+            //             playerData.EnergyBuffDatas.Add(i * 100 + j, new Data_EnergyBuff()
+            //             {
+            //                 Heart = i,
+            //                 HP = j,
+            //                 EnergyBuffIdx = energyBuffIdx,
+            //                 BuffStr = energyBuffDict[energyBuffIdx],
+            //             });
+            //             energyBuffIdx++;
+            //             idx = 0;
+            //         }
+            //         
+            //         if (j == 1)
+            //         {
+            //             idx = 0;
+            //         }
+            //         else
+            //         {
+            //             idx += 1;
+            //         }
+            //     }
+            // }
             
         }
 

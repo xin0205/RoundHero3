@@ -29,7 +29,7 @@ namespace RoundHero
             }
             
             
-            SelectGO.SetActive(GameManager.Instance.StartSelect_HeroID == drHero.Id);
+            SelectGO.SetActive(GameManager.Instance.TmpHeroID == drHero.Id);
         }
 
 

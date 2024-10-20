@@ -12,7 +12,7 @@ namespace RoundHero
         private int randomSeed;
 
         public Dictionary<int, Data_GridProp> GridPropDatas =>
-            DataManager.Instance.CurUser.GamePlayData.BattleData.GridPropDatas;
+            DataManager.Instance.DataGame.User.CurGamePlayData.BattleData.GridPropDatas;
 
         public Dictionary<int, GridPropEntity> GridPropEntities = new();
 

@@ -35,10 +35,10 @@ namespace RoundHero
         public EBattleState BattleState { get; set; }
 
         
-        public Data_GamePlay GamePlayData => DataManager.Instance.CurUser.GamePlayData;
+        public Data_GamePlay GamePlayData => DataManager.Instance.DataGame.User.CurGamePlayData;
         public Data_Battle BattleData => GamePlayData.BattleData;
         
-        public void Init(int randomSeed, EEnemyType enemyType)
+        public void  Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
             
@@ -60,13 +60,7 @@ namespace RoundHero
             BattleManager.Instance.Init(randomSeed);
 
             BattleCardManager.Instance.InitCards();
-            BattleEnemyManager.Instance.Init(Random.Next(), enemyType);
-            
-            
-
-            
-
-            
+            BattleEnemyManager.Instance.Init(Random.Next());
         }
 
         public void StartBattle()

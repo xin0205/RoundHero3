@@ -67,7 +67,7 @@ namespace RoundHero
             if(deltaHP > 0)
                 return;
             
-            var energyBuffDatas = GamePlayManager.Instance.GamePlayData.PlayerDatas[hero.UnitCamp].EnergyBuffDatas;
+            var energyBuffDatas = GamePlayManager.Instance.GamePlayData.PlayerDataCampDict[hero.UnitCamp].EnergyBuffDatas;
 
             var copyHero = hero.Copy();
             var eachDeltaHP = deltaHP / Math.Abs(deltaHP); 
@@ -93,7 +93,7 @@ namespace RoundHero
 
         public Data_EnergyBuff GetEnergyBuff(EUnitCamp unitCamp, int heart, int hp)
         {
-            var energyBuffDatas = GamePlayManager.Instance.GamePlayData.PlayerDatas[unitCamp].EnergyBuffDatas;
+            var energyBuffDatas = GamePlayManager.Instance.GamePlayData.PlayerDataCampDict[unitCamp].EnergyBuffDatas;
             
             var key = (int)heart * 100 + hp;
             if(energyBuffDatas.ContainsKey(key))

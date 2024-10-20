@@ -65,7 +65,7 @@ namespace RoundHero
         private List<string> clientBroadCasts = new List<string>();
 
         
-        public Data_GamePlay GamePlayData => DataManager.Instance.CurUser.GamePlayData;
+        public Data_GamePlay GamePlayData => DataManager.Instance.DataGame.User.CurGamePlayData;
         public Data_Battle BattleData => GamePlayData.BattleData;
 
         public void ResetClientBroadCasts()
@@ -417,9 +417,9 @@ namespace RoundHero
 
         public Data_Card GetCard(int cardID)
         {
-            foreach (var kv in GamePlayManager.Instance.GamePlayData.PlayerDatas)
+            foreach (var playerData in GamePlayManager.Instance.GamePlayData.PlayerDatas)
             {
-                foreach (var kv2 in kv.Value.CardDatas)
+                foreach (var kv2 in playerData.CardDatas)
                 {
                     if (kv2.Value.Idx == cardID)
                         return kv2.Value;

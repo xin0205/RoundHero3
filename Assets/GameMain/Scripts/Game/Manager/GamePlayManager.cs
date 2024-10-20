@@ -4,24 +4,33 @@ namespace RoundHero
 {
     public class GamePlayManager : Singleton<GamePlayManager>
     {
-        public Data_GamePlay GamePlayData => DataManager.Instance.CurUser.GamePlayData;
+        public Data_GamePlay GamePlayData => DataManager.Instance.DataGame.User.CurGamePlayData;
         //public ProcedureGamePlay ProcedureGamePlay;
         
-        public void Init(GamePlayInitData gamePlayInitData)
+        public void Start()
         {
-            if (gamePlayInitData.GameMode == EGamMode.PVE)
+            if (GamePlayData.GameMode == EGamMode.PVE)
             {
-                var random = new Random(GamePlayData.RandomSeed);
-                // var randoms = MathUtility.GetRandomNum(6, 0,
-                //     Constant.Game.RandomRange, random);
-            
                 GamePlayManager.Instance.GamePlayData.AddPlayerData(PlayerManager.Instance.PlayerData);
+                PlayerManager.Instance.PlayerData.Clear();
+                
                 
                 PVEManager.Instance.SetCurPlayer();
-                
-                BattleHeroManager.Instance.InitHeroData();
+
+                var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.TmpHeroID);
+                BattleHeroManager.Instance.InitHeroData(drHero.HeroID);
                 
                 BattlePlayerManager.Instance.InitData(EUnitCamp.Player1);
+
+            }
+            
+        }
+
+        public void Contitnue()
+        {
+            if (GamePlayData.GameMode == EGamMode.PVE)
+            {
+                var random = new Random(GamePlayData.RandomSeed);
 
                 BattleMapManager.Instance.Init(random.Next());
                 //BattleEventManager.Instance.Init(random.Next());
@@ -32,23 +41,17 @@ namespace RoundHero
                 BattleEnergyBuffManager.Instance.Init(random.Next());
                 BattleEnergyBuffManager.Instance.InitHero(BattleHeroManager.Instance.BattleHeroData);
                 
+                PVEManager.Instance.Init(random.Next());
+                
             }
-            
         }
 
         public void Destory(EGamMode gameMode)
         {
             if (gameMode == EGamMode.PVE)
             {
-                GamePlayManager.Instance.GamePlayData.Clear();
-                BattleAreaManager.Instance.Destory();
                 PVEManager.Instance.Destory();
-                //BattleMapManager.Instance.Destory();
 
-                BattleUnitManager.Instance.Destory();
-                BattleHeroManager.Instance.Destory();
-                //BattleEnergyBuffManager.Instance.Destory();
-                
             }
         }
 
