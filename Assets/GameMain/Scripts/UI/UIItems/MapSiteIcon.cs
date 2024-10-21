@@ -6,8 +6,7 @@ namespace RoundHero
 {
     public class MapSiteIcon : MonoBehaviour
     {
-        [SerializeField]
-        public MapSiteSprite MapSiteSprite;
+        
         
         [SerializeField]
         public Image MapSiteImage;

@@ -196,6 +196,19 @@ namespace RoundHero
             
         }
         
+        public void Confirm(int selectIdx)
+        {
+            BattleMapManager.Instance.MapData
+                    .MapStageDataDict[BattleMapManager.Instance.MapData.CurMapStageIdx.StageIdx].SelectRouteIdx = selectIdx;
+            MapStageRoute.SelectRouteIdx = selectIdx;
+            
+            //BattleMapManager.Instance.MapData.CurMapStageIdx.RouteIdx = MapStageRoute.SelectRouteIdx;
+            BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute = true;
+            
+            GameEntry.Event.Fire(null, RefreshMapStageEventArgs.Create());
+
+        }
+        
         public void Confirm()
         {
             BattleMapManager.Instance.MapData
