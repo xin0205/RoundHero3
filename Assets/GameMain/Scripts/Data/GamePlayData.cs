@@ -1279,6 +1279,27 @@ namespace RoundHero
         public int StageRandomSeed;
         
         public Dictionary<int, Dictionary<int, Data_MapStep>> MapSteps = new ();
+
+        public Data_MapStage Copy()
+        {
+            var data = new Data_MapStage();
+            data.MapIdx = MapIdx;
+            data.StageIdx = StageIdx;
+            data.SelectRouteIdx = SelectRouteIdx;
+            data.StageRandomSeed = StageRandomSeed;
+
+            foreach (var kv in MapSteps)
+            {
+                var dict = new Dictionary<int, Data_MapStep>();
+                foreach (var kv2 in kv.Value)
+                {
+                    dict.Add(kv2.Key, kv2.Value.Copy());
+                }
+                data.MapSteps.Add(kv.Key, dict);
+            }
+
+            return data;
+        }
         
     }
     
@@ -1287,6 +1308,16 @@ namespace RoundHero
         public Data_MapRoute MapRoute;
         public int StepIdx;
         public int RandomSeed;
+
+        public Data_MapStep Copy()
+        {
+            var data = new Data_MapStep();
+            data.MapRoute = MapRoute.Copy();
+            data.StepIdx = StepIdx;
+            data.RandomSeed = RandomSeed;
+
+            return data;
+        }
     }
     
     public class Data_MapRoute
@@ -1295,6 +1326,17 @@ namespace RoundHero
         public int StageIdx;
         public int RouteIdx;
 
+        public Data_MapRoute Copy()
+        {
+            var data = new Data_MapRoute();
+            data.MapIdx = MapIdx;
+            data.StageIdx = StageIdx;
+            data.RouteIdx = RouteIdx;
+            
+            return data;
+        }
+
+        
     }
     
     public class MapStageIdx
@@ -1304,7 +1346,7 @@ namespace RoundHero
         //public int RouteIdx;
         public int StepIdx = -1;
         public bool IsSelectRoute = false;
-        public int RadomSeed;
+        //public int RadomSeed;
 
         public MapStageIdx Copy()
         {
@@ -1314,6 +1356,7 @@ namespace RoundHero
             mapStageIdx.StageIdx = StageIdx;
             //mapStageIdx.RouteIdx = RouteIdx;
             mapStageIdx.StepIdx = StepIdx;
+            mapStageIdx.IsSelectRoute = IsSelectRoute;
 
             return mapStageIdx;
         }
@@ -1332,7 +1375,10 @@ namespace RoundHero
         public Data_Map Copy()
         {
             var data = new Data_Map();
-            
+            foreach (var kv in MapStageDataDict)
+            {
+                data.MapStageDataDict.Add(kv.Key, kv.Value.Copy());
+            }
             data.CurMapStageIdx = CurMapStageIdx.Copy();
 
             return data;

@@ -36,6 +36,7 @@ namespace RoundHero
 
         public async void Start()
         {
+            StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
             GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
         }
         
@@ -104,9 +105,9 @@ namespace RoundHero
 
         }
 
-        private void StartGame()
+        private async void StartGame()
         {
-            
+            StartSelectEntity = await GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
             GameEntry.UI.OpenUIForm(UIFormId.StartSelectForm, this);
         }
 

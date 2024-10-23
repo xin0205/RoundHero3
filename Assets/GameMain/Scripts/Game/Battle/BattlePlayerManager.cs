@@ -18,14 +18,23 @@ namespace RoundHero
         {
             var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
 
-            // foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
-            // {
-            //     var funeIdx = playerData.FuneIdx++;
-            //     var drFune = GameEntry.DataTable.GetBuff(funeID);
-            //     var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
-            //     playerData.FuneDatas.Add(funeIdx, new Data_Fune(funeIdx, funeID, (int)value));
-            //     playerData.UnusedFuneIdxs.Add(funeIdx);
-            // }
+            foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
+            {
+                var funeIdx = playerData.FuneIdx++;
+                var drFune = GameEntry.DataTable.GetBuff(funeID);
+                var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
+                playerData.FuneDatas.Add(funeIdx, new Data_Fune(funeIdx, funeID, (int)value));
+                playerData.UnusedFuneIdxs.Add(funeIdx);
+            }
+            
+            foreach (var blessID in Constant.Hero.InitDatas[unitCamp].InitBlesses)
+            {
+                var blessIdx = playerData.BlessIdx++;
+                //var drBless = GameEntry.DataTable.GetBless(blessID);
+                
+                playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, blessID));
+                
+            }
             
             foreach (var cardID in GameManager.Instance.TmpInitCards)
             {

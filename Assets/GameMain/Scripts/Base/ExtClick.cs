@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
  
 namespace UnityEngine.UI
 {
-    public class ExtClick : MonoBehaviour,IPointerClickHandler
+    public class ExtClick : MonoBehaviour, IPointerClickHandler
     {
         [Serializable]
         public class ClickedEvent : UnityEvent
@@ -42,6 +42,11 @@ namespace UnityEngine.UI
  
         bool isClicked = false;
         int clickCount = 0;
+
+        public void Start()
+        {
+            
+        }
  
         public void OnPointerClick(PointerEventData eventData)
         {

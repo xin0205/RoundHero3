@@ -47,7 +47,7 @@ namespace RoundHero
             //
             // }
             
-            procedureGamePlay.MapEntity = await GameEntry.Entity.ShowSceneEntityAsync("Map");
+            
 
             InitMapStageRoute();
 
@@ -72,6 +72,7 @@ namespace RoundHero
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
+            GameEntry.Entity.HideEntity(procedureGamePlay.MapEntity);
             GameEntry.Event.Unsubscribe(RefreshMapStageEventArgs.EventId, OnRefreshMapStage);
             GameEntry.Event.Unsubscribe(ClickMapStageStepItemEventArgs.EventId, OnClickMapStageStepItem);
             
@@ -97,9 +98,9 @@ namespace RoundHero
                
             }
 
-            GameUtility.DelayExcute(0.1f, () => {
-                scrollRect.verticalNormalizedPosition = 1;
-            });
+            // GameUtility.DelayExcute(0.1f, () => {
+            //     scrollRect.verticalNormalizedPosition = 1;
+            // });
 
             // for (int i = 0; i < MapStageRouteItems.Count; i++)
             // {

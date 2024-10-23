@@ -54,8 +54,7 @@ namespace RoundHero
             
             
             heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
-            procedureStart.StartSelectEntity = await GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
-            
+
             GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
 
             
@@ -89,6 +88,7 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             GameEntry.Entity.HideEntity(heroSceneEntity);
+            GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
             
             GameEntry.Event.Unsubscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
         }
@@ -141,7 +141,7 @@ namespace RoundHero
                 return;
             }
             
-            GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
+            
             GameEntry.UI.CloseUIForm(this);
             
             
@@ -276,7 +276,7 @@ namespace RoundHero
 
         public void Back()
         {
-            GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
+            
             GameEntry.UI.CloseUIForm(this);
 
             procedureStart.Start();

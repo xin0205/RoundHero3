@@ -991,6 +991,7 @@ namespace RoundHero
         
         public class InitData
         {
+            public List<int> InitBlesses = new List<int>();
             public List<int> InitFunes = new List<int>();
             public List<InitCardData> InitCards = new();
         }
@@ -1001,6 +1002,14 @@ namespace RoundHero
             {
                 [EUnitCamp.Player1] = new InitData()
                 {
+                    InitBlesses = new List<int>()
+                    {
+                        0,
+                        1,
+                        2,
+                        3,
+                    },
+                    
                     InitFunes = new List<int>()
                     {
                         0,

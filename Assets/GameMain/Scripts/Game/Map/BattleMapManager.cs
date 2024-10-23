@@ -12,7 +12,7 @@ namespace RoundHero
 
         public void Init(int randomSeed)
         {
-            MapData.Clear();
+            //MapData.Clear();
             
             this.randomSeed = randomSeed;
             MapData.RandomSeed = randomSeed;
@@ -20,6 +20,11 @@ namespace RoundHero
             
             for (int i = 0; i < Constant.Map.StageCount; i++)
             {
+                if (MapData.MapStageDataDict.ContainsKey(i))
+                {
+                    continue;
+                }
+                
                 randomSeed = BattleMapManager.Instance.Random.Next(0, Constant.Game.RandomRange);
                 var routes = new Dictionary<int, Dictionary<int, Data_MapStep>>();
                 for (int j = 0; j < Constant.Map.RouteCount; j++)
@@ -42,7 +47,13 @@ namespace RoundHero
                     }
                     routes.Add(j, steps);
                 }
-                
+
+                // var selectRouteIdx = -1;
+                // if (MapData.MapStageDataDict.ContainsKey(i))
+                // {
+                //     selectRouteIdx = BattleMapManager.Instance.MapData.MapStageDataDict[i].SelectRouteIdx;
+                // }
+                //
                 MapData.MapStageDataDict.Add(i, new Data_MapStage()
                 {
                     StageRandomSeed = randomSeed,

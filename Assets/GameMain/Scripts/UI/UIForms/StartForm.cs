@@ -23,8 +23,7 @@ namespace RoundHero
                 return;
             }
             
-            procedureStart.StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
-
+            
             var isStartGame = DataManager.Instance.DataGame.User.CurGamePlayData.PlayerData.BattleHero.HeroID !=
                               EHeroID.Empty;
             

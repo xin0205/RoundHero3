@@ -30,6 +30,7 @@ namespace RoundHero
         public async void ShowMap()
         {
             GamePlayManager.Instance.SetProcedureGamePlay(this);
+            MapEntity = await GameEntry.Entity.ShowSceneEntityAsync("Map");
             var mapFormResult = await GameEntry.UI.OpenUIFormAsync(UIFormId.MapForm, this);
             mapForm = mapFormResult.Logic as MapForm;
             var playerInfoFormResult = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
@@ -59,7 +60,7 @@ namespace RoundHero
         {
             GamePlayManager.Instance.Destory(EGamMode.PVE);
             
-            GameEntry.Entity.HideEntity(MapEntity);
+            
             GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(mapForm);
         }

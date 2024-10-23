@@ -207,6 +207,28 @@ namespace RoundHero
 
         }
         
+        public static string GetBlessIconName(int blessID)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Blesses/{0}.png", blessID);
+            
+        }
+        
+        
+        
+        public static Task<Sprite> GetBlessIcon(int blessID)
+        {
+            var assetName = GetBlessIconName(blessID);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetBlessIconName(0));
+            }
+
+        }
+        
         public static string GetTacticIconName(int tacticID)
         {
             return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Tactics/{0}.png", tacticID);
