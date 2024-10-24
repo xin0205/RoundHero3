@@ -849,6 +849,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 6709028039014310551, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

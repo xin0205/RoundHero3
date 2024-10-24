@@ -84,6 +84,8 @@ namespace RoundHero
         StartSelectForm = 129,
         
         PlayerInfoForm = 130,
+        
+        InfoForm = 131,
 
     }
 }

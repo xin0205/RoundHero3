@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace RoundHero
@@ -12,6 +13,10 @@ namespace RoundHero
         private Text Value;
 
         private int blessID = -1;
+
+        private bool isShowInfo = false;
+
+        private InfoForm infoForm;
         
         public void Init()
         {
@@ -28,14 +33,48 @@ namespace RoundHero
                 
             }
 
-            Value.gameObject.SetActive(blessData.Value != 0);
-            if (blessData.Value != 0)
+            var drBless = GameEntry.DataTable.GetBless(blessID);
+            var deltaValue = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]) - blessData.Value;
+            Value.gameObject.SetActive(deltaValue != 0);
+            if (deltaValue != 0)
             {
-                Value.text = blessData.Value.ToString();
+                Value.text = deltaValue.ToString();
             }
 
             
             
+        }
+
+        private void Update()
+        {
+            if (infoForm != null && !isShowInfo)
+            {
+                GameEntry.UI.CloseUIForm(infoForm);
+                infoForm = null;
+            }
+        }
+
+        public async void ShowInfo()
+        {
+            isShowInfo = true;
+            var blessName = "";
+            var blessDesc = "";
+            GameUtility.GetBlessText(blessID, ref blessName, ref blessDesc);
+            
+            var uiForm = await GameEntry.UI.OpenInfoFormAsync(new InfoFormParams()
+            {
+                Name = blessName,
+                Desc = blessDesc,
+                Position = this.transform.position + new Vector3(0.5f, -0.5f, 0),
+            });
+            
+            infoForm = uiForm.Logic as InfoForm;
+        }
+
+        public void HideInfo()
+        {
+            isShowInfo = false;
+
         }
     }
 }

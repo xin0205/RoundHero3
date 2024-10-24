@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameFramework;
 using GameFramework.Event;
 using SuperScrollView;
 using UnityEngine;
@@ -9,7 +10,8 @@ namespace RoundHero
 {
     public class PlayerInfoForm : UGuiForm
     {
-        public Text coinText;
+        [SerializeField] private Text hpText;
+        [SerializeField] private Text coinText;
         [SerializeField] private Image heroIcon;
         [SerializeField] private List<GameObject> heroHPs;
         public LoopGridView blessGridView;
@@ -46,6 +48,7 @@ namespace RoundHero
         private async void OnRefreshPlayerInfo(object sender, GameEventArgs e)
         {
             coinText.text = BattlePlayerManager.Instance.PlayerData.Coin.ToString();
+            hpText.text = BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP.ToString();
             var drHero = GameEntry.DataTable.GetHero(BattlePlayerManager.Instance.PlayerData.BattleHero.HeroID);
             heroIcon.sprite = await AssetUtility.GetHeroIcon(drHero.Id);
             
@@ -87,6 +90,20 @@ namespace RoundHero
             
             itemScript.SetItemData(blessData, itemIndex, row, column);
             return item;
+        }
+        
+        public void HPTipsInfo(InfoFormParams infoFormParams)
+        {
+            infoFormParams.Name = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.HeroName,
+                BattleHeroManager.Instance.BattleHeroData.ID));
+            infoFormParams.Desc = Utility.Text.Format(infoFormParams.Desc,
+                BattleHeroManager.Instance.BattleHeroData.CurHeart + "/" +
+                BattleHeroManager.Instance.BattleHeroData.MaxHeart,
+                BattleHeroManager.Instance.BattleHeroData.CurHP + "/" +
+                BattleHeroManager.Instance.BattleHeroData.MaxHP);
+            
+            infoFormParams.Desc += "\n" + GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.HeroDesc,
+                BattleHeroManager.Instance.BattleHeroData.ID));
         }
     }
 }

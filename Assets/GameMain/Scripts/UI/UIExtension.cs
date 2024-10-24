@@ -8,7 +8,9 @@
 using GameFramework.DataTable;
 using GameFramework.UI;
 using System.Collections;
+using System.Threading.Tasks;
 using GameFramework;
+using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -156,6 +158,16 @@ namespace RoundHero
         public static void OpenConfirm(this UIComponent uiComponent, ConfirmFormParams dialogParams)
         {
             uiComponent.OpenUIForm(UIFormId.ConfirmForm, dialogParams);
+        }
+        
+        public static void OpenInfoForm(this UIComponent uiComponent, InfoFormParams infoFormParams)
+        {
+            uiComponent.OpenUIForm(UIFormId.InfoForm, infoFormParams);
+        }
+        
+        public static Task<UIForm> OpenInfoFormAsync(this UIComponent uiComponent, InfoFormParams infoFormParams)
+        {
+            return uiComponent.OpenUIFormAsync(UIFormId.InfoForm, infoFormParams);
         }
         
         public static void OpenMessage(this UIComponent uiComponent, string message)

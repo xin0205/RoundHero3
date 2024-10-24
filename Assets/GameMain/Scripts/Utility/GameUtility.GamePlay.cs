@@ -101,6 +101,35 @@ namespace RoundHero
             
             
         }
+        
+        public static void GetBlessText(int blessID, ref string name, ref string desc)
+        {
+            var blessName =
+                Utility.Text.Format(Constant.Localization.BlessName, blessID); 
+
+            name = GameEntry.Localization.GetString(blessName);
+
+            var drBless = GameEntry.DataTable.GetBless(blessID);
+
+            var values = new List<float>();
+            foreach (var value in drBless.Values1)
+            {
+                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+                if (val != 0)
+                {
+                    values.Add(val);
+                }
+               
+            }
+
+            var cardDesc =
+                Utility.Text.Format(Constant.Localization.BlessDesc, blessID);
+
+            desc = GetStrByValues(GameEntry.Localization.GetString(cardDesc), values);
+
+            
+            
+        }
 
         public static string GetStrByValues(string str, List<string> values, bool showSign = false)
         {

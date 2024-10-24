@@ -583,6 +583,8 @@ namespace RoundHero
         public EHeroID HeroID = EHeroID.Empty;
 
         public Attribute Attribute = new();
+        
+        public int BaseMaxHeart { get; set; }
 
         //public int RoundHeroHPDelta;
 
@@ -596,6 +598,19 @@ namespace RoundHero
         {
             get => (int) Attribute.GetAttribute(EHeroAttribute.CurHP);
             set => Attribute.SetAttribute(EHeroAttribute.CurHP, value);
+        }
+        
+        public int CurHeart
+        {
+            get => (int) Attribute.GetAttribute(EHeroAttribute.CurHeart);
+            set => Attribute.SetAttribute(EHeroAttribute.CurHeart, value);
+        }
+        
+        public int MaxHeart
+        {
+            // + GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.AddHeroMaxHP, BattleManager.Instance.CurUnitCamp);
+            get => (int) BaseMaxHeart;
+            //set => Attribute.SetAttribute(EHeroAttribute.MaxHP, value);
         }
 
         public override int MaxHP
@@ -616,13 +631,15 @@ namespace RoundHero
             
             HeroID = heroID;
             BaseMaxHP = drHero.HP;
+            BaseMaxHeart = drHero.Heart;
+            CurHeart = MaxHeart;
             CurHP = MaxHP;
             LastCurHP = CurHP;
             UnitRole = EUnitRole.Hero;
             
 
-            Attribute.SetAttribute(EHeroAttribute.MaxHeart, drHero.Heart);
-            Attribute.SetAttribute(EHeroAttribute.CurHeart, drHero.Heart);
+            // Attribute.SetAttribute(EHeroAttribute.MaxHeart, drHero.Heart);
+            // Attribute.SetAttribute(EHeroAttribute.CurHeart, drHero.Heart);
             // Attribute.SetAttribute(EHeroAttribute.MaxEnergy, Constant.Hero.MaxEnergy);
             // Attribute.SetAttribute(EHeroAttribute.CurEnergy, Constant.Hero.RecoverEnergy);
             //Attribute.SetAttribute(EHeroAttribute.RecoverEnergy, Constant.Hero.RecoverEnergy);
