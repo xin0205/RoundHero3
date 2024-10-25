@@ -9,7 +9,7 @@ namespace RoundHero
     {
         private StoreItemData storeItemData;
         
-        [SerializeField] private BaseCard baseCard;
+        [SerializeField] private CardItem cardItem;
 
         [SerializeField] private Text cardPrice;
         
@@ -35,7 +35,7 @@ namespace RoundHero
 
         public void Refresh()
         {
-            baseCard.SetCardUI(this.storeItemData.CommonItemData.CardID);
+            cardItem.SetCardUI(this.storeItemData.CommonItemData.CardID);
             cardPrice.text = storeItemData.Price.ToString();
             mask.SetActive(storeItemData.IsSaleOut);
         }

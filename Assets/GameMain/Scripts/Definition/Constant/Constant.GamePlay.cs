@@ -991,6 +991,7 @@ namespace RoundHero
         
         public class InitData
         {
+            public int Coin = 350;
             public List<int> InitBlesses = new List<int>();
             public List<int> InitFunes = new List<int>();
             public List<InitCardData> InitCards = new();

@@ -28,7 +28,7 @@ namespace RoundHero
         //private List<int> cardIdxs = new List<int>();
         private GameObject parentForm;
         
-        public int CurSelectCardIdx;
+        public int CurSelectCardIdx = -1;
         
         [SerializeField] private Toggle unitToggle;
 

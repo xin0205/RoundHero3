@@ -15,10 +15,6 @@ namespace RoundHero
         
         [SerializeField]
         public FunesView FunesViews;
-
-        
-        
-        
         
         // [SerializeField]
         // private GameObject cardGO;
@@ -32,7 +28,8 @@ namespace RoundHero
         // [SerializeField]
         // private Toggle switchViewToggle;
         
-        
+        [SerializeField]
+        private Toggle unitToggle;
         
         protected override void OnOpen(object userData)
         {
@@ -41,6 +38,9 @@ namespace RoundHero
 
             var funeIdxs = BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs;
             FunesViews.Init(funeIdxs, this.gameObject);
+
+            unitToggle.isOn = false;
+            unitToggle.isOn = true;
 
             // switchViewToggle.isOn = true;
             // switchViewToggle.isOn = false;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameFramework;
 using UnityEngine;
 using SuperScrollView;
 using UnityGameFramework.Runtime;
@@ -135,9 +136,21 @@ namespace RoundHero
 
         public void PurseCard(int cardStoreIdx, int price)
         {
+            if (price > PlayerManager.Instance.PlayerData.Coin)
+            {
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_CoinNotEnough);
+                return;
+            }
+
+            var cardItemData = storeCards[cardStoreIdx];
+            var name = "";
+            var desc = "";
+            GameUtility.GetCardText(cardItemData.CommonItemData.CardID, ref name, ref desc);
+            
             GameEntry.UI.OpenConfirm(new ConfirmFormParams()
             {
                 IsShowCancel = true,
+                Message = GameEntry.Localization.GetLocalizedString(Constant.Localization.Message_Purchase, price, name),
                 OnConfirm = () =>
                 {
                     storeCards[cardStoreIdx].IsSaleOut = true;

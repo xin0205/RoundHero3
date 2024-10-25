@@ -1,4 +1,6 @@
-﻿using UnityGameFramework.Runtime;
+﻿
+using GameFramework;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -22,6 +24,12 @@ namespace RoundHero
 
             //return "No Key";
             return key;
+        }
+
+        public static string GetLocalizedString<T1, T2>(this LocalizationComponent localizationComponent, string localizationStr, T1 val1, T2 val2)
+        {
+            var str = GetString(localizationComponent, localizationStr);
+            return Utility.Text.Format(str, val1, val2);
         }
         
 

@@ -266,6 +266,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnitCardItem
       objectReference: {fileID: 0}
+    - target: {fileID: 6737811815257700014, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

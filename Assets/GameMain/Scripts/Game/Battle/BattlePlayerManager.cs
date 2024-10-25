@@ -17,7 +17,9 @@ namespace RoundHero
         public void InitData(EUnitCamp unitCamp)
         {
             var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
-
+            playerData.Coin = Constant.Hero.InitDatas[unitCamp].Coin;
+            
+            
             foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
             {
                 var funeIdx = playerData.FuneIdx++;

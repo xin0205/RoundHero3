@@ -13,7 +13,7 @@ namespace RoundHero
         
         private PlayerCardData playerCardData;
         
-        [SerializeField] private BaseCard BaseCard;
+        [SerializeField] private CardItem CardItem;
 
         [SerializeField] private List<Image> FuneIcons = new List<Image>();
         
@@ -36,7 +36,7 @@ namespace RoundHero
             OnPointExitAction = onPointExitAction;
             //OnDropAction = onPointUpAction;
             
-            BaseCard.SetCardUI(this.playerCardData.CardID);
+            CardItem.SetCardUI(this.playerCardData.CardID);
             Refresh();
             
         }

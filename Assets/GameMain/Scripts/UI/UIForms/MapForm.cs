@@ -139,56 +139,62 @@ namespace RoundHero
                 var randomSeed = BattleMapManager.Instance.MapData.MapStageDataDict[stageIdx]
                     .MapSteps[routeIdx][ne.MapStep.StepIdx].RandomSeed;
                 
-                switch (ne.MapSite)
+                GameEntry.UI.OpenUIForm(UIFormId.StoreForm, new StoreFormData()
                 {
-                    case EMapSite.NormalBattle:
-                        // Close();
-                        // procedureGamePlay.StartBattle();
-                        // break;
-                        //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Normal);
-                        
-                        
-                    case EMapSite.EliteBattle:
-                        //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Elite);
-                         // Close();
-                         // procedureGamePlay.StartBattle();
-                         // break;
-                        GameEntry.UI.OpenUIForm(UIFormId.StoreForm, new StoreFormData()
-                        {
-                            RandomSeed = randomSeed,
-                        });
-                        break;
-                    
-                    case EMapSite.BossBattle:
-                        //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Boss);
-                        Close();
-                        procedureGamePlay.StartBattle();
-                        break;
-                    case EMapSite.Store:
-                        GameEntry.UI.OpenUIForm(UIFormId.RestForm);
-                        break;
-                    case EMapSite.Rest:
-                        GameEntry.UI.OpenUIForm(UIFormId.RestForm);
-                        break;
-                    case EMapSite.Treasure:
-                        GameEntry.UI.OpenUIForm(UIFormId.TreasureForm, new TreasureFormData()
-                        {
-                            RandomSeed = randomSeed,
-                        });
-                        break;
-                        
-                    case EMapSite.Event:
-                        GameEntry.UI.OpenUIForm(UIFormId.BattleEventForm, new BattleEventFormData()
-                        {
-                            RandomSeed = randomSeed,
-                        });
-                        break;
-                    case EMapSite.Empty:
-                        GameEntry.UI.OpenUIForm(UIFormId.RestForm);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    RandomSeed = randomSeed,
+                });
+                
+                
+                // switch (ne.MapSite)
+                // {
+                //     case EMapSite.NormalBattle:
+                //         // Close();
+                //         // procedureGamePlay.StartBattle();
+                //         // break;
+                //         //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Normal);
+                //         
+                //         
+                //     case EMapSite.EliteBattle:
+                //         //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Elite);
+                //          // Close();
+                //          // procedureGamePlay.StartBattle();
+                //          // break;
+                //         GameEntry.UI.OpenUIForm(UIFormId.StoreForm, new StoreFormData()
+                //         {
+                //             RandomSeed = randomSeed,
+                //         });
+                //         break;
+                //     
+                //     case EMapSite.BossBattle:
+                //         //PVEManager.Instance.Init(ne.MapStep.RandomSeed, EEnemyType.Boss);
+                //         Close();
+                //         procedureGamePlay.StartBattle();
+                //         break;
+                //     case EMapSite.Store:
+                //         GameEntry.UI.OpenUIForm(UIFormId.StoreForm);
+                //         break;
+                //     case EMapSite.Rest:
+                //         GameEntry.UI.OpenUIForm(UIFormId.RestForm);
+                //         break;
+                //     case EMapSite.Treasure:
+                //         GameEntry.UI.OpenUIForm(UIFormId.TreasureForm, new TreasureFormData()
+                //         {
+                //             RandomSeed = randomSeed,
+                //         });
+                //         break;
+                //         
+                //     case EMapSite.Event:
+                //         GameEntry.UI.OpenUIForm(UIFormId.BattleEventForm, new BattleEventFormData()
+                //         {
+                //             RandomSeed = randomSeed,
+                //         });
+                //         break;
+                //     case EMapSite.Empty:
+                //         GameEntry.UI.OpenUIForm(UIFormId.RestForm);
+                //         break;
+                //     default:
+                //         throw new ArgumentOutOfRangeException();
+                // }
             }
             else
             {

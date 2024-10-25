@@ -767,7 +767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.14901961, g: 0.24705884, b: 0.32941177, a: 0.78431374}
+  m_Color: {r: 0.050980393, g: 0.12156863, b: 0.14117648, a: 0.78431374}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -4061,6 +4061,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].eventID
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4696941397077384465}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RoundHero.SelectCardItem, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2633150277188848425, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3165861610604313420, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3518094533685406194, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
       propertyPath: Scroll
       value: 
@@ -4083,6 +4123,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4905353502174006129, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
   m_PrefabInstance: {fileID: 6844314322810923594}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4696941397077384465 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2293740467996374875, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
+  m_PrefabInstance: {fileID: 6844314322810923594}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938996007174906171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff06495540a4746a947323e0e61b83c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6028014111048427664 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 962694414983365338, guid: 7495d869529d1cb4fad20d095ba03f26, type: 3}
