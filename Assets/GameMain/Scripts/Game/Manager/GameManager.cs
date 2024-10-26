@@ -7,6 +7,8 @@ namespace RoundHero
         public int TmpHeroID = -1;
         public List<int> TmpInitCards = new List<int>();
         
+        public List<int> CardsForm_EquipFuneIdxs = new List<int>();
+        
         
         
     }

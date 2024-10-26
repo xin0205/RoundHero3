@@ -24,9 +24,18 @@ namespace RoundHero
             funeView.InitGridView(0, OnGetCardItemByRowColumn);
         }
 
-        public void Init(List<int> funeIdxs, GameObject parentForm)
+        public void Init(GameObject parentForm)
         {
             this.parentForm = parentForm;
+
+            Refresh();
+
+        }
+
+        public void Refresh()
+        {
+            var funeIdxs = BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs;
+            
             
             //this.cardIdxs = cardIdxs;
             this.funes.Clear();
@@ -49,12 +58,6 @@ namespace RoundHero
             }
 
             funeView.SetListItemCount(this.funes.Count);
-            funeView.RefreshAllShownItem();
-
-        }
-
-        public void Refresh()
-        {
             funeView.RefreshAllShownItem();
         }
         
@@ -113,6 +116,7 @@ namespace RoundHero
             
             ClearDrop();
             
+            GameManager.Instance.CardsForm_EquipFuneIdxs.Add(runeIdx);
             cardData.FuneIdxs.Add(runeIdx);
             BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(runeIdx);
 

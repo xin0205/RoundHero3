@@ -3335,6 +3335,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 753293560380806648}
     m_Modifications:
+    - target: {fileID: 3135670615847494446, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: isShowFuneDownTag
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4559589956139492282, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3430,6 +3434,38 @@ PrefabInstance:
     - target: {fileID: 6737811815257700014, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
       propertyPath: m_Name
       value: PlayerCardItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8731249614564042189}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2935950716449547077}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HideInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: DownFune
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: RoundHero.InfoTrigger, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748786903991640352, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: RoundHero.PlayerCardItem, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3553,6 +3589,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5038fb5227e9485ea47f70a182f37990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8731249614564042189 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8795834720247358886, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+  m_PrefabInstance: {fileID: 232696589846511723}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e44f684a5d4ac98e11f696d0bab127, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6381827764826030242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3567,11 +3614,11 @@ PrefabInstance:
       objectReference: {fileID: 7302077079737557620}
     - target: {fileID: 2271400685664710927, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Close
+      value: ConfirmClose
       objectReference: {fileID: 0}
     - target: {fileID: 2271400685664710927, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RoundHero.UGuiForm, Assembly-CSharp
+      value: RoundHero.CardsForm, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4136299216539228746, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_Pivot.x

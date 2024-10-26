@@ -26,7 +26,7 @@ namespace RoundHero
         private ECardType cardType = ECardType.Unit;
 
         //private List<int> cardIdxs = new List<int>();
-        private GameObject parentForm;
+        //private GameObject parentForm;
         
         public int CurSelectCardIdx = -1;
         
@@ -39,9 +39,9 @@ namespace RoundHero
             unitToggle.isOn = true;
         }
 
-        public void Init(List<int> cardIdxs, GameObject parentForm)
+        public void Init(List<int> cardIdxs)
         {
-            this.parentForm = parentForm;
+            //this.parentForm = parentForm;
             
             //this.cardIdxs = cardIdxs;
             this.cards.Clear();
@@ -145,7 +145,7 @@ namespace RoundHero
                 
             }
             
-            Init(cardIdxs, this.gameObject);
+            Init(cardIdxs);
         }
     }
 }

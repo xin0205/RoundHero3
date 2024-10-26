@@ -1,8 +1,5 @@
-﻿using System;
-using GameFramework;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace RoundHero
 {
@@ -54,6 +51,11 @@ namespace RoundHero
         public void HideInfo()
         {
             isShowInfo = false;
+            if (infoForm != null && !isShowInfo)
+            {
+                GameEntry.UI.CloseUIForm(infoForm);
+                infoForm = null;
+            }
         }
 
 

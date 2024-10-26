@@ -23,13 +23,12 @@
             public const string BlessDesc = "BlessDesc.{0}";
             public const string HeroName = "HeroName.{0}";
             public const string HeroDesc = "HeroDesc.{0}";
-           
-                
 
             public const string Message_InitCardMaxCount = "Message.InitCardMaxCount";
             public const string Message_InitCardCount = "Message.InitCardCount";
             public const string Message_CoinNotEnough= "Message.CoinNotEnough";
             public const string Message_Purchase = "Message.Purchase";
+            public const string Message_ConfirmEquipFune = "Message.ConfirmEquipFune";
         }
     }
 }
