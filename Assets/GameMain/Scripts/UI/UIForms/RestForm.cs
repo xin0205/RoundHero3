@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,10 +39,15 @@ namespace RoundHero
             var heroAttribute = BattleHeroManager.Instance.BattleHeroData.Attribute;
             var curHeart = heroAttribute.GetAttribute(EHeroAttribute.CurHeart);
             var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
-            if (curHeart < maxHeart)
+            if (curHeart >= maxHeart)
             {
-                heroAttribute.SetAttribute(EHeroAttribute.CurHeart, curHeart + 1);
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MaxHeart);
+                return;
             }
+            
+            
+            heroAttribute.SetAttribute(EHeroAttribute.CurHeart, curHeart + 1);
+            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
             
         }
         
@@ -48,9 +55,52 @@ namespace RoundHero
         {
             BattleHeroManager.Instance.BattleHeroData.BaseMaxHP += 1;
             BattleHeroManager.Instance.BattleHeroData.CurHP += 1;
+            
+            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
 
         }
 
+        private CardsForm cardsForm;
+        public async void CardAddFune()
+        {
+            var uiForm = await GameEntry.UI.OpenUIFormAsync(UIFormId.CardsForm, new CardsFormParams()
+            {
+                Tips = GameEntry.Localization.GetString(Constant.Localization.Tips_CardAddFune),
+                ShowCardTypes = new List<ECardType>()
+                {
+                    ECardType.Unit,
+                },
+                OnClickAction = CardAddFuneClickAction,
+                IsShowAllFune = true,
+                
+            });
+            
+            cardsForm = uiForm.Logic as CardsForm;
+        }
+
+        public void CardAddFuneClickAction(int cardIdx)
+        {
+            var cardData = CardManager.Instance.GetCard(cardIdx);
+            if (cardData.MaxFuneCount >= Constant.Card.MaxFuneCount)
+            {
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MaxFuneCount);
+                return;
+            }
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmAddFune),
+                OnConfirm = () =>
+                {
+                    
+                    var cardData = CardManager.Instance.GetCard(cardIdx);
+                    cardData.MaxFuneCount += 1;
+                    GameEntry.UI.CloseUIForm(cardsForm);
+                    Close();
+                }
+            });
+            
+            
+        }
         
         
     }

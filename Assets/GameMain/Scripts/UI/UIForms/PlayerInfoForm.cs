@@ -20,7 +20,7 @@ namespace RoundHero
         
         public void ShowCards()
         {
-            GameEntry.UI.OpenUIForm(UIFormId.CardsForm);
+            GameEntry.UI.OpenUIForm(UIFormId.CardAndFuneForm);
         }
         
         protected override void OnInit(object userData)

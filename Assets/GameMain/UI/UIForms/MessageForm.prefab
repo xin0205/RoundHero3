@@ -95,9 +95,7 @@ GameObject:
   - component: {fileID: 299380372503371027}
   - component: {fileID: 6422391110887751283}
   - component: {fileID: 2120781393986367690}
-  - component: {fileID: 5450322713898649933}
-  - component: {fileID: 4327636257390269326}
-  - component: {fileID: 2671729973559019851}
+  - component: {fileID: 6845353197588652249}
   m_Layer: 5
   m_Name: Text (Legacy)
   m_TagString: Untagged
@@ -121,8 +119,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 340, y: -38.75}
-  m_SizeDelta: {x: 1200, y: 0}
+  m_AnchoredPosition: {x: 171.75, y: -38.75}
+  m_SizeDelta: {x: 527, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6422391110887751283
 CanvasRenderer:
@@ -166,7 +164,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 11111111111111111
---- !u!114 &5450322713898649933
+--- !u!114 &6845353197588652249
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,44 +173,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 257037594669096163}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Script: {fileID: 11500000, guid: cea96648b490445882ae428449678adb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!114 &4327636257390269326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 257037594669096163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: 1200
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 100
---- !u!114 &2671729973559019851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 257037594669096163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77ad139868aa4aa299ebf2e4da0f042b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rectTransform: {fileID: 299380372503371027}
+  m_MaxWidth: 1000
+  m_MaxHeight: -1
 --- !u!1 &1783717908690501476
 GameObject:
   m_ObjectHideFlags: 0

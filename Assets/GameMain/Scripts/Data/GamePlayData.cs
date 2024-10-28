@@ -101,6 +101,7 @@ namespace RoundHero
     {
         public int Idx;
         public int CardID;
+        public int MaxFuneCount;
         public List<int> FuneIdxs = new();
         public int RoundEnergyDelta = 0;
         public List<ELinkID> RoundLinkIDs = new();
@@ -122,7 +123,8 @@ namespace RoundHero
             {
                 FuneIdxs = funeIdxs;
             }
-            
+
+            MaxFuneCount = Constant.Card.InitFuneCount;
 
         }
 

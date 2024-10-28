@@ -139,10 +139,11 @@ namespace RoundHero
                 var randomSeed = BattleMapManager.Instance.MapData.MapStageDataDict[stageIdx]
                     .MapSteps[routeIdx][ne.MapStep.StepIdx].RandomSeed;
                 
-                GameEntry.UI.OpenUIForm(UIFormId.StoreForm, new StoreFormData()
-                {
-                    RandomSeed = randomSeed,
-                });
+                // GameEntry.UI.OpenUIForm(UIFormId.StoreForm, new StoreFormData()
+                // {
+                //     RandomSeed = randomSeed,
+                // });
+                GameEntry.UI.OpenUIForm(UIFormId.RestForm);
                 
                 
                 // switch (ne.MapSite)

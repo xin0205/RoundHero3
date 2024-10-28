@@ -67,7 +67,7 @@ namespace RoundHero
         
         BattleForm = 121,
         
-        CardsForm = 122,
+        CardAndFuneForm = 122,
         
         KillRewardForm = 123,
         
@@ -87,5 +87,6 @@ namespace RoundHero
         
         InfoForm = 131,
 
+        CardsForm = 132,
     }
 }

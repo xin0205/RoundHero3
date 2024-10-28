@@ -100,7 +100,7 @@ namespace RoundHero
         
         public void OnPointUp()
         {
-            var cardForm = parentForm.GetComponent<CardsForm>();
+            var cardForm = parentForm.GetComponent<CardAndFuneForm>();
             var cardsViews = cardForm.CardsViews;
 
             if (cardsViews.CurSelectCardIdx == -1)
@@ -111,6 +111,15 @@ namespace RoundHero
                 
 
             var cardData = CardManager.Instance.GetCard(cardsViews.CurSelectCardIdx);
+
+            if (cardData.FuneIdxs.Count >= cardData.MaxFuneCount)
+            {
+                ClearDrop();
+                return;
+            }
+                
+            
+            
             var runeIdx = TempPlayerCommonItem.PlayerCommonItemData
                 .ItemIdx;
             
@@ -125,7 +134,7 @@ namespace RoundHero
 
         private void ClearDrop()
         {
-            var cardForm = parentForm.GetComponent<CardsForm>();
+            var cardForm = parentForm.GetComponent<CardAndFuneForm>();
             var cardsViews = cardForm.CardsViews;
             
             GameObject.DestroyImmediate(TempPlayerCommonItem.gameObject);

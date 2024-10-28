@@ -22,26 +22,47 @@ namespace RoundHero
 
         public Action<int> OnPointEnterAction;
         public Action OnPointExitAction;
+        public Action<int> OnClickAction;
         
         public Action<int> OnDropAction;
 
         public bool isShowFuneDownTag = false;
         
-        public void Init()
+        public void Init(Action<int> onPointEnterAction, Action onPointExitAction, Action<int> onClickAction)
         {
-            
+            OnPointEnterAction = onPointEnterAction;
+            OnPointExitAction = onPointExitAction;
+            OnClickAction = onClickAction;
         }
         
-        public void SetItemData(PlayerCardData playerCardData, Action<int> onPointEnterAction, Action onPointExitAction)
+        public void SetItemData(PlayerCardData playerCardData, bool idShowAllFune)
         {
             
             this.playerCardData = playerCardData;
-            OnPointEnterAction = onPointEnterAction;
-            OnPointExitAction = onPointExitAction;
+            
             //OnDropAction = onPointUpAction;
             
             CardItem.SetCardUI(this.playerCardData.CardID);
+            ShowAllFune(idShowAllFune);
             Refresh();
+            
+        }
+
+        public void ShowAllFune(bool isShowAll)
+        {
+            var cardData = CardManager.Instance.GetCard(this.playerCardData.CardIdx);
+            var drCard = CardManager.Instance.GetCardTable(playerCardData.CardIdx);
+            var idx = 0;
+            foreach (var funeGO in FuneGOs)
+            {
+                funeGO.SetActive(false);
+                
+                if(idx >= cardData.MaxFuneCount)
+                    continue;
+                idx++;
+
+                funeGO.SetActive(isShowAll && drCard.CardType == ECardType.Unit);
+            }
             
         }
 
@@ -51,9 +72,9 @@ namespace RoundHero
             
             var cardData = CardManager.Instance.GetCard(this.playerCardData.CardIdx);
 
-            foreach (var funeGO in FuneGOs)
+            foreach (var funeIcon in FuneIcons)
             {
-                funeGO.SetActive(false);
+                funeIcon.gameObject.SetActive(false);
             }
             
             var idx = 0;
@@ -62,6 +83,7 @@ namespace RoundHero
                 var isTmpEquipFune = GameManager.Instance.CardsForm_EquipFuneIdxs.Contains(funeIdx);
  
                 var funeData = FuneManager.Instance.GetFuneData(funeIdx);
+                FuneIcons[idx].gameObject.SetActive(true);
                 FuneIcons[idx].overrideSprite = await AssetUtility.GetFuneIcon(funeData.FuneID);
                 FuneGOs[idx].SetActive(true);
                 FuneDownGOs[idx].SetActive(isTmpEquipFune && isShowFuneDownTag);
@@ -80,6 +102,11 @@ namespace RoundHero
             OnPointEnterAction?.Invoke(playerCardData.CardIdx);
             
 
+        }
+
+        public void OnClick()
+        {
+            OnClickAction.Invoke(playerCardData.CardIdx);
         }
         
         public void OnPointExit()
@@ -116,6 +143,7 @@ namespace RoundHero
             BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(funeIdx);
             GameManager.Instance.CardsForm_EquipFuneIdxs.Remove(funeIdx);
             cardData.FuneIdxs.RemoveAt(funeOrder);
+            FuneDownGOs[funeOrder].SetActive(false);
             GameEntry.Event.Fire(null, RefreshCardsFormEventArgs.Create());
         }
         

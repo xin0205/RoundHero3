@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace RoundHero
 {
@@ -26,6 +28,11 @@ namespace RoundHero
     
     [Serializable]
     public class FollowerIconSpriteDictionary : SerializableDictionary<EHeroID, Sprite>
+    {
+    }
+    
+    [Serializable]
+    public class CardTypeToggleDictionary : SerializableDictionary<ECardType, Toggle>
     {
     }
 }

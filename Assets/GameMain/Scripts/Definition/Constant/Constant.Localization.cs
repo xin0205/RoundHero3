@@ -1,4 +1,6 @@
-﻿namespace RoundHero
+﻿using JetBrains.Annotations;
+
+namespace RoundHero
 {
     public static partial class Constant
     {
@@ -29,6 +31,11 @@
             public const string Message_CoinNotEnough= "Message.CoinNotEnough";
             public const string Message_Purchase = "Message.Purchase";
             public const string Message_ConfirmEquipFune = "Message.ConfirmEquipFune";
+            public const string Message_MaxHeart = "Message.MaxHeart";
+            public const string Message_MaxFuneCount = "Message.MaxFuneCount";
+            public const string Tips_CardAddFune = "Tips.CardAddFune";
+            public const string Message_ConfirmAddFune = "Message.ConfirmAddFune";
+
         }
     }
 }
