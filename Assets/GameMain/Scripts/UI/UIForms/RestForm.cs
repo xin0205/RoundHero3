@@ -17,10 +17,10 @@ namespace RoundHero
         {
             base.OnOpen(userData);
 
-            var heroAttribute = BattleHeroManager.Instance.BattleHeroData.Attribute;
-            var curHeart = heroAttribute.GetAttribute(EHeroAttribute.CurHeart);
-            var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
-            addHeart.interactable = curHeart < maxHeart;
+            // var heroAttribute = BattleHeroManager.Instance.BattleHeroData.Attribute;
+            // var curHeart = heroAttribute.GetAttribute(EHeroAttribute.CurHeart);
+            // var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
+            // addHeart.interactable = curHeart < maxHeart;
 
             restSceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Rest");
 
@@ -45,18 +45,44 @@ namespace RoundHero
                 return;
             }
             
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+
+                Message = GameEntry.Localization.GetLocalizedString(Constant.Localization.Message_ConfirmAddHeart, Constant.Rest.AddHeart),
+                OnConfirm = () =>
+                {
+                    var heroAttribute = BattleHeroManager.Instance.BattleHeroData.Attribute;
+                    var curHeart = heroAttribute.GetAttribute(EHeroAttribute.CurHeart);
+                    var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
+
+                    heroAttribute.SetAttribute(EHeroAttribute.CurHeart, curHeart + 1);
+                    GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
+                    Close();
+                }
+                
+            });
             
-            heroAttribute.SetAttribute(EHeroAttribute.CurHeart, curHeart + 1);
-            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
+            
             
         }
         
-        public void AddMaxHP()
+        public void AddMaxEnergy()
         {
-            BattleHeroManager.Instance.BattleHeroData.BaseMaxHP += 1;
-            BattleHeroManager.Instance.BattleHeroData.CurHP += 1;
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                Message = GameEntry.Localization.GetLocalizedString(Constant.Localization.Message_ConfirmAddMaxEnergy, Constant.Rest.AddMaxEnergy),
+                OnConfirm = () =>
+                {
+                    BattleHeroManager.Instance.BattleHeroData.BaseMaxHP += Constant.Rest.AddMaxEnergy;
+                    BattleHeroManager.Instance.BattleHeroData.CurHP += Constant.Rest.AddMaxEnergy;
             
-            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
+                    GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
+                    Close();
+                }
+                
+            });
+            
+            
 
         }
 

@@ -965,6 +965,12 @@ namespace RoundHero
             public static Vector2Int BlessPriceRange = new Vector2Int(85, 115);
             public static Vector2Int FunePriceRange = new Vector2Int(85, 115);
         }
+
+        public static class Rest
+        {
+            public static int AddMaxEnergy = 2;
+            public static int AddHeart = 1;
+        }
         
 
         public static class GridProp

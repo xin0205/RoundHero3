@@ -35,6 +35,10 @@ namespace RoundHero
             public const string Message_MaxFuneCount = "Message.MaxFuneCount";
             public const string Tips_CardAddFune = "Tips.CardAddFune";
             public const string Message_ConfirmAddFune = "Message.ConfirmAddFune";
+            public const string Message_ConfirmAddHeart = "Message.ConfirmAddHeart";
+            public const string Message_ConfirmAddMaxEnergy = "Message.ConfirmAddMaxEnergy";
+            
+
 
         }
     }

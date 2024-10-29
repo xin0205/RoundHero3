@@ -32,6 +32,10 @@ namespace RoundHero
             return Utility.Text.Format(str, val1, val2);
         }
         
-
+        public static string GetLocalizedString<T1>(this LocalizationComponent localizationComponent, string localizationStr, T1 val1)
+        {
+            var str = GetString(localizationComponent, localizationStr);
+            return Utility.Text.Format(str, val1);
+        }
     }
 }
