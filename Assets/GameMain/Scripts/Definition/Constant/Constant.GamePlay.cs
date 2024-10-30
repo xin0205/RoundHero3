@@ -1475,6 +1475,16 @@ namespace RoundHero
                 },
             };
             
+            
+            public static Dictionary<EBattleEventYNType, List<EBattleEvent>> BattleTreasureTypes = new()
+            {
+
+                [EBattleEventYNType.YN] = new List<EBattleEvent>()
+                {
+                    EBattleEvent.Select_YN_YN_O,
+
+                },
+            };
             public static Dictionary<EBattleEventYNType, List<EBattleEvent>> BattleSelectEventYNTypes = new()
             {
                 [EBattleEventYNType.Y] = new List<EBattleEvent>()

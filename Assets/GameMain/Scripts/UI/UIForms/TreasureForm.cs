@@ -12,10 +12,10 @@ namespace RoundHero
     
     public class TreasureForm : UGuiForm
     {
-        public List<BattleEventItemData> BattleEventItemDatas;
+        private List<BattleEventItemData> BattleEventItemDatas;
 
         [SerializeField]
-        private BattleEventItem BattleEventItem;
+        private List<BattleEventItem> BattleEventItems;
         
         [SerializeField]
         private Text text;
@@ -37,7 +37,12 @@ namespace RoundHero
 
             //text.text = battleEventData.BattleEventExpressionType + "-" + battleEventData.BattleEvent;
 
-            BattleEventItem.Init(BattleEventItemDatas);
+            for (int i = 0; i <  BattleEventItemDatas.Count; i++)
+            {
+                BattleEventItems[i].Init(BattleEventItemDatas);
+            }
+
+            
         }
         
         protected override void OnClose(bool isShutdown, object userData)

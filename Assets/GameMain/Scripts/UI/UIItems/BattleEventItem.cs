@@ -16,8 +16,8 @@ namespace RoundHero
         public void Init(List<BattleEventItemData> battleGameEventItemDatas)
         {
             this.battleGameEventItemDatas = battleGameEventItemDatas;
-            
-            text.text = "";
+
+
             foreach (var battleGameEventItemData in battleGameEventItemDatas)
             {
                 text.text += battleGameEventItemData.EventType.ToString();
@@ -30,13 +30,14 @@ namespace RoundHero
                 text.text += "-";
             }
             
+            
         }
 
         public void OnClick()
         {
-            foreach (var battleEventItemData in this.battleGameEventItemDatas)
+            foreach (var battleGameEventItemData in battleGameEventItemDatas)
             {
-                BattleEventManager.Instance.AcquireEventItem(battleEventItemData);
+                BattleEventManager.Instance.AcquireEventItem(battleGameEventItemData);
             }
         }
 
