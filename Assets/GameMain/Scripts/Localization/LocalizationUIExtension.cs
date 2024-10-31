@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using GameFramework;
 using UnityGameFramework.Runtime;
 
@@ -36,6 +37,25 @@ namespace RoundHero
         {
             var str = GetString(localizationComponent, localizationStr);
             return Utility.Text.Format(str, val1);
+        }
+        
+        public static string GetLocalizedStrings<T>(this LocalizationComponent localizationComponent, string localizationStr, List<T> vals)
+        {
+            if (vals.Count == 1)
+            {
+                return GetLocalizedString(localizationComponent, localizationStr, vals[0]);
+
+            }
+            else if(vals.Count == 2)
+            {
+                return GetLocalizedString(localizationComponent, localizationStr, vals[0], vals[1]);
+
+            }
+            else
+            {
+                return localizationStr;
+            }
+
         }
     }
 }

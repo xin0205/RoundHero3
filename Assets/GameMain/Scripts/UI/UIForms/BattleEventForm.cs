@@ -33,7 +33,7 @@ namespace RoundHero
                 return;
             }
 
-            battleEventData = BattleEventManager.Instance.GenerateEvent(battleEventFormData.RandomSeed);
+            battleEventData = BattleEventManager.Instance.GenerateRandomEvent(battleEventFormData.RandomSeed);
 
             text.text = battleEventData.BattleEventExpressionType + "-" + battleEventData.BattleEvent;
 

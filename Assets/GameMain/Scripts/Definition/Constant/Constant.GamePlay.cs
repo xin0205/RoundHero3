@@ -1481,7 +1481,7 @@ namespace RoundHero
 
                 [EBattleEventYNType.YN] = new List<EBattleEvent>()
                 {
-                    EBattleEvent.Select_YN_YN_O,
+                    EBattleEvent.Select_Y_Y_O,
 
                 },
             };
@@ -1642,6 +1642,32 @@ namespace RoundHero
                     EEventType.SubHeroMaxHP,
                     EEventType.SubHeroCurHP,
                 },
+            };
+
+            public static Dictionary<EItemType, List<EEventType>> ItemTypeEventTypeMap = new()
+            {
+                [EItemType.Card] = new List<EEventType>()
+                {
+                    //EEventType.Random_UnitCard,
+                    //EEventType.Random_TacticCard,
+                    EEventType.Appoint_UnitCard,
+                    EEventType.Appoint_TacticCard,
+                    EEventType.NegativeCard,
+                },
+                [EItemType.Fune] = new List<EEventType>()
+                {
+                    //EEventType.Random_Fune,
+                    EEventType.Appoint_Fune,
+
+                },
+                [EItemType.Bless] = new List<EEventType>()
+                {
+                    //EEventType.Random_Bless,
+                    EEventType.Appoint_Bless,
+
+                },
+
+
             };
         }
 

@@ -12,13 +12,10 @@ namespace RoundHero
     
     public class TreasureForm : UGuiForm
     {
-        private List<BattleEventItemData> BattleEventItemDatas;
+        private BattleEventData battleEventData;
 
         [SerializeField]
         private List<BattleEventItem> BattleEventItems;
-        
-        [SerializeField]
-        private Text text;
         
         private TreasureFormData treasureFormData;
         
@@ -33,16 +30,24 @@ namespace RoundHero
                 return;
             }
 
-            BattleEventItemDatas = TreasureManager.Instance.GenerateTreasureEvent(treasureFormData.RandomSeed);
+            battleEventData = BattleEventManager.Instance.GenerateTreasureEvent(treasureFormData.RandomSeed);
 
             //text.text = battleEventData.BattleEventExpressionType + "-" + battleEventData.BattleEvent;
 
-            for (int i = 0; i <  BattleEventItemDatas.Count; i++)
+            for (int i = 0; i <  BattleEventItems.Count; i++)
             {
-                BattleEventItems[i].Init(BattleEventItemDatas);
+                BattleEventItems[i].Init(battleEventData.BattleGameEventItemDatas[i]);
             }
 
             
+        }
+
+        private void OnClickItem(int itemIdx)
+        {
+            foreach (var VARIABLE in )
+            {
+                
+            }
         }
         
         protected override void OnClose(bool isShutdown, object userData)

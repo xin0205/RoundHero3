@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using UGFExtensions.Await;
 
 
 namespace RoundHero
@@ -39,52 +41,12 @@ namespace RoundHero
         //
         // }
 
-        public BattleEventData GenerateEvent(int randomSeed)
+        public void GenerateEvent(BattleEventData battleEventData, Random random, EBattleEvent battleEvent)
         {
-            var random = new Random(randomSeed);
             
-            var battleGameEventData = new BattleEventData();
-            
-            var expressions = new List<EBattleEventExpressionType>();
-            foreach (var kv in Constant.BattleEvent.EventExpressionTypes)
-            {
-                for (int i = 0; i < kv.Value; i++)
-                {
-                    expressions.Add(kv.Key);
-                }
-            }
-            
-            var eventYNTypes = new List<EBattleEventYNType>();
-            foreach (var kv in Constant.BattleEvent.EEventYNTypes)
-            {
-                for (int i = 0; i < kv.Value; i++)
-                {
-                    eventYNTypes.Add(kv.Key);
-                }
-            }
+            battleEventData.BattleEvent = battleEvent;
 
-            var expressionType = expressions[random.Next(0, 100)];
-            var eventYNType = eventYNTypes[random.Next(0, 100)];
-            
-            battleGameEventData.BattleEventExpressionType = expressionType;
-
-            if (expressionType == EBattleEventExpressionType.Game)
-            {
-                battleGameEventData.BattleEvent  =
-                    Constant.BattleEvent.BattleGameEventYNTypes[eventYNType][
-                        random.Next(0, Constant.BattleEvent.BattleGameEventYNTypes[eventYNType].Count)];
-
-            }
-            else if (expressionType == EBattleEventExpressionType.Selection)
-            {
-                battleGameEventData.BattleEvent  =
-                    Constant.BattleEvent.BattleSelectEventYNTypes[eventYNType][
-                        random.Next(0, Constant.BattleEvent.BattleSelectEventYNTypes[eventYNType].Count)];
-
-            }
-            
-            var battleGameEvents = battleGameEventData.BattleEvent.ToString().Split("_");
-
+            var battleGameEvents = battleEventData.BattleEvent.ToString().Split("_");
 
             for (int i = 1; i < battleGameEvents.Length; i++)
             {
@@ -131,9 +93,84 @@ namespace RoundHero
                     
                 }
                 
-                battleGameEventData.BattleGameEventItemDatas.Add(eventItemDatas);
+                battleEventData.BattleGameEventItemDatas.Add(eventItemDatas);
 
             }
+
+
+        }
+        
+        public BattleEventData GenerateRandomEvent(int randomSeed)
+        {
+            var random = new Random(randomSeed);
+            
+            var battleGameEventData = new BattleEventData();
+            
+            var expressions = new List<EBattleEventExpressionType>();
+            foreach (var kv in Constant.BattleEvent.EventExpressionTypes)
+            {
+                for (int i = 0; i < kv.Value; i++)
+                {
+                    expressions.Add(kv.Key);
+                }
+            }
+            
+            var eventYNTypes = new List<EBattleEventYNType>();
+            foreach (var kv in Constant.BattleEvent.EEventYNTypes)
+            {
+                for (int i = 0; i < kv.Value; i++)
+                {
+                    eventYNTypes.Add(kv.Key);
+                }
+            }
+            
+            var expressionType = expressions[random.Next(0, 100)];
+            var eventYNType = eventYNTypes[random.Next(0, 100)];
+            
+            battleGameEventData.BattleEventExpressionType = expressionType;
+
+            EBattleEvent battleEvent = EBattleEvent.Select_Y_Y_O; 
+            
+            if (expressionType == EBattleEventExpressionType.Game)
+            {
+                battleEvent  =
+                    Constant.BattleEvent.BattleGameEventYNTypes[eventYNType][
+                        random.Next(0, Constant.BattleEvent.BattleGameEventYNTypes[eventYNType].Count)];
+            
+            }
+            else if (expressionType == EBattleEventExpressionType.Selection)
+            {
+                battleEvent  =
+                    Constant.BattleEvent.BattleSelectEventYNTypes[eventYNType][
+                        random.Next(0, Constant.BattleEvent.BattleSelectEventYNTypes[eventYNType].Count)];
+            
+            }
+
+
+            GenerateEvent(battleGameEventData, random, battleEvent);
+            
+
+            return battleGameEventData;
+
+        }
+        
+        public BattleEventData GenerateTreasureEvent(int randomSeed)
+        {
+            var random = new Random(randomSeed);
+            
+            var battleGameEventData = new BattleEventData();
+
+            var keys = Constant.BattleEvent.BattleTreasureTypes.Keys.ToList();
+            var eventYNType = keys[random.Next(0, keys.Count)];
+
+            EBattleEvent battleEvent = Constant.BattleEvent.BattleTreasureTypes[eventYNType][
+                random.Next(0, Constant.BattleEvent.BattleSelectEventYNTypes[eventYNType].Count)]; 
+            
+            
+
+
+            GenerateEvent(battleGameEventData, random, battleEvent);
+            
 
             return battleGameEventData;
 
@@ -220,7 +257,7 @@ namespace RoundHero
             return itemIDs;
         }
 
-
+        
         public void AcquireEventItem(BattleEventItemData battleEventItemData, int selectIdx = 0)
         {
             var eventType = battleEventItemData.EventType;
@@ -258,6 +295,17 @@ namespace RoundHero
             {
                 PlayerManager.Instance.PlayerData.BattleHero.CurHP += eventValue;
             }
+            else if(eventType == EEventType.Card_Copy)
+            {
+                var cardData = CardManager.Instance.GetCard(eventValue);
+                var newCardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
+                CardManager.Instance.CardDatas.Add(newCardIdx, new Data_Card(newCardIdx, cardData.CardID));
+                
+                
+                
+            }
         }
+        
+        
     }
 }

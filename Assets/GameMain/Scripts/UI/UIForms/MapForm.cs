@@ -143,7 +143,10 @@ namespace RoundHero
                 // {
                 //     RandomSeed = randomSeed,
                 // });
-                GameEntry.UI.OpenUIForm(UIFormId.RestForm);
+                GameEntry.UI.OpenUIForm(UIFormId.TreasureForm, new TreasureFormData()
+                {
+                    RandomSeed = randomSeed,
+                });
                 
                 
                 // switch (ne.MapSite)

@@ -11,7 +11,7 @@ namespace RoundHero
 {
     public static partial class GameUtility
     {
-        public static void GetItemText(int funeID, ref string name, ref string desc)
+        public static void GetFuneText(int funeID, ref string name, ref string desc)
         {
             var funeName =
                 Utility.Text.Format(Constant.Localization.FuneName, funeID); 
@@ -37,31 +37,31 @@ namespace RoundHero
             desc = GetStrByValues(GameEntry.Localization.GetString(buffDesc), values);
         }
         
-        public static void GetItemText(EBlessID blessID, ref string name, ref string desc)
-        {
-            var blessName =
-                Utility.Text.Format(Constant.Localization.BlessName, blessID); 
-            
-            name = GameEntry.Localization.GetString(blessName);
-            
-            var drBless = GameEntry.DataTable.GetBless(blessID);
-            
-            var values = new List<float>();
-            foreach (var value in drBless.Values1)
-            {
-                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
-                if (val != 0)
-                {
-                    values.Add(val);
-                }
-               
-            }
-            
-            var blessDesc =
-                Utility.Text.Format(Constant.Localization.BlessDesc, blessID.ToString());
-
-            desc = GetStrByValues(GameEntry.Localization.GetString(blessDesc), values);
-        }
+        // public static void GetItemText(EBlessID blessID, ref string name, ref string desc)
+        // {
+        //     var blessName =
+        //         Utility.Text.Format(Constant.Localization.BlessName, blessID); 
+        //     
+        //     name = GameEntry.Localization.GetString(blessName);
+        //     
+        //     var drBless = GameEntry.DataTable.GetBless(blessID);
+        //     
+        //     var values = new List<float>();
+        //     foreach (var value in drBless.Values1)
+        //     {
+        //         var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+        //         if (val != 0)
+        //         {
+        //             values.Add(val);
+        //         }
+        //        
+        //     }
+        //     
+        //     var blessDesc =
+        //         Utility.Text.Format(Constant.Localization.BlessDesc, blessID.ToString());
+        //
+        //     desc = GetStrByValues(GameEntry.Localization.GetString(blessDesc), values);
+        // }
         
         public static void GetCardText(int cardID, ref string name, ref string desc)
         {
@@ -129,6 +129,26 @@ namespace RoundHero
 
             
             
+        }
+
+        public static void GetItemText(EItemType itemType, int itemID, ref string name, ref string desc)
+        {
+            switch (itemType)
+            {
+                case EItemType.Card:
+                    GetCardText(itemID, ref name, ref desc);
+                    break;
+                case EItemType.Bless:
+                    GetBlessText(itemID, ref name, ref desc);
+                    break;
+                case EItemType.Fune:
+                    GetFuneText(itemID, ref name, ref desc);
+                    break;
+                default:
+                    name = "";
+                    desc = "";
+                    break;
+            }
         }
 
         public static string GetStrByValues(string str, List<string> values, bool showSign = false)

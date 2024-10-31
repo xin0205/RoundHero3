@@ -17,7 +17,7 @@ namespace RoundHero
         
         public int FuneID { get; set; }
         public int CardID { get; set; }
-        public EBlessID BlessID { get; set; }
+        public int BlessID { get; set; }
     }
     
     public class CommonItem : MonoBehaviour
@@ -50,11 +50,11 @@ namespace RoundHero
             {
  
                 case EItemType.Bless:
-                    GameUtility.GetItemText(_commonItemData.BlessID, ref name, ref desc);
+                    GameUtility.GetBlessText(_commonItemData.BlessID, ref name, ref desc);
                     icon.sprite = await AssetUtility.GetBlessIcon(_commonItemData.BlessID);
                     break;
                 case EItemType.Fune:
-                    GameUtility.GetItemText(_commonItemData.FuneID, ref name, ref desc);
+                    GameUtility.GetFuneText(_commonItemData.FuneID, ref name, ref desc);
                     icon.sprite = await AssetUtility.GetFuneIcon(_commonItemData.FuneID);
                     break;
                 default:

@@ -90,7 +90,7 @@ namespace RoundHero
             cardView.RefreshAllShownItem();
             
             var drBlesses = GameEntry.DataTable.GetDataTable<DRBless>();
-            var blessIDs = drBlesses.Select(t => t.BlessID).ToList();
+            var blessIDs = drBlesses.Select(t => t.Id).ToList();
             var randomBlessSequence = MathUtility.GetRandomNum(3, 0, blessIDs.Count, random);
             idx = 0;
             foreach (var sequence in randomBlessSequence)

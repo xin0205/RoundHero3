@@ -37,6 +37,9 @@ namespace RoundHero
             public const string Message_ConfirmAddFune = "Message.ConfirmAddFune";
             public const string Message_ConfirmAddHeart = "Message.ConfirmAddHeart";
             public const string Message_ConfirmAddMaxEnergy = "Message.ConfirmAddMaxEnergy";
+            public const string Message_ConfirmUnAcquire = "Message.ConfirmUnAcquire";
+            public const string Message_ConfirmAcquire = "Message.ConfirmAcquire";
+            public const string Message_ConfirmCopyCard = "Message.ConfirmCopyCard";
             
 
 
