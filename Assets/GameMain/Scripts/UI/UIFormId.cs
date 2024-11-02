@@ -88,5 +88,9 @@ namespace RoundHero
         InfoForm = 131,
 
         CardsForm = 132,
+        
+        AcquireForm = 133,
+        
+        SelectAcquireForm = 134,
     }
 }

@@ -33,7 +33,7 @@ namespace RoundHero
             if (this.cardID != cardID)
             {
                 this.cardID = cardID;
-                CardItem.SetCardUI(cardID);
+                CardItem.SetCard(cardID);
                 
             }
             isUse = GameManager.Instance.TmpInitCards.Contains(cardID);

@@ -77,7 +77,7 @@ namespace RoundHero
                 {
                     CommonItemData = new CommonItemData()
                     {
-                        CardID = cardIDs[sequence],
+                        ItemID = cardIDs[sequence],
                         ItemType = EItemType.Card,
                     },
                     Price = random.Next(Constant.Store.CardPriceRange.x, Constant.Store.CardPriceRange.y),
@@ -99,7 +99,7 @@ namespace RoundHero
                 {
                     CommonItemData = new CommonItemData()
                     {
-                        BlessID = blessIDs[sequence],
+                        ItemID = blessIDs[sequence],
                         ItemType = EItemType.Bless,
                     },
                     Price = random.Next(Constant.Store.BlessPriceRange.x, Constant.Store.BlessPriceRange.y),
@@ -121,7 +121,7 @@ namespace RoundHero
                 {
                     CommonItemData = new CommonItemData()
                     {
-                        FuneID = funeIDs[sequence],
+                        ItemID = funeIDs[sequence],
                         ItemType = EItemType.Fune,
                     },
                     Price = random.Next(Constant.Store.FunePriceRange.x, Constant.Store.FunePriceRange.y),
@@ -145,7 +145,7 @@ namespace RoundHero
             var cardItemData = storeCards[cardStoreIdx];
             var name = "";
             var desc = "";
-            GameUtility.GetCardText(cardItemData.CommonItemData.CardID, ref name, ref desc);
+            GameUtility.GetCardText(cardItemData.CommonItemData.ItemID, ref name, ref desc);
             
             GameEntry.UI.OpenConfirm(new ConfirmFormParams()
             {
@@ -158,7 +158,7 @@ namespace RoundHero
                     
                     var cardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
                     PlayerManager.Instance.PlayerData.CardDatas.Add(cardIdx,
-                        new Data_Card(cardIdx, storeCards[cardStoreIdx].CommonItemData.CardID, new List<int>()));
+                        new Data_Card(cardIdx, storeCards[cardStoreIdx].CommonItemData.ItemID, new List<int>()));
 
                 }
             });

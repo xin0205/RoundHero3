@@ -17,13 +17,14 @@ namespace RoundHero
         public EEventType EventType;
         //public List<int> RandomItemIDs = new List<int>();
         public List<int> EventValues = new List<int>();
+        public int RandomSeed;
     }
     
     public class BattleEventData
     {
         public EBattleEventExpressionType BattleEventExpressionType;
         public EBattleEvent BattleEvent;
-        public List<List<BattleEventItemData>> BattleGameEventItemDatas = new List<List<BattleEventItemData>>();
+        public List<List<BattleEventItemData>> BattleEventItemDatas = new List<List<BattleEventItemData>>();
         
 
     }
@@ -93,7 +94,7 @@ namespace RoundHero
                     
                 }
                 
-                battleEventData.BattleGameEventItemDatas.Add(eventItemDatas);
+                battleEventData.BattleEventItemDatas.Add(eventItemDatas);
 
             }
 
@@ -181,6 +182,7 @@ namespace RoundHero
             var battleEventItemData = new BattleEventItemData()
             {
                 EventType = eventType,
+                RandomSeed = random.Next(0, Constant.Game.RandomRange),
             };
             
             if (Constant.BattleEvent.BattleEventSubTypes[EEventSubType.Random].Contains(eventType))
@@ -261,16 +263,21 @@ namespace RoundHero
         public void AcquireEventItem(BattleEventItemData battleEventItemData, int selectIdx = 0)
         {
             var eventType = battleEventItemData.EventType;
-            var eventValue = battleEventItemData.EventValues[selectIdx];
+            var eventValue = 0;
+            if (battleEventItemData.EventValues.Contains(selectIdx))
+            {
+                eventValue = battleEventItemData.EventValues[selectIdx];
+            }
+            
             if (eventType == EEventType.Appoint_UnitCard || eventType == EEventType.Appoint_TacticCard ||eventType == EEventType.NegativeCard ||
                 eventType == EEventType.Random_UnitCard || eventType == EEventType.Random_TacticCard)
             {
-                var cardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
+                var cardIdx = CardManager.Instance.GetIdx();
                 CardManager.Instance.CardDatas.Add(cardIdx, new Data_Card(cardIdx, eventValue));
             }
             else if (eventType == EEventType.Random_Fune || eventType == EEventType.Appoint_Fune)
             {
-                var funeIdx = PlayerManager.Instance.PlayerData.FuneIdx++;
+                var funeIdx = FuneManager.Instance.GetIdx();
                 var drFune = GameEntry.DataTable.GetBuff(eventValue);
                 var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
                 
@@ -279,7 +286,7 @@ namespace RoundHero
             }
             else if (eventType == EEventType.Random_Bless || eventType == EEventType.Appoint_Bless)
             {
-                var blessIdx = PlayerManager.Instance.PlayerData.BlessIdx++;
+                var blessIdx = BlessManager.Instance.GetIdx();
                 BlessManager.Instance.BlessDatas.Add(blessIdx,new Data_Bless(blessIdx, eventValue));
 
             }
@@ -299,9 +306,33 @@ namespace RoundHero
             {
                 var cardData = CardManager.Instance.GetCard(eventValue);
                 var newCardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
+                battleEventItemData.EventValues.Add(cardData.CardID);
                 CardManager.Instance.CardDatas.Add(newCardIdx, new Data_Card(newCardIdx, cardData.CardID));
                 
                 
+                
+            }
+            else if(eventType == EEventType.Card_Remove)
+            {
+                var cardData = CardManager.Instance.GetCard(eventValue);
+                CardManager.Instance.CardDatas.Remove(cardData.CardIdx);
+                
+                
+                
+            }
+            else if(eventType == EEventType.Card_Change)
+            {
+                var cardData = CardManager.Instance.GetCard(eventValue);
+                CardManager.Instance.CardDatas.Remove(cardData.CardIdx);
+                
+                var newCardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
+                
+                var cards = GameEntry.DataTable.GetCards(new List<ECardType>() { ECardType.Unit, ECardType.Tactic }, cardData.CardID);
+                var random = new Random(battleEventItemData.RandomSeed);
+                
+                var randomIdxs = MathUtility.GetRandomNum(1, 0, cards.Length, random);
+                battleEventItemData.EventValues.Add(cards[randomIdxs[0]].Id);
+                CardManager.Instance.CardDatas.Add(newCardIdx, new Data_Card(newCardIdx, cards[randomIdxs[0]].Id));
                 
             }
         }

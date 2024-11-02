@@ -16,7 +16,7 @@ namespace RoundHero
         private int CardID = -1;
 
         
-        public void SetCardUI(int cardID)
+        public void SetCard(int cardID)
         {
 
             CardID = cardID;
@@ -36,7 +36,7 @@ namespace RoundHero
             baseCard.SetCardUI(CardID);
         }
 
-        public void RefreshCardUI()
+        public void Refresh()
         {
             baseCard.RefreshCardUI();
         }

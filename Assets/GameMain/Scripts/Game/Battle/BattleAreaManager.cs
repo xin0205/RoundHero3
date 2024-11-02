@@ -310,7 +310,7 @@ namespace RoundHero
             if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
             {
                 var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
-                if (CardManager.Instance.Contain(card.Idx, EBuffID.Spec_ExchangeGrid))
+                if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
                 {
                     var tempExchangeGridData = BattleAreaManager.Instance.TempExchangeGridData;
                     if (tempExchangeGridData.GridPosIdx1 != -1 && tempExchangeGridData.GridPosIdx2 == -1 &&
@@ -1033,7 +1033,7 @@ namespace RoundHero
             var gridRange = Constant.Area.GridRange;
             var gridSize = Constant.Area.GridSize;
             var curSelectCard = CardManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
-            var isAllMove = CardManager.Instance.Contain(curSelectCard.Idx, EBuffID.Spec_MoveAllGrid);
+            var isAllMove = CardManager.Instance.Contain(curSelectCard.CardIdx, EBuffID.Spec_MoveAllGrid);
 
             var moveCount = 0;
             
@@ -1792,7 +1792,7 @@ namespace RoundHero
             else if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
             {
                 var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
-                if (CardManager.Instance.Contain(card.Idx, EBuffID.Spec_ExchangeGrid))
+                if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
                 {
                     var gridEntity = GetGridEntityByGridPosIdx(ne.GridPosIdx);
                     var tempExchangeGridData = BattleAreaManager.Instance.TempExchangeGridData;

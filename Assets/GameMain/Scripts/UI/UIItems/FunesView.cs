@@ -50,7 +50,7 @@ namespace RoundHero
                     CommonItemData = new CommonItemData()
                     {
                         ItemType = EItemType.Fune,
-                        FuneID = funeData.FuneID,
+                        ItemID = funeData.FuneID,
 
                     }
                 });

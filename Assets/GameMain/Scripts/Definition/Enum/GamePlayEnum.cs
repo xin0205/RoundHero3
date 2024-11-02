@@ -196,8 +196,18 @@ namespace RoundHero
     {
         Fast,
         Near,
-
+        
     }
+
+    // public enum EItemType
+    // {
+    //     Card,
+    //     Bless,
+    //     Fune,
+    //     HP,
+    //     Heart,
+    //     Coin
+    // }
 
     public enum ECardType
     {

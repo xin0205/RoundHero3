@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RoundHero
 {
@@ -15,7 +16,7 @@ namespace RoundHero
     
     public class PlayerCommonItem : MonoBehaviour
     {
-        [SerializeField] public CommonItem commonItem;
+        [FormerlySerializedAs("commonItem")] [SerializeField] public CommonDescItem commonDescItem;
 
         public Action<int> OnPointDownAction;
         
@@ -25,7 +26,7 @@ namespace RoundHero
 
         public void Init()
         {
-            commonItem.Init();
+            commonDescItem.Init();
         }
 
         
@@ -34,7 +35,7 @@ namespace RoundHero
         {
             this.PlayerCommonItemData = playerCommonItemData;
             
-            commonItem.SetItemData(playerCommonItemData.CommonItemData);
+            commonDescItem.SetItemData(playerCommonItemData.CommonItemData);
             OnPointDownAction = onPointDownAction;
             OnPointUpAction = onPointUpAction;
 
@@ -42,7 +43,7 @@ namespace RoundHero
 
         public void Refresh()
         {
-            commonItem.Refresh();
+            commonDescItem.Refresh();
         }
 
         private PlayerCommonItem tempPlayerCommonItem;

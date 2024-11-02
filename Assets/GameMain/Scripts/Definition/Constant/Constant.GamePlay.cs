@@ -1005,6 +1005,19 @@ namespace RoundHero
 
         public static class Hero
         {
+            public static List<EItemType> AttributeItemTypes = new List<EItemType>()
+            {
+                EItemType.Coin,
+                EItemType.HP,
+                EItemType.Heart,
+            };
+            
+            public static List<EItemType> CommonItemTypes = new List<EItemType>()
+            {
+                EItemType.Bless,
+                EItemType.Fune,
+            };
+            
             public static Dictionary<EUnitCamp, InitData> InitDatas = new()
             {
                 [EUnitCamp.Player1] = new InitData()
@@ -1644,7 +1657,7 @@ namespace RoundHero
                 },
             };
 
-            public static Dictionary<EItemType, List<EEventType>> ItemTypeEventTypeMap = new()
+            public static Dictionary<EItemType, List<EEventType>> ItemTypeAppointEventTypeMap = new()
             {
                 [EItemType.Card] = new List<EEventType>()
                 {
@@ -1666,9 +1679,83 @@ namespace RoundHero
                     EEventType.Appoint_Bless,
 
                 },
+                
 
 
             };
+            
+            public static Dictionary<EItemType, List<EEventType>> ItemTypeEventTypeMap = new()
+            {
+                [EItemType.Card] = new List<EEventType>()
+                {
+                    EEventType.Random_UnitCard,
+                    EEventType.Random_TacticCard,
+                    EEventType.Appoint_UnitCard,
+                    EEventType.Appoint_TacticCard,
+                    EEventType.NegativeCard,
+                    EEventType.Card_Change,
+                    EEventType.Card_Copy,
+                    
+
+                },
+                [EItemType.Fune] = new List<EEventType>()
+                {
+                    EEventType.Random_Fune,
+                    EEventType.Appoint_Fune,
+
+                },
+                [EItemType.Bless] = new List<EEventType>()
+                {
+                    EEventType.Random_Bless,
+                    EEventType.Appoint_Bless,
+
+                },
+                [EItemType.Coin] = new List<EEventType>()
+                {
+                    EEventType.AddCoin,
+                    EEventType.SubCoin,
+                },
+                [EItemType.HP] = new List<EEventType>()
+                {
+                    //EEventType.Random_Bless,
+                    EEventType.AddHeroCurHP,
+                    EEventType.AddHeroMaxHP,
+                    EEventType.SubHeroCurHP,
+                    EEventType.SubHeroMaxHP,
+                },
+                
+
+
+            };
+            
+            // public static Dictionary<EItemType, List<EEventType>> ItemTypeEventTypeMap2 = new()
+            // {
+            //     [EItemType.Card] = new List<EEventType>()
+            //     {
+            //         EEventType.Random_UnitCard,
+            //         EEventType.Random_TacticCard,
+            //         EEventType.Appoint_UnitCard,
+            //         EEventType.Appoint_TacticCard,
+            //         EEventType.NegativeCard,
+            //     },
+            //     [EItemType.Fune] = new List<EEventType>()
+            //     {
+            //         EEventType.Random_Fune,
+            //         EEventType.Appoint_Fune,
+            //
+            //     },
+            //     [EItemType.Bless] = new List<EEventType>()
+            //     {
+            //         EEventType.Random_Bless,
+            //         EEventType.Appoint_Bless,
+            //
+            //     },
+            //
+            //
+            // };
+            
+            public static Dictionary<EEventType, EItemType> AppointEventTypeItemTypeMap = new();
+            public static Dictionary<EEventType, EItemType> EventTypeItemTypeMap = new();
         }
 
         public class EGridPropEffectValueTemplate
@@ -1720,5 +1807,28 @@ namespace RoundHero
             }
 
         };
+
+        
+
+        public static void Init()
+        {
+            foreach (var kv in BattleEvent.ItemTypeAppointEventTypeMap)
+            {
+                foreach (var eventType in kv.Value)
+                {
+                    if(!BattleEvent.AppointEventTypeItemTypeMap.ContainsKey(eventType))
+                        BattleEvent.AppointEventTypeItemTypeMap.Add(eventType, kv.Key);
+                }
+            }
+            
+            foreach (var kv in BattleEvent.ItemTypeEventTypeMap)
+            {
+                foreach (var eventType in kv.Value)
+                {
+                    if(!BattleEvent.EventTypeItemTypeMap.ContainsKey(eventType))
+                        BattleEvent.EventTypeItemTypeMap.Add(eventType, kv.Key);
+                }
+            }
+        }
     }
 }

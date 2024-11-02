@@ -35,7 +35,7 @@ namespace RoundHero
 
         public void Refresh()
         {
-            cardItem.SetCardUI(this.storeItemData.CommonItemData.CardID);
+            cardItem.SetCard(this.storeItemData.CommonItemData.ItemID);
             cardPrice.text = storeItemData.Price.ToString();
             mask.SetActive(storeItemData.IsSaleOut);
         }

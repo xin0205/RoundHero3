@@ -295,6 +295,26 @@ namespace RoundHero
             
         }
         
+        public static string GetCommonIconName(EItemType itemType)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icon/Common/{0}.png", itemType.ToString());
+            
+        }
+        
+        public static Task<Sprite> GetCommonIcon(EItemType itemType)
+        {
+            var assetName = GetCommonIconName(itemType);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GameEntry.Resource.LoadSpriteAsync(GetEmptyIconName());
+            }
+
+        }
+        
         public static string GetEmptyIconName()
         {
             return "Assets/GameMain/UI/UISprites/Icons/Empty.png";

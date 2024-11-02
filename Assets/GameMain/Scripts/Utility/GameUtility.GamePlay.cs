@@ -144,6 +144,18 @@ namespace RoundHero
                 case EItemType.Fune:
                     GetFuneText(itemID, ref name, ref desc);
                     break;
+                case EItemType.Coin:
+                    name = Constant.Localization.Attribute_Coin;
+                    desc = Constant.Localization.Attribute_Coin;
+                    break;
+                case EItemType.HP:
+                    name = Constant.Localization.Attribute_HP;
+                    desc = Constant.Localization.Attribute_HP;
+                    break;
+                case EItemType.Heart:
+                    name = Constant.Localization.Attribute_Heart;
+                    desc = Constant.Localization.Attribute_Heart;
+                    break;
                 default:
                     name = "";
                     desc = "";

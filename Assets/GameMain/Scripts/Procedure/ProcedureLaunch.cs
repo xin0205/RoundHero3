@@ -60,6 +60,8 @@ namespace RoundHero
             JsonParser.Default.IsPolymorphic = true;
             JsonParser.Default.IsFormat = false;
             
+            Constant.Init();
+            
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)

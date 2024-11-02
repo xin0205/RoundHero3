@@ -401,7 +401,7 @@ namespace RoundHero
                 //     return false;
                 // }
 
-                if (buffData.BuffTriggerType == EBuffTriggerType.SelectUnit || CardManager.Instance.Contain(card.Idx, EBuffID.Spec_MoveUs))
+                if (buffData.BuffTriggerType == EBuffTriggerType.SelectUnit || CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
                 {
                     BattleManager.Instance.BattleState = EBattleState.TacticSelectUnit;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
@@ -410,7 +410,7 @@ namespace RoundHero
                     
                     return false;
                 }
-                else if (CardManager.Instance.Contain(card.Idx, EBuffID.Spec_MoveGrid) || CardManager.Instance.Contain(card.Idx, EBuffID.Spec_MoveAllGrid) )
+                else if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveGrid) || CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveAllGrid) )
                 {
                     BattleManager.Instance.BattleState = EBattleState.MoveGrid;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
@@ -420,7 +420,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID = cardID;
                     return false;
                 }
-                else if (CardManager.Instance.Contain(card.Idx, EBuffID.Spec_ExchangeGrid))
+                else if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
                 {
                     //BattleManager.Instance.BattleState = EBattleState.TacticSelectGrid;
                     BattleManager.Instance.BattleState = EBattleState.ExchangeSelectGrid;

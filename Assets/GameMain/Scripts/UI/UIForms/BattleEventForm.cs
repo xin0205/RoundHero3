@@ -37,14 +37,14 @@ namespace RoundHero
 
             text.text = battleEventData.BattleEventExpressionType + "-" + battleEventData.BattleEvent;
 
-            for (int i = 0; i < BattleEventItems.Count; i++)
-            {
-                if (i < battleEventData.BattleGameEventItemDatas.Count)
-                {
-                    BattleEventItems[i].Init(battleEventData.BattleGameEventItemDatas[i]);
-                }
-                
-            }
+            // for (int i = 0; i < BattleEventItems.Count; i++)
+            // {
+            //     if (i < battleEventData.BattleEventItemDatas.Count)
+            //     {
+            //         BattleEventItems[i].Init(battleEventData.BattleEventItemDatas[i]);
+            //     }
+            //     
+            // }
         }
         
         protected override void OnClose(bool isShutdown, object userData)

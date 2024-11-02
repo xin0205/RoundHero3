@@ -16,12 +16,16 @@ namespace RoundHero
 
         private List<BattleEventItemData> battleGameEventItemDatas;
 
-        [SerializeField] private UnityEvent clickEvent;
+        private Action<int> onClickAction;
 
-        public void Init(List<BattleEventItemData> battleGameEventItemDatas)
+        private int idx;
+
+        public void Init(int idx, List<BattleEventItemData> battleGameEventItemDatas, Action<int> OnClickAction)
         {
             this.battleGameEventItemDatas = battleGameEventItemDatas;
-
+            this.onClickAction = OnClickAction;
+            this.idx = idx;
+            
             text.text = "";
             var eventValues = new List<string>();
             
@@ -37,18 +41,15 @@ namespace RoundHero
                 
 
                 var changeValue = false;
-                foreach (var kv in Constant.BattleEvent.ItemTypeEventTypeMap)
-                {
-                    if (kv.Value.Contains(battleGameEventItemData.EventType))
-                    {
-                        var name = "";
-                        var desc = "";
-                        GameUtility.GetItemText(kv.Key, battleGameEventItemData.EventValues[0], ref name, ref desc);
-                        eventValues[0] = name;
-                        changeValue = true;
-                    }
-                }
 
+                if (Constant.BattleEvent.AppointEventTypeItemTypeMap.ContainsKey(battleGameEventItemData.EventType))
+                {
+                    var name = "";
+                    var desc = "";
+                    GameUtility.GetItemText(Constant.BattleEvent.AppointEventTypeItemTypeMap[battleGameEventItemData.EventType], battleGameEventItemData.EventValues[0], ref name, ref desc);
+                    eventValues[0] = name;
+                    changeValue = true;
+                }
                 
                 
                 text.text += GameEntry.Localization.GetLocalizedStrings(eventTypeStr, eventValues);
@@ -64,107 +65,12 @@ namespace RoundHero
             
             
         }
-        
-        private CardsForm cardsForm;
 
-        public async void OnClick()
+        public void OnClick()
         {
-            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
-            {
-                Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmAcquire) + "\n" + text.text.ToString(),
-                OnConfirm = () =>
-                {
-                    foreach (var battleGameEventItemData in battleGameEventItemDatas)
-                    {
-                        switch (battleGameEventItemData.EventType)
-                        {
-                            case EEventType.Card_Remove:
-                                break;
-                            case EEventType.Card_Change:
-                                break;
-                            case EEventType.Card_Copy:
-                                var uiForm = await GameEntry.UI.OpenUIFormAsync(UIFormId.CardsForm, new CardsFormParams()
-                                {
-                                    Tips = GameEntry.Localization.GetString(Constant.Localization.Tips_CardAddFune),
-                                    ShowCardTypes = new List<ECardType>()
-                                    {
-                                        ECardType.Unit,
-                                    },
-                                    OnClickAction = CopyCard,
-                                    IsShowAllFune = false,
-                
-                                });
-                                cardsForm = uiForm.Logic as CardsForm;
-                                
-                                break;
-                            case EEventType.Random_UnitCard:
-                                break;
-                            case EEventType.Random_TacticCard:
-                                break;
-                            case EEventType.Random_Fune:
-                                break;
-                            case EEventType.Random_Bless:
-                                break;
-                            case EEventType.Appoint_UnitCard:
-                                break;
-                            case EEventType.Appoint_TacticCard:
-                                break;
-                            case EEventType.Appoint_Fune:
-                                break;
-                            case EEventType.Appoint_Bless:
-                                break;
-                            case EEventType.AddCoin:
-                                break;
-                            case EEventType.AddHeroMaxHP:
-                                break;
-                            case EEventType.AddHeroCurHP:
-                                break;
-                            case EEventType.NegativeCard:
-                                break;
-                            case EEventType.SubCoin:
-                                break;
-                            case EEventType.SubHeroMaxHP:
-                                break;
-                            case EEventType.SubHeroCurHP:
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                        battleGameEventItemData.EventType
-                        
-                        BattleEventManager.Instance.AcquireEventItem(battleGameEventItemData);
-                    }
-                    clickEvent?.Invoke();
-                    
-                    
-                    
-                }
-            });
-            
-            
-            
+            this.onClickAction.Invoke(idx);
         }
         
-        public void CopyCard(int cardIdx)
-        {
-            
-            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
-            {
-                Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmCopyCard),
-                OnConfirm = () =>
-                {
-                    var cardData = CardManager.Instance.GetCard(cardIdx);
-                    var newCardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
-                    CardManager.Instance.CardDatas.Add(newCardIdx, new Data_Card(newCardIdx, cardData.CardID));
-                    
-                    GameEntry.UI.CloseUIForm(cardsForm);
-                    
-                    Close();
-                }
-            });
-            
-            
-        }
         
         
 

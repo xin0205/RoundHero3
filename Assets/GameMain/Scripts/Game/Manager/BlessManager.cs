@@ -17,7 +17,7 @@ namespace RoundHero
             Random = new System.Random(this.randomSeed);
         }
 
-        public int GetID()
+        public int GetIdx()
         {
             return BattlePlayerManager.Instance.PlayerData.BlessIdx++;
         }

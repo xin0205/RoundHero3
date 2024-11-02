@@ -10,7 +10,7 @@ namespace RoundHero
         public Dictionary<int, Data_Card> TempCards = new Dictionary<int, Data_Card>();
         
         private int id;
-        public int GetID()
+        public int GetIdx()
         {
             return BattlePlayerManager.Instance.PlayerData.CardIdx++;
         }

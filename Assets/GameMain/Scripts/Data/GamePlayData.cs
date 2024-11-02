@@ -99,7 +99,7 @@ namespace RoundHero
 
     public class Data_Card
     {
-        public int Idx;
+        public int CardIdx;
         public int CardID;
         public int MaxFuneCount;
         public List<int> FuneIdxs = new();
@@ -115,9 +115,9 @@ namespace RoundHero
 
         }
 
-        public Data_Card(int idx, int cardID, [CanBeNull] List<int> funeIdxs = null)
+        public Data_Card(int cardIdx, int cardID, [CanBeNull] List<int> funeIdxs = null)
         {
-            Idx = idx;
+            CardIdx = cardIdx;
             CardID = cardID;
             if (funeIdxs != null)
             {
@@ -130,7 +130,7 @@ namespace RoundHero
 
         public virtual Data_Card Copy()
         {
-            var dataCard = new Data_Card(Idx, CardID, FuneIdxs);
+            var dataCard = new Data_Card(CardIdx, CardID, FuneIdxs);
 
             return dataCard;
         }

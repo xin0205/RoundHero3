@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DG.Tweening;
+
 using GameFramework;
 using UGFExtensions.Await;
 using UnityEngine;

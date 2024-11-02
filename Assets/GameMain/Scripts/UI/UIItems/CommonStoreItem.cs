@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace RoundHero
@@ -17,7 +18,7 @@ namespace RoundHero
     
     public class CommonStoreItem : MonoBehaviour
     {
-        [SerializeField] private CommonItem commonItem;
+        [FormerlySerializedAs("commonItem")] [SerializeField] private CommonDescItem commonDescItem;
         [SerializeField] private CoinItem coinItem;
         [SerializeField] private GameObject mask;
         
@@ -34,7 +35,7 @@ namespace RoundHero
         {
             this.storeItemData = storeItemData;
             this.purchaseAction = purchaseAction;
-            commonItem.SetItemData(storeItemData.CommonItemData);
+            commonDescItem.SetItemData(storeItemData.CommonItemData);
             
             Refresh();
         }
@@ -42,7 +43,7 @@ namespace RoundHero
 
         public async void Refresh()
         {
-            commonItem.Refresh();
+            commonDescItem.Refresh();
             coinItem.SetPrice(storeItemData.Price);
             mask.SetActive(storeItemData.IsSaleOut);
         }
