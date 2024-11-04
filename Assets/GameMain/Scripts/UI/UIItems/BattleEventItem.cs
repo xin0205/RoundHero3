@@ -28,7 +28,8 @@ namespace RoundHero
             
             text.text = "";
             var eventValues = new List<string>();
-            
+
+            var index = 0;
             foreach (var battleGameEventItemData in battleGameEventItemDatas)
             {
                 eventValues.Clear();
@@ -52,7 +53,7 @@ namespace RoundHero
                 }
                 
                 
-                text.text += GameEntry.Localization.GetLocalizedStrings(eventTypeStr, eventValues);
+                text.text +=  GameEntry.Localization.GetLocalizedStrings(eventTypeStr, eventValues) + (index != battleGameEventItemDatas.Count - 1 ? "," : "");
 
                 // var names = new List<string>();
                 // foreach (var value in battleGameEventItemData.EventValues)
@@ -61,6 +62,7 @@ namespace RoundHero
                 // }
                 //
                 // text.text += "-";
+                index++;
             }
             
             

@@ -143,9 +143,10 @@ namespace RoundHero
                 // {
                 //     RandomSeed = randomSeed,
                 // });
-                GameEntry.UI.OpenUIForm(UIFormId.TreasureForm, new TreasureFormData()
+                GameEntry.UI.OpenUIForm(UIFormId.BattleEventForm, new BattleEventFormData()
                 {
                     RandomSeed = randomSeed,
+                    BattleEventData = BattleEventManager.Instance.GenerateRandomEvent(randomSeed),
                 });
                 
                 

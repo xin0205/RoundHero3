@@ -14,11 +14,14 @@ namespace RoundHero
 
         private Action<int> TagCallBack;
 
+        [SerializeField] private GameObject frameGO;
+
         // private int randomSeed;
         // private System.Random random;
 
         public void Init(Data_MapRoute mapRoute, List<EMapSite> mapSites, Action<int> tagCallBack)
         {
+            frameGO.SetActive(true);
             gameObject.SetActive(true);
             this.mapRoute = mapRoute;
             MapSites = mapSites;
@@ -56,6 +59,11 @@ namespace RoundHero
                 //mapStageStepItems[i].RandomPosition();
             }
 
+        }
+
+        public void ShowSelect(bool isShow)
+        {
+            frameGO.SetActive(isShow);
         }
 
         public void Select(bool valueChanged)

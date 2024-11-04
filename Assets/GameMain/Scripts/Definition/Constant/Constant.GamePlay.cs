@@ -1530,8 +1530,8 @@ namespace RoundHero
                     [EBattleEventYNType.N] = new ()
                     {
                         [EEventType.SubCoin] = new Vector2Int(-100, -50),
-                        [EEventType.SubHeroMaxHP] = new Vector2Int(-1, -2),
-                        [EEventType.SubHeroCurHP] = new Vector2Int(-2, -4),
+                        [EEventType.SubHeroMaxHP] = new Vector2Int(-2, -1),
+                        [EEventType.SubHeroCurHP] = new Vector2Int(-4, -2),
                     },
 
                     [EBattleEventYNType.YN] = new ()

@@ -13,6 +13,9 @@ namespace RoundHero
         [SerializeField]
         private BaseCard tacticCard;
         
+        [SerializeField]
+        private BaseCard stateCard;
+        
         private int CardID = -1;
 
         
@@ -29,10 +32,15 @@ namespace RoundHero
             {
                 baseCard = tacticCard;
             }
+            else if (drCard.CardType == ECardType.State)
+            {
+                baseCard = stateCard;
+            }
             
             unitCard.gameObject.SetActive(drCard.CardType == ECardType.Unit);
             tacticCard.gameObject.SetActive(drCard.CardType == ECardType.Tactic);
-
+            stateCard.gameObject.SetActive(drCard.CardType == ECardType.State);
+            
             baseCard.SetCardUI(CardID);
         }
 

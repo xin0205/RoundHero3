@@ -304,9 +304,10 @@ namespace RoundHero
             }
             else if(eventType == EEventType.Card_Copy)
             {
+                eventValue = battleEventItemData.EventValues[0];
                 var cardData = CardManager.Instance.GetCard(eventValue);
                 var newCardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
-                battleEventItemData.EventValues.Add(cardData.CardID);
+                //battleEventItemData.EventValues.Add(cardData.CardID);
                 CardManager.Instance.CardDatas.Add(newCardIdx, new Data_Card(newCardIdx, cardData.CardID));
                 
                 
@@ -314,7 +315,9 @@ namespace RoundHero
             }
             else if(eventType == EEventType.Card_Remove)
             {
+                eventValue = battleEventItemData.EventValues[0];
                 var cardData = CardManager.Instance.GetCard(eventValue);
+                //battleEventItemData.EventValues.Add(cardData.CardIdx);
                 CardManager.Instance.CardDatas.Remove(cardData.CardIdx);
                 
                 
@@ -322,6 +325,7 @@ namespace RoundHero
             }
             else if(eventType == EEventType.Card_Change)
             {
+                eventValue = battleEventItemData.EventValues[0];
                 var cardData = CardManager.Instance.GetCard(eventValue);
                 CardManager.Instance.CardDatas.Remove(cardData.CardIdx);
                 
@@ -331,7 +335,7 @@ namespace RoundHero
                 var random = new Random(battleEventItemData.RandomSeed);
                 
                 var randomIdxs = MathUtility.GetRandomNum(1, 0, cards.Length, random);
-                battleEventItemData.EventValues.Add(cards[randomIdxs[0]].Id);
+                //battleEventItemData.EventValues.Add(cards[randomIdxs[0]].Id);
                 CardManager.Instance.CardDatas.Add(newCardIdx, new Data_Card(newCardIdx, cards[randomIdxs[0]].Id));
                 
             }

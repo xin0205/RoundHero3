@@ -9,7 +9,7 @@ namespace RoundHero
     public class MapStageRoute : MonoBehaviour
     {
         [SerializeField] private List<MapStageRouteItem> mapStageRouteItems;
-        [SerializeField] private List<Toggle> toggles;
+        //[SerializeField] private List<Toggle> toggles;
         
         private int randomSeed;
         private int stageIdx = -1;
@@ -38,23 +38,23 @@ namespace RoundHero
                 }, stage[i], RefreshSelectRouteIdx);
             }
 
-            ToggleEnable(true);
+            //ToggleEnable(true);
 
         }
 
-        private void ToggleEnable(bool isEnable)
-        {
-            foreach (var toggle in toggles)
-            {
-                
-                if (!isEnable)
-                {
-                    toggle.isOn = false;
-                }
-                toggle.graphic.gameObject.SetActive(isEnable);
-                toggle.enabled = isEnable;
-            }
-        }
+        // private void ToggleEnable(bool isEnable)
+        // {
+        //     foreach (var toggle in toggles)
+        //     {
+        //         
+        //         if (!isEnable)
+        //         {
+        //             toggle.isOn = false;
+        //         }
+        //         toggle.graphic.gameObject.SetActive(isEnable);
+        //         toggle.enabled = isEnable;
+        //     }
+        // }
         
         public void Refresh()
         {
@@ -66,11 +66,12 @@ namespace RoundHero
                     // {
                     //     
                     // });
-                    ToggleEnable(false);
+                    //ToggleEnable(false);
                     for (int i = 0; i < mapStageRouteItems.Count; i++)
                     {
                         mapStageRouteItems[i].gameObject
                             .SetActive(i == SelectRouteIdx);
+                        mapStageRouteItems[i].ShowSelect(false);
                     }
                 }
                 else

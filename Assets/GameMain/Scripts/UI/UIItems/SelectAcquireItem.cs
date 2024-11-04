@@ -25,15 +25,18 @@ namespace RoundHero
             
         }
         
-        public void SetItemData(SelectAcquireItemData selectAcquireItemData, Action<int> onClick, int itemIndex,int row,int column)
+        public void SetItemData(SelectAcquireItemData selectAcquireItemData, Action<int> onClick, int itemIndex)
         {
             this.selectAcquireItemData = selectAcquireItemData;
             this.onClickAction = onClick;
             this.itemIdx = itemIdx;
+            
+            cardItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.Card);
+            commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType != EItemType.Card);
+            
             if (selectAcquireItemData.ItemType == EItemType.Card)
             {
                 cardItem.SetCard(selectAcquireItemData.ItemID);
-                cardItem.Refresh();
             }
             else if (Constant.Hero.CommonItemTypes.Contains(selectAcquireItemData.ItemType))
             {
@@ -42,14 +45,15 @@ namespace RoundHero
                     ItemType = this.selectAcquireItemData.ItemType,
                     ItemID = this.selectAcquireItemData.ItemID,
                 });
-                commonDescItem.Refresh();
+                
             }
+            
+            Refresh();
         }
         
         public void Refresh()
         {
-            cardItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.Card);
-            commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType != EItemType.Card);
+            
             
             if (selectAcquireItemData.ItemType == EItemType.Card)
             {

@@ -18,14 +18,16 @@ namespace RoundHero
     
     public class SelectAcquireForm : UGuiForm
     {
-        [SerializeField]
-        private LoopGridView itemView;
+        // [SerializeField]
+        // private LoopGridView itemView;
         
         private SelectAcquireFormParams selectAcquireFormParams;
+
+        [SerializeField] private List<SelectAcquireItem> selectAcquireItems;
         
         private void Awake()
         {
-            itemView.InitGridView(0,  OnGetItemByRowColumn);
+            //itemView.InitGridView(0,  OnGetItemByRowColumn);
   
         }
         
@@ -40,31 +42,71 @@ namespace RoundHero
                 return;
             }
             
-            itemView.SetListItemCount(selectAcquireFormParams.SelectAcquireItemDatas.Count);
-            itemView.RefreshAllShownItem();
-            
+            //itemView.SetListItemCount(selectAcquireFormParams.SelectAcquireItemDatas.Count);
+            //itemView.RefreshAllShownItem();
+            RefreshItems();
         }
-        
-        LoopGridViewItem OnGetItemByRowColumn(LoopGridView view, int itemIndex,int row,int column)
+
+        public void RefreshItems()
         {
-            if (itemIndex < 0)
+            for (int i = 0; i < selectAcquireItems.Count; i++)
             {
-                return null;
-            }
-            
-            var item = view.NewListViewItem("SelectAcquireItem");
-        
-            var itemScript = item.GetComponent<SelectAcquireItem>();
-            if (item.IsInitHandlerCalled == false)
-            {
-                item.IsInitHandlerCalled = true;
-                itemScript.Init();
+                var selectAcquireItem = selectAcquireItems[i];
+                if (i >= selectAcquireFormParams.SelectAcquireItemDatas.Count)
+                {
+                    selectAcquireItem.gameObject.SetActive(false);
+                    continue;
+                }
+                
+                selectAcquireItem.gameObject.SetActive(true);
+                selectAcquireItem.SetItemData(selectAcquireFormParams.SelectAcquireItemDatas[i],
+                    OnSelectItem, i);
             }
 
-            itemScript.SetItemData(selectAcquireFormParams.SelectAcquireItemDatas[itemIndex],
-                selectAcquireFormParams.OnClick, itemIndex, row, column);
-            
-            return item;
         }
+        
+        // LoopGridViewItem OnGetItemByRowColumn(LoopGridView view, int itemIndex,int row,int column)
+        // {
+        //     if (itemIndex < 0)
+        //     {
+        //         return null;
+        //     }
+        //     
+        //     var item = view.NewListViewItem("SelectAcquireItem");
+        //
+        //     var itemScript = item.GetComponent<SelectAcquireItem>();
+        //     if (item.IsInitHandlerCalled == false)
+        //     {
+        //         item.IsInitHandlerCalled = true;
+        //         itemScript.Init();
+        //     }
+        //
+        //     itemScript.SetItemData(selectAcquireFormParams.SelectAcquireItemDatas[itemIndex],
+        //         OnSelectItem, itemIndex, row, column);
+        //     
+        //     return item;
+        // }
+        
+        public void OnSelectItem(int selectIdx)
+        {
+            selectAcquireFormParams.OnClick.Invoke(selectIdx);
+            Close();
+        }
+
+        public void ConfirmClose()
+        {
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmUnAcquire),
+                OnConfirm = () =>
+                {
+
+                    Close();
+                    
+                }
+            });    
+        }
+        
+        
     }
 }
