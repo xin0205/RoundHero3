@@ -9,10 +9,10 @@ namespace RoundHero
             public const string Message_ResetData = "Message.ResetData";
             public const string Message_NoEnergy = "Message.NoEnergy";
             
-            public const string UI_BattleRound = "UI.BattleRound";
+            public const string UI_Round = "UI.Round";
 
             public const string Tips_StartTurn = "Tips.StartTurn";
-            public const string Tips_EnemyAction = "Tips.EnemyAction";
+            
             
             
             public const string CardName = "CardName.{0}";
@@ -37,6 +37,9 @@ namespace RoundHero
             public const string Tips_CopyCard = "Tips.CopyCard";
             public const string Tips_RemoveCard = "Tips.RemoveCard";
             public const string Tips_ChangeCard = "Tips.ChangeCard";
+            public const string Tips_Round = "Tips.Round";
+            public const string Tips_UsAction = "Tips.UsAction";
+            public const string Tips_EnemyAction = "Tips.EnemyAction";
             public const string Message_ConfirmAddFune = "Message.ConfirmAddFune";
             public const string Message_ConfirmAddHeart = "Message.ConfirmAddHeart";
             public const string Message_ConfirmAddMaxEnergy = "Message.ConfirmAddMaxEnergy";
@@ -48,6 +51,10 @@ namespace RoundHero
             public const string Attribute_Coin = "Attribute.Coin";
             public const string Attribute_HP = "Attribute.HP";
             public const string Attribute_Heart = "Attribute.Heart";
+            public const string Message_ConfirmUnChangeCard = "Message.ConfirmUnChangeCard";
+            public const string Message_ConfirmUnCopyCard = "Message.ConfirmUnChangeCard";
+            public const string Message_ConfirmUnRemoveCard = "Message.ConfirmUnChangeCard";
+
 
         }
     }

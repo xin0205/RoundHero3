@@ -933,27 +933,31 @@ namespace RoundHero
         public void RefreshSelectCard(int refreshCardID)
         {
             var idx = 0;
-            var selectCardSiblingIdx = 999;
-            if (CardEntities.ContainsKey(refreshCardID))
-            {
-                selectCardSiblingIdx = CardEntities[refreshCardID].RawSiblingIdx;
-            }
+            // var selectCardSiblingIdx = 999;
+            // if (CardEntities.ContainsKey(refreshCardID))
+            // {
+            //     selectCardSiblingIdx = CardEntities[refreshCardID].RawSiblingIdx;
+            // }
             
             foreach (var kv in CardEntities)
             {
                 if (kv.Key == refreshCardID)
                 {
-                    kv.Value.gameObject.GetComponent<RectTransform>().SetAsLastSibling();
+                    kv.Value.SetSortingOrder(1000);
+                    //kv.Value.gameObject.GetComponent<RectTransform>().SetAsLastSibling();
                 }
                 else
                 {
-                    var siblingIdx = kv.Value.RawSiblingIdx;
-                    if (siblingIdx > selectCardSiblingIdx)
-                    {
-                        siblingIdx -= 1;
-                    }
-                    kv.Value.gameObject.GetComponent<RectTransform>().SetSiblingIndex(siblingIdx);
+                    // var siblingIdx = kv.Value.RawSiblingIdx;
+                    // if (siblingIdx > selectCardSiblingIdx)
+                    // {
+                    //     siblingIdx -= 1;
+                    // }
+                    //kv.Value.gameObject.GetComponent<RectTransform>().SetSiblingIndex(siblingIdx);
+                    kv.Value.SetSortingOrder(idx * 10);
                 }
+
+                idx++;
             }
         }
         

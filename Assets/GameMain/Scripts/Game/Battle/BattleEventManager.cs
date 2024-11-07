@@ -49,7 +49,7 @@ namespace RoundHero
 
             var battleGameEvents = battleEventData.BattleEvent.ToString().Split("_");
 
-            for (int i = 1; i < battleGameEvents.Length; i++)
+            for (int i = 1; i < battleGameEvents.Length;)
             {
                 var eventItemDatas = new List<BattleEventItemData>();
                 var battleEventYNType = GameUtility.GetEnum<EBattleEventYNType>(battleGameEvents[i]);
@@ -93,12 +93,43 @@ namespace RoundHero
                     eventItemDatas.Add(AcquireBattleEventItemData(battleEventYNType, gameEvent, random));
                     
                 }
-                
-                battleEventData.BattleEventItemDatas.Add(eventItemDatas);
 
+                if (!CheckSameEvent(battleEventData.BattleEventItemDatas, eventItemDatas))
+                {
+                    battleEventData.BattleEventItemDatas.Add(eventItemDatas);
+                    i++;
+                }
+                
+                // battleEventData.BattleEventItemDatas.Add(eventItemDatas);
+                // i++;
             }
 
 
+        }
+
+        private bool CheckSameEvent(List<List<BattleEventItemData>> allEventItemDatas, List<BattleEventItemData> eventItemDatas)
+        {
+            foreach (var datas in allEventItemDatas)
+            {
+                var sameCount = 0;
+                foreach (var data in datas)
+                {
+                    foreach (var data2 in eventItemDatas)
+                    {
+                        if (data.EventType == data2.EventType)
+                        {
+                            sameCount += 1;
+                        }
+                    }
+                }
+
+                if (sameCount == datas.Count)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
         
         public BattleEventData GenerateRandomEvent(int randomSeed)
@@ -264,42 +295,70 @@ namespace RoundHero
         {
             var eventType = battleEventItemData.EventType;
             var eventValue = 0;
-            if (battleEventItemData.EventValues.Contains(selectIdx))
-            {
-                eventValue = battleEventItemData.EventValues[selectIdx];
-            }
+            // if (battleEventItemData.EventValues.Contains(selectIdx))
+            // {
+            //     eventValue = battleEventItemData.EventValues[selectIdx];
+            // }
             
-            if (eventType == EEventType.Appoint_UnitCard || eventType == EEventType.Appoint_TacticCard ||eventType == EEventType.NegativeCard ||
-                eventType == EEventType.Random_UnitCard || eventType == EEventType.Random_TacticCard)
+            if (eventType == EEventType.Appoint_UnitCard || eventType == EEventType.Appoint_TacticCard ||eventType == EEventType.NegativeCard)
             {
                 var cardIdx = CardManager.Instance.GetIdx();
+                eventValue = battleEventItemData.EventValues[0];
                 CardManager.Instance.CardDatas.Add(cardIdx, new Data_Card(cardIdx, eventValue));
             }
-            else if (eventType == EEventType.Random_Fune || eventType == EEventType.Appoint_Fune)
+            else if (eventType == EEventType.Random_UnitCard || eventType == EEventType.Random_TacticCard)
+            {
+                var cardIdx = CardManager.Instance.GetIdx();
+                eventValue = battleEventItemData.EventValues[selectIdx];
+                CardManager.Instance.CardDatas.Add(cardIdx, new Data_Card(cardIdx, eventValue));
+            }
+            else if (eventType == EEventType.Random_Fune)
             {
                 var funeIdx = FuneManager.Instance.GetIdx();
+                eventValue = battleEventItemData.EventValues[selectIdx];
                 var drFune = GameEntry.DataTable.GetBuff(eventValue);
                 var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
                 
                 FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, value));
                 BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(funeIdx);
             }
-            else if (eventType == EEventType.Random_Bless || eventType == EEventType.Appoint_Bless)
+            else if (eventType == EEventType.Appoint_Fune)
+            {
+                var funeIdx = FuneManager.Instance.GetIdx();
+                eventValue = battleEventItemData.EventValues[0];
+                var drFune = GameEntry.DataTable.GetBuff(eventValue);
+                var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
+                
+                FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, value));
+                BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(funeIdx);
+            }
+            else if (eventType == EEventType.Random_Bless)
             {
                 var blessIdx = BlessManager.Instance.GetIdx();
+                eventValue = battleEventItemData.EventValues[selectIdx];
+                BlessManager.Instance.BlessDatas.Add(blessIdx,new Data_Bless(blessIdx, eventValue));
+
+            }
+            else if (eventType == EEventType.Appoint_Bless)
+            {
+                var blessIdx = BlessManager.Instance.GetIdx();
+                eventValue = battleEventItemData.EventValues[0];
                 BlessManager.Instance.BlessDatas.Add(blessIdx,new Data_Bless(blessIdx, eventValue));
 
             }
             else if (eventType == EEventType.AddCoin || eventType == EEventType.SubCoin)
             {
+                eventValue = battleEventItemData.EventValues[0];
                 PlayerManager.Instance.PlayerData.Coin += eventValue;
             }
             else if (eventType == EEventType.AddHeroMaxHP || eventType == EEventType.SubHeroMaxHP)
             {
+                eventValue = battleEventItemData.EventValues[0];
                 PlayerManager.Instance.PlayerData.BattleHero.BaseMaxHP += eventValue;
             }
             else if (eventType == EEventType.AddHeroCurHP || eventType == EEventType.SubHeroCurHP)
             {
+                eventValue = battleEventItemData.EventValues[0];
                 PlayerManager.Instance.PlayerData.BattleHero.CurHP += eventValue;
             }
             else if(eventType == EEventType.Card_Copy)
@@ -331,14 +390,16 @@ namespace RoundHero
                 
                 var newCardIdx = PlayerManager.Instance.PlayerData.CardIdx++;
                 
-                var cards = GameEntry.DataTable.GetCards(new List<ECardType>() { ECardType.Unit, ECardType.Tactic }, cardData.CardID);
+                var cards = GameEntry.DataTable.GetCards(new List<ECardType>() { ECardType.Tactic }, cardData.CardID);
                 var random = new Random(battleEventItemData.RandomSeed);
                 
                 var randomIdxs = MathUtility.GetRandomNum(1, 0, cards.Length, random);
-                //battleEventItemData.EventValues.Add(cards[randomIdxs[0]].Id);
+                battleEventItemData.EventValues[0] = cards[randomIdxs[0]].Id;
                 CardManager.Instance.CardDatas.Add(newCardIdx, new Data_Card(newCardIdx, cards[randomIdxs[0]].Id));
                 
             }
+            
+            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
         }
         
         

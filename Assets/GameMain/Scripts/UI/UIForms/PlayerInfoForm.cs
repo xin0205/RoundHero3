@@ -48,7 +48,7 @@ namespace RoundHero
         private async void OnRefreshPlayerInfo(object sender, GameEventArgs e)
         {
             coinText.text = BattlePlayerManager.Instance.PlayerData.Coin.ToString();
-            hpText.text = BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP.ToString();
+            hpText.text = BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" + BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
             var drHero = GameEntry.DataTable.GetHero(BattlePlayerManager.Instance.PlayerData.BattleHero.HeroID);
             heroIcon.sprite = await AssetUtility.GetHeroIcon(drHero.Id);
             

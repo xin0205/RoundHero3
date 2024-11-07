@@ -20,12 +20,13 @@ namespace RoundHero
         private List<BattleEventItem> BattleEventItems;
         
         private BattleEventFormData battleEventFormData;
+        private SceneEntity sceneEntity;
 
         private int curAcquireIdx;
         private int curItemIdx;
         private int acquireIdx;
         
-        protected override void OnOpen(object userData)
+        protected async override void OnOpen(object userData)
         {
             base.OnOpen(userData);
             
@@ -45,7 +46,7 @@ namespace RoundHero
                 BattleEventItems[i].Init(i, battleEventFormData.BattleEventData.BattleEventItemDatas[i], OnClickItem);
             }
 
-            
+            sceneEntity = await GameEntry.Entity.ShowSceneEntityAsync("Event");
         }
 
         private void NextAcquireItem()
@@ -110,6 +111,8 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             BattleMapManager.Instance.NextStep();
+            
+            GameEntry.Entity.HideEntity(sceneEntity);
         }
 
         private void AcquireItem(int selectIdx = 0)
@@ -178,8 +181,6 @@ namespace RoundHero
         private CardsForm cardsForm;
         private async void CopyCard()
         {
-            
-            
             var uiForm = await GameEntry.UI.OpenUIFormAsync(UIFormId.CardsForm, new CardsFormParams()
             {
                 Tips = GameEntry.Localization.GetString(Constant.Localization.Tips_CopyCard),
@@ -191,10 +192,29 @@ namespace RoundHero
                 },
                 OnClickAction = CopyCard,
                 IsShowAllFune = false,
-                
+                OnCloseAction = () =>
+                {
+                    CloseCardsFormConfirm(Constant.Localization.Message_ConfirmUnCopyCard);
+
+                }
+
             });
             cardsForm = uiForm.Logic as CardsForm;
             
+        }
+
+        private void CloseCardsFormConfirm(string message)
+        {
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                Message = GameEntry.Localization.GetString(message),
+                OnConfirm = () =>
+                {
+                    GameEntry.UI.CloseUIForm(cardsForm);
+                    CheckClose();
+                },
+                
+            });
         }
 
         private BattleEventItemData GetCurrentBattleEventItemData()
@@ -217,8 +237,9 @@ namespace RoundHero
                 {
                     AcquireItem();
                     GameEntry.UI.CloseUIForm(cardsForm);
-                    
-                }
+
+                },
+                
             });
             
             
@@ -237,6 +258,11 @@ namespace RoundHero
                 },
                 OnClickAction = RemoveCard,
                 IsShowAllFune = false,
+                OnCloseAction = () =>
+                {
+                    CloseCardsFormConfirm(Constant.Localization.Message_ConfirmUnRemoveCard);
+
+                }
                 
             });
             cardsForm = uiForm.Logic as CardsForm;
@@ -275,6 +301,11 @@ namespace RoundHero
                 },
                 OnClickAction = ChangeCard,
                 IsShowAllFune = false,
+                OnCloseAction = () =>
+                {
+                    CloseCardsFormConfirm(Constant.Localization.Message_ConfirmUnChangeCard);
+
+                }
                 
             });
             cardsForm = uiForm.Logic as CardsForm;

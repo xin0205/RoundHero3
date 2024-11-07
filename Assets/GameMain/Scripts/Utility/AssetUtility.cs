@@ -111,9 +111,9 @@ namespace RoundHero
             //return Utility.Text.Format("Assets/GameMain/Entities/Battles/GridPropEntity_Action_HurtRoundStart_Range.prefab", Enum.GetName(typeof(EGridPropID), gridPropID));
         }
         
-        public static string GetBattleHeroPrefab(EHeroID heroID)
+        public static string GetBattleHeroPrefab(int heroID)
         {
-            return Utility.Text.Format("Assets/GameMain/Entities/Heros/BattleHeroEntity_Normal.prefab", Enum.GetName(typeof(EHeroID), heroID));
+            return Utility.Text.Format("Assets/GameMain/Entities/Heros/BattleHeroEntity_{0}.prefab", heroID);
         }
         
         public static string GetBattleTipsPrefab()
@@ -181,7 +181,7 @@ namespace RoundHero
         
         public static string GetBattleSoliderPrefab(int cardID)
         {
-            return "Assets/GameMain/Entities/Soliders/BattleSoliderEntity_OnTheWay_Attack.prefab";
+            return Utility.Text.Format("Assets/GameMain/Entities/Soliders/BattleSoliderEntity_{0}.prefab", cardID);
             
         }
         

@@ -1026,12 +1026,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2134743781}
     m_Modifications:
+    - target: {fileID: 2277106314966858249, guid: fc1ea046448299446bfd1e9a992a44c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5941483992559590091, guid: fc1ea046448299446bfd1e9a992a44c5, type: 3}
       propertyPath: m_Name
       value: HUD_GameTime01
       objectReference: {fileID: 0}
     - target: {fileID: 5941483992559590091, guid: fc1ea046448299446bfd1e9a992a44c5, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6483675104883523022, guid: fc1ea046448299446bfd1e9a992a44c5, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8229254030556374021, guid: fc1ea046448299446bfd1e9a992a44c5, type: 3}
@@ -1117,6 +1125,10 @@ PrefabInstance:
     - target: {fileID: 8229254030556374021, guid: fc1ea046448299446bfd1e9a992a44c5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422662497418459230, guid: fc1ea046448299446bfd1e9a992a44c5, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

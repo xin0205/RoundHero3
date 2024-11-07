@@ -29,6 +29,8 @@ namespace RoundHero
             DRScene drScene = GameEntry.DataTable.GetScene(1);
             GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             
+            await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
+            
             await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
             
             await BattleAreaManager.Instance.InitArea();
@@ -43,8 +45,11 @@ namespace RoundHero
                 
             BattleManager.Instance.RoundStartTrigger();
             BattleManager.Instance.Refresh();
-            
-            
+            GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
+            GameUtility.DelayExcute(1.5f, () =>
+            {
+                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+            });
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)

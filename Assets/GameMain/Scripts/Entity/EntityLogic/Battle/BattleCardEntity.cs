@@ -19,7 +19,7 @@ namespace RoundHero
         public BattleCardEntityData BattleCardEntityData { get; protected set; }
 
         [SerializeField]
-        private BaseCard BaseCard;
+        private CardItem CardItem;
         
         private int sortingOrder;
         private bool isShow;
@@ -27,13 +27,18 @@ namespace RoundHero
         [SerializeField]
         private RectTransform cardRect;
         
+        [SerializeField]
+        private Canvas canvas;
+        
         public GameObject ActionGO;
 
         private Rect rect;
         private bool isInside;
         private bool isHand;
 
-        public int RawSiblingIdx;
+        //public int RawSiblingIdx;
+
+        
         
 
         protected override void OnInit(object userData)
@@ -60,7 +65,7 @@ namespace RoundHero
             //GetComponent<Canvas>().sortingOrder = 1000;
             var drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
             
-            BaseCard.SetCardUI(BattleCardEntityData.CardData.CardID);
+            CardItem.SetCard(BattleCardEntityData.CardData.CardID);
             
         }
 
@@ -177,7 +182,7 @@ namespace RoundHero
             {
                 isHand = true;
                 RefreshCardRect();
-                RawSiblingIdx = gameObject.GetComponent<RectTransform>().GetSiblingIndex();
+                //RawSiblingIdx = gameObject.GetComponent<RectTransform>().GetSiblingIndex();
             });
         }
         
@@ -428,16 +433,18 @@ namespace RoundHero
         
         public void SetSortingOrder(int sortingOrder, bool force = false)
         {
-            this.sortingOrder = sortingOrder;
-            if (!isShow || force)
-            {
-                //GetComponent<Canvas>().sortingOrder = sortingOrder;
-            }
+            //this.canvas.overrideSorting = true;
+            // this.canvas.sortingOrder = sortingOrder;
+            // this.sortingOrder = sortingOrder;
+            // if (!isShow || force)
+            // {
+            //     //GetComponent<Canvas>().sortingOrder = sortingOrder;
+            // }
         }
 
         public void RefreshInfo()
         {
-            BaseCard.SetCardUI(BattleCardEntityData.CardData.CardID);
+            CardItem.SetCard(BattleCardEntityData.CardData.CardID);
         }
 
         public void OnRefreshInfo(object sender, GameEventArgs e)

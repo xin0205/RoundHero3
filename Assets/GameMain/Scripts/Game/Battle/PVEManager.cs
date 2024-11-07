@@ -38,7 +38,7 @@ namespace RoundHero
         public Data_GamePlay GamePlayData => DataManager.Instance.DataGame.User.CurGamePlayData;
         public Data_Battle BattleData => GamePlayData.BattleData;
         
-        public void  Init(int randomSeed)
+        public void Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
             
@@ -133,6 +133,11 @@ namespace RoundHero
             BattleCardManager.Instance.RoundAcquireCards(false);
             
             BattleManager.Instance.RoundStartTrigger();
+            GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
+            GameUtility.DelayExcute(1.5f, () =>
+            {
+                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+            });
         }
 
         public void StartAction()
@@ -262,6 +267,7 @@ namespace RoundHero
             
             
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+            GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
         }
         
         public void UseCard(int cardID, int posIdx)

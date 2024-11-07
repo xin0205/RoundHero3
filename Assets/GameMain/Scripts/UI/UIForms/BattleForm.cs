@@ -1,7 +1,9 @@
-﻿using GameFramework;
+﻿using DG.Tweening;
+using GameFramework;
 using GameFramework.Event;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 namespace RoundHero
@@ -15,15 +17,19 @@ namespace RoundHero
         [SerializeField] public Transform ConsumeCardPos;
         
         [SerializeField] private TextMeshProUGUI round;
-        [SerializeField] private TextMeshProUGUI standByCardCount;
-        [SerializeField] private TextMeshProUGUI passCardCount;
-        [SerializeField] private TextMeshProUGUI consumeCardCount;
+        [SerializeField] private Text standByCardCount;
+        [SerializeField] private Text passCardCount;
+        [SerializeField] private Text consumeCardCount;
         [SerializeField] private TextMeshProUGUI energy;
         [SerializeField] private TextMeshProUGUI heroHP;
         [SerializeField] private TextMeshProUGUI test;
         [SerializeField] private TextMeshProUGUI coin;
         
         [SerializeField] private EnergyBuffBarUItem energyBuffBarUItem;
+        
+        [SerializeField] private GameObject tipsNode;
+
+        [SerializeField] private Text tips;
         
         private ProcedureBattle procedureBattle;
 
@@ -36,11 +42,41 @@ namespace RoundHero
             procedureBattle = (ProcedureBattle)userData;
             
             GameEntry.Event.Subscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
+            GameEntry.Event.Subscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
+            GameEntry.Event.Subscribe(RefreshActionCampEventArgs.EventId, OnRefreshActionCamp);
 
             RefreshEnergy();
             
-            energyBuffBarUItem.Init(BattlePlayerManager.Instance.PlayerData.BattleHero);
-            
+            //energyBuffBarUItem.Init(BattlePlayerManager.Instance.PlayerData.BattleHero);
+            tipsNode.SetActive(false);
+        }
+
+        private void ShowRoundTips(int round)
+        {
+            tipsNode.GetComponent<Animation>().Stop();
+            tipsNode.GetComponent<Animation>().Play();
+            tipsNode.SetActive(true);
+            tips.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_Round, round);
+            // GameUtility.DelayExcute(2f, () =>
+            // {
+            //     tips.text = "";
+            //     tipsNode.SetActive(false);
+            // });
+        }
+        
+        private void ShowActionTips(bool isUs)
+        {
+            tipsNode.GetComponent<Animation>().Stop();
+            tipsNode.GetComponent<Animation>().Play();
+            tipsNode.SetActive(true);
+            tips.text = GameEntry.Localization.GetString(isUs
+                ? Constant.Localization.Tips_UsAction
+                : Constant.Localization.Tips_EnemyAction);
+            // GameUtility.DelayExcute(2f, () =>
+            // {
+            //     tips.text = "";
+            //     tipsNode.SetActive(false);
+            // });
         }
 
         // protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -62,6 +98,17 @@ namespace RoundHero
         public void OnRefreshBattleUI(object sender, GameEventArgs e)
         {
             RefreshUI();
+        }
+        
+        public void OnRefreshActionCamp(object sender, GameEventArgs e)
+        {
+            var ne = e as RefreshActionCampEventArgs;
+            ShowActionTips(ne.IsUs);
+        }
+        
+        public void OnRefreshRound(object sender, GameEventArgs e)
+        {
+            ShowRoundTips(BattleManager.Instance.BattleData.Round + 1);
         }
 
         private void RefreshUI()
@@ -136,7 +183,7 @@ namespace RoundHero
         
         private void RefreshRound()
         {
-            round.text = Utility.Text.Format(GameEntry.Localization.GetString(Constant.Localization.UI_BattleRound),
+            round.text = Utility.Text.Format(GameEntry.Localization.GetString(Constant.Localization.UI_Round),
                 BattleManager.Instance.BattleData.Round + 1);
         }
 
@@ -151,8 +198,11 @@ namespace RoundHero
         public void EndRound()
         {
             BattleManager.Instance.EndRound();
+            ShowActionTips(false);
             //isEndRound = true;
         }
+        
+        
         
         public void ConfirmUseCard()
         {
@@ -174,9 +224,7 @@ namespace RoundHero
             {
                 BattleAreaManager.Instance.ClearExchangeGrid();
             }
-            
-            
-            
+
         }
 
         

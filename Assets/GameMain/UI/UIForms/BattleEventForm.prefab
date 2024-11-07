@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 7301471923425191795}
   - component: {fileID: 1936931666766640884}
   - component: {fileID: 7680208822851679141}
+  - component: {fileID: 5993450936154870243}
   m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
@@ -846,7 +847,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.36862746, g: 0.36862746, b: 0.36862746, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -860,6 +861,22 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!111 &5993450936154870243
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7376371587349928150}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: c4d962fa90bff7745bf61df0e3f16214, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: c4d962fa90bff7745bf61df0e3f16214, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &7962694627766590185
 GameObject:
   m_ObjectHideFlags: 0

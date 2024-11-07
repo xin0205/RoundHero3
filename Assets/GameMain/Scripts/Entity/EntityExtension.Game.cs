@@ -90,7 +90,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, BattleHeroManager.Instance.BattleHeroData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleHeroEntity),
-                AssetUtility.GetBattleHeroPrefab(battleHeroData.HeroID), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleHeroPrefab(battleHeroData.ID), Constant.EntityGroup.Unit, 0, data);
             
             return (BattleHeroEntity)task.Logic;
         }

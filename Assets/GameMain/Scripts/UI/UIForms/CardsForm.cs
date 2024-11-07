@@ -14,6 +14,7 @@ namespace RoundHero
         public string Tips;
         public List<ECardType> ShowCardTypes = new List<ECardType>();
         public Action<int> OnClickAction;
+        public Action OnCloseAction;
         public bool IsShowAllFune;
 
     }
@@ -80,7 +81,14 @@ namespace RoundHero
 
         public void ConfirmClose()
         {
-            
+            if (cardsFormParams.OnCloseAction != null)
+            {
+                cardsFormParams.OnCloseAction.Invoke();
+            }
+            else
+            {
+                Close();
+            }
         }
         
         public void OnRefreshCardsForm(object sender, GameEventArgs e)

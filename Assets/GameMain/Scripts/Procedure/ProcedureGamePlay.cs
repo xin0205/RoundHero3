@@ -40,6 +40,10 @@ namespace RoundHero
             // PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
         }
 
+        
+            
+            
+
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
@@ -58,7 +62,7 @@ namespace RoundHero
         
         public void Back()
         {
-            GamePlayManager.Instance.Destory(EGamMode.PVE);
+            //GamePlayManager.Instance.Destory(EGamMode.PVE);
             
             
             GameEntry.UI.CloseUIForm(playerInfoForm);
@@ -84,11 +88,13 @@ namespace RoundHero
         }
 
 
-        public void StartBattle()
+        public void StartBattle(int randomSeed)
         {
+            PVEManager.Instance.Init(randomSeed);
             // DRScene drScene = GameEntry.DataTable.GetScene(1);
             // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
-            
+            GameEntry.UI.CloseUIForm(playerInfoForm);
+            GameEntry.UI.CloseUIForm(mapForm);
             ChangeState<ProcedureBattle>(procedureOwner);
         }
         

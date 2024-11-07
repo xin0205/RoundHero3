@@ -38,16 +38,12 @@ namespace RoundHero
             procedureGamePlay = (ProcedureGamePlay)userData;
             GameEntry.Event.Subscribe(RefreshMapStageEventArgs.EventId, OnRefreshMapStage);
             GameEntry.Event.Subscribe(ClickMapStageStepItemEventArgs.EventId, OnClickMapStageStepItem);
-            
-            
-            
+
             // if (!BattleMapManager.Instance.MapData.CurMapStageIdx.IsSelectRoute)
             // {
             //     GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
             //
             // }
-            
-            
 
             InitMapStageRoute();
 
@@ -143,12 +139,16 @@ namespace RoundHero
                 // {
                 //     RandomSeed = randomSeed,
                 // });
-                GameEntry.UI.OpenUIForm(UIFormId.BattleEventForm, new BattleEventFormData()
-                {
-                    RandomSeed = randomSeed,
-                    BattleEventData = BattleEventManager.Instance.GenerateRandomEvent(randomSeed),
-                });
+                // GameEntry.UI.OpenUIForm(UIFormId.BattleEventForm, new BattleEventFormData()
+                // {
+                //     RandomSeed = randomSeed,
+                //     BattleEventData = BattleEventManager.Instance.GenerateRandomEvent(randomSeed),
+                // });
                 
+                
+                procedureGamePlay.StartBattle(randomSeed);
+
+
                 
                 // switch (ne.MapSite)
                 // {

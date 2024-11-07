@@ -41,7 +41,7 @@ namespace RoundHero
                 BattleEnergyBuffManager.Instance.Init(random.Next());
                 BattleEnergyBuffManager.Instance.InitHero(BattleHeroManager.Instance.BattleHeroData);
                 
-                PVEManager.Instance.Init(random.Next());
+                //PVEManager.Instance.Init(random.Next());
                 
             }
         }
@@ -50,7 +50,7 @@ namespace RoundHero
         {
             if (gameMode == EGamMode.PVE)
             {
-                PVEManager.Instance.Destory();
+                //PVEManager.Instance.Destory();
 
             }
         }

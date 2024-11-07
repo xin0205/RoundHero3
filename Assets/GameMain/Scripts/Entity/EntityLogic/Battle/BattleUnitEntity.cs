@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
 using RPGCharacterAnims;
-using RPGCharacterAnims.Lookups;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -120,14 +117,14 @@ namespace RoundHero
             if (UnitActionState == EUnitActionState.RunAttack || UnitActionState == EUnitActionState.RunHurt)
             {
                 //Animator.speed = 0.5f;
-                Animator.SetLayerWeight(TopLayerIdx, 1);
+                //Animator.SetLayerWeight(TopLayerIdx, 1);
                 //Animator.SetLayerWeight(BaseLayerIdx, 0);
             }
             else
             {
                 //Animator.speed = 1f;
                 // Animator.SetLayerWeight(BaseLayerIdx, 1);
-                Animator.SetLayerWeight(TopLayerIdx, 0);
+                //Animator.SetLayerWeight(TopLayerIdx, 0);
             }
 
         }
@@ -184,14 +181,14 @@ namespace RoundHero
             // }
             
             UnitActionState = actionState;
-            AnimatorSetLayerWeight();
+            //AnimatorSetLayerWeight();
 
             // if (BattleUnitData is Data_BattleMonster)
             // {
             //     //Log.Debug("act:" + actionState.ToString());
             // }
   
-            Animator.SetTrigger(actionState.ToString());
+            //Animator.SetTrigger(actionState.ToString());
 
         }
 
@@ -318,9 +315,9 @@ namespace RoundHero
         {
             var curHP = BattleUnitData.CurHP;
             curHP = curHP < 0 ? 0 : curHP;
-            hp.text = curHP + "/" +
-                      BattleUnitData.MaxHP;
-
+            // hp.text = curHP + "/" +
+            //           BattleUnitData.MaxHP;
+            hp.text = curHP.ToString();
         }
 
         public void RefreshDamageState()
