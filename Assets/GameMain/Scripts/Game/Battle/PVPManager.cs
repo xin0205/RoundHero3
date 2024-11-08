@@ -236,9 +236,9 @@ namespace RoundHero
             {
                 await BattleAreaManager.Instance.InitArea();
                 SetCurPlayer(EUnitCamp.Player1);
-                await BattleHeroManager.Instance.GenerateHero();
+                await HeroManager.Instance.GenerateHero();
                 SetCurPlayer(EUnitCamp.Player2);
-                await BattleHeroManager.Instance.GenerateHero();
+                await HeroManager.Instance.GenerateHero();
                 
                 SetCurPlayer(EUnitCamp.Player1);
                 
@@ -288,32 +288,32 @@ namespace RoundHero
         
         public void StartUnitAction()
         {
-            FightManager.Instance.AcitonUnitIdx = 0;
+            BattleFightManager.Instance.AcitonUnitIdx = 0;
             BattleManager.Instance.BattleState = EBattleState.PlayerAction;
-            FightManager.Instance.ActionProgress = EActionProgress.ActionStart;
+            BattleFightManager.Instance.ActionProgress = EActionProgress.ActionStart;
             ContinueAction();
 
         }
 
         public void ContinueAction()
         {
-            if (FightManager.Instance.ActionProgress == EActionProgress.ActionStart)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionStart)
             {
                 //FightManager.Instance.RoundStartTrigger();
             }
             
-            if (FightManager.Instance.ActionProgress == EActionProgress.ThirdUnitAttack)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.ThirdUnitAttack)
             {
-                FightManager.Instance.ThirdUnitAttack();
+                BattleFightManager.Instance.ThirdUnitAttack();
             }
             
-            if (FightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
             {
-                FightManager.Instance.SoliderAttack();
+                BattleFightManager.Instance.SoliderAttack();
             }
             
 
-            if (FightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
             {
                 
                 GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(BattleManager.Instance.BattleState));
@@ -322,37 +322,37 @@ namespace RoundHero
         
         public void NextAction()
         {
-            if (FightManager.Instance.ActionProgress == EActionProgress.ActionStart)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionStart)
             {
-                FightManager.Instance.ActionProgress = EActionProgress.ThirdUnitAttack;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.ThirdUnitAttack;
             }
             
-            else if (FightManager.Instance.ActionProgress == EActionProgress.ThirdUnitAttack)
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.ThirdUnitAttack)
             {
-                FightManager.Instance.ActionProgress = EActionProgress.SoliderAttack;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.SoliderAttack;
             }
             
-            else if (FightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
             {
                 if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player1)
                 {
                     BattleManager.Instance.CurUnitCamp = EUnitCamp.Player2;
                     BattleManager.Instance.BattleState = EBattleState.EndTurn;
-                    FightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
+                    BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
                     
                 }
                 else if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player2)
                 {
                     BattleManager.Instance.CurUnitCamp = EUnitCamp.Player1;
                     BattleManager.Instance.BattleState = EBattleState.EndRound;
-                    FightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
+                    BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
                 }
                 
                 
             }
             else
             {
-                FightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
                 
             }
 

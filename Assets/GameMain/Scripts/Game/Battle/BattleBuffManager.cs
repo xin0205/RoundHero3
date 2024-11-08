@@ -88,6 +88,10 @@ namespace RoundHero
             Random = new System.Random(this.randomSeed);
 
         }
+        
+        public void Destory()
+        {}
+        
 
         // public TriggerData UsActionEndTrigger(EBuffID buffID, List<float> values, int ownUnitID, int actionUnitID,
         //     int effectUnitID)
@@ -126,7 +130,7 @@ namespace RoundHero
             var buffvalueType = buffData.BuffValueType;
             TriggerData triggerData = null;
 
-            var realEffectUnitIDs = FightManager.Instance.GetEffectUnitIDs(buffData, ownUnitID, actionUnitID, effectUnitID ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
+            var realEffectUnitIDs = BattleFightManager.Instance.GetEffectUnitIDs(buffData, ownUnitID, actionUnitID, effectUnitID ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
             if (realEffectUnitIDs.Count > 0)
             {
@@ -136,12 +140,12 @@ namespace RoundHero
                     switch (buffvalueType)
                     {
                         case EBuffValueType.Hero:
-                            triggerData = FightManager.Instance.Unit_HeroAttribute(ownUnitID, actionUnitID,
+                            triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitID, actionUnitID,
                                 realEffectUnitID, buffData.HeroAttribute, values[0]);
                             
                             break;
                         case EBuffValueType.Atrb:
-                            triggerData = FightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
+                            triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
                                 realEffectUnitID, buffData.UnitAttribute, values[0], ETriggerDataSubType.Unit);
                             break;
                         case EBuffValueType.State:
@@ -155,10 +159,10 @@ namespace RoundHero
                                 //     break;
                             }
 
-                            triggerData = FightManager.Instance.Unit_State(triggerDatas, ownUnitID, actionUnitID, realEffectUnitID,
+                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitID, actionUnitID, realEffectUnitID,
                                 unitState, values[0], ETriggerDataType.RoleState);
                             var addEnemyMoreDebuff =
-                                FightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
+                                BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
                                     EBlessID.AddEnemyMoreDebuff, BattleManager.Instance.CurUnitCamp);
 
 
@@ -179,11 +183,11 @@ namespace RoundHero
                             //         value = Math.Abs(BattleUnitManager.Instance.GetDamage(effectUnitID)) - 1;
                             //         break;
                             // }
-                            triggerData = FightManager.Instance.Unit_State(triggerDatas, ownUnitID, actionUnitID, realEffectUnitID,
+                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitID, actionUnitID, realEffectUnitID,
                                 buffData.UnitState, values[0], ETriggerDataType.RoundRoleState);
                             break;
                         case EBuffValueType.Card:
-                            triggerData = FightManager.Instance.Hero_Card(ownUnitID, actionUnitID, realEffectUnitID,
+                            triggerData = BattleFightManager.Instance.Hero_Card(ownUnitID, actionUnitID, realEffectUnitID,
                                 values[0], buffData.CardTriggerType);
                             break;
                         
@@ -262,7 +266,7 @@ namespace RoundHero
             if(triggerData == null)
                 return;
    
-            FightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
+            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
             if (isAddTriggerData)
             {
                 triggerDatas.Add(triggerData);
@@ -280,13 +284,13 @@ namespace RoundHero
                 triggerData.Value + triggerData.DeltaValue < 0))
                 return;
             
-            var actionUnit = FightManager.Instance.GetUnitByID(triggerData.ActionUnitID);
+            var actionUnit = BattleFightManager.Instance.GetUnitByID(triggerData.ActionUnitID);
             if(actionUnit == null || actionUnit.CurHP <= 0)
                 return;
             
-            BuffsTrigger(FightManager.Instance.RoundFightData.GamePlayData, actionUnit, triggerData, triggerDatas, EBuffTriggerType.Attack);
+            BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, actionUnit, triggerData, triggerDatas, EBuffTriggerType.Attack);
             BattleGridPropManager.Instance.AttackTrigger(actionUnit.GridPosIdx, triggerData, triggerDatas);
-            FightManager.Instance.TriggerUnitData(actionUnit.ID, triggerData.EffectUnitID, actionUnit.GridPosIdx,
+            BattleFightManager.Instance.TriggerUnitData(actionUnit.ID, triggerData.EffectUnitID, actionUnit.GridPosIdx,
                 EBuffTriggerType.Attack, triggerDatas);
         }
         
@@ -297,7 +301,7 @@ namespace RoundHero
                   triggerData.Value + triggerData.DeltaValue < 0))
                 return;
             
-            var effectUnit = FightManager.Instance.GetUnitByID(triggerData.EffectUnitID);
+            var effectUnit = BattleFightManager.Instance.GetUnitByID(triggerData.EffectUnitID);
             // || effectUnit.CurHP <= 0
             if(effectUnit == null)
                 return;
@@ -319,9 +323,9 @@ namespace RoundHero
             
             
 
-            BuffsTrigger(FightManager.Instance.RoundFightData.GamePlayData, effectUnit, triggerData, triggerDatas, EBuffTriggerType.Hurt);
+            BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, effectUnit, triggerData, triggerDatas, EBuffTriggerType.Hurt);
   
-            FightManager.Instance.TriggerUnitData(effectUnit.ID, triggerData.ActionUnitID, effectUnit.GridPosIdx, EBuffTriggerType.Hurt, triggerDatas);
+            BattleFightManager.Instance.TriggerUnitData(effectUnit.ID, triggerData.ActionUnitID, effectUnit.GridPosIdx, EBuffTriggerType.Hurt, triggerDatas);
         }
         
         public void BuffsTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit, TriggerData triggerData, List<TriggerData> triggerDatas, EBuffTriggerType buffTriggerType)
@@ -635,11 +639,11 @@ namespace RoundHero
         
         public void TriggerBuff()
         {
-            foreach (var kv in FightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas)
             {
                 foreach (var triggerData in kv.Value)
                 {
-                    FightManager.Instance.TriggerAction(triggerData);
+                    BattleFightManager.Instance.TriggerAction(triggerData);
                 }
             }
 

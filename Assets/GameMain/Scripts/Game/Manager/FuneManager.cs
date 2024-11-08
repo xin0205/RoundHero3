@@ -43,20 +43,20 @@ namespace RoundHero
         
         public void CacheUnitUseData(int ownUnitID, int actionUnitID, int cardID, EUnitCamp unitCamp, int gridPosIdx)
         {
-            FightManager.Instance.RoundFightData.UseCardDatas.Clear();
+            BattleFightManager.Instance.RoundFightData.UseCardDatas.Clear();
             var card = BattleManager.Instance.GetCard(cardID);
             foreach (var funeID in card.FuneIdxs)
             {
                 FuneManager.Instance.UseTrigger(funeID, ownUnitID, actionUnitID, unitCamp, gridPosIdx,
-                    FightManager.Instance.RoundFightData.UseCardDatas);
+                    BattleFightManager.Instance.RoundFightData.UseCardDatas);
             }
             
         }
         
         public void CacheUnitKillData(int ownUnitID, int actionUnitID, int unitID, List<TriggerData> triggerDatas)
         {
-            FightManager.Instance.RoundFightData.UseCardDatas.Clear();
-            var unit = FightManager.Instance.GetUnitByID(unitID);
+            BattleFightManager.Instance.RoundFightData.UseCardDatas.Clear();
+            var unit = BattleFightManager.Instance.GetUnitByID(unitID);
 
             if (unit is Data_BattleSolider solider)
             {
@@ -79,9 +79,9 @@ namespace RoundHero
 
         public void TriggerUnitUse()
         {
-            foreach (var triggerData in FightManager.Instance.RoundFightData.UseCardDatas)
+            foreach (var triggerData in BattleFightManager.Instance.RoundFightData.UseCardDatas)
             {
-                FightManager.Instance.TriggerAction(triggerData);
+                BattleFightManager.Instance.TriggerAction(triggerData);
             }
             
             //BattleManager.Instance.Refresh();
@@ -110,11 +110,11 @@ namespace RoundHero
             List<TriggerData> triggerDatas)
         {
             var drFune = FuneManager.Instance.GetBuffTable(funeID);
-            var triggerData = FightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
+            var triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
                 actionUnitID, EUnitAttribute.HP, BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]), ETriggerDataSubType.Unit);
             triggerDatas.Add(triggerData);
                 
-            FightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
+            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
 
             return triggerData;
         }
@@ -217,12 +217,12 @@ namespace RoundHero
         private void Kill_AddHeroCurHP(int funeID, int ownUnitID, int actionUnitID, 
             List<TriggerData> triggerDatas)
         {
-            var unit = FightManager.Instance.GetUnitByID(actionUnitID);
-            var triggerData = FightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
-                FightManager.Instance.PlayerData.BattleHero.ID, EUnitAttribute.HP, unit.MaxHP - unit.CurHP, ETriggerDataSubType.Unit);
+            var unit = BattleFightManager.Instance.GetUnitByID(actionUnitID);
+            var triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
+                BattleFightManager.Instance.PlayerData.BattleHero.ID, EUnitAttribute.HP, unit.MaxHP - unit.CurHP, ETriggerDataSubType.Unit);
             triggerDatas.Add(triggerData);
                 
-            FightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
+            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
         }
         
         private void Kill_AddCoin(int funeID, int ownUnitID, int actionUnitID, 
@@ -230,11 +230,11 @@ namespace RoundHero
         {
             var drFune = FuneManager.Instance.GetBuffTable(funeID);
 
-            var triggerData = FightManager.Instance.Unit_HeroAttribute(ownUnitID, actionUnitID,
-                FightManager.Instance.PlayerData.BattleHero.ID, EHeroAttribute.Coin, BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]));
+            var triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitID, actionUnitID,
+                BattleFightManager.Instance.PlayerData.BattleHero.ID, EHeroAttribute.Coin, BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]));
             triggerDatas.Add(triggerData);
                 
-            FightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
+            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
         }
         
         private void Kill_ToHandCards(int funeID, int ownUnitID, int actionUnitID, 

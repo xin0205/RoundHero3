@@ -110,7 +110,7 @@ MonoBehaviour:
   PassCardPos: {fileID: 2154135423662793824}
   HandCardPos: {fileID: 7710050397821489537}
   ConsumeCardPos: {fileID: 5932341396690616425}
-  round: {fileID: 6912958049782187446}
+  round: {fileID: 5211455446960425523}
   standByCardCount: {fileID: 9040943725033001325}
   passCardCount: {fileID: 5883562305712279502}
   consumeCardCount: {fileID: 135106906083938362}
@@ -1432,7 +1432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8761153833592239725
 RectTransform:
   m_ObjectHideFlags: 0

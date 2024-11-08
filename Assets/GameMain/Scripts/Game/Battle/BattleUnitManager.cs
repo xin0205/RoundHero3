@@ -344,7 +344,7 @@ namespace RoundHero
             }
             else if (battleUnit is Data_BattleHero heroData)
             {
-                return BattleHeroManager.Instance.GetBuffData(heroData.HeroID);
+                return HeroManager.Instance.GetBuffData(heroData.HeroID);
             }
             
             return null;
@@ -464,8 +464,8 @@ namespace RoundHero
             }
             else if (unit is Data_BattleHero hero)
             {
-                buffDatas = BattleHeroManager.Instance.GetBuffData(hero.HeroID);
-                valueList = BattleHeroManager.Instance.GetBuffValues(hero.HeroID);
+                buffDatas = HeroManager.Instance.GetBuffData(hero.HeroID);
+                valueList = HeroManager.Instance.GetBuffValues(hero.HeroID);
 
 
             }

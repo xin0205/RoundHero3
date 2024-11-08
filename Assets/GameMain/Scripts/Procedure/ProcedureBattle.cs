@@ -15,7 +15,9 @@ namespace RoundHero
     public class ProcedureBattle : ProcedureBase
     {
         private bool InitSuccess = false;
-
+        private BattleForm battleForm;
+        private PlayerInfoForm playerInfoForm;
+        
         protected override async void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
@@ -29,12 +31,14 @@ namespace RoundHero
             DRScene drScene = GameEntry.DataTable.GetScene(1);
             GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             
-            await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
+            var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
+            playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
             
-            await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
+            var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
+            battleForm = battleFormTask.Logic as BattleForm;
             
             await BattleAreaManager.Instance.InitArea();
-            await BattleHeroManager.Instance.GenerateHero();
+            await HeroManager.Instance.GenerateHero();
                 
             await BattleEnemyManager.Instance.GenerateNewEnemies();
                 
@@ -92,7 +96,12 @@ namespace RoundHero
         
         public void EndBattle()
         {
+            HeroManager.Instance.BattleHeroData.CurHP = HeroManager.Instance.BattleHeroData.MaxHP; 
+            
+            GameEntry.UI.CloseUIForm(playerInfoForm);
+            GameEntry.UI.CloseUIForm(battleForm);
             BattleManager.Instance.BattleTypeManager.Destory();
+            
             DRScene drScene = GameEntry.DataTable.GetScene(1);
             GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
             ChangeState<ProcedureGamePlay>(procedureOwner);

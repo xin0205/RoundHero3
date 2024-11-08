@@ -16,7 +16,7 @@ namespace RoundHero
         [SerializeField] public Transform HandCardPos;
         [SerializeField] public Transform ConsumeCardPos;
         
-        [SerializeField] private TextMeshProUGUI round;
+        [SerializeField] private Text round;
         [SerializeField] private Text standByCardCount;
         [SerializeField] private Text passCardCount;
         [SerializeField] private Text consumeCardCount;
@@ -93,6 +93,8 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             GameEntry.Event.Unsubscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
+            GameEntry.Event.Unsubscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
+            GameEntry.Event.Unsubscribe(RefreshActionCampEventArgs.EventId, OnRefreshActionCamp);
         }
 
         public void OnRefreshBattleUI(object sender, GameEventArgs e)
@@ -131,7 +133,7 @@ namespace RoundHero
                 if(solider == null)
                     return;
 
-                var fightSoliderData = FightManager.Instance.GetUnitByID(solider.ID) as Data_BattleSolider;
+                var fightSoliderData = BattleFightManager.Instance.GetUnitByID(solider.ID) as Data_BattleSolider;
                 var soliderEntity = BattleUnitManager.Instance.GetUnitByID(solider.ID) as BattleSoliderEntity;
                 if(fightSoliderData == null)
                     return;
@@ -163,7 +165,7 @@ namespace RoundHero
                 BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
 
             var hpDelta =
-                FightManager.Instance.GetTotalDelta(BattleHeroManager.Instance.HeroEntity.ID, EHeroAttribute.CurHP);
+                BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.ID, EHeroAttribute.CurHP);
             heroHP.text += "   " + ((hpDelta > 0) ? "+" + hpDelta : hpDelta);
         }
 
@@ -176,9 +178,9 @@ namespace RoundHero
         
         private void RefreshCoin()
         {
-            coin.text = BattleHeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.Coin) + "";
+            coin.text = HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.Coin) + "";
             
-            coin.text += "-" + FightManager.Instance.GetTotalDelta(BattleHeroManager.Instance.HeroEntity.ID, EHeroAttribute.Coin);
+            coin.text += "-" + BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.ID, EHeroAttribute.Coin);
         }
         
         private void RefreshRound()
@@ -251,9 +253,9 @@ namespace RoundHero
 
         public void TestSuccess()
         {
-            Close();
-            BattleMapManager.Instance.NextStep();
             procedureBattle.EndBattle();
+            BattleMapManager.Instance.NextStep();
+            
         }
     }
 }

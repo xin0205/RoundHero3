@@ -1642,6 +1642,16 @@ namespace RoundHero
             BattlePlayerDatas.Add(EUnitCamp.Player2, new Data_BattlePlayer());
 
         }
+
+        public void Clear()
+        {
+            Round = 0;
+            BattlePlayerDatas.Clear();
+            BattleUnitDatas.Clear();
+            GridPropDatas.Clear();
+            GridTypes.Clear();
+            
+        }
         
         public Data_BattlePlayer GetBattlePlayerData(EUnitCamp unitCamp)
         {
@@ -1740,14 +1750,14 @@ namespace RoundHero
         public Data_GridProp Contain(EGridPropID gridPropID, int gridPosIdx)
         {
 
-            if (!FightManager.Instance.CacheGridPorpIDStr.ContainsKey(gridPropID))
+            if (!BattleFightManager.Instance.CacheGridPorpIDStr.ContainsKey(gridPropID))
             {
-                FightManager.Instance.CacheGridPorpIDStr.Add(gridPropID, gridPropID.ToString());    
+                BattleFightManager.Instance.CacheGridPorpIDStr.Add(gridPropID, gridPropID.ToString());    
             }
             
             
 
-            return Contain(FightManager.Instance.CacheGridPorpIDStr[gridPropID], gridPosIdx);
+            return Contain(BattleFightManager.Instance.CacheGridPorpIDStr[gridPropID], gridPosIdx);
 
         }
         

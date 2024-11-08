@@ -87,7 +87,7 @@ namespace RoundHero
             var data = ReferencePool.Acquire<BattleHeroEntityData>();
             var pos = GameUtility.GridPosIdxToPos(battleHeroData.GridPosIdx);
             
-            data.Init(entityComponent.GenerateSerialId(), pos, BattleHeroManager.Instance.BattleHeroData);
+            data.Init(entityComponent.GenerateSerialId(), pos, HeroManager.Instance.BattleHeroData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleHeroEntity),
                 AssetUtility.GetBattleHeroPrefab(battleHeroData.ID), Constant.EntityGroup.Unit, 0, data);

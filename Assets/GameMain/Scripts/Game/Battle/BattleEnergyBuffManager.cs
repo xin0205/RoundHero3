@@ -20,6 +20,11 @@ namespace RoundHero
             
         }
         
+        public void Destory()
+        {
+            
+        }
+        
         
         public void InitHero(Data_BattleHero hero)
         {
@@ -139,7 +144,7 @@ namespace RoundHero
 
         public bool TriggerEnergyBuff(Data_EnergyBuff energyBuffData)
         {
-            var drHero = GameEntry.DataTable.GetHero(BattleHeroManager.Instance.BattleHeroData.HeroID);
+            var drHero = GameEntry.DataTable.GetHero(HeroManager.Instance.BattleHeroData.HeroID);
             var buffID = drHero.EnergyBuffIDs[energyBuffData.EnergyBuffIdx];
             
 
@@ -169,7 +174,7 @@ namespace RoundHero
 
         public void UseEnergyBuff(int heart, int hp)
         {
-            var energyBuff = GetEnergyBuff(BattleHeroManager.Instance.BattleHeroData.UnitCamp, heart, hp);
+            var energyBuff = GetEnergyBuff(HeroManager.Instance.BattleHeroData.UnitCamp, heart, hp);
             energyBuff.EffectCount = 0;
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
             

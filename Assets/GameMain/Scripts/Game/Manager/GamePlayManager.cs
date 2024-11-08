@@ -17,8 +17,9 @@ namespace RoundHero
                 
                 PVEManager.Instance.SetCurPlayer();
 
+                
                 var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.TmpHeroID);
-                BattleHeroManager.Instance.InitHeroData(drHero.HeroID);
+                HeroManager.Instance.InitHeroData(drHero.HeroID);
                 
                 BattlePlayerManager.Instance.InitData(EUnitCamp.Player1);
 
@@ -32,18 +33,27 @@ namespace RoundHero
             {
                 var random = new Random(GamePlayData.RandomSeed);
 
+                BlessManager.Instance.Init(random.Next());
                 BattleMapManager.Instance.Init(random.Next());
                 //BattleEventManager.Instance.Init(random.Next());
-                BattleAreaManager.Instance.Init(random.Next());
-                BattleUnitManager.Instance.Init(random.Next());
-                BattleHeroManager.Instance.Init(random.Next());
+                
+                
+                
 
-                BattleEnergyBuffManager.Instance.Init(random.Next());
-                BattleEnergyBuffManager.Instance.InitHero(BattleHeroManager.Instance.BattleHeroData);
+                // BattleEnergyBuffManager.Instance.Init(random.Next());
+                // BattleEnergyBuffManager.Instance.InitHero(BattleHeroManager.Instance.BattleHeroData);
                 
                 //PVEManager.Instance.Init(random.Next());
                 
             }
+        }
+
+        public void Back()
+        {
+            BlessManager.Instance.Destory();
+            BattleMapManager.Instance.Destory();
+            // BattleEnergyBuffManager.Instance.Destory();
+            // BattleHeroManager.Instance.Destory();
         }
 
         public void Destory(EGamMode gameMode)

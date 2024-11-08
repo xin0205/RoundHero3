@@ -17,6 +17,11 @@ namespace RoundHero
             Random = new System.Random(this.randomSeed);
         }
 
+        public void Destory()
+        {
+            
+        }
+
         public int GetIdx()
         {
             return BattlePlayerManager.Instance.PlayerData.BlessIdx++;
@@ -41,13 +46,13 @@ namespace RoundHero
             foreach (var kv in BlessDatas)
             {
                 var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
-                if (blessIDs.Contains(drBless.BlessID) && FightManager.Instance.RoundFightData.BlessTriggerDatas.ContainsKey(kv.Value.Idx))
+                if (blessIDs.Contains(drBless.BlessID) && BattleFightManager.Instance.RoundFightData.BlessTriggerDatas.ContainsKey(kv.Value.Idx))
                 {
-                    foreach (var kv2 in FightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.Idx].TriggerDatas)
+                    foreach (var kv2 in BattleFightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.Idx].TriggerDatas)
                     {
                         foreach (var triggerData in kv2.Value)
                         {
-                            FightManager.Instance.TriggerAction(triggerData);
+                            BattleFightManager.Instance.TriggerAction(triggerData);
                         }
                         
                     }
@@ -63,7 +68,7 @@ namespace RoundHero
         
         public void CacheRoundStartDatas()
         {
-            var gamePlayData = FightManager.Instance.RoundFightData.GamePlayData;
+            var gamePlayData = BattleFightManager.Instance.RoundFightData.GamePlayData;
             CacheUnUseCardAddHeroHP(gamePlayData);
         }
         
@@ -77,14 +82,14 @@ namespace RoundHero
             {
                 var actionData = new ActionData();
                 actionData.ActionDataType = EActionDataType.Bless;
-                FightManager.Instance.RoundFightData.RoundStartBuffDatas.Add(unUseCardAddHeroHP.Idx, actionData);
+                BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas.Add(unUseCardAddHeroHP.Idx, actionData);
                 
-                var triggerBlessData = FightManager.Instance.BattleRoleAttribute(-1, -1, playerData.BattleHero.ID,
+                var triggerBlessData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1, playerData.BattleHero.ID,
                     EUnitAttribute.HP, 1, ETriggerDataSubType.Bless);
                 
                 actionData.AddTriggerData(playerData.BattleHero.ID, triggerBlessData, playerData.BattleHero);
                 BattleBuffManager.Instance.CacheTriggerData(triggerBlessData,
-                    FightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.Idx]
+                    BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.Idx]
                         .TriggerDatas[playerData.BattleHero.ID]);
 
             }
@@ -428,7 +433,7 @@ namespace RoundHero
 
             if (cardEnergy > 0)
             {
-                BattleHeroManager.Instance.ChangeHP(-cardEnergy, EHPChangeType.CardConsume, true, false, true);
+                HeroManager.Instance.ChangeHP(-cardEnergy, EHPChangeType.CardConsume, true, false, true);
             }
             
             
@@ -442,7 +447,7 @@ namespace RoundHero
                 (gamePlayData.BattleData.EnemyType == EEnemyType.Boss ||
                  gamePlayData.BattleData.EnemyType == EEnemyType.Elite))
             {
-                BattleHeroManager.Instance.ChangeHP(BattleBuffManager.Instance.GetBuffValue(drHeroHPEachRoundInBigFight.Values1[0]), EHPChangeType.Bless, true, false, true);
+                HeroManager.Instance.ChangeHP(BattleBuffManager.Instance.GetBuffValue(drHeroHPEachRoundInBigFight.Values1[0]), EHPChangeType.Bless, true, false, true);
             }
         }
         

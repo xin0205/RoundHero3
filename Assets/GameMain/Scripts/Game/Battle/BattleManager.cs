@@ -30,16 +30,19 @@ namespace RoundHero
             // var randoms = MathUtility.GetRandomNum(8, 0,
             //     Constant.Game.RandomRange, Random);
             
+            
             BattleSoliderManager.Instance.Init(Random.Next());
             BattleThirdUnitManager.Instance.Init(Random.Next());
             
             BattleGridPropManager.Instance.Init(Random.Next());
-            BlessManager.Instance.Init(Random.Next());
             BattleBuffManager.Instance.Init(Random.Next());
-            FightManager.Instance.Init(Random.Next());
+            BattleFightManager.Instance.Init(Random.Next());
             BattleCurseManager.Instance.Init(Random.Next());
             BattleCardManager.Instance.Init(Random.Next());
             
+            BattleAreaManager.Instance.Init(Random.Next());
+            BattleUnitManager.Instance.Init(Random.Next());
+            HeroManager.Instance.Init(Random.Next());
         }
 
         public void SetBattleTypeManager(IBattleTypeManager battleTypeManager)
@@ -64,15 +67,20 @@ namespace RoundHero
 
         public void Destory()
         {
-            
-            BattleAreaManager.Instance.Destory();
-            BattleCardManager.Instance.Destory();
-            BattleEnemyManager.Instance.Destory();
-            BattleHeroManager.Instance.Destory();
+            BattleData.Clear();
             BattleSoliderManager.Instance.Destory();
             BattleThirdUnitManager.Instance.Destory();
-            BattleUnitManager.Instance.Destory();
+            
             BattleGridPropManager.Instance.Destory();
+            BattleBuffManager.Instance.Destory();
+            BattleFightManager.Instance.Destory();
+            BattleCurseManager.Instance.Destory();
+            BattleCardManager.Instance.Destory();
+            BattleAreaManager.Instance.Destory();
+            
+            BattleEnemyManager.Instance.Destory();
+            BattleUnitManager.Instance.Destory();
+            HeroManager.Instance.Destory();
             //BlessManager.Instance.Destory();
             //BattleBuffManager.Instance.Destory();
             //FightManager.Instance.Destory();
@@ -82,7 +90,7 @@ namespace RoundHero
         public void Refresh()
         {
 
-            FightManager.Instance.CacheRoundFightData();
+            BattleFightManager.Instance.CacheRoundFightData();
             BattleUnitManager.Instance.RefreshDamageState();
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
             GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
@@ -293,7 +301,7 @@ namespace RoundHero
             BattleUnitStateManager.Instance.RoundStartTrigger();
             BattleCurseManager.Instance.RoundStartTrigger();
             BlessManager.Instance.RoundStartTrigger(GamePlayManager.Instance.GamePlayData);
-            BattleHeroManager.Instance.RoundStartTrigger();
+            HeroManager.Instance.RoundStartTrigger();
         }
 
         public void StartAction()

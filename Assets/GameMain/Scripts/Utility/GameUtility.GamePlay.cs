@@ -320,7 +320,7 @@ namespace RoundHero
             //     return cachePosToUnits[gridPosIdx];
             
             var unit = isBattleData
-                ? FightManager.Instance.GetUnitByGridPosIdx(gridPosIdx)
+                ? BattleFightManager.Instance.GetUnitByGridPosIdx(gridPosIdx)
                 : BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx)?.BattleUnit;
 
             // if (unit != null)
@@ -336,7 +336,7 @@ namespace RoundHero
             //     return cachePosToUnits[gridPosIdx];
             
             var unit = isBattleData
-                ? FightManager.Instance.GetUnitByID(unitID)
+                ? BattleFightManager.Instance.GetUnitByID(unitID)
                 : BattleUnitManager.Instance.GetUnitByID(unitID)?.BattleUnit;
 
             // if (unit != null)
@@ -351,7 +351,7 @@ namespace RoundHero
         public static Data_BattleUnit GetUnitByGridPosIdxMoreCamps(int gridPosIdx,  bool isBattleData = true, EUnitCamp? selfUnitCamp = null, List<ERelativeCamp> unitCamps = null)
         {
             var unit = isBattleData
-                ? FightManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx, selfUnitCamp, unitCamps)
+                ? BattleFightManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx, selfUnitCamp, unitCamps)
                 : BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx, selfUnitCamp, unitCamps)?.BattleUnit;
         
             return unit;
@@ -360,7 +360,7 @@ namespace RoundHero
         public static Data_BattleHero GetHero(bool isBattleData = true)
         {
             var unit = isBattleData
-                ? FightManager.Instance.PlayerData.BattleHero
+                ? BattleFightManager.Instance.PlayerData.BattleHero
                 : BattlePlayerManager.Instance.PlayerData.BattleHero;
         
             return unit;
@@ -412,7 +412,7 @@ namespace RoundHero
             if (actionType == EActionType.All)
             {
                 var units = isBattleData
-                    ? FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas
+                    ? BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas
                     : BattleUnitManager.Instance.BattleUnitDatas;
                 foreach (var kv in units)
                 {
@@ -434,7 +434,7 @@ namespace RoundHero
             else if (actionType == EActionType.UnFullCurHPUnit)
             {
                 var units = isBattleData
-                    ? FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas
+                    ? BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas
                     : BattleUnitManager.Instance.BattleUnitDatas;
                 foreach (var kv in units)
                 {
@@ -551,7 +551,7 @@ namespace RoundHero
             else if (actionType == EActionType.Cross_Long_Empty)
             {
                 var gridTypes = isBattleData
-                    ? FightManager.Instance.RoundFightData.GamePlayData.BattleData.GridTypes
+                    ? BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GridTypes
                     : GamePlayManager.Instance.GamePlayData.BattleData.GridTypes;
                 
                 var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
@@ -654,7 +654,7 @@ namespace RoundHero
                                      unit = GetUnitByGridPosIdx(posIdx, isBattleData);
                                      if (unit != null)
                                      {
-                                         if (unit.ID == BattleHeroManager.Instance.BattleHeroData.ID)
+                                         if (unit.ID == HeroManager.Instance.BattleHeroData.ID)
                                          {
                                              retGetRange.Add(posIdx);
                                          }
@@ -670,7 +670,7 @@ namespace RoundHero
                                  
                                  if (unit != null && unit.CurHP > 0)
                                  {
-                                     if (unit.ID == BattleHeroManager.Instance.BattleHeroData.ID)
+                                     if (unit.ID == HeroManager.Instance.BattleHeroData.ID)
                                      {
                                          retGetRange.Add(posIdx);
                                      }
@@ -826,8 +826,8 @@ namespace RoundHero
             GameUtility.InsertionSort(list, (gridPosIdx1, gridPosIdx2) =>
             {
 
-                var unit1 = FightManager.Instance.GetUnitByGridPosIdx(gridPosIdx1);
-                var unit2 = FightManager.Instance.GetUnitByGridPosIdx(gridPosIdx2);
+                var unit1 = BattleFightManager.Instance.GetUnitByGridPosIdx(gridPosIdx1);
+                var unit2 = BattleFightManager.Instance.GetUnitByGridPosIdx(gridPosIdx2);
                 if (unit1 != null && unit1.UnitRole == EUnitRole.Hero)
                 {
                     return 1;
@@ -945,7 +945,7 @@ namespace RoundHero
             var isOblique = ActionTypeMaps[attackType].Contains("Direct8");
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionGridPosIdx);
-            var heroCoord = GameUtility.GridPosIdxToCoord(BattleHeroManager.Instance.BattleHeroData.GridPosIdx);
+            var heroCoord = GameUtility.GridPosIdxToCoord(HeroManager.Instance.BattleHeroData.GridPosIdx);
 
             if (!isExtendActionType)
             {
@@ -1000,7 +1000,7 @@ namespace RoundHero
             
             GetRange(gridPosIdx, moveType, moveRange, null, null, isBattleData);
             
-            GetRange(BattleHeroManager.Instance.BattleHeroData.GridPosIdx, attackType, heroHurtRange, null, null,
+            GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, attackType, heroHurtRange, null, null,
                 isBattleData);
 
             var intersectList = moveRange.Intersect(heroHurtRange).ToList();

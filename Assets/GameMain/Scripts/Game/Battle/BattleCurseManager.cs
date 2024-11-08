@@ -20,6 +20,9 @@ namespace RoundHero
             Random = new Random(randomSeed);
             //CurseIDs.Add(ECurseID.UnitCardAddEnengy_OddRound);
         }
+        
+        public void Destory()
+        {}
 
         private void RecordRandonUnitID(ECurseID curseID, int unitID)
         {
@@ -35,7 +38,7 @@ namespace RoundHero
 
         public void CacheRoundStartDatas()
         {
-            var gamePlayData = FightManager.Instance.RoundFightData.GamePlayData;
+            var gamePlayData = BattleFightManager.Instance.RoundFightData.GamePlayData;
             CacheAttackMostUnit_Select();
             CacheRandomUnitUnRecover(gamePlayData);
             CacheRandomUnitUnAttack(gamePlayData);
@@ -60,7 +63,7 @@ namespace RoundHero
                 
             var actionData = new ActionData();
             actionData.ActionDataType = EActionDataType.Curse;
-            FightManager.Instance.RoundFightData.RoundStartBuffDatas.Add((int)curseID, actionData);
+            BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas.Add((int)curseID, actionData);
 
             var units = new List<Data_BattleUnit>();
             foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
@@ -82,7 +85,7 @@ namespace RoundHero
             effectUnit.ChangeState(unitState);
                 
             actionData.AddEmptyTriggerDataList(effectUnit.ID);
-            var triggerData = FightManager.Instance.Unit_State(actionData.TriggerDatas[effectUnit.ID], -1, -1,
+            var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[effectUnit.ID], -1, -1,
                 effectUnit.ID, unitState, 1, ETriggerDataType.Curse);
                 
                 
@@ -167,7 +170,7 @@ namespace RoundHero
                 return;
             
             actionData.ActionDataType = EActionDataType.Curse;
-            FightManager.Instance.RoundFightData.RoundStartBuffDatas.Add((int)ECurseID.RandomUnitClearDebuff, actionData);
+            BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas.Add((int)ECurseID.RandomUnitClearDebuff, actionData);
             
             
             var unitStates = new List<UnitStateData>() { randomUnit.UnitState, randomUnit.RoundUnitState };
@@ -179,7 +182,7 @@ namespace RoundHero
                     if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(unitState))
                     {
                         actionData.AddEmptyTriggerDataList(randomUnit.ID);
-                        var triggerData = FightManager.Instance.Unit_State(actionData.TriggerDatas[randomUnit.ID], -1, -1, randomUnit.ID,
+                        var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[randomUnit.ID], -1, -1, randomUnit.ID,
                             unitState, -1, ETriggerDataType.RoleState);
                         
                         BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[randomUnit.ID]);
@@ -264,7 +267,7 @@ namespace RoundHero
                 if(unit == null)
                     continue;
 
-                var triggerData = FightManager.Instance.BattleRoleAttribute(-1, -1,
+                var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
                     unit.ID, EUnitAttribute.HP, -1, ETriggerDataSubType.Curse);
                 
                 BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
@@ -274,7 +277,7 @@ namespace RoundHero
             
             if (triggerDatas.Count > 0)
             {
-                FightManager.Instance.RoundFightData.RoundEndDatas.Add(-1, actionData);
+                BattleFightManager.Instance.RoundFightData.RoundEndDatas.Add(-1, actionData);
                 actionData.TriggerDatas.Add(-1, triggerDatas);
                 
             }
@@ -310,7 +313,7 @@ namespace RoundHero
                     return unit1.CurHP - unit2.CurHP;
                 });
                 
-                var triggerData = FightManager.Instance.BattleRoleAttribute(units[0].ID, units[0].ID,
+                var triggerData = BattleFightManager.Instance.BattleRoleAttribute(units[0].ID, units[0].ID,
                     units[0].ID, EUnitAttribute.HP, oldHP - curHP, ETriggerDataSubType.Curse);
                 
                 triggerDatas.Add(triggerData);

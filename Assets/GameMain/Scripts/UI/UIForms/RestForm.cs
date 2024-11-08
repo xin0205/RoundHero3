@@ -36,7 +36,7 @@ namespace RoundHero
         
         public void AddHeart()
         {
-            var heroAttribute = BattleHeroManager.Instance.BattleHeroData.Attribute;
+            var heroAttribute = HeroManager.Instance.BattleHeroData.Attribute;
             var curHeart = heroAttribute.GetAttribute(EHeroAttribute.CurHeart);
             var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
             if (curHeart >= maxHeart)
@@ -51,7 +51,7 @@ namespace RoundHero
                 Message = GameEntry.Localization.GetLocalizedString(Constant.Localization.Message_ConfirmAddHeart, Constant.Rest.AddHeart),
                 OnConfirm = () =>
                 {
-                    var heroAttribute = BattleHeroManager.Instance.BattleHeroData.Attribute;
+                    var heroAttribute = HeroManager.Instance.BattleHeroData.Attribute;
                     var curHeart = heroAttribute.GetAttribute(EHeroAttribute.CurHeart);
                     var maxHeart = heroAttribute.GetAttribute(EHeroAttribute.MaxHeart);
 
@@ -73,8 +73,8 @@ namespace RoundHero
                 Message = GameEntry.Localization.GetLocalizedString(Constant.Localization.Message_ConfirmAddMaxEnergy, Constant.Rest.AddMaxEnergy),
                 OnConfirm = () =>
                 {
-                    BattleHeroManager.Instance.BattleHeroData.BaseMaxHP += Constant.Rest.AddMaxEnergy;
-                    BattleHeroManager.Instance.BattleHeroData.CurHP += Constant.Rest.AddMaxEnergy;
+                    HeroManager.Instance.BattleHeroData.BaseMaxHP += Constant.Rest.AddMaxEnergy;
+                    HeroManager.Instance.BattleHeroData.CurHP += Constant.Rest.AddMaxEnergy;
             
                     GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
                     Close();

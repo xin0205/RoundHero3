@@ -163,17 +163,17 @@ namespace RoundHero
             // }
 
 
-            FightManager.Instance.CalculateHeroHPDelta(FightManager.Instance.RoundFightData.BuffData_Use);
+            BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use);
 
         }
 
 
         public void HurtUsDamage(EUnitCamp camp, Data_BattleUnit effectUnit, List<float> value1s, float ratio)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
           
             var unitCount =
-                FightManager.Instance.RoundFightData.GamePlayData.BattleData.GetUnitCount(BattleManager.Instance.CurUnitCamp,
+                BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetUnitCount(BattleManager.Instance.CurUnitCamp,
                     new List<ERelativeCamp>() {ERelativeCamp.Us}, new List<EUnitRole>() {EUnitRole.Staff, EUnitRole.Hero});
             var value = unitCount * value1s[1] * ratio;
 
@@ -188,7 +188,7 @@ namespace RoundHero
             
             BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
             
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
                 if (kv.Value.UnitCamp == camp && kv.Value.CurHP > 0)
                 {
@@ -211,10 +211,10 @@ namespace RoundHero
         
         private void UnitCountDamage(EUnitCamp unitCamp, Data_BattleUnit effectUnit, List<float> value1s, float ratio)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
             var unitCount =
-                FightManager.Instance.RoundFightData.GamePlayData.BattleData.GetUnitCount(BattleManager.Instance.CurUnitCamp,
+                BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetUnitCount(BattleManager.Instance.CurUnitCamp,
                     new List<ERelativeCamp>() {ERelativeCamp.Us, ERelativeCamp.Enemy}, new List<EUnitRole>() {EUnitRole.Staff, EUnitRole.Hero});
 
             var value = unitCount * value1s[0] * ratio;
@@ -234,7 +234,7 @@ namespace RoundHero
         
         private void MoveCountDamage(Data_BattleUnit effectUnit, List<float> value1s, float ratio)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
             var value = effectUnit.RoundMoveCount * value1s[0] * ratio;
 
@@ -253,9 +253,9 @@ namespace RoundHero
         
         private void DeBuffCountDamage(EUnitCamp unitCamp, List<float> value1s, float ratio)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
                 if(unitCamp == kv.Value.UnitCamp)
                     continue;
@@ -280,9 +280,9 @@ namespace RoundHero
         
         private void BuffUsAddCurHP(EUnitCamp unitCamp, List<float> value1s, float ratio)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
                 
                 if(kv.Value.UnitCamp != unitCamp)
@@ -308,9 +308,9 @@ namespace RoundHero
         
         private void FullHPUsAddDamage(EUnitCamp unitCamp, List<float> value1s)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
                 if(kv.Value.UnitCamp != unitCamp)
                     continue;
@@ -370,9 +370,9 @@ namespace RoundHero
         
         private void LessHalfHPEnemyHurtAddDamge(EUnitCamp unitCamp, List<float> value1s)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
                 if(kv.Value.UnitCamp == unitCamp)
                     continue;
@@ -396,9 +396,9 @@ namespace RoundHero
         
         private void MoreHalfHPEnemySubDamge(EUnitCamp unitCamp, List<float> value1s)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
 
                 if(kv.Value.UnitCamp == unitCamp)
@@ -423,7 +423,7 @@ namespace RoundHero
         
         private void UnitAddCurHP(Data_BattleUnit effectUnit, List<float> value1s)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
             var value = effectUnit.UnitRole == EUnitRole.Staff ? value1s[0] : value1s[1];
 
@@ -443,7 +443,7 @@ namespace RoundHero
         
         private void RemoveDebuff(EUnitCamp unitCamp, Data_BattleUnit effectUnit)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
             var keyList = effectUnit.UnitState.UnitStates.Keys.ToList();
             for (int i = effectUnit.UnitState.UnitStates.Count - 1; i >= 0; i--)
@@ -480,7 +480,7 @@ namespace RoundHero
 
         private void RemoveCardAddCurHP(Data_BattleUnit effectUnit)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RemoveUnit,
@@ -494,9 +494,9 @@ namespace RoundHero
 
         private void State1AddState2(EUnitCamp unitCamp, EUnitState state1, EUnitState state2, List<float> value1s)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
                 if(kv.Value.UnitCamp == unitCamp)
                     continue;
@@ -519,9 +519,9 @@ namespace RoundHero
         
         private void UnMoveHeroUnit(EUnitCamp unitCamp)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            var battleHero = FightManager.Instance.RoundFightData.GamePlayData.GetPlayerData(unitCamp).BattleHero;
+            var battleHero = BattleFightManager.Instance.RoundFightData.GamePlayData.GetPlayerData(unitCamp).BattleHero;
             var aroundHeroRange = GameUtility.GetRange(battleHero.GridPosIdx, EActionType.Around, unitCamp,
                 new List<ERelativeCamp>()
                 {
@@ -529,7 +529,7 @@ namespace RoundHero
                 });
 
 
-            foreach (var kv in FightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
   
                 if(kv.Value.UnitCamp == unitCamp)
@@ -554,9 +554,9 @@ namespace RoundHero
 
         private void AddRoundStates(EBuffID buffID, EUnitCamp unitCamp)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            var battleHero = FightManager.Instance.RoundFightData.GamePlayData.GetPlayerData(unitCamp).BattleHero;
+            var battleHero = BattleFightManager.Instance.RoundFightData.GamePlayData.GetPlayerData(unitCamp).BattleHero;
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoundBuff,
@@ -624,7 +624,7 @@ namespace RoundHero
         //
         private void Link(EBuffID buffID, Data_BattleUnit effectUnit)
         {
-            var useCardData = FightManager.Instance.RoundFightData.BuffData_Use;
+            var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
             var linkID = GameUtility.BuffIDToLinkID(buffID);
             effectUnit.BattleLinkIDs.Add(linkID);

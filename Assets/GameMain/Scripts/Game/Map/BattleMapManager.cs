@@ -64,6 +64,11 @@ namespace RoundHero
             }
             
         }
+        
+        public void Destory()
+        {
+            
+        }
 
         public void  RefreshMapData()
         {

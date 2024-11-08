@@ -62,7 +62,7 @@ namespace RoundHero
         
         public void Back()
         {
-            //GamePlayManager.Instance.Destory(EGamMode.PVE);
+            GamePlayManager.Instance.Back();
             
             
             GameEntry.UI.CloseUIForm(playerInfoForm);

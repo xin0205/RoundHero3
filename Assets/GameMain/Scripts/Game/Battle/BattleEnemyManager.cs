@@ -108,8 +108,8 @@ namespace RoundHero
             isShowRoute = true;
             BattleRouteEntities.Clear();
             
-            var enemyMovePaths = new Dictionary<int, List<int>>(FightManager.Instance.RoundFightData.EnemyMovePaths);
-            enemyMovePaths.AddRange(FightManager.Instance.RoundFightData.ThirdUnitMovePaths);
+            var enemyMovePaths = new Dictionary<int, List<int>>(BattleFightManager.Instance.RoundFightData.EnemyMovePaths);
+            enemyMovePaths.AddRange(BattleFightManager.Instance.RoundFightData.ThirdUnitMovePaths);
             foreach (var kv in enemyMovePaths)
             {
                 if(kv.Value == null || kv.Value.Count <= 0)
@@ -208,7 +208,7 @@ namespace RoundHero
             //     return 0;
             // }
             
-            var heroCoord = GameUtility.GridPosIdxToCoord(BattleHeroManager.Instance.HeroEntity.BattleHeroEntityData.BattleHeroData.GridPosIdx);
+            var heroCoord = GameUtility.GridPosIdxToCoord(HeroManager.Instance.HeroEntity.BattleHeroEntityData.BattleHeroData.GridPosIdx);
             var dis = GameUtility.GetDis(enemyCoord, heroCoord);
             return dis;
         }

@@ -60,6 +60,9 @@ namespace RoundHero
             Random = new Random(randomSeed);
 
         }
+        
+        
+        
         public async Task InitArea()
         {
             var initIdx = MathUtility.GetRandomNum(Constant.Area.ObstacleCount, 0,
@@ -183,13 +186,13 @@ namespace RoundHero
                     var cardData = BattleManager.Instance.GetCard(cardID);
                     var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardID);
                     
-                    var aroundHeroRange = GameUtility.GetRange(BattleHeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Around, EUnitCamp.Player1);
+                    var aroundHeroRange = GameUtility.GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Around, EUnitCamp.Player1);
 
-                    if (BattleHeroManager.Instance.BattleHeroData.HeroID == EHeroID.SubUnitCardEnergy)
+                    if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.SubUnitCardEnergy)
                     {
                         if (aroundHeroRange.Contains(ne.GridPosIdx))
                         {
-                            var values = BattleHeroManager.Instance.GetHeroBuffValues();
+                            var values = HeroManager.Instance.GetHeroBuffValues();
                             cardEnergy += (int)values[0];
                             
                         }
@@ -206,12 +209,12 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.UnitData.CurHP =
                         BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
 
-                    if (BattleHeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
+                    if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
                     {
 
                         if (aroundHeroRange.Contains(ne.GridPosIdx))
                         {
-                            var values = BattleHeroManager.Instance.GetHeroBuffValues();
+                            var values = HeroManager.Instance.GetHeroBuffValues();
                             BattleManager.Instance.TempTriggerData.UnitData.BaseMaxHP += (int)values[0];
                             BattleManager.Instance.TempTriggerData.UnitData.CurHP += (int)values[0];
                         }
@@ -284,7 +287,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
 
                     var tempUnitMovePaths = BattleManager.Instance.TempTriggerData.TempUnitMovePaths =
-                        FightManager.Instance.GetRunPaths(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
+                        BattleFightManager.Instance.GetRunPaths(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
                             ne.GridPosIdx, runPaths);
                     //var realTargetGridPosIdx = BattleManager.Instance.TempTriggerData.TargetGridPosIdx =
                         
@@ -1633,7 +1636,7 @@ namespace RoundHero
                             BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.AutoAtk;
                             
                             BattleManager.Instance.Refresh();
-                            FightManager.Instance.SoliderAutoAttack();
+                            BattleFightManager.Instance.SoliderAutoAttack();
                             BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.ID);
                             
                             ShowBackupGrids(null);
@@ -1742,7 +1745,7 @@ namespace RoundHero
                     var unit = BattleUnitManager.Instance.GetUnitByID(BattleManager.Instance.TempTriggerData.UnitData
                         .ID);
 
-                    var moveActionData = FightManager.Instance.RoundFightData.SoliderMoveDatas[unit.ID];
+                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.ID];
 
                     var time = unit.Run(moveActionData);
                     GameUtility.DelayExcute(time, () =>
@@ -1770,7 +1773,7 @@ namespace RoundHero
                     var unit = BattleUnitManager.Instance.GetUnitByID(BattleManager.Instance.TempTriggerData.UnitData
                         .ID);
                     
-                    var moveActionData = FightManager.Instance.RoundFightData.SoliderMoveDatas[unit.ID];
+                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.ID];
                     
 
                     var time = unit.Run(moveActionData);
@@ -1854,7 +1857,7 @@ namespace RoundHero
                         //unit.UnitState.RemoveState(EUnitState.ActiveAttack);
                     }
                     
-                    FightManager.Instance.SoliderActiveAttack();
+                    BattleFightManager.Instance.SoliderActiveAttack();
                         
                     //BattleManager.Instance.Refresh();
                     BattleEnemyManager.Instance.UnShowEnemyRoutes();

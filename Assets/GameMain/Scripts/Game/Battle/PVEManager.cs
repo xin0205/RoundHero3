@@ -26,6 +26,8 @@ namespace RoundHero
         public void PlaceUnitCard(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp);
 
         public void Destory();
+
+
     }
     public class PVEManager : Singleton<PVEManager>, IBattleTypeManager
     {
@@ -145,9 +147,9 @@ namespace RoundHero
             if (BattleState != EBattleState.UseCard)
                 return;
             
-            FightManager.Instance.AcitonUnitIdx = 0;
+            BattleFightManager.Instance.AcitonUnitIdx = 0;
             BattleManager.Instance.BattleState = EBattleState.ActionExcuting;
-            FightManager.Instance.ActionProgress = EActionProgress.RoundStartBuff;
+            BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStartBuff;
             ContinueAction();
             
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
@@ -158,28 +160,28 @@ namespace RoundHero
 
         public void ContinueAction()
         {
-            if (FightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
             {
-                FightManager.Instance.RoundStartBuffTrigger();
+                BattleFightManager.Instance.RoundStartBuffTrigger();
             }
-            if (FightManager.Instance.ActionProgress == EActionProgress.RoundStartUnit)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartUnit)
             {
-                FightManager.Instance.RoundStartUnitTrigger();
-            }
-            
-            if (FightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
-            {
-                FightManager.Instance.SoliderAttack();
+                BattleFightManager.Instance.RoundStartUnitTrigger();
             }
             
-            if (FightManager.Instance.ActionProgress == EActionProgress.SoliderActiveAttack)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
             {
-                FightManager.Instance.SoliderActiveAttack();
+                BattleFightManager.Instance.SoliderAttack();
             }
             
-            if (FightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderActiveAttack)
             {
-                FightManager.Instance.EnemyMove();
+                BattleFightManager.Instance.SoliderActiveAttack();
+            }
+            
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
+            {
+                BattleFightManager.Instance.EnemyMove();
             }
             // if (FightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
             // {
@@ -195,11 +197,11 @@ namespace RoundHero
             //     FightManager.Instance.ThirdUnitAttack();
             // }
             
-            if (FightManager.Instance.ActionProgress == EActionProgress.RoundEnd)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundEnd)
             {
-                FightManager.Instance.RoundEndTrigger();
+                BattleFightManager.Instance.RoundEndTrigger();
             }
-            if (FightManager.Instance.ActionProgress == EActionProgress.NotifyRoundEnd)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.NotifyRoundEnd)
             {
                 GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(EBattleState.EndRound));
             }
@@ -208,21 +210,21 @@ namespace RoundHero
 
         public void NextAction()
         {
-            if (FightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
             {
-                FightManager.Instance.ActionProgress = EActionProgress.RoundStartUnit;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStartUnit;
             }
-            else if (FightManager.Instance.ActionProgress == EActionProgress.RoundStartUnit)
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartUnit)
             {
-                FightManager.Instance.ActionProgress = EActionProgress.SoliderAttack;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.SoliderAttack;
             }
-            else if (FightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
             {
-                FightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
             }
-            else if (FightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
-                FightManager.Instance.ActionProgress = EActionProgress.RoundEnd;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.RoundEnd;
             }
             // else if (FightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
             // {
@@ -239,14 +241,14 @@ namespace RoundHero
             //     FightManager.Instance.ActionProgress = EActionProgress.RoundEnd;
             // }
 
-            else if (FightManager.Instance.ActionProgress == EActionProgress.RoundEnd)
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundEnd)
             {
-                FightManager.Instance.ActionProgress = EActionProgress.NotifyRoundEnd;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.NotifyRoundEnd;
                 
             }
             else
             {
-                FightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
                 BattleManager.Instance.Refresh();
             }
         }

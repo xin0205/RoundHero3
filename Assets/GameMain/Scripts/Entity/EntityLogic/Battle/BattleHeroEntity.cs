@@ -29,7 +29,7 @@ namespace RoundHero
 
         public override void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = false, bool changeHPInstantly = false)
         {
-            BattleHeroManager.Instance.ChangeHP(changeHP, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
+            HeroManager.Instance.ChangeHP(changeHP, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
         }
         
         

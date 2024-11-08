@@ -35,6 +35,7 @@ namespace RoundHero
         {
             base.OnOpen(userData);
             GameEntry.Event.Subscribe(RefreshPlayerInfoEventArgs.EventId, OnRefreshPlayerInfo);
+            GameEntry.Event.Subscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
             GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
 
         }
@@ -43,9 +44,22 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             GameEntry.Event.Unsubscribe(RefreshPlayerInfoEventArgs.EventId, OnRefreshPlayerInfo);
+            GameEntry.Event.Unsubscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
         }
 
-        private async void OnRefreshPlayerInfo(object sender, GameEventArgs e)
+        private void OnRefreshPlayerInfo(object sender, GameEventArgs e)
+        {
+            Refresh();
+
+        }
+        
+        private void OnRefreshBattleUI(object sender, GameEventArgs e)
+        {
+            Refresh();
+
+        }
+
+        private async void Refresh()
         {
             coinText.text = BattlePlayerManager.Instance.PlayerData.Coin.ToString();
             hpText.text = BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" + BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
@@ -67,7 +81,6 @@ namespace RoundHero
             blessList = BlessManager.Instance.BlessDatas.Keys.ToList();
             blessGridView.SetListItemCount(blessList.Count);
             blessGridView.RefreshAllShownItem();
-            
         }
         
         LoopGridViewItem OnBlessIconGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
@@ -95,15 +108,15 @@ namespace RoundHero
         public void HPTipsInfo(InfoFormParams infoFormParams)
         {
             infoFormParams.Name = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.HeroName,
-                BattleHeroManager.Instance.BattleHeroData.ID));
+                HeroManager.Instance.BattleHeroData.ID));
             infoFormParams.Desc = Utility.Text.Format(infoFormParams.Desc,
-                BattleHeroManager.Instance.BattleHeroData.CurHeart + "/" +
-                BattleHeroManager.Instance.BattleHeroData.MaxHeart,
-                BattleHeroManager.Instance.BattleHeroData.CurHP + "/" +
-                BattleHeroManager.Instance.BattleHeroData.MaxHP);
+                HeroManager.Instance.BattleHeroData.CurHeart + "/" +
+                HeroManager.Instance.BattleHeroData.MaxHeart,
+                HeroManager.Instance.BattleHeroData.CurHP + "/" +
+                HeroManager.Instance.BattleHeroData.MaxHP);
             
             infoFormParams.Desc += "\n" + GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.HeroDesc,
-                BattleHeroManager.Instance.BattleHeroData.ID));
+                HeroManager.Instance.BattleHeroData.ID));
         }
     }
 }

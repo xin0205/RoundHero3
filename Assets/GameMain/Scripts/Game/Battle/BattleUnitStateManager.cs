@@ -107,13 +107,13 @@ namespace RoundHero
             
             if (passUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
-                var triggerData = FightManager.Instance.Unit_State(triggerDatas, passUnitID, passUnitID, bePassUnitID,
+                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnitID, passUnitID, bePassUnitID,
                     EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
                 triggerDatas.Add(triggerData);
             }
             if (bePassUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
-                var triggerData = FightManager.Instance.Unit_State(triggerDatas,bePassUnitID, bePassUnitID, passUnitID,
+                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,bePassUnitID, bePassUnitID, passUnitID,
                     EUnitState.HurtRoundStart, -1, ETriggerDataType.RoleState);
                 triggerDatas.Add(triggerData);
             }

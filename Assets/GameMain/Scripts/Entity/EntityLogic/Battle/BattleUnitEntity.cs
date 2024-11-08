@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
 using RPGCharacterAnims;
+using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -237,13 +238,15 @@ namespace RoundHero
                     
                     if (BattleUnitData.CurHP > 0)
                     {
-                        transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
-                        {
-                            GridPosIdx = nextMoveGridPosIdx;
-                            
-                            FightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.ID);
-   
-                        });
+                        Controller.StartAction(HandlerTypes.Navigation, movePos);
+                        
+                        // transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
+                        // {
+                        //     GridPosIdx = nextMoveGridPosIdx;
+                        //     
+                        //     BattleFightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.ID);
+                        //
+                        // });
                     }
 
                 });
@@ -258,7 +261,7 @@ namespace RoundHero
                 if (BattleUnitData.CurHP > 0)
                 {
                     Idle();
-                    var pos = BattleHeroManager.Instance.HeroEntity.Position;
+                    var pos = HeroManager.Instance.HeroEntity.Position;
                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
                     GridPosIdx = moveGridPosIdxs[moveGridPosIdxs.Count - 1];
                 }
@@ -322,7 +325,7 @@ namespace RoundHero
 
         public void RefreshDamageState()
         {
-            var hurt = FightManager.Instance.GetTotalDelta(this.ID, EHeroAttribute.CurHP);
+            var hurt = BattleFightManager.Instance.GetTotalDelta(this.ID, EHeroAttribute.CurHP);
             this.damage.text = "hurt:" + hurt;
         }
         

@@ -369,7 +369,7 @@ namespace RoundHero
             // }
             
             if (cardEnergy >
-                BattleHeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.CurHP))
+                HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.CurHP))
             {
                 GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_NoEnergy));
                 return false;
@@ -470,7 +470,7 @@ namespace RoundHero
             BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardID, unitID);
 
             BattleBuffManager.Instance.RecoverUseBuffState();
-            FightManager.Instance.UseCardTrigger();
+            BattleFightManager.Instance.UseCardTrigger();
             BattleManager.Instance.Refresh();
             return true;
 
