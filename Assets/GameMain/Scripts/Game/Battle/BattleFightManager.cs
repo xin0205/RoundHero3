@@ -807,6 +807,9 @@ namespace RoundHero
             
             var actionUnit = GetUnitByID(actionUnitID);
             var effectUnit = GetUnitByGridPosIdx(effectGridPosIdx);
+            var relativeCamp = GameUtility.GetRelativeCamp(actionUnit.UnitCamp, effectUnit.UnitCamp);
+            if(!buffData.TriggerUnitCamps.Contains(relativeCamp))
+                return;
             
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionUnit.GridPosIdx);

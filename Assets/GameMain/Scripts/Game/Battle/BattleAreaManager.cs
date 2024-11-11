@@ -382,7 +382,8 @@ namespace RoundHero
                             }   
                             else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                             {
-                        
+                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.ID, ne.GridPosIdx);
+                                ShowBackupGrids(attackRanges);
                             }
                             else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                             {
@@ -398,6 +399,7 @@ namespace RoundHero
                     else
                     {
                         BattleManager.Instance.Refresh();
+                        ShowBackupGrids(null);
                         //BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.ID);
                     }
 
@@ -1648,6 +1650,8 @@ namespace RoundHero
                         else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                         {
                             BattleManager.Instance.BattleState = EBattleState.SelectHurtUnit;
+                            var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.ID, ne.GridPosIdx);
+                            ShowBackupGrids(attackRanges);
                         }
                         else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                         {

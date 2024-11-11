@@ -1,4 +1,5 @@
 ﻿
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -6,6 +7,8 @@ namespace RoundHero
     public class BattleSoliderEntity : BattleUnitEntity
     {
         public BattleSoliderEntityData BattleSoliderEntityData { get; protected set; }
+
+        [SerializeField] private Animator animator;
         
         protected override void OnShow(object userData)
         {
@@ -21,6 +24,8 @@ namespace RoundHero
             BattleUnitData = BattleSoliderEntityData.BattleSoliderData;
 
             ShowInit();
+            
+            
         }
 
         public override void Quit()

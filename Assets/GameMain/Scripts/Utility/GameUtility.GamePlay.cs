@@ -1327,6 +1327,22 @@ namespace RoundHero
 
             return ret;
         }
+
+        public static ERelativeCamp GetRelativeCamp(EUnitCamp camp1, EUnitCamp camp2)
+        {
+            if (camp1 == camp2)
+                return ERelativeCamp.Us;
+
+            if (camp1 != camp2)
+            {
+                if (camp2 == EUnitCamp.Third)
+                    return ERelativeCamp.Third;
+
+                return ERelativeCamp.Enemy;
+            }
+
+            return ERelativeCamp.Empty;
+        }
         
     }
 }

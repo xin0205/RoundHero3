@@ -310,11 +310,11 @@ namespace RoundHero
         Staff,
     }
     
-    public enum ERelativeUnitCamp
-    {
-        Self,
-        Enemy,
-    }
+    // public enum ERelativeUnitCamp
+    // {
+    //     Self,
+    //     Enemy,
+    // }
 
     public enum ETriggerTarget
     {

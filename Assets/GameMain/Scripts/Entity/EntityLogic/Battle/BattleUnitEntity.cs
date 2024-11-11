@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿
 using DG.Tweening;
 using RPGCharacterAnims;
+using RPGCharacterAnims.Actions;
 using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -182,6 +183,11 @@ namespace RoundHero
             // }
             
             UnitActionState = actionState;
+            if (UnitActionState == EUnitActionState.Attack)
+            {
+                Controller.StartAction(HandlerTypes.Attack, new AttackContext(HandlerTypes.Attack, Side.Left));
+            }
+            
             //AnimatorSetLayerWeight();
 
             // if (BattleUnitData is Data_BattleMonster)
@@ -238,15 +244,15 @@ namespace RoundHero
                     
                     if (BattleUnitData.CurHP > 0)
                     {
-                        Controller.StartAction(HandlerTypes.Navigation, movePos);
+                        //Controller.StartAction(HandlerTypes.Navigation, movePos);
                         
-                        // transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
-                        // {
-                        //     GridPosIdx = nextMoveGridPosIdx;
-                        //     
-                        //     BattleFightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.ID);
-                        //
-                        // });
+                        transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
+                        {
+                            GridPosIdx = nextMoveGridPosIdx;
+                            
+                            BattleFightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.ID);
+                        
+                        });
                     }
 
                 });

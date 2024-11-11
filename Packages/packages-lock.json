@@ -9,6 +9,12 @@
       },
       "hash": "1bd810cf432c0d1324efe8e94b160879ce32fabc"
     },
+    "com.kybernetik.animancer": {
+      "version": "file:com.kybernetik.animancer",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.rlabrecque.steamworks.net": {
       "version": "https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net",
       "depth": 0,
