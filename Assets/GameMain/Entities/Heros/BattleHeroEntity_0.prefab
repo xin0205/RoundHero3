@@ -58,6 +58,7 @@ MonoBehaviour:
   damage: {fileID: 6959348961771500532}
   uiNode: {fileID: 175087306450733963}
   Controller: {fileID: 5953909708049985824}
+  animator: {fileID: 1116066522971024983}
 --- !u!114 &5953909708049985824
 MonoBehaviour:
   m_ObjectHideFlags: 0

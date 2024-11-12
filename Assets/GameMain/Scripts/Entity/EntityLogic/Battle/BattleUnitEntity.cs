@@ -18,6 +18,7 @@ namespace RoundHero
         [SerializeField] protected RPGCharacterController Controller;
         
         protected Quaternion cameraQuaternion = Quaternion.identity;
+        [SerializeField] protected Animator animator;
         
         protected Data_BattleUnit BattleUnitData { get; set; }
         protected bool IsMove = false;
@@ -203,8 +204,8 @@ namespace RoundHero
         
         public void Idle()
         {
-            
-            SetAction(EUnitActionState.Idle);
+            animator.SetFloat(AnimationParameters.VelocityZ, 0);
+            //SetAction(EUnitActionState.Idle);
         }
         
         public void Dodge()
@@ -245,7 +246,7 @@ namespace RoundHero
                     if (BattleUnitData.CurHP > 0)
                     {
                         //Controller.StartAction(HandlerTypes.Navigation, movePos);
-                        
+                        Run();
                         transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
                         {
                             GridPosIdx = nextMoveGridPosIdx;
@@ -288,10 +289,18 @@ namespace RoundHero
             return Move(EUnitActionState.Fly, moveActionData);
 
         }
-        
-        public void Attack()
+
+        private void Run()
         {
-            SetAction(EUnitActionState.Attack);
+            animator.SetFloat(AnimationParameters.VelocityZ, 1);
+        }
+        
+        public virtual void Attack()
+        {
+            //SetAction(EUnitActionState.Attack);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, 1);
         }
         
         public void RunAttack()

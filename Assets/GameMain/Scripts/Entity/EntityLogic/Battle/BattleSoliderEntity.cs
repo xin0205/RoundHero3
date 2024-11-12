@@ -1,4 +1,5 @@
 ﻿
+using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -8,7 +9,7 @@ namespace RoundHero
     {
         public BattleSoliderEntityData BattleSoliderEntityData { get; protected set; }
 
-        [SerializeField] private Animator animator;
+        
         
         protected override void OnShow(object userData)
         {
@@ -24,8 +25,9 @@ namespace RoundHero
             BattleUnitData = BattleSoliderEntityData.BattleSoliderData;
 
             ShowInit();
-            
-            
+            animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.WeaponUnsheathTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
         }
 
         public override void Quit()
@@ -41,6 +43,8 @@ namespace RoundHero
             BattleSoliderManager.Instance.RemoveSolider(BattleSoliderEntityData.BattleSoliderData.ID);
  
         }
+
+        
 
         public override void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = true)
         {

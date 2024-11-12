@@ -10,9 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3523285037464269076}
   - component: {fileID: 4176909720325366391}
-  - component: {fileID: 7893318919590277851}
-  - component: {fileID: 8081168606606918}
-  - component: {fileID: 3359481643661937477}
   m_Layer: 6
   m_Name: BattleSoliderEntity_0
   m_TagString: Untagged
@@ -59,116 +56,8 @@ MonoBehaviour:
   hp: {fileID: 2741339457671713794}
   damage: {fileID: 6959348961771500532}
   uiNode: {fileID: 175087306450733963}
-  Controller: {fileID: 7893318919590277851}
-  animator: {fileID: 0}
---- !u!114 &7893318919590277851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3234534928620479827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad159c285c6e6ae4caa1641e7eff37c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  mainCamera: {fileID: 0}
-  ikHands: {fileID: 0}
-  ladder: {fileID: 0}
-  cliff: {fileID: 0}
-  target: {fileID: 3523285037464269076}
-  animationSpeed: 1
-  headLook: 0
-  idleAlert: 1
-  isNearCliff: 0
-  isNearLadder: 0
-  isSitting: 0
-  isSpecial: 0
-  isTalking: 0
-  rightWeapon: 0
-  leftWeapon: 0
---- !u!114 &8081168606606918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3234534928620479827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22f8445ce871a9b46b22d4812ecda9b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  knockbackMultiplier: 1
-  movementAnimationMultiplier: 1
-  currentVelocity: {x: 0, y: 0, z: 0}
-  walkSpeed: 0.5
-  walkAccel: 15
-  runSpeed: 1
-  runAccel: 30
-  sprintSpeed: 2
-  sprintAccel: 15
-  crouchSpeed: 0.25
-  crouchAccel: 15
-  crawlSpeed: 0.15
-  crawlAccel: 15
-  injuredSpeed: 0.675
-  injuredAccel: 20
-  groundFriction: 120
-  rotationSpeed: 100
-  canJump: 0
-  holdingJump: 0
-  canDoubleJump: 0
-  jumpSpeed: 12
-  jumpGravity: 24
-  allowDoubleJump: 1
-  doubleJumpSpeed: 8
-  inAirSpeed: 8
-  inAirAccel: 16
-  fallGravity: 32
-  fallingControl: 0
-  swimSpeed: 4
-  swimAccel: 4
-  strokeSpeed: 6
-  waterFriction: 5
-  debugMessages: 0
---- !u!114 &3359481643661937477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3234534928620479827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 294f215f6a448ab4d8564c41fa2e0502, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMove: {x: 0, y: 0, z: 0}
-  triggerInteraction: 0
-  fixedTimeStep: 0
-  fixedUpdatesPerSecond: 0
-  clampToMovingGround: 1
-  debugSpheres: 1
-  debugGrounding: 1
-  debugPushbackMesssages: 1
-  spheres:
-  - offset: 0.5
-    isFeet: 1
-    isHead: 0
-  - offset: 1
-    isFeet: 0
-    isHead: 0
-  - offset: 1.5
-    isFeet: 0
-    isHead: 1
-  Walkable:
-    serializedVersion: 2
-    m_Bits: 0
-  ownCollider: {fileID: 0}
-  radius: 0.5
+  Controller: {fileID: 0}
+  animator: {fileID: 516410851728545096}
 --- !u!1001 &1602278981855802231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -180,7 +69,11 @@ PrefabInstance:
     - target: {fileID: 1231409937473152575, guid: f9c7613e598ac2b4eb7b22dd3d4564d8, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 7ff0cf27ed8e9684b9bdd381bab1f846, type: 2}
+      objectReference: {fileID: 9100000, guid: f7dd3165ce175ee44a3097f7ff3d81e0, type: 2}
+    - target: {fileID: 1231409937473152575, guid: f9c7613e598ac2b4eb7b22dd3d4564d8, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5185600322512682053, guid: f9c7613e598ac2b4eb7b22dd3d4564d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
