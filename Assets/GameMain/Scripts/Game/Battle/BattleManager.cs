@@ -237,24 +237,33 @@ namespace RoundHero
                 var curHeart = hero.Attribute.GetAttribute(EHeroAttribute.CurHeart);
             
                 var heroDodgeSubHeartDamage = gamePlayData.GetUsefulBless(EBlessID.HeroDodgeSubHeartDamage, BattleManager.Instance.CurUnitCamp);
-                if (heroDodgeSubHeartDamage != null && curHeart < oldHeart)
-                {
-                    heroDodgeSubHeartDamage.Value -= 1;
-                    hero.Attribute.SetAttribute(EHeroAttribute.CurHeart, oldHeart);
-                    hero.CurHP = oldHP;
 
-                }
-                
-                if (curHeart < oldHeart && gamePlayData.BlessCount(EBlessID.HPTo0FullAllUnitHP, BattleManager.Instance.CurUnitCamp) > 0)
+                if (curHeart < oldHeart)
                 {
-                    foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
+                    if (heroDodgeSubHeartDamage != null)
                     {
-                        if (kv.Value.UnitCamp == BattleManager.Instance.CurUnitCamp && kv.Value.UnitRole == EUnitRole.Staff)
+                        heroDodgeSubHeartDamage.Value -= 1;
+                        hero.Attribute.SetAttribute(EHeroAttribute.CurHeart, oldHeart);
+                        hero.CurHP = oldHP;
+
+                    }
+                
+                    else if (gamePlayData.BlessCount(EBlessID.HPTo0FullAllUnitHP, BattleManager.Instance.CurUnitCamp) > 0)
+                    {
+                        foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
                         {
-                            kv.Value.CurHP = kv.Value.MaxHP;
+                            if (kv.Value.UnitCamp == BattleManager.Instance.CurUnitCamp && kv.Value.UnitRole == EUnitRole.Staff)
+                            {
+                                kv.Value.CurHP = kv.Value.MaxHP;
+                            }
                         }
                     }
+                    else
+                    {
+                        hero.Attribute.SetAttribute(EHeroAttribute.CurHeart, curHeart);
+                    }
                 }
+                
                 
                 
                 if (curHeart <= 0 &&
@@ -331,9 +340,9 @@ namespace RoundHero
 
         }
         
-        public Data_Card GetCard(int cardID)
+        public Data_Card GetCard(int cardIdx)
         {
-            return BattleTypeManager.GetCard(cardID);
+            return BattleTypeManager.GetCard(cardIdx);
         }
         
         public Data_EnergyBuff GetEnergyBuff(EUnitCamp unitCamp, int heart, int hp)

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using GameFramework;
+using RPGCharacterAnims.Lookups;
 using UGFExtensions.Await;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -134,7 +135,7 @@ namespace RoundHero
             // var cardEnergy =
             //     BattleCardManager.Instance.GetCardEnergy(cardID);
             var newBattleSoliderData = battleSoliderData.Copy();
-            var card = BattleManager.Instance.GetCard(newBattleSoliderData.CardID);
+            var card = BattleManager.Instance.GetCard(newBattleSoliderData.CardIdx);
             newBattleSoliderData.UnitRole = EUnitRole.Staff;
             newBattleSoliderData.ID = BattleUnitManager.Instance.GetID();
             
@@ -198,9 +199,19 @@ namespace RoundHero
             var data = ReferencePool.Acquire<EntityData>();
             data.Init(entityComponent.GenerateSerialId(), Vector2.zero);
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(DisplayHeroEntity),
-                AssetUtility.GetDisplayHeroPrefab(heroID), Constant.EntityGroup.Scene, 0, data);
+                AssetUtility.GetDisplayHeroPrefab(heroID), Constant.EntityGroup.Unit, 0, data);
             
             return (DisplayHeroEntity)task.Logic;
+        }
+        
+        public static async Task<BattleWeaponEntity> ShowWeaponEntityAsync(this EntityComponent entityComponent, EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
+        {
+            var data = ReferencePool.Acquire<BattleWeaponEntityData>();
+            data.Init(entityComponent.GenerateSerialId(), weaponHoldingType, weaponType, weaponID);
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleWeaponEntity),
+                AssetUtility.GetBattleWeaponPrefab(weaponHoldingType, weaponType, weaponID), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleWeaponEntity)task.Logic;
         }
     }
 }

@@ -745,7 +745,7 @@ namespace RoundHero
 
     public class Data_BattleSolider : Data_BattleUnit
     {
-        public int CardID;
+        public int CardIdx;
         //public List<BuffData> FuneDatas;
         public int Energy;
        
@@ -756,13 +756,13 @@ namespace RoundHero
 
         }
 
-        public Data_BattleSolider(int id, int cardID, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIdxs) : base(
+        public Data_BattleSolider(int id, int cardIdx, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIdxs) : base(
             id, gridPosIdx, unitCamp, funeIdxs)
         {
-            CardID = cardID;
+            CardIdx = cardIdx;
             Energy = energy;
-            var card = BattleManager.Instance.GetCard(cardID);
-            var drCard = CardManager.Instance.GetCardTable(cardID);
+            var card = BattleManager.Instance.GetCard(cardIdx);
+            var drCard = CardManager.Instance.GetCardTable(cardIdx);
             BaseMaxHP = drCard.HP;
             CurHP = MaxHP;
             LastCurHP = CurHP;
@@ -776,7 +776,7 @@ namespace RoundHero
             var dataBattleUnit = new Data_BattleSolider();
             dataBattleUnit.ID = ID;
             dataBattleUnit.BaseDamage = BaseDamage;
-            dataBattleUnit.CardID = CardID;
+            dataBattleUnit.CardIdx = CardIdx;
             dataBattleUnit.GridPosIdx = GridPosIdx;
             dataBattleUnit.UnitCamp = UnitCamp;
             dataBattleUnit.Links = new List<int>(Links);
@@ -805,7 +805,7 @@ namespace RoundHero
         public override int BuffCount(string buffStr)
         {
             var count = 0;
-            var drCard = CardManager.Instance.GetCardTable(CardID);
+            var drCard = CardManager.Instance.GetCardTable(CardIdx);
             foreach (var buffIDStr in drCard.BuffIDs)
             {
                 //var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
@@ -1668,7 +1668,7 @@ namespace RoundHero
             {
                 if (kv.Value is Data_BattleSolider solider)
                 {
-                    var card = BattleManager.Instance.GetCard(solider.CardID);
+                    var card = BattleManager.Instance.GetCard(solider.CardIdx);
                     if (card.CardID == cardID)
                     {
                         units.Add(kv.Value);

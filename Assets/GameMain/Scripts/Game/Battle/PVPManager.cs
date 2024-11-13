@@ -415,13 +415,13 @@ namespace RoundHero
                 return;
         }
 
-        public Data_Card GetCard(int cardID)
+        public Data_Card GetCard(int cardIdx)
         {
             foreach (var playerData in GamePlayManager.Instance.GamePlayData.PlayerDatas)
             {
                 foreach (var kv2 in playerData.CardDatas)
                 {
-                    if (kv2.Value.CardIdx == cardID)
+                    if (kv2.Value.CardIdx == cardIdx)
                         return kv2.Value;
                 }
             }

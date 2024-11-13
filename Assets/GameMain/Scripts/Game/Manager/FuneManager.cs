@@ -60,7 +60,7 @@ namespace RoundHero
 
             if (unit is Data_BattleSolider solider)
             {
-                var card = BattleManager.Instance.GetCard(solider.CardID);
+                var card = BattleManager.Instance.GetCard(solider.CardIdx);
                 foreach (var funeID in card.FuneIdxs)
                 {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                     FuneManager.Instance.KillTrigger(funeID, ownUnitID, actionUnitID,

@@ -108,6 +108,33 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取武器持有类型。
+        /// </summary>
+        public EWeaponHoldingType WeaponHoldingType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取武器类型。
+        /// </summary>
+        public EWeaponType WeaponType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取武器ID。
+        /// </summary>
+        public int WeaponID
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -128,6 +155,9 @@ namespace RoundHero
             HP = int.Parse(columnStrings[index++]);
 			MoveType = Enum.Parse<EActionType>(columnStrings[index++]);
             InitCard = bool.Parse(columnStrings[index++]);
+			WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(columnStrings[index++]);
+			WeaponType = Enum.Parse<EWeaponType>(columnStrings[index++]);
+            WeaponID = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -148,6 +178,9 @@ namespace RoundHero
                     HP = binaryReader.Read7BitEncodedInt32();
                     MoveType = Enum.Parse<EActionType>(binaryReader.ReadString());
                     InitCard = binaryReader.ReadBoolean();
+                    WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(binaryReader.ReadString());
+                    WeaponType = Enum.Parse<EWeaponType>(binaryReader.ReadString());
+                    WeaponID = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

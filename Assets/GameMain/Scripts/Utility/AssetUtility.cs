@@ -185,6 +185,12 @@ namespace RoundHero
             
         }
         
+        public static string GetBattleWeaponPrefab(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
+        {
+            return $"Assets/GameMain/Entities/Weapons/{weaponHoldingType}/{weaponType}/Weapon_{weaponID}.prefab";
+
+        }
+        
         public static string GetHeroIconName(int heroID)
         {
             return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Heros/{0}.png", heroID);

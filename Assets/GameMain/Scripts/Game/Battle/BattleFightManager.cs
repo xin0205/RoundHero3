@@ -326,7 +326,7 @@ namespace RoundHero
                 var soliderData = RoundFightData.TempTriggerData.UnitData as Data_BattleSolider;
                 if (soliderData != null)
                 {
-                    FuneManager.Instance.CacheUnitUseData(newUnitID, newUnitID, soliderData.CardID,
+                    FuneManager.Instance.CacheUnitUseData(newUnitID, newUnitID, soliderData.CardIdx,
                         BattleManager.Instance.CurUnitCamp,
                         RoundFightData.TempTriggerData.UnitData.GridPosIdx);
                 }
@@ -1927,9 +1927,8 @@ namespace RoundHero
 
                         var deltaHeart = fightHeroData.Attribute.GetAttribute(EHeroAttribute.CurHeart) -
                                          heroData.Attribute.GetAttribute(EHeroAttribute.CurHeart);
-
-                        if (fightHeroData.Attribute.GetAttribute(EHeroAttribute.CurHeart) <
-                            heroData.Attribute.GetAttribute(EHeroAttribute.CurHeart))
+                        
+                        if (deltaHeart < 0)
                         {
                             return -((fightHeroData.MaxHP - fightHeroData.CurHP) + heroData.CurHP);
                         }
@@ -3064,7 +3063,7 @@ namespace RoundHero
                             var actionUnit = GetUnitByID(triggerData.ActionUnitID);
                             if (actionUnit is Data_BattleSolider solider)
                             {
-                                BattleCardManager.Instance.ToHandCards(solider.CardID);
+                                BattleCardManager.Instance.ToHandCards(solider.CardIdx);
                             }
                             
                             break;

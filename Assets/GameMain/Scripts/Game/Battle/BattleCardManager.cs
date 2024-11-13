@@ -221,11 +221,11 @@ namespace RoundHero
             {
                 var drConsumeCardAcquireNewCard = GameEntry.DataTable.GetBless(EBlessID.ConsumeCardAddRandomCard);
                 var value0 = BattleBuffManager.Instance.GetBuffValue(drConsumeCardAcquireNewCard.Values1[0]);
-                var newCardIDs = AddRandomCard(value0);
-                for (int i = 0; i < newCardIDs.Count; i++)
+                var newCardIdxs = AddRandomCard(value0);
+                for (int i = 0; i < newCardIdxs.Count; i++)
                 {
-                    var newCardID = newCardIDs[i];
-                    GameUtility.DelayExcute(1f + 0.5f * i, () => { NewCardToHand(newCardID); });
+                    var newCardIdx = newCardIdxs[i];
+                    GameUtility.DelayExcute(1f + 0.5f * i, () => { NewCardToHand(newCardIdx); });
                 }
 
             }
@@ -325,11 +325,11 @@ namespace RoundHero
 
             for (int i = 0; i < randomStandByCards.Count; i++)
             {
-                var cardID = BattlePlayerData.StandByCards[randomStandByCards[i]];
-                BattlePlayerData.PassCards.Add(cardID);
-                BattlePlayerData.StandByCards.Remove(cardID);
+                var cardIdx = BattlePlayerData.StandByCards[randomStandByCards[i]];
+                BattlePlayerData.PassCards.Add(cardIdx);
+                BattlePlayerData.StandByCards.Remove(cardIdx);
 
-                var cardEntity = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
+                var cardEntity = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
                 cardEntity.ShowInStandByCard();
                 GameUtility.DelayExcute(0.5f + 0.5f * i, () => { cardEntity.ToPassCard(0.5f); });
 
@@ -681,9 +681,9 @@ namespace RoundHero
             return cardEnergy;
         }
 
-        public async void PassCardToHand(int cardID)
+        public async void PassCardToHand(int cardIdx)
         {
-            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
+            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
             CardEntities.Add(card.BattleCardEntityData.CardIdx, card);
             card.PassCardToHand(0.5f);
 
@@ -694,11 +694,11 @@ namespace RoundHero
             
         }
         
-        public async void NewCardToHand(int cardID)
+        public async void NewCardToHand(int cardIdx)
         {
-            BattlePlayerData.HandCards.Add(cardID);
+            BattlePlayerData.HandCards.Add(cardIdx);
             
-            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
+            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
             CardEntities.Add(card.BattleCardEntityData.CardIdx, card);
             card.NewCardToHand(0.5f);
 
@@ -708,22 +708,22 @@ namespace RoundHero
             });
         }
 
-        public async void NewCardToPass(int cardID)
+        public async void NewCardToPass(int cardIdx)
         {
-            BattlePlayerData.PassCards.Add(cardID);
+            BattlePlayerData.PassCards.Add(cardIdx);
             
-            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
+            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
             CardEntities.Add(card.BattleCardEntityData.CardIdx, card);
             card.NewCardToPass(0.5f);
 
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
         
-        public async void NewCardToStandBy(int cardID)
+        public async void NewCardToStandBy(int cardIdx)
         {
-            BattlePlayerData.StandByCards.Add(cardID);
+            BattlePlayerData.StandByCards.Add(cardIdx);
             
-            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
+            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
             CardEntities.Add(card.BattleCardEntityData.CardIdx, card);
             card.NewCardToStandBy(0.5f);
 
@@ -731,25 +731,25 @@ namespace RoundHero
             
         }
         
-        public async void ToHandCards(int cardID)
+        public async void ToHandCards(int cardIdx)
         {
-            if(BattlePlayerData.HandCards.Contains(cardID))
+            if(BattlePlayerData.HandCards.Contains(cardIdx))
                 return;
             
-            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
+            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
             CardEntities.Add(card.BattleCardEntityData.CardIdx, card);
             
             
-            if (BattlePlayerData.StandByCards.Contains(cardID))
+            if (BattlePlayerData.StandByCards.Contains(cardIdx))
             {
-                BattlePlayerData.StandByCards.Remove(cardID);
-                BattlePlayerData.HandCards.Add(cardID);
+                BattlePlayerData.StandByCards.Remove(cardIdx);
+                BattlePlayerData.HandCards.Add(cardIdx);
                 card.StandByCardToHand(0.5f);
             }
-            else if (BattlePlayerData.PassCards.Contains(cardID))
+            else if (BattlePlayerData.PassCards.Contains(cardIdx))
             {
-                BattlePlayerData.PassCards.Remove(cardID);
-                BattlePlayerData.HandCards.Add(cardID);
+                BattlePlayerData.PassCards.Remove(cardIdx);
+                BattlePlayerData.HandCards.Add(cardIdx);
                 card.PassCardToHand(0.5f);
             }
 
@@ -760,9 +760,9 @@ namespace RoundHero
             
         }
         
-        public async void StandByCardToHand(int cardID)
+        public async void StandByCardToHand(int cardIdx)
         {
-            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
+            var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
             CardEntities.Add(card.BattleCardEntityData.CardIdx, card);
             card.StandByCardToHand(0.5f);
 
@@ -773,7 +773,7 @@ namespace RoundHero
             
         }
 
-        public async void ConsumeCard(int cardID)
+        public async void ConsumeCard(int cardIdx)
         {
             var unComsumeCardCount = GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.UnConsumeCard, BattleManager.Instance.CurUnitCamp);
             var isConsume = true;
@@ -784,31 +784,31 @@ namespace RoundHero
 
             BattleCardEntity cardEntity = null;
             
-            if (BattlePlayerData.HandCards.Contains(cardID))
+            if (BattlePlayerData.HandCards.Contains(cardIdx))
             {
-                if (CardEntities.ContainsKey(cardID))
+                if (CardEntities.ContainsKey(cardIdx))
                 {
-                    cardEntity = CardEntities[cardID];
+                    cardEntity = CardEntities[cardIdx];
                     
-                    CardEntities.Remove(cardID);
+                    CardEntities.Remove(cardIdx);
                     ResetCardsPos(true);
                 }
                 
-                BattlePlayerData.HandCards.Remove(cardID);
+                BattlePlayerData.HandCards.Remove(cardIdx);
                 
             }
             else
             {
-                cardEntity = await GameEntry.Entity.ShowBattleCardEntityAsync(cardID);
-                if (BattlePlayerData.PassCards.Contains(cardID))
+                cardEntity = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
+                if (BattlePlayerData.PassCards.Contains(cardIdx))
                 {
                     cardEntity.ShowInPassCard();
-                    BattlePlayerData.PassCards.Remove(cardID);
+                    BattlePlayerData.PassCards.Remove(cardIdx);
                 }
-                else if (BattlePlayerData.StandByCards.Contains(cardID))
+                else if (BattlePlayerData.StandByCards.Contains(cardIdx))
                 {
                     cardEntity.ShowInStandByCard();
-                    BattlePlayerData.StandByCards.Remove(cardID);
+                    BattlePlayerData.StandByCards.Remove(cardIdx);
                 }
             }
             
@@ -816,13 +816,13 @@ namespace RoundHero
             
             if (isConsume)
             {
-                BattlePlayerData.ConsumeCards.Add(cardID);
+                BattlePlayerData.ConsumeCards.Add(cardIdx);
                 cardEntity.ToConsumeCard(0.5f);
                 
             }
             else
             {
-                BattlePlayerData.PassCards.Add(cardID);
+                BattlePlayerData.PassCards.Add(cardIdx);
                 cardEntity.ToPassCard(0.5f);
             }
 
@@ -903,8 +903,8 @@ namespace RoundHero
             {
                 var randomIdx = Random.Next(0, cardIDList.Count);
 
-                var tempID = AddTempNewCard(cardIDList[randomIdx]);
-                newCards.Add(tempID);
+                var tempCardIdx = AddTempNewCard(cardIDList[randomIdx]);
+                newCards.Add(tempCardIdx);
                 cardIDList.RemoveAt(randomIdx);
             }
 

@@ -353,7 +353,7 @@ namespace RoundHero
             var hp = drCard.HP + card.FuneCount(EBuffID.Spec_AddMaxHP);
             
             if (BattleManager.Instance.TempTriggerData.UnitData is Data_BattleSolider solider &&
-                solider.CardID == cardID)
+                solider.CardIdx == cardID)
             {
                 hp = BattleManager.Instance.TempTriggerData.UnitData.MaxHP;
             }

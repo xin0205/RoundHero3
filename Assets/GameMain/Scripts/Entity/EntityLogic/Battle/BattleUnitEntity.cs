@@ -10,7 +10,6 @@ namespace RoundHero
 {
     public class BattleUnitEntity : Entity, IMoveGrid
     {
-        [SerializeField] protected Animator Animator;
         [SerializeField] protected Transform roleRoot;
         [SerializeField] protected TextMesh hp;
         [SerializeField] protected TextMesh damage;
@@ -19,7 +18,9 @@ namespace RoundHero
         
         protected Quaternion cameraQuaternion = Quaternion.identity;
         [SerializeField] protected Animator animator;
-        
+        [SerializeField] protected Transform leftWeapon;
+        [SerializeField] protected Transform rightWeapon;
+
         protected Data_BattleUnit BattleUnitData { get; set; }
         protected bool IsMove = false;
         
@@ -77,7 +78,7 @@ namespace RoundHero
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
-            TopLayerIdx = Animator.GetLayerIndex("TopLayer");
+            TopLayerIdx = animator.GetLayerIndex("TopLayer");
             
             // var idleName = EUnitActionState.RunAttack.ToString();
             //
@@ -200,10 +201,29 @@ namespace RoundHero
 
         }
 
+        public void WeaponSwitch()
+        {
+            
+        }
         
+        public void Hit()
+        {
+            
+        }
+        
+        public void FootL()
+        {
+            
+        }
+        
+        public void FootR()
+        {
+            
+        }
         
         public void Idle()
         {
+            animator.SetBool(AnimationParameters.Moving, false);
             animator.SetFloat(AnimationParameters.VelocityZ, 0);
             //SetAction(EUnitActionState.Idle);
         }
@@ -292,6 +312,7 @@ namespace RoundHero
 
         private void Run()
         {
+            animator.SetBool(AnimationParameters.Moving, true);
             animator.SetFloat(AnimationParameters.VelocityZ, 1);
         }
         

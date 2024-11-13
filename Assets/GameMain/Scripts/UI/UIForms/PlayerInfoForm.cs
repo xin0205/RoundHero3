@@ -63,12 +63,12 @@ namespace RoundHero
         {
             coinText.text = BattlePlayerManager.Instance.PlayerData.Coin.ToString();
             hpText.text = BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" + BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
-            var drHero = GameEntry.DataTable.GetHero(BattlePlayerManager.Instance.PlayerData.BattleHero.HeroID);
-            heroIcon.sprite = await AssetUtility.GetHeroIcon(drHero.Id);
+            var battleHeroData = BattlePlayerManager.Instance.PlayerData.BattleHero;
+            heroIcon.sprite = await AssetUtility.GetHeroIcon(battleHeroData.ID);
             
             for (int i = 0; i < heroHPs.Count; i++)
             {
-                if (i < drHero.Heart)
+                if (i < battleHeroData.CurHeart)
                 {
                     heroHPs[i].SetActive(true);
                 }

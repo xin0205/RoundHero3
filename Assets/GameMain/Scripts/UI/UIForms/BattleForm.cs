@@ -138,7 +138,7 @@ namespace RoundHero
                 if(fightSoliderData == null)
                     return;
 
-                var card = BattleManager.Instance.GetCard(solider.BattleSoliderEntityData.BattleSoliderData.CardID);
+                var card = BattleManager.Instance.GetCard(solider.BattleSoliderEntityData.BattleSoliderData.CardIdx);
 
                 var name = "";
                 var desc = "";

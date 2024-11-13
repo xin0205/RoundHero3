@@ -1,6 +1,31 @@
 ﻿
 namespace RoundHero
 {
+    public enum EWeaponHoldingType
+    {
+        TwoHand,
+        Left,
+        Right,
+        Empty,
+    }
+    
+    public enum EWeaponType
+    {
+        Sword,
+        Spear,
+        Axe,
+        Bow,
+        Crossbow,
+        Staff,
+        Shield,
+        Mace,
+        Dagger,
+        Item,
+        Pistol,
+        Rifle,
+        Empty,
+    }
+    
     public enum EHeroAttribute
     {
         CurHeart,

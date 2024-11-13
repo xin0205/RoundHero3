@@ -336,7 +336,7 @@ namespace RoundHero
         {
             if (battleUnit is Data_BattleSolider soliderData)
             {
-                return CardManager.Instance.GetBuffData(soliderData.CardID);
+                return CardManager.Instance.GetBuffData(soliderData.CardIdx);
             }
             else if (battleUnit is Data_BattleMonster monsterData)
             {
@@ -454,8 +454,8 @@ namespace RoundHero
 
             if (unit is Data_BattleSolider solider)
             {
-                buffDatas = CardManager.Instance.GetBuffData(solider.CardID);
-                valueList = CardManager.Instance.GetBuffValues(solider.CardID);
+                buffDatas = CardManager.Instance.GetBuffData(solider.CardIdx);
+                valueList = CardManager.Instance.GetBuffValues(solider.CardIdx);
             }
             else if (unit is Data_BattleMonster monster)
             {
@@ -511,7 +511,7 @@ namespace RoundHero
             {
                 if (kv.Value is Data_BattleSolider solider)
                 {
-                    var soliderDrCard = CardManager.Instance.GetCardTable(solider.CardID);
+                    var soliderDrCard = CardManager.Instance.GetCardTable(solider.CardIdx);
                     var drCard = CardManager.Instance.GetCardTable(cardID);
                     
                     return soliderDrCard?.Id == drCard?.Id;
@@ -546,7 +546,7 @@ namespace RoundHero
             var unit = GetUnitByID(unitID);
             if (unit is BattleSoliderEntity soliderEntity)
             {
-                var cardTable = CardManager.Instance.GetCardTable(soliderEntity.BattleSoliderEntityData.BattleSoliderData.CardID);
+                var cardTable = CardManager.Instance.GetCardTable(soliderEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                 return cardTable.MoveType;
             }
             else if (unit is BattleMonsterEntity monsterEntity)

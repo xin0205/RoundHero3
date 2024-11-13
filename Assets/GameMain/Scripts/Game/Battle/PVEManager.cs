@@ -19,7 +19,7 @@ namespace RoundHero
 
         public void UseCard(int cardID, int posIdx);
 
-        public Data_Card GetCard(int cardID);
+        public Data_Card GetCard(int cardIdx);
 
         public Data_EnergyBuff GetEnergyBuff(EUnitCamp unitCamp, int heart, int hp);
 
@@ -296,9 +296,9 @@ namespace RoundHero
                 return;
         }
         
-        public Data_Card GetCard(int cardID)
+        public Data_Card GetCard(int cardIdx)
         {
-            return CardManager.Instance.GetCard(cardID);
+            return CardManager.Instance.GetCard(cardIdx);
 
         }
         
