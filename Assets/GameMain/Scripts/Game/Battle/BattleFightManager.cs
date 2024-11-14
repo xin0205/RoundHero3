@@ -1748,7 +1748,7 @@ namespace RoundHero
             foreach (var unitDisplacementResult in unitDisplacementResults)
             {
                 var buffTriggerType = unitDisplacementResult.BuffTriggerType;
-                var unit = GameUtility.GetUnitByID(unitDisplacementResult.TriggerUnitID);
+                var unit = GameUtility.GetUnitDataByID(unitDisplacementResult.TriggerUnitID);
 
                 BattleUnitManager.Instance.GetBuffValue(RoundFightData.GamePlayData, unit,
                     out List<BuffValue> triggerBuffDatas);
@@ -1889,8 +1889,8 @@ namespace RoundHero
 
         public int GetTotalDelta(int unitID, EHeroAttribute heroAttribute)
         {
-            var fightUnitData = GameUtility.GetUnitByID(unitID, true);
-            var unitData = GameUtility.GetUnitByID(unitID, false);
+            var fightUnitData = GameUtility.GetUnitDataByID(unitID, true);
+            var unitData = GameUtility.GetUnitDataByID(unitID, false);
 
             if (fightUnitData == null)
                 return 0;
@@ -2820,7 +2820,7 @@ namespace RoundHero
         public TriggerData Unit_State(List<TriggerData> triggerDatas, int triggerSoliderID, int actionSoliderID, int effectUnitID,
             EUnitState unitState, float attributeValue, ETriggerDataType triggerDataType)
         {
-            var effectUnit = GameUtility.GetUnitByID(effectUnitID);
+            var effectUnit = GameUtility.GetUnitDataByID(effectUnitID);
             if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(unitState))
             {
                 if (BattleCurseManager.Instance.CurseIDs.Contains(ECurseID.AddDebuffRecoverHP))
@@ -3521,7 +3521,7 @@ namespace RoundHero
             {
                 foreach (var triggerData in kv.Value)
                 {
-                    var effectUnit = GameUtility.GetUnitByID(triggerData.EffectUnitID);
+                    var effectUnit = GameUtility.GetUnitDataByID(triggerData.EffectUnitID);
                     if(effectUnit == null)
                         continue;
 
@@ -3540,7 +3540,7 @@ namespace RoundHero
                     if (!(triggerData.BattleUnitAttribute == EUnitAttribute.HP && triggerValue < 0))
                         continue;
 
-                    var unit = GameUtility.GetUnitByID(triggerData.EffectUnitID, true);
+                    var unit = GameUtility.GetUnitDataByID(triggerData.EffectUnitID, true);
                     if(unit == null)
                         continue;
                     
@@ -3747,7 +3747,7 @@ namespace RoundHero
                     {
                         if (actionUnit.ID == moveUnitID)
                         {
-                            actionUnit.RunAttack();
+                            actionUnit.Attack();
                         }
                         else
                         {

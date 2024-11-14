@@ -407,6 +407,7 @@ namespace RoundHero
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
+                    ShowBackupGrids(null);
                     BattleManager.Instance.TempTriggerData.UnitData = null;
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
                     BattleManager.Instance.TempTriggerData.CardEffectUnitID = -1;
@@ -1854,15 +1855,16 @@ namespace RoundHero
                 if (attackRanges.Contains(ne.GridPosIdx))
                 {
                     ShowBackupGrids(null);
-
-                    var unit = GameUtility.GetUnitByID(BattleManager.Instance.TempTriggerData.UnitData.ID, false);
-                    if (unit != null)
+                    
+                    var unitData = GameUtility.GetUnitDataByID(BattleManager.Instance.TempTriggerData.UnitData.ID, false);
+                    if (unitData != null)
                     {
                         //unit.UnitState.RemoveState(EUnitState.ActiveAttack);
                     }
                     
                     BattleFightManager.Instance.SoliderActiveAttack();
-                        
+                    BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unitData.ID);
+                    unitData.RoundAttackTimes += 1;
                     //BattleManager.Instance.Refresh();
                     BattleEnemyManager.Instance.UnShowEnemyRoutes();
 
@@ -1870,8 +1872,9 @@ namespace RoundHero
                     // BattleUnitManager.Instance.TempUnitData.TriggerType = ETempUnitType.Null;
                     //BattleUnitManager.Instance.TempUnitData.UnitData = null;
                     BattleManager.Instance.BattleState = EBattleState.UseCard;
+                    
                     //BattleManager.Instance.TempTriggerData.UnitData.RemoveState(EUnitState.ActiveAtk);
-     
+                   
                 }
                 
        

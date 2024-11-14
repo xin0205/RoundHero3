@@ -112,7 +112,7 @@ namespace RoundHero
             int effectUnitID, TriggerData preTriggerData, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
-            var actionUnit = GameUtility.GetUnitByID(actionUnitID);
+            var actionUnit = GameUtility.GetUnitDataByID(actionUnitID);
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
             //     !GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData, ECardID.RoundDeBuffUnEffect))
             // {
@@ -136,7 +136,7 @@ namespace RoundHero
             {
                 foreach (var realEffectUnitID in realEffectUnitIDs)
                 {
-                    var realEffectUnit = GameUtility.GetUnitByID(realEffectUnitID);
+                    var realEffectUnit = GameUtility.GetUnitDataByID(realEffectUnitID);
                     switch (buffvalueType)
                     {
                         case EBuffValueType.Hero:
@@ -235,14 +235,14 @@ namespace RoundHero
 
         public void CacheTriggerData(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
-            var actionUnit = GameUtility.GetUnitByID(triggerData.ActionUnitID);
+            var actionUnit = GameUtility.GetUnitDataByID(triggerData.ActionUnitID);
             
             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                 triggerData.Value + triggerData.DeltaValue < 0)
             {
                 triggerData.Value += actionUnit == null ? 0 : actionUnit.BaseDamage;
 
-                var effectUnit = GameUtility.GetUnitByID(triggerData.EffectUnitID);
+                var effectUnit = GameUtility.GetUnitDataByID(triggerData.EffectUnitID);
                 //effectUnit.GetAllStateCount(EUnitState.Dodge) <= 0 || 
                 if (effectUnit.GetAllStateCount(EUnitState.UnHurt) <= 0)
                 {
@@ -497,14 +497,14 @@ namespace RoundHero
             
             foreach (var unitDisplacementData in unitDisplacementDatas)
             {
-                var actionUnit = GameUtility.GetUnitByID(unitDisplacementData.ActionUnitID, true);
+                var actionUnit = GameUtility.GetUnitDataByID(unitDisplacementData.ActionUnitID, true);
                 actionUnit.GridPosIdx = unitDisplacementData.PreGridPosIdx;
             }
             var preUnitRanges = RecordUnitRange(gamePlayData);
             
             foreach (var unitDisplacementData in unitDisplacementDatas)
             {
-                var actionUnit = GameUtility.GetUnitByID(unitDisplacementData.ActionUnitID, true);
+                var actionUnit = GameUtility.GetUnitDataByID(unitDisplacementData.ActionUnitID, true);
                 actionUnit.GridPosIdx = unitDisplacementData.CurGridPosIdx;
             }
             var curUnitRanges = RecordUnitRange(gamePlayData);
@@ -529,7 +529,7 @@ namespace RoundHero
                 var preUnitRangeOwn = preUnitRange.Except(curUnitRange).ToList();
                 foreach (var leaveUnitID in preUnitRangeOwn)
                 {
-                    var leaveUnit = GameUtility.GetUnitByID(leaveUnitID, true);
+                    var leaveUnit = GameUtility.GetUnitDataByID(leaveUnitID, true);
                     
                     foreach (var triggerBuffData in unitTriggerBuffDatas)
                     {
@@ -561,7 +561,7 @@ namespace RoundHero
                 var curUnitRangeOwn = curUnitRange.Except(preUnitRange).ToList();
                 foreach (var enterUnitID in curUnitRangeOwn)
                 {
-                    var enterUnit = GameUtility.GetUnitByID(enterUnitID, true);
+                    var enterUnit = GameUtility.GetUnitDataByID(enterUnitID, true);
                     foreach (var triggerBuffData in unitTriggerBuffDatas)
                     {
                         var buffData = triggerBuffData.BuffData;

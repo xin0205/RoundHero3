@@ -330,7 +330,7 @@ namespace RoundHero
 
             return unit;
         }
-        public static Data_BattleUnit GetUnitByID(int unitID, bool isBattleData = true)
+        public static Data_BattleUnit GetUnitDataByID(int unitID, bool isBattleData = true)
         {
             // if (cachePosToUnits.ContainsKey(gridPosIdx))
             //     return cachePosToUnits[gridPosIdx];

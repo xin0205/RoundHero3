@@ -137,6 +137,172 @@ namespace RoundHero
         {
             base.OnShow(userData);
             IsMove = false;
+            
+            
+        }
+        
+         protected void InitWeaponType(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
+        {
+            animator.SetBool(AnimationParameters.Moving, false);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.WeaponUnsheathTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            
+            switch (weaponHoldingType)
+            {
+                case EWeaponHoldingType.TwoHand:
+                    switch (weaponType)
+                    {
+                        case EWeaponType.Sword:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandSword);
+                            break;
+                        case EWeaponType.Spear:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandSpear);
+                            break;
+                        case EWeaponType.Axe:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandAxe);
+                            break;
+                        case EWeaponType.Bow:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandBow);
+                            break;
+                        case EWeaponType.Crossbow:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandCrossbow);
+                            break;
+                        case EWeaponType.Staff:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandStaff);
+                            break;
+                        // case EWeaponType.Mace:
+                        //     break;
+                        // case EWeaponType.Dagger:
+                        //     break;
+                        // case EWeaponType.Item:
+                        //     break;
+                        // case EWeaponType.Pistol:
+                        //     break;
+                        // case EWeaponType.Shield:
+                        //     break;
+                        // case EWeaponType.Rifle:
+                        //     break;
+                        // case EWeaponType.Empty:
+                        //     break;
+                        default:
+                            break;
+                    }
+                    
+                    
+                    break;
+                case EWeaponHoldingType.Left:
+                    switch (weaponType)
+                    {
+                        case EWeaponType.Sword:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftSword);
+                            break;
+                        case EWeaponType.Mace:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftMace);
+                            break;
+                        case EWeaponType.Dagger:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftDagger);
+                            break;
+                        case EWeaponType.Item:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftItem);
+                            break;
+                        case EWeaponType.Pistol:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftPistol);
+                            break;
+                        // case EWeaponType.Spear:
+                        //     break;
+                        // case EWeaponType.Axe:
+                        //     break;
+                        // case EWeaponType.Bow:
+                        //     break;
+                        // case EWeaponType.Crossbow:
+                        //     break;
+                        // case EWeaponType.Staff:
+                        //     break;
+                        // case EWeaponType.Shield:
+                        //     break;
+                        //
+                        // case EWeaponType.Rifle:
+                        //     break;
+                        // case EWeaponType.Empty:
+                        //     break;
+                        default:
+                            break;
+                    }
+                    break;
+                case EWeaponHoldingType.Right:
+                    switch (weaponType)
+                    {
+                        case EWeaponType.Sword:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightSword);
+                            break;
+                        case EWeaponType.Spear:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightSpear);
+                            break;
+                        case EWeaponType.Mace:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightMace);
+                            break;
+                        case EWeaponType.Dagger:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightDagger);
+                            break;
+                        case EWeaponType.Item:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightItem);
+                            break;
+                        case EWeaponType.Pistol:
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightPistol);
+                            break;
+                        // case EWeaponType.Axe:
+                        //     break;
+                        // case EWeaponType.Bow:
+                        //     break;
+                        // case EWeaponType.Crossbow:
+                        //     break;
+                        // case EWeaponType.Staff:
+                        //     break;
+                        // case EWeaponType.Shield:
+                        //     break;
+                        // case EWeaponType.Rifle:
+                        //     break;
+                        // case EWeaponType.Empty:
+                        //     break;
+                        default:
+                            break;
+                    }
+                    
+                    break;
+                case EWeaponHoldingType.Empty:
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+
+        protected async void AttachWeapon(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
+        {
+
+            var weaponEntity = await GameEntry.Entity.ShowWeaponEntityAsync(weaponHoldingType, weaponType, weaponID);
+
+            switch (weaponHoldingType)
+            {
+                case EWeaponHoldingType.TwoHand:
+                    GameEntry.Entity.AttachEntity(weaponEntity.Entity, this.Entity, rightWeapon);
+                    break;
+                case EWeaponHoldingType.Left:
+                    GameEntry.Entity.AttachEntity(weaponEntity.Entity, this.Entity, leftWeapon);
+                    break;
+                case EWeaponHoldingType.Right:
+                    GameEntry.Entity.AttachEntity(weaponEntity.Entity, this.Entity, rightWeapon);
+                    break;
+                case EWeaponHoldingType.Empty:
+                    break;
+                default:
+                    break;
+            }
+            
+            weaponEntity.transform.localPosition = Vector3.zero;
+            weaponEntity.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            
+            
         }
 
         protected void ShowInit()
@@ -326,12 +492,14 @@ namespace RoundHero
         
         public void RunAttack()
         {
-            
-            SetAction(EUnitActionState.RunAttack);
-            GameUtility.DelayExcute(0.8f, () =>
-            {
-                AfterRunAction();
-            });
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, 1);
+            // SetAction(EUnitActionState.RunAttack);
+            // GameUtility.DelayExcute(0.8f, () =>
+            // {
+            //     AfterRunAction();
+            // });
         }
         
         public void RunHurt()
