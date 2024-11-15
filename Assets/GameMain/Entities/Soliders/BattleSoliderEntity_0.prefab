@@ -87,7 +87,6 @@ MonoBehaviour:
   hp: {fileID: 2741339457671713794}
   damage: {fileID: 6959348961771500532}
   uiNode: {fileID: 175087306450733963}
-  Controller: {fileID: 0}
   animator: {fileID: 4525250011595830683}
   leftWeapon: {fileID: 4173331263707445510}
   rightWeapon: {fileID: 8682693444565856127}
@@ -101,7 +100,7 @@ Animator:
   m_GameObject: {fileID: 3234534928620479827}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: f510ac33d25a7234dbd84ea8a7ffde53, type: 3}
-  m_Controller: {fileID: 9100000, guid: f7dd3165ce175ee44a3097f7ff3d81e0, type: 2}
+  m_Controller: {fileID: 9100000, guid: 95552f4b680cb084abb6076a036ba036, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

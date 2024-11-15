@@ -173,7 +173,7 @@ namespace RoundHero
             
             for (int i = 0; i < Constant.Enemy.EachTurnGenerateEnemyCounts[BattleManager.Instance.BattleData.EnemyType]; i++)
             {
-                var randomEnemyType = Random.Next(0, 3);
+                var randomEnemyType = 0;//Random.Next(0, 3);
                 var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(0, randomEnemyType,  places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
 
                 BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ID);

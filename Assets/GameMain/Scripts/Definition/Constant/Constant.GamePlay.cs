@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace RoundHero
 {
+    // public class UnitActionType
+    // {
+    //     public 
+    // }
+    
     public static partial class Constant
     {
         public static class Area
@@ -896,9 +901,11 @@ namespace RoundHero
             public static Dictionary<EUnitActionState, float> MoveTimes = new Dictionary<EUnitActionState, float>()
             {
                 [EUnitActionState.Run] = 0.7f,
-                [EUnitActionState.Fly] = 0.7f,
+                [EUnitActionState.Fly] = 0.4f,
 
             };
+            
+            
         }
 
         public static class Enemy

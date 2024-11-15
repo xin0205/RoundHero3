@@ -14,7 +14,7 @@ namespace RoundHero
         [SerializeField] protected TextMesh hp;
         [SerializeField] protected TextMesh damage;
         [SerializeField] protected GameObject uiNode;
-        [SerializeField] protected RPGCharacterController Controller;
+        //[SerializeField] protected RPGCharacterController Controller;
         
         protected Quaternion cameraQuaternion = Quaternion.identity;
         [SerializeField] protected Animator animator;
@@ -71,14 +71,14 @@ namespace RoundHero
             get => BattleUnitData.MaxHP;
         }
         
-        public EUnitActionState UnitActionState { get; set; }
+        //public EUnitActionState UnitActionState { get; set; }
 
-        protected int TopLayerIdx;
+        //protected int TopLayerIdx;
 
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
-            TopLayerIdx = animator.GetLayerIndex("TopLayer");
+            //TopLayerIdx = animator.GetLayerIndex("TopLayer");
             
             // var idleName = EUnitActionState.RunAttack.ToString();
             //
@@ -101,37 +101,37 @@ namespace RoundHero
 
         }
 
-        public void AfterRunAction()
-        {
-            Log.Debug("AfterRunAction");
-            //Animator.SetTrigger(EUnitActionState.Run.ToString());
-            if (IsMove)
-            {
-                SetAction(EUnitActionState.Run);
-            }
-            else
-            {
-                SetAction(EUnitActionState.Idle);
-            }
-        }
+        // public void AfterRunAction()
+        // {
+        //     Log.Debug("AfterRunAction");
+        //     //Animator.SetTrigger(EUnitActionState.Run.ToString());
+        //     if (IsMove)
+        //     {
+        //         SetAction(EUnitActionState.Run);
+        //     }
+        //     else
+        //     {
+        //         SetAction(EUnitActionState.Idle);
+        //     }
+        // }
         
 
-        public void AnimatorSetLayerWeight()
-        {
-            if (UnitActionState == EUnitActionState.RunAttack || UnitActionState == EUnitActionState.RunHurt)
-            {
-                //Animator.speed = 0.5f;
-                //Animator.SetLayerWeight(TopLayerIdx, 1);
-                //Animator.SetLayerWeight(BaseLayerIdx, 0);
-            }
-            else
-            {
-                //Animator.speed = 1f;
-                // Animator.SetLayerWeight(BaseLayerIdx, 1);
-                //Animator.SetLayerWeight(TopLayerIdx, 0);
-            }
-
-        }
+        // public void AnimatorSetLayerWeight()
+        // {
+        //     if (UnitActionState == EUnitActionState.RunAttack || UnitActionState == EUnitActionState.RunHurt)
+        //     {
+        //         //Animator.speed = 0.5f;
+        //         //Animator.SetLayerWeight(TopLayerIdx, 1);
+        //         //Animator.SetLayerWeight(BaseLayerIdx, 0);
+        //     }
+        //     else
+        //     {
+        //         //Animator.speed = 1f;
+        //         // Animator.SetLayerWeight(BaseLayerIdx, 1);
+        //         //Animator.SetLayerWeight(TopLayerIdx, 0);
+        //     }
+        //
+        // }
 
         protected override void OnShow(object userData)
         {
@@ -324,48 +324,48 @@ namespace RoundHero
             
         }
         
-        public void SetAction(EUnitActionState actionState)
-        {
-            // if (actionState == EUnitActionState.Hurt)
-            // {
-            //     if (UnitActionState == EUnitActionState.Run)
-            //     {
-            //         actionState = EUnitActionState.RunHurt;
-            //     }
-            //     else
-            //     {
-            //         actionState = EUnitActionState.Hurt;
-            //     }
-            // }
-            //
-            // if (actionState == EUnitActionState.Attack)
-            // {
-            //     if (UnitActionState == EUnitActionState.Run)
-            //     {
-            //         actionState = EUnitActionState.RunAttack;
-            //     }
-            //     else
-            //     {
-            //         actionState = EUnitActionState.Attack;
-            //     }
-            // }
-            
-            UnitActionState = actionState;
-            if (UnitActionState == EUnitActionState.Attack)
-            {
-                Controller.StartAction(HandlerTypes.Attack, new AttackContext(HandlerTypes.Attack, Side.Left));
-            }
-            
-            //AnimatorSetLayerWeight();
-
-            // if (BattleUnitData is Data_BattleMonster)
-            // {
-            //     //Log.Debug("act:" + actionState.ToString());
-            // }
-  
-            //Animator.SetTrigger(actionState.ToString());
-
-        }
+        // public void SetAction(EUnitActionState actionState)
+        // {
+        //     // if (actionState == EUnitActionState.Hurt)
+        //     // {
+        //     //     if (UnitActionState == EUnitActionState.Run)
+        //     //     {
+        //     //         actionState = EUnitActionState.RunHurt;
+        //     //     }
+        //     //     else
+        //     //     {
+        //     //         actionState = EUnitActionState.Hurt;
+        //     //     }
+        //     // }
+        //     //
+        //     // if (actionState == EUnitActionState.Attack)
+        //     // {
+        //     //     if (UnitActionState == EUnitActionState.Run)
+        //     //     {
+        //     //         actionState = EUnitActionState.RunAttack;
+        //     //     }
+        //     //     else
+        //     //     {
+        //     //         actionState = EUnitActionState.Attack;
+        //     //     }
+        //     // }
+        //     
+        //     //UnitActionState = actionState;
+        //     // if (UnitActionState == EUnitActionState.Attack)
+        //     // {
+        //     //     Controller.StartAction(HandlerTypes.Attack, new AttackContext(HandlerTypes.Attack, Side.Left));
+        //     // }
+        //     
+        //     //AnimatorSetLayerWeight();
+        //
+        //     // if (BattleUnitData is Data_BattleMonster)
+        //     // {
+        //     //     //Log.Debug("act:" + actionState.ToString());
+        //     // }
+        //
+        //     //Animator.SetTrigger(actionState.ToString());
+        //
+        // }
 
         public void WeaponSwitch()
         {
@@ -390,19 +390,24 @@ namespace RoundHero
         public void Idle()
         {
             animator.SetBool(AnimationParameters.Moving, false);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            
             animator.SetFloat(AnimationParameters.VelocityZ, 0);
             //SetAction(EUnitActionState.Idle);
         }
         
         public void Dodge()
         {
-            SetAction(EUnitActionState.Dodge);
+            animator.SetInteger(AnimationParameters.Action, (int)DodgeType.Left);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.DodgeTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            //SetAction(EUnitActionState.Dodge);
         }
 
         public float Move(EUnitActionState unitActionState, MoveActionData moveActionData)
         {
             IsMove = true;
-            SetAction(unitActionState);
+            //SetAction(unitActionState);
 
             var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
             for (int i = 0; i < moveGridPosIdxs.Count; i++)
@@ -431,8 +436,16 @@ namespace RoundHero
                     
                     if (BattleUnitData.CurHP > 0)
                     {
+                        if (unitActionState == EUnitActionState.Fly)
+                        {
+                            Fly();
+                        }
+                        else
+                        {
+                            Run();
+                        }
                         //Controller.StartAction(HandlerTypes.Navigation, movePos);
-                        Run();
+                        
                         transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
                         {
                             GridPosIdx = nextMoveGridPosIdx;
@@ -453,6 +466,7 @@ namespace RoundHero
                 BattleUnitData.RoundMoveCount += moveCount;
                 if (BattleUnitData.CurHP > 0)
                 {
+                    animator.SetInteger(AnimationParameters.Jumping, -1);
                     Idle();
                     var pos = HeroManager.Instance.HeroEntity.Position;
                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
@@ -475,6 +489,13 @@ namespace RoundHero
             return Move(EUnitActionState.Fly, moveActionData);
 
         }
+        
+        public void Fly()
+        {
+            animator.SetInteger(AnimationParameters.Jumping, 2);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.JumpTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+        }
 
         private void Run()
         {
@@ -487,14 +508,14 @@ namespace RoundHero
             //SetAction(EUnitActionState.Attack);
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
-            animator.SetInteger(AnimationParameters.Action, 1);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
         }
         
         public void RunAttack()
         {
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
-            animator.SetInteger(AnimationParameters.Action, 1);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
             // SetAction(EUnitActionState.RunAttack);
             // GameUtility.DelayExcute(0.8f, () =>
             // {
@@ -502,15 +523,15 @@ namespace RoundHero
             // });
         }
         
-        public void RunHurt()
-        {
-            
-            SetAction(EUnitActionState.RunHurt);
-            GameUtility.DelayExcute(1.2f, () =>
-            {
-                AfterRunAction();
-            });
-        }
+        // public void RunHurt()
+        // {
+        //     
+        //     // SetAction(EUnitActionState.RunHurt);
+        //     // GameUtility.DelayExcute(1.2f, () =>
+        //     // {
+        //     //     AfterRunAction();
+        //     // });
+        // }
         
         public void RefreshData()
         {
@@ -535,7 +556,7 @@ namespace RoundHero
         
         public virtual void Quit()
         {
-            SetAction(EUnitActionState.Quit);
+            // SetAction(EUnitActionState.Quit);
             GameUtility.DelayExcute(1.5f, () =>
             {
                 GameEntry.Entity.HideEntity(this);
@@ -544,7 +565,11 @@ namespace RoundHero
         
         public virtual void Dead()
         {
-            SetAction(EUnitActionState.Dead);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.DeathTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            
+            
+            //SetAction(EUnitActionState.Dead);
             GameUtility.DelayExcute(1.5f, () =>
             {
                 GameEntry.Entity.HideEntity(this);
@@ -564,30 +589,39 @@ namespace RoundHero
 
         public void Hurt()
         {
-            if (UnitActionState == EUnitActionState.Run)
-            {
-                RunHurt();
-            }
-            else
-            {
-                SetAction(EUnitActionState.Hurt);
-            }
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.GetHitTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)HitType.Back1);
+            
+            // if (UnitActionState == EUnitActionState.Run)
+            // {
+            //     RunHurt();
+            // }
+            // else
+            // {
+            //     SetAction(EUnitActionState.Hurt);
+            // }
+            
+            
 
-            if (CurHP == 0)
-            {
-                CurHP = -1;
-                GameUtility.DelayExcute(1.5f, () =>
-                {
-                    Dead();
-                });
-               
-            }
+            // if (CurHP == 0)
+            // {
+            //     CurHP = -1;
+            //     GameUtility.DelayExcute(1.5f, () =>
+            //     {
+            //         Dead();
+            //     });
+            //    
+            // }
             
         }
         
         public void Recover()
         {
-            SetAction(EUnitActionState.Recover);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.ActionTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)EmoteType.Boost);
+            //SetAction(EUnitActionState.Recover);
         }
         
         public virtual void ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly)

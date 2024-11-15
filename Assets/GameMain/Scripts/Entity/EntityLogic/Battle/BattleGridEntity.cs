@@ -1,5 +1,6 @@
 ﻿
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
@@ -72,7 +73,11 @@ namespace RoundHero
         
         public void OnPointerClick(BaseEventData baseEventData)
         {
-            GameEntry.Event.Fire(null, ClickGridEventArgs.Create(BattleGridEntityData.GridPosIdx)); 
+            if (Input.GetMouseButtonUp(0))
+            {
+                GameEntry.Event.Fire(null, ClickGridEventArgs.Create(BattleGridEntityData.GridPosIdx)); 
+            }
+            
         }
     }
 }

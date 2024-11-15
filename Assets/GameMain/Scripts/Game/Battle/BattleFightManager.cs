@@ -807,6 +807,8 @@ namespace RoundHero
             
             var actionUnit = GetUnitByID(actionUnitID);
             var effectUnit = GetUnitByGridPosIdx(effectGridPosIdx);
+            if(effectUnit == null)
+                return;
             var relativeCamp = GameUtility.GetRelativeCamp(actionUnit.UnitCamp, effectUnit.UnitCamp);
             if(!buffData.TriggerUnitCamps.Contains(relativeCamp))
                 return;
@@ -3967,7 +3969,10 @@ namespace RoundHero
                 var gridPosIdx =
                     GameUtility.GridCoordToPosIdx(targetCoord);
                 
-                
+                if (BattleManager.Instance.BattleData.GridTypes[gridPosIdx] == EGridType.Obstacle)
+                {
+                    break;
+                }
                 
                 flyPosIdxs.Add(gridPosIdx);
 
@@ -3979,10 +3984,7 @@ namespace RoundHero
                     break;
                 }
                 
-                if (BattleManager.Instance.BattleData.GridTypes[gridPosIdx] != EGridType.Empty)
-                {
-                    break;
-                }
+                
                 
                 var gridProp = RoundFightData.GamePlayData.BattleData.Contain(EGridPropID.MoveDirect, gridPosIdx);
                 if (gridProp != null && !MoveDirectPropUseDict[gridProp.ID].UseInRound)
