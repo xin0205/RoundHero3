@@ -434,7 +434,7 @@ namespace RoundHero
         public void SetSortingOrder(int sortingOrder, bool force = false)
         {
             //this.canvas.overrideSorting = true;
-            // this.canvas.sortingOrder = sortingOrder;
+            this.canvas.sortingOrder = sortingOrder;
             // this.sortingOrder = sortingOrder;
             // if (!isShow || force)
             // {

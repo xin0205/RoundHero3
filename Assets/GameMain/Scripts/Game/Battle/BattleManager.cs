@@ -33,6 +33,7 @@ namespace RoundHero
             
             BattleSoliderManager.Instance.Init(Random.Next());
             BattleThirdUnitManager.Instance.Init(Random.Next());
+            BattleEnemyManager.Instance.Init(Random.Next());
             
             BattleGridPropManager.Instance.Init(Random.Next());
             BattleBuffManager.Instance.Init(Random.Next());
@@ -43,6 +44,7 @@ namespace RoundHero
             BattleAreaManager.Instance.Init(Random.Next());
             BattleUnitManager.Instance.Init(Random.Next());
             HeroManager.Instance.Init(Random.Next());
+            BattleCardManager.Instance.InitCards();
         }
 
         public void SetBattleTypeManager(IBattleTypeManager battleTypeManager)

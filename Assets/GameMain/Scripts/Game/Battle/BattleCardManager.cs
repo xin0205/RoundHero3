@@ -369,9 +369,9 @@ namespace RoundHero
             // }
             
             if (cardEnergy >
-                HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.CurHP))
+                HeroManager.Instance.GetAllCurHP())
             {
-                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_NoEnergy));
+                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_HPNotEnough));
                 return false;
             }
 
@@ -430,6 +430,26 @@ namespace RoundHero
                 }
 
             }
+
+            // bool ret = false;
+            // if (cardEnergy >
+            //     HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.CurHP))
+            // {
+            //     GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            //     {
+            //         Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmSubHeart),
+            //         OnConfirm = () =>
+            //         {
+            //             ret = UseCard(cardID);
+            //         }
+            //     });
+            //     
+            //     
+            // }
+            // else
+            // {
+            //     ret = UseCard(cardID);
+            // }
 
             return UseCard(cardID);
         }

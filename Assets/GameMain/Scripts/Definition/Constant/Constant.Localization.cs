@@ -7,7 +7,7 @@ namespace RoundHero
         public static class Localization
         {
             public const string Message_ResetData = "Message.ResetData";
-            public const string Message_NoEnergy = "Message.NoEnergy";
+            
             
             public const string UI_Round = "UI.Round";
 
@@ -28,7 +28,8 @@ namespace RoundHero
 
             public const string Message_InitCardMaxCount = "Message.InitCardMaxCount";
             public const string Message_InitCardCount = "Message.InitCardCount";
-            public const string Message_CoinNotEnough= "Message.CoinNotEnough";
+            public const string Message_CoinNotEnough = "Message.CoinNotEnough";
+            public const string Message_HPNotEnough = "Message.HPNotEnough";
             public const string Message_Purchase = "Message.Purchase";
             public const string Message_ConfirmEquipFune = "Message.ConfirmEquipFune";
             public const string Message_MaxHeart = "Message.MaxHeart";
@@ -54,7 +55,7 @@ namespace RoundHero
             public const string Message_ConfirmUnChangeCard = "Message.ConfirmUnChangeCard";
             public const string Message_ConfirmUnCopyCard = "Message.ConfirmUnChangeCard";
             public const string Message_ConfirmUnRemoveCard = "Message.ConfirmUnChangeCard";
-
+            public const string Message_ConfirmSubHeart = "Message.ConfirmSubHeart";
 
         }
     }

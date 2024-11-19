@@ -9,7 +9,13 @@ EditorBuildSettings:
     path: Assets/Launcher.unity
     guid: 81139823b38a3674ba910c4b36be10ee
   - enabled: 1
-    path: Assets/GameMain/Scenes/Dungeon.unity
+    path: Assets/GameMain/Scenes/Scene0.unity
+    guid: e9af60c0974d0f445a871441b0010499
+  - enabled: 1
+    path: Assets/GameMain/Scenes/Scene01.unity
+    guid: 544071797a26d884fb62afa81654c71e
+  - enabled: 1
+    path: Assets/GameMain/Scenes/Scene011.unity
     guid: dfaefd7b02c68174096f36579568f2db
   - enabled: 1
     path: Assets/GameMain/Scenes/Lobby.unity

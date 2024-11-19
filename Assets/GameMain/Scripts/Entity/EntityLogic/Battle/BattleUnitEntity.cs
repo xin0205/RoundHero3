@@ -301,8 +301,8 @@ namespace RoundHero
             
             weaponEntity.transform.localPosition = Vector3.zero;
             weaponEntity.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            
-            
+            weaponEntity.gameObject.SetLayerRecursively(this.gameObject.layer);
+
         }
 
         protected void ShowInit()

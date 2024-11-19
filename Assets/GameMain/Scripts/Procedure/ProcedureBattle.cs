@@ -24,12 +24,14 @@ namespace RoundHero
 
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
 
-            GameEntry.Sound.PlayMusic(0);
+            //GameEntry.Sound.PlayMusic(0);
+            
 
             InitSuccess = false;
 
-            DRScene drScene = GameEntry.DataTable.GetScene(1);
-            GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
+            var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
+            //DRScene drScene = GameEntry.DataTable.GetScene(1);
+            GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(sceneName), Constant.AssetPriority.SceneAsset);
             
             var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
             playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
@@ -100,10 +102,13 @@ namespace RoundHero
             
             GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(battleForm);
-            BattleManager.Instance.BattleTypeManager.Destory();
+            BattleManager.Instance.Destory();
             
-            DRScene drScene = GameEntry.DataTable.GetScene(1);
-            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
+            //BattleManager.Instance.BattleTypeManager.Destory();
+            
+            //DRScene drScene = GameEntry.DataTable.GetScene(1);
+            var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
+            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
             ChangeState<ProcedureGamePlay>(procedureOwner);
             
             var procedureGamePlay = procedureOwner.CurrentState as ProcedureGamePlay;

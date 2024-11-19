@@ -1,8 +1,4 @@
-﻿using System;
-using GameFramework;
-using GameFramework.Event;
-using UGFExtensions.Await;
-using UnityGameFramework.Runtime;
+﻿using UGFExtensions.Await;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
 namespace RoundHero
@@ -24,11 +20,14 @@ namespace RoundHero
             //GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             
             GameEntry.Sound.PlayMusic(0);
+            
+            ;
 
         }
 
         public async void ShowMap()
         {
+            
             GamePlayManager.Instance.SetProcedureGamePlay(this);
             MapEntity = await GameEntry.Entity.ShowSceneEntityAsync("Map");
             var mapFormResult = await GameEntry.UI.OpenUIFormAsync(UIFormId.MapForm, this);
@@ -55,6 +54,7 @@ namespace RoundHero
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
+            
             GameEntry.Sound.StopMusic();
             base.OnLeave(procedureOwner, isShutdown);
             //GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
@@ -62,6 +62,7 @@ namespace RoundHero
         
         public void Back()
         {
+            PVEManager.Instance.Destory();
             GamePlayManager.Instance.Back();
             
             
@@ -90,7 +91,7 @@ namespace RoundHero
 
         public void StartBattle(int randomSeed)
         {
-            PVEManager.Instance.Init(randomSeed);
+            BattleManager.Instance.Init(randomSeed);
             // DRScene drScene = GameEntry.DataTable.GetScene(1);
             // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             GameEntry.UI.CloseUIForm(playerInfoForm);

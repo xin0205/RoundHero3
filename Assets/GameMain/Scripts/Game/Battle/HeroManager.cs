@@ -40,6 +40,11 @@ namespace RoundHero
             //id = 0;
         }
 
+        public int GetAllCurHP()
+        {
+            return (BattleHeroData.CurHeart - 1) * BattleHeroData.MaxHP + BattleHeroData.CurHP;
+        }
+
         public void Destory()
         {
             HeroEntities.Clear();

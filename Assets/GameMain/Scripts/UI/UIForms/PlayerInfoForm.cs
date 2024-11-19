@@ -20,7 +20,22 @@ namespace RoundHero
         
         public void ShowCards()
         {
-            GameEntry.UI.OpenUIForm(UIFormId.CardAndFuneForm);
+            //GameEntry.UI.OpenUIForm(UIFormId.CardAndFuneForm);
+            
+            GameEntry.UI.OpenUIForm(UIFormId.CardsForm, new CardsFormParams()
+            {
+                ShowCardTypes = new List<ECardType>()
+                {
+                    ECardType.Unit,
+                    ECardType.Tactic,
+                    ECardType.State,
+                },
+                
+                IsShowAllFune = true,
+
+                
+            });
+
         }
         
         protected override void OnInit(object userData)

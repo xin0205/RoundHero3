@@ -95,7 +95,7 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
             GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Unsubscribe(ClickGridEventArgs.EventId, OnClickGrid);
-            
+            MoveGrids.Clear();
             foreach (var kv in GridEntities)
             {
                 GameEntry.Entity.HideEntity(kv.Value);

@@ -73,7 +73,8 @@ namespace RoundHero
             GameEntry.Event.Subscribe(LoadDictionaryFailureEventArgs.EventId, OnLoadDictionaryFailure);
             //HeathenEngineering.SteamworksIntegration.API.App.evtSteamInitialized.AddListener(HandleInitialization);
             //HeathenEngineering.SteamworksIntegration.API.App.evtSteamInitializationError.AddListener(HandleInitializationError);
-
+            Application.targetFrameRate = -1;
+            
             m_LoadedFlag.Clear();
 
             PreloadResources();

@@ -59,15 +59,16 @@ namespace RoundHero
             // var randoms = MathUtility.GetRandomNum(1, 0,
             //     Constant.Game.RandomRange, Random);
 
-            BattleManager.Instance.Init(randomSeed);
+            
 
-            BattleCardManager.Instance.InitCards();
-            BattleEnemyManager.Instance.Init(Random.Next());
+            
+            
         }
 
         public void StartBattle()
         {
-            GameEntry.UI.OpenUIForm(UIFormId.BattleForm);
+            
+            //GameEntry.UI.OpenUIForm(UIFormId.BattleForm);
         }
 
         public void SetCurPlayer()
@@ -80,7 +81,7 @@ namespace RoundHero
         {
             GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Unsubscribe(RefreshBattleStateEventArgs.EventId, OnRefreshBattleState);
-            BattleManager.Instance.Destory();
+            
                 
         }
         

@@ -88,6 +88,7 @@ namespace RoundHero
             
             if (ne.GamePlayInitData.GameMode == EGamMode.PVE)
             {
+                PVEManager.Instance.Init(ne.GamePlayInitData.RandomSeed);
                 GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
                 GamePlayManager.Instance.Start();
                 GamePlayManager.Instance.Contitnue();
