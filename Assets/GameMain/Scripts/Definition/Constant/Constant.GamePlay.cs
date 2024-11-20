@@ -900,8 +900,8 @@ namespace RoundHero
         {
             public static Dictionary<EUnitActionState, float> MoveTimes = new Dictionary<EUnitActionState, float>()
             {
-                [EUnitActionState.Run] = 0.7f,
-                [EUnitActionState.Fly] = 0.4f,
+                [EUnitActionState.Run] = 0.5f,
+                [EUnitActionState.Fly] = 0.3f,
 
             };
             

@@ -1,4 +1,5 @@
 ﻿
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -7,8 +8,10 @@ namespace RoundHero
     {
 
         public BattleHeroEntityData BattleHeroEntityData { get; protected set; }
+
+
         
-        
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -27,9 +30,10 @@ namespace RoundHero
 
         }
 
-        public override void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = false, bool changeHPInstantly = false)
+        public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = false, bool changeHPInstantly = false)
         {
             HeroManager.Instance.ChangeHP(changeHP, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
+            await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleHeroEntityData.BattleHeroData.GridPosIdx, changeHP);
         }
         
         

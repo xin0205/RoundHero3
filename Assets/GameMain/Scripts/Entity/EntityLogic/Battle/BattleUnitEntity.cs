@@ -24,6 +24,9 @@ namespace RoundHero
         protected Data_BattleUnit BattleUnitData { get; set; }
         protected bool IsMove = false;
         
+        public Transform EffectHurtPos;
+        public Transform AttackHurtPos;
+        
         public Vector3 Position
         {
             get => transform.position; 
@@ -374,7 +377,12 @@ namespace RoundHero
         
         public void Hit()
         {
-            
+            ShowEffectAttackEntity();
+        }
+
+        private async void ShowEffectAttackEntity()
+        {
+            await GameEntry.Entity.ShowEffectEntityAsync("EffectAttackEntity", AttackHurtPos.position);
         }
         
         public void FootL()
@@ -466,7 +474,7 @@ namespace RoundHero
                 BattleUnitData.RoundMoveCount += moveCount;
                 if (BattleUnitData.CurHP > 0)
                 {
-                    animator.SetInteger(AnimationParameters.Jumping, -1);
+                    animator.SetInteger(AnimationParameters.Jumping, 0);
                     Idle();
                     var pos = HeroManager.Instance.HeroEntity.Position;
                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
@@ -551,7 +559,7 @@ namespace RoundHero
         public void RefreshDamageState()
         {
             var hurt = BattleFightManager.Instance.GetTotalDelta(this.ID, EHeroAttribute.CurHP);
-            this.damage.text = "hurt:" + hurt;
+            this.damage.text = hurt.ToString();
         }
         
         public virtual void Quit()
@@ -586,9 +594,15 @@ namespace RoundHero
             uiNode.transform.localScale = Vector3.one *  dis / 12f;
             
         }
+        
+        private async void ShowEffectHurtEntity()
+        {
+            await GameEntry.Entity.ShowEffectEntityAsync("EffectHurtEntity", AttackHurtPos.position);
+        }
 
         public void Hurt()
         {
+            ShowEffectHurtEntity();
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.GetHitTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)HitType.Back1);

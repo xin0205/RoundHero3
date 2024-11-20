@@ -360,6 +360,18 @@ namespace RoundHero
             }
 
         }
+        
+        public static string GetBattleHurtPrefab()
+        {
+            return $"Assets/GameMain/Entities/Battles/BattleHurtEntity.prefab";
+
+        }
+        
+        public static string GetEffectPrefab(string assetName)
+        {
+            return $"Assets/GameMain/Entities/Effects/{assetName}.prefab";
+
+        }
 
     }
 }
