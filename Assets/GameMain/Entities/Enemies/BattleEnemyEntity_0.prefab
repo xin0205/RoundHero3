@@ -60,7 +60,8 @@ MonoBehaviour:
   leftWeapon: {fileID: 8490208382400611549}
   rightWeapon: {fileID: 2622050021739450375}
   EffectHurtPos: {fileID: 2066135726217102810}
-  AttackHurtPos: {fileID: 6025886859164801879}
+  EffectAttackPos: {fileID: 6025886859164801879}
+  ActionUnitID: 0
 --- !u!95 &4107302258608099607
 Animator:
   serializedVersion: 5

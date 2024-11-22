@@ -113,7 +113,7 @@ namespace RoundHero
         public EHeroAttribute HeroAttribute = EHeroAttribute.Empty;
         public EUnitState UnitState = EUnitState.Empty;
         public ELinkID LinkID = ELinkID.Empty;
-        public EBlessID BlessID = EBlessID.Empty;
+        //public EBlessID BlessID = EBlessID.Empty;
         //public ECardID CardID = ECardID.Empty;
         public EBuffID BuffID = EBuffID.Empty;
         public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
@@ -125,6 +125,27 @@ namespace RoundHero
 
         public bool ChangeHPInstantly = false;
         //public bool AddHeroHP = true;
+
+        public TriggerData Copy()
+        {
+            var triggerData = new TriggerData();
+            triggerData.OwnUnitID = OwnUnitID;
+            triggerData.ActionUnitID = ActionUnitID;
+            triggerData.EffectUnitID = EffectUnitID;
+            triggerData.BattleUnitAttribute = BattleUnitAttribute;
+            triggerData.HeroAttribute = HeroAttribute;
+            triggerData.LinkID = LinkID;
+            triggerData.BuffID = BuffID;
+            triggerData.CardTriggerType = CardTriggerType;
+            triggerData.TriggerDataType = TriggerDataType;
+            triggerData.TriggerDataSubType = TriggerDataSubType;
+            triggerData.Value = Value;
+            triggerData.DeltaValue = DeltaValue;
+            triggerData.TriggerResult = TriggerResult;
+            triggerData.ChangeHPInstantly = ChangeHPInstantly;
+
+            return triggerData;
+        }
     }
     
     public class RoundFightData
@@ -3278,7 +3299,8 @@ namespace RoundHero
                 foreach (var triggerData in trigger.Value)
                 {
                     isAttack = true;
-                    TriggerAction(triggerData);
+                    BattleBulletManager.Instance.AddTriggerData(triggerData);
+                    //TriggerAction(triggerData);
                 }
             }
 
@@ -3447,7 +3469,8 @@ namespace RoundHero
                 foreach (var triggerData in trigger.Value)
                 {
                     isAttack = true;
-                    TriggerAction(triggerData);
+                    //TriggerAction(triggerData);
+                    BattleBulletManager.Instance.AddTriggerData(triggerData);
                 }
             }
 
@@ -3519,10 +3542,13 @@ namespace RoundHero
                 [EUnitCamp.Player2] = new HPDeltaData(),
             };
 
+
             foreach (var kv in triggerDatas)
             {
-                foreach (var triggerData in kv.Value)
+                for (int i = kv.Value.Count - 1; i >= 0; i--)
                 {
+                    var triggerData = kv.Value[i];
+                    
                     var effectUnit = GameUtility.GetUnitDataByID(triggerData.EffectUnitID);
                     if(effectUnit == null)
                         continue;
@@ -3563,7 +3589,56 @@ namespace RoundHero
                     
                     hpDeltaDict[unit.UnitCamp].Value += (int) (isHeroUnit ? triggerValue : Math.Abs(value));
                     hpDeltaDict[unit.UnitCamp].Key = isMoveTriggerData ? kv.Key : playerData.BattleHero.ID;
+
+                    if (unit.UnitRole == EUnitRole.Hero && !triggerData.ChangeHPInstantly)
+                    {
+                        kv.Value.RemoveAt(i);
+                    }
                 }
+                
+                // foreach (var triggerData in kv.Value)
+                // {
+                //     var effectUnit = GameUtility.GetUnitDataByID(triggerData.EffectUnitID);
+                //     if(effectUnit == null)
+                //         continue;
+                //
+                //     var triggerValue = triggerData.Value + triggerData.DeltaValue;
+                //     var value = effectUnit.AddHeroHP;
+                //     
+                //     if(BattleCurseManager.Instance.CurseIDs.Contains(ECurseID.UnitDeadUnRecoverHeroHP) && effectUnit.CurHP <= 0)
+                //         continue;
+                //
+                //     if (effectUnit.GetStateCount(EUnitState.UnRecover) > 0 && ! GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData,
+                //             EBuffID.Spec_CurseUnEffect))
+                //         continue;
+                //     
+                //     effectUnit.AddHeroHP = 0;
+                //     //triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+                //     if (!(triggerData.BattleUnitAttribute == EUnitAttribute.HP && triggerValue < 0))
+                //         continue;
+                //
+                //     var unit = GameUtility.GetUnitDataByID(triggerData.EffectUnitID, true);
+                //     if(unit == null)
+                //         continue;
+                //     
+                //     if (unit.UnitCamp == EUnitCamp.Enemy)
+                //     {
+                //         triggerData.ChangeHPInstantly = true;
+                //         continue;
+                //     }
+                //
+                //     if (unit.UnitRole != EUnitRole.Hero)
+                //     {
+                //         triggerData.ChangeHPInstantly = true;
+                //     }
+                //
+                //     var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unit.UnitCamp);
+                //     var isHeroUnit = playerData != null && playerData.BattleHero != null &&
+                //                      playerData.BattleHero.ID == unit.ID;
+                //     
+                //     hpDeltaDict[unit.UnitCamp].Value += (int) (isHeroUnit ? triggerValue : Math.Abs(value));
+                //     hpDeltaDict[unit.UnitCamp].Key = isMoveTriggerData ? kv.Key : playerData.BattleHero.ID;
+                // }
                 
 
                 
@@ -3700,7 +3775,8 @@ namespace RoundHero
                 foreach (var triggerData in trigger.Value)
                 {
                     isAttack = true;
-                    TriggerAction(triggerData);
+                    //TriggerAction(triggerData);
+                    BattleBulletManager.Instance.AddTriggerData(triggerData);
                 }
             }
 

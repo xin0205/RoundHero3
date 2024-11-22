@@ -55,12 +55,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139168940729246286}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.034144185, y: 1.079, z: 0.008882782}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.034144185, y: 0.979, z: -0.008882782}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3523285037464269076}
+  m_Father: {fileID: 6457383696530502701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2169866014971350870
 GameObject:
@@ -86,12 +86,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2169866014971350870}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.034144185, y: 1.079, z: 0.008882782}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.034144185, y: 0.979, z: -0.008882782}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3523285037464269076}
+  m_Father: {fileID: 6457383696530502701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3234534928620479827
 GameObject:
@@ -126,8 +126,6 @@ Transform:
   m_Children:
   - {fileID: 6457383696530502701}
   - {fileID: 2099652754129527772}
-  - {fileID: 18550950733261522}
-  - {fileID: 6600592747578602251}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6740671401879268618
@@ -155,7 +153,8 @@ MonoBehaviour:
   leftWeapon: {fileID: 351450008559610199}
   rightWeapon: {fileID: 4226364071834297755}
   EffectHurtPos: {fileID: 18550950733261522}
-  AttackHurtPos: {fileID: 6600592747578602251}
+  EffectAttackPos: {fileID: 6600592747578602251}
+  ActionUnitID: 0
 --- !u!95 &6330339263858269483
 Animator:
   serializedVersion: 5
@@ -268,6 +267,12 @@ PrefabInstance:
     - {fileID: 1370715532444407685, guid: ee7b0011740e8344085f167e164aa3c4, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5036693816418520575, guid: ee7b0011740e8344085f167e164aa3c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 18550950733261522}
+    - targetCorrespondingSourceObject: {fileID: 5036693816418520575, guid: ee7b0011740e8344085f167e164aa3c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6600592747578602251}
     - targetCorrespondingSourceObject: {fileID: 8509389816779792885, guid: ee7b0011740e8344085f167e164aa3c4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 351450008559610199}
