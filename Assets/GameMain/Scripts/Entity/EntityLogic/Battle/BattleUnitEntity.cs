@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using DG.Tweening;
 using RPGCharacterAnims;
 using RPGCharacterAnims.Actions;
@@ -28,7 +29,7 @@ namespace RoundHero
         public Transform EffectHurtPos;
         public Transform EffectAttackPos;
 
-        public int ActionUnitID;
+        
         
         public Vector3 Position
         {
@@ -400,9 +401,21 @@ namespace RoundHero
 
         private async void ShowEffectAttackEntity()
         {
-            var effectAttack = await GameEntry.Entity.ShowEffectEntityAsync("EffectAttackEntity", EffectAttackPos.position);
+            var triggerDataDict = BattleBulletManager.Instance.GetTriggerDatas(this.BattleUnitData.ID);
+            var effectIDs = triggerDataDict.Keys.ToList();
+            var triggerDatas = triggerDataDict.Values.ToList();
+            for (int i = 0; i < effectIDs.Count; i++)
+            {
+                var triggerData = triggerDatas[i];
+                var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
+                
+                var effectAttack = await GameEntry.Entity.ShowEffectEntityAsync("EffectAttackEntity", EffectAttackPos.position);
+                
+                var pos = effectUnit.Position;
+                effectAttack.transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+            }
             
-            effectAttack.transform.rotation = transform.root.rotation;
+
         }
         
         public void FootL()

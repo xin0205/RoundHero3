@@ -16,7 +16,7 @@ namespace RoundHero
         public void AddTriggerData(TriggerData triggerData)
         {
             var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
-            effectUnit.ActionUnitID = triggerData.ActionUnitID;
+            //effectUnit.ActionUnitID = triggerData.ActionUnitID;
             
             if (!TriggerDatas.ContainsKey(triggerData.ActionUnitID))
             {
@@ -57,6 +57,16 @@ namespace RoundHero
                 UseTriggerData(actionUnitID, effectUnit.ID);
             }
             TriggerDatas[actionUnitID].Clear();
+        }
+
+        public Dictionary<int, TriggerData> GetTriggerDatas(int actionUnitID)
+        {
+            if (!TriggerDatas.ContainsKey(actionUnitID))
+            {
+                return null;
+            }
+
+            return TriggerDatas[actionUnitID];
         }
         
         

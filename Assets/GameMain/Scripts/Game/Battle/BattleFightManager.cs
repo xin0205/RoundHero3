@@ -3590,10 +3590,10 @@ namespace RoundHero
                     hpDeltaDict[unit.UnitCamp].Value += (int) (isHeroUnit ? triggerValue : Math.Abs(value));
                     hpDeltaDict[unit.UnitCamp].Key = isMoveTriggerData ? kv.Key : playerData.BattleHero.ID;
 
-                    if (unit.UnitRole == EUnitRole.Hero && !triggerData.ChangeHPInstantly)
-                    {
-                        kv.Value.RemoveAt(i);
-                    }
+                    // if (unit.UnitRole == EUnitRole.Hero && !triggerData.ChangeHPInstantly)
+                    // {
+                    //     kv.Value.RemoveAt(i);
+                    // }
                 }
                 
                 // foreach (var triggerData in kv.Value)
@@ -4541,11 +4541,13 @@ namespace RoundHero
                     
                 var enemyData = GameEntry.DataTable.GetEnemy(battleUnitData.MonsterID);
                 
+                retGetRange.Clear();
+                retGetRange2.Clear();
+                
                 retGetRange.Add(battleUnitData.GridPosIdx);
                 var intersectList = GameUtility.GetActionGridPosIdxs(battleUnitData.GridPosIdx, enemyData.MoveType,
                     buffData.TriggerRange, retGetRange, retGetRange2, true);
-                retGetRange.Clear();
-                retGetRange2.Clear();
+                
 
                 for (int i = 0; i < intersectList.Count; i++)
                 {

@@ -652,15 +652,15 @@ namespace RoundHero
                                  if (isBattleData)
                                  {
                                      unit = GetUnitByGridPosIdx(posIdx, isBattleData);
-                                     if (unit != null)
-                                     {
-                                         if (unit.ID == HeroManager.Instance.BattleHeroData.ID)
-                                         {
-                                             retGetRange.Add(posIdx);
-                                         }
-                                         
-                                         break;
-                                     }
+                                     // if (unit != null)
+                                     // {
+                                     //     // if (unit.ID == HeroManager.Instance.BattleHeroData.ID)
+                                     //     // {
+                                     //     //     retGetRange.Add(posIdx);
+                                     //     // }
+                                     //     
+                                     //     break;
+                                     // }
 
                                  }
                                  else
@@ -670,11 +670,11 @@ namespace RoundHero
                                  
                                  if (unit != null && unit.CurHP > 0)
                                  {
-                                     if (unit.ID == HeroManager.Instance.BattleHeroData.ID)
-                                     {
-                                         retGetRange.Add(posIdx);
-                                     }
-                                         
+                                     // if (unit.ID == HeroManager.Instance.BattleHeroData.ID)
+                                     // {
+                                     //     retGetRange.Add(posIdx);
+                                     // }
+                                     retGetRange.Add(posIdx);    
                                      break;
                                  }
                                  
