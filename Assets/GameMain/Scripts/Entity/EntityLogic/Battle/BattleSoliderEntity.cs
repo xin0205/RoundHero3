@@ -1,7 +1,4 @@
 ﻿
-using System;
-using RPGCharacterAnims.Lookups;
-using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -56,5 +53,7 @@ namespace RoundHero
 
             BattleManager.Instance.ChangeHP(BattleUnitData, changeHP,  GamePlayManager.Instance.GamePlayData, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
         }
+        
+        
     }
 }

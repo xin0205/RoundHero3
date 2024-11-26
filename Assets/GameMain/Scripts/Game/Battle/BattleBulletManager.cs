@@ -4,69 +4,93 @@ using UnityEngine;
 
 namespace RoundHero
 {
-    
+    public class TriggerActionData
+    {
+        public TriggerData TriggerData;
+        public MoveActionData MoveActionData;
+    }
     
     
     public class BattleBulletManager : Singleton<BattleBulletManager>
     {
-        public Dictionary<int, Dictionary<int, TriggerData>> TriggerDatas =
+        public Dictionary<int, Dictionary<int, TriggerActionData>> TriggerActionDatas =
             new ();
 
 
         public void AddTriggerData(TriggerData triggerData)
         {
-            var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
+            //var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
             //effectUnit.ActionUnitID = triggerData.ActionUnitID;
+
             
-            if (!TriggerDatas.ContainsKey(triggerData.ActionUnitID))
+            if (!TriggerActionDatas.ContainsKey(triggerData.ActionUnitID))
             {
-                TriggerDatas.Add(triggerData.ActionUnitID, new Dictionary<int, TriggerData>());
+                
+                TriggerActionDatas.Add(triggerData.ActionUnitID, new Dictionary<int, TriggerActionData>());
             } 
+            var triggerActionData = new TriggerActionData();
+            triggerActionData.TriggerData = triggerData.Copy();
+            TriggerActionDatas[triggerData.ActionUnitID].Add(triggerData.EffectUnitID, triggerActionData);
+        }
+        
+        public void AddMoveActionData(int actionUnitID, MoveActionData moveActionData)
+        {
+            //var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(moveActionData.ActionUnitID);
+            //effectUnit.ActionUnitID = triggerData.ActionUnitID;
+
             
-            TriggerDatas[triggerData.ActionUnitID].Add(triggerData.EffectUnitID, triggerData.Copy());
+            if (!TriggerActionDatas.ContainsKey(actionUnitID))
+            {
+                
+                TriggerActionDatas.Add(moveActionData.ActionUnitID, new Dictionary<int, TriggerActionData>());
+            } 
+            var triggerActionData = new TriggerActionData();
+            triggerActionData.MoveActionData = moveActionData.Copy();
+            TriggerActionDatas[moveActionData.ActionUnitID].Add(moveActionData.ActionUnitID, triggerActionData);
         }
 
         public void UseTriggerData(int actionUnitID, int effectUnitID)
         {
-            if (!TriggerDatas.ContainsKey(actionUnitID))
+            if (!TriggerActionDatas.ContainsKey(actionUnitID))
             {
                 return;
             }
             
-            if (!TriggerDatas[actionUnitID].ContainsKey(effectUnitID))
+            if (!TriggerActionDatas[actionUnitID].ContainsKey(effectUnitID))
             {
                 return;
             }
 
-            BattleFightManager.Instance.TriggerAction(TriggerDatas[actionUnitID][effectUnitID]);
+            BattleFightManager.Instance.TriggerAction(TriggerActionDatas[actionUnitID][effectUnitID].TriggerData);
             
 
         }
 
         public void ActionUnitTrigger(int actionUnitID)
         {
-            if (!TriggerDatas.ContainsKey(actionUnitID))
+            if (!TriggerActionDatas.ContainsKey(actionUnitID))
             {
                 return;
             }
 
-            foreach (var kv in TriggerDatas[actionUnitID])
+            foreach (var kv in TriggerActionDatas[actionUnitID])
             {
                 var effectUnit = BattleUnitManager.Instance.GetUnitByID(kv.Key);
                 
                 UseTriggerData(actionUnitID, effectUnit.ID);
             }
-            TriggerDatas[actionUnitID].Clear();
+            TriggerActionDatas[actionUnitID].Clear();
+            BattleManager.Instance.Refresh();
         }
 
-        public Dictionary<int, TriggerData> GetTriggerDatas(int actionUnitID)
+        public Dictionary<int, TriggerActionData> GetTriggerDatas(int actionUnitID)
         {
-            if (!TriggerDatas.ContainsKey(actionUnitID))
+            if (!TriggerActionDatas.ContainsKey(actionUnitID))
             {
                 return null;
             }
 
-            return TriggerDatas[actionUnitID];
+            return TriggerActionDatas[actionUnitID];
         }
         
         

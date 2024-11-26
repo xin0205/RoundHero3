@@ -102,6 +102,22 @@ namespace RoundHero
         public int ActionUnitID;
         public List<int> MoveGridPosIdxs = new ();
         public Dictionary<int, List<TriggerData>> TriggerDatas = new ();
+        
+        public MoveActionData Copy()
+        {
+            var moveActionData = new MoveActionData();
+            moveActionData.ActionUnitID = ActionUnitID;
+            moveActionData.MoveGridPosIdxs = new List<int>(MoveGridPosIdxs);
+
+            
+            foreach (var kv in TriggerDatas)
+            {
+                var triggerDatas = new List<TriggerData>(kv.Value);
+                moveActionData.TriggerDatas.Add(kv.Key, triggerDatas);
+            }
+
+            return moveActionData;
+        }
     }
 
     public class TriggerData
@@ -3131,6 +3147,7 @@ namespace RoundHero
                 default:
                     break;
             }
+            
 
         }
 
@@ -3590,10 +3607,10 @@ namespace RoundHero
                     hpDeltaDict[unit.UnitCamp].Value += (int) (isHeroUnit ? triggerValue : Math.Abs(value));
                     hpDeltaDict[unit.UnitCamp].Key = isMoveTriggerData ? kv.Key : playerData.BattleHero.ID;
 
-                    // if (unit.UnitRole == EUnitRole.Hero && !triggerData.ChangeHPInstantly)
-                    // {
-                    //     kv.Value.RemoveAt(i);
-                    // }
+                    if (unit.UnitRole == EUnitRole.Hero && !triggerData.ChangeHPInstantly)
+                    {
+                        kv.Value.RemoveAt(i);
+                    }
                 }
                 
                 // foreach (var triggerData in kv.Value)

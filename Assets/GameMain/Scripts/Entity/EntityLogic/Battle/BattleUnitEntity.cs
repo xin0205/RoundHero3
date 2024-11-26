@@ -28,7 +28,7 @@ namespace RoundHero
         
         public Transform EffectHurtPos;
         public Transform EffectAttackPos;
-
+        public EAttackCastType UnitAttackCastType;
         
         
         public Vector3 Position
@@ -379,17 +379,21 @@ namespace RoundHero
             
         }
         
+        public void Shoot()
+        {
+            
+        }
+        
         public void Hit()
         {
             ShowEffectAttackEntity();
-            
+
             BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.ID);
         }
 
         public void GetHit()
         {
-            
-            
+            Log.Debug("GetHit");
             ShowEffectHurtEntity();
         }
 
@@ -397,22 +401,47 @@ namespace RoundHero
         {
             
         }
-        
 
+        public void Land()
+        {
+            
+        }
+
+        private EffectEntity effectAttackEntity;
         private async void ShowEffectAttackEntity()
         {
-            var triggerDataDict = BattleBulletManager.Instance.GetTriggerDatas(this.BattleUnitData.ID);
-            var effectIDs = triggerDataDict.Keys.ToList();
-            var triggerDatas = triggerDataDict.Values.ToList();
+            var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerDatas(this.BattleUnitData.ID);
+            var effectIDs = triggerActionDataDict.Keys.ToList();
+            var triggerActionDatas = triggerActionDataDict.Values.ToList();
             for (int i = 0; i < effectIDs.Count; i++)
             {
-                var triggerData = triggerDatas[i];
-                var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
+                var triggerActionData = triggerActionDatas[i];
+                var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerActionData.TriggerData.EffectUnitID);
+
+                var effectName = "EffectAttackEntity";
+                var effectPos = EffectAttackPos.position;
+                switch (UnitAttackCastType)
+                {
+                    case EAttackCastType.CloseSingle:
+                        effectName = "EffectCloseSingleAttackEntity";
+                        effectPos = EffectAttackPos.position;
+                        break;
+                    case EAttackCastType.CloseMulti:
+                        effectName = "EffectCloseMultiAttackEntity";
+                        effectPos = EffectHurtPos.position;
+                        break;
+                    case EAttackCastType.RemoteSingle:
+                        break;
+                    case EAttackCastType.RemoteMulti:
+                        break;
+                    default:
+                        break;
+                }
                 
-                var effectAttack = await GameEntry.Entity.ShowEffectEntityAsync("EffectAttackEntity", EffectAttackPos.position);
+                effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
                 
                 var pos = effectUnit.Position;
-                effectAttack.transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                effectAttackEntity.transform.LookAt(new Vector3(pos.x, effectAttackEntity.transform.position.y, pos.z));
             }
             
 
@@ -430,6 +459,7 @@ namespace RoundHero
         
         public void Idle()
         {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.InstantSwitchTrigger);
             animator.SetBool(AnimationParameters.Moving, false);
             animator.SetTrigger(AnimationParameters.Trigger);
             
@@ -547,16 +577,53 @@ namespace RoundHero
         public virtual void Attack()
         {
             //SetAction(EUnitActionState.Attack);
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
+
+            switch (UnitAttackCastType)
+            {
+                case EAttackCastType.CloseSingle:
+                    CloseSingleAttack();
+                    break;
+                case EAttackCastType.CloseMulti:
+                    CloseMultiAttack();
+                    break;
+                case EAttackCastType.RemoteSingle:
+                    break;
+                case EAttackCastType.RemoteMulti:
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+
+        protected void CloseMultiAttack()
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialAttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            GameUtility.DelayExcute(1f, () =>
+            {
+                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
+                animator.SetTrigger(AnimationParameters.Trigger);
+                GameEntry.Entity.HideEntity(effectAttackEntity);
+            });
         }
         
-        public void RunAttack()
+        protected void CloseSingleAttack()
         {
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            // GameUtility.DelayExcute(1f, () =>
+            // {
+            //
+            //     GameEntry.Entity.HideEntity(effectAttackEntity);
+            // });
+        }
+        
+        public void RunAttack()
+        {
+            CloseSingleAttack();
             // SetAction(EUnitActionState.RunAttack);
             // GameUtility.DelayExcute(0.8f, () =>
             // {

@@ -25,6 +25,8 @@ namespace RoundHero
             var drEnemy = GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
             InitWeaponType(drEnemy.WeaponHoldingType, drEnemy.WeaponType, drEnemy.WeaponID);
             AttachWeapon(drEnemy.WeaponHoldingType, drEnemy.WeaponType, drEnemy.WeaponID);
+            
+            UnitAttackCastType = drEnemy.AttackCastType;
         }
 
         public override void Dead()
@@ -45,5 +47,7 @@ namespace RoundHero
         {
             BattleManager.Instance.ChangeHP(BattleUnitData, changeHP,  GamePlayManager.Instance.GamePlayData, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
         }
+
+
     }
 }

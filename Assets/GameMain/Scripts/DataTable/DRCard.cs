@@ -135,6 +135,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取攻击表现类型。
+        /// </summary>
+        public EAttackCastType AttackCastType
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -158,6 +167,7 @@ namespace RoundHero
 			WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(columnStrings[index++]);
 			WeaponType = Enum.Parse<EWeaponType>(columnStrings[index++]);
             WeaponID = int.Parse(columnStrings[index++]);
+			AttackCastType = Enum.Parse<EAttackCastType>(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -181,6 +191,7 @@ namespace RoundHero
                     WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(binaryReader.ReadString());
                     WeaponType = Enum.Parse<EWeaponType>(binaryReader.ReadString());
                     WeaponID = binaryReader.Read7BitEncodedInt32();
+                    AttackCastType = Enum.Parse<EAttackCastType>(binaryReader.ReadString());
                 }
             }
 

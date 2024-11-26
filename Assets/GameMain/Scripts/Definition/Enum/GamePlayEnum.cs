@@ -1,6 +1,8 @@
 ﻿
 namespace RoundHero
 {
+
+    
     public enum EWeaponHoldingType
     {
         TwoHand,
@@ -680,12 +682,18 @@ namespace RoundHero
 
     }
 
-    public enum EAttackType
+    public enum EEnemyAttackType
     {
         Dynamic,
         Lock,
     }
 
-
+    public enum EAttackCastType
+    {
+        CloseSingle,
+        CloseMulti,
+        RemoteSingle,
+        RemoteMulti,
+    }
 
 }
