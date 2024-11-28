@@ -427,6 +427,7 @@ namespace RoundHero
         Bless,
         Unit,
         Curse,
+        Collision,
         Empty,
     }
 

@@ -182,7 +182,7 @@ namespace RoundHero
 
                     var triggerBuffData = BattleManager.Instance.TempTriggerData.TriggerBuffData;
                     
-                    var cardID = triggerBuffData.CardID;
+                    var cardID = triggerBuffData.CardIdx;
                     var cardData = BattleManager.Instance.GetCard(cardID);
                     var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardID);
                     
@@ -207,7 +207,7 @@ namespace RoundHero
                     //BattleUnitManager.Instance.TempUnitData.UnitData.AddState(EUnitState.AttackPassUs, 1);
                     
                     BattleManager.Instance.TempTriggerData.UnitData.CurHP =
-                        BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
+                        BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
 
                     if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
                     {
@@ -312,7 +312,7 @@ namespace RoundHero
 
             if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
             {
-                var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
+                var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
                 if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
                 {
                     var tempExchangeGridData = BattleAreaManager.Instance.TempExchangeGridData;
@@ -1038,7 +1038,7 @@ namespace RoundHero
 
             var gridRange = Constant.Area.GridRange;
             var gridSize = Constant.Area.GridSize;
-            var curSelectCard = CardManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
+            var curSelectCard = CardManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
             var isAllMove = CardManager.Instance.Contain(curSelectCard.CardIdx, EBuffID.Spec_MoveAllGrid);
 
             var moveCount = 0;
@@ -1579,7 +1579,7 @@ namespace RoundHero
                     return;
                 }
                 
-                BattleManager.Instance.PlaceUnitCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID, ne.GridPosIdx, BattleManager.Instance.CurUnitCamp);
+                BattleManager.Instance.PlaceUnitCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx, ne.GridPosIdx, BattleManager.Instance.CurUnitCamp);
                 
 
             }
@@ -1752,7 +1752,8 @@ namespace RoundHero
 
                     var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.ID];
 
-                    var time = unit.Run(moveActionData);
+                    var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
+                    unit.Run(moveActionData);
                     GameUtility.DelayExcute(time, () =>
                     {
                         BattleManager.Instance.TempTriggerData.Reset();
@@ -1781,7 +1782,8 @@ namespace RoundHero
                     var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.ID];
                     
 
-                    var time = unit.Run(moveActionData);
+                    var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
+                    unit.Run(moveActionData);
                     GameUtility.DelayExcute(time, () => { BattleManager.Instance.Refresh(); });
 
                     RefreshObstacles();
@@ -1799,7 +1801,7 @@ namespace RoundHero
             }
             else if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
             {
-                var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
+                var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
                 if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
                 {
                     var gridEntity = GetGridEntityByGridPosIdx(ne.GridPosIdx);

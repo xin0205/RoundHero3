@@ -215,8 +215,8 @@ namespace RoundHero
             }
  
             BattleManager.Instance.BattleState = EBattleState.UseCard;
-            BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID].UseCardAnimation();
-            BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
+            BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx].UseCardAnimation();
+            BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
             
             if (battleState == EBattleState.MoveGrid)
             {

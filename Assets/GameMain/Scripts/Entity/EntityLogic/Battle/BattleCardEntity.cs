@@ -1,8 +1,7 @@
-﻿using System;
+﻿
 using DG.Tweening;
 using GameFramework.Event;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -35,6 +34,7 @@ namespace RoundHero
         private Rect rect;
         private bool isInside;
         private bool isHand;
+        public int HandSortingOrder;
 
         //public int RawSiblingIdx;
 
@@ -211,6 +211,7 @@ namespace RoundHero
         
         public void UseCardAnimation(int gridPosIdx = -1)
         {
+            ActionGO.SetActive(false);
             isInside = false;
             isHand = false;
             BattleCardManager.Instance.PointerCardIdx = -1;
@@ -475,7 +476,7 @@ namespace RoundHero
             
             BattleManager.Instance.BattleState = EBattleState.TacticSelectUnit;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
-            BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID = BattleCardEntityData.CardIdx;
+            BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = BattleCardEntityData.CardIdx;
             
         }
     }

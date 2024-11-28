@@ -52,7 +52,7 @@ namespace RoundHero
     {
         public TriggerBuffType TriggerBuffType;
         // public EBuffID BuffID;
-        public int CardID;
+        public int CardIdx;
         public Data_EnergyBuff EnergyBuffData = new Data_EnergyBuff();
 
         public TriggerBuffData Copy()
@@ -229,6 +229,8 @@ namespace RoundHero
                 // }
                 PostTrigger(triggerData, triggerDatas);
             }
+
+            triggerData.BuffTriggerType = buffTriggerType;
 
             return triggerData;
         }
@@ -654,9 +656,9 @@ namespace RoundHero
         {
             if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.Card)
             {
-                BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID]
+                BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx]
                     .UseCardAnimation(gridPosIdx);
-                BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID, unitID);
+                BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx, unitID);
             }
             else if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.EnergyBuff)
             {

@@ -420,28 +420,47 @@ namespace RoundHero
 
                 var effectName = "EffectAttackEntity";
                 var effectPos = EffectAttackPos.position;
-                switch (UnitAttackCastType)
+                if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
+                    triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
                 {
-                    case EAttackCastType.CloseSingle:
-                        effectName = "EffectCloseSingleAttackEntity";
-                        effectPos = EffectAttackPos.position;
-                        break;
-                    case EAttackCastType.CloseMulti:
-                        effectName = "EffectCloseMultiAttackEntity";
-                        effectPos = EffectHurtPos.position;
-                        break;
-                    case EAttackCastType.RemoteSingle:
-                        break;
-                    case EAttackCastType.RemoteMulti:
-                        break;
-                    default:
-                        break;
+                    effectName = "EffectCloseSingleAttackEntity";
+                    effectPos = EffectAttackPos.position;
+                }
+                else
+                {
+                    switch (UnitAttackCastType)
+                    {
+                        case EAttackCastType.CloseSingle:
+                            effectName = "EffectCloseSingleAttackEntity";
+                            effectPos = EffectAttackPos.position;
+                            break;
+                        case EAttackCastType.CloseMulti:
+                            effectName = "EffectCloseMultiAttackEntity";
+                            effectPos = EffectHurtPos.position;
+                            break;
+                        case EAttackCastType.RemoteSingle:
+                            break;
+                        case EAttackCastType.RemoteMulti:
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 
+
                 effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
                 
                 var pos = effectUnit.Position;
                 effectAttackEntity.transform.LookAt(new Vector3(pos.x, effectAttackEntity.transform.position.y, pos.z));
+                if (!effectAttackEntity.AutoHide)
+                {
+                    GameUtility.DelayExcute(1f, () =>
+                    {
+                        GameEntry.Entity.HideEntity(effectAttackEntity);
+                    });
+                }
+                
+                
             }
             
 
@@ -475,7 +494,14 @@ namespace RoundHero
             //SetAction(EUnitActionState.Dodge);
         }
 
-        public float Move(EUnitActionState unitActionState, MoveActionData moveActionData)
+        public float GetMoveTime(EUnitActionState unitActionState, MoveActionData moveActionData)
+        {
+            var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
+            var moveCount = moveGridPosIdxs.Count > 1 ? moveGridPosIdxs.Count - 1 : 1;
+            return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
+        }
+
+        public void Move(EUnitActionState unitActionState, MoveActionData moveActionData)
         {
             IsMove = true;
             //SetAction(unitActionState);
@@ -544,20 +570,27 @@ namespace RoundHero
                     GridPosIdx = moveGridPosIdxs[moveGridPosIdxs.Count - 1];
                 }
                 IsMove = false;
+                //BattleManager.Instance.Refresh();
+                
+                BattleUnitManager.Instance.RefreshDamageState();
+                GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+                GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
             });
 
-            return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
+            //return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
         }
         
-        public float Run(MoveActionData moveActionData)
+        public void Run(MoveActionData moveActionData)
         {
-            return Move(EUnitActionState.Run, moveActionData);
+            //return
+            Move(EUnitActionState.Run, moveActionData);
 
         }
         
-        public float Fly(MoveActionData moveActionData)
+        public void Fly(MoveActionData moveActionData)
         {
-            return Move(EUnitActionState.Fly, moveActionData);
+            //return
+            Move(EUnitActionState.Fly, moveActionData);
 
         }
         
@@ -596,7 +629,7 @@ namespace RoundHero
             
         }
 
-        protected void CloseMultiAttack()
+        public void CloseMultiAttack()
         {
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialAttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
@@ -605,11 +638,10 @@ namespace RoundHero
             {
                 animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
-                GameEntry.Entity.HideEntity(effectAttackEntity);
             });
         }
         
-        protected void CloseSingleAttack()
+        public void CloseSingleAttack()
         {
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);

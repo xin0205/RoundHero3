@@ -49,6 +49,7 @@ namespace RoundHero
             public static int EachHardCardCount = 5;
 
             public static int InitCardMaxCount = 12;
+            public static int CollisionHurt = -1;
 
             public static Dictionary<EUnitStateEffectType, List<EUnitState>> EffectUnitStates =
                 new ()

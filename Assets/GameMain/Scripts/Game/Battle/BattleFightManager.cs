@@ -31,14 +31,26 @@ namespace RoundHero
     {
         public int UnitID;
         public EUnitActionState UnitActionState = EUnitActionState.Empty;
-        public int TargetGridPosIdx;
+        //public int TargetGridPosIdx;
         public MoveActionData MoveActionData;
+        //public EFlyType FlyType = EFlyType.Empty;
+
+        public MoveUnitData Copy()
+        {
+            var moveUnitData = new MoveUnitData();
+            moveUnitData.UnitID = UnitID;
+            moveUnitData.UnitActionState = UnitActionState;
+            //moveUnitData.FlyType = FlyType;
+            moveUnitData.MoveActionData = MoveActionData.Copy();
+
+            return moveUnitData;
+        }
     
     }
     
     public class MoveData
     {
-        public EFlyType FlyType = EFlyType.Empty;
+        
         public Dictionary<int, MoveUnitData> MoveUnitDatas = new Dictionary<int, MoveUnitData>();
 
     }
@@ -138,6 +150,7 @@ namespace RoundHero
         public float Value;
         public float DeltaValue;
         public ETriggerResult TriggerResult = ETriggerResult.Continue;
+        public EBuffTriggerType BuffTriggerType = EBuffTriggerType.Empty;
 
         public bool ChangeHPInstantly = false;
         //public bool AddHeroHP = true;
@@ -159,7 +172,7 @@ namespace RoundHero
             triggerData.DeltaValue = DeltaValue;
             triggerData.TriggerResult = TriggerResult;
             triggerData.ChangeHPInstantly = ChangeHPInstantly;
-
+            triggerData.BuffTriggerType = BuffTriggerType;
             return triggerData;
         }
     }
@@ -397,12 +410,12 @@ namespace RoundHero
 
                 if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.Card)
                 {
-                    BattleCardManager.Instance.CacheTacticCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID,
+                    BattleCardManager.Instance.CacheTacticCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
                         BattleManager.Instance.CurUnitCamp, effectUnit);
                 }
                 else if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.EnergyBuff)
                 {
-                    BattleCardManager.Instance.CacheTacticCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID,
+                    BattleCardManager.Instance.CacheTacticCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
                         BattleManager.Instance.CurUnitCamp, effectUnit);
                 }
 
@@ -860,7 +873,7 @@ namespace RoundHero
             var moveActionDatas = new Dictionary<int, MoveActionData>();
             
             //var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
-            actionData.MoveData.FlyType = buffData.FlyType;
+            
 
             if (effectUnit == null &&
                 (buffData.FlyType != EFlyType.SelfCross))
@@ -1648,7 +1661,7 @@ namespace RoundHero
                     passUnit.RemoveState(EUnitState.HurtEachMove);
                 }
 
-                if (bePassUnit != null)
+                if (bePassUnit != null && nextGridPosIdx != preGridPosIdx)
                 {
                     BattleUnitStateManager.Instance.HurtRoundStartMoveTrigger(passUnit.ID, bePassUnit.ID, triggerDatas);
 
@@ -1711,11 +1724,11 @@ namespace RoundHero
                 if (nextGridPosIdx == preGridPosIdx && bePassUnit != null)
                 {
                     var collisionTriggerData = BattleFightManager.Instance.BattleRoleAttribute(unitID, unitID,
-                        bePassUnit.ID, EUnitAttribute.HP, -1, ETriggerDataSubType.Unit);
+                        bePassUnit.ID, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
                     BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData, triggerDatas);
                     
                     var collisionTriggerData2 = BattleFightManager.Instance.BattleRoleAttribute(bePassUnit.ID, bePassUnit.ID,
-                        unitID, EUnitAttribute.HP, -1, ETriggerDataSubType.Unit);
+                        unitID, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
                     BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData2, triggerDatas);
                 }
                 
@@ -3336,16 +3349,21 @@ namespace RoundHero
             
             var moveTime = 0f;
             var maxMoveTime = 0f;
+            
+            BattleBulletManager.Instance.AddMoveActionData(unitKeys[AcitonUnitIdx], actionData.MoveData);
             foreach (var kv in actionData.MoveData.MoveUnitDatas)
             {
-                if (kv.Value.UnitActionState == EUnitActionState.Fly)
-                {
-                    moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Fly(kv.Value.MoveActionData);
-                }
-                else if (kv.Value.UnitActionState == EUnitActionState.Run)
-                {
-                    moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Run(kv.Value.MoveActionData);
-                }
+                var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(kv.Value.UnitID);
+                moveTime = effectUnitEntity.GetMoveTime(kv.Value.UnitActionState, kv.Value.MoveActionData);
+                
+                // if (kv.Value.UnitActionState == EUnitActionState.Fly)
+                // {
+                //     moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Fly(kv.Value.MoveActionData);
+                // }
+                // else if (kv.Value.UnitActionState == EUnitActionState.Run)
+                // {
+                //     moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Run(kv.Value.MoveActionData);
+                // }
 
                 if (moveTime > maxMoveTime)
                 {
@@ -3453,7 +3471,10 @@ namespace RoundHero
 
             if (moveActionData.MoveGridPosIdxs.Count > 1)
             {
-                runTime = BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Run(moveActionData);
+                var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(unitKeys[AcitonUnitIdx]);
+                runTime = effectUnitEntity.GetMoveTime(EUnitActionState.Run, moveActionData);
+                effectUnitEntity.Run(moveActionData);
+                //runTime = BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Run(moveActionData);
             }
 
             AcitonUnitIdx++;
@@ -3506,16 +3527,21 @@ namespace RoundHero
             
             var moveTime = 0f;
             var maxMoveTime = 0f;
+            BattleBulletManager.Instance.AddMoveActionData(unitID, actionData.MoveData);
             foreach (var kv in actionData.MoveData.MoveUnitDatas)
             {
-                if (kv.Value.UnitActionState == EUnitActionState.Fly)
-                {
-                    moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Fly(kv.Value.MoveActionData);
-                }
-                else if (kv.Value.UnitActionState == EUnitActionState.Run)
-                {
-                    moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Run(kv.Value.MoveActionData);
-                }
+                var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(kv.Value.UnitID);
+                moveTime = effectUnitEntity.GetMoveTime(kv.Value.UnitActionState, kv.Value.MoveActionData);
+                //effectUnitEntity.Run(kv.Value.MoveActionData);
+                
+                // if (kv.Value.UnitActionState == EUnitActionState.Fly)
+                // {
+                //     moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Fly(kv.Value.MoveActionData);
+                // }
+                // else if (kv.Value.UnitActionState == EUnitActionState.Run)
+                // {
+                //     moveTime = BattleUnitManager.Instance.BattleUnitEntities[kv.Value.UnitID].Run(kv.Value.MoveActionData);
+                // }
 
                 if (moveTime > maxMoveTime)
                 {
@@ -3837,18 +3863,24 @@ namespace RoundHero
                 if (triggerData.ActionUnitID != -1 && triggerData.EffectUnitID != triggerData.ActionUnitID)
                 {
                     var actionUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.ActionUnitID);
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
                     Log.Debug("ActionUnitID:" + triggerData.ActionUnitID);
                     if (!(!triggerData.ChangeHPInstantly && HeroManager.Instance.IsHero(triggerData.EffectUnitID)))
                     {
-                        if (actionUnit.ID == moveUnitID)
+                        //actionUnit.Hurt();
+
+                        if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
                         {
-                            actionUnit.Attack();
+                            effectUnit.Hurt();
+                            TriggerAction(triggerData);
                         }
                         else
                         {
-                            actionUnit.Attack();
+                            actionUnit.CloseSingleAttack();
+                            //effectUnit.Hurt();
+                            BattleBulletManager.Instance.AddTriggerData(triggerData);
                         }
-                        
+
                     }
                 }
                 
@@ -3857,7 +3889,7 @@ namespace RoundHero
                 //     unit.Dead();
                 // }
                 
-                TriggerAction(triggerData);
+                
             }
             GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
@@ -4564,19 +4596,15 @@ namespace RoundHero
                 retGetRange.Add(battleUnitData.GridPosIdx);
                 var intersectList = GameUtility.GetActionGridPosIdxs(battleUnitData.GridPosIdx, enemyData.MoveType,
                     buffData.TriggerRange, retGetRange, retGetRange2, true);
-                
 
+                var isFindPath = false;
+                    
                 for (int i = 0; i < intersectList.Count; i++)
                 {
                     var intersectGridPosIdx = intersectList[i];
 
                     if (curObstacleMask[intersectGridPosIdx] == EGridType.Obstacle)
                     {
-                        if (i == intersectList.Count - 1)
-                        {
-                            SearchPath(curObstacleMask, actionUnitID, battleUnitData.GridPosIdx,
-                                playerData.BattleHero.GridPosIdx, movePaths, enemyData.MoveType.ToString().Contains("Direct8"));
-                        }
                         continue;
                     }
                     
@@ -4588,13 +4616,12 @@ namespace RoundHero
                     
                     if (InObstacle(curObstacleMask, realPaths))
                     { 
-                        if (i == intersectList.Count - 1)
-                        {
-                            SearchPath(curObstacleMask, actionUnitID, battleUnitData.GridPosIdx,
-                                playerData.BattleHero.GridPosIdx, movePaths, enemyData.MoveType.ToString().Contains("Direct8"));
-                        }
+      
                         continue;
                     }
+                    
+                    // if(realTargetPosIdx == battleUnitData.GridPosIdx)
+                    //     continue;
                     
                     battleUnitData.GridPosIdx = realTargetPosIdx;
                     RefreshUnitGridPosIdx();
@@ -4604,11 +4631,7 @@ namespace RoundHero
                     {
                         battleUnitData.GridPosIdx = oriGridPosIdxs[actionUnitID];
                         RefreshUnitGridPosIdx();
-                        if (i == intersectList.Count - 1)
-                        {
-                            SearchPath(curObstacleMask, actionUnitID, battleUnitData.GridPosIdx,
-                                playerData.BattleHero.GridPosIdx, movePaths, enemyData.MoveType.ToString().Contains("Direct8"));
-                        }
+
                         continue;
                     }
                     
@@ -4618,8 +4641,17 @@ namespace RoundHero
                     RefreshUnitGridPosIdx();
                     
                     movePaths.Add(actionUnitID, realPaths);
+                    isFindPath = true;
                     break;
                 }
+                
+                if (!isFindPath)
+                {
+                    SearchPath(curObstacleMask, actionUnitID, battleUnitData.GridPosIdx,
+                        playerData.BattleHero.GridPosIdx, movePaths, enemyData.MoveType.ToString().Contains("Direct8"));
+                }
+
+                
             }
             
             RefreshPropMoveDirectUseInRound();
@@ -4988,6 +5020,13 @@ namespace RoundHero
                         break;
                 }
             }
+
+        
+        }
+        
+        public int GetCollisionHurt()
+        {
+            return Constant.Battle.CollisionHurt;
         }
         
 
