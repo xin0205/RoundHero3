@@ -138,7 +138,7 @@ namespace RoundHero
                 UseMoveActionData(actionUnitID, effectUnit.ID);
             }
             TriggerActionDatas[actionUnitID].Clear();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshView();
         }
 
         public Dictionary<int, TriggerActionData> GetTriggerDatas(int actionUnitID)

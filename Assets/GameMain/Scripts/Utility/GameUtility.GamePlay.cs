@@ -946,7 +946,7 @@ namespace RoundHero
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionGridPosIdx);
             var heroCoord = GameUtility.GridPosIdxToCoord(HeroManager.Instance.BattleHeroData.GridPosIdx);
-
+    
             if (!isExtendActionType)
             {
                 return actionGridPosIdx;

@@ -93,6 +93,12 @@ namespace RoundHero
         {
 
             BattleFightManager.Instance.CacheRoundFightData();
+            RefreshView();
+        }
+        
+        public void RefreshView()
+        {
+
             BattleUnitManager.Instance.RefreshDamageState();
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
             GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
@@ -206,11 +212,11 @@ namespace RoundHero
                 var addHP = -deltaHPNoDefense;
                 if (unit.UnitCamp == BattleManager.Instance.CurUnitCamp &&
                     gamePlayData.BlessCount(EBlessID.DefenseToHP, BattleManager.Instance.CurUnitCamp) > 0)
-
+            
                 {
                     addHP += useDefenseCount;
                 }
-
+            
                 var battlePlayerData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
                 // if (unit.UnitCamp == BattleManager.Instance.CurUnitCamp &&
                 //     battlePlayerData != null && 

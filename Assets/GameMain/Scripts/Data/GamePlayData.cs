@@ -674,6 +674,7 @@ namespace RoundHero
             dataBattleHero.RoundUnitState = RoundUnitState.Copy();
             dataBattleHero.HurtTimes = HurtTimes;
             dataBattleHero.UnitCamp = UnitCamp;
+            dataBattleHero.AddHeroHP = AddHeroHP;
             //dataBattleHero.RoundHeroHPDelta = RoundHeroHPDelta;
             return dataBattleHero;
 
@@ -798,6 +799,7 @@ namespace RoundHero
             dataBattleUnit.HurtTimes = HurtTimes;
             dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
             dataBattleUnit.UnitCamp = UnitCamp;
+            dataBattleUnit.AddHeroHP = AddHeroHP;
             return dataBattleUnit;
 
         }
@@ -920,6 +922,7 @@ namespace RoundHero
             dataBattleEnemy.RoundUnitState = RoundUnitState.Copy();
             dataBattleEnemy.HurtTimes = HurtTimes;
             dataBattleEnemy.UnitCamp = UnitCamp;
+            dataBattleEnemy.AddHeroHP = AddHeroHP;
             return dataBattleEnemy;
 
         }

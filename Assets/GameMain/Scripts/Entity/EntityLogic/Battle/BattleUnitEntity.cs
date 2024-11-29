@@ -407,7 +407,7 @@ namespace RoundHero
             
         }
 
-        private EffectEntity effectAttackEntity;
+        //private EffectEntity effectAttackEntity;
         private async void ShowEffectAttackEntity()
         {
             var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerDatas(this.BattleUnitData.ID);
@@ -448,7 +448,7 @@ namespace RoundHero
                 }
                 
 
-                effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
+                var effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
                 
                 var pos = effectUnit.Position;
                 effectAttackEntity.transform.LookAt(new Vector3(pos.x, effectAttackEntity.transform.position.y, pos.z));
@@ -572,9 +572,8 @@ namespace RoundHero
                 IsMove = false;
                 //BattleManager.Instance.Refresh();
                 
-                BattleUnitManager.Instance.RefreshDamageState();
-                GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
-                GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
+                BattleManager.Instance.RefreshView();
+
             });
 
             //return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
@@ -710,7 +709,7 @@ namespace RoundHero
             
             
             //SetAction(EUnitActionState.Dead);
-            GameUtility.DelayExcute(1.5f, () =>
+            GameUtility.DelayExcute(5f, () =>
             {
                 GameEntry.Entity.HideEntity(this);
             });
@@ -730,7 +729,7 @@ namespace RoundHero
         private async void ShowEffectHurtEntity()
         {
             var effectHurt = await GameEntry.Entity.ShowEffectEntityAsync("EffectHurtEntity", EffectHurtPos.position);
-            effectHurt.transform.parent = EffectHurtPos;
+            //effectHurt.transform.parent = EffectHurtPos;
         }
 
         public void Hurt()
@@ -751,15 +750,15 @@ namespace RoundHero
             
             
 
-            // if (CurHP == 0)
-            // {
-            //     CurHP = -1;
-            //     GameUtility.DelayExcute(1.5f, () =>
-            //     {
-            //         Dead();
-            //     });
-            //    
-            // }
+            if (CurHP == 0)
+            {
+                CurHP = -1;
+                GameUtility.DelayExcute(1.5f, () =>
+                {
+                    Dead();
+                });
+               
+            }
             
         }
         
