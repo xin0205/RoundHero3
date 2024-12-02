@@ -30,11 +30,11 @@ namespace RoundHero
 
         }
 
-        public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = false, bool changeHPInstantly = false)
-        {
-            HeroManager.Instance.ChangeHP(changeHP, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
-            await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleHeroEntityData.BattleHeroData.GridPosIdx, changeHP);
-        }
+        // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = false, bool changeHPInstantly = false)
+        // {
+        //     HeroManager.Instance.ChangeHP(changeHP, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
+        //     await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleHeroEntityData.BattleHeroData.GridPosIdx, changeHP);
+        // }
         
         
     }

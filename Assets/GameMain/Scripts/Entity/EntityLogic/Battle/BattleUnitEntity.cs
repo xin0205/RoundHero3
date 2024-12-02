@@ -1,6 +1,10 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DG.Tweening;
+using GameFramework;
 using RPGCharacterAnims;
 using RPGCharacterAnims.Actions;
 using RPGCharacterAnims.Lookups;
@@ -29,6 +33,8 @@ namespace RoundHero
         public Transform EffectHurtPos;
         public Transform EffectAttackPos;
         public EAttackCastType UnitAttackCastType;
+
+        protected Queue<int> hurtQueue = new Queue<int>();
         
         
         public Vector3 Position
@@ -327,8 +333,8 @@ namespace RoundHero
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
             RefreshRoatation();
-            
-            
+            ShowHurts();
+
         }
         
         // public void SetAction(EUnitActionState actionState)
@@ -384,9 +390,9 @@ namespace RoundHero
             
         }
         
-        public void Hit()
+        public async void Hit()
         {
-            ShowEffectAttackEntity();
+            await ShowEffectAttackEntity();
 
             BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.ID);
         }
@@ -408,62 +414,151 @@ namespace RoundHero
         }
 
         //private EffectEntity effectAttackEntity;
-        private async void ShowEffectAttackEntity()
+        private async Task ShowEffectAttackEntity()
         {
             var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerDatas(this.BattleUnitData.ID);
-            var effectIDs = triggerActionDataDict.Keys.ToList();
-            var triggerActionDatas = triggerActionDataDict.Values.ToList();
-            for (int i = 0; i < effectIDs.Count; i++)
+            switch (UnitAttackCastType)
             {
-                var triggerActionData = triggerActionDatas[i];
-                var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerActionData.TriggerData.EffectUnitID);
-
-                var effectName = "EffectAttackEntity";
-                var effectPos = EffectAttackPos.position;
-                if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
-                    triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
-                {
-                    effectName = "EffectCloseSingleAttackEntity";
-                    effectPos = EffectAttackPos.position;
-                }
-                else
-                {
-                    switch (UnitAttackCastType)
-                    {
-                        case EAttackCastType.CloseSingle:
-                            effectName = "EffectCloseSingleAttackEntity";
-                            effectPos = EffectAttackPos.position;
-                            break;
-                        case EAttackCastType.CloseMulti:
-                            effectName = "EffectCloseMultiAttackEntity";
-                            effectPos = EffectHurtPos.position;
-                            break;
-                        case EAttackCastType.RemoteSingle:
-                            break;
-                        case EAttackCastType.RemoteMulti:
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                
-
-                var effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
-                
-                var pos = effectUnit.Position;
-                effectAttackEntity.transform.LookAt(new Vector3(pos.x, effectAttackEntity.transform.position.y, pos.z));
-                if (!effectAttackEntity.AutoHide)
-                {
-                    GameUtility.DelayExcute(1f, () =>
-                    {
-                        GameEntry.Entity.HideEntity(effectAttackEntity);
-                    });
-                }
-                
-                
+                case EAttackCastType.CloseSingle:
+                    ShowEffectAttackEntity_CloseSingle(triggerActionDataDict);
+                    break;
+                case EAttackCastType.CloseMulti:
+                    ShowEffectAttackEntity_CloseMulti(triggerActionDataDict);
+                    break;
+                case EAttackCastType.RemoteSingle:
+                    break;
+                case EAttackCastType.RemoteMulti:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             
+            // var effectIDs = triggerActionDataDict.Keys.ToList();
+            // var triggerActionDatas = triggerActionDataDict.Values.ToList();
+            // for (int i = 0; i < effectIDs.Count; i++)
+            // {
+            //     var triggerActionData = triggerActionDatas[i];
+            //     var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerActionData.TriggerData.EffectUnitID);
+            //
+            //     var effectName = "EffectAttackEntity";
+            //     var effectPos = EffectAttackPos.position;
+            //     if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
+            //         triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+            //     {
+            //         effectName = "EffectCloseSingleAttackEntity";
+            //         effectPos = EffectAttackPos.position;
+            //     }
+            //     else
+            //     {
+            //         switch (UnitAttackCastType)
+            //         {
+            //             case EAttackCastType.CloseSingle:
+            //                 effectName = "EffectCloseSingleAttackEntity";
+            //                 effectPos = EffectAttackPos.position;
+            //                 break;
+            //             case EAttackCastType.CloseMulti:
+            //                 effectName = "EffectCloseMultiAttackEntity";
+            //                 effectPos = EffectHurtPos.position;
+            //                 break;
+            //             case EAttackCastType.RemoteSingle:
+            //                 break;
+            //             case EAttackCastType.RemoteMulti:
+            //                 break;
+            //             default:
+            //                 break;
+            //         }
+            //     }
+            //     
+            //
+            //     var effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
+            //     
+            //     var pos = effectUnit.Position;
+            //     effectAttackEntity.transform.LookAt(new Vector3(pos.x, effectAttackEntity.transform.position.y, pos.z));
+            //     if (!effectAttackEntity.AutoHide)
+            //     {
+            //         GameUtility.DelayExcute(1f, () =>
+            //         {
+            //             GameEntry.Entity.HideEntity(effectAttackEntity);
+            //         });
+            //     }
+            //     
+            //     
+            // }
+            
 
+        }
+        
+        private async void ShowEffectAttackEntity_CloseSingle(GameFrameworkMultiDictionary<int, TriggerActionData> triggerActionDataDict)
+        {
+            var effectName = "EffectCloseSingleAttackEntity";
+            var effectPos = EffectHurtPos.position;
+
+            foreach (var kv in triggerActionDataDict)
+            {
+                foreach (var triggerActionData in kv.Value)
+                {
+                    
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerActionData.TriggerData.EffectUnitID);
+                    
+                    if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
+                        triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+                    {
+                        effectName = "EffectCloseSingleAttackEntity";
+                        effectPos = EffectAttackPos.position;
+                    }
+
+                    
+                    ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                }
+            }
+        }
+
+        private async void ShowEffectAttackEntity_CloseMulti(GameFrameworkMultiDictionary<int, TriggerActionData> triggerActionDataDict)
+        {
+            var effectName = "EffectCloseMultiAttackEntity";
+            var effectPos = EffectHurtPos.position;
+
+            foreach (var kv in triggerActionDataDict)
+            {
+                foreach (var triggerActionData in kv.Value)
+                {
+                    
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerActionData.TriggerData.EffectUnitID);
+                    
+                    if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
+                        triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+                    {
+                        effectName = "EffectCloseSingleAttackEntity";
+                        effectPos = EffectAttackPos.position;
+                    }
+
+                    
+                    
+                    
+                    
+                    
+                    
+                    ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                }
+            }
+        }
+
+        private async void ShowEffectAttackEntity(string effectName, Vector3 effectPos, Vector3 lookAtPos)
+        {
+            var effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
+
+            if (lookAtPos != Vector3.zero)
+            {
+                effectAttackEntity.transform.LookAt(new Vector3(lookAtPos.x, effectAttackEntity.transform.position.y, lookAtPos.z));
+            }
+            
+            if (!effectAttackEntity.AutoHide)
+            {
+                GameUtility.DelayExcute(1f, () =>
+                {
+                    GameEntry.Entity.HideEntity(effectAttackEntity);
+                });
+            }
         }
         
         public void FootL()
@@ -573,7 +668,7 @@ namespace RoundHero
                 //BattleManager.Instance.Refresh();
                 
                 BattleManager.Instance.RefreshView();
-
+                BattleAreaManager.Instance.RefreshObstacles();
             });
 
             //return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
@@ -774,11 +869,29 @@ namespace RoundHero
         {
             BattleManager.Instance.ChangeHP(BattleUnitData, changeHP, GamePlayManager.Instance.GamePlayData,
                 EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
+            AddHurts(changeHP);
         }
 
         public void UpdatePos(Vector3 pos)
         {
             Position = pos;
+        }
+
+        protected void AddHurts(int hurt)
+        {
+            hurtQueue.Enqueue(hurt);
+        }
+
+        private float showHurtTime = 0f;
+        protected async void ShowHurts()
+        {
+            showHurtTime += Time.deltaTime;
+            if (showHurtTime > 0.4f && hurtQueue.Count > 0)
+            {
+                showHurtTime = 0;
+                var hurt = hurtQueue.Dequeue();
+                await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
+            }
         }
     }
 }

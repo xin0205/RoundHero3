@@ -13,7 +13,7 @@ namespace RoundHero
     
     public class BattleBulletManager : Singleton<BattleBulletManager>
     {
-        public Dictionary<int, Dictionary<int, TriggerActionData>> TriggerActionDatas =
+        public Dictionary<int, GameFrameworkMultiDictionary<int, TriggerActionData>> TriggerActionDatas =
             new ();
 
 
@@ -25,23 +25,22 @@ namespace RoundHero
             
             if (!TriggerActionDatas.ContainsKey(triggerData.ActionUnitID))
             {
-                TriggerActionDatas.Add(triggerData.ActionUnitID, new Dictionary<int, TriggerActionData>());
+                TriggerActionDatas.Add(triggerData.ActionUnitID, new GameFrameworkMultiDictionary<int, TriggerActionData>());
             } 
             
-            TriggerActionData triggerActionData;
-            if (!TriggerActionDatas[triggerData.ActionUnitID].ContainsKey(triggerData.EffectUnitID))
-            {
-                triggerActionData = new TriggerActionData();
-                TriggerActionDatas[triggerData.ActionUnitID].Add(triggerData.EffectUnitID, triggerActionData);
-            }
-            else
-            {
-                triggerActionData = TriggerActionDatas[triggerData.ActionUnitID][triggerData.EffectUnitID];
-            }
             
+            // if (!TriggerActionDatas[triggerData.ActionUnitID].Contains(triggerData.EffectUnitID))
+            // {
+            //     TriggerActionDatas[triggerData.ActionUnitID].Add(triggerData.EffectUnitID, triggerActionDatas);
+            // }
+            // else
+            // {
+            //     triggerActionData = TriggerActionDatas[triggerData.ActionUnitID][triggerData.EffectUnitID];
+            // }
             
+            var triggerActionData = new TriggerActionData();
             triggerActionData.TriggerData = triggerData.Copy();
-            TriggerActionDatas[triggerData.ActionUnitID][triggerData.EffectUnitID] = triggerActionData;
+            TriggerActionDatas[triggerData.ActionUnitID].Add(triggerData.EffectUnitID, triggerActionData);
         }
         
         public void AddMoveActionData(int actionUnitID, MoveData moveData)
@@ -54,22 +53,22 @@ namespace RoundHero
                 if (!TriggerActionDatas.ContainsKey(kv.Key))
                 {
                 
-                    TriggerActionDatas.Add(kv.Key, new Dictionary<int, TriggerActionData>());
+                    TriggerActionDatas.Add(kv.Key, new GameFrameworkMultiDictionary<int, TriggerActionData>());
                 }
                 
-                TriggerActionData triggerActionData;
-                if (!TriggerActionDatas[actionUnitID].ContainsKey(kv.Key))
-                {
-                    triggerActionData = new TriggerActionData();
-                    TriggerActionDatas[actionUnitID].Add(kv.Key, triggerActionData);
-                }
-                else
-                {
-                    triggerActionData = TriggerActionDatas[actionUnitID][kv.Key];
-                }
+                var triggerActionData = new TriggerActionData();
+                // if (!TriggerActionDatas[actionUnitID].Contains(kv.Key))
+                // {
+                //     triggerActionData = new TriggerActionData();
+                //     TriggerActionDatas[actionUnitID].Add(kv.Key, triggerActionData);
+                // }
+                // else
+                // {
+                //     triggerActionData = TriggerActionDatas[actionUnitID][kv.Key];
+                // }
 
                 triggerActionData.MoveUnitData = kv.Value.Copy();
-                TriggerActionDatas[actionUnitID][kv.Key] = triggerActionData;
+                TriggerActionDatas[actionUnitID].Add(kv.Key, triggerActionData);
             }
             
         }
@@ -81,44 +80,59 @@ namespace RoundHero
                 return;
             }
             
-            if (!TriggerActionDatas[actionUnitID].ContainsKey(effectUnitID))
+            if (!TriggerActionDatas[actionUnitID].Contains(effectUnitID))
             {
                 return;
             }
             
-            var moveActionData = TriggerActionDatas[actionUnitID][effectUnitID];
-            if (moveActionData.MoveUnitData == null)
-            {
-                return;
-            }
-            
-            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(effectUnitID);
+            var moveActionDatas = TriggerActionDatas[actionUnitID][effectUnitID];
 
-            if (moveActionData.MoveUnitData.UnitActionState == EUnitActionState.Fly)
+            foreach (var moveActionData in moveActionDatas)
             {
-                effectUnitEntity.Fly(moveActionData.MoveUnitData.MoveActionData);
+                if (moveActionData.MoveUnitData == null)
+                {
+                    return;
+                }
+            
+                var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(effectUnitID);
+
+                if (moveActionData.MoveUnitData.UnitActionState == EUnitActionState.Fly)
+                {
+                    effectUnitEntity.Fly(moveActionData.MoveUnitData.MoveActionData);
+                }
+                else if (moveActionData.MoveUnitData.UnitActionState == EUnitActionState.Run)
+                {
+                    effectUnitEntity.Run(moveActionData.MoveUnitData.MoveActionData);
+                }
             }
-            else if (moveActionData.MoveUnitData.UnitActionState == EUnitActionState.Run)
-            {
-                effectUnitEntity.Run(moveActionData.MoveUnitData.MoveActionData);
-            }
+            
+            
 
             
         }
 
         public void UseTriggerData(int actionUnitID, int effectUnitID)
         {
+
+            
             if (!TriggerActionDatas.ContainsKey(actionUnitID))
             {
                 return;
             }
             
-            if (!TriggerActionDatas[actionUnitID].ContainsKey(effectUnitID))
+            if (!TriggerActionDatas[actionUnitID].Contains(effectUnitID))
             {
                 return;
             }
+            
+            var moveActionDatas = TriggerActionDatas[actionUnitID][effectUnitID];
+            
+            foreach (var moveActionData in moveActionDatas)
+            {
+                BattleFightManager.Instance.TriggerAction(moveActionData.TriggerData);
+            }
 
-            BattleFightManager.Instance.TriggerAction(TriggerActionDatas[actionUnitID][effectUnitID].TriggerData);
+            
             
 
         }
@@ -141,7 +155,7 @@ namespace RoundHero
             BattleManager.Instance.RefreshView();
         }
 
-        public Dictionary<int, TriggerActionData> GetTriggerDatas(int actionUnitID)
+        public GameFrameworkMultiDictionary<int, TriggerActionData> GetTriggerDatas(int actionUnitID)
         {
             if (!TriggerActionDatas.ContainsKey(actionUnitID))
             {

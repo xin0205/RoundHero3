@@ -132,6 +132,7 @@ namespace RoundHero
             BattleUnitManager.Instance.BattleUnitEntities.Remove(soliderID);
             
             RefreshSoliderEntities();
+            BattleAreaManager.Instance.RefreshObstacles();
         }
         
         public int GetAttackInRoundCount()

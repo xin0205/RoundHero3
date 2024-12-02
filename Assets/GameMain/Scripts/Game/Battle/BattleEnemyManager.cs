@@ -257,7 +257,7 @@ namespace RoundHero
             BattleAreaManager.Instance.MoveGrids.Remove(enemyID);
             
             //RefreshEnemyEntities();
-
+            BattleAreaManager.Instance.RefreshObstacles();
         }
 
         // public bool InEnemyPaths(int gridPosIdx)

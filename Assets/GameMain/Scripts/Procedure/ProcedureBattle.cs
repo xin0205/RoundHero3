@@ -48,9 +48,10 @@ namespace RoundHero
             PVEManager.Instance.BattleState = EBattleState.UseCard;
             BattleCardManager.Instance.RoundAcquireCards(true);
                 
-                
+            BattleAreaManager.Instance.RefreshObstacles();    
             BattleManager.Instance.RoundStartTrigger();
             BattleManager.Instance.Refresh();
+            
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
             GameUtility.DelayExcute(1.5f, () =>
             {

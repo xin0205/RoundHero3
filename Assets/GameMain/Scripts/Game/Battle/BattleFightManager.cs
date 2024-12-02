@@ -3579,25 +3579,24 @@ namespace RoundHero
         {
             foreach (var kv in triggerDatas)
             {
-                
-                
-                foreach (var triggerData in kv.Value)
+                for (int i = 0; i < kv.Value.Count; i++)
                 {
+                    var triggerData = kv.Value[i];
                     var effectUnit = GetUnitByID(triggerData.EffectUnitID);
                     if (effectUnit == null)
                         continue;
 
-                    if (!triggerDatas.ContainsKey(triggerData.EffectUnitID))
-                    {
-                        triggerDatas.Add(triggerData.EffectUnitID, new List<TriggerData>());
-                    }
+                    // if (!triggerDatas.ContainsKey(triggerData.EffectUnitID))
+                    // {
+                    //     triggerDatas.Add(triggerData.EffectUnitID, new List<TriggerData>());
+                    // }
                     
                     if (effectUnit.AddHeroHP > 0)
                     {
                         var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnit.UnitCamp);
                         var addHeroHPTriggerData = new TriggerData()
                         {
-                            //ActionUnitID = effectUnit.ID,
+                            ActionUnitID = triggerData.ActionUnitID,
                             EffectUnitID = playerData.BattleHero.ID,
                             TriggerDataType = ETriggerDataType.RoleAttribute,
                             BattleUnitAttribute = EUnitAttribute.HP,
@@ -3605,9 +3604,37 @@ namespace RoundHero
                             ChangeHPInstantly = true,
                         };
                         
-                        BattleBuffManager.Instance.CacheTriggerData(addHeroHPTriggerData, triggerDatas[effectUnit.ID]);
+                        BattleBuffManager.Instance.CacheTriggerData(addHeroHPTriggerData, triggerDatas[kv.Key]);
+                        effectUnit.AddHeroHP = 0;
                     }
                 }
+                // foreach (var triggerData in kv.Value)
+                // {
+                //     var effectUnit = GetUnitByID(triggerData.EffectUnitID);
+                //     if (effectUnit == null)
+                //         continue;
+                //
+                //     // if (!triggerDatas.ContainsKey(triggerData.EffectUnitID))
+                //     // {
+                //     //     triggerDatas.Add(triggerData.EffectUnitID, new List<TriggerData>());
+                //     // }
+                //     
+                //     if (effectUnit.AddHeroHP > 0)
+                //     {
+                //         var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnit.UnitCamp);
+                //         var addHeroHPTriggerData = new TriggerData()
+                //         {
+                //             //ActionUnitID = effectUnit.ID,
+                //             EffectUnitID = playerData.BattleHero.ID,
+                //             TriggerDataType = ETriggerDataType.RoleAttribute,
+                //             BattleUnitAttribute = EUnitAttribute.HP,
+                //             Value = effectUnit.AddHeroHP,
+                //             ChangeHPInstantly = true,
+                //         };
+                //         
+                //         BattleBuffManager.Instance.CacheTriggerData(addHeroHPTriggerData, triggerDatas[kv.Key]);
+                //     }
+                // }
             }
             
             

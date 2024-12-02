@@ -27,6 +27,10 @@ namespace RoundHero
 
             text.text = BattleHurtEntityData.Hurt < 0 ? BattleHurtEntityData.Hurt.ToString() :  "+" + BattleHurtEntityData.Hurt;
             text.color = BattleHurtEntityData.Hurt < 0 ? hurtColor : recoverColor;
+            GameUtility.DelayExcute(animation.clip.length, () =>
+            {
+                GameEntry.Entity.HideEntity(this);
+            });
         }
 
         

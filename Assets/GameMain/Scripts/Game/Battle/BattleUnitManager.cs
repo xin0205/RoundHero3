@@ -293,7 +293,8 @@ namespace RoundHero
                     solider.RoundAttackTimes = 0;
 
                 }
-                
+
+                kv.Value.BattleUnit.AddHeroHP = 0;
             }
         }
 
@@ -631,6 +632,8 @@ namespace RoundHero
 
            
         }
- 
+
+
+
     }
 }
