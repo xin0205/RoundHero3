@@ -387,6 +387,36 @@ namespace RoundHero
         
         public void Shoot()
         {
+            var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
+
+            for (int i = 1; i < Constant.Battle.ActionTypePoints[buffData[0].TriggerRange].Count; i++)
+            {
+                var range = Constant.Battle.ActionTypePoints[buffData[0].TriggerRange][i];
+                var bulletData = new BulletData();
+                
+                foreach (var deltaPos in range)
+                {
+                    var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
+                    var gridPosIdx = GameUtility.GridCoordToPosIdx(coord + deltaPos);
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
+                    
+                    bulletData.MoveGridPosIdxs.Add(gridPosIdx);
+                    if (effectUnit != null)
+                    {
+                        var triggerActionDatas =
+                            BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.ID, effectUnit.BattleUnit.ID);
+                        foreach (var triggerActionData in triggerActionDatas)
+                        {
+                            bulletData.TriggerDataDict.Add(gridPosIdx, triggerActionData.TriggerData);
+                        }
+                        
+                    }
+                    
+                }
+                
+                GameEntry.Entity.ShowBattleBulletEntityAsync(bulletData);
+                
+            }
             
         }
         
@@ -416,7 +446,7 @@ namespace RoundHero
         //private EffectEntity effectAttackEntity;
         private async Task ShowEffectAttackEntity()
         {
-            var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerDatas(this.BattleUnitData.ID);
+            var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerActionDatas(this.BattleUnitData.ID);
             switch (UnitAttackCastType)
             {
                 case EAttackCastType.CloseSingle:
@@ -428,6 +458,7 @@ namespace RoundHero
                 case EAttackCastType.RemoteSingle:
                     break;
                 case EAttackCastType.RemoteMulti:
+                    ShowEffectAttackEntity_RemoteMulti(triggerActionDataDict);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -543,6 +574,12 @@ namespace RoundHero
             }
         }
 
+        private async void ShowEffectAttackEntity_RemoteMulti(GameFrameworkMultiDictionary<int, TriggerActionData> triggerActionDataDict)
+        {
+            
+        }
+
+        
         private async void ShowEffectAttackEntity(string effectName, Vector3 effectPos, Vector3 lookAtPos)
         {
             var effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
@@ -716,11 +753,24 @@ namespace RoundHero
                 case EAttackCastType.RemoteSingle:
                     break;
                 case EAttackCastType.RemoteMulti:
+                    RemoteMultiAttack();
                     break;
                 default:
                     break;
             }
             
+        }
+        
+        public void RemoteMultiAttack()
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            GameUtility.DelayExcute(1f, () =>
+            {
+                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
+                animator.SetTrigger(AnimationParameters.Trigger);
+            });
         }
 
         public void CloseMultiAttack()
@@ -892,6 +942,12 @@ namespace RoundHero
                 var hurt = hurtQueue.Dequeue();
                 await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
             }
+        }
+
+        protected BulletData bulletData = new BulletData();
+        protected void AddBulletData()
+        {
+            
         }
     }
 }

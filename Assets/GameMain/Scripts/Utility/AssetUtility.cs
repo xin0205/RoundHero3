@@ -179,6 +179,11 @@ namespace RoundHero
             return "Assets/GameMain/Entities/Areas/RouteEntity.prefab";
         }
         
+        public static string GetBattleBulletPrefab()
+        {
+            return "Assets/GameMain/Entities/Bullet/Bullet1.prefab";
+        }
+        
         public static string GetBattleSoliderPrefab(int cardID)
         {
             return Utility.Text.Format("Assets/GameMain/Entities/Soliders/BattleSoliderEntity_0.prefab", cardID);

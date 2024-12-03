@@ -7,8 +7,7 @@ namespace RoundHero
     {
         public BattleSoliderEntityData BattleSoliderEntityData { get; protected set; }
 
-        
-        
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);

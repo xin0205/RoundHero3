@@ -186,7 +186,7 @@ namespace RoundHero
         Self,
         Around,//周围
        
-        Cross_Short,//短十字
+        Cross2Short,//短十字
         Cross2Long,//长十字
         Cross2Extend,//十字_发射
         UnitMaxDirect,

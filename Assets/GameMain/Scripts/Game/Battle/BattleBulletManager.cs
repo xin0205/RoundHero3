@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GameFramework;
 using UnityEngine;
 
@@ -155,7 +156,7 @@ namespace RoundHero
             BattleManager.Instance.RefreshView();
         }
 
-        public GameFrameworkMultiDictionary<int, TriggerActionData> GetTriggerDatas(int actionUnitID)
+        public GameFrameworkMultiDictionary<int, TriggerActionData> GetTriggerActionDatas(int actionUnitID)
         {
             if (!TriggerActionDatas.ContainsKey(actionUnitID))
             {
@@ -165,6 +166,20 @@ namespace RoundHero
             return TriggerActionDatas[actionUnitID];
         }
         
-        
+        public List<TriggerActionData> GetTriggerActionDatas(int actionUnitID, int effectUnitID)
+        {
+            var triggerDatas = GetTriggerActionDatas(actionUnitID);
+            if ( triggerDatas == null)
+            {
+                return null;
+            }
+
+            if (triggerDatas.TryGetValue(effectUnitID, out var triggerActionDatas))
+            {
+                return triggerActionDatas.ToList();
+            }
+
+            return null;
+        }
     }
 }

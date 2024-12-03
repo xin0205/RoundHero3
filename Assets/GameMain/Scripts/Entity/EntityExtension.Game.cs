@@ -238,5 +238,17 @@ namespace RoundHero
             
             return (EffectEntity)task.Logic;
         }
+        
+        public static async Task<BattleBulletEntity> ShowBattleBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData)
+        {
+            var data = ReferencePool.Acquire<BattleBulletEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), Vector3.zero, bulletData);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleBulletEntityData),
+                AssetUtility.GetBattleRoutePrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleBulletEntity)task.Logic;
+        }
     }
 }

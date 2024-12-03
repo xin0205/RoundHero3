@@ -50,6 +50,7 @@ namespace RoundHero
 
             public static int InitCardMaxCount = 12;
             public static int CollisionHurt = -1;
+            public static float BulletShootTime = 0.3f;
 
             public static Dictionary<EUnitStateEffectType, List<EUnitState>> EffectUnitStates =
                 new ()
@@ -150,7 +151,7 @@ namespace RoundHero
                         },
                     },
                     
-                    [EActionType.Cross_Short] = new List<List<Vector2Int>>()
+                    [EActionType.Cross2Short] = new List<List<Vector2Int>>()
                     {
                         new List<Vector2Int>()
                         {
@@ -903,7 +904,7 @@ namespace RoundHero
             {
                 [EUnitActionState.Run] = 0.5f,
                 [EUnitActionState.Fly] = 0.4f,
-
+                
             };
             
             
