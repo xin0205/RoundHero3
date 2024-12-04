@@ -6,7 +6,8 @@ namespace RoundHero
 {
     public class BulletData
     {
-        public List<int> MoveGridPosIdxs;
+        public int ActionUnitID = -1;
+        public List<int> MoveGridPosIdxs = new List<int>();
         public GameFrameworkMultiDictionary<int, TriggerData> TriggerDataDict = new GameFrameworkMultiDictionary<int, TriggerData>();
     }
     
@@ -15,7 +16,7 @@ namespace RoundHero
 
         public BulletData BulletData;
         
-        public void Init(int entityId, Vector2 pos, BulletData bulletData)
+        public void Init(int entityId, Vector3 pos, BulletData bulletData)
         {
             base.Init(entityId, pos);
             BulletData = bulletData;

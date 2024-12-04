@@ -32,6 +32,7 @@ namespace RoundHero
         
         public Transform EffectHurtPos;
         public Transform EffectAttackPos;
+        public Transform ShootPos;
         public EAttackCastType UnitAttackCastType;
 
         protected Queue<int> hurtQueue = new Queue<int>();
@@ -388,33 +389,50 @@ namespace RoundHero
         public void Shoot()
         {
             var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
-
+            var triggerRange = buffData[0].TriggerRange;
+            var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
             for (int i = 1; i < Constant.Battle.ActionTypePoints[buffData[0].TriggerRange].Count; i++)
             {
                 var range = Constant.Battle.ActionTypePoints[buffData[0].TriggerRange][i];
                 var bulletData = new BulletData();
-                
+                bulletData.ActionUnitID = BattleUnitData.ID;
+                bulletData.MoveGridPosIdxs.Add(BattleUnit.GridPosIdx);
                 foreach (var deltaPos in range)
                 {
-                    var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
-                    var gridPosIdx = GameUtility.GridCoordToPosIdx(coord + deltaPos);
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
-                    
-                    bulletData.MoveGridPosIdxs.Add(gridPosIdx);
-                    if (effectUnit != null)
-                    {
-                        var triggerActionDatas =
-                            BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.ID, effectUnit.BattleUnit.ID);
-                        foreach (var triggerActionData in triggerActionDatas)
-                        {
-                            bulletData.TriggerDataDict.Add(gridPosIdx, triggerActionData.TriggerData);
-                        }
+                    var deltaCoord = coord + deltaPos;
+                    if(!GameUtility.InGridRange(deltaCoord))
+                        continue;
                         
+                    var gridPosIdx = GameUtility.GridCoordToPosIdx(deltaCoord);
+                    bulletData.MoveGridPosIdxs.Add(gridPosIdx);
+                    
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
+                    if(effectUnit == null)
+                        continue;
+                    
+                    var triggerActionDatas =
+                        BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.ID, effectUnit.BattleUnit.ID);
+                    
+                    if(triggerActionDatas == null)
+                        continue;
+                    
+                    foreach (var triggerActionData in triggerActionDatas)
+                    {
+                        bulletData.TriggerDataDict.Add(gridPosIdx, triggerActionData.TriggerData);
                     }
+
+                    if(triggerActionDatas != null && triggerRange.ToString().Contains("Extend"))
+                    {
+                        break;
+                    }
+
                     
                 }
+
+                if (bulletData.MoveGridPosIdxs.Count <= 1)
+                    continue;
                 
-                GameEntry.Entity.ShowBattleBulletEntityAsync(bulletData);
+                GameEntry.Entity.ShowBattleBulletEntityAsync(bulletData, ShootPos.position);
                 
             }
             

@@ -8,7 +8,7 @@ namespace RoundHero
         public int CardIdx;
         public Data_Card CardData;
         
-        public void Init(int entityId, Vector2 pos, int cardIdx)
+        public void Init(int entityId, Vector3 pos, int cardIdx)
         {
             base.Init(entityId, pos);
             CardIdx = cardIdx;

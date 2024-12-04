@@ -50,7 +50,7 @@ namespace RoundHero
 
             public static int InitCardMaxCount = 12;
             public static int CollisionHurt = -1;
-            public static float BulletShootTime = 0.3f;
+            public static float BulletShootTime = 0.2f;
 
             public static Dictionary<EUnitStateEffectType, List<EUnitState>> EffectUnitStates =
                 new ()

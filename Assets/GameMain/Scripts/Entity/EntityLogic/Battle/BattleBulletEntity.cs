@@ -41,8 +41,14 @@ namespace RoundHero
 
         private void ShowShootParticle()
         {
+            
             shootParticle = Instantiate(shootParticleTemp, transform.position, transform.rotation) as GameObject;
             shootParticle.transform.parent = transform;
+            
+            GameUtility.DelayExcute(2f, () =>
+            {
+                Destroy(shootParticle);
+            });
         }
         
         private void ShowBulletParticle()
@@ -55,19 +61,24 @@ namespace RoundHero
         {
             explodeParticle = Instantiate(explodeParticleTemp, transform.position, transform.rotation) as GameObject;
             explodeParticle.transform.parent = transform;
+            
+            GameUtility.DelayExcute(2f, () =>
+            {
+                Destroy(explodeParticle);
+            });
         }
 
         private void Move()
         {
             for (int i = 0; i < BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count; i++)
             {
-                var moveGridPosIdx = BattleBulletEntityData.BulletData.MoveGridPosIdxs[i];
+                
 
                 var pos = GameUtility.GetMovePos(EUnitActionState.Fly, BattleBulletEntityData.BulletData.MoveGridPosIdxs, i);
                 
                 var tIdx = i;
 
-                var time = Constant.Battle.BulletShootTime * (tIdx - 1);
+                var time = Constant.Battle.BulletShootTime * (i - 1);
                 time = time < 0 ? 0 : time;
 
                 GameUtility.DelayExcute(time, () =>
@@ -75,32 +86,49 @@ namespace RoundHero
                     var moveTIdx = tIdx;
                     
                     var movePos = pos;
-
-                    transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                    var moveGridPosIdx = BattleBulletEntityData.BulletData.MoveGridPosIdxs[moveTIdx];
+                    movePos.y = transform.position.y;
+                    bulletParticle.transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
                     
 
-                    transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Battle.BulletShootTime).SetEase(Ease.Linear).OnComplete(() =>
+                    bulletParticle.transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Battle.BulletShootTime).SetEase(Ease.Linear).OnComplete(() =>
                     {
-                        if (BattleBulletEntityData.BulletData.TriggerDataDict.ContainsKey(moveTIdx))
+                        if (BattleBulletEntityData.BulletData.TriggerDataDict.Contains(moveGridPosIdx))
                         {
                             ShowExplodeParticle();
-                            BattleFightManager.Instance.TriggerAction(
-                                BattleBulletEntityData.BulletData.TriggerDataDict[moveTIdx]);
+                            foreach (var triggerData in BattleBulletEntityData.BulletData.TriggerDataDict[moveGridPosIdx])
+                            {
+                                BattleFightManager.Instance.TriggerAction(triggerData);
+                                BattleManager.Instance.RefreshView();
+                            }
+                            
                         }
                         
                     });
+                    
+                    
 
                 });
                 
+                
+                
             }
+            
+            
 
-            // var moveCount = BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count > 1 ? BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count - 1 : 1;
-            //
-            // GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 0.1f, () =>
-            // {
-            //     
-            //     ShowExplodeParticle();
-            // });
+            var moveCount = BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count > 1 ? BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count - 1 : 1;
+            
+            GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 0.1f, () =>
+            {
+                BattleBulletManager.Instance.ClearData(BattleBulletEntityData.BulletData.ActionUnitID);
+                Destroy(bulletParticle);
+            });
+            
+            GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 3f, () =>
+            {
+
+                GameEntry.Entity.HideEntity(this);
+            });
         }
 
     }

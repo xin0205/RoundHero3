@@ -156,6 +156,14 @@ namespace RoundHero
             BattleManager.Instance.RefreshView();
         }
 
+        public void ClearData(int actionUnitID)
+        {
+            if (TriggerActionDatas.ContainsKey(actionUnitID))
+            {
+                TriggerActionDatas[actionUnitID].Clear();
+            }
+        }
+
         public GameFrameworkMultiDictionary<int, TriggerActionData> GetTriggerActionDatas(int actionUnitID)
         {
             if (!TriggerActionDatas.ContainsKey(actionUnitID))

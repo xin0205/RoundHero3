@@ -61,7 +61,8 @@ MonoBehaviour:
   rightWeapon: {fileID: 2622050021739450375}
   EffectHurtPos: {fileID: 2066135726217102810}
   EffectAttackPos: {fileID: 6025886859164801879}
-  ActionUnitID: 0
+  ShootPos: {fileID: 2796897572946510672}
+  UnitAttackCastType: 0
 --- !u!95 &4107302258608099607
 Animator:
   serializedVersion: 5
@@ -83,6 +84,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &2150513022608381231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2796897572946510672}
+  m_Layer: 0
+  m_Name: ShootPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2796897572946510672
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2150513022608381231}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.034144185, y: 1.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5393397868085087896}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2249934039843109205
 GameObject:
   m_ObjectHideFlags: 0
@@ -8609,6 +8641,7 @@ Transform:
   - {fileID: 5388197886683033738}
   - {fileID: 2066135726217102810}
   - {fileID: 6025886859164801879}
+  - {fileID: 2796897572946510672}
   m_Father: {fileID: 4465285574356180}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7507144360037539811
