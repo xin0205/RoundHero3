@@ -351,6 +351,7 @@ namespace RoundHero
         public int AddHeroHP = 0;
         public int RoundMoveTimes = 0;
         public int RoundAttackTimes = 0;
+        public int CacheHPDelta;
 
         //, EGridType.Unit
         public Data_BattleUnit(int id, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) : base(id, gridPosIdx,
@@ -585,6 +586,8 @@ namespace RoundHero
         public EHeroID HeroID = EHeroID.Empty;
 
         public Attribute Attribute = new();
+
+        
         
         public int BaseMaxHeart { get; set; }
 
@@ -592,6 +595,7 @@ namespace RoundHero
 
         public void Clear()
         {
+            CacheHPDelta = 0;
             HeroID = EHeroID.Empty;
             Attribute.Clear();
         }
@@ -675,6 +679,7 @@ namespace RoundHero
             dataBattleHero.HurtTimes = HurtTimes;
             dataBattleHero.UnitCamp = UnitCamp;
             dataBattleHero.AddHeroHP = AddHeroHP;
+            dataBattleHero.CacheHPDelta = CacheHPDelta;
             //dataBattleHero.RoundHeroHPDelta = RoundHeroHPDelta;
             return dataBattleHero;
 
@@ -800,6 +805,7 @@ namespace RoundHero
             dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
             dataBattleUnit.UnitCamp = UnitCamp;
             dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.CacheHPDelta = CacheHPDelta;
             return dataBattleUnit;
 
         }
@@ -923,6 +929,7 @@ namespace RoundHero
             dataBattleEnemy.HurtTimes = HurtTimes;
             dataBattleEnemy.UnitCamp = UnitCamp;
             dataBattleEnemy.AddHeroHP = AddHeroHP;
+            dataBattleEnemy.CacheHPDelta = CacheHPDelta;
             return dataBattleEnemy;
 
         }

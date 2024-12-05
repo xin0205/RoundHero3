@@ -137,6 +137,7 @@ namespace RoundHero
                 foreach (var realEffectUnitID in realEffectUnitIDs)
                 {
                     var realEffectUnit = GameUtility.GetUnitDataByID(realEffectUnitID);
+
                     switch (buffvalueType)
                     {
                         case EBuffValueType.Hero:
@@ -198,6 +199,13 @@ namespace RoundHero
 
                     if (triggerData != null)
                     {
+                        triggerData.BuffTriggerType = buffTriggerType;
+                        if (realEffectUnit.UnitRole == EUnitRole.Hero && buffvalueType == EBuffValueType.Atrb &&
+                            buffData.UnitAttribute == EUnitAttribute.HP && 
+                            (buffTriggerType != EBuffTriggerType.Use && buffTriggerType != EBuffTriggerType.UseCard))
+                        {
+                            triggerData.ChangeHPInstantly = false;
+                        }
                         CacheTriggerData(triggerData, triggerDatas);
 
                     }
@@ -230,7 +238,7 @@ namespace RoundHero
                 PostTrigger(triggerData, triggerDatas);
             }
 
-            triggerData.BuffTriggerType = buffTriggerType;
+            
 
             return triggerData;
         }
