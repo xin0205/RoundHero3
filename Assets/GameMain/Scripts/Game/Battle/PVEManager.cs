@@ -250,6 +250,8 @@ namespace RoundHero
             else
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
+                
+                
                 BattleManager.Instance.Refresh();
             }
         }

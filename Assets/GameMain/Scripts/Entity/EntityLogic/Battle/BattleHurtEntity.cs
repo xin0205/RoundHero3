@@ -40,9 +40,9 @@ namespace RoundHero
             cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
             animation.transform.rotation = cameraQuaternion;
 
-            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(animation.transform.position));
+            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
             
-            animation.transform.localScale = Vector3.one *  dis / 8f;
+            transform.localScale = Vector3.one *  dis / 8f;
         }
     }
 }

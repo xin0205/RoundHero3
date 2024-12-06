@@ -835,7 +835,7 @@ namespace RoundHero
         //     // });
         // }
         
-        public void RefreshData()
+        public virtual void RefreshData()
         {
             RefreshHP();
             RefreshDamageState();
@@ -945,7 +945,7 @@ namespace RoundHero
             Position = pos;
         }
 
-        protected void AddHurts(int hurt)
+        public void AddHurts(int hurt)
         {
             hurtQueue.Enqueue(hurt);
         }

@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using GameFramework;
+﻿using GameFramework;
 using GameFramework.Event;
 using TMPro;
 using UnityEngine;

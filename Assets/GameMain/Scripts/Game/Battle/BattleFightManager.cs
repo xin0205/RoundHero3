@@ -2981,21 +2981,22 @@ namespace RoundHero
             // }
             
             var triggerValue = (int) (triggerData.Value + triggerData.DeltaValue);
-
+            
             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                 !triggerData.ChangeHPInstantly)
             {
                 effectUnitEntity.BattleUnit.CacheHPDelta += triggerValue;
+                //HeroManager.Instance.HeroEntity.AddHurts(triggerValue);
                 return;
             }
 
-            if (effectUnitEntity.BattleUnit.AddHeroHP != 0)
-            {
-                var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnitEntity.UnitCamp);
-                playerData.BattleHero.CacheHPDelta += effectUnitEntity.BattleUnit.AddHeroHP;
-                effectUnitEntity.BattleUnit.AddHeroHP = 0;
-                return;
-            }
+            // if (effectUnitEntity.BattleUnit.AddHeroHP != 0)
+            // {
+            //     var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnitEntity.UnitCamp);
+            //     playerData.BattleHero.CacheHPDelta += effectUnitEntity.BattleUnit.AddHeroHP;
+            //     effectUnitEntity.BattleUnit.AddHeroHP = 0;
+            //     return;
+            // }
                 
             
             switch (triggerData.TriggerDataType)
@@ -3513,6 +3514,7 @@ namespace RoundHero
                     var attackTime = UnitAttack(unitID, unitAttackDatas[unitID]);
                     GameUtility.DelayExcute(attackTime, () =>
                     {
+                        HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
                         BattleManager.Instance.ContinueAction();
                     });
                 }
