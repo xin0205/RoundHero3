@@ -2986,7 +2986,7 @@ namespace RoundHero
                 !triggerData.ChangeHPInstantly)
             {
                 effectUnitEntity.BattleUnit.CacheHPDelta += triggerValue;
-                //HeroManager.Instance.HeroEntity.AddHurts(triggerValue);
+                HeroManager.Instance.HeroEntity.AddHurts(triggerValue);
                 return;
             }
 
@@ -3180,14 +3180,24 @@ namespace RoundHero
 
             if (triggerData.HeroHPDelta != 0)
             {
-                var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnitEntity.UnitCamp);
-                if (playerData != null && playerData.BattleHero != null)
+                var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);
+                
+                if (heroEntity != null)
                 {
-                    playerData.BattleHero.ChangeHP(triggerData.HeroHPDelta);
+                    heroEntity.BattleUnit.CacheHPDelta += triggerData.HeroHPDelta;
                     triggerData.HeroHPDelta = 0;
-
-
+                
+                
                 }
+                
+                // var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnitEntity.UnitCamp);
+                // if (playerData != null && playerData.BattleHero != null)
+                // {
+                //     playerData.BattleHero.ChangeHP(triggerData.HeroHPDelta);
+                //     triggerData.HeroHPDelta = 0;
+                //
+                //
+                // }
             }
 
         }
@@ -3667,7 +3677,7 @@ namespace RoundHero
                             EBuffID.Spec_CurseUnEffect))
                         continue;
                     
-                    //effectUnit.AddHeroHP = 0;
+                    effectUnit.AddHeroHP = 0;
                     //triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
                     if (!(triggerData.BattleUnitAttribute == EUnitAttribute.HP && triggerValue < 0))
                         continue;

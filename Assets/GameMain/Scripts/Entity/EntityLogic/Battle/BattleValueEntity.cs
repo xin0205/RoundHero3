@@ -26,9 +26,24 @@ namespace RoundHero
             }
 
             text.text = BattleValueEntityData.Value < 0 ? BattleValueEntityData.Value.ToString() :  "+" + BattleValueEntityData.Value;
-            text.color = BattleValueEntityData.Value < 0 ? hurtColor : recoverColor;
+            
+            //text.text = Mathf.Abs(BattleValueEntityData.Value).ToString();
+            //text.color = BattleValueEntityData.Value < 0 ? hurtColor : recoverColor;
+            text.color = hurtColor;
 
-            transform.DOMove(BattleValueEntityData.TargetPos, 1f);
+            var dis = Vector3.Distance(BattleValueEntityData.TargetPos, transform.position);
+            //Constant.Battle.BattleValueVelocity
+            var time = 2;
+            
+            DOTween.To(()=> text.color, x => text.color = x, recoverColor, time).SetEase(Ease.InOutQuart);
+            transform.DOMove(BattleValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart).OnComplete(() =>
+            {
+                GameEntry.Entity.HideEntity(this);
+            });
+            GameUtility.DelayExcute(time / 2f, () =>
+            {
+                text.text = "+" + Mathf.Abs(BattleValueEntityData.Value);
+            });
         }
 
         
@@ -36,7 +51,7 @@ namespace RoundHero
         private void Update()
         {
             cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
-            
+            transform.rotation = cameraQuaternion;
             var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
             
             transform.localScale = Vector3.one *  dis / 8f;

@@ -93,6 +93,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6457383696530502701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2778021287678733884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1986280534477202210}
+  m_Layer: 0
+  m_Name: ValuePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1986280534477202210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2778021287678733884}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.034144185, y: 2.508, z: -0.008882782}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6457383696530502701}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3234534928620479827
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,6 +187,7 @@ MonoBehaviour:
   EffectAttackPos: {fileID: 6600592747578602251}
   ShootPos: {fileID: 0}
   UnitAttackCastType: 0
+  ValuePos: {fileID: 1986280534477202210}
   cacheHPText: {fileID: 6812214392670147243}
 --- !u!95 &6330339263858269483
 Animator:
@@ -195,7 +227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1200650155419526769
 RectTransform:
   m_ObjectHideFlags: 0
@@ -376,6 +408,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5036693816418520575, guid: ee7b0011740e8344085f167e164aa3c4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6600592747578602251}
+    - targetCorrespondingSourceObject: {fileID: 5036693816418520575, guid: ee7b0011740e8344085f167e164aa3c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1986280534477202210}
     - targetCorrespondingSourceObject: {fileID: 8509389816779792885, guid: ee7b0011740e8344085f167e164aa3c4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 351450008559610199}

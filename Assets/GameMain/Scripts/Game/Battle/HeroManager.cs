@@ -26,9 +26,17 @@ namespace RoundHero
         public Random Random;
         private int randomSeed;
         
-        public Dictionary<ulong, BattleHeroEntity> HeroEntities = new ();
+        public Dictionary<EUnitCamp, BattleHeroEntity> HeroEntities = new ();
         
-        public BattleHeroEntity HeroEntity =>  HeroEntities[PlayerManager.Instance.PlayerData.PlayerID];
+        public BattleHeroEntity HeroEntity =>  HeroEntities[PlayerManager.Instance.PlayerData.UnitCamp];
+
+        public BattleHeroEntity GetHeroEntity(EUnitCamp unitCamp)
+        {
+            if (HeroEntities.ContainsKey(unitCamp))
+                return HeroEntities[unitCamp];
+
+            return null;
+        }
         
         public void Init(int randomSeed)
         {
@@ -80,7 +88,8 @@ namespace RoundHero
             }
             
             BattleUnitManager.Instance.BattleUnitEntities.Add(heroEntity.BattleHeroEntityData.BattleHeroData.ID, heroEntity);
-            HeroEntities.Add(PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp), heroEntity);
+            //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
+            HeroEntities.Add(BattleManager.Instance.CurUnitCamp, heroEntity);
         }
         
         // public bool IsHero(int gridPosIdx)

@@ -34,7 +34,7 @@ namespace RoundHero
         public Transform EffectAttackPos;
         public Transform ShootPos;
         public EAttackCastType UnitAttackCastType;
-
+        public Transform ValuePos;
         protected Queue<int> hurtQueue = new Queue<int>();
         
         
@@ -933,11 +933,13 @@ namespace RoundHero
             //SetAction(EUnitActionState.Recover);
         }
         
-        public virtual void ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly)
+        public virtual void ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly, bool showValue = true)
         {
             BattleManager.Instance.ChangeHP(BattleUnitData, changeHP, GamePlayManager.Instance.GamePlayData,
                 EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
-            AddHurts(changeHP);
+            
+            if(showValue)
+                AddHurts(changeHP);
         }
 
         public void UpdatePos(Vector3 pos)
@@ -958,8 +960,13 @@ namespace RoundHero
             {
                 showHurtTime = 0;
                 var hurt = hurtQueue.Dequeue();
-                await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
+                await ShowBattleHurts(hurt);
             }
+        }
+        
+        protected async virtual Task ShowBattleHurts(int hurt)
+        {
+            await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
         }
 
         protected BulletData bulletData = new BulletData();

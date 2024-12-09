@@ -1,4 +1,6 @@
 ﻿
+using System.Threading.Tasks;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -45,7 +47,12 @@ namespace RoundHero
  
         }
 
-        
+        protected async override Task ShowBattleHurts(int hurt)
+        {
+            var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
+            var heroEntity = HeroManager.Instance.GetHeroEntity(BattleUnitData.UnitCamp);
+            await GameEntry.Entity.ShowBattleValueEntityAsync(ValuePos.position,  heroEntity.ValuePos.position, hurt);
+        }
 
         // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = true)
         // {

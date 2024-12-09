@@ -10,8 +10,6 @@ namespace RoundHero
         public BattleHeroEntityData BattleHeroEntityData { get; protected set; }
         [SerializeField] protected TextMesh cacheHPText;
 
-        
-
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -38,9 +36,9 @@ namespace RoundHero
 
         public void UpdateCacheHPDelta()
         {
-            ChangeCurHP(BattleHeroEntityData.BattleHeroData.CacheHPDelta, false, false, true);
+            ChangeCurHP(BattleHeroEntityData.BattleHeroData.CacheHPDelta, false, false, true, false);
             BattleHeroEntityData.BattleHeroData.CacheHPDelta = 0;
-            cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
+            //cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
         }
 
         // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = false, bool changeHPInstantly = false)

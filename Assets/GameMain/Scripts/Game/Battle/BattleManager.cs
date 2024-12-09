@@ -217,7 +217,7 @@ namespace RoundHero
                     addHP += useDefenseCount;
                 }
             
-                var battlePlayerData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
+                //var battlePlayerData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
                 // if (unit.UnitCamp == BattleManager.Instance.CurUnitCamp &&
                 //     battlePlayerData != null && 
                 //     battlePlayerData.RoundBuffs.Contains(EBuffID.HurtSubDamageAddHeroCurHP))

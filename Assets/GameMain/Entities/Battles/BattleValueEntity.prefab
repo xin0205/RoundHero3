@@ -106,7 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3277891593474557247}
-  - component: {fileID: 7163367433182429057}
+  - component: {fileID: 8610406827131740044}
   m_Layer: 0
   m_Name: BattleValueEntity
   m_TagString: Untagged
@@ -130,7 +130,7 @@ Transform:
   - {fileID: 7214033051365823810}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7163367433182429057
+--- !u!114 &8610406827131740044
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,7 +139,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5035076243106181485}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d4cec775dc04bae92e7d7909c4462c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f999224afd44037b52f4f992abbc574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_EntityData:
@@ -147,7 +147,6 @@ MonoBehaviour:
     m_TypeId: 0
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0, w: 1}
-  animation: {fileID: 0}
   text: {fileID: 6260409050788205319}
   hurtColor: {r: 0.7725491, g: 0.21176472, b: 0.21176472, a: 1}
   recoverColor: {r: 0.23137257, g: 0.627451, b: 0.36862746, a: 1}
