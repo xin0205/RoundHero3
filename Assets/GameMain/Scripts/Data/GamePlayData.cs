@@ -711,10 +711,21 @@ namespace RoundHero
 
                 var deltaHeart = changeHP / MaxHP;
                 var deltaHP = changeHP % MaxHP;
+                var curHeart = Attribute.GetAttribute(EHeroAttribute.CurHeart);
 
                 if (CurHP + deltaHP <= 0)
                 {
                     deltaHeart -= 1;
+                    if (curHeart + deltaHeart >= 0)
+                    {
+                        CurHP += MaxHP + deltaHP;
+                    }
+                    else
+                    {
+                        CurHP = 0;
+                    }
+                    
+                    
                     // if (deltaHeart > 0)
                     // {
                     //     CurHP += MaxHP + deltaHP;
@@ -723,17 +734,27 @@ namespace RoundHero
                     // {
                     //     CurHP = MaxHP;
                     // }
-                    CurHP += MaxHP + deltaHP;
+                    
                 }
                 else
                 {
                     IntervalChangeHP(deltaHP);
                 }
 
-                Attribute.SetAttribute(EHeroAttribute.CurHeart,
-                    Attribute.GetAttribute(EHeroAttribute.CurHeart) + deltaHeart);
+                
 
-                if (Attribute.GetAttribute(EHeroAttribute.CurHeart) <= 0)
+                if (curHeart + deltaHeart <= 0)
+                {
+                    Attribute.SetAttribute(EHeroAttribute.CurHeart, 0);
+                }
+                else
+                {
+                    Attribute.SetAttribute(EHeroAttribute.CurHeart,
+                        curHeart + deltaHeart);
+                }
+                
+
+                if (Attribute.GetAttribute(EHeroAttribute.CurHeart) < 0)
                 {
                     CurHP = 0;
                 }

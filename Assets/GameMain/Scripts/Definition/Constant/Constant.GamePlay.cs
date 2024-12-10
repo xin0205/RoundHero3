@@ -915,7 +915,7 @@ namespace RoundHero
         {
             public static Dictionary<EEnemyType, int> EachTurnGenerateEnemyCounts = new()
             {
-                [EEnemyType.Normal] = 3,
+                [EEnemyType.Normal] = 1,
                 [EEnemyType.Elite] = 1,
                 [EEnemyType.Boss] = 1,
 

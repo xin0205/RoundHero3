@@ -1293,6 +1293,17 @@ namespace RoundHero
             var paths = AStarSearch.GetPathList(cacheSearchMaps, GridPosIdxToCoord(startPosIdx), GridPosIdxToCoord(endPosIdx), isQblique, isIgnoreCorner);
 
             var retPaths = new List<int>(paths.Count);
+            
+            if (paths.Count >= 2)
+            {
+                var coord = paths[paths.Count - 2];
+                if (cacheSearchMaps[coord.x, coord.y] != AStarSearch.EPointType.Empty)
+                {
+                    return retPaths;
+                }
+            }
+            
+            
 
             for (int i = 0; i < paths.Count; i++)
             {

@@ -154,7 +154,7 @@ namespace RoundHero
 
         public bool ChangeHPInstantly = true;
 
-        public int HeroHPDelta = 0;
+        public bool HeroHPDelta = false;
         //public bool AddHeroHP = true;
 
         public TriggerData()
@@ -2982,13 +2982,7 @@ namespace RoundHero
             
             var triggerValue = (int) (triggerData.Value + triggerData.DeltaValue);
             
-            if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
-                !triggerData.ChangeHPInstantly)
-            {
-                effectUnitEntity.BattleUnit.CacheHPDelta += triggerValue;
-                HeroManager.Instance.HeroEntity.AddHurts(triggerValue);
-                return;
-            }
+            
 
             // if (effectUnitEntity.BattleUnit.AddHeroHP != 0)
             // {
@@ -3056,7 +3050,29 @@ namespace RoundHero
                     {
                         case EUnitAttribute.HP:
                             
-                            effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly);
+                            var hpDelta = effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly);
+                            
+                            if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
+                                !triggerData.ChangeHPInstantly && hpDelta != 0)
+                            {
+                                effectUnitEntity.BattleUnit.CacheHPDelta += hpDelta;
+                                //HeroManager.Instance.HeroEntity.AddHurts(hpDelta);
+                                return;
+                            }
+                            
+                            if (triggerData.HeroHPDelta && hpDelta != 0)
+                            {
+                                var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);
+                
+                                if (heroEntity != null)
+                                {
+                                    heroEntity.BattleUnit.CacheHPDelta += -hpDelta;
+                                    triggerData.HeroHPDelta = false;
+        
+                                }
+
+                            }
+                            
                             if (triggerValue < 0)
                             {
                                 
@@ -3178,27 +3194,27 @@ namespace RoundHero
                     break;
             }
 
-            if (triggerData.HeroHPDelta != 0)
-            {
-                var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);
-                
-                if (heroEntity != null)
-                {
-                    heroEntity.BattleUnit.CacheHPDelta += triggerData.HeroHPDelta;
-                    triggerData.HeroHPDelta = 0;
-                
-                
-                }
-                
-                // var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnitEntity.UnitCamp);
-                // if (playerData != null && playerData.BattleHero != null)
-                // {
-                //     playerData.BattleHero.ChangeHP(triggerData.HeroHPDelta);
-                //     triggerData.HeroHPDelta = 0;
-                //
-                //
-                // }
-            }
+            // if (triggerData.HeroHPDelta)
+            // {
+            //     // var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);
+            //     //
+            //     // if (heroEntity != null)
+            //     // {
+            //     //     heroEntity.BattleUnit.CacheHPDelta += ;
+            //     //     triggerData.HeroHPDelta = false;
+            //     //
+            //     //
+            //     // }
+            //     
+            //     // var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(effectUnitEntity.UnitCamp);
+            //     // if (playerData != null && playerData.BattleHero != null)
+            //     // {
+            //     //     playerData.BattleHero.ChangeHP(triggerData.HeroHPDelta);
+            //     //     triggerData.HeroHPDelta = 0;
+            //     //
+            //     //
+            //     // }
+            // }
 
         }
 
@@ -3694,7 +3710,7 @@ namespace RoundHero
                 
                     if (unit.UnitRole != EUnitRole.Hero)
                     {
-                        triggerData.HeroHPDelta = value;
+                        triggerData.HeroHPDelta = true;
                     }
                 
                     var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unit.UnitCamp);
@@ -4381,9 +4397,9 @@ namespace RoundHero
         
         
 
-        public void ChangeHP(Data_BattleUnit unit, float value, EHPChangeType hpChangeType, bool useDefense = true, bool changeHPInstantly = false)
+        public int ChangeHP(Data_BattleUnit unit, float value, EHPChangeType hpChangeType, bool useDefense = true, bool changeHPInstantly = false)
         {
-            BattleManager.Instance.ChangeHP(unit, (int)value, RoundFightData.GamePlayData, hpChangeType, useDefense, true, changeHPInstantly);
+            return BattleManager.Instance.ChangeHP(unit, (int)value, RoundFightData.GamePlayData, hpChangeType, useDefense, true, changeHPInstantly);
 
         }
         

@@ -933,13 +933,26 @@ namespace RoundHero
             //SetAction(EUnitActionState.Recover);
         }
         
-        public virtual void ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly, bool showValue = true)
+        public virtual int  ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly, bool showValue = true)
         {
-            BattleManager.Instance.ChangeHP(BattleUnitData, changeHP, GamePlayManager.Instance.GamePlayData,
+            var hpDelta = BattleManager.Instance.ChangeHP(BattleUnitData, changeHP, GamePlayManager.Instance.GamePlayData,
                 EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
+
+            if (showValue)
+            {
+                if (!changeHPInstantly)
+                {
+                    AddHurts(changeHP);
+                }
+                else if (hpDelta != 0)
+                {
+                    AddHurts(hpDelta);
+                }
+                        
+            }
             
-            if(showValue)
-                AddHurts(changeHP);
+
+            return hpDelta;
         }
 
         public void UpdatePos(Vector3 pos)
@@ -969,10 +982,5 @@ namespace RoundHero
             await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
         }
 
-        protected BulletData bulletData = new BulletData();
-        protected void AddBulletData()
-        {
-            
-        }
     }
 }

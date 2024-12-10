@@ -133,10 +133,10 @@ namespace RoundHero
 
         }
 
-        public void ChangeHP(Data_BattleUnit unit, int value, Data_GamePlay gamePlayData,  EHPChangeType hpChangeType, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = false)
+        public int ChangeHP(Data_BattleUnit unit, int value, Data_GamePlay gamePlayData,  EHPChangeType hpChangeType, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = false)
         {
             if(unit == null)
-                return;
+                return 0;
             
             var useDefenseCount = 0;
             
@@ -300,6 +300,25 @@ namespace RoundHero
             }
 
             BlessManager.Instance.DeadTrigger(gamePlayData, unit);
+
+            var hpDelta = 0;
+
+            if (!changeHPInstantly)
+            {
+                hpDelta = value;
+            }
+            else if (hero != null)
+            {
+                var curHeart = hero.Attribute.GetAttribute(EHeroAttribute.CurHeart);
+                hpDelta = (int)((curHeart * hero.MaxHP + hero.CurHP) - (oldHeart * hero.MaxHP + oldHP));
+ 
+            }
+            else
+            {
+                hpDelta = unit.CurHP - oldHP;
+            }
+
+            return hpDelta;
         }
 
 
