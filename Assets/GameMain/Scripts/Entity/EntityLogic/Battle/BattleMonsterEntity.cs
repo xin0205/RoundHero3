@@ -41,7 +41,10 @@ namespace RoundHero
         {
             base.Dead();
             BattleEnemyManager.Instance.RemoveEnemy(BattleMonsterEntityData.BattleMonsterData.ID);
-            
+            GameUtility.DelayExcute(3f, () =>
+            {
+                GameEntry.Entity.HideEntity(this);
+            });
         }
         
         public override void Quit()

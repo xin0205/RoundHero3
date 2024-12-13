@@ -44,7 +44,10 @@ namespace RoundHero
         {
             base.Dead();
             BattleSoliderManager.Instance.RemoveSolider(BattleSoliderEntityData.BattleSoliderData.ID);
- 
+            GameUtility.DelayExcute(3f, () =>
+            {
+                GameEntry.Entity.HideEntity(this);
+            });
         }
 
         protected async override Task ShowBattleHurts(int hurt)

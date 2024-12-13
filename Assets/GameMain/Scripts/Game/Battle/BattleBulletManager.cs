@@ -92,7 +92,7 @@ namespace RoundHero
             {
                 if (moveActionData.MoveUnitData == null)
                 {
-                    return;
+                    continue;
                 }
             
                 var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(effectUnitID);

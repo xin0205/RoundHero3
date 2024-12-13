@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameFramework;
 using UnityEngine;
-using UnityGameFramework.Runtime;
+
 
 namespace RoundHero
 {
@@ -1095,12 +1095,12 @@ namespace RoundHero
             return Constant.Battle.Coord2PosMap[deltaCoord];
         }
         
-        public static Vector3 GetMovePos(EUnitActionState unitActionState, List<int> moveGridPosIdxs, int i)
+        public static Vector3 GetMovePos(EUnitActionState unitActionState, List<int> moveGridPosIdxs, int idx, bool hasUnit)
         {
             var nextMoveGridPosIdx = -1;
             var beforeMoveGridPosIdx = -1;
             
-            var moveGridPosIdx = moveGridPosIdxs[i];
+            var moveGridPosIdx = moveGridPosIdxs[idx];
  
             var pos = GameUtility.GridPosIdxToPos(moveGridPosIdx);
             if (unitActionState == EUnitActionState.Fly)
@@ -1109,44 +1109,55 @@ namespace RoundHero
 
             var relativePosLength = Enum.GetValues(typeof(ERelativePos)).Length;
             
-            if (i > 0  && i < moveGridPosIdxs.Count - 1)
+            if (idx > 0  && (idx < moveGridPosIdxs.Count - 1 || hasUnit))
             {
-                nextMoveGridPosIdx = moveGridPosIdxs[i + 1];
-                beforeMoveGridPosIdx = moveGridPosIdxs[i - 1];
-                var nextPos = GameUtility.GridPosIdxToPos(nextMoveGridPosIdx);
-                var moveGrids = BattleAreaManager.Instance.GetUnits(moveGridPosIdx);
-                if (moveGrids.Count > 0)
+                beforeMoveGridPosIdx = moveGridPosIdxs[idx - 1];
+                
+                if (hasUnit && idx == moveGridPosIdxs.Count - 1)
                 {
-                     var nextRelativePos = GameUtility.GetRelativePos(moveGridPosIdx, nextMoveGridPosIdx);
-                     if (nextRelativePos != null)
-                     {
-                         var relativePos = GameUtility.GetRelativePos(moveGridPosIdx, beforeMoveGridPosIdx);
-                         if (relativePos != null)
-                         {
-
-                             var deltaRelativePos = ERelativePos.Left;
-                             if ((int) nextRelativePos < (int) relativePos)
-                             {
-                                 deltaRelativePos = (ERelativePos)(relativePosLength -
-                                                                   ((int) relativePos - (int) nextRelativePos));
-                             }
-                             else
-                             {
-                                 deltaRelativePos = (ERelativePos)(nextRelativePos - relativePos);
-                             }
-
-                             var target = (int)Constant.Battle.UnitPassRoute[deltaRelativePos] + (int)relativePos;
-                             target %= relativePosLength;
-
-                             var deltaPos = Constant.Battle.EPos2CoordMap[(ERelativePos) target];
-                             pos = new Vector3(pos.x + deltaPos.x * Constant.Area.GridLength.x / 3.0f, pos.y,
-                                 pos.z + deltaPos.y * Constant.Area.GridLength.y / 3.0f);
-
-                         }
-                         
-                     }
-                 
+                    var beforeCoord = GameUtility.GridPosIdxToCoord(beforeMoveGridPosIdx);
+                    var coord = GameUtility.GridPosIdxToCoord(moveGridPosIdx);
+                    var nextCoord = coord + (coord - beforeCoord);
+                    nextMoveGridPosIdx = GameUtility.GridCoordToPosIdx(nextCoord);
                 }
+                else
+                {
+                    
+                    nextMoveGridPosIdx = moveGridPosIdxs[idx + 1];
+                    
+                }
+                
+                
+                //var nextPos = GameUtility.GridPosIdxToPos(nextMoveGridPosIdx);
+                var moveGrids = BattleAreaManager.Instance.GetUnits(moveGridPosIdx);
+                if (moveGrids.Count <= 0)
+                    return pos;
+                
+                var nextRelativePos = GameUtility.GetRelativePos(moveGridPosIdx, nextMoveGridPosIdx);
+                if (nextRelativePos == null)
+                    return pos;
+                
+                var relativePos = GameUtility.GetRelativePos(moveGridPosIdx, beforeMoveGridPosIdx);
+                if (relativePos == null)
+                    return pos;
+                
+                var deltaRelativePos = ERelativePos.Left;
+                if ((int) nextRelativePos < (int) relativePos)
+                {
+                    deltaRelativePos = (ERelativePos)(relativePosLength -
+                                                      ((int) relativePos - (int) nextRelativePos));
+                }
+                else
+                {
+                    deltaRelativePos = (ERelativePos)(nextRelativePos - relativePos);
+                }
+
+                var target = (int)Constant.Battle.UnitPassRoute[deltaRelativePos] + (int)relativePos;
+                target %= relativePosLength;
+
+                var deltaPos = Constant.Battle.EPos2CoordMap[(ERelativePos) target];
+                pos = new Vector3(pos.x + deltaPos.x * Constant.Area.GridLength.x / 3.0f, pos.y,
+                    pos.z + deltaPos.y * Constant.Area.GridLength.y / 3.0f);
                  
             }
 

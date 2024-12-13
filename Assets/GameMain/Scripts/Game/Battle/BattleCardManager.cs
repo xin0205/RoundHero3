@@ -158,13 +158,14 @@ namespace RoundHero
                 if (CardEntities.ContainsKey(BattlePlayerData.HandCards[idx]))
                 {
                     card = CardEntities[BattlePlayerData.HandCards[idx]];
+                    card.BattleCardEntityData.HandSortingIdx = idx;
                     card.MoveCard(
                         new Vector3(cardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
                     card.SetSortingOrder(idx * 10);
                 }
                 else
                 {
-                    card = await GameEntry.Entity.ShowBattleCardEntityAsync(BattlePlayerData.HandCards[idx]);
+                    card = await GameEntry.Entity.ShowBattleCardEntityAsync(BattlePlayerData.HandCards[idx], idx);
 
                     card.transform.position = initPosition;
                     card.SetSortingOrder(idx * 10);
@@ -531,8 +532,10 @@ namespace RoundHero
                 {
                     continue;
                 }
+                
 
                 var cardEntity = CardEntities[cardIdx];
+                cardEntity.BattleCardEntityData.HandSortingIdx = idx;
                 
                 cardEntity.SetSortingOrder(idx * 10, forceSortingOrder);
                 cardEntity.MoveCard(
@@ -1009,7 +1012,7 @@ namespace RoundHero
                     //     siblingIdx -= 1;
                     // }
                     //kv.Value.gameObject.GetComponent<RectTransform>().SetSiblingIndex(siblingIdx);
-                    kv.Value.SetSortingOrder(idx * 10);
+                    kv.Value.SetSortingOrder(kv.Value.BattleCardEntityData.HandSortingIdx * 10);
                 }
 
                 idx++;

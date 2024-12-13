@@ -34,7 +34,6 @@ namespace RoundHero
         private Rect rect;
         private bool isInside;
         private bool isHand;
-        public int HandSortingOrder;
 
         //public int RawSiblingIdx;
 

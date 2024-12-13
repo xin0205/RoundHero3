@@ -155,7 +155,8 @@ namespace RoundHero
             if (start.ParentPoint != null)
             {
                 if (start.ParentPoint.X - start.X != start.X - point.X ||
-                    start.ParentPoint.Y - start.Y != start.Y - point.Y)
+                    start.ParentPoint.Y - start.Y != start.Y - point.Y ||
+                    (point.X == EndCoord.x && point.Y == EndCoord.y))
                 {
                     // && !(point.X == EndCoord.x && point.Y == EndCoord.y)
                     if (!CanReach(start.X, start.Y))

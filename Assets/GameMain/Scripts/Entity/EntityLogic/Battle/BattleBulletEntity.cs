@@ -74,7 +74,7 @@ namespace RoundHero
             {
                 
 
-                var pos = GameUtility.GetMovePos(EUnitActionState.Fly, BattleBulletEntityData.BulletData.MoveGridPosIdxs, i);
+                var pos = GameUtility.GetMovePos(EUnitActionState.Fly, BattleBulletEntityData.BulletData.MoveGridPosIdxs, i, false);
                 
                 var tIdx = i;
 

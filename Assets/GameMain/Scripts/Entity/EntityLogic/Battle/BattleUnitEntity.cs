@@ -388,6 +388,11 @@ namespace RoundHero
         
         public void Shoot()
         {
+
+        }
+        
+        public void HandleShoot()
+        {
             var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
             var triggerRange = buffData[0].TriggerRange;
             var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
@@ -440,12 +445,22 @@ namespace RoundHero
         
         public async void Hit()
         {
+
+        }
+        
+        public async void HandleHit()
+        {
             await ShowEffectAttackEntity();
 
             BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.ID);
         }
 
         public void GetHit()
+        {
+
+        }
+        
+        public async void HandleGetHit()
         {
             Log.Debug("GetHit");
             ShowEffectHurtEntity();
@@ -661,7 +676,9 @@ namespace RoundHero
             {
                 var moveGridPosIdx = moveGridPosIdxs[i];
 
-                var pos = GameUtility.GetMovePos(unitActionState, moveGridPosIdxs, i);
+                var hasUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(moveGridPosIdx) !=  null;
+                
+                var pos = GameUtility.GetMovePos(unitActionState, moveGridPosIdxs, i, hasUnit);
                 
                 var tIdx = i;
 
@@ -764,14 +781,17 @@ namespace RoundHero
             {
                 case EAttackCastType.CloseSingle:
                     CloseSingleAttack();
+                    
                     break;
                 case EAttackCastType.CloseMulti:
                     CloseMultiAttack();
+                    
                     break;
                 case EAttackCastType.RemoteSingle:
                     break;
                 case EAttackCastType.RemoteMulti:
                     RemoteMultiAttack();
+                    
                     break;
                 default:
                     break;
@@ -789,6 +809,10 @@ namespace RoundHero
                 animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
             });
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                HandleShoot();
+            });
         }
 
         public void CloseMultiAttack()
@@ -800,6 +824,10 @@ namespace RoundHero
             {
                 animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
+            });
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                HandleHit();
             });
         }
         
@@ -813,6 +841,10 @@ namespace RoundHero
             //
             //     GameEntry.Entity.HideEntity(effectAttackEntity);
             // });
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                HandleHit();
+            });
         }
         
         public void RunAttack()
@@ -872,10 +904,7 @@ namespace RoundHero
             
             
             //SetAction(EUnitActionState.Dead);
-            GameUtility.DelayExcute(5f, () =>
-            {
-                GameEntry.Entity.HideEntity(this);
-            });
+            
         }
         
         public void RefreshRoatation()
@@ -901,6 +930,11 @@ namespace RoundHero
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.GetHitTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)HitType.Back1);
+
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                HandleGetHit();
+            });
             
             // if (UnitActionState == EUnitActionState.Run)
             // {

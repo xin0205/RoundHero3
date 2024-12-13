@@ -51,11 +51,11 @@ namespace RoundHero
             return (BattleGridEntity)task.Logic;
         }
         
-        public static async Task<BattleCardEntity> ShowBattleCardEntityAsync(this EntityComponent entityComponent, int cardIdx)
+        public static async Task<BattleCardEntity> ShowBattleCardEntityAsync(this EntityComponent entityComponent, int cardIdx, int handSortingIdx = 0)
         {
             var data = ReferencePool.Acquire<BattleCardEntityData>();
             
-            data.Init(entityComponent.GenerateSerialId(), Vector2.zero, cardIdx);
+            data.Init(entityComponent.GenerateSerialId(), Vector2.zero, cardIdx, handSortingIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleCardEntity),
                 AssetUtility.GetBattleCardPrefab(), Constant.EntityGroup.Card, 0, data);
