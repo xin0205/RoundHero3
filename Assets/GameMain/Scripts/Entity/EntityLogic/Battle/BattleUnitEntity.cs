@@ -786,18 +786,23 @@ namespace RoundHero
                 {
                     animator.SetInteger(AnimationParameters.Jumping, 0);
                     Idle();
-                    var pos = HeroManager.Instance.HeroEntity.Position;
-                    roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                    LookAtHero();
                     GridPosIdx = moveGridPosIdxs[moveGridPosIdxs.Count - 1];
                 }
                 IsMove = false;
-                //BattleManager.Instance.Refresh();
+                BattleManager.Instance.Refresh();
                 
                 BattleManager.Instance.RefreshView();
                 BattleAreaManager.Instance.RefreshObstacles();
             });
 
             //return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
+        }
+
+        protected virtual void LookAtHero()
+        {
+            var pos = HeroManager.Instance.HeroEntity.Position;
+            roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
         }
         
         public void Run(MoveActionData moveActionData)

@@ -1373,7 +1373,11 @@ namespace RoundHero
             {
                 endCoord += direct;
                 if (!GameUtility.InGridRange(endCoord))
+                {
+                    endCoord -= direct;
                     break;
+                }
+                    
             }
 
             return GameUtility.GridCoordToPosIdx(endCoord);

@@ -33,6 +33,11 @@ namespace RoundHero
             base.RefreshData();
             //cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
         }
+        
+        protected override void LookAtHero()
+        {
+
+        }
 
         public void UpdateCacheHPDelta()
         {
