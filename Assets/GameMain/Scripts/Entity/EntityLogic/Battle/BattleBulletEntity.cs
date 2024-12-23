@@ -93,12 +93,24 @@ namespace RoundHero
 
                     bulletParticle.transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Battle.BulletShootTime).SetEase(Ease.Linear).OnComplete(() =>
                     {
-                        if (BattleBulletEntityData.BulletData.TriggerDataDict.Contains(moveGridPosIdx))
+                        if (BattleBulletEntityData.BulletData.TriggerActionDataDict.Contains(moveGridPosIdx))
                         {
                             ShowExplodeParticle();
-                            foreach (var triggerData in BattleBulletEntityData.BulletData.TriggerDataDict[moveGridPosIdx])
+                            
+                            
+                            foreach (var triggerActionData in BattleBulletEntityData.BulletData.TriggerActionDataDict[moveGridPosIdx])
                             {
-                                BattleFightManager.Instance.TriggerAction(triggerData);
+                                if (triggerActionData.TriggerData != null)
+                                {
+                                    BattleFightManager.Instance.TriggerAction(triggerActionData.TriggerData);
+
+                                }
+                                
+                                if (triggerActionData.MoveUnitData != null)
+                                {
+                                    BattleBulletManager.Instance.UseMoveActionData(triggerActionData.MoveUnitData);
+                                }
+                                
                                 BattleManager.Instance.RefreshView();
                             }
                             

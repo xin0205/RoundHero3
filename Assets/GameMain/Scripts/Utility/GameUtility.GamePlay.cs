@@ -1366,5 +1366,46 @@ namespace RoundHero
             return ERelativeCamp.Empty;
         }
         
+        public static int GetEndPosIdx(int startPosIdx, Vector2Int direct)
+        {
+            var endCoord = GameUtility.GridPosIdxToCoord(startPosIdx);
+            while (true)
+            {
+                endCoord += direct;
+                if (!GameUtility.InGridRange(endCoord))
+                    break;
+            }
+
+            return GameUtility.GridCoordToPosIdx(endCoord);
+        }
+
+        public static List<int> GetMoveIdxs(int startIdx, int endIdx)
+        {
+            var moveIdxs = new List<int>();
+            var startCoord = GameUtility.GridPosIdxToCoord(startIdx);
+            var endCoord = GameUtility.GridPosIdxToCoord(endIdx);
+            
+            moveIdxs.Add(startIdx);
+
+            var deltaCoord = endCoord - startCoord;
+            deltaCoord.x = deltaCoord.x < 0 ? -1 : deltaCoord.x > 0 ? 1 : 0;
+            deltaCoord.y = deltaCoord.y < 0 ? -1 : deltaCoord.y > 0 ? 1 : 0;
+
+            var moveCoord = startCoord;
+            
+            while (true)
+            {
+                moveCoord += deltaCoord;
+                moveIdxs.Add(GameUtility.GridCoordToPosIdx(moveCoord));
+                if (moveCoord == endCoord)
+                {
+                    break;
+                }
+            }
+
+            return moveIdxs;
+
+        }
+        
     }
 }

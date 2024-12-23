@@ -387,7 +387,8 @@ namespace RoundHero
                             }
                             else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                             {
-                        
+                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.ID, ne.GridPosIdx);
+                                ShowBackupGrids(attackRanges);
                             }
                     
                             BattleManager.Instance.Refresh();
@@ -417,8 +418,6 @@ namespace RoundHero
                 }
                 
             }
-            
-            
             
             if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
             {
@@ -1656,7 +1655,9 @@ namespace RoundHero
                         }
                         else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                         {
-                        
+                            BattleManager.Instance.BattleState = EBattleState.SelectHurtUnit;
+                            var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.ID, ne.GridPosIdx);
+                            ShowBackupGrids(attackRanges);
                         }
                     
                         
@@ -1859,6 +1860,11 @@ namespace RoundHero
                     ShowBackupGrids(null);
                     
                     var unitData = GameUtility.GetUnitDataByID(BattleManager.Instance.TempTriggerData.UnitData.ID, false);
+                    var unit = BattleUnitManager.Instance.GetUnitByID(unitData.ID);
+                    if (unit != null)
+                    {
+                        unit.TargetPosIdx = ne.GridPosIdx;
+                    }
                     if (unitData != null)
                     {
                         //unit.UnitState.RemoveState(EUnitState.ActiveAttack);

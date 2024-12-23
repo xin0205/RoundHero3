@@ -184,6 +184,7 @@ namespace RoundHero
     public enum EActionType
     {
         Self,
+        Other,
         Around,//周围
        
         Cross2Short,//短十字
@@ -507,21 +508,43 @@ namespace RoundHero
 
     public enum EFlyType
     {
+        Back,
+        Close,
+        Back1,
+        Close1,
+        
         OtherBack,
         SelfBack,
         OtherClose,
         SelfClose,
-        //AllBack,
-        //AllClose,
-        //CrossOtherBack1,
-        Exchange,
-        SelfCross,
-        BackToSelf,
         OtherBack1,
         SelfBack1,
         OtherClose1,
         SelfClose1,
+        
+        // CrossBack,
+        // CrossClose,
+        // HorizontalBack,
+        // HorizontalClose,
+        // VerticalBack,
+        // VerticalClose,
+        //
+        
+        // CrossBack1,
+        // CrossClose1,
+        // HorizontalBack1,
+        // HorizontalClose1,
+        // VerticalBack1,
+        // VerticalClose1,
+        
+        Exchange,
+        SelfPass,
+        BackToSelf,
         Empty,
+        
+        //AllBack,
+        //AllClose,
+        //CrossOtherBack1,
     }
 
     public enum EMoveType

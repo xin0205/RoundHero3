@@ -51,10 +51,10 @@ namespace RoundHero
 
             foreach (var kv in moveData.MoveUnitDatas)
             {
-                if (!TriggerActionDatas.ContainsKey(kv.Key))
+                if (!TriggerActionDatas.ContainsKey(actionUnitID))
                 {
                 
-                    TriggerActionDatas.Add(kv.Key, new GameFrameworkMultiDictionary<int, TriggerActionData>());
+                    TriggerActionDatas.Add(actionUnitID, new GameFrameworkMultiDictionary<int, TriggerActionData>());
                 }
                 
                 var triggerActionData = new TriggerActionData();
@@ -71,44 +71,6 @@ namespace RoundHero
                 triggerActionData.MoveUnitData = kv.Value.Copy();
                 TriggerActionDatas[actionUnitID].Add(kv.Key, triggerActionData);
             }
-            
-        }
-
-        public void UseMoveActionData(int actionUnitID, int effectUnitID)
-        {
-            if (!TriggerActionDatas.ContainsKey(actionUnitID))
-            {
-                return;
-            }
-            
-            if (!TriggerActionDatas[actionUnitID].Contains(effectUnitID))
-            {
-                return;
-            }
-            
-            var moveActionDatas = TriggerActionDatas[actionUnitID][effectUnitID];
-
-            foreach (var moveActionData in moveActionDatas)
-            {
-                if (moveActionData.MoveUnitData == null)
-                {
-                    continue;
-                }
-            
-                var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(effectUnitID);
-
-                if (moveActionData.MoveUnitData.UnitActionState == EUnitActionState.Fly)
-                {
-                    effectUnitEntity.Fly(moveActionData.MoveUnitData.MoveActionData);
-                }
-                else if (moveActionData.MoveUnitData.UnitActionState == EUnitActionState.Run)
-                {
-                    effectUnitEntity.Run(moveActionData.MoveUnitData.MoveActionData);
-                }
-            }
-            
-            
-
             
         }
 
@@ -130,12 +92,60 @@ namespace RoundHero
             
             foreach (var moveActionData in moveActionDatas)
             {
+                
                 BattleFightManager.Instance.TriggerAction(moveActionData.TriggerData);
             }
 
             
             
 
+        }
+        
+        public void UseMoveActionData(int actionUnitID, int effectUnitID)
+        {
+            if (!TriggerActionDatas.ContainsKey(actionUnitID))
+            {
+                return;
+            }
+            
+            if (!TriggerActionDatas[actionUnitID].Contains(effectUnitID))
+            {
+                return;
+            }
+            
+            var moveActionDatas = TriggerActionDatas[actionUnitID][effectUnitID];
+
+            foreach (var moveActionData in moveActionDatas)
+            {
+                if (moveActionData.MoveUnitData == null)
+                {
+                    continue;
+                }
+                
+                UseMoveActionData(moveActionData.MoveUnitData);
+
+            }
+            
+            
+
+            
+        }
+        
+        public void UseMoveActionData(MoveUnitData moveUnitData)
+        {
+            
+            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(moveUnitData.UnitID);
+
+            if (moveUnitData.UnitActionState == EUnitActionState.Fly)
+            {
+                effectUnitEntity.Fly(moveUnitData.MoveActionData);
+            }
+            else if (moveUnitData.UnitActionState == EUnitActionState.Run)
+            {
+                effectUnitEntity.Run(moveUnitData.MoveActionData);
+            }
+            
+           
         }
 
         public void ActionUnitTrigger(int actionUnitID)
@@ -154,14 +164,6 @@ namespace RoundHero
             }
             TriggerActionDatas[actionUnitID].Clear();
             BattleManager.Instance.RefreshView();
-        }
-
-        public void ClearData(int actionUnitID)
-        {
-            if (TriggerActionDatas.ContainsKey(actionUnitID))
-            {
-                TriggerActionDatas[actionUnitID].Clear();
-            }
         }
 
         public GameFrameworkMultiDictionary<int, TriggerActionData> GetTriggerActionDatas(int actionUnitID)
@@ -188,6 +190,27 @@ namespace RoundHero
             }
 
             return null;
+        }
+        
+        // public List<TriggerActionData> GetTriggerActionDatasA(int actionUnitID)
+        // {
+        //     var triggerDatas = GetTriggerActionDatas(actionUnitID);
+        //     if ( triggerDatas == null)
+        //     {
+        //         return null;
+        //     }
+        //
+        //     var list = triggerDatas.ke
+        //
+        //     return list;
+        // }
+        
+        public void ClearData(int actionUnitID)
+        {
+            if (TriggerActionDatas.ContainsKey(actionUnitID))
+            {
+                TriggerActionDatas[actionUnitID].Clear();
+            }
         }
     }
 }

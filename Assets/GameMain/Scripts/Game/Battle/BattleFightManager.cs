@@ -865,12 +865,15 @@ namespace RoundHero
             
             var actionUnit = GetUnitByID(actionUnitID);
             var effectUnit = GetUnitByGridPosIdx(effectGridPosIdx);
-            if(effectUnit == null)
+            if(effectUnit == null && !Constant.Battle.RelatedUnitFlyRanges.Contains(buffData.FlyRange))
                 return;
-            var relativeCamp = GameUtility.GetRelativeCamp(actionUnit.UnitCamp, effectUnit.UnitCamp);
-            if(!buffData.TriggerUnitCamps.Contains(relativeCamp))
-                return;
-            
+
+            if (effectUnit != null)
+            {
+                var relativeCamp = GameUtility.GetRelativeCamp(actionUnit.UnitCamp, effectUnit.UnitCamp);
+                if(!buffData.TriggerUnitCamps.Contains(relativeCamp))
+                    return;
+            }
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionUnit.GridPosIdx);
 
@@ -883,112 +886,326 @@ namespace RoundHero
             //var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
             
 
-            if (effectUnit == null &&
-                (buffData.FlyType != EFlyType.SelfCross))
-                return;
+            // if (effectUnit == null &&
+            //     (buffData.FlyType != EFlyType.SelfPass))
+            //     return;
             
             var effectUnitCoord = GameUtility.GridPosIdxToCoord(effectGridPosIdx);
+            var moveUnitID = -1;
+
+
+            if (buffData.FlyType == EFlyType.Exchange)
+            {
+                actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
+                {
+                    UnitID = actionUnit.ID,
+                    MoveActionData = new MoveActionData()
+                    {
+                        ActionUnitID = actionUnit.ID,
+                        MoveGridPosIdxs = new List<int>()
+                        {
+                            actionUnit.GridPosIdx,
+                            effectUnit.GridPosIdx,
+                        }
+                    },
+                    UnitActionState = EUnitActionState.Fly,
+                });
+                actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
+                {
+                    UnitID = effectUnit.ID,
+                    MoveActionData = new MoveActionData()
+                    {
+                        ActionUnitID = effectUnit.ID,
+                        MoveGridPosIdxs = new List<int>()
+                        {
+                            effectUnit.GridPosIdx,
+                            actionUnit.GridPosIdx,
+                        }
+                    },
+                    UnitActionState = EUnitActionState.Fly,
+                });
+            }
+            else if(Constant.Battle.RelatedUnitFlyRanges.Contains(buffData.FlyRange))
+            {
+                var relatedUnits = GetUnitByGridPosIdx(effectGridPosIdx, buffData.FlyRange);
+                foreach (var relatedUnit in relatedUnits)
+                {
+                    var relatedUnitCoord = GameUtility.GridPosIdxToCoord(relatedUnit.GridPosIdx);
+                    flyDirect =  relatedUnitCoord - effectUnitCoord;
+                    flyPaths = GetFlyPaths(relatedUnit.GridPosIdx, flyDirect);
+                    CacheUnitMoveDatas(relatedUnit.ID, flyPaths, moveActionDatas);
+
+
+                    if (!actionData.MoveData.MoveUnitDatas.ContainsKey(relatedUnit.ID))
+                    {
+                        actionData.MoveData.MoveUnitDatas.Add(relatedUnit.ID, new MoveUnitData()
+                        {
+                            UnitID = relatedUnit.ID,
+                            MoveActionData = moveActionDatas[relatedUnit.ID],
+                            UnitActionState = EUnitActionState.Fly,
+                        });
+                        
+                    }
+                }
+            }
+            else
+            {
+                if (buffData.FlyRange == EActionType.Self)
+                {
+                    if (buffData.FlyType == EFlyType.Back)
+                    {
+                        flyDirect = actionUnitCoord - effectUnitCoord;
+                    }
+                    else if (buffData.FlyType == EFlyType.Close)
+                    {
+                        flyDirect = actionUnitCoord - effectUnitCoord;
+                    }
+
+                    moveUnitID = actionUnit.ID;
+
+                }
+                else if (buffData.FlyRange == EActionType.Other)
+                {
+                    if (buffData.FlyType == EFlyType.Back)
+                    {
+                        flyDirect = effectUnitCoord - actionUnitCoord;
+                    }
+                    else if (buffData.FlyType == EFlyType.Close)
+                    {
+                        flyDirect = actionUnitCoord - effectUnitCoord;
+                    }
+                  
+                    moveUnitID = effectUnit.ID;
+                }
+                else if (buffData.FlyType == EFlyType.SelfPass)
+                {
+                    flyDirect = effectUnitCoord - actionUnitCoord;
+                    moveUnitID = actionUnit.ID;
+                }
+                else if (buffData.FlyType == EFlyType.BackToSelf)
+                {
+                    flyDirect = actionUnitCoord - effectUnitCoord;
+                    moveUnitID = effectUnit.ID;
+                }
+                
+                flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect);
+ 
+                CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
+
+                if (moveActionDatas.Count > 0)
+                {
+                    actionData.MoveData.MoveUnitDatas.Add(moveUnitID, new MoveUnitData()
+                    {
+                        UnitID = moveUnitID,
+                        MoveActionData = moveActionDatas[moveUnitID],
+                        UnitActionState = EUnitActionState.Fly,
+                    });
+                        
+                }
+                
+            }
+
             
+
             switch (buffData.FlyType)
             {
-                case EFlyType.OtherBack:
-                    flyDirect = effectUnitCoord - actionUnitCoord;
-                        
-                    flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect);
-                        
-                    
-                    CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
-
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = effectUnit.ID,
-                            MoveActionData = moveActionDatas[effectUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-                        
-                    }
-
-                    break;
-                case EFlyType.SelfBack:
-                    flyDirect = actionUnitCoord - effectUnitCoord;
-                    flyPaths = GetFlyPaths(actionUnit.GridPosIdx, flyDirect);
-
-                    CacheUnitMoveDatas(actionUnit.ID, flyPaths, moveActionDatas);
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = actionUnit.ID,
-                            MoveActionData = moveActionDatas[actionUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-
-                    }
-                    break;
-                case EFlyType.OtherClose:
-                    flyDirect = actionUnitCoord - effectUnitCoord;
-                        
-                    flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect);
-                    
-                    for (int i = 0; i < flyPaths.Count; i++)
-                    {
-                        if (flyPaths[i] == actionUnit.GridPosIdx)
-                        {
-                            break;
-                        }
-                        newFlyPaths.Add(flyPaths[i]);
-                    }
-                        
-                    
-                    CacheUnitMoveDatas(effectUnit.ID, newFlyPaths, moveActionDatas);
-
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = effectUnit.ID,
-                            MoveActionData = moveActionDatas[effectUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-                        
-                    }
-                    break;
-                case EFlyType.SelfClose:
-                    flyDirect = effectUnitCoord - actionUnitCoord;
-                        
-                    flyPaths = GetFlyPaths(actionUnit.GridPosIdx, flyDirect);
-                    
-                    for (int i = 0; i < flyPaths.Count; i++)
-                    {
-                        if (flyPaths[i] == effectUnit.GridPosIdx)
-                        {
-                            break;
-                        }
-                        newFlyPaths.Add(flyPaths[i]);
-                    }
-                        
-                    
-                    CacheUnitMoveDatas(actionUnit.ID, newFlyPaths, moveActionDatas);
-
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = actionUnit.ID,
-                            MoveActionData = moveActionDatas[actionUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-                        
-                    }
-                    break;
-                // case EFlyType.AllBack:
+                // case EFlyType.CrossBack:
+                //     var relatedUnits = GetUnitByGridPosIdx(effectGridPosIdx, buffData.FlyRange);
+                //     foreach (var relatedUnit in relatedUnits)
+                //     {
+                //         var relatedUnitCoord = GameUtility.GridPosIdxToCoord(relatedUnit.GridPosIdx);
+                //         flyDirect =  relatedUnitCoord - effectUnitCoord;
+                //         flyPaths = GetFlyPaths(relatedUnit.GridPosIdx, flyDirect);
+                //         CacheUnitMoveDatas(relatedUnit.ID, flyPaths, moveActionDatas);
+                //
+                //
+                //         if (!actionData.MoveData.MoveUnitDatas.ContainsKey(relatedUnit.ID))
+                //         {
+                //             actionData.MoveData.MoveUnitDatas.Add(relatedUnit.ID, new MoveUnitData()
+                //             {
+                //                 UnitID = relatedUnit.ID,
+                //                 MoveActionData = moveActionDatas[relatedUnit.ID],
+                //                 UnitActionState = EUnitActionState.Fly,
+                //             });
+                //         
+                //         }
+                //     }
                 //     break;
-                // case EFlyType.AllClose:
+                // case EFlyType.OtherBack:
+                //     flyDirect = effectUnitCoord - actionUnitCoord;
+                //         
+                //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect);
+                //         
+                //     
+                //     CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
+                //
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = effectUnit.ID,
+                //             MoveActionData = moveActionDatas[effectUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //         
+                //     }
+                //
                 //     break;
-                // case EFlyType.CrossOtherBack1:
+                // case EFlyType.SelfBack:
+                //     flyDirect = actionUnitCoord - effectUnitCoord;
+                //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, flyDirect);
+                //
+                //     CacheUnitMoveDatas(actionUnit.ID, flyPaths, moveActionDatas);
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = actionUnit.ID,
+                //             MoveActionData = moveActionDatas[actionUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //
+                //     }
                 //     break;
+                // case EFlyType.OtherClose:
+                //     flyDirect = actionUnitCoord - effectUnitCoord;
+                //         
+                //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect);
+                //     
+                //     for (int i = 0; i < flyPaths.Count; i++)
+                //     {
+                //         if (flyPaths[i] == actionUnit.GridPosIdx)
+                //         {
+                //             break;
+                //         }
+                //         newFlyPaths.Add(flyPaths[i]);
+                //     }
+                //         
+                //     
+                //     CacheUnitMoveDatas(effectUnit.ID, newFlyPaths, moveActionDatas);
+                //
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = effectUnit.ID,
+                //             MoveActionData = moveActionDatas[effectUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //         
+                //     }
+                //     break;
+                // case EFlyType.SelfClose:
+                //     flyDirect = effectUnitCoord - actionUnitCoord;
+                //         
+                //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, flyDirect);
+                //     
+                //     for (int i = 0; i < flyPaths.Count; i++)
+                //     {
+                //         if (flyPaths[i] == effectUnit.GridPosIdx)
+                //         {
+                //             break;
+                //         }
+                //         newFlyPaths.Add(flyPaths[i]);
+                //     }
+                //         
+                //     
+                //     CacheUnitMoveDatas(actionUnit.ID, newFlyPaths, moveActionDatas);
+                //
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = actionUnit.ID,
+                //             MoveActionData = moveActionDatas[actionUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //         
+                //     }
+                //     break;
+                // case EFlyType.OtherBack1:
+                //     flyDirect = effectUnitCoord - actionUnitCoord;
+                //     flyDirect = GameUtility.GetDirect(flyDirect);
+                //     
+                //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(effectUnitCoord + flyDirect));
+                //     
+                //     CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
+                //
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = effectUnit.ID,
+                //             MoveActionData = moveActionDatas[effectUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //         
+                //     }
+                //     break;
+                // case EFlyType.SelfBack1:
+                //     flyDirect = actionUnitCoord - effectUnitCoord;
+                //     flyDirect = GameUtility.GetDirect(flyDirect);
+                //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(actionUnitCoord + flyDirect));
+                //
+                //     CacheUnitMoveDatas(actionUnit.ID, flyPaths, moveActionDatas);
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = actionUnit.ID,
+                //             MoveActionData = moveActionDatas[actionUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //
+                //     }
+                //     break;
+                // case EFlyType.OtherClose1:
+                //     flyDirect = actionUnitCoord - effectUnitCoord;
+                //     flyDirect = GameUtility.GetDirect(flyDirect);    
+                //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(effectUnitCoord + flyDirect));
+                //
+                //     CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
+                //
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = effectUnit.ID,
+                //             MoveActionData = moveActionDatas[effectUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //         
+                //     }
+                //     break;
+                // case EFlyType.SelfClose1:
+                //     flyDirect = effectUnitCoord - actionUnitCoord;
+                //     flyDirect = GameUtility.GetDirect(flyDirect);    
+                //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(actionUnitCoord + flyDirect));
+                //     
+                //     for (int i = 0; i < flyPaths.Count; i++)
+                //     {
+                //         if (flyPaths[i] == effectUnit.GridPosIdx)
+                //         {
+                //             break;
+                //         }
+                //         newFlyPaths.Add(flyPaths[i]);
+                //     }
+                //         
+                //     
+                //     CacheUnitMoveDatas(actionUnit.ID, newFlyPaths, moveActionDatas);
+                //
+                //     if (moveActionDatas.Count > 0)
+                //     {
+                //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
+                //         {
+                //             UnitID = actionUnit.ID,
+                //             MoveActionData = moveActionDatas[actionUnit.ID],
+                //             UnitActionState = EUnitActionState.Fly,
+                //         });
+                //         
+                //     }
+                //     break;
+                
                 case EFlyType.Exchange:
                     
                     actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
@@ -1021,7 +1238,7 @@ namespace RoundHero
                     });
                     
                     break;
-                case EFlyType.SelfCross:
+                case EFlyType.SelfPass:
                     flyDirect = effectUnitCoord - actionUnitCoord;
                     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, effectGridPosIdx);
 
@@ -1053,90 +1270,15 @@ namespace RoundHero
 
                     }
                     break;
-                case EFlyType.OtherBack1:
-                    flyDirect = effectUnitCoord - actionUnitCoord;
-                    flyDirect = GameUtility.GetDirect(flyDirect);
-                    
-                    flyPaths = GetFlyPaths(effectUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(effectUnitCoord + flyDirect));
-                    
-                    CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
-
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = effectUnit.ID,
-                            MoveActionData = moveActionDatas[effectUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-                        
-                    }
-                    break;
-                case EFlyType.SelfBack1:
-                    flyDirect = actionUnitCoord - effectUnitCoord;
-                    flyDirect = GameUtility.GetDirect(flyDirect);
-                    flyPaths = GetFlyPaths(actionUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(actionUnitCoord + flyDirect));
-
-                    CacheUnitMoveDatas(actionUnit.ID, flyPaths, moveActionDatas);
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = actionUnit.ID,
-                            MoveActionData = moveActionDatas[actionUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-
-                    }
-                    break;
-                case EFlyType.OtherClose1:
-                    flyDirect = actionUnitCoord - effectUnitCoord;
-                    flyDirect = GameUtility.GetDirect(flyDirect);    
-                    flyPaths = GetFlyPaths(effectUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(effectUnitCoord + flyDirect));
-
-                    CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
-
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = effectUnit.ID,
-                            MoveActionData = moveActionDatas[effectUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-                        
-                    }
-                    break;
-                case EFlyType.SelfClose1:
-                    flyDirect = effectUnitCoord - actionUnitCoord;
-                    flyDirect = GameUtility.GetDirect(flyDirect);    
-                    flyPaths = GetFlyPaths(actionUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(actionUnitCoord + flyDirect));
-                    
-                    for (int i = 0; i < flyPaths.Count; i++)
-                    {
-                        if (flyPaths[i] == effectUnit.GridPosIdx)
-                        {
-                            break;
-                        }
-                        newFlyPaths.Add(flyPaths[i]);
-                    }
-                        
-                    
-                    CacheUnitMoveDatas(actionUnit.ID, newFlyPaths, moveActionDatas);
-
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-                        {
-                            UnitID = actionUnit.ID,
-                            MoveActionData = moveActionDatas[actionUnit.ID],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-                        
-                    }
-                    break;
                 case EFlyType.Empty:
                     break;
+                // case EFlyType.AllBack:
+                //     break;
+                // case EFlyType.AllClose:
+                //     break;
+                // case EFlyType.CrossOtherBack1:
+                //     break;
+                
                 default:
                     break;
             }
@@ -2700,6 +2842,35 @@ namespace RoundHero
                 exceptUnitID);
         }
 
+        public List<Data_BattleUnit> GetUnitByGridPosIdx(int gridPosIdx, EActionType actionType)
+        {
+            var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
+            var pointList = Constant.Battle.ActionTypePoints[actionType];
+            var units = new List<Data_BattleUnit>();
+
+            var idx = 0;
+            foreach (var points in pointList)
+            {
+                idx++;
+                if(idx == 1)
+                    continue;
+                
+                foreach (var point in points)
+                {
+                    var targetCoord = coord + point;
+                    var targetGridPosIdx = GameUtility.GridCoordToPosIdx(targetCoord);
+                    var unit = GetUnitByGridPosIdx(targetGridPosIdx);
+                    if (unit != null)
+                    {
+                        units.Add(unit);
+                    }
+                    
+                }
+            }
+
+            return units;
+        }
+
         private Data_BattleUnit InternalGetUnitByGridPosIdx(Dictionary<int, Data_BattleUnit> battleUnitDatas,
             int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null,
             int exceptUnitID = -1)
@@ -3389,7 +3560,8 @@ namespace RoundHero
             }
 
             var time = 0.5f;
-            if (isAttack)
+            //
+            if (isAttack || actionData.MoveData.MoveUnitDatas.Count > 0)
             {
                 time += 1.5f;
                 
@@ -3568,7 +3740,7 @@ namespace RoundHero
             }
 
             var time = 0.5f;
-            if (isAttack)
+            if (isAttack || actionData.MoveData.MoveUnitDatas.Count > 0)
             {
                 time += 0.5f;
                 
@@ -4210,82 +4382,90 @@ namespace RoundHero
             return runPaths;
         }
 
+        
+
         public List<int> GetFlyPaths(int startPosIdx, Vector2Int direct)
         {
             var startCoord = GameUtility.GridPosIdxToCoord(startPosIdx);
+
+            var endPosIdx = GameUtility.GetEndPosIdx(startPosIdx, direct);
+
+            return GetFlyPaths(startPosIdx, endPosIdx);
             
-            var flyPosIdxs = new List<int>();
-            flyPosIdxs.Add(startPosIdx);
-            
-            var signX = 0;
-            var signY = 0;
-            if (direct.x < 0)
-            {
-                signX = -1;
-            }
-            else if (direct.x > 0)
-            {
-                signX = 1;
-            }
-            
-            if (direct.y < 0)
-            {
-                signY = -1;
-            }
-            else if (direct.y > 0)
-            {
-                signY = 1;
-            }
-
-
-            var idx = 0;
-            var isMoveDirect = false;
-            var targetCoord = startCoord;
-            var lastGridPosIdx = startPosIdx;
-            while (true)
-            {
-                targetCoord = targetCoord +
-                              new Vector2Int(signX, signY);
-                
-                if (!GameUtility.InGridRange(targetCoord))
-                    break;
-                
-                var gridPosIdx =
-                    GameUtility.GridCoordToPosIdx(targetCoord);
-                
-                if (BattleManager.Instance.BattleData.GridTypes[gridPosIdx] == EGridType.Obstacle)
-                {
-                    break;
-                }
-                
-                flyPosIdxs.Add(gridPosIdx);
-
-                var unit = GameUtility.GetUnitByGridPosIdx(gridPosIdx);
-                // && unit.GetStateCount(EUnitState.UnBePass) > 0
-                if (unit != null)
-                {
-                    flyPosIdxs.Add(lastGridPosIdx);
-                    break;
-                }
-                
-                
-                
-                var gridProp = RoundFightData.GamePlayData.BattleData.Contain(EGridPropID.MoveDirect, gridPosIdx);
-                if (gridProp != null && !MoveDirectPropUseDict[gridProp.ID].UseInRound)
-                {
-                    MoveDirectPropUseDict[gridProp.ID].UseInRound = true;
-                    var newDirectCoord = Constant.Battle.EPos2CoordMap[MoveDirectPropUseDict[gridProp.ID].Direct];
-                    signX = newDirectCoord.x;
-                    signY = newDirectCoord.y;
-                    isMoveDirect = true;
-
-                }
-                idx++;
-                
-                lastGridPosIdx = gridPosIdx;
-            }
-
-            return flyPosIdxs;
+            // var flyPosIdxs = new List<int>();
+            // flyPosIdxs.Add(startPosIdx);
+            //
+            // direct = GameUtility.GetDirect(direct);
+            //
+            // // var signX = 0;
+            // // var signY = 0;
+            // // if (direct.x < 0)
+            // // {
+            // //     signX = -1;
+            // // }
+            // // else if (direct.x > 0)
+            // // {
+            // //     signX = 1;
+            // // }
+            // //
+            // // if (direct.y < 0)
+            // // {
+            // //     signY = -1;
+            // // }
+            // // else if (direct.y > 0)
+            // // {
+            // //     signY = 1;
+            // // }
+            //
+            //
+            // var idx = 0;
+            // var isMoveDirect = false;
+            // var targetCoord = startCoord;
+            // var lastGridPosIdx = startPosIdx;
+            // while (true)
+            // {
+            //     targetCoord = targetCoord +
+            //                   direct;
+            //     
+            //     if (!GameUtility.InGridRange(targetCoord))
+            //         break;
+            //     
+            //     var gridPosIdx =
+            //         GameUtility.GridCoordToPosIdx(targetCoord);
+            //     
+            //     if (BattleManager.Instance.BattleData.GridTypes[gridPosIdx] == EGridType.Obstacle)
+            //     {
+            //         break;
+            //     }
+            //     
+            //     flyPosIdxs.Add(gridPosIdx);
+            //
+            //     var unit = GameUtility.GetUnitByGridPosIdx(gridPosIdx);
+            //     // && unit.GetStateCount(EUnitState.UnBePass) > 0
+            //     if (unit != null)
+            //     {
+            //         flyPosIdxs.Add(lastGridPosIdx);
+            //         break;
+            //     }
+            //     
+            //     
+            //     
+            //     var gridProp = RoundFightData.GamePlayData.BattleData.Contain(EGridPropID.MoveDirect, gridPosIdx);
+            //     if (gridProp != null && !MoveDirectPropUseDict[gridProp.ID].UseInRound)
+            //     {
+            //         MoveDirectPropUseDict[gridProp.ID].UseInRound = true;
+            //         var newDirectCoord = Constant.Battle.EPos2CoordMap[MoveDirectPropUseDict[gridProp.ID].Direct];
+            //         direct.x = newDirectCoord.x;
+            //         direct.y = newDirectCoord.y;
+            //         isMoveDirect = true;
+            //
+            //     }
+            //     idx++;
+            //     
+            //     lastGridPosIdx = gridPosIdx;
+            // }
+            //
+            // return flyPosIdxs;
         }
         
         public List<int> GetFlyPaths(int startPosIdx, int endPosIdx)
@@ -4297,25 +4477,27 @@ namespace RoundHero
             var flyPosIdxs = new List<int>();
             flyPosIdxs.Add(startPosIdx);
             
-            var signX = 0;
-            var signY = 0;
-            if (direct.x < 0)
-            {
-                signX = -1;
-            }
-            else if (direct.x > 0)
-            {
-                signX = 1;
-            }
+            // var signX = 0;
+            // var signY = 0;
+            // if (direct.x < 0)
+            // {
+            //     signX = -1;
+            // }
+            // else if (direct.x > 0)
+            // {
+            //     signX = 1;
+            // }
+            //
+            // if (direct.y < 0)
+            // {
+            //     signY = -1;
+            // }
+            // else if (direct.y > 0)
+            // {
+            //     signY = 1;
+            // }
             
-            if (direct.y < 0)
-            {
-                signY = -1;
-            }
-            else if (direct.y > 0)
-            {
-                signY = 1;
-            }
+            direct = GameUtility.GetDirect(direct);
 
 
             var idx = 0;
@@ -4325,7 +4507,7 @@ namespace RoundHero
             while (true)
             {
                 targetCoord = targetCoord +
-                              new Vector2Int(signX, signY);
+                              direct;
                 
                 if (!GameUtility.InGridRange(targetCoord))
                     break;
@@ -4350,14 +4532,14 @@ namespace RoundHero
                 {
                     MoveDirectPropUseDict[gridProp.ID].UseInRound = true;
                     var newDirectCoord = Constant.Battle.EPos2CoordMap[MoveDirectPropUseDict[gridProp.ID].Direct];
-                    signX = newDirectCoord.x;
-                    signY = newDirectCoord.y;
+                    direct.x = newDirectCoord.x;
+                    direct.y = newDirectCoord.y;
 
                 }
                 
                 
 
-                if (targetCoord == endCoord)
+                if (targetCoord == endCoord && !isMoveDirect)
                 {
                     var gridType = RoundFightData.GamePlayData.BattleData.GridTypes[gridPosIdx];
                     if (gridType == EGridType.Obstacle)

@@ -96,6 +96,12 @@ namespace RoundHero
 
             };
 
+            public static List<EActionType> RelatedUnitFlyRanges = new List<EActionType>()
+            {
+                EActionType.Cross2Short,
+
+            };
+
             public static Dictionary<EActionType, List<List<Vector2Int>>> ActionTypePoints =
                 new()
                 {

@@ -9,17 +9,18 @@ namespace RoundHero
 {
     public class BuffData
     {
-        public EBuffTriggerType BuffTriggerType;
+        public EBuffTriggerType BuffTriggerType = EBuffTriggerType.Empty;
         public List<ERelativeCamp> TriggerUnitCamps = new List<ERelativeCamp>();
-        public EActionType TriggerRange;
-        public EFlyType FlyType;
+        public EActionType TriggerRange = EActionType.Empty;
+        public EFlyType FlyType = EFlyType.Empty;
+        public EActionType FlyRange = EActionType.Empty;
         public List<ETriggerTarget> TriggerTargets = new List<ETriggerTarget>();
-        public EBuffValueType BuffValueType;
+        public EBuffValueType BuffValueType = EBuffValueType.Empty;
         public bool RangeTrigger;
-        public EHeroAttribute HeroAttribute;
-        public EUnitAttribute UnitAttribute;
-        public EUnitState UnitState;
-        public ECardTriggerType CardTriggerType;
+        public EHeroAttribute HeroAttribute = EHeroAttribute.Empty;
+        public EUnitAttribute UnitAttribute = EUnitAttribute.Empty;
+        public EUnitState UnitState = EUnitState.Empty;
+        public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
         public string BuffStr;
         public List<string> Values;
     }
@@ -759,6 +760,7 @@ namespace RoundHero
                     BuffParse_TacticSelectUnit(strList, buffData);
                     break;
                 case EBuffTriggerType.SelectGrid:
+                    BuffParse_SelectGrid(strList, buffData);
                     break;
                 case EBuffTriggerType.Use:
                     break;
@@ -865,34 +867,76 @@ namespace RoundHero
         public void BuffParse_SelectUnit(string[] strList, BuffData buffData)
         {
             buffData.FlyType = Enum.Parse<EFlyType>(strList[1]);
-            buffData.TriggerRange = Enum.Parse<EActionType>(strList[2]);
+            buffData.FlyRange = Enum.Parse<EActionType>(strList[2]);
+            buffData.TriggerRange = Enum.Parse<EActionType>(strList[3]);
+
             
-            var unitCamps = strList[3].Split("2");
+            var unitCamps = strList[4].Split("2");
             foreach (var unitCamp in unitCamps)
             {
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
             }
             
-            var triggerTargets = strList[4].Split("2");
+            var triggerTargets = strList[5].Split("2");
             foreach (var triggerTarget in triggerTargets)
             {
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
 
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[5]);
+            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[6]);
             switch (buffData.BuffValueType)
             {
                 case EBuffValueType.Atrb:
-                    buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[6]);
+                    buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[7]);
                     break;
                 case EBuffValueType.Hero:
-                    buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[6]);
+                    buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[7]);
                     break;
                 case EBuffValueType.State:
-                    buffData.UnitState = Enum.Parse<EUnitState>(strList[6]);
+                    buffData.UnitState = Enum.Parse<EUnitState>(strList[7]);
                     break;
                 case EBuffValueType.Card:
-                    buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[6]);
+                    buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[7]);
+                    break;
+                case EBuffValueType.Empty:
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        public void BuffParse_SelectGrid(string[] strList, BuffData buffData)
+        {
+            buffData.FlyType = Enum.Parse<EFlyType>(strList[1]);
+            buffData.FlyRange = Enum.Parse<EActionType>(strList[2]);
+            buffData.TriggerRange = Enum.Parse<EActionType>(strList[3]);
+            
+            var unitCamps = strList[4].Split("2");
+            foreach (var unitCamp in unitCamps)
+            {
+                buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
+            }
+            
+            var triggerTargets = strList[5].Split("2");
+            foreach (var triggerTarget in triggerTargets)
+            {
+                buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
+            }
+
+            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[6]);
+            switch (buffData.BuffValueType)
+            {
+                case EBuffValueType.Atrb:
+                    buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[7]);
+                    break;
+                case EBuffValueType.Hero:
+                    buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[7]);
+                    break;
+                case EBuffValueType.State:
+                    buffData.UnitState = Enum.Parse<EUnitState>(strList[7]);
+                    break;
+                case EBuffValueType.Card:
+                    buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[7]);
                     break;
                 case EBuffValueType.Empty:
                     break;

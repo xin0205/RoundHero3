@@ -28,6 +28,8 @@ namespace RoundHero
             var drCard = CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
             InitWeaponType(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);
             AttachWeapon(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);
+            
+            UnitAttackCastType = drCard.AttackCastType;
         }
 
        

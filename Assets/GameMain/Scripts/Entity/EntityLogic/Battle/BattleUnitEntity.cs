@@ -36,7 +36,8 @@ namespace RoundHero
         public EAttackCastType UnitAttackCastType;
         public Transform ValuePos;
         protected Queue<int> hurtQueue = new Queue<int>();
-        
+
+        public int TargetPosIdx;
         
         public Vector3 Position
         {
@@ -391,7 +392,7 @@ namespace RoundHero
 
         }
         
-        public void HandleShoot()
+        public void MultiHandleShoot()
         {
             var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
             var triggerRange = buffData[0].TriggerRange;
@@ -423,7 +424,7 @@ namespace RoundHero
                     
                     foreach (var triggerActionData in triggerActionDatas)
                     {
-                        bulletData.TriggerDataDict.Add(gridPosIdx, triggerActionData.TriggerData);
+                        bulletData.TriggerActionDataDict.Add(gridPosIdx, triggerActionData);
                     }
 
                     if(triggerActionDatas != null && triggerRange.ToString().Contains("Extend"))
@@ -443,6 +444,59 @@ namespace RoundHero
             
         }
         
+        
+        public void SingleHandleShoot()
+        {
+            var bulletData = new BulletData();
+            bulletData.ActionUnitID = BattleUnitData.ID;
+            var moveIdxs = GameUtility.GetMoveIdxs(BattleUnit.GridPosIdx, TargetPosIdx);
+            bulletData.MoveGridPosIdxs.AddRange(moveIdxs);
+            
+            var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
+            var flyRange = buffData[0].FlyRange;
+            var endPosIdx = moveIdxs[moveIdxs.Count - 1];
+            var endCoord = GameUtility.GridPosIdxToCoord(endPosIdx);
+            for (int i = 1; i < Constant.Battle.ActionTypePoints[flyRange].Count; i++)
+            {
+                var range = Constant.Battle.ActionTypePoints[flyRange][i];
+
+                foreach (var deltaPos in range)
+                {
+                    var deltaCoord = endCoord + deltaPos;
+                    if (!GameUtility.InGridRange(deltaCoord))
+                        continue;
+
+                    var gridPosIdx = GameUtility.GridCoordToPosIdx(deltaCoord);
+
+
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
+                    if (effectUnit == null)
+                        continue;
+
+                    var triggerActionDatas =
+                        BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.ID, effectUnit.BattleUnit.ID);
+
+                    if (triggerActionDatas == null)
+                        continue;
+
+                    foreach (var triggerActionData in triggerActionDatas)
+                    {
+                        bulletData.TriggerActionDataDict.Add(endPosIdx, triggerActionData);
+                    }
+
+                    if (triggerActionDatas != null && flyRange.ToString().Contains("Extend"))
+                    {
+                        break;
+                    }
+
+                }
+
+
+            }
+
+            GameEntry.Entity.ShowBattleBulletEntityAsync(bulletData, ShootPos.position);
+            
+        }
         public async void Hit()
         {
 
@@ -788,6 +842,7 @@ namespace RoundHero
                     
                     break;
                 case EAttackCastType.RemoteSingle:
+                    RemoteSingleAttack();
                     break;
                 case EAttackCastType.RemoteMulti:
                     RemoteMultiAttack();
@@ -797,6 +852,22 @@ namespace RoundHero
                     break;
             }
             
+        }
+        
+        public void RemoteSingleAttack()
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            GameUtility.DelayExcute(1f, () =>
+            {
+                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
+                animator.SetTrigger(AnimationParameters.Trigger);
+            });
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                SingleHandleShoot();
+            });
         }
         
         public void RemoteMultiAttack()
@@ -811,7 +882,7 @@ namespace RoundHero
             });
             GameUtility.DelayExcute(0.15f, () =>
             {
-                HandleShoot();
+                MultiHandleShoot();
             });
         }
 
@@ -836,11 +907,7 @@ namespace RoundHero
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
-            // GameUtility.DelayExcute(1f, () =>
-            // {
-            //
-            //     GameEntry.Entity.HideEntity(effectAttackEntity);
-            // });
+
             GameUtility.DelayExcute(0.15f, () =>
             {
                 HandleHit();

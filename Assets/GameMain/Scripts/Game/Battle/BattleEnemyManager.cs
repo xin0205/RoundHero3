@@ -18,7 +18,8 @@ namespace RoundHero
         //public Dictionary<int, List<int>> EnemyMovePaths = new ();
         public Dictionary<int, BattleRouteEntity>  BattleRouteEntities = new ();
         private bool isShowRoute = false;
-
+        private int curRouteIdx = 0;
+        private int showRouteIdx = 0;
         
         
         //private int id;
@@ -34,6 +35,8 @@ namespace RoundHero
             
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
+            curRouteIdx = 0;
+            showRouteIdx = 0;
             
             //BattleManager.Instance.BattleData.EnemyType = enemyType;
             
@@ -114,12 +117,14 @@ namespace RoundHero
             {
                 if(kv.Value == null || kv.Value.Count <= 0)
                     continue;
-                
-                var battleRouteEntity = await GameEntry.Entity.ShowBattleRouteEntityAsync(kv.Value);
+
+                var battleRouteEntity = await GameEntry.Entity.ShowBattleRouteEntityAsync(kv.Value, curRouteIdx);
+                curRouteIdx++;
                 
                 battleRouteEntity.SetCurrent(kv.Value.First() == BattleAreaManager.Instance.CurPointGridPosIdx);
                 
-                if (!isShowRoute)
+
+                if (!isShowRoute  || battleRouteEntity.BattleRouteEntityData.RouteIdx < showRouteIdx)
                 {
                     GameEntry.Entity.HideEntity(battleRouteEntity);
                     break;
@@ -136,6 +141,7 @@ namespace RoundHero
         public void UnShowEnemyRoutes()
         {
             isShowRoute = false;
+            showRouteIdx = curRouteIdx;
             foreach (var kv in BattleRouteEntities)
             {
                 GameEntry.Entity.HideEntity(kv.Value.Entity);

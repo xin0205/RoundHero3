@@ -8,7 +8,7 @@ namespace RoundHero
     {
         public int ActionUnitID = -1;
         public List<int> MoveGridPosIdxs = new List<int>();
-        public GameFrameworkMultiDictionary<int, TriggerData> TriggerDataDict = new GameFrameworkMultiDictionary<int, TriggerData>();
+        public GameFrameworkMultiDictionary<int, TriggerActionData> TriggerActionDataDict = new ();
     }
     
     public class BattleBulletEntityData : EntityData

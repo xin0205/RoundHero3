@@ -96,11 +96,11 @@ namespace RoundHero
             return (BattleHeroEntity)task.Logic;
         }
         
-        public static async Task<BattleRouteEntity> ShowBattleRouteEntityAsync(this EntityComponent entityComponent, List<int> gridPosIdxs)
+        public static async Task<BattleRouteEntity> ShowBattleRouteEntityAsync(this EntityComponent entityComponent, List<int> gridPosIdxs, int routeIdx)
         {
             var data = ReferencePool.Acquire<BattleRouteEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), Vector3.zero, gridPosIdxs);
+            data.Init(entityComponent.GenerateSerialId(), Vector3.zero, gridPosIdxs, routeIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleRouteEntity),
                 AssetUtility.GetBattleRoutePrefab(), Constant.EntityGroup.Unit, 0, data);
