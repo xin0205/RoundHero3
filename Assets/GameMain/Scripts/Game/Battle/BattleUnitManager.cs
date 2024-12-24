@@ -136,13 +136,16 @@ namespace RoundHero
             return null;
         }
         
-        public BattleUnitEntity GetUnitByGridPosIdx(int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null)
+        public BattleUnitEntity GetUnitByGridPosIdx(int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null, int exceptUnitID = -1)
         {
             foreach (var kv in BattleUnitEntities)
             {
                 if (kv.Value is BattleUnitEntity unit)
                 {
                     if(unitRole != null && unit.UnitRole != unitRole)
+                        continue;
+                    
+                    if(unit.ID == exceptUnitID)
                         continue;
                 }
                 

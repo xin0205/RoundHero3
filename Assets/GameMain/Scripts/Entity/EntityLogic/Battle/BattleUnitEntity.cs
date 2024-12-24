@@ -726,11 +726,12 @@ namespace RoundHero
             //SetAction(unitActionState);
 
             var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
+            
             for (int i = 0; i < moveGridPosIdxs.Count; i++)
             {
                 var moveGridPosIdx = moveGridPosIdxs[i];
 
-                var hasUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(moveGridPosIdx) !=  null;
+                var hasUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(moveGridPosIdx, null, null, null, BattleUnitData.ID) !=  null;
                 
                 var pos = GameUtility.GetMovePos(unitActionState, moveGridPosIdxs, i, hasUnit);
                 

@@ -945,7 +945,8 @@ namespace RoundHero
             var isOblique = ActionTypeMaps[attackType].Contains("Direct8");
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionGridPosIdx);
-            var heroCoord = GameUtility.GridPosIdxToCoord(HeroManager.Instance.BattleHeroData.GridPosIdx);
+            var heroUnitData = GameUtility.GetUnitDataByID(HeroManager.Instance.BattleHeroData.ID, isBattleData);
+            var heroCoord = GameUtility.GridPosIdxToCoord(heroUnitData.GridPosIdx);
     
             if (!isExtendActionType)
             {

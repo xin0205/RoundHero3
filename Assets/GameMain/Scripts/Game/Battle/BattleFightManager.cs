@@ -1874,10 +1874,20 @@ namespace RoundHero
                 {
                     var collisionTriggerData = BattleFightManager.Instance.BattleRoleAttribute(unitID, unitID,
                         bePassUnit.ID, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
+                    var bePassUnitHeroEntity = HeroManager.Instance.GetHeroEntity(bePassUnit.UnitCamp);
+                    if (bePassUnitHeroEntity != null && bePassUnitHeroEntity.BattleHeroEntityData.BattleHeroData.ID == bePassUnit.ID)
+                    {
+                        collisionTriggerData.ChangeHPInstantly = false;
+                    }
                     BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData, triggerDatas);
                     
                     var collisionTriggerData2 = BattleFightManager.Instance.BattleRoleAttribute(bePassUnit.ID, bePassUnit.ID,
                         unitID, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
+                    var passUnitHeroEntity = HeroManager.Instance.GetHeroEntity(passUnit.UnitCamp);
+                    if (passUnitHeroEntity!= null && passUnitHeroEntity.BattleHeroEntityData.BattleHeroData.ID == passUnit.ID)
+                    {
+                        collisionTriggerData2.ChangeHPInstantly = false;
+                    }
                     BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData2, triggerDatas);
                 }
                 
@@ -3561,7 +3571,7 @@ namespace RoundHero
 
             var time = 0.5f;
             //
-            if (isAttack || actionData.MoveData.MoveUnitDatas.Count > 0)
+            if (isAttack || actionData.MoveData.MoveUnitDatas.Count > 0 || actionProgress == EActionProgress.SoliderActiveAttack)
             {
                 time += 1.5f;
                 
@@ -4519,7 +4529,8 @@ namespace RoundHero
                 
 
                 var unit = GameUtility.GetUnitByGridPosIdx(gridPosIdx);
-                if (unit != null && unit.GetStateCount(EUnitState.UnBePass) > 0)
+                // && unit.GetStateCount(EUnitState.UnBePass) > 0
+                if (unit != null)
                 {
                     flyPosIdxs.Add(lastGridPosIdx);
                     break;
