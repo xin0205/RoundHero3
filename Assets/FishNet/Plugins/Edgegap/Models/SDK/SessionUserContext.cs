@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Users in the session</value>
     [DataMember(Name="session_users", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "session_users")]
+    [JsonProperty2(PropertyName = "session_users")]
     public List<SessionUser> SessionUsers { get; set; }
 
 
@@ -38,7 +38,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

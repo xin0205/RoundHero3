@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>IP</value>
     [DataMember(Name="ip", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ip")]
+    [JsonProperty2(PropertyName = "ip")]
     public string Ip { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Latitude</value>
     [DataMember(Name="latitude", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "latitude")]
+    [JsonProperty2(PropertyName = "latitude")]
     public decimal? Latitude { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Longitude</value>
     [DataMember(Name="longitude", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "longitude")]
+    [JsonProperty2(PropertyName = "longitude")]
     public decimal? Longitude { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -397,7 +397,7 @@ namespace RoundHero
             var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
             var triggerRange = buffData[0].TriggerRange;
             var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
-            for (int i = 1; i < Constant.Battle.ActionTypePoints[buffData[0].TriggerRange].Count; i++)
+            for (int i = 0; i < Constant.Battle.ActionTypePoints[buffData[0].TriggerRange].Count; i++)
             {
                 var range = Constant.Battle.ActionTypePoints[buffData[0].TriggerRange][i];
                 var bulletData = new BulletData();
@@ -438,7 +438,7 @@ namespace RoundHero
                 if (bulletData.MoveGridPosIdxs.Count <= 1)
                     continue;
                 
-                GameEntry.Entity.ShowBattleBulletEntityAsync(bulletData, ShootPos.position);
+                GameEntry.Entity.ShowBattleLineBulletEntityAsync(bulletData, ShootPos.position);
                 
             }
             
@@ -456,9 +456,9 @@ namespace RoundHero
             var flyRange = buffData[0].FlyRange;
             var endPosIdx = moveIdxs[moveIdxs.Count - 1];
             var endCoord = GameUtility.GridPosIdxToCoord(endPosIdx);
-            for (int i = 1; i < Constant.Battle.ActionTypePoints[flyRange].Count; i++)
+            for (int i = 0; i < Constant.Battle.ActionTypePoints[flyRange].Count; i++)
             {
-                var range = Constant.Battle.ActionTypePoints[flyRange][i];
+                var range= Constant.Battle.ActionTypePoints[flyRange][i];
 
                 foreach (var deltaPos in range)
                 {
@@ -494,7 +494,7 @@ namespace RoundHero
 
             }
 
-            GameEntry.Entity.ShowBattleBulletEntityAsync(bulletData, ShootPos.position);
+            GameEntry.Entity.ShowBattleParabolaBulletEntityAsync(bulletData, ShootPos.position);
             
         }
         public async void Hit()

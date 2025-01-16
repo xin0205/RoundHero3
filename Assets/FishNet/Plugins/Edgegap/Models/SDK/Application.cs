@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Application name</value>
     [DataMember(Name="name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "name")]
+    [JsonProperty2(PropertyName = "name")]
     public string Name { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the application can be deployed</value>
     [DataMember(Name="is_active", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "is_active")]
+    [JsonProperty2(PropertyName = "is_active")]
     public bool? IsActive { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Image base64 string</value>
     [DataMember(Name="image", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "image")]
+    [JsonProperty2(PropertyName = "image")]
     public string Image { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Creation date</value>
     [DataMember(Name="create_time", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "create_time")]
+    [JsonProperty2(PropertyName = "create_time")]
     public string CreateTime { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Date of the last update</value>
     [DataMember(Name="last_updated", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "last_updated")]
+    [JsonProperty2(PropertyName = "last_updated")]
     public string LastUpdated { get; set; }
 
 
@@ -74,7 +74,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Total pages count</value>
     [DataMember(Name="num_pages", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "num_pages")]
+    [JsonProperty2(PropertyName = "num_pages")]
     public int? NumPages { get; set; }
 
 
@@ -38,7 +38,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -473,7 +473,7 @@ namespace Edgegap
 
             // Setup post data
             AppVersionUpdatePatchData updatePatchData = new AppVersionUpdatePatchData { DockerImage = _containerImageRepo, DockerRegistry = _containerRegistry, DockerTag = newTag };
-            string json = JsonConvert.SerializeObject(updatePatchData);
+            string json = JsonConvert2.SerializeObject(updatePatchData);
             StringContent patchData = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Make HTTP request
@@ -497,7 +497,7 @@ namespace Edgegap
 
             // Setup post data
             DeployPostData deployPostData = new DeployPostData(_appName, _appVersionName, new List<string> { _userExternalIp });
-            string json = JsonConvert.SerializeObject(deployPostData);
+            string json = JsonConvert2.SerializeObject(deployPostData);
             StringContent postData = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Make HTTP request
@@ -508,7 +508,7 @@ namespace Edgegap
             if (response.IsSuccessStatusCode)
             {
                 // Parse response
-                Deployment parsedResponse = JsonConvert.DeserializeObject<Deployment>(content);
+                Deployment parsedResponse = JsonConvert2.DeserializeObject<Deployment>(content);
 
                 _deploymentRequestId = parsedResponse.RequestId;
 
@@ -604,7 +604,7 @@ namespace Edgegap
 
             if (response.IsSuccessStatusCode)
             {
-                parsedData = JsonConvert.DeserializeObject<Status>(content);
+                parsedData = JsonConvert2.DeserializeObject<Status>(content);
             }
             else
             {

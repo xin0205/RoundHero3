@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>API Name</value>
     [DataMember(Name="name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "name")]
+    [JsonProperty2(PropertyName = "name")]
     public string Name { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>API Version</value>
     [DataMember(Name="version", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "version")]
+    [JsonProperty2(PropertyName = "version")]
     public string Version { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>API Host</value>
     [DataMember(Name="host", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "host")]
+    [JsonProperty2(PropertyName = "host")]
     public string Host { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>API Host URL</value>
     [DataMember(Name="host_url", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "host_url")]
+    [JsonProperty2(PropertyName = "host_url")]
     public string HostUrl { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>API Swagger Specification Location</value>
     [DataMember(Name="spec_url", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "spec_url")]
+    [JsonProperty2(PropertyName = "spec_url")]
     public string SpecUrl { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>API Messages</value>
     [DataMember(Name="messages", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "messages")]
+    [JsonProperty2(PropertyName = "messages")]
     public List<string> Messages { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>API Errors</value>
     [DataMember(Name="errors", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "errors")]
+    [JsonProperty2(PropertyName = "errors")]
     public List<string> Errors { get; set; }
 
 
@@ -92,7 +92,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

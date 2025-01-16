@@ -64,6 +64,7 @@ namespace RoundHero
         {
             BattleAreaManager.Instance.Update();
             BattleCardManager.Instance.Update();
+            BattleEnemyManager.Instance.Update();
         }
         
 
@@ -93,6 +94,7 @@ namespace RoundHero
         {
 
             BattleFightManager.Instance.CacheRoundFightData();
+            BattleEnemyManager.Instance.ShowEnemyRoute();
             RefreshView();
         }
         

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Animancer;
 using GameFramework.Event;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -47,9 +48,18 @@ namespace RoundHero
             // {
             //     ranges.Add(i, false);
             //}
+            buffValuelist = new List<List<float>>(10);
+            for (int i = 0; i < 10; i++)
+            {
+                var values = new List<float>(10);
+                for (int j = 0; j < 10; j++)
+                {
+                    values.Add(0);
+                }
+                buffValuelist.Add(values);
+            }
 
-            
- 
+
         }
 
         
@@ -73,11 +83,13 @@ namespace RoundHero
 
             if (isEnemy)
             {
-                if(ne.ShowState == EShowState.Show)
-                    ShowEnemyRoutes();
+                if (ne.ShowState == EShowState.Show)
+                {
+                    //ShowEnemyRoutes();
+                }    
                 else if(ne.ShowState == EShowState.Unshow)
                 {
-                    UnShowEnemyRoutes();
+                    //UnShowEnemyRoutes();
                 }
             }
         }
@@ -94,6 +106,12 @@ namespace RoundHero
             }
         }
 
+        public void ShowEnemyRoute()
+        {
+            UnShowEnemyRoutes();
+            ShowEnemyRoutes();
+        }
+
 
         public async void ShowEnemyRoutes()
         {
@@ -103,51 +121,73 @@ namespace RoundHero
                 return;
             }
 
-            if (isShowRoute)
-            {
-                UnShowEnemyRoutes();
-            }
+            // if (isShowRoute)
+            // {
+            //     UnShowEnemyRoutes();
+            // }
             
             isShowRoute = true;
             BattleRouteEntities.Clear();
             
             var enemyMovePaths = new Dictionary<int, List<int>>(BattleFightManager.Instance.RoundFightData.EnemyMovePaths);
             enemyMovePaths.AddRange(BattleFightManager.Instance.RoundFightData.ThirdUnitMovePaths);
+            
+            var routeIdx = curRouteIdx;
             foreach (var kv in enemyMovePaths)
             {
-                if(kv.Value == null || kv.Value.Count <= 0)
-                    continue;
-
-                var battleRouteEntity = await GameEntry.Entity.ShowBattleRouteEntityAsync(kv.Value, curRouteIdx);
-                curRouteIdx++;
-                
-                battleRouteEntity.SetCurrent(kv.Value.First() == BattleAreaManager.Instance.CurPointGridPosIdx);
-                
-
-                if (!isShowRoute  || battleRouteEntity.BattleRouteEntityData.RouteIdx < showRouteIdx)
+                if (kv.Value == null || kv.Value.Count <= 0)
                 {
+                    continue;
+                }
+
+                curRouteIdx++;
+            }
+
+            
+            foreach (var kv in enemyMovePaths)
+            {
+                if (kv.Value == null || kv.Value.Count <= 0)
+                {
+                    continue;
+                }
+                
+                var battleRouteEntity = await GameEntry.Entity.ShowBattleRouteEntityAsync(kv.Value, routeIdx);
+                routeIdx++;
+                //battleRouteEntity.SetCurrent(kv.Value.First() == BattleAreaManager.Instance.CurPointGridPosIdx);
+                
+                // !isShowRoute || 
+                if (battleRouteEntity.BattleRouteEntityData.RouteIdx < showRouteIdx)
+                {
+                    
                     GameEntry.Entity.HideEntity(battleRouteEntity);
-                    break;
+                    //break;
                 }
                 else
                 {
                     BattleRouteEntities.Add(battleRouteEntity.BattleRouteEntityData.Id, battleRouteEntity);
                 }
-                
+
             }
-            
+
         }
 
         public void UnShowEnemyRoutes()
         {
+            
             isShowRoute = false;
             showRouteIdx = curRouteIdx;
+            
             foreach (var kv in BattleRouteEntities)
             {
                 GameEntry.Entity.HideEntity(kv.Value.Entity);
             }
             BattleRouteEntities.Clear();
             
+        }
+
+        public void Update()
+        {
+
         }
         
         // public int GetEnemyID(int posIdx)
@@ -333,34 +373,49 @@ namespace RoundHero
             return buffStrs;
         }
         
+        private List<List<float>> buffValuelist = new List<List<float>>();
         public List<List<float>> GetBuffValues(int monsterID)
         {
             var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
-            
-            var valuelist = new List<List<float>>();
 
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    buffValuelist[i][j] = 0;
+                }
+            }
+            var idx = 0;
+            var idx2 = 0;
 
             foreach (var buffID in drEnemy.OwnBuffs)
             {
-                var values = new List<float>();
+                //var values = new List<float>();
                 foreach (var value in drEnemy.OwnBuffValues1)
                 {
-                    values.Add(BattleBuffManager.Instance.GetBuffValue(value));
+                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value);
+                    //buffValuelist[idx].Add(BattleBuffManager.Instance.GetBuffValue(value));
                 }
-                valuelist.Add(values);
+
+                idx++;
+                idx2 = 0;
+                //valuelist.Add(values);
             }
             
             foreach (var buffID in drEnemy.SecondaryBuffs)
             {
-                var values = new List<float>();
+                //var values = new List<float>();
                 foreach (var value in drEnemy.SecondaryValues)
                 {
-                    values.Add(BattleBuffManager.Instance.GetBuffValue(value));
+                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value);
                 }
-                valuelist.Add(values);
+
+                idx++;
+                idx2 = 0;
+                //valuelist.Add(values);
             }
 
-            return valuelist;
+            return buffValuelist;
         }
 
         public List<List<float>> GetSecondaryBuffValues(int monsterID)
@@ -369,7 +424,7 @@ namespace RoundHero
             
             var valuelist = new List<List<float>>();
 
-            var idx = 2;
+            //var idx = 2;
             foreach (var buffID in drEnemy.SecondaryBuffs)
             {
                 var values = new List<float>();

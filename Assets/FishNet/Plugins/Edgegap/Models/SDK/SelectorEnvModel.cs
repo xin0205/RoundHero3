@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Key to inject in the Deployment Environment Variable for this Selector</value>
     [DataMember(Name="key", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "key")]
+    [JsonProperty2(PropertyName = "key")]
     public string Key { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Value to inject in the Deployment Environment Variable for this Selector</value>
     [DataMember(Name="value", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "value")]
+    [JsonProperty2(PropertyName = "value")]
     public string Value { get; set; }
 
 
@@ -47,7 +47,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

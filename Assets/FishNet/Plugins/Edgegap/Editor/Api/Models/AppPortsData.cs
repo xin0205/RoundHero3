@@ -9,20 +9,20 @@ namespace Edgegap.Editor.Api.Models
     public class AppPortsData
     {
         /// <summary>1024~49151; Default 7770</summary>
-        [JsonProperty("port")]
+        [JsonProperty2("port")]
         public int Port { get; set; } = EdgegapWindowMetadata.PORT_DEFAULT;
        
         /// <summary>Default "UDP"</summary>
-        [JsonProperty("protocol")]
+        [JsonProperty2("protocol")]
         public string ProtocolStr { get; set; } = EdgegapWindowMetadata.DEFAULT_PROTOCOL_TYPE.ToString();
         
-        [JsonProperty("to_check")]
+        [JsonProperty2("to_check")]
         public bool ToCheck { get; set; } = true;
         
-        [JsonProperty("tls_upgrade")]
+        [JsonProperty2("tls_upgrade")]
         public bool TlsUpgrade { get; set; }
         
-        [JsonProperty("name")]
+        [JsonProperty2("name")]
         public string PortName { get; set; } = "Game Port";
     }
 }

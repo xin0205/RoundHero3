@@ -16,42 +16,42 @@ namespace Edgegap.Editor.Api.Models.Requests
         public string AppName { get; set; }
         
         /// <summary>*The name of the application associated.</summary>
-        [JsonProperty("name")]
+        [JsonProperty2("name")]
         public string VersionName { get; set; } = EdgegapWindowMetadata.DEFAULT_VERSION_TAG;
         
         /// <summary>*The tag of your image. Default == "latest".</summary>
         /// <example>"0.1.2" || "latest" (although "latest" !recommended; use actual versions in production)</example>
-        [JsonProperty("docker_tag")]
+        [JsonProperty2("docker_tag")]
         public string DockerTag { get; set; } = EdgegapWindowMetadata.DEFAULT_VERSION_TAG;
         
         /// <summary>*The name of your image.</summary>
         /// <example>"edgegap/demo" || "myCompany-someId/mylowercaseapp"</example>
-        [JsonProperty("docker_image")]
+        [JsonProperty2("docker_image")]
         public string DockerImage { get; set; } = "";
 
         /// <summary>*The Repository where the image is.</summary>
         /// <example>"registry.edgegap.com" || "harbor.edgegap.com" || "docker.io"</example>
-        [JsonProperty("docker_repository")]
+        [JsonProperty2("docker_repository")]
         public string DockerRepository { get; set; } = "";
         
         /// <summary>*Units of vCPU needed (1024 = 1vcpu)</summary>
-        [JsonProperty("req_cpu")]
+        [JsonProperty2("req_cpu")]
         public int ReqCpu { get; set; } = 256;
        
         /// <summary>*Units of memory in MB needed (1024 = 1 GPU)</summary>
-        [JsonProperty("req_memory")]
+        [JsonProperty2("req_memory")]
         public int ReqMemory { get; set; } = 256;
 
         /// <summary>*Required: At least 1 { Port, ProtocolStr }.</summary>
-        [JsonProperty("ports")]
+        [JsonProperty2("ports")]
         public AppPortsData[] Ports { get; set; } = {};
         
         /// <summary>The username to access the docker repository</summary>
-        [JsonProperty("private_username")]
+        [JsonProperty2("private_username")]
         public string PrivateUsername { get; set; } = "";
         
         /// <summary>The Private Password or Token of the username (We recommend to use a token)</summary>
-        [JsonProperty("private_token")]
+        [JsonProperty2("private_token")]
         public string PrivateToken { get; set; } = "";
         #endregion // Required
         
@@ -196,14 +196,14 @@ namespace Edgegap.Editor.Api.Models.Requests
         public static CreateAppVersionRequest FromUpdateRequest(UpdateAppVersionRequest updateRequest)
         {
             // Convert the updateRequest to JSON
-            string json = JsonConvert.SerializeObject(updateRequest);
+            string json = JsonConvert2.SerializeObject(updateRequest);
 
             // Deserialize the JSON back to CreateAppVersionRequest
             CreateAppVersionRequest createReq = null;
                 
             try
             {
-                createReq = JsonConvert.DeserializeObject<CreateAppVersionRequest>(json);
+                createReq = JsonConvert2.DeserializeObject<CreateAppVersionRequest>(json);
                 createReq.AppName = updateRequest.AppName; // Normally JsonIgnored in Update
                 createReq.VersionName = updateRequest.VersionName; // Normally JsonIgnored in Update
                 createReq.PrivateUsername = updateRequest.PrivateUsername;
@@ -220,6 +220,6 @@ namespace Edgegap.Editor.Api.Models.Requests
 
         /// <summary>Parse to json str</summary>
         public override string ToString() =>
-            JsonConvert.SerializeObject(this);
+            JsonConvert2.SerializeObject(this);
     }
 }

@@ -7,16 +7,26 @@ Shader "Custom/Dynamic Route"
 		_MainTex("MainTex", 2D) = "white" {}
 		_Number("Number", Range( 0 , 100)) = 3.082893
 		_Color ("Color", Color) = (1.0, 1.0, 1.0, 1.0)
+        //_AlphaScale("Alpha_Scale", Range(0, 1)) = 1
 
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType"="Transparent" }
         LOD 100
+        
+        Pass
+        {
+            ZWrite On
+            ColorMask 0
+        }
 
         Pass
         {
 
+            ZWrite Off
+//            Blend SrcAlpha OneMinusSrcAlpha
+            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -64,6 +74,7 @@ Shader "Custom/Dynamic Route"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 col *= _Color;
                 clip( tex2DNode.a - _Cutoff );
+                
                 return col;
             }
             ENDCG

@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the matchmaker component to use as the Open Match frontend.</value>
     [DataMember(Name="frontend_component_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "frontend_component_name")]
+    [JsonProperty2(PropertyName = "frontend_component_name")]
     public string FrontendComponentName { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the matchmaker component to use as the Open Match director.</value>
     [DataMember(Name="director_component_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "director_component_name")]
+    [JsonProperty2(PropertyName = "director_component_name")]
     public string DirectorComponentName { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the matchmaker component to use as the Open Match match function.</value>
     [DataMember(Name="match_function_component_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "match_function_component_name")]
+    [JsonProperty2(PropertyName = "match_function_component_name")]
     public string MatchFunctionComponentName { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public  new string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -16,14 +16,14 @@ namespace IO.Swagger.Model {
     /// Gets or Sets Receive
     /// </summary>
     [DataMember(Name="receive", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "receive")]
+    [JsonProperty2(PropertyName = "receive")]
     public MetricsModel Receive { get; set; }
 
     /// <summary>
     /// Gets or Sets Transmit
     /// </summary>
     [DataMember(Name="transmit", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "transmit")]
+    [JsonProperty2(PropertyName = "transmit")]
     public MetricsModel Transmit { get; set; }
 
 
@@ -45,7 +45,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

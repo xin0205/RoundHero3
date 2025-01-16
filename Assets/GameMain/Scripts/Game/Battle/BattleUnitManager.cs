@@ -424,7 +424,7 @@ namespace RoundHero
                 triggerBuffDatas.Add(new BuffValue()
                 {
                     BuffData = buffData,
-                    ValueList = valueList[idx++],
+                    ValueList = new List<float>(valueList[idx++]),
                     UnitID = unit.ID,
                 });
             };

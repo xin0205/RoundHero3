@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Auto Generated Field for logs</value>
     [DataMember(Name="logs", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "logs")]
+    [JsonProperty2(PropertyName = "logs")]
     public string Logs { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Auto Generated Field for encoding</value>
     [DataMember(Name="encoding", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "encoding")]
+    [JsonProperty2(PropertyName = "encoding")]
     public string Encoding { get; set; }
 
     /// <summary>
@@ -33,14 +33,14 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Auto Generated Field for crash_logs</value>
     [DataMember(Name="crash_logs", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "crash_logs")]
+    [JsonProperty2(PropertyName = "crash_logs")]
     public string CrashLogs { get; set; }
 
     /// <summary>
     /// Gets or Sets CrashData
     /// </summary>
     [DataMember(Name="crash_data", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "crash_data")]
+    [JsonProperty2(PropertyName = "crash_data")]
     public ApiModelContainercrashdata CrashData { get; set; }
 
 
@@ -64,7 +64,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

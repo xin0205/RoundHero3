@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>A message depending of the request termination</value>
     [DataMember(Name="message", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "message")]
+    [JsonProperty2(PropertyName = "message")]
     public string Message { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Unique Identifier of the Session</value>
     [DataMember(Name="session_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "session_id")]
+    [JsonProperty2(PropertyName = "session_id")]
     public string SessionId { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Custom ID if Available</value>
     [DataMember(Name="custom_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "custom_id")]
+    [JsonProperty2(PropertyName = "custom_id")]
     public string CustomId { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

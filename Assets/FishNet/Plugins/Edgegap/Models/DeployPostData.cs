@@ -5,13 +5,13 @@ namespace Edgegap
 {
     public struct DeployPostData
     {
-        [JsonProperty("app_name")]
+        [JsonProperty2("app_name")]
         public string AppName { get; set; }
 
-        [JsonProperty("version_name")]
+        [JsonProperty2("version_name")]
         public string AppVersionName { get; set; }
 
-        [JsonProperty("ip_list")]
+        [JsonProperty2("ip_list")]
         public IList<string> IpList { get; set; }
 
         public DeployPostData(string appName, string appVersionName, IList<string> ipList)

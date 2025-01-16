@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Will override the app version container log storage for this deployment</value>
     [DataMember(Name="enabled", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "enabled")]
+    [JsonProperty2(PropertyName = "enabled")]
     public bool? Enabled { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The name of your endpoint storage. If container log storage is enabled without this parameter, we will try to take the app version endpoint storage. If there is no endpoint storage in your app version, the container logs will not be stored. If we don't find any endpoint storage associated with this name, the container logs will not be stored.</value>
     [DataMember(Name="endpoint_storage", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "endpoint_storage")]
+    [JsonProperty2(PropertyName = "endpoint_storage")]
     public string EndpointStorage { get; set; }
 
 
@@ -47,7 +47,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

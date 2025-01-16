@@ -16,14 +16,14 @@ namespace IO.Swagger.Model {
     /// Gets or Sets Versions
     /// </summary>
     [DataMember(Name="versions", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "versions")]
+    [JsonProperty2(PropertyName = "versions")]
     public List<AppVersion> Versions { get; set; }
 
     /// <summary>
     /// Gets or Sets TotalCount
     /// </summary>
     [DataMember(Name="total_count", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "total_count")]
+    [JsonProperty2(PropertyName = "total_count")]
     public int? TotalCount { get; set; }
 
 
@@ -45,7 +45,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

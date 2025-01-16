@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Auto Generated Field for exit_code</value>
     [DataMember(Name="exit_code", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "exit_code")]
+    [JsonProperty2(PropertyName = "exit_code")]
     public int? ExitCode { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Auto Generated Field for message</value>
     [DataMember(Name="message", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "message")]
+    [JsonProperty2(PropertyName = "message")]
     public string Message { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Auto Generated Field for restart_count</value>
     [DataMember(Name="restart_count", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "restart_count")]
+    [JsonProperty2(PropertyName = "restart_count")]
     public int? RestartCount { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

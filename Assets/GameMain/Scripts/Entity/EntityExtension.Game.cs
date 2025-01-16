@@ -252,16 +252,28 @@ namespace RoundHero
             return (EffectEntity)task.Logic;
         }
         
-        public static async Task<BattleBulletEntity> ShowBattleBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData, Vector3 shootPos)
+        public static async Task<BattleLineBulletEntity> ShowBattleLineBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData, Vector3 shootPos)
         {
             var data = ReferencePool.Acquire<BattleBulletEntityData>();
 
             data.Init(entityComponent.GenerateSerialId(), shootPos, bulletData);
 
-            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleBulletEntity),
-                AssetUtility.GetBattleBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleLineBulletEntity),
+                AssetUtility.GetBattleLineBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
             
-            return (BattleBulletEntity)task.Logic;
+            return (BattleLineBulletEntity)task.Logic;
+        }
+        
+        public static async Task<BattleParabolaBulletEntity> ShowBattleParabolaBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData, Vector3 shootPos)
+        {
+            var data = ReferencePool.Acquire<BattleBulletEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), shootPos, bulletData);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleParabolaBulletEntity),
+                AssetUtility.GetBattleParabolaBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleParabolaBulletEntity)task.Logic;
         }
     }
 }

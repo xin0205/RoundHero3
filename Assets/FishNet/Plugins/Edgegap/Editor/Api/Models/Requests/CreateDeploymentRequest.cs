@@ -10,26 +10,26 @@ namespace Edgegap.Editor.Api.Models.Requests
     {
         #region Required
         /// <summary>*Required: The name of the App you want to deploy.</summary>
-        [JsonProperty("app_name")]
+        [JsonProperty2("app_name")]
         public string AppName { get; set; }
         
         /// <summary>
         /// *Required: The name of the App Version you want to deploy;
         /// if not present, the last version created is picked.
         /// </summary>
-        [JsonProperty("version_name")]
+        [JsonProperty2("version_name")]
         public string VersionName { get; set; }
         
         /// <summary>
         /// *Required: The List of IP of your user.
         /// </summary>
-        [JsonProperty("ip_list")]
+        [JsonProperty2("ip_list")]
         public string[] IpList { get; set; }
 
         /// <summary>
         /// *Required: The list of IP of your user with their location (latitude, longitude).
         /// </summary>
-        [JsonProperty("geo_ip_list")]
+        [JsonProperty2("geo_ip_list")]
         public string[] GeoIpList { get; set; } = {};
         #endregion // Required
         
@@ -58,6 +58,6 @@ namespace Edgegap.Editor.Api.Models.Requests
         
         /// <summary>Parse to json str</summary>
         public override string ToString() =>
-            JsonConvert.SerializeObject(this);
+            JsonConvert2.SerializeObject(this);
     }
 }

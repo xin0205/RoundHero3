@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Current page number</value>
     [DataMember(Name="number", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "number")]
+    [JsonProperty2(PropertyName = "number")]
     public int? Number { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Next page number</value>
     [DataMember(Name="next_page_number", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "next_page_number")]
+    [JsonProperty2(PropertyName = "next_page_number")]
     public int? NextPageNumber { get; set; }
 
     /// <summary>
@@ -33,14 +33,14 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Previous page number</value>
     [DataMember(Name="previous_page_number", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "previous_page_number")]
+    [JsonProperty2(PropertyName = "previous_page_number")]
     public int? PreviousPageNumber { get; set; }
 
     /// <summary>
     /// Gets or Sets Paginator
     /// </summary>
     [DataMember(Name="paginator", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "paginator")]
+    [JsonProperty2(PropertyName = "paginator")]
     public Paginator Paginator { get; set; }
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If there is a next page</value>
     [DataMember(Name="has_next", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "has_next")]
+    [JsonProperty2(PropertyName = "has_next")]
     public bool? HasNext { get; set; }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If there is a previous page</value>
     [DataMember(Name="has_previous", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "has_previous")]
+    [JsonProperty2(PropertyName = "has_previous")]
     public bool? HasPrevious { get; set; }
 
 
@@ -82,7 +82,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

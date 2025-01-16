@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The URL to bind to</value>
     [DataMember(Name="url", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "url")]
+    [JsonProperty2(PropertyName = "url")]
     public string Url { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Public IP of the Site</value>
     [DataMember(Name="public_ip", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "public_ip")]
+    [JsonProperty2(PropertyName = "public_ip")]
     public string PublicIp { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Port to Bind to</value>
     [DataMember(Name="port", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "port")]
+    [JsonProperty2(PropertyName = "port")]
     public decimal? Port { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Latitude of the Site</value>
     [DataMember(Name="latitude", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "latitude")]
+    [JsonProperty2(PropertyName = "latitude")]
     public decimal? Latitude { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Longitude of the Site</value>
     [DataMember(Name="longitude", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "longitude")]
+    [JsonProperty2(PropertyName = "longitude")]
     public decimal? Longitude { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>City of the Site</value>
     [DataMember(Name="city", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "city")]
+    [JsonProperty2(PropertyName = "city")]
     public string City { get; set; }
 
 
@@ -83,7 +83,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -16,7 +16,7 @@ namespace IO.Swagger.Model {
     /// Gets or Sets Sites
     /// </summary>
     [DataMember(Name="sites", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sites")]
+    [JsonProperty2(PropertyName = "sites")]
     public List<StaticSites> Sites { get; set; }
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Total of Sites</value>
     [DataMember(Name="total_count", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "total_count")]
+    [JsonProperty2(PropertyName = "total_count")]
     public int? TotalCount { get; set; }
 
 
@@ -46,7 +46,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

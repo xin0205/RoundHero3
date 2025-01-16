@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the matchmaker release configuration to use for this managed release.</value>
     [DataMember(Name="release_config_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "release_config_name")]
+    [JsonProperty2(PropertyName = "release_config_name")]
     public string ReleaseConfigName { get; set; }
 
 
@@ -38,7 +38,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public  new string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

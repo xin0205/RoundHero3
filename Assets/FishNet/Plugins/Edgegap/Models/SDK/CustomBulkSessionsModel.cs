@@ -16,7 +16,7 @@ namespace IO.Swagger.Model {
     /// Gets or Sets Sessions
     /// </summary>
     [DataMember(Name="sessions", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sessions")]
+    [JsonProperty2(PropertyName = "sessions")]
     public List<CustomBulkSessionModel> Sessions { get; set; }
 
 
@@ -37,7 +37,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

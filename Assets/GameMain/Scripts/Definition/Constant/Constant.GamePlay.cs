@@ -99,7 +99,7 @@ namespace RoundHero
             public static List<EActionType> RelatedUnitFlyRanges = new List<EActionType>()
             {
                 EActionType.Cross2Short,
-
+                EActionType.Cross2Extend,
             };
 
             public static Dictionary<EActionType, List<List<Vector2Int>>> ActionTypePoints =
@@ -921,7 +921,7 @@ namespace RoundHero
         {
             public static Dictionary<EEnemyType, int> EachTurnGenerateEnemyCounts = new()
             {
-                [EEnemyType.Normal] = 1,
+                [EEnemyType.Normal] = 3,
                 [EEnemyType.Elite] = 1,
                 [EEnemyType.Boss] = 1,
 

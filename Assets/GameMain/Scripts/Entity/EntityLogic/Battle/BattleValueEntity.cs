@@ -36,7 +36,7 @@ namespace RoundHero
             var time = 2;
             
             DOTween.To(()=> text.color, x => text.color = x, recoverColor, time).SetEase(Ease.InOutQuart);
-            transform.DOMove(BattleValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart).OnComplete(() =>
+            transform.DOLocalMove(BattleValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart).OnComplete(() =>
             {
                 GameEntry.Entity.HideEntity(this);
             });

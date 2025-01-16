@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>CIDR to allow</value>
     [DataMember(Name="cidr", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "cidr")]
+    [JsonProperty2(PropertyName = "cidr")]
     public string Cidr { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Label to organized your entries</value>
     [DataMember(Name="label", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "label")]
+    [JsonProperty2(PropertyName = "label")]
     public string Label { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the Rule will be applied on runtime</value>
     [DataMember(Name="is_active", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "is_active")]
+    [JsonProperty2(PropertyName = "is_active")]
     public bool? IsActive { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

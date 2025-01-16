@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Unique UUID</value>
     [DataMember(Name="request_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "request_id")]
+    [JsonProperty2(PropertyName = "request_id")]
     public string RequestId { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The public IP</value>
     [DataMember(Name="public_ip", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "public_ip")]
+    [JsonProperty2(PropertyName = "public_ip")]
     public string PublicIp { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Current status of Deployment</value>
     [DataMember(Name="status", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "status")]
+    [JsonProperty2(PropertyName = "status")]
     public string Status { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>if the deployment is ready</value>
     [DataMember(Name="ready", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ready")]
+    [JsonProperty2(PropertyName = "ready")]
     public bool? Ready { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>if the deployment ACL is active</value>
     [DataMember(Name="whitelisting_active", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "whitelisting_active")]
+    [JsonProperty2(PropertyName = "whitelisting_active")]
     public bool? WhitelistingActive { get; set; }
 
     /// <summary>
@@ -57,14 +57,14 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value></value>
     [DataMember(Name="fqdn", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "fqdn")]
+    [JsonProperty2(PropertyName = "fqdn")]
     public string Fqdn { get; set; }
 
     /// <summary>
     /// Gets or Sets Ports
     /// </summary>
     [DataMember(Name="ports", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ports")]
+    [JsonProperty2(PropertyName = "ports")]
     public Dictionary<string, PortMapping> Ports { get; set; }
 
     /// <summary>
@@ -72,7 +72,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Location related information</value>
     [DataMember(Name="location", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "location")]
+    [JsonProperty2(PropertyName = "location")]
     public DeploymentLocation Location { get; set; }
 
     /// <summary>
@@ -80,7 +80,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of tags associated with the deployment</value>
     [DataMember(Name="tags", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tags")]
+    [JsonProperty2(PropertyName = "tags")]
     public List<string> Tags { get; set; }
 
     /// <summary>
@@ -88,7 +88,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Capacity of the Deployment</value>
     [DataMember(Name="sockets", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sockets")]
+    [JsonProperty2(PropertyName = "sockets")]
     public int? Sockets { get; set; }
 
     /// <summary>
@@ -96,7 +96,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Capacity Usage of the Deployment</value>
     [DataMember(Name="sockets_usage", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sockets_usage")]
+    [JsonProperty2(PropertyName = "sockets_usage")]
     public int? SocketsUsage { get; set; }
 
 
@@ -127,7 +127,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

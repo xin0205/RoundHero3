@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Unique UUID</value>
     [DataMember(Name="session_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "session_id")]
+    [JsonProperty2(PropertyName = "session_id")]
     public string SessionId { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Custom ID if Available</value>
     [DataMember(Name="custom_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "custom_id")]
+    [JsonProperty2(PropertyName = "custom_id")]
     public string CustomId { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Current status of the session</value>
     [DataMember(Name="status", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "status")]
+    [JsonProperty2(PropertyName = "status")]
     public string Status { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the session is linked to a Ready deployment</value>
     [DataMember(Name="ready", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ready")]
+    [JsonProperty2(PropertyName = "ready")]
     public bool? Ready { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the session is linked to a deployment</value>
     [DataMember(Name="linked", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "linked")]
+    [JsonProperty2(PropertyName = "linked")]
     public bool? Linked { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Type of session created</value>
     [DataMember(Name="kind", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "kind")]
+    [JsonProperty2(PropertyName = "kind")]
     public string Kind { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Count of user this session currently have</value>
     [DataMember(Name="user_count", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "user_count")]
+    [JsonProperty2(PropertyName = "user_count")]
     public int? UserCount { get; set; }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Unique UUID</value>
     [DataMember(Name="deployment_request_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "deployment_request_id")]
+    [JsonProperty2(PropertyName = "deployment_request_id")]
     public string DeploymentRequestId { get; set; }
 
 
@@ -101,7 +101,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

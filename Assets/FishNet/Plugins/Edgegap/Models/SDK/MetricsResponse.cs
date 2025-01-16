@@ -16,28 +16,28 @@ namespace IO.Swagger.Model {
     /// Gets or Sets Total
     /// </summary>
     [DataMember(Name="total", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "total")]
+    [JsonProperty2(PropertyName = "total")]
     public TotalMetricsModel Total { get; set; }
 
     /// <summary>
     /// Gets or Sets Cpu
     /// </summary>
     [DataMember(Name="cpu", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "cpu")]
+    [JsonProperty2(PropertyName = "cpu")]
     public MetricsModel Cpu { get; set; }
 
     /// <summary>
     /// Gets or Sets Mem
     /// </summary>
     [DataMember(Name="mem", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "mem")]
+    [JsonProperty2(PropertyName = "mem")]
     public MetricsModel Mem { get; set; }
 
     /// <summary>
     /// Gets or Sets Network
     /// </summary>
     [DataMember(Name="network", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "network")]
+    [JsonProperty2(PropertyName = "network")]
     public NetworkMetricsModel Network { get; set; }
 
 
@@ -61,7 +61,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

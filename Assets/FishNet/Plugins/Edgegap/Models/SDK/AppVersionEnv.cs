@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Key where the Environment Variable will be set</value>
     [DataMember(Name="key", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "key")]
+    [JsonProperty2(PropertyName = "key")]
     public string Key { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Value to retrieve at the Key</value>
     [DataMember(Name="value", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "value")]
+    [JsonProperty2(PropertyName = "value")]
     public string Value { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>This will encrypt the value in our database, won't be readable by external source</value>
     [DataMember(Name="is_secret", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "is_secret")]
+    [JsonProperty2(PropertyName = "is_secret")]
     public bool? IsSecret { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

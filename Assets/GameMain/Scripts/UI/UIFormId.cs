@@ -92,5 +92,7 @@ namespace RoundHero
         AcquireForm = 133,
         
         SelectAcquireForm = 134,
+        
+        GIFForm = 135,
     }
 }

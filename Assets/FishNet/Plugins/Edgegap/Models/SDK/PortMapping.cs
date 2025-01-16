@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Port to Connect from Internet</value>
     [DataMember(Name="external", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "external")]
+    [JsonProperty2(PropertyName = "external")]
     public int? External { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The internal Port of the Container</value>
     [DataMember(Name="internal", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "internal")]
+    [JsonProperty2(PropertyName = "internal")]
     public int? Internal { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Protocol (i.e. 'TCP')</value>
     [DataMember(Name="protocol", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "protocol")]
+    [JsonProperty2(PropertyName = "protocol")]
     public string Protocol { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Name of the port if given, default to internal port in string</value>
     [DataMember(Name="name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "name")]
+    [JsonProperty2(PropertyName = "name")]
     public string Name { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the port require TLS Upgrade</value>
     [DataMember(Name="tls_upgrade", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tls_upgrade")]
+    [JsonProperty2(PropertyName = "tls_upgrade")]
     public bool? TlsUpgrade { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>link of the port with scheme depending of the protocol</value>
     [DataMember(Name="link", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "link")]
+    [JsonProperty2(PropertyName = "link")]
     public string Link { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Internal Proxy Mapping</value>
     [DataMember(Name="proxy", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "proxy")]
+    [JsonProperty2(PropertyName = "proxy")]
     public int? Proxy { get; set; }
 
 
@@ -92,7 +92,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

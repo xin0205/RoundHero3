@@ -16,7 +16,7 @@ namespace IO.Swagger.Model {
     /// Gets or Sets WhitelistEntries
     /// </summary>
     [DataMember(Name="whitelist_entries", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "whitelist_entries")]
+    [JsonProperty2(PropertyName = "whitelist_entries")]
     public List<AppVersionWhitelistEntry> WhitelistEntries { get; set; }
 
 
@@ -37,7 +37,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

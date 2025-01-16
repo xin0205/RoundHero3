@@ -9,23 +9,23 @@ namespace Edgegap.Editor.Api.Models.Results
     /// </summary>
     public class GetCreateAppResult
     {
-        [JsonProperty("name")]
+        [JsonProperty2("name")]
         public string AppName { get; set; }
         
-        [JsonProperty("is_active")]
+        [JsonProperty2("is_active")]
         public bool IsActive { get; set; }
         
         /// <summary>Optional</summary>
-        [JsonProperty("is_telemetry_agent_active")]
+        [JsonProperty2("is_telemetry_agent_active")]
         public bool IsTelemetryAgentActive { get; set; }
         
-        [JsonProperty("image")]
+        [JsonProperty2("image")]
         public string Image { get; set; }
         
-        [JsonProperty("create_time")]
+        [JsonProperty2("create_time")]
         public string CreateTimeStr { get; set; }
         
-        [JsonProperty("last_updated")]
+        [JsonProperty2("last_updated")]
         public string LastUpdatedStr { get; set; }
     }
 }

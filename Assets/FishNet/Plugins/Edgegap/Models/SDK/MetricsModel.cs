@@ -16,21 +16,21 @@ namespace IO.Swagger.Model {
     /// Gets or Sets Labels
     /// </summary>
     [DataMember(Name="labels", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "labels")]
+    [JsonProperty2(PropertyName = "labels")]
     public List<string> Labels { get; set; }
 
     /// <summary>
     /// Gets or Sets Datasets
     /// </summary>
     [DataMember(Name="datasets", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "datasets")]
+    [JsonProperty2(PropertyName = "datasets")]
     public List<decimal?> Datasets { get; set; }
 
     /// <summary>
     /// Gets or Sets Timestamps
     /// </summary>
     [DataMember(Name="timestamps", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "timestamps")]
+    [JsonProperty2(PropertyName = "timestamps")]
     public List<DateTime?> Timestamps { get; set; }
 
 
@@ -53,7 +53,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

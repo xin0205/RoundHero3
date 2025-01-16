@@ -7,16 +7,16 @@ namespace Edgegap.Editor.Api.Models.Results
     /// </summary>
     public class GetRegistryCredentialsResult
     {
-        [JsonProperty("registry_url")]
+        [JsonProperty2("registry_url")]
         public string RegistryUrl { get; set; }
 
-        [JsonProperty("project")]
+        [JsonProperty2("project")]
         public string Project { get; set; }
 
-        [JsonProperty("username")]
+        [JsonProperty2("username")]
         public string Username { get; set; }
 
-        [JsonProperty("token")]
+        [JsonProperty2("token")]
         public string Token { get; set; }
     }
 }

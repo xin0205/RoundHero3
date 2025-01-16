@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Matchmaker component name. Must be unique.</value>
     [DataMember(Name="name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "name")]
+    [JsonProperty2(PropertyName = "name")]
     public string Name { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Container repository where the component's image is hosted.</value>
     [DataMember(Name="repository", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "repository")]
+    [JsonProperty2(PropertyName = "repository")]
     public string Repository { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Container image to use for this component.</value>
     [DataMember(Name="image", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "image")]
+    [JsonProperty2(PropertyName = "image")]
     public string Image { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Tag of the container image to use for this component.</value>
     [DataMember(Name="tag", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tag")]
+    [JsonProperty2(PropertyName = "tag")]
     public string Tag { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Private repo credentials to use for pulling the image, if applicable.</value>
     [DataMember(Name="credentials", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "credentials")]
+    [JsonProperty2(PropertyName = "credentials")]
     public Object Credentials { get; set; }
 
 
@@ -74,7 +74,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public  new string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

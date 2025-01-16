@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The List of IP of your user, Array of String, example:     [\"162.254.103.13\",\"198.12.116.39\", \"162.254.135.39\", \"162.254.129.34\"]</value>
     [DataMember(Name="ip_list", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ip_list")]
+    [JsonProperty2(PropertyName = "ip_list")]
     public List<string> IpList { get; set; }
 
 
@@ -38,7 +38,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

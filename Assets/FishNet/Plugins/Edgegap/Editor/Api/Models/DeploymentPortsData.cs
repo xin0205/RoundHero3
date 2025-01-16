@@ -5,25 +5,25 @@ namespace Edgegap.Editor.Api.Models
     /// <summary>Used in `GetDeploymentStatus`.</summary>
     public class DeploymentPortsData
     {
-        [JsonProperty("external")]
+        [JsonProperty2("external")]
         public int External { get; set; }
         
-        [JsonProperty("internal")]
+        [JsonProperty2("internal")]
         public int Internal { get; set; }
         
-        [JsonProperty("protocol")]
+        [JsonProperty2("protocol")]
         public string Protocol { get; set; }
         
-        [JsonProperty("name")]
+        [JsonProperty2("name")]
         public string PortName { get; set; }
         
-        [JsonProperty("tls_upgrade")]
+        [JsonProperty2("tls_upgrade")]
         public bool TlsUpgrade { get; set; }
         
-        [JsonProperty("link")]
+        [JsonProperty2("link")]
         public string Link { get; set; }
         
-        [JsonProperty("proxy")]
+        [JsonProperty2("proxy")]
         public int? Proxy { get; set; }
     }
 }

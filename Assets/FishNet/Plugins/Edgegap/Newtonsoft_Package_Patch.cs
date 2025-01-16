@@ -23,11 +23,11 @@ namespace Newtonsoft.Json
 {
 
 
-    public class JsonPropertyAttribute : Attribute
+    public class JsonProperty2Attribute : Attribute
     {
         public string PropertyName;
-        public JsonPropertyAttribute() { }
-        public JsonPropertyAttribute(string a) { }
+        public JsonProperty2Attribute() { }
+        public JsonProperty2Attribute(string a) { }
     }
 
 
@@ -36,7 +36,7 @@ namespace Newtonsoft.Json
     }
 
 
-    public static class JsonConvert
+    public static class JsonConvert2
     {
         public static string SerializeObject(object obj, Formatting format) => default;
         public static string SerializeObject(object obj) => default;

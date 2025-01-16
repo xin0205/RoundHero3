@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Username for the component's private repository.</value>
     [DataMember(Name="username", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "username")]
+    [JsonProperty2(PropertyName = "username")]
     public string Username { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Password (token) of the component's private repository.</value>
     [DataMember(Name="token", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "token")]
+    [JsonProperty2(PropertyName = "token")]
     public string Token { get; set; }
 
 
@@ -47,7 +47,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

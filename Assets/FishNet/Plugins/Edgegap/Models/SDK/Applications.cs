@@ -16,7 +16,7 @@ namespace IO.Swagger.Model {
     /// Gets or Sets _Applications
     /// </summary>
     [DataMember(Name="applications", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "applications")]
+    [JsonProperty2(PropertyName = "applications")]
     public List<Application> _Applications { get; set; }
 
 
@@ -37,7 +37,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

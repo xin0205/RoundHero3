@@ -9,7 +9,11 @@ namespace RoundHero
 
         [SerializeField]
         private LineRenderer line;
+
+        private Color yellow = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.5f);
         
+        private Color white = new Color(Color.white.r, Color.white.g, Color.white.b, 0.5f);
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -33,12 +37,12 @@ namespace RoundHero
             
 
             line.material.SetInt("_Number", 3 * (BattleRouteEntityData.GridPosIdxs.Count - 1));
-
+            SetCurrent(false);
         }
 
         public void SetCurrent(bool isCurrent)
         {
-            line.material.SetColor("_Color", isCurrent ? Color.yellow : Color.white); 
+            line.material.SetColor("_Color", isCurrent ? yellow : white); 
         }
 
     }

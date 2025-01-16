@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Your optimal value for Latency</value>
     [DataMember(Name="optimal_ping", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "optimal_ping")]
+    [JsonProperty2(PropertyName = "optimal_ping")]
     public int? OptimalPing { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Your reject value for Latency</value>
     [DataMember(Name="rejected_ping", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "rejected_ping")]
+    [JsonProperty2(PropertyName = "rejected_ping")]
     public int? RejectedPing { get; set; }
 
 
@@ -47,7 +47,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

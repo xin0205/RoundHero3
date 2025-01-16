@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of Active Sessions</value>
     [DataMember(Name="data", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "data")]
+    [JsonProperty2(PropertyName = "data")]
     public List<SessionContext> Data { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Total Session in the Database</value>
     [DataMember(Name="total_count", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "total_count")]
+    [JsonProperty2(PropertyName = "total_count")]
     public int? TotalCount { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Pagination Object</value>
     [DataMember(Name="pagination", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "pagination")]
+    [JsonProperty2(PropertyName = "pagination")]
     public Pagination Pagination { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

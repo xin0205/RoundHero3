@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the matchmaker release. Should be unique, and will be used to differentiate your releases.</value>
     [DataMember(Name="version", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "version")]
+    [JsonProperty2(PropertyName = "version")]
     public string Version { get; set; }
 
 
@@ -38,7 +38,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

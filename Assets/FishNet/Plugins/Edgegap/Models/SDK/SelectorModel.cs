@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Tag to filter potential Deployment with this Selector</value>
     [DataMember(Name="tag", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tag")]
+    [JsonProperty2(PropertyName = "tag")]
     public string Tag { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If True, will not try to filter Deployment and only tag the Session</value>
     [DataMember(Name="tag_only", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tag_only")]
+    [JsonProperty2(PropertyName = "tag_only")]
     public bool? TagOnly { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Environment Variable to inject in new Deployment created by App Version with auto-deploy</value>
     [DataMember(Name="env", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "env")]
+    [JsonProperty2(PropertyName = "env")]
     public Object Env { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

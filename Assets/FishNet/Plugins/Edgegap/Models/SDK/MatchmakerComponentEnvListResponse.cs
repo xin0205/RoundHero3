@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Number of matchmaker component envs for the component.</value>
     [DataMember(Name="count", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "count")]
+    [JsonProperty2(PropertyName = "count")]
     public int? Count { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of the matchmaker component's envs.</value>
     [DataMember(Name="data", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "data")]
+    [JsonProperty2(PropertyName = "data")]
     public MatchmakerComponentEnvsResponse Data { get; set; }
 
 
@@ -47,7 +47,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

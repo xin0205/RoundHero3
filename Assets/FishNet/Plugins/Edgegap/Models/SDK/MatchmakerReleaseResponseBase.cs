@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the app to deploy using the matchmaker.</value>
     [DataMember(Name="app_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "app_name")]
+    [JsonProperty2(PropertyName = "app_name")]
     public string AppName { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the version of the specified app to deploy using the matchmaker.</value>
     [DataMember(Name="version_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "version_name")]
+    [JsonProperty2(PropertyName = "version_name")]
     public string VersionName { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Name of the matchmaker release. Should be unique, and will be used to differentiate your releases.</value>
     [DataMember(Name="version", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "version")]
+    [JsonProperty2(PropertyName = "version")]
     public string Version { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public  new string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

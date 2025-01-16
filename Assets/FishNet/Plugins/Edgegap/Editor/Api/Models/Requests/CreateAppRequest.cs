@@ -9,22 +9,22 @@ namespace Edgegap.Editor.Api.Models.Requests
     {
         #region Required
         /// <summary>*The application name.</summary>
-        [JsonProperty("name")]
+        [JsonProperty2("name")]
         public string AppName { get; set; }
         #endregion // Required
         
         
         #region Optional
         /// <summary>*If the application can be deployed.</summary>
-        [JsonProperty("is_active")]
+        [JsonProperty2("is_active")]
         public bool IsActive { get; set; }
         
         /// <summary>*Image base64 string.</summary>
-        [JsonProperty("image")]
+        [JsonProperty2("image")]
         public string Image { get; set; }
         
         /// <summary>If the telemetry agent is installed on the versions of this app.</summary>
-        [JsonProperty("is_telemetry_agent_active")]
+        [JsonProperty2("is_telemetry_agent_active")]
         public bool IsTelemetryAgentActive { get; set; }
         #endregion // Optional
 
@@ -50,6 +50,6 @@ namespace Edgegap.Editor.Api.Models.Requests
 
         /// <summary>Parse to json str</summary>
         public override string ToString() =>
-            JsonConvert.SerializeObject(this);
+            JsonConvert2.SerializeObject(this);
     }
 }

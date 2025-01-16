@@ -16,14 +16,14 @@ namespace IO.Swagger.Model {
     /// Gets or Sets CreatedAt
     /// </summary>
     [DataMember(Name="created_at", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "created_at")]
+    [JsonProperty2(PropertyName = "created_at")]
     public string CreatedAt { get; set; }
 
     /// <summary>
     /// Gets or Sets UpdatedAt
     /// </summary>
     [DataMember(Name="updated_at", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "updated_at")]
+    [JsonProperty2(PropertyName = "updated_at")]
     public string UpdatedAt { get; set; }
 
 
@@ -45,7 +45,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

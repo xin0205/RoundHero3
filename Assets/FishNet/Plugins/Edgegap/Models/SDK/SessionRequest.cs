@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Unique Identifier of the Session</value>
     [DataMember(Name="session_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "session_id")]
+    [JsonProperty2(PropertyName = "session_id")]
     public string SessionId { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Custom ID if Available</value>
     [DataMember(Name="custom_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "custom_id")]
+    [JsonProperty2(PropertyName = "custom_id")]
     public string CustomId { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Name of the App you requested</value>
     [DataMember(Name="app", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "app")]
+    [JsonProperty2(PropertyName = "app")]
     public string App { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The name of the App Version you requested</value>
     [DataMember(Name="version", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "version")]
+    [JsonProperty2(PropertyName = "version")]
     public string Version { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Name of the App Version you want to deploy, example:    v1.0</value>
     [DataMember(Name="deployment_request_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "deployment_request_id")]
+    [JsonProperty2(PropertyName = "deployment_request_id")]
     public string DeploymentRequestId { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of Selectors to filter potential Deployment to link and tag the Session</value>
     [DataMember(Name="selectors", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "selectors")]
+    [JsonProperty2(PropertyName = "selectors")]
     public List<SelectorModel> Selectors { get; set; }
 
 
@@ -83,7 +83,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

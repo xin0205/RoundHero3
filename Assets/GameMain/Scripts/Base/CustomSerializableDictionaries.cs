@@ -1,4 +1,5 @@
 ﻿using System;
+using GifImporter;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +34,11 @@ namespace RoundHero
     
     [Serializable]
     public class CardTypeToggleDictionary : SerializableDictionary<ECardType, Toggle>
+    {
+    }
+    
+    [Serializable]
+    public class GIFAssetDictionary : SerializableDictionary<string, Gif>
     {
     }
 }

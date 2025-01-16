@@ -1,6 +1,4 @@
-﻿
-using UGFExtensions.Await;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RoundHero
 {

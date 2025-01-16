@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Application name</value>
     [DataMember(Name="name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "name")]
+    [JsonProperty2(PropertyName = "name")]
     public string Name { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the application can be deployed</value>
     [DataMember(Name="is_active", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "is_active")]
+    [JsonProperty2(PropertyName = "is_active")]
     public bool? IsActive { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Image base64 string</value>
     [DataMember(Name="image", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "image")]
+    [JsonProperty2(PropertyName = "image")]
     public string Image { get; set; }
 
 
@@ -56,7 +56,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

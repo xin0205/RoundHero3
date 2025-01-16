@@ -931,11 +931,11 @@ namespace RoundHero
                 foreach (var relatedUnit in relatedUnits)
                 {
                     var relatedUnitCoord = GameUtility.GridPosIdxToCoord(relatedUnit.GridPosIdx);
-                    flyDirect =  relatedUnitCoord - effectUnitCoord;
+                    flyDirect =  buffData.FlyType == EFlyType.Back ? relatedUnitCoord - effectUnitCoord : effectUnitCoord - relatedUnitCoord;
                     flyPaths = GetFlyPaths(relatedUnit.GridPosIdx, flyDirect);
                     CacheUnitMoveDatas(relatedUnit.ID, flyPaths, moveActionDatas);
 
-
+                    
                     if (!actionData.MoveData.MoveUnitDatas.ContainsKey(relatedUnit.ID))
                     {
                         actionData.MoveData.MoveUnitDatas.Add(relatedUnit.ID, new MoveUnitData()
@@ -4212,12 +4212,12 @@ namespace RoundHero
 
                         if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
                         {
-                            effectUnit.Hurt();
+                            effectUnit?.Hurt();
                             TriggerAction(triggerData);
                         }
                         else
                         {
-                            actionUnit.CloseSingleAttack();
+                            actionUnit?.CloseSingleAttack();
                             //effectUnit.Hurt();
                             BattleBulletManager.Instance.AddTriggerData(triggerData);
                         }
@@ -4261,6 +4261,16 @@ namespace RoundHero
         public void CalculateThirdUnitPaths()
         {
             CalculateUnitPaths(EUnitCamp.Third, RoundFightData.ThirdUnitMovePaths);
+        }
+
+        public List<int> GetMovePaths(int unitID)
+        {
+            if(!RoundFightData.EnemyMovePaths.ContainsKey(unitID))
+            {
+                return null;
+            }
+
+            return RoundFightData.EnemyMovePaths[unitID];
         }
 
         public bool InObstacle(Dictionary<int, EGridType> obstacleMask, List<int> movePaths)
@@ -4396,6 +4406,7 @@ namespace RoundHero
 
         public List<int> GetFlyPaths(int startPosIdx, Vector2Int direct)
         {
+            direct = GameUtility.GetDirect(direct);
             var startCoord = GameUtility.GridPosIdxToCoord(startPosIdx);
 
             var endPosIdx = GameUtility.GetEndPosIdx(startPosIdx, direct);

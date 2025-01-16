@@ -7,46 +7,46 @@ namespace Edgegap.Editor.Api.Models.Results
     /// </summary>
     public class CreateDeploymentResult
     {
-        [JsonProperty("request_id")]
+        [JsonProperty2("request_id")]
         public string RequestId { get; set; }
         
-        [JsonProperty("request_dns")]
+        [JsonProperty2("request_dns")]
         public string RequestDns { get; set; }
         
-        [JsonProperty("request_app")]
+        [JsonProperty2("request_app")]
         public string RequestApp { get; set; }
         
-        [JsonProperty("request_version")]
+        [JsonProperty2("request_version")]
         public string RequestVersion { get; set; }
         
-        [JsonProperty("request_user_count")]
+        [JsonProperty2("request_user_count")]
         public int RequestUserCount { get; set; }
         
-        [JsonProperty("city")]
+        [JsonProperty2("city")]
         public string City { get; set; }
         
-        [JsonProperty("country")]
+        [JsonProperty2("country")]
         public string Country { get; set; }
         
-        [JsonProperty("continent")]
+        [JsonProperty2("continent")]
         public string Continent { get; set; }
         
-        [JsonProperty("administrative_division")]
+        [JsonProperty2("administrative_division")]
         public string AdministrativeDivision { get; set; }
         
-        [JsonProperty("tags")]
+        [JsonProperty2("tags")]
         public string[] Tags { get; set; }
         
-        [JsonProperty("container_log_storage")]
+        [JsonProperty2("container_log_storage")]
         public ContainerLogStorageData ContainerLogStorage { get; set; }
         
 
         public class ContainerLogStorageData
         {
-            [JsonProperty("enabled")]
+            [JsonProperty2("enabled")]
             public bool Enabled { get; set; }
             
-            [JsonProperty("endpoint_storage")]
+            [JsonProperty2("endpoint_storage")]
             public string EndpointStorage { get; set; }
         }
     }

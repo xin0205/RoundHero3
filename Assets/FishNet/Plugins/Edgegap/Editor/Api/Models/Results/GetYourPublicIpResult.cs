@@ -8,7 +8,7 @@ namespace Edgegap.Editor.Api.Models.Results
     /// </summary>
     public class GetYourPublicIpResult
     {
-        [JsonProperty("public_ip")]
+        [JsonProperty2("public_ip")]
         public string PublicIp { get; set; }
     }
 }

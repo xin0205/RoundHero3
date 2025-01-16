@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Name of the App you want to deploy</value>
     [DataMember(Name="app_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "app_name")]
+    [JsonProperty2(PropertyName = "app_name")]
     public string AppName { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Name of the App Version you want to deploy, if not present, the last version created is picked</value>
     [DataMember(Name="version_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "version_name")]
+    [JsonProperty2(PropertyName = "version_name")]
     public string VersionName { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the Application is public or private. If not specified, we will look for a private Application</value>
     [DataMember(Name="is_public_app", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "is_public_app")]
+    [JsonProperty2(PropertyName = "is_public_app")]
     public bool? IsPublicApp { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The List of IP of your user</value>
     [DataMember(Name="ip_list", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ip_list")]
+    [JsonProperty2(PropertyName = "ip_list")]
     public List<string> IpList { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The list of IP of your user with their location (latitude, longitude)</value>
     [DataMember(Name="geo_ip_list", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "geo_ip_list")]
+    [JsonProperty2(PropertyName = "geo_ip_list")]
     public List<GeoIpListModel> GeoIpList { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>A list of deployment variables</value>
     [DataMember(Name="env_vars", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "env_vars")]
+    [JsonProperty2(PropertyName = "env_vars")]
     public List<DeployEnvModel> EnvVars { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If you want to skip the Telemetry and use a geolocations decision only</value>
     [DataMember(Name="skip_telemetry", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "skip_telemetry")]
+    [JsonProperty2(PropertyName = "skip_telemetry")]
     public bool? SkipTelemetry { get; set; }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If you want to specify a centroid for your deployment.</value>
     [DataMember(Name="location", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "location")]
+    [JsonProperty2(PropertyName = "location")]
     public LocationModel Location { get; set; }
 
     /// <summary>
@@ -81,7 +81,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If you want to deploy in a specific city</value>
     [DataMember(Name="city", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "city")]
+    [JsonProperty2(PropertyName = "city")]
     public string City { get; set; }
 
     /// <summary>
@@ -89,7 +89,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If you want to deploy in a specific country</value>
     [DataMember(Name="country", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "country")]
+    [JsonProperty2(PropertyName = "country")]
     public string Country { get; set; }
 
     /// <summary>
@@ -97,7 +97,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If you want to deploy in a specific continent</value>
     [DataMember(Name="continent", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "continent")]
+    [JsonProperty2(PropertyName = "continent")]
     public string Continent { get; set; }
 
     /// <summary>
@@ -105,7 +105,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If you want to deploy in a specific region</value>
     [DataMember(Name="region", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "region")]
+    [JsonProperty2(PropertyName = "region")]
     public string Region { get; set; }
 
     /// <summary>
@@ -113,7 +113,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If you want to deploy in a specific administrative division</value>
     [DataMember(Name="administrative_division", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "administrative_division")]
+    [JsonProperty2(PropertyName = "administrative_division")]
     public string AdministrativeDivision { get; set; }
 
     /// <summary>
@@ -121,7 +121,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>A web URL. This url will be called with method POST. The deployment status will be send in JSON format</value>
     [DataMember(Name="webhook_url", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "webhook_url")]
+    [JsonProperty2(PropertyName = "webhook_url")]
     public string WebhookUrl { get; set; }
 
     /// <summary>
@@ -129,7 +129,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The list of tags for your deployment</value>
     [DataMember(Name="tags", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tags")]
+    [JsonProperty2(PropertyName = "tags")]
     public List<string> Tags { get; set; }
 
     /// <summary>
@@ -137,7 +137,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The container log storage options for the deployment</value>
     [DataMember(Name="container_log_storage", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "container_log_storage")]
+    [JsonProperty2(PropertyName = "container_log_storage")]
     public ContainerLogStorageModel ContainerLogStorage { get; set; }
 
 
@@ -173,7 +173,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

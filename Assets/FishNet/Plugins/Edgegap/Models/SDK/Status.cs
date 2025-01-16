@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Unique ID of the Deployment's request</value>
     [DataMember(Name="request_id", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "request_id")]
+    [JsonProperty2(PropertyName = "request_id")]
     public string RequestId { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The FQDN that allow to connect to your Deployment</value>
     [DataMember(Name="fqdn", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "fqdn")]
+    [JsonProperty2(PropertyName = "fqdn")]
     public string Fqdn { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The name of the deployed App</value>
     [DataMember(Name="app_name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "app_name")]
+    [JsonProperty2(PropertyName = "app_name")]
     public string AppName { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The version of the deployed App</value>
     [DataMember(Name="app_version", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "app_version")]
+    [JsonProperty2(PropertyName = "app_version")]
     public string AppVersion { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The current status of the Deployment</value>
     [DataMember(Name="current_status", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "current_status")]
+    [JsonProperty2(PropertyName = "current_status")]
     public string CurrentStatus { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>True if the current Deployment is ready to be connected and running</value>
     [DataMember(Name="running", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "running")]
+    [JsonProperty2(PropertyName = "running")]
     public bool? Running { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>True if the current Deployment is ACL protected</value>
     [DataMember(Name="whitelisting_active", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "whitelisting_active")]
+    [JsonProperty2(PropertyName = "whitelisting_active")]
     public bool? WhitelistingActive { get; set; }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Timestamp of the Deployment when it is up and running</value>
     [DataMember(Name="start_time", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "start_time")]
+    [JsonProperty2(PropertyName = "start_time")]
     public string StartTime { get; set; }
 
     /// <summary>
@@ -81,7 +81,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Timestamp of the end of the Deployment</value>
     [DataMember(Name="removal_time", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "removal_time")]
+    [JsonProperty2(PropertyName = "removal_time")]
     public string RemovalTime { get; set; }
 
     /// <summary>
@@ -89,7 +89,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Time since the Deployment is up and running in seconds</value>
     [DataMember(Name="elapsed_time", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "elapsed_time")]
+    [JsonProperty2(PropertyName = "elapsed_time")]
     public int? ElapsedTime { get; set; }
 
     /// <summary>
@@ -97,7 +97,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The last status of the Deployment</value>
     [DataMember(Name="last_status", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "last_status")]
+    [JsonProperty2(PropertyName = "last_status")]
     public string LastStatus { get; set; }
 
     /// <summary>
@@ -105,7 +105,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>True if there is an error with the Deployment</value>
     [DataMember(Name="error", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "error")]
+    [JsonProperty2(PropertyName = "error")]
     public bool? Error { get; set; }
 
     /// <summary>
@@ -113,14 +113,14 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The error details of the Deployment</value>
     [DataMember(Name="error_detail", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "error_detail")]
+    [JsonProperty2(PropertyName = "error_detail")]
     public string ErrorDetail { get; set; }
 
     /// <summary>
     /// Gets or Sets Ports
     /// </summary>
     [DataMember(Name="ports", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ports")]
+    [JsonProperty2(PropertyName = "ports")]
     public Dictionary<string, PortMapping> Ports { get; set; }
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The public IP</value>
     [DataMember(Name="public_ip", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "public_ip")]
+    [JsonProperty2(PropertyName = "public_ip")]
     public string PublicIp { get; set; }
 
     /// <summary>
@@ -136,7 +136,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of Active Sessions if Deployment App is Session Based</value>
     [DataMember(Name="sessions", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sessions")]
+    [JsonProperty2(PropertyName = "sessions")]
     public List<DeploymentSessionContext> Sessions { get; set; }
 
     /// <summary>
@@ -144,7 +144,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Location related information</value>
     [DataMember(Name="location", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "location")]
+    [JsonProperty2(PropertyName = "location")]
     public DeploymentLocation Location { get; set; }
 
     /// <summary>
@@ -152,7 +152,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of tags associated with the deployment</value>
     [DataMember(Name="tags", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tags")]
+    [JsonProperty2(PropertyName = "tags")]
     public List<string> Tags { get; set; }
 
     /// <summary>
@@ -160,7 +160,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Capacity of the Deployment</value>
     [DataMember(Name="sockets", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sockets")]
+    [JsonProperty2(PropertyName = "sockets")]
     public int? Sockets { get; set; }
 
     /// <summary>
@@ -168,7 +168,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Capacity Usage of the Deployment</value>
     [DataMember(Name="sockets_usage", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sockets_usage")]
+    [JsonProperty2(PropertyName = "sockets_usage")]
     public int? SocketsUsage { get; set; }
 
 
@@ -208,7 +208,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -16,7 +16,7 @@ namespace IO.Swagger.Model {
     /// Gets or Sets _Locations
     /// </summary>
     [DataMember(Name="locations", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "locations")]
+    [JsonProperty2(PropertyName = "locations")]
     public List<Location> _Locations { get; set; }
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Extra Messages for the query</value>
     [DataMember(Name="messages", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "messages")]
+    [JsonProperty2(PropertyName = "messages")]
     public List<string> Messages { get; set; }
 
 
@@ -46,7 +46,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of Creation Reply</value>
     [DataMember(Name="sessions", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sessions")]
+    [JsonProperty2(PropertyName = "sessions")]
     public List<SessionRequest> Sessions { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of Creation Errors Reply</value>
     [DataMember(Name="errors", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "errors")]
+    [JsonProperty2(PropertyName = "errors")]
     public List<string> Errors { get; set; }
 
 
@@ -47,7 +47,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

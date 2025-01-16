@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Port to Expose your service</value>
     [DataMember(Name="port", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "port")]
+    [JsonProperty2(PropertyName = "port")]
     public int? Port { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Available protocols: TCP, UDP, TCP/UDP, HTTP, HTTPS, WS or WSS</value>
     [DataMember(Name="protocol", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "protocol")]
+    [JsonProperty2(PropertyName = "protocol")]
     public string Protocol { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the port must be verified by our port validations</value>
     [DataMember(Name="to_check", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "to_check")]
+    [JsonProperty2(PropertyName = "to_check")]
     public bool? ToCheck { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Enabling with HTTP or WS will inject a sidecar proxy that upgrades the connection with TLS</value>
     [DataMember(Name="tls_upgrade", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "tls_upgrade")]
+    [JsonProperty2(PropertyName = "tls_upgrade")]
     public bool? TlsUpgrade { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>An optional name for the port for easier handling</value>
     [DataMember(Name="name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "name")]
+    [JsonProperty2(PropertyName = "name")]
     public string Name { get; set; }
 
 
@@ -74,7 +74,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

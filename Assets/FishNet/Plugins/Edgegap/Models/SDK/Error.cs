@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>A message depending of the request termination</value>
     [DataMember(Name="message", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "message")]
+    [JsonProperty2(PropertyName = "message")]
     public string Message { get; set; }
 
 
@@ -38,7 +38,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

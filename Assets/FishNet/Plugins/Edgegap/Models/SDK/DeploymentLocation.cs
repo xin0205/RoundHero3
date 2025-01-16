@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>City of the deployment</value>
     [DataMember(Name="city", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "city")]
+    [JsonProperty2(PropertyName = "city")]
     public string City { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Country of the deployment</value>
     [DataMember(Name="country", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "country")]
+    [JsonProperty2(PropertyName = "country")]
     public string Country { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Continent of the deployment</value>
     [DataMember(Name="continent", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "continent")]
+    [JsonProperty2(PropertyName = "continent")]
     public string Continent { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Administrative division of the deployment</value>
     [DataMember(Name="administrative_division", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "administrative_division")]
+    [JsonProperty2(PropertyName = "administrative_division")]
     public string AdministrativeDivision { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Timezone of the deployment</value>
     [DataMember(Name="timezone", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "timezone")]
+    [JsonProperty2(PropertyName = "timezone")]
     public string Timezone { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Latitude of the deployment</value>
     [DataMember(Name="latitude", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "latitude")]
+    [JsonProperty2(PropertyName = "latitude")]
     public decimal? Latitude { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Longitude of the deployment</value>
     [DataMember(Name="longitude", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "longitude")]
+    [JsonProperty2(PropertyName = "longitude")]
     public decimal? Longitude { get; set; }
 
 
@@ -92,7 +92,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

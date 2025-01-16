@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>List of Custom IDs to Delete</value>
     [DataMember(Name="sessions", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "sessions")]
+    [JsonProperty2(PropertyName = "sessions")]
     public List<string> Sessions { get; set; }
 
 
@@ -38,7 +38,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

@@ -17,7 +17,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Version Name</value>
     [DataMember(Name="name", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "name")]
+    [JsonProperty2(PropertyName = "name")]
     public string Name { get; set; }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>If the Version is active currently in the system</value>
     [DataMember(Name="is_active", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "is_active")]
+    [JsonProperty2(PropertyName = "is_active")]
     public bool? IsActive { get; set; }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Repository where the image is (i.e. 'harbor.edgegap.com' or 'docker.io')</value>
     [DataMember(Name="docker_repository", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "docker_repository")]
+    [JsonProperty2(PropertyName = "docker_repository")]
     public string DockerRepository { get; set; }
 
     /// <summary>
@@ -41,7 +41,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The name of your image (i.e. 'edgegap/demo')</value>
     [DataMember(Name="docker_image", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "docker_image")]
+    [JsonProperty2(PropertyName = "docker_image")]
     public string DockerImage { get; set; }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The tag of your image (i.e. '0.1.2')</value>
     [DataMember(Name="docker_tag", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "docker_tag")]
+    [JsonProperty2(PropertyName = "docker_tag")]
     public string DockerTag { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The username to access the docker repository</value>
     [DataMember(Name="private_username", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "private_username")]
+    [JsonProperty2(PropertyName = "private_username")]
     public string PrivateUsername { get; set; }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Private Password or Token of the username (We recommend to use a token)</value>
     [DataMember(Name="private_token", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "private_token")]
+    [JsonProperty2(PropertyName = "private_token")]
     public string PrivateToken { get; set; }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Units of vCPU needed (1024= 1vcpu)</value>
     [DataMember(Name="req_cpu", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "req_cpu")]
+    [JsonProperty2(PropertyName = "req_cpu")]
     public int? ReqCpu { get; set; }
 
     /// <summary>
@@ -81,7 +81,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Units of memory in MB needed (1024 = 1GB)</value>
     [DataMember(Name="req_memory", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "req_memory")]
+    [JsonProperty2(PropertyName = "req_memory")]
     public int? ReqMemory { get; set; }
 
     /// <summary>
@@ -89,7 +89,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Units of GPU needed (1024= 1 GPU)</value>
     [DataMember(Name="req_video", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "req_video")]
+    [JsonProperty2(PropertyName = "req_video")]
     public int? ReqVideo { get; set; }
 
     /// <summary>
@@ -97,7 +97,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>The Max duration of the game</value>
     [DataMember(Name="max_duration", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "max_duration")]
+    [JsonProperty2(PropertyName = "max_duration")]
     public int? MaxDuration { get; set; }
 
     /// <summary>
@@ -105,7 +105,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Allow to inject ASA Variables</value>
     [DataMember(Name="use_telemetry", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "use_telemetry")]
+    [JsonProperty2(PropertyName = "use_telemetry")]
     public bool? UseTelemetry { get; set; }
 
     /// <summary>
@@ -113,7 +113,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Allow to inject Context Variables</value>
     [DataMember(Name="inject_context_env", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "inject_context_env")]
+    [JsonProperty2(PropertyName = "inject_context_env")]
     public bool? InjectContextEnv { get; set; }
 
     /// <summary>
@@ -121,7 +121,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>ACL Protection is active</value>
     [DataMember(Name="whitelisting_active", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "whitelisting_active")]
+    [JsonProperty2(PropertyName = "whitelisting_active")]
     public bool? WhitelistingActive { get; set; }
 
     /// <summary>
@@ -129,7 +129,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Allow faster deployment by caching your container image in every Edge site</value>
     [DataMember(Name="force_cache", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "force_cache")]
+    [JsonProperty2(PropertyName = "force_cache")]
     public bool? ForceCache { get; set; }
 
     /// <summary>
@@ -137,7 +137,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Start of the preferred interval for caching your container</value>
     [DataMember(Name="cache_min_hour", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "cache_min_hour")]
+    [JsonProperty2(PropertyName = "cache_min_hour")]
     public int? CacheMinHour { get; set; }
 
     /// <summary>
@@ -145,7 +145,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>End of the preferred interval for caching your container</value>
     [DataMember(Name="cache_max_hour", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "cache_max_hour")]
+    [JsonProperty2(PropertyName = "cache_max_hour")]
     public int? CacheMaxHour { get; set; }
 
     /// <summary>
@@ -153,7 +153,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Estimated maximum time in seconds to deploy, after this time we will consider it not working and retry.</value>
     [DataMember(Name="time_to_deploy", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "time_to_deploy")]
+    [JsonProperty2(PropertyName = "time_to_deploy")]
     public int? TimeToDeploy { get; set; }
 
     /// <summary>
@@ -161,7 +161,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Enable every location available. By enabling this, your request will use every potential location, including those which may require a longer time to deploy. This means that your application may take up to 2 minutes before being up and ready. This functionality does not support ACL and Caching at the moment.</value>
     [DataMember(Name="enable_all_locations", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "enable_all_locations")]
+    [JsonProperty2(PropertyName = "enable_all_locations")]
     public bool? EnableAllLocations { get; set; }
 
     /// <summary>
@@ -169,28 +169,28 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <value>Parameters defining the behavior of a session-based app version. If set, the app is considered to be session-based.</value>
     [DataMember(Name="session_config", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "session_config")]
+    [JsonProperty2(PropertyName = "session_config")]
     public AppVersionUpdateSessionConfig SessionConfig { get; set; }
 
     /// <summary>
     /// Gets or Sets Ports
     /// </summary>
     [DataMember(Name="ports", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "ports")]
+    [JsonProperty2(PropertyName = "ports")]
     public List<AppVersionPort> Ports { get; set; }
 
     /// <summary>
     /// Gets or Sets Probe
     /// </summary>
     [DataMember(Name="probe", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "probe")]
+    [JsonProperty2(PropertyName = "probe")]
     public AppVersionProbe Probe { get; set; }
 
     /// <summary>
     /// Gets or Sets Envs
     /// </summary>
     [DataMember(Name="envs", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "envs")]
+    [JsonProperty2(PropertyName = "envs")]
     public List<AppVersionEnv> Envs { get; set; }
 
 
@@ -233,7 +233,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }

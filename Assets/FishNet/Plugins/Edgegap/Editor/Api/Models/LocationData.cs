@@ -4,25 +4,25 @@ namespace Edgegap.Editor.Api.Models
 {
     public class LocationData
     {
-        [JsonProperty("city")]
+        [JsonProperty2("city")]
         public string City { get; set; }
             
-        [JsonProperty("country")]
+        [JsonProperty2("country")]
         public string Country { get; set; }
             
-        [JsonProperty("continent")]
+        [JsonProperty2("continent")]
         public string Continent { get; set; }
             
-        [JsonProperty("administrative_division")]
+        [JsonProperty2("administrative_division")]
         public string AdministrativeDivision { get; set; }
             
-        [JsonProperty("timezone")]
+        [JsonProperty2("timezone")]
         public string Timezone { get; set; }
             
-        [JsonProperty("latitude")]
+        [JsonProperty2("latitude")]
         public double Latitude { get; set; }
             
-        [JsonProperty("longitude")]
+        [JsonProperty2("longitude")]
         public double Longitude { get; set; }
     }
 }

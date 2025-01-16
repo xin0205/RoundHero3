@@ -67,7 +67,7 @@ namespace Edgegap.Editor.Api.Models.Results
                 //       Instead, make a factory builder Task =>
                 this.Json = httpResponse.Content.ReadAsStringAsync().Result;
 
-                this.Error = JsonConvert.DeserializeObject<EdgegapErrorResult>(Json);
+                this.Error = JsonConvert2.DeserializeObject<EdgegapErrorResult>(Json);
                 if (Error != null && string.IsNullOrEmpty(Error.ErrorMessage))
                     Error = null;
             }
@@ -102,7 +102,7 @@ namespace Edgegap.Editor.Api.Models.Results
             {
                 try
                 {
-                    this.Data = JsonConvert.DeserializeObject<TResult>(Json);
+                    this.Data = JsonConvert2.DeserializeObject<TResult>(Json);
                 }
                 catch (Exception e)
                 {

@@ -16,28 +16,28 @@ namespace IO.Swagger.Model {
     /// Gets or Sets ReceiveTotal
     /// </summary>
     [DataMember(Name="receive_total", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "receive_total")]
+    [JsonProperty2(PropertyName = "receive_total")]
     public MetricsModel ReceiveTotal { get; set; }
 
     /// <summary>
     /// Gets or Sets TransmitTotal
     /// </summary>
     [DataMember(Name="transmit_total", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "transmit_total")]
+    [JsonProperty2(PropertyName = "transmit_total")]
     public MetricsModel TransmitTotal { get; set; }
 
     /// <summary>
     /// Gets or Sets DiskReadTotal
     /// </summary>
     [DataMember(Name="disk_read_total", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "disk_read_total")]
+    [JsonProperty2(PropertyName = "disk_read_total")]
     public MetricsModel DiskReadTotal { get; set; }
 
     /// <summary>
     /// Gets or Sets DiskWriteTotal
     /// </summary>
     [DataMember(Name="disk_write_total", EmitDefaultValue=false)]
-    [JsonProperty(PropertyName = "disk_write_total")]
+    [JsonProperty2(PropertyName = "disk_write_total")]
     public MetricsModel DiskWriteTotal { get; set; }
 
 
@@ -61,7 +61,7 @@ namespace IO.Swagger.Model {
     /// </summary>
     /// <returns>JSON string presentation of the object</returns>
     public string ToJson() {
-      return JsonConvert.SerializeObject(this, Formatting.Indented);
+      return JsonConvert2.SerializeObject(this, Formatting.Indented);
     }
 
 }
