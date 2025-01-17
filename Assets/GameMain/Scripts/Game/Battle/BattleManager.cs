@@ -30,7 +30,7 @@ namespace RoundHero
             // var randoms = MathUtility.GetRandomNum(8, 0,
             //     Constant.Game.RandomRange, Random);
             
-            
+            BattleRouteManager.Instance.Init(Random.Next());
             BattleSoliderManager.Instance.Init(Random.Next());
             BattleThirdUnitManager.Instance.Init(Random.Next());
             BattleEnemyManager.Instance.Init(Random.Next());
@@ -94,7 +94,7 @@ namespace RoundHero
         {
 
             BattleFightManager.Instance.CacheRoundFightData();
-            BattleEnemyManager.Instance.ShowEnemyRoute();
+            BattleRouteManager.Instance.ShowEnemyRoute();
             RefreshView();
         }
         

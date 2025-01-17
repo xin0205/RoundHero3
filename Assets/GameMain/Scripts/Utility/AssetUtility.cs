@@ -377,10 +377,15 @@ namespace RoundHero
 
         }
         
-        public static string GetBattleValuePrefab()
+        public static string GetBattleMoveValuePrefab()
         {
-            return $"Assets/GameMain/Entities/Battles/BattleValueEntity.prefab";
+            return $"Assets/GameMain/Entities/Battles/BattleMoveValueEntity.prefab";
 
+        }
+        
+        public static string GetBattleDisplayValuePrefab()
+        {
+            return "Assets/GameMain/Entities/Battles/BattleDisplayValueEntity.prefab";
         }
         
         public static string GetEffectPrefab(string assetName)

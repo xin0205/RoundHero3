@@ -805,16 +805,18 @@ namespace RoundHero
 
                     if (GameUtility.IsSubCurHPTrigger(triggerData))
                     {
-                        isSubCurHP = true;
+                        //isSubCurHP = true;
+                        BattleBuffManager.Instance.AttackTrigger(triggerDatas[0], triggerDatas);
+                        BattleUnitStateManager.Instance.CheckUnitState(attackUnitID, triggerDatas);
                     }
                 }
 
-                if (isSubCurHP)
-                {
-                    var triggerDatas = actionData.TriggerDatas.Values.ToList()[actionData.TriggerDatas.Count - 1];
-                    BattleBuffManager.Instance.AttackTrigger(triggerDatas[0], triggerDatas);
-                    BattleUnitStateManager.Instance.CheckUnitState(attackUnitID, triggerDatas);
-                }
+                // if (isSubCurHP)
+                // {
+                //     var triggerDatas = actionData.TriggerDatas.Values.ToList()[actionData.TriggerDatas.Count - 1];
+                //     BattleBuffManager.Instance.AttackTrigger(triggerDatas[0], triggerDatas);
+                //     BattleUnitStateManager.Instance.CheckUnitState(attackUnitID, triggerDatas);
+                // }
             }
         }
         
@@ -4271,6 +4273,43 @@ namespace RoundHero
             }
 
             return RoundFightData.EnemyMovePaths[unitID];
+        }
+        
+        public List<TriggerData> GetAttackData(int unitID)
+        {
+            var triggerDatas = new List<TriggerData>();
+            if (RoundFightData.EnemyMoveDatas.ContainsKey(unitID))
+            {
+                var triggerDataList = RoundFightData.EnemyMoveDatas[unitID].TriggerDatas.Values.ToList();
+                foreach (var datas in triggerDataList)
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        if (triggerData.ActionUnitID == unitID)
+                        {
+                            triggerDatas.Add(triggerData);
+                        }
+                    }
+                }
+                
+            }
+
+            if(RoundFightData.EnemyAttackDatas.ContainsKey(unitID))
+            {
+                var triggerDataList = RoundFightData.EnemyAttackDatas[unitID].TriggerDatas.Values.ToList();
+                foreach (var datas in triggerDataList)
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        if (triggerData.ActionUnitID == unitID)
+                        {
+                            triggerDatas.Add(triggerData);
+                        }
+                    }
+                }
+            }
+
+            return triggerDatas;
         }
 
         public bool InObstacle(Dictionary<int, EGridType> obstacleMask, List<int> movePaths)

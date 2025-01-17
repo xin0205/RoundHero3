@@ -1,12 +1,12 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Threading.Tasks;
-using Animancer;
+
 using GameFramework.Event;
-using Unity.VisualScripting;
+
 using UnityEngine;
-using UnityGameFramework.Runtime;
+
 using Random = System.Random;
 
 namespace RoundHero
@@ -17,10 +17,7 @@ namespace RoundHero
         
         //public Dictionary<int, Data_BattleMonster> BattleEnemyDatas => DataManager.Instance.CurUser.GamePlayData.BattleData.BattleEnemies;
         //public Dictionary<int, List<int>> EnemyMovePaths = new ();
-        public Dictionary<int, BattleRouteEntity>  BattleRouteEntities = new ();
-        private bool isShowRoute = false;
-        private int curRouteIdx = 0;
-        private int showRouteIdx = 0;
+        
         
         
         //private int id;
@@ -36,9 +33,7 @@ namespace RoundHero
             
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
-            curRouteIdx = 0;
-            showRouteIdx = 0;
-            
+
             //BattleManager.Instance.BattleData.EnemyType = enemyType;
             
             //id = 0;
@@ -106,84 +101,7 @@ namespace RoundHero
             }
         }
 
-        public void ShowEnemyRoute()
-        {
-            UnShowEnemyRoutes();
-            ShowEnemyRoutes();
-        }
-
-
-        public async void ShowEnemyRoutes()
-        {
-            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting ||
-                BattleManager.Instance.BattleState == EBattleState.End)
-            {
-                return;
-            }
-
-            // if (isShowRoute)
-            // {
-            //     UnShowEnemyRoutes();
-            // }
-            
-            isShowRoute = true;
-            BattleRouteEntities.Clear();
-            
-            var enemyMovePaths = new Dictionary<int, List<int>>(BattleFightManager.Instance.RoundFightData.EnemyMovePaths);
-            enemyMovePaths.AddRange(BattleFightManager.Instance.RoundFightData.ThirdUnitMovePaths);
-            
-            var routeIdx = curRouteIdx;
-            foreach (var kv in enemyMovePaths)
-            {
-                if (kv.Value == null || kv.Value.Count <= 0)
-                {
-                    continue;
-                }
-
-                curRouteIdx++;
-            }
-
-            
-            foreach (var kv in enemyMovePaths)
-            {
-                if (kv.Value == null || kv.Value.Count <= 0)
-                {
-                    continue;
-                }
-                
-                var battleRouteEntity = await GameEntry.Entity.ShowBattleRouteEntityAsync(kv.Value, routeIdx);
-                routeIdx++;
-                //battleRouteEntity.SetCurrent(kv.Value.First() == BattleAreaManager.Instance.CurPointGridPosIdx);
-                
-                // !isShowRoute || 
-                if (battleRouteEntity.BattleRouteEntityData.RouteIdx < showRouteIdx)
-                {
-                    
-                    GameEntry.Entity.HideEntity(battleRouteEntity);
-                    //break;
-                }
-                else
-                {
-                    BattleRouteEntities.Add(battleRouteEntity.BattleRouteEntityData.Id, battleRouteEntity);
-                }
-
-            }
-
-        }
-
-        public void UnShowEnemyRoutes()
-        {
-            
-            isShowRoute = false;
-            showRouteIdx = curRouteIdx;
-            
-            foreach (var kv in BattleRouteEntities)
-            {
-                GameEntry.Entity.HideEntity(kv.Value.Entity);
-            }
-            BattleRouteEntities.Clear();
-            
-        }
+        
 
         public void Update()
         {

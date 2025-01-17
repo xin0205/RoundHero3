@@ -96,11 +96,11 @@ namespace RoundHero
             return (BattleHeroEntity)task.Logic;
         }
         
-        public static async Task<BattleRouteEntity> ShowBattleRouteEntityAsync(this EntityComponent entityComponent, List<int> gridPosIdxs, int routeIdx)
+        public static async Task<BattleRouteEntity> ShowBattleRouteEntityAsync(this EntityComponent entityComponent, List<int> gridPosIdxs, int entityIdx)
         {
             var data = ReferencePool.Acquire<BattleRouteEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), Vector3.zero, gridPosIdxs, routeIdx);
+            data.Init(entityComponent.GenerateSerialId(), Vector3.zero, gridPosIdxs, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleRouteEntity),
                 AssetUtility.GetBattleRoutePrefab(), Constant.EntityGroup.Unit, 0, data);
@@ -227,17 +227,17 @@ namespace RoundHero
             return (BattleHurtEntity)task.Logic;
         }
         
-        public static async Task<BattleValueEntity> ShowBattleValueEntityAsync(this EntityComponent entityComponent,
-            Vector3 pos, Vector3 targetPos, int value)
+        public static async Task<BattleMoveValueEntity> ShowBattleMoveValueEntityAsync(this EntityComponent entityComponent,
+            Vector3 pos, Vector3 targetPos, int value, int entityIdx = -1)
         {
-            var data = ReferencePool.Acquire<BattleValueEntityData>();
+            var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value);
+            data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value, entityIdx);
 
-            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleValueEntity),
-                AssetUtility.GetBattleValuePrefab(), Constant.EntityGroup.Unit, 0, data);
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveValueEntity),
+                AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, data);
             
-            return (BattleValueEntity)task.Logic;
+            return (BattleMoveValueEntity)task.Logic;
         }
         
         public static async Task<EffectEntity> ShowEffectEntityAsync(this EntityComponent entityComponent, string assetName, Vector3 pos)
@@ -274,6 +274,18 @@ namespace RoundHero
                 AssetUtility.GetBattleParabolaBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
             
             return (BattleParabolaBulletEntity)task.Logic;
+        }
+        
+        public static async Task<BattleDisplayValueEntity> ShowBattleDisplayValueEntityAsync(this EntityComponent entityComponent, Vector3 pos, Vector3 targetPos, int value, int entityIdx)
+        {
+            var data = ReferencePool.Acquire<BattleDisplayValueEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value, entityIdx);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleDisplayValueEntity),
+                AssetUtility.GetBattleDisplayValuePrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleDisplayValueEntity)task.Logic;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace RoundHero
         {
             var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
             var heroEntity = HeroManager.Instance.GetHeroEntity(BattleUnitData.UnitCamp);
-            await GameEntry.Entity.ShowBattleValueEntityAsync(ValuePos.position,  heroEntity.ValuePos.position, hurt);
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  heroEntity.ValuePos.position, hurt);
         }
 
         // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = true)

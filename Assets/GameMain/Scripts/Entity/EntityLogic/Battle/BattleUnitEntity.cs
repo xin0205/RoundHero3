@@ -791,7 +791,7 @@ namespace RoundHero
                     GridPosIdx = moveGridPosIdxs[moveGridPosIdxs.Count - 1];
                 }
                 IsMove = false;
-                BattleManager.Instance.Refresh();
+                //BattleManager.Instance.Refresh();
                 
                 BattleManager.Instance.RefreshView();
                 BattleAreaManager.Instance.RefreshObstacles();

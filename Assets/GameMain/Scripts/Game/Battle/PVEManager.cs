@@ -261,6 +261,7 @@ namespace RoundHero
             if(BattleState != EBattleState.UseCard)
                 return;
             
+            BattleRouteManager.Instance.UnShowEnemyRoutes();
             if (GamePlayData.BlessCount(EBlessID.UnPassCards, BattleManager.Instance.CurUnitCamp) <= 0)
             {
                 BattleCardManager.Instance.PassCards();
