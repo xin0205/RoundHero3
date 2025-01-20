@@ -32,6 +32,7 @@ namespace RoundHero
         public async void ShowDisplayValues(int unitID)
         {
             //isShowDisplayValue = true;
+            
             BattleValueEntities.Clear();
             
             var entityIdx = curEntityIdx;
@@ -46,50 +47,59 @@ namespace RoundHero
                 }
                     
             }
-            
-            
+
+            var idx = 0;
             foreach (var triggerData in triggerDatas)
             {
-                var actionUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.ActionUnitID);
-                var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
-                var value = (int)(triggerData.Value + triggerData.DeltaValue);
-
-                Entity entity;
-                if (effectUnit is BattleSoliderEntity solider)
+                GameUtility.DelayExcute(0.25f * idx, () =>
                 {
-                    var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnit.UnitCamp);
-                        
-                    entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnit.Position, heroEntity.Position,
-                        value, entityIdx);
-                        
-                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showEntityIdx)
-                    {
-                        GameEntry.Entity.HideEntity(entity);
-                    }
-                    else
-                    {
-                        BattleValueEntities.Add(entity.Entity.Id, entity);
-                    }
-                }
-                else
-                {
-                    entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(actionUnit.Position,
-                        effectUnit.Position, value, entityIdx);
-                        
-                    if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx < showEntityIdx)
-                    {
-                        GameEntry.Entity.HideEntity(entity);
-                    }
-                    else
-                    {
-                        BattleValueEntities.Add(entity.Entity.Id, entity);
-                    }
-                }
-
-                entityIdx++;
+                    ShowValues(triggerData, entityIdx);
+                });
+                idx++;
 
             }
 
+        }
+
+        private async void ShowValues(TriggerData triggerData, int entityIdx)
+        {
+            var actionUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.ActionUnitID);
+            var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
+            var value = (int)(triggerData.Value + triggerData.DeltaValue);
+            
+            Entity entity;
+            if (effectUnit is BattleSoliderEntity solider)
+            {
+                var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnit.UnitCamp);
+                        
+                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnit.Position, heroEntity.Position,
+                    value, entityIdx, true);
+                        
+                if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showEntityIdx)
+                {
+                    GameEntry.Entity.HideEntity(entity);
+                }
+                else
+                {
+                    BattleValueEntities.Add(entity.Entity.Id, entity);
+                }
+            }
+            else
+            {
+                entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(actionUnit.Position,
+                    effectUnit.Position, value, entityIdx);
+                        
+                if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx < showEntityIdx)
+                {
+                    GameEntry.Entity.HideEntity(entity);
+                }
+                else
+                {
+                    BattleValueEntities.Add(entity.Entity.Id, entity);
+                }
+            }
+
+            entityIdx++;
         }
         
         public void UnShowDisplayValues()

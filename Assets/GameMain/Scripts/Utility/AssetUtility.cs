@@ -179,6 +179,11 @@ namespace RoundHero
             return "Assets/GameMain/Entities/Areas/RouteEntity.prefab";
         }
         
+        public static string GetBattleAttackTagPrefab()
+        {
+            return "Assets/GameMain/Entities/Areas/BattleAttackTagEntity.prefab";
+        }
+        
         public static string GetBattleParabolaBulletPrefab()
         {
             return "Assets/GameMain/Entities/Bullets/ParabolaBullet.prefab";

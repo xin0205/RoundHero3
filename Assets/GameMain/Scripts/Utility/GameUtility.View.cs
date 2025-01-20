@@ -32,5 +32,12 @@ namespace RoundHero
         {
             return coord.x + coord.y * Constant.Area.GridSize.x;
         }
+        
+        public static int GridPosToPosIdx(Vector3 pos)
+        {
+            var coord = GridPosToCoord(pos);
+
+            return GridCoordToPosIdx(coord);
+        }
     }
 }

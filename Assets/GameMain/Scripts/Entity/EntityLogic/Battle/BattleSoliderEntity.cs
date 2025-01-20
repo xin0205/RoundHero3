@@ -23,6 +23,15 @@ namespace RoundHero
             
             BattleUnitData = BattleSoliderEntityData.BattleSoliderData;
 
+            var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
+            unitDescFormData.UnitCamp = BattleSoliderEntityData.BattleSoliderData.UnitCamp;
+            unitDescFormData.UnitRole = EUnitRole.Staff;
+
+            var cardTable = CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
+            
+            unitDescFormData.UnitIdx = cardTable.Id;
+
+            
             ShowInit();
             //animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
             var drCard = CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);

@@ -1214,6 +1214,17 @@ namespace RoundHero
                     triggerData.Value < 0;
 
         }
+        
+        public static bool IsAddCurHPTrigger(TriggerData triggerData)
+        {
+            if (triggerData == null)
+                return false;
+            
+            return  triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+                    triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
+                    triggerData.Value > 0;
+
+        }
 
         public static bool ContainRoundState(Data_GamePlay gamePlay, EBuffID buffID)
         {
@@ -1412,5 +1423,12 @@ namespace RoundHero
 
         }
         
+        public static Vector3 GetBetweenPoint(Vector3 start, Vector3 end, float percent=0.5f)
+        {
+            Vector3 normal = (end - start).normalized;
+            float distance = Vector3.Distance(start, end);
+            return normal * (distance * percent) + start;
+        }
+
     }
 }

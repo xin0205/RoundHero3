@@ -14,6 +14,9 @@ namespace RoundHero
         [SerializeField] private Color recoverColor;
 
         protected Quaternion cameraQuaternion = Quaternion.identity;
+        private Tween textColTween;
+        private Tween textStrTween;
+        
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -33,17 +36,36 @@ namespace RoundHero
 
             var dis = Vector3.Distance(BattleMoveValueEntityData.TargetPos, transform.position);
             //Constant.Battle.BattleValueVelocity
-            var time = 2;
+            var time = dis / Constant.Battle.BattleValueVelocity;
+
+            textStrTween = 
             
-            DOTween.To(()=> text.color, x => text.color = x, recoverColor, time).SetEase(Ease.InOutQuart);
-            transform.DOLocalMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart).OnComplete(() =>
+            textColTween = DOTween.To(()=> text.color, x => text.color = x, recoverColor, time).SetEase(Ease.InOutQuart);
+            var moveTween = transform.DOLocalMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
+            var absValue = Mathf.Abs(BattleMoveValueEntityData.Value);
+            
+            textStrTween = DOTween.To(() => text.text, x => text.text = x, "+" + absValue, time)
+                    .From("-" + absValue).SetEase(Ease.InOutExpo);
+            
+            
+            if (BattleMoveValueEntityData.IsLoop)
             {
-                GameEntry.Entity.HideEntity(this);
-            });
-            GameUtility.DelayExcute(time / 2f, () =>
+                textColTween.SetLoops(-1);
+                textStrTween.SetLoops(-1);
+                moveTween.SetLoops(-1);
+            }
+            else
             {
-                text.text = "+" + Mathf.Abs(BattleMoveValueEntityData.Value);
-            });
+                moveTween.OnComplete(() =>
+                {
+                    GameEntry.Entity.HideEntity(this);
+                });
+            }
+            
+            // GameUtility.DelayExcute(time / 2f, () =>
+            // {
+            //     text.text = "+" + Mathf.Abs(BattleMoveValueEntityData.Value);
+            // });
         }
 
         
@@ -59,9 +81,11 @@ namespace RoundHero
 
         protected override void OnHide(bool isShutdown, object userData)
         {
-            base.OnHide(isShutdown, userData);
+            
             transform.DOKill();
-            text.DOKill();
+            textColTween.Kill();
+            textStrTween.Kill();
+            base.OnHide(isShutdown, userData);
         }
     }
 }

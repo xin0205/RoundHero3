@@ -1,6 +1,7 @@
 ﻿using System;
 using GifImporter;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -15,8 +16,7 @@ namespace RoundHero
     [Serializable]
     public class GIFFormData
     {
-        public EGIFType ItemType;
-        public int Idx;
+        public GIFPlayData GifPlayData;
 
     }
     
@@ -24,17 +24,46 @@ namespace RoundHero
     {
         private GIFFormData gifFormData;
 
-        [SerializeField] private GifPlayer gifPlayer;
-        [SerializeField] private GIFAssets gifAssets;
+        [SerializeField] private GIFPlayItem gifPlayItem;
         
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
             gifFormData = (GIFFormData)userData;
 
-            var gifStr = gifFormData.ItemType.ToString() + "_" + gifFormData.Idx.ToString();
-            gifPlayer.Gif = gifAssets.GifAssetDict[gifStr];
+            gifPlayItem.SetGIF(gifFormData.GifPlayData);
+
+            Vector3 mousePosition = Input.mousePosition;
             
+            var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
+            var delta = 2f;
+            if (mousePosition.x < Screen.width / 2)
+            {
+                gifPos.x += delta;
+                if (mousePosition.y < Screen.height / 2)
+                {
+                    gifPos.y += delta;
+                }
+                else
+                {
+                    gifPos.y -= delta;
+                }
+            }
+            else
+            {
+                gifPos.x -= delta;
+                if (mousePosition.y < Screen.height / 2)
+                {
+                    gifPos.y += delta;
+                }
+                else
+                {
+                    gifPos.y -= delta;
+                }
+            }
+            
+            
+            gifPlayItem.transform.position = gifPos;
         }
     }
 }

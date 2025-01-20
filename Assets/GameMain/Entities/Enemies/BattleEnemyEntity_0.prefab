@@ -63,6 +63,8 @@ MonoBehaviour:
   EffectAttackPos: {fileID: 6025886859164801879}
   ShootPos: {fileID: 2796897572946510672}
   UnitAttackCastType: 0
+  ValuePos: {fileID: 0}
+  TargetPosIdx: 0
 --- !u!95 &4107302258608099607
 Animator:
   serializedVersion: 5
@@ -8683,6 +8685,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4465285574356180}
     m_Modifications:
+    - target: {fileID: 3481462899000137147, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_Text
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3481462899000137147, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_Color.rgba
+      value: 4281743045
+      objectReference: {fileID: 0}
+    - target: {fileID: 3481462899000137147, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_CharacterSize
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5613525845362263443, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8693,7 +8707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5613525845362263443, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5613525845362263443, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8712,6 +8726,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5613525845362263443, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613525845362263443, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -8726,6 +8744,30 @@ PrefabInstance:
     - target: {fileID: 5956643790703324612, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
       propertyPath: m_Name
       value: UnitUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6663148033602993298, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.0005
+      objectReference: {fileID: 0}
+    - target: {fileID: 6663148033602993298, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0005
+      objectReference: {fileID: 0}
+    - target: {fileID: 6663148033602993298, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.297
+      objectReference: {fileID: 0}
+    - target: {fileID: 8561068820784853581, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_Text
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8561068820784853581, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_Color.rgba
+      value: 4281743045
+      objectReference: {fileID: 0}
+    - target: {fileID: 8561068820784853581, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+      propertyPath: m_CharacterSize
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

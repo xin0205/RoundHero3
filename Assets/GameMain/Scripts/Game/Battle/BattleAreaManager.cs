@@ -152,11 +152,13 @@ namespace RoundHero
                         {
                             unit.Position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
                             BattleValueManager.Instance.ShowDisplayValue(unit.ID);
+                            BattleAttackTagManager.Instance.ShowAttackTag(unit.ID);
                         }
                         else if (ne.ShowState == EShowState.Unshow)
                         {
                             unit.Position = GameUtility.GridPosIdxToPos(movePaths[0]);
                             BattleValueManager.Instance.UnShowDisplayValues();
+                            BattleAttackTagManager.Instance.UnShowAttackTags();
                         }
                     }
                 }
