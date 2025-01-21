@@ -1,4 +1,5 @@
 ﻿
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -7,7 +8,7 @@ namespace RoundHero
     {
 
         public BattleMonsterEntityData BattleMonsterEntityData { get; protected set; }
-        
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -27,7 +28,11 @@ namespace RoundHero
             AttachWeapon(drEnemy.WeaponHoldingType, drEnemy.WeaponType, drEnemy.WeaponID);
 
             
-            
+            var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
+            unitDescFormData.UnitCamp = BattleMonsterEntityData.BattleMonsterData.UnitCamp;
+            unitDescFormData.UnitRole = EUnitRole.Staff;
+
+            unitDescFormData.Idx = BattleMonsterEntityData.BattleMonsterData.Idx;
 
             
             
@@ -40,7 +45,7 @@ namespace RoundHero
         public override void Dead()
         {
             base.Dead();
-            BattleEnemyManager.Instance.RemoveEnemy(BattleMonsterEntityData.BattleMonsterData.ID);
+            BattleEnemyManager.Instance.RemoveEnemy(BattleMonsterEntityData.BattleMonsterData.Idx);
             GameUtility.DelayExcute(3f, () =>
             {
                 GameEntry.Entity.HideEntity(this);
@@ -50,7 +55,7 @@ namespace RoundHero
         public override void Quit()
         {
             base.Quit();
-            BattleEnemyManager.Instance.RemoveEnemy(BattleMonsterEntityData.BattleMonsterData.ID);
+            BattleEnemyManager.Instance.RemoveEnemy(BattleMonsterEntityData.BattleMonsterData.Idx);
             
         }
 
@@ -60,5 +65,22 @@ namespace RoundHero
         // }
 
 
+
+        public void OnPointerEnter()
+        {
+            var movePaths = BattleFightManager.Instance.GetMovePaths(Idx);
+            Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
+            BattleValueManager.Instance.ShowDisplayValue(Idx);
+            BattleAttackTagManager.Instance.ShowAttackTag(Idx,
+                GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]));
+        }
+        
+        public void OnPointerExit()
+        {
+            var movePaths = BattleFightManager.Instance.GetMovePaths(Idx);
+            Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
+            BattleValueManager.Instance.UnShowDisplayValues();
+            BattleAttackTagManager.Instance.UnShowAttackTags();
+        }
     }
 }

@@ -26,6 +26,10 @@ namespace RoundHero
         [SerializeField] protected Animator animator;
         [SerializeField] protected Transform leftWeapon;
         [SerializeField] protected Transform rightWeapon;
+        
+        
+        public Transform Root;
+
 
         protected Data_BattleUnit BattleUnitData { get; set; }
         protected bool IsMove = false;
@@ -51,10 +55,10 @@ namespace RoundHero
             set => BattleUnitData.GridPosIdx = value;
         }
         
-        public int ID
+        public int Idx
         {
-            get => BattleUnitData.ID; 
-            set => BattleUnitData.ID = value;
+            get => BattleUnitData.Idx; 
+            set => BattleUnitData.Idx = value;
         }
 
         public Data_BattleUnit BattleUnit
@@ -401,7 +405,7 @@ namespace RoundHero
             {
                 var range = Constant.Battle.ActionTypePoints[buffData[0].TriggerRange][i];
                 var bulletData = new BulletData();
-                bulletData.ActionUnitID = BattleUnitData.ID;
+                bulletData.ActionUnitID = BattleUnitData.Idx;
                 bulletData.MoveGridPosIdxs.Add(BattleUnit.GridPosIdx);
                 foreach (var deltaPos in range)
                 {
@@ -417,7 +421,7 @@ namespace RoundHero
                         continue;
                     
                     var triggerActionDatas =
-                        BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.ID, effectUnit.BattleUnit.ID);
+                        BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.Idx, effectUnit.BattleUnit.Idx);
                     
                     if(triggerActionDatas == null)
                         continue;
@@ -448,7 +452,7 @@ namespace RoundHero
         public void SingleHandleShoot()
         {
             var bulletData = new BulletData();
-            bulletData.ActionUnitID = BattleUnitData.ID;
+            bulletData.ActionUnitID = BattleUnitData.Idx;
             var moveIdxs = GameUtility.GetMoveIdxs(BattleUnit.GridPosIdx, TargetPosIdx);
             bulletData.MoveGridPosIdxs.AddRange(moveIdxs);
             
@@ -474,7 +478,7 @@ namespace RoundHero
                         continue;
 
                     var triggerActionDatas =
-                        BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.ID, effectUnit.BattleUnit.ID);
+                        BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.Idx, effectUnit.BattleUnit.Idx);
 
                     if (triggerActionDatas == null)
                         continue;
@@ -506,7 +510,7 @@ namespace RoundHero
         {
             await ShowEffectAttackEntity();
 
-            BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.ID);
+            BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.Idx);
         }
 
         public void GetHit()
@@ -533,7 +537,7 @@ namespace RoundHero
         //private EffectEntity effectAttackEntity;
         private async Task ShowEffectAttackEntity()
         {
-            var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerActionDatas(this.BattleUnitData.ID);
+            var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerActionDatas(this.BattleUnitData.Idx);
             switch (UnitAttackCastType)
             {
                 case EAttackCastType.CloseSingle:
@@ -616,7 +620,7 @@ namespace RoundHero
                 foreach (var triggerActionData in kv.Value)
                 {
                     
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerActionData.TriggerData.EffectUnitID);
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitID);
                     
                     if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
                         triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
@@ -641,7 +645,7 @@ namespace RoundHero
                 foreach (var triggerActionData in kv.Value)
                 {
                     
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByID(triggerActionData.TriggerData.EffectUnitID);
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitID);
                     
                     if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
                         triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
@@ -731,7 +735,7 @@ namespace RoundHero
             {
                 var moveGridPosIdx = moveGridPosIdxs[i];
 
-                var hasUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(moveGridPosIdx, null, null, null, BattleUnitData.ID) !=  null;
+                var hasUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(moveGridPosIdx, null, null, null, BattleUnitData.Idx) !=  null;
                 
                 var pos = GameUtility.GetMovePos(unitActionState, moveGridPosIdxs, i, hasUnit);
                 
@@ -769,7 +773,7 @@ namespace RoundHero
                         {
                             GridPosIdx = nextMoveGridPosIdx;
                             
-                            BattleFightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.ID);
+                            BattleFightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.Idx);
                         
                         });
                     }
@@ -957,7 +961,7 @@ namespace RoundHero
 
         public void RefreshDamageState()
         {
-            var hurt = BattleFightManager.Instance.GetTotalDelta(this.ID, EHeroAttribute.CurHP);
+            var hurt = BattleFightManager.Instance.GetTotalDelta(this.Idx, EHeroAttribute.CurHP);
             this.damage.text = hurt.ToString();
         }
         

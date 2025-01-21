@@ -7,24 +7,24 @@ Shader "Custom/Dynamic Route"
 		_MainTex("MainTex", 2D) = "white" {}
 		_Number("Number", Range( 0 , 100)) = 3.082893
 		_Color ("Color", Color) = (1.0, 1.0, 1.0, 1.0)
-        //_AlphaScale("Alpha_Scale", Range(0, 1)) = 1
+        _AlphaScale("Alpha_Scale", Range(0, 1)) = 0.5
 
     }
     SubShader
     {
-        Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType"="Transparent" }
+        Tags { "Queue" = "AlphatTest" "IgnoreProjector" = "True" "RenderType"="TransparentCutout" }
         LOD 100
-        
-        Pass
-        {
-            ZWrite On
-            ColorMask 0
-        }
+        Cull Off
+//        Pass
+//        {
+//            ZWrite On
+//            ColorMask 0
+//        }
 
         Pass
         {
 
-            ZWrite Off
+            //ZWrite Off
 //            Blend SrcAlpha OneMinusSrcAlpha
             
             CGPROGRAM
@@ -64,7 +64,8 @@ Shader "Custom/Dynamic Route"
 		    uniform float _Number;
 		    uniform float _Cutoff = 0.5;
 		    fixed4 _Color;
-
+            uniform float _AlphaScale;
+            
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 temp_cast_0 = (_Number).xx;
@@ -73,6 +74,7 @@ Shader "Custom/Dynamic Route"
 
                 fixed4 col = tex2D(_MainTex, i.uv);
                 col *= _Color;
+                col.a = col.a * _AlphaScale;
                 clip( tex2DNode.a - _Cutoff );
                 
                 return col;

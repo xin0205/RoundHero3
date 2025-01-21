@@ -1,6 +1,7 @@
 ﻿using System;
 using GifImporter;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RoundHero
 {
@@ -8,7 +9,7 @@ namespace RoundHero
     public class GIFPlayData
     {
         public EGIFType ItemType;
-        public int Idx;
+        [FormerlySerializedAs("Idx")] public int ID;
 
     }
     
@@ -22,7 +23,7 @@ namespace RoundHero
         public void SetGIF(GIFPlayData gifPlayData)
         {
             this.gifPlayData = gifPlayData;
-            var gifStr = gifPlayData.ItemType.ToString() + "_" + gifPlayData.Idx.ToString();
+            var gifStr = gifPlayData.ItemType.ToString() + "_" + gifPlayData.ID.ToString();
             gifPlayer.Gif = gifAssets.GifAssetDict[gifStr];
         }
     }

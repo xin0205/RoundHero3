@@ -301,7 +301,7 @@ namespace RoundHero
             
             BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, actionUnit, triggerData, triggerDatas, EBuffTriggerType.Attack);
             BattleGridPropManager.Instance.AttackTrigger(actionUnit.GridPosIdx, triggerData, triggerDatas);
-            BattleFightManager.Instance.TriggerUnitData(actionUnit.ID, triggerData.EffectUnitID, actionUnit.GridPosIdx,
+            BattleFightManager.Instance.TriggerUnitData(actionUnit.Idx, triggerData.EffectUnitID, actionUnit.GridPosIdx,
                 EBuffTriggerType.Attack, triggerDatas);
         }
         
@@ -336,7 +336,7 @@ namespace RoundHero
 
             BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, effectUnit, triggerData, triggerDatas, EBuffTriggerType.Hurt);
   
-            BattleFightManager.Instance.TriggerUnitData(effectUnit.ID, triggerData.ActionUnitID, effectUnit.GridPosIdx, EBuffTriggerType.Hurt, triggerDatas);
+            BattleFightManager.Instance.TriggerUnitData(effectUnit.Idx, triggerData.ActionUnitID, effectUnit.GridPosIdx, EBuffTriggerType.Hurt, triggerDatas);
         }
         
         public void BuffsTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit, TriggerData triggerData, List<TriggerData> triggerDatas, EBuffTriggerType buffTriggerType)
@@ -357,7 +357,7 @@ namespace RoundHero
                     continue;
                 
                 BuffTrigger(buffTriggerType,
-                    triggerBuffData.BuffData, triggerBuffData.ValueList, unit.ID, unit.ID, unit.ID,
+                    triggerBuffData.BuffData, triggerBuffData.ValueList, unit.Idx, unit.Idx, unit.Idx,
                     triggerData, triggerDatas);
     
             }
@@ -625,7 +625,7 @@ namespace RoundHero
                         var unit = GameUtility.GetUnitByGridPosIdx(gridPosIdx, true);
                         if (unit != null)
                         {
-                            unitRanges.Add(kv.Key, unit.ID);
+                            unitRanges.Add(kv.Key, unit.Idx);
                         }
                     }
                 }

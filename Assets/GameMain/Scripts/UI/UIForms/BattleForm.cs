@@ -132,8 +132,8 @@ namespace RoundHero
                 if(solider == null)
                     return;
 
-                var fightSoliderData = BattleFightManager.Instance.GetUnitByID(solider.ID) as Data_BattleSolider;
-                var soliderEntity = BattleUnitManager.Instance.GetUnitByID(solider.ID) as BattleSoliderEntity;
+                var fightSoliderData = BattleFightManager.Instance.GetUnitByID(solider.Idx) as Data_BattleSolider;
+                var soliderEntity = BattleUnitManager.Instance.GetUnitByIdx(solider.Idx) as BattleSoliderEntity;
                 if(fightSoliderData == null)
                     return;
 
@@ -143,7 +143,7 @@ namespace RoundHero
                 var desc = "";
                 GameUtility.GetCardText(card.CardID, ref name, ref desc);
 
-                test.text = solider.ID + "-" + name + "\n";
+                test.text = solider.Idx + "-" + name + "\n";
                 var list = fightSoliderData.Links;
                 foreach (var linkSoliderID in list)
                 {
@@ -164,7 +164,7 @@ namespace RoundHero
                 BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
 
             var hpDelta =
-                BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.ID, EHeroAttribute.CurHP);
+                BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.Idx, EHeroAttribute.CurHP);
             heroHP.text += "   " + ((hpDelta > 0) ? "+" + hpDelta : hpDelta);
         }
 
@@ -179,7 +179,7 @@ namespace RoundHero
         {
             coin.text = HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.Coin) + "";
             
-            coin.text += "-" + BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.ID, EHeroAttribute.Coin);
+            coin.text += "-" + BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.Idx, EHeroAttribute.Coin);
         }
         
         private void RefreshRound()

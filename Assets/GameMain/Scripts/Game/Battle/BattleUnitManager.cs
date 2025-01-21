@@ -107,9 +107,9 @@ namespace RoundHero
             BattleUnitEntities.Clear();
         }
 
-        public int GetID()
+        public int GetIdx()
         {
-            return DataManager.Instance.DataGame.User.CurGamePlayData.BattleData.UnitID++;
+            return DataManager.Instance.DataGame.User.CurGamePlayData.BattleData.UnitIdx++;
         }
 
         public int GetTempID()
@@ -145,7 +145,7 @@ namespace RoundHero
                     if(unitRole != null && unit.UnitRole != unitRole)
                         continue;
                     
-                    if(unit.ID == exceptUnitID)
+                    if(unit.Idx == exceptUnitID)
                         continue;
                 }
                 
@@ -214,7 +214,7 @@ namespace RoundHero
         //     return null;
         // }
         
-        public BattleUnitEntity GetUnitByID(int id)
+        public BattleUnitEntity GetUnitByIdx(int id)
         {
             // foreach (var kv in BattleUnitEntities)
             // {
@@ -253,7 +253,7 @@ namespace RoundHero
             
             foreach (var kv in BattleUnitEntities)
             {
-                if (kv.Value.ID == id)
+                if (kv.Value.Idx == id)
                 {
                     return kv.Value;
                 }
@@ -268,7 +268,7 @@ namespace RoundHero
         {
             var unit = GetUnitByGridPosIdx(gridPosIdx, selfUnitCamp, unitCamp, unitRole);
             if(unit != null) 
-                return unit.ID;
+                return unit.Idx;
 
             return -1;
         }
@@ -425,7 +425,7 @@ namespace RoundHero
                 {
                     BuffData = buffData,
                     ValueList = new List<float>(valueList[idx++]),
-                    UnitID = unit.ID,
+                    UnitID = unit.Idx,
                 });
             };
             
@@ -502,7 +502,7 @@ namespace RoundHero
                 {
                     BuffData = BattleBuffManager.Instance.GetBuffData(buffStr),
                     ValueList = valueList[idx++],
-                    UnitID = unit.ID,
+                    UnitID = unit.Idx,
                 });
             };
 
@@ -547,7 +547,7 @@ namespace RoundHero
         public EActionType GetMoveType(int unitID)
         {
             
-            var unit = GetUnitByID(unitID);
+            var unit = GetUnitByIdx(unitID);
             if (unit is BattleSoliderEntity soliderEntity)
             {
                 var cardTable = CardManager.Instance.GetCardTable(soliderEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
@@ -602,7 +602,7 @@ namespace RoundHero
         public List<int> GetAttackRanges(int unitID, int gridPosIdx)
         {
             var rangeList = new List<int>();
-            var battleUnitData = GetUnitByID(unitID)?.BattleUnit;
+            var battleUnitData = GetUnitByIdx(unitID)?.BattleUnit;
             if(battleUnitData == null)
                 return rangeList;
             

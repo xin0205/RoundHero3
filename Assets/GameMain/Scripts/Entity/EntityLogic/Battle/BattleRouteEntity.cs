@@ -34,7 +34,9 @@ namespace RoundHero
                 pos.y = 0.5f;
                 line.SetPosition(idx++, pos);
             }
-            
+
+            line.startWidth = 0.02f;
+            line.endWidth = 0.02f;
 
             line.material.SetInt("_Number", 3 * (BattleRouteEntityData.GridPosIdxs.Count - 1));
             SetCurrent(false);

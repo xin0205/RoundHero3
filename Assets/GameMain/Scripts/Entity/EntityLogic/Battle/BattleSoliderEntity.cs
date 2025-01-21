@@ -27,9 +27,7 @@ namespace RoundHero
             unitDescFormData.UnitCamp = BattleSoliderEntityData.BattleSoliderData.UnitCamp;
             unitDescFormData.UnitRole = EUnitRole.Staff;
 
-            var cardTable = CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
-            
-            unitDescFormData.UnitIdx = cardTable.Id;
+            unitDescFormData.Idx = BattleSoliderEntityData.BattleSoliderData.CardIdx;
 
             
             ShowInit();
@@ -46,7 +44,7 @@ namespace RoundHero
         public override void Quit()
         {
             base.Quit();
-            BattleSoliderManager.Instance.RemoveSolider(BattleSoliderEntityData.BattleSoliderData.ID);
+            BattleSoliderManager.Instance.RemoveSolider(BattleSoliderEntityData.BattleSoliderData.Idx);
             
             
         }
@@ -54,7 +52,7 @@ namespace RoundHero
         public override void Dead()
         {
             base.Dead();
-            BattleSoliderManager.Instance.RemoveSolider(BattleSoliderEntityData.BattleSoliderData.ID);
+            BattleSoliderManager.Instance.RemoveSolider(BattleSoliderEntityData.BattleSoliderData.Idx);
             GameUtility.DelayExcute(3f, () =>
             {
                 GameEntry.Entity.HideEntity(this);

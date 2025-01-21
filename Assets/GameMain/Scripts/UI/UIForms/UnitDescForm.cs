@@ -1,4 +1,5 @@
 ﻿using System;
+using GameFramework;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,7 +10,7 @@ namespace RoundHero
     {
         public EUnitRole UnitRole;
         public EUnitCamp UnitCamp;
-        public int UnitIdx;
+        public int Idx;
         
     }
     
@@ -34,7 +35,9 @@ namespace RoundHero
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
                 gifPlayData.ItemType = EGIFType.Enemy;
-                
+                var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
+                gifPlayData.ID = enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID;
+
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
@@ -44,10 +47,13 @@ namespace RoundHero
                 }
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
+                    var drCard = CardManager.Instance.GetCard(UnitDescFormData.Idx);
+                    //drCard.CardID
+                    gifPlayData.ID = 0;
                     gifPlayData.ItemType = EGIFType.Solider;
                 }
             }
-            gifPlayData.Idx = UnitDescFormData.UnitIdx;
+            
             gifPlayItem.SetGIF(gifPlayData);
             
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
@@ -56,7 +62,17 @@ namespace RoundHero
                 playerCardItem.gameObject.SetActive(false);
                 
                 gifPlayData.ItemType = EGIFType.Enemy;
-                unitDescItem.SetDesc("1", 5, "2323");
+                
+                var name = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.EnemyName,
+                    gifPlayData.ID));
+                var desc = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.EnemyDesc,
+                    gifPlayData.ID));
+                
+                var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
+                var power = enemyEntity.BattleMonsterEntityData.BattleMonsterData.CurHP + "/" +
+                            enemyEntity.BattleMonsterEntityData.BattleMonsterData.MaxHP;
+                
+                unitDescItem.SetDesc(name, power, desc);
                 
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
@@ -67,7 +83,7 @@ namespace RoundHero
                     playerCardItem.gameObject.SetActive(false);
                     
                     gifPlayData.ItemType = EGIFType.Hero;
-                    unitDescItem.SetDesc("1", 5, "2323");
+                    unitDescItem.SetDesc("1", "5", "2323");
                 }
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
@@ -75,13 +91,11 @@ namespace RoundHero
                     unitDescItem.gameObject.SetActive(false);
                     
                     gifPlayData.ItemType = EGIFType.Solider;
-                    var unitEntity = BattleUnitManager.Instance.GetUnitByID(UnitDescFormData.UnitIdx) as BattleSoliderEntity;
-                    var cardIdx = unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx;
-                    var drCard = CardManager.Instance.GetCardTable(cardIdx);
+                    var drCard = CardManager.Instance.GetCard(UnitDescFormData.Idx);
                     var playerCardData = new PlayerCardData()
                     {
-                        CardIdx = cardIdx,
-                        CardID = drCard.Id,
+                        CardIdx = UnitDescFormData.Idx,
+                        CardID = drCard.CardID,
                     };
                     
                     playerCardItem.SetItemData(playerCardData, true);
@@ -92,6 +106,7 @@ namespace RoundHero
             
             var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
             var delta = 2f;
+
             if (mousePosition.x < Screen.width / 2)
             {
                 gifPos.x += delta;

@@ -54,6 +54,9 @@ namespace RoundHero
         public void ContinueGame()
         {
             CloseForm();
+            //GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(GamePlayManager.Instance.GamePlayData.RandomSeed, EEnemyType.Normal));
+
+            GamePlayManager.Instance.InitPlayerData();
             procedureStart.ContinueGame();
         }
 

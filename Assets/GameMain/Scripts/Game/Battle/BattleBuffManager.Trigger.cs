@@ -180,13 +180,13 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.ID,
+                EffectUnitID = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
             };
-            useCardData.AddEmptyTriggerDataList(effectUnit.ID);
+            useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
             
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
             
             foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
@@ -196,14 +196,14 @@ namespace RoundHero
                     triggerData = new TriggerData()
                     {
                         TriggerDataType = ETriggerDataType.RoleAttribute,
-                        EffectUnitID = kv.Value.ID,
+                        EffectUnitID = kv.Value.Idx,
                         BattleUnitAttribute = EUnitAttribute.HP,
                         Value = value2,
 
                     };
 
-                    useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                    useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
                 }
                 
             }
@@ -222,13 +222,13 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.ID,
+                EffectUnitID = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
             };
             
-            useCardData.AddEmptyTriggerDataList(effectUnit.ID);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
+            useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
 
         }
         
@@ -241,13 +241,13 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.ID,
+                EffectUnitID = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
             };
             
-            useCardData.AddEmptyTriggerDataList(effectUnit.ID);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
+            useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
 
         }
         
@@ -267,13 +267,13 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleAttribute,
-                    EffectUnitID = kv.Value.ID,
+                    EffectUnitID = kv.Value.Idx,
                     BattleUnitAttribute = EUnitAttribute.HP,
                     Value = value,
                 };
                 
-                useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
             }
 
         }
@@ -295,13 +295,13 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleAttribute,
-                    EffectUnitID = kv.Value.ID,
+                    EffectUnitID = kv.Value.Idx,
                     BattleUnitAttribute = EUnitAttribute.HP,
                     Value = value,
                 };
                 
-                useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
             }
 
         }
@@ -321,13 +321,13 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.ID,
+                    EffectUnitID = kv.Value.Idx,
                     UnitState = EUnitState.AddDmg,
                     Value = value1s[0],
                 };
                 
-                useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
             }
 
         }
@@ -383,13 +383,13 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.ID,
+                    EffectUnitID = kv.Value.Idx,
                     UnitState = EUnitState.HurtAddDmg,
                     Value = value1s[1],
                 };
                 
-                useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
             }
 
         }
@@ -410,13 +410,13 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.ID,
+                    EffectUnitID = kv.Value.Idx,
                     UnitState = EUnitState.SubDmg,
                     Value = value1s[1],
                 };
                 
-                useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
             }
 
         }
@@ -430,14 +430,14 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.ID,
+                EffectUnitID = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
                 ChangeHPInstantly = true,
             };
             
-            useCardData.AddEmptyTriggerDataList(effectUnit.ID);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
+            useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
 
         }
         
@@ -454,13 +454,13 @@ namespace RoundHero
                     var triggerData = new TriggerData()
                     {
                         TriggerDataType = ETriggerDataType.RoleState,
-                        EffectUnitID = effectUnit.ID,
+                        EffectUnitID = effectUnit.Idx,
                         UnitState = state,
                         Value = -effectUnit.UnitState.UnitStates[state],
                     };
             
-                    useCardData.AddEmptyTriggerDataList(effectUnit.ID);
-                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
+                    useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
+                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
                 }
             }
             
@@ -485,11 +485,11 @@ namespace RoundHero
             {
                 TriggerDataType = ETriggerDataType.RemoveUnit,
                 BattleUnitAttribute = EUnitAttribute.HP,
-                EffectUnitID = effectUnit.ID,
+                EffectUnitID = effectUnit.Idx,
                 Value = -effectUnit.CurHP,
             };
-            useCardData.AddEmptyTriggerDataList(effectUnit.ID);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
+            useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
         }
 
         private void State1AddState2(EUnitCamp unitCamp, EUnitState state1, EUnitState state2, List<float> value1s)
@@ -507,13 +507,13 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.ID,
+                    EffectUnitID = kv.Value.Idx,
                     UnitState = state2,
                     Value = value1s[0],
                 };
                 
-                useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
             }
         }
         
@@ -541,13 +541,13 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.ID,
+                    EffectUnitID = kv.Value.Idx,
                     UnitState = EUnitState.UnMove,
                     Value = 1,
                 };
                 
-                useCardData.AddEmptyTriggerDataList(kv.Value.ID);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.ID]);
+                useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[kv.Value.Idx]);
             }
 
         }
@@ -560,7 +560,7 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoundBuff,
-                EffectUnitID = battleHero.ID,
+                EffectUnitID = battleHero.Idx,
                 BuffID = buffID,
                 Value = 1,
             };
@@ -632,12 +632,12 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.Link,
-                EffectUnitID = effectUnit.ID,
+                EffectUnitID = effectUnit.Idx,
                 LinkID = linkID,
             };
             
-            useCardData.AddEmptyTriggerDataList(effectUnit.ID);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.ID]);
+            useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
 
         }    
     }

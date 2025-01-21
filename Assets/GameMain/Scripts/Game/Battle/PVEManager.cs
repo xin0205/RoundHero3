@@ -40,29 +40,28 @@ namespace RoundHero
         public Data_GamePlay GamePlayData => DataManager.Instance.DataGame.User.CurGamePlayData;
         public Data_Battle BattleData => GamePlayData.BattleData;
         
-        public void Init(int randomSeed)
+        public void Init()
         {
-            this.randomSeed = randomSeed;
+            this.randomSeed = GamePlayManager.Instance.GamePlayData.RandomSeed;
             
             Log.Debug(randomSeed);
             
             Random = new Random(randomSeed);
             
             BattleManager.Instance.SetBattleTypeManager(this);
-            
-            GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
-            GameEntry.Event.Subscribe(RefreshBattleStateEventArgs.EventId, OnRefreshBattleState);
-            
-            
+
             GamePlayData.GameMode = EGamMode.PVE;
             
             // var randoms = MathUtility.GetRandomNum(1, 0,
             //     Constant.Game.RandomRange, Random);
 
-            
+        }
 
-            
-            
+        public void Enter()
+        {
+            GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            GameEntry.Event.Subscribe(RefreshBattleStateEventArgs.EventId, OnRefreshBattleState);
+
         }
 
         public void StartBattle()
@@ -76,13 +75,17 @@ namespace RoundHero
             BattleManager.Instance.SetCurPlayer(EUnitCamp.Player1);
 
         }
-        
-        public void Destory()
+
+        public void Exit()
         {
             GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Unsubscribe(RefreshBattleStateEventArgs.EventId, OnRefreshBattleState);
-            
-                
+
+        }
+        
+        public void Destory()
+        {
+  
         }
         
         private void OnRefreshBattleState(object sender, GameEventArgs e)

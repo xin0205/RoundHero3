@@ -12,11 +12,8 @@ namespace RoundHero
             if (GamePlayData.GameMode == EGamMode.PVE)
             {
                 GamePlayManager.Instance.GamePlayData.AddPlayerData(PlayerManager.Instance.PlayerData);
-                PlayerManager.Instance.PlayerData.Clear();
-                
-                
-                PVEManager.Instance.SetCurPlayer();
-
+                InitPlayerData();
+                //PlayerManager.Instance.PlayerData.Clear();
                 
                 var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.TmpHeroID);
                 HeroManager.Instance.InitHeroData(drHero.HeroID);
@@ -25,6 +22,12 @@ namespace RoundHero
 
             }
             
+        }
+
+        public void InitPlayerData()
+        {
+            
+            PVEManager.Instance.SetCurPlayer();
         }
 
         public void Contitnue()
@@ -52,6 +55,8 @@ namespace RoundHero
         {
             BlessManager.Instance.Destory();
             BattleMapManager.Instance.Destory();
+            
+            //GamePlayManager.Instance.GamePlayData.Clear();
             // BattleEnergyBuffManager.Instance.Destory();
             // BattleHeroManager.Instance.Destory();
         }

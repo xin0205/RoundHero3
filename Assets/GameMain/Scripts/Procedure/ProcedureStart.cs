@@ -79,8 +79,8 @@ namespace RoundHero
         public void OnGamePlayInitGame(object sender, GameEventArgs e)
         {
             var ne = e as GamePlayInitGameEventArgs;
-            // var data = new VarGamePlayInitData();
-            // data.SetValue(ne.GamePlayInitData);
+            // var data = new ();
+            // data.SetValue(ne.GamVarGamePlayInitDataePlayInitData);
             //
             // procedureOwner.SetData("GamePlayInitData", data);
             
@@ -88,16 +88,12 @@ namespace RoundHero
             
             if (ne.GamePlayInitData.GameMode == EGamMode.PVE)
             {
-                PVEManager.Instance.Init(ne.GamePlayInitData.RandomSeed);
+                GamePlayManager.Instance.GamePlayData.RandomSeed = ne.GamePlayInitData.RandomSeed;
+                
                 GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
                 GamePlayManager.Instance.Start();
-                GamePlayManager.Instance.Contitnue();
-                
-                ChangeState<ProcedureGamePlay>(procedureOwner);
-                
-                var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
-                gamePlayProcedure.ShowMap();
-                
+                ContinueGame();
+                DataManager.Instance.Save();
             }
             else if (ne.GamePlayInitData.GameMode == EGamMode.PVP)
             {
@@ -114,6 +110,8 @@ namespace RoundHero
 
         public void ContinueGame()
         {
+            PVEManager.Instance.Enter();
+            PVEManager.Instance.Init();
             GamePlayManager.Instance.Contitnue();
             
             ChangeState<ProcedureGamePlay>(procedureOwner);

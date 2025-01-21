@@ -27,14 +27,14 @@ namespace RoundHero
 
         }
 
-        public void ShowAttackTag(int unitID)
+        public void ShowAttackTag(int unitID, Vector3 attackStartPos)
         {
             UnShowAttackTags();
-            ShowAttackTags(unitID);
+            ShowAttackTags(unitID, attackStartPos);
         }
 
 
-        public async void ShowAttackTags(int unitID)
+        public async void ShowAttackTags(int unitID, Vector3 attackStartPos)
         {
             if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting ||
                 BattleManager.Instance.BattleState == EBattleState.End)
@@ -55,7 +55,7 @@ namespace RoundHero
             var entityIdx = curEntityIdx;
             foreach (var triggerData in triggerDatas)
             {
-                var unit = BattleUnitManager.Instance.GetUnitByID(triggerData.EffectUnitID);
+                var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitID);
 
                 if (unit != null)
                 {
@@ -69,15 +69,15 @@ namespace RoundHero
             {
                 var actionUnitID = triggerData.ActionUnitID;
                 var effectUnitID = triggerData.EffectUnitID;
-                var actionUnit = BattleUnitManager.Instance.GetUnitByID(actionUnitID);
-                var effectUnit = BattleUnitManager.Instance.GetUnitByID(effectUnitID);
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(actionUnitID);
+                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitID);
 
                 var attackTagType = GameUtility.IsSubCurHPTrigger(triggerData) ? EAttackTagType.Attack :
                     GameUtility.IsAddCurHPTrigger(triggerData) ? EAttackTagType.Recover : EAttackTagType.UnitState;
 
                 var unitState = attackTagType == EAttackTagType.UnitState ? triggerData.UnitState : EUnitState.Empty;
 
-                var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnit.Position,
+                var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnit.Position, attackStartPos,
                     effectUnit.Position, attackTagType, unitState, entityIdx);
                 
                 entityIdx++;

@@ -12,11 +12,12 @@ namespace RoundHero
         [SerializeField]
         private Text powerText;
         
-        public void SetDesc(string name, int power, string desc)
+        public void SetDesc(string name, string power, string desc)
         {
             nameText.text = name;
+            powerText.text = power;
             descText.text = desc;
-            powerText.text = power.ToString();
+            
         }
     }
 }

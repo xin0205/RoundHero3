@@ -30,11 +30,12 @@ namespace RoundHero
                 return;
             }
 
+            
+            var startGridPosIdx = GameUtility.GridPosToPosIdx(BattleAttackTagEntityData.StartPos);
             var endGridPosIdx = GameUtility.GridPosToPosIdx(BattleAttackTagEntityData.TargetPos);
-            var startGridPosIdx = GameUtility.GridPosToPosIdx(BattleAttackTagEntityData.Position);
             var gridPosIdxs = GameUtility.GetMoveIdxs(startGridPosIdx, endGridPosIdx);
 
-            var centerPoint = GameUtility.GetBetweenPoint(BattleAttackTagEntityData.Position,
+            var centerPoint = GameUtility.GetBetweenPoint(BattleAttackTagEntityData.StartPos,
                 BattleAttackTagEntityData.TargetPos);
             centerPoint.y += 1f;
 
@@ -50,7 +51,8 @@ namespace RoundHero
                 line.SetPosition(idx++, pos);
             }
             
-
+            line.startWidth = 0.02f;
+            line.endWidth = 0.02f;
             line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
             line.material.SetColor("_Color", red); 
             line.material.SetInt("_Speed", 20);

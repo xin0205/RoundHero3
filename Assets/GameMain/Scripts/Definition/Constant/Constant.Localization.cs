@@ -25,6 +25,8 @@ namespace RoundHero
             public const string BlessDesc = "BlessDesc.{0}";
             public const string HeroName = "HeroName.{0}";
             public const string HeroDesc = "HeroDesc.{0}";
+            public const string EnemyName = "EnemyName.{0}";
+            public const string EnemyDesc = "EnemyDesc.{0}";
 
             public const string Message_InitCardMaxCount = "Message.InitCardMaxCount";
             public const string Message_InitCardCount = "Message.InitCardCount";

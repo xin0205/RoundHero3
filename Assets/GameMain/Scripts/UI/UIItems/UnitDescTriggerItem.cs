@@ -20,6 +20,9 @@ namespace RoundHero
             isOpen = true;
             var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.UnitDescForm, UnitDescFormData);
             unitDescForm = formAsync.Logic as UnitDescForm;
+            
+            
+            
         }
 
         public void OnPointerExit()

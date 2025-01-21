@@ -62,7 +62,7 @@ namespace RoundHero
         
         public void Back()
         {
-            PVEManager.Instance.Destory();
+            PVEManager.Instance.Exit();
             GamePlayManager.Instance.Back();
             
             

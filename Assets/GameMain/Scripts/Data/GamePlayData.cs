@@ -192,7 +192,7 @@ namespace RoundHero
 
     public class Data_GridItem
     {
-        public int ID;
+        public int Idx;
         public int GridPosIdx;
 
         //public EUnitCamp UnitCamp;
@@ -205,9 +205,9 @@ namespace RoundHero
         }
 
         //, EGridType gridType
-        public Data_GridItem(int id, int gridPosIdx, EUnitCamp unitCamp)
+        public Data_GridItem(int idx, int gridPosIdx, EUnitCamp unitCamp)
         {
-            ID = id;
+            Idx = idx;
             GridPosIdx = gridPosIdx;
             UnitCamp = unitCamp;
             //TargetGridType = gridType;
@@ -216,7 +216,7 @@ namespace RoundHero
         public Data_GridItem Copy()
         {
             var dataGridItem = new Data_GridItem();
-            dataGridItem.ID = ID;
+            dataGridItem.Idx = Idx;
             dataGridItem.GridPosIdx = GridPosIdx;
             dataGridItem.UnitCamp = UnitCamp;
             //dataGridItem.TargetGridType = TargetGridType;
@@ -354,10 +354,10 @@ namespace RoundHero
         public int CacheHPDelta;
 
         //, EGridType.Unit
-        public Data_BattleUnit(int id, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) : base(id, gridPosIdx,
+        public Data_BattleUnit(int idx, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) : base(idx, gridPosIdx,
             unitCamp)
         {
-            ID = id;
+            Idx = idx;
             GridPosIdx = gridPosIdx;
             UnitCamp = unitCamp;
             FuneIdxs = funeIdxs;
@@ -371,7 +371,7 @@ namespace RoundHero
         public new Data_BattleUnit Copy()
         {
             var dataBattleUnit = new Data_BattleUnit();
-            dataBattleUnit.ID = ID;
+            dataBattleUnit.Idx = Idx;
             dataBattleUnit.GridPosIdx = GridPosIdx;
 
             return dataBattleUnit;
@@ -630,8 +630,8 @@ namespace RoundHero
         {
         }
 
-        public Data_BattleHero(int id, EHeroID heroID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) :
-            base(id, gridPosIdx, unitCamp, funeIdxs)
+        public Data_BattleHero(int idx, EHeroID heroID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) :
+            base(idx, gridPosIdx, unitCamp, funeIdxs)
         {
             var drHero = GameEntry.DataTable.GetHero(heroID);
             
@@ -655,7 +655,7 @@ namespace RoundHero
         public new Data_BattleHero Copy()
         {
             var dataBattleHero = new Data_BattleHero();
-            dataBattleHero.ID = ID;
+            dataBattleHero.Idx = Idx;
             dataBattleHero.BaseDamage = BaseDamage;
             dataBattleHero.HeroID = HeroID;
             dataBattleHero.GridPosIdx = GridPosIdx;
@@ -783,8 +783,8 @@ namespace RoundHero
 
         }
 
-        public Data_BattleSolider(int id, int cardIdx, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIdxs) : base(
-            id, gridPosIdx, unitCamp, funeIdxs)
+        public Data_BattleSolider(int idx, int cardIdx, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIdxs) : base(
+            idx, gridPosIdx, unitCamp, funeIdxs)
         {
             CardIdx = cardIdx;
             Energy = energy;
@@ -801,7 +801,7 @@ namespace RoundHero
         public new Data_BattleSolider Copy()
         {
             var dataBattleUnit = new Data_BattleSolider();
-            dataBattleUnit.ID = ID;
+            dataBattleUnit.Idx = Idx;
             dataBattleUnit.BaseDamage = BaseDamage;
             dataBattleUnit.CardIdx = CardIdx;
             dataBattleUnit.GridPosIdx = GridPosIdx;
@@ -904,8 +904,8 @@ namespace RoundHero
         {
         }
 
-        public Data_BattleMonster(int id, int monsterID, int gridPosIdx, EUnitCamp unitCamp,
-            List<int> funeIdxs) : base(id, gridPosIdx, unitCamp, funeIdxs)
+        public Data_BattleMonster(int idx, int monsterID, int gridPosIdx, EUnitCamp unitCamp,
+            List<int> funeIdxs) : base(idx, gridPosIdx, unitCamp, funeIdxs)
         {
             MonsterID = monsterID;
             //EnemyTypeID = enemyTypeID;
@@ -925,7 +925,7 @@ namespace RoundHero
         public new Data_BattleMonster Copy()
         {
             var dataBattleEnemy = new Data_BattleMonster();
-            dataBattleEnemy.ID = ID;
+            dataBattleEnemy.Idx = Idx;
             dataBattleEnemy.BaseDamage = BaseDamage;
             dataBattleEnemy.MonsterID = MonsterID;
             //dataBattleEnemy.EnemyTypeID = EnemyTypeID;
@@ -990,7 +990,7 @@ namespace RoundHero
             
         }
         
-        public Data_GridProp(int gridPropID, int id, int gridPosIdx, EUnitCamp unitCamp) : base(id, gridPosIdx, unitCamp)
+        public Data_GridProp(int gridPropID, int idx, int gridPosIdx, EUnitCamp unitCamp) : base(idx, gridPosIdx, unitCamp)
         {
             GridPropID = gridPropID;
         }
@@ -999,7 +999,7 @@ namespace RoundHero
         {
             var dataGridProp = new Data_GridProp();
             dataGridProp.GridPropID = GridPropID;
-            dataGridProp.ID = ID;
+            dataGridProp.Idx = Idx;
             dataGridProp.GridPosIdx = GridPosIdx;
             dataGridProp.UnitCamp = UnitCamp;
             //dataGridProp.TargetGridType = TargetGridType;
@@ -1019,7 +1019,7 @@ namespace RoundHero
             
         }
 
-        public Data_GridPropLink(int gridPropID, ELinkID linkID, int id, int gridPosIdx) : base(gridPropID, id,
+        public Data_GridPropLink(int gridPropID, ELinkID linkID, int idx, int gridPosIdx) : base(gridPropID, idx,
             gridPosIdx, EUnitCamp.Third)
 
         {
@@ -1031,7 +1031,7 @@ namespace RoundHero
             var dataGridProp = new Data_GridPropLink();
             dataGridProp.GridPropID = GridPropID;
 
-            dataGridProp.ID = ID;
+            dataGridProp.Idx = Idx;
             dataGridProp.GridPosIdx = GridPosIdx;
             dataGridProp.UnitCamp = UnitCamp;
             dataGridProp.LinkID = LinkID;
@@ -1049,7 +1049,7 @@ namespace RoundHero
             
         }
 
-        public Data_GridPropMoveDirect(int gridPropID, ERelativePos direct, int id, int gridPosIdx, EUnitCamp unitCamp) : base(gridPropID, id,
+        public Data_GridPropMoveDirect(int gridPropID, ERelativePos direct, int idx, int gridPosIdx, EUnitCamp unitCamp) : base(gridPropID, idx,
             gridPosIdx, unitCamp)
 
         {
@@ -1063,7 +1063,7 @@ namespace RoundHero
             dataGridProp.Direct = Direct;
             dataGridProp.UseInRound = UseInRound;
 
-            dataGridProp.ID = ID;
+            dataGridProp.Idx = Idx;
             dataGridProp.GridPosIdx = GridPosIdx;
             dataGridProp.UnitCamp = UnitCamp;
             //dataGridProp.TargetGridType = TargetGridType;
@@ -1430,7 +1430,6 @@ namespace RoundHero
                 data.MapStageDataDict.Add(kv.Key, kv.Value.Copy());
             }
             data.CurMapStageIdx = CurMapStageIdx.Copy();
-
             return data;
         }
 
@@ -1549,7 +1548,7 @@ namespace RoundHero
         
         public int BlessCount(EBlessID blessID, EUnitCamp unitCamp)
         {
-            if (PlayerDataCampDict.ContainsKey(unitCamp))
+            if (!PlayerDataCampDict.ContainsKey(unitCamp))
                 return 0;
             
             return PlayerDataCampDict[unitCamp].BlessCount(blessID);
@@ -1557,7 +1556,7 @@ namespace RoundHero
         
         public Data_Bless GetUsefulBless(EBlessID blessID, EUnitCamp unitCamp)
         {
-            if (PlayerDataCampDict.ContainsKey(unitCamp))
+            if (!PlayerDataCampDict.ContainsKey(unitCamp))
                 return null;
             
             return PlayerDataCampDict[unitCamp].GetUsefulBless(blessID);
@@ -1653,12 +1652,24 @@ namespace RoundHero
             RoundBuffs.Clear();
             
         }
+
+        public void Clear()
+        {
+            StandByCards.Clear();
+            PassCards.Clear();
+            HandCards.Clear();
+            ConsumeCards.Clear();
+            RoundUseCardCount = 0;
+            LastRoundUseCardCount = 0;
+            RoundIsAttack = false;
+            RoundBuffs.Clear();
+        }
     }
 
     public class Data_Battle
     {
         public int Round;
-        public int UnitID;
+        public int UnitIdx;
         public EEnemyType EnemyType;
         public Dictionary<EUnitCamp, Data_BattlePlayer> BattlePlayerDatas = new ();
 
@@ -1677,7 +1688,11 @@ namespace RoundHero
         public void Clear()
         {
             Round = 0;
-            BattlePlayerDatas.Clear();
+            foreach (var kv in BattlePlayerDatas)
+            {
+                kv.Value.Clear();
+            }
+            
             BattleUnitDatas.Clear();
             GridPropDatas.Clear();
             GridTypes.Clear();

@@ -239,8 +239,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameText: {fileID: 3087448478627235881}
-  descText: {fileID: 249413308861101741}
-  powerText: {fileID: 7432763925126234076}
+  descText: {fileID: 7432763925126234076}
+  powerText: {fileID: 249413308861101741}
 --- !u!1 &4711860682257340264
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ namespace RoundHero
     public class BattleAttackTagEntityData : EntityData
     {
         //public int Value;
+        public Vector3 StartPos;
         public Vector3 TargetPos;
         public int EntityIdx;
         public EAttackTagType AttackTagType;
@@ -19,10 +20,11 @@ namespace RoundHero
 
 
         //int value, 
-        public void Init(int entityId, Vector3 pos, Vector3 targetPos, EAttackTagType attackTagType,
+        public void Init(int entityId, Vector3 pos, Vector3 startPos, Vector3 targetPos, EAttackTagType attackTagType,
             EUnitState unitState, int entityIdx = -1)
         {
             base.Init(entityId, pos);
+            this.StartPos = startPos;
             this.TargetPos = targetPos;
             //this.Value = value;
             this.EntityIdx = entityIdx;

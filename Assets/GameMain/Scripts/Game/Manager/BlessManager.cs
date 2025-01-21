@@ -84,13 +84,13 @@ namespace RoundHero
                 actionData.ActionDataType = EActionDataType.Bless;
                 BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas.Add(unUseCardAddHeroHP.Idx, actionData);
                 
-                var triggerBlessData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1, playerData.BattleHero.ID,
+                var triggerBlessData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1, playerData.BattleHero.Idx,
                     EUnitAttribute.HP, 1, ETriggerDataSubType.Bless);
                 
-                actionData.AddTriggerData(playerData.BattleHero.ID, triggerBlessData, playerData.BattleHero);
+                actionData.AddTriggerData(playerData.BattleHero.Idx, triggerBlessData, playerData.BattleHero);
                 BattleBuffManager.Instance.CacheTriggerData(triggerBlessData,
                     BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.Idx]
-                        .TriggerDatas[playerData.BattleHero.ID]);
+                        .TriggerDatas[playerData.BattleHero.Idx]);
 
             }
         }

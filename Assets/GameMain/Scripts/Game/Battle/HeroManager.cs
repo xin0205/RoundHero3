@@ -43,7 +43,7 @@ namespace RoundHero
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
             //HeroEntities.Clear();
-            BattleUnitManager.Instance.BattleUnitDatas.Add(HeroManager.Instance.BattleHeroData.ID, HeroManager.Instance.BattleHeroData);
+            BattleUnitManager.Instance.BattleUnitDatas.Add(HeroManager.Instance.BattleHeroData.Idx, HeroManager.Instance.BattleHeroData);
             
             //id = 0;
         }
@@ -65,7 +65,7 @@ namespace RoundHero
 
         public void InitHeroData(EHeroID heroID)
         {
-            BattleHeroData = new Data_BattleHero(BattleUnitManager.Instance.GetID(),
+            BattleHeroData = new Data_BattleHero(BattleUnitManager.Instance.GetIdx(),
                 heroID, 0, BattleManager.Instance.CurUnitCamp, new List<int>());
             BattleHeroData.UnitRole = EUnitRole.Hero;
             
@@ -87,7 +87,7 @@ namespace RoundHero
                 BattleAreaManager.Instance.MoveGrids.Add(heroEntity.BattleHeroEntityData.Id, moveGrid);
             }
             
-            BattleUnitManager.Instance.BattleUnitEntities.Add(heroEntity.BattleHeroEntityData.BattleHeroData.ID, heroEntity);
+            BattleUnitManager.Instance.BattleUnitEntities.Add(heroEntity.BattleHeroEntityData.BattleHeroData.Idx, heroEntity);
             //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
             HeroEntities.Add(BattleManager.Instance.CurUnitCamp, heroEntity);
         }
@@ -136,7 +136,7 @@ namespace RoundHero
 
         public bool IsHero(int unitID)
         {
-            var unit = BattleUnitManager.Instance.GetUnitByID(unitID);
+            var unit = BattleUnitManager.Instance.GetUnitByIdx(unitID);
             if (unit == null)
                 return false;
 
@@ -148,7 +148,7 @@ namespace RoundHero
             if (playerData.BattleHero == null)
                 return false;
 
-            return playerData.BattleHero.ID == unitID;
+            return playerData.BattleHero.Idx == unitID;
         }
         
         public List<float> GetHeroBuffValues()

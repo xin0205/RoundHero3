@@ -155,6 +155,7 @@ MonoBehaviour:
   animator: {fileID: 4525250011595830683}
   leftWeapon: {fileID: 4173331263707445510}
   rightWeapon: {fileID: 8682693444565856127}
+  Root: {fileID: 0}
   EffectHurtPos: {fileID: 937558399482192451}
   EffectAttackPos: {fileID: 958389280808196585}
   ShootPos: {fileID: 5418341277573921378}
@@ -260,10 +261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77b2aa0ec3944bafba21c6a5d17c5918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitDescFormData:
-    UnitRole: 1
+  UnitDescFormData:
+    UnitRole: 0
     UnitCamp: 0
-    UnitID: 0
+    Idx: 0
 --- !u!1 &4663356532679191230
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,18 +465,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3523285037464269076}
     m_Modifications:
-    - target: {fileID: 3481462899000137147, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_Text
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3481462899000137147, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_Color.rgba
-      value: 4281743045
-      objectReference: {fileID: 0}
-    - target: {fileID: 3481462899000137147, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_CharacterSize
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 5613525845362263443, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -559,34 +548,6 @@ PrefabInstance:
     - target: {fileID: 5956643790703324612, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
       propertyPath: m_Name
       value: UnitUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 6663148033602993298, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.0005
-      objectReference: {fileID: 0}
-    - target: {fileID: 6663148033602993298, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.0005
-      objectReference: {fileID: 0}
-    - target: {fileID: 6663148033602993298, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.0005
-      objectReference: {fileID: 0}
-    - target: {fileID: 6663148033602993298, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0.297
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561068820784853581, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_Text
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561068820784853581, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_Color.rgba
-      value: 4281743045
-      objectReference: {fileID: 0}
-    - target: {fileID: 8561068820784853581, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-      propertyPath: m_CharacterSize
-      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

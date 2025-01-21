@@ -80,16 +80,16 @@ namespace RoundHero
 
             var randomIdx = Random.Next(0, units.Count);
             var effectUnit = units[randomIdx];
-            RecordRandonUnitID(curseID, effectUnit.ID);
+            RecordRandonUnitID(curseID, effectUnit.Idx);
                 
             effectUnit.ChangeState(unitState);
                 
-            actionData.AddEmptyTriggerDataList(effectUnit.ID);
-            var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[effectUnit.ID], -1, -1,
-                effectUnit.ID, unitState, 1, ETriggerDataType.Curse);
+            actionData.AddEmptyTriggerDataList(effectUnit.Idx);
+            var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[effectUnit.Idx], -1, -1,
+                effectUnit.Idx, unitState, 1, ETriggerDataType.Curse);
                 
                 
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[effectUnit.ID]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[effectUnit.Idx]);
         }
 
         public void CacheRandomUnitUnRecover(Data_GamePlay gamePlayData)
@@ -160,7 +160,7 @@ namespace RoundHero
                 
                 var randomIdx = Random.Next(0, units.Count);
                 randomUnit = units[randomIdx];
-                BattleCurseData.RandomUnitIDs.Add(ECurseID.RandomUnitClearDebuff, randomUnit.ID);
+                BattleCurseData.RandomUnitIDs.Add(ECurseID.RandomUnitClearDebuff, randomUnit.Idx);
                 
                 
             }
@@ -181,11 +181,11 @@ namespace RoundHero
                 {
                     if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(unitState))
                     {
-                        actionData.AddEmptyTriggerDataList(randomUnit.ID);
-                        var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[randomUnit.ID], -1, -1, randomUnit.ID,
+                        actionData.AddEmptyTriggerDataList(randomUnit.Idx);
+                        var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[randomUnit.Idx], -1, -1, randomUnit.Idx,
                             unitState, -1, ETriggerDataType.RoleState);
                         
-                        BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[randomUnit.ID]);
+                        BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[randomUnit.Idx]);
                     }
                 }
             }
@@ -268,7 +268,7 @@ namespace RoundHero
                     continue;
 
                 var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
-                    unit.ID, EUnitAttribute.HP, -1, ETriggerDataSubType.Curse);
+                    unit.Idx, EUnitAttribute.HP, -1, ETriggerDataSubType.Curse);
                 
                 BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
                 
@@ -313,8 +313,8 @@ namespace RoundHero
                     return unit1.CurHP - unit2.CurHP;
                 });
                 
-                var triggerData = BattleFightManager.Instance.BattleRoleAttribute(units[0].ID, units[0].ID,
-                    units[0].ID, EUnitAttribute.HP, oldHP - curHP, ETriggerDataSubType.Curse);
+                var triggerData = BattleFightManager.Instance.BattleRoleAttribute(units[0].Idx, units[0].Idx,
+                    units[0].Idx, EUnitAttribute.HP, oldHP - curHP, ETriggerDataSubType.Curse);
                 
                 triggerDatas.Add(triggerData);
             }

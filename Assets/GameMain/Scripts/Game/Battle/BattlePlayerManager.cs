@@ -7,6 +7,8 @@ namespace RoundHero
         public Data_BattlePlayer BattlePlayerData;
         public Data_Player PlayerData;
         
+        
+        
         public void SetCurPlayer()
         {
             BattlePlayerData = GamePlayManager.Instance.GamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);

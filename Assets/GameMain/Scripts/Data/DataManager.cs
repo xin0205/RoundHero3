@@ -10,19 +10,19 @@ namespace RoundHero
         
         public DataManager()
         {
-            // var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
-            //
-            // if (hasSetting)
-            // {
-            //     DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
-            // }
-            // else
-            // {
-            //     DataGame = new Data_Game();
-            // }
+            var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
             
-            GameEntry.Setting.RemoveAllSettings();
-            DataGame = new Data_Game();
+            if (hasSetting)
+            {
+                DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
+            }
+            else
+            {
+                DataGame = new Data_Game();
+            }
+            
+            // GameEntry.Setting.RemoveAllSettings();
+            // DataGame = new Data_Game();
             
         }
         

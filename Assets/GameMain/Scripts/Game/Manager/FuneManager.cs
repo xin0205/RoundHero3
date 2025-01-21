@@ -219,7 +219,7 @@ namespace RoundHero
         {
             var unit = BattleFightManager.Instance.GetUnitByID(actionUnitID);
             var triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
-                BattleFightManager.Instance.PlayerData.BattleHero.ID, EUnitAttribute.HP, unit.MaxHP - unit.CurHP, ETriggerDataSubType.Unit);
+                BattleFightManager.Instance.PlayerData.BattleHero.Idx, EUnitAttribute.HP, unit.MaxHP - unit.CurHP, ETriggerDataSubType.Unit);
             triggerDatas.Add(triggerData);
                 
             BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
@@ -231,7 +231,7 @@ namespace RoundHero
             var drFune = FuneManager.Instance.GetBuffTable(funeID);
 
             var triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitID, actionUnitID,
-                BattleFightManager.Instance.PlayerData.BattleHero.ID, EHeroAttribute.Coin, BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]));
+                BattleFightManager.Instance.PlayerData.BattleHero.Idx, EHeroAttribute.Coin, BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]));
             triggerDatas.Add(triggerData);
                 
             BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);

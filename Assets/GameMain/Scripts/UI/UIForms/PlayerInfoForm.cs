@@ -79,7 +79,7 @@ namespace RoundHero
             coinText.text = BattlePlayerManager.Instance.PlayerData.Coin.ToString();
             hpText.text = BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" + BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
             var battleHeroData = BattlePlayerManager.Instance.PlayerData.BattleHero;
-            heroIcon.sprite = await AssetUtility.GetHeroIcon(battleHeroData.ID);
+            heroIcon.sprite = await AssetUtility.GetHeroIcon(battleHeroData.Idx);
             
             for (int i = 0; i < heroHPs.Count; i++)
             {
@@ -123,7 +123,7 @@ namespace RoundHero
         public void HPTipsInfo(InfoFormParams infoFormParams)
         {
             infoFormParams.Name = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.HeroName,
-                HeroManager.Instance.BattleHeroData.ID));
+                HeroManager.Instance.BattleHeroData.Idx));
             infoFormParams.Desc = Utility.Text.Format(infoFormParams.Desc,
                 HeroManager.Instance.BattleHeroData.CurHeart + "/" +
                 HeroManager.Instance.BattleHeroData.MaxHeart,
@@ -131,7 +131,7 @@ namespace RoundHero
                 HeroManager.Instance.BattleHeroData.MaxHP);
             
             infoFormParams.Desc += "\n" + GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.HeroDesc,
-                HeroManager.Instance.BattleHeroData.ID));
+                HeroManager.Instance.BattleHeroData.Idx));
         }
     }
 }

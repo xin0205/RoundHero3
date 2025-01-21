@@ -293,11 +293,11 @@ namespace RoundHero
             if (unit.CurHP <= 0 && 
                 unit.UnitCamp == EUnitCamp.Enemy &&
                 BattleCurseManager.Instance.CurseIDs.Contains(ECurseID.AllUnitDodgeSubHeartDamage) &&
-                BattleCurseManager.Instance.GetAllUnitDodgeSubHeartDamageValue(gamePlayData, unit.ID) > 0 && 
+                BattleCurseManager.Instance.GetAllUnitDodgeSubHeartDamageValue(gamePlayData, unit.Idx) > 0 && 
                 !GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData, EBuffID.Spec_CurseUnEffect))
   
             {
-                gamePlayData.EnemyData.BattleCurseData.AllUnitDodgeSubHeartDamage_Dict[unit.ID] -= 1;
+                gamePlayData.EnemyData.BattleCurseData.AllUnitDodgeSubHeartDamage_Dict[unit.Idx] -= 1;
                 unit.CurHP = oldHP;
             }
 

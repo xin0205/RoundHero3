@@ -134,7 +134,7 @@ namespace RoundHero
         public void UseMoveActionData(MoveUnitData moveUnitData)
         {
             
-            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByID(moveUnitData.UnitID);
+            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(moveUnitData.UnitID);
 
             if (moveUnitData.UnitActionState == EUnitActionState.Fly)
             {
@@ -157,10 +157,10 @@ namespace RoundHero
 
             foreach (var kv in TriggerActionDatas[actionUnitID])
             {
-                var effectUnit = BattleUnitManager.Instance.GetUnitByID(kv.Key);
+                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
                 
-                UseTriggerData(actionUnitID, effectUnit.ID);
-                UseMoveActionData(actionUnitID, effectUnit.ID);
+                UseTriggerData(actionUnitID, effectUnit.Idx);
+                UseMoveActionData(actionUnitID, effectUnit.Idx);
             }
             TriggerActionDatas[actionUnitID].Clear();
             BattleManager.Instance.RefreshView();

@@ -639,7 +639,7 @@ namespace RoundHero
 
             if (unitID != -1)
             {
-                var unitEntity = BattleUnitManager.Instance.GetUnitByID(unitID);
+                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitID);
                 switch (card.CardUseType)
                 {
                     case ECardUseType.Raw:

@@ -38,7 +38,7 @@ namespace RoundHero
             {
                 var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(0, 3,  places[enemyIdxs[i]], EUnitCamp.Third, new List<int>());
                 
-                BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ID, battleEnemyEntity);
+                BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx, battleEnemyEntity);
                 RefreshEntities();
                 
                 if (battleEnemyEntity is IMoveGrid moveGrid)

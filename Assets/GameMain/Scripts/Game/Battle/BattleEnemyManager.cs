@@ -140,7 +140,7 @@ namespace RoundHero
                 var randomEnemyType = 0;//Random.Next(0, 3);
                 var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(0, randomEnemyType,  places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
 
-                BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ID);
+                BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx);
                 
                 var enemyGenerateAddDebuff = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EnemyGenerateAddDebuff, BattleManager.Instance.CurUnitCamp);
                 if (enemyGenerateAddDebuff != null )
@@ -150,7 +150,7 @@ namespace RoundHero
                     battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ChangeState(randomDeBuff);
                 }
                 
-                BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ID, battleEnemyEntity);
+                BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx, battleEnemyEntity);
                 //RefreshEnemyEntities();
                 
                 if (battleEnemyEntity is IMoveGrid moveGrid)

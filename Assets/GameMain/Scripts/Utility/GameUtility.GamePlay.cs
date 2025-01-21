@@ -337,7 +337,7 @@ namespace RoundHero
             
             var unit = isBattleData
                 ? BattleFightManager.Instance.GetUnitByID(unitID)
-                : BattleUnitManager.Instance.GetUnitByID(unitID)?.BattleUnit;
+                : BattleUnitManager.Instance.GetUnitByIdx(unitID)?.BattleUnit;
 
             // if (unit != null)
             // {
@@ -371,7 +371,7 @@ namespace RoundHero
             foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
             {
                 
-                if (kv.Value.ID == unitID)
+                if (kv.Value.Idx == unitID)
                 {
                     return kv.Value;
                 }
@@ -945,7 +945,7 @@ namespace RoundHero
             var isOblique = ActionTypeMaps[attackType].Contains("Direct8");
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionGridPosIdx);
-            var heroUnitData = GameUtility.GetUnitDataByID(HeroManager.Instance.BattleHeroData.ID, isBattleData);
+            var heroUnitData = GameUtility.GetUnitDataByID(HeroManager.Instance.BattleHeroData.Idx, isBattleData);
             var heroCoord = GameUtility.GridPosIdxToCoord(heroUnitData.GridPosIdx);
     
             if (!isExtendActionType)
@@ -1408,15 +1408,21 @@ namespace RoundHero
             deltaCoord.y = deltaCoord.y < 0 ? -1 : deltaCoord.y > 0 ? 1 : 0;
 
             var moveCoord = startCoord;
-            
+
+            var idx = 0;
             while (true)
             {
+                
                 moveCoord += deltaCoord;
                 moveIdxs.Add(GameUtility.GridCoordToPosIdx(moveCoord));
                 if (moveCoord == endCoord)
                 {
                     break;
                 }
+
+                if (idx > 10)
+                    break;
+                idx++;
             }
 
             return moveIdxs;
