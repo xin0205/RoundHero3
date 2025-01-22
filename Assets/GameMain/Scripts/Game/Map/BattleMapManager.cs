@@ -184,6 +184,8 @@ namespace RoundHero
                 //GameEntry.UI.OpenUIForm(UIFormId.MapStageRouteSelectForm);
                 GameEntry.Event.Fire(null, RefreshMapStageEventArgs.Create());
             }
+            
+            DataManager.Instance.Save();
         }
 
     }

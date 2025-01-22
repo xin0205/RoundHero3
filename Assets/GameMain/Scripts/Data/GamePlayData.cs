@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CatJson;
 using JetBrains.Annotations;
 
 namespace RoundHero
@@ -1389,14 +1390,21 @@ namespace RoundHero
         
     }
     
+    
     public class MapStageIdx
     {
         public int MapIdx;
         public int StageIdx;
         //public int RouteIdx;
+        
         public int StepIdx = -1;
         public bool IsSelectRoute = false;
         //public int RadomSeed;
+
+        public MapStageIdx()
+        {
+            
+        }
 
         public MapStageIdx Copy()
         {
@@ -1421,6 +1429,11 @@ namespace RoundHero
         public Dictionary<int, Data_MapStage> MapStageDataDict = new ();
         public MapStageIdx CurMapStageIdx = new MapStageIdx();
 
+        public Data_Map()
+        {
+            
+        }
+        
 
         public Data_Map Copy()
         {

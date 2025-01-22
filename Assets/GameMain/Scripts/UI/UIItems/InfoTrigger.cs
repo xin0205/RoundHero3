@@ -8,6 +8,8 @@ namespace RoundHero
         [SerializeField] private string name;
         [SerializeField] private string desc;
         
+        [SerializeField] private Vector2 infoDelta = new Vector2(1f, 1f);
+        
         private bool isShowInfo = false;
         
         private InfoForm infoForm;
@@ -32,7 +34,7 @@ namespace RoundHero
             {
                 Name = string.IsNullOrEmpty(name) ? "" : GameEntry.Localization.GetString(name),
                 Desc = string.IsNullOrEmpty(desc) ? "" : GameEntry.Localization.GetString(desc),
-                Position = this.transform.position + new Vector3(0.5f, -0.5f, 0),
+                Position = this.transform.position + (Vector3)infoDelta,
             };
             
             if (infoParams != null)

@@ -17,7 +17,7 @@ namespace RoundHero
     public class GIFFormData
     {
         public GIFPlayData GifPlayData;
-
+        
     }
     
     public class GIFForm : UGuiForm
@@ -25,6 +25,8 @@ namespace RoundHero
         private GIFFormData gifFormData;
 
         [SerializeField] private GIFPlayItem gifPlayItem;
+        
+        [SerializeField] private Transform battleLeftTransform;
         
         protected override void OnOpen(object userData)
         {
@@ -35,35 +37,43 @@ namespace RoundHero
 
             Vector3 mousePosition = Input.mousePosition;
             
-            var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
-            var delta = 2f;
-            if (mousePosition.x < Screen.width / 2)
+            if (gifFormData.GifPlayData.ShowPosition == EShowPosition.MousePosition)
             {
-                gifPos.x += delta;
-                if (mousePosition.y < Screen.height / 2)
+                var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
+                var delta = 2f;
+                if (mousePosition.x < Screen.width / 2)
                 {
-                    gifPos.y += delta;
+                    gifPos.x += delta;
+                    if (mousePosition.y < Screen.height / 2)
+                    {
+                        gifPos.y += delta;
+                    }
+                    else
+                    {
+                        gifPos.y -= delta;
+                    }
                 }
                 else
                 {
-                    gifPos.y -= delta;
+                    gifPos.x -= delta;
+                    if (mousePosition.y < Screen.height / 2)
+                    {
+                        gifPos.y += delta;
+                    }
+                    else
+                    {
+                        gifPos.y -= delta;
+                    }
                 }
+            
+            
+                gifPlayItem.transform.position = gifPos;
             }
-            else
+            else if (gifFormData.GifPlayData.ShowPosition == EShowPosition.BattleLeft)
             {
-                gifPos.x -= delta;
-                if (mousePosition.y < Screen.height / 2)
-                {
-                    gifPos.y += delta;
-                }
-                else
-                {
-                    gifPos.y -= delta;
-                }
+                gifPlayItem.transform.position = battleLeftTransform.position;
             }
             
-            
-            gifPlayItem.transform.position = gifPos;
         }
     }
 }

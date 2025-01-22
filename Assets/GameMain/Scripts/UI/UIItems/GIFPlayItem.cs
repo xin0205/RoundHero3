@@ -9,8 +9,8 @@ namespace RoundHero
     public class GIFPlayData
     {
         public EGIFType ItemType;
-        [FormerlySerializedAs("Idx")] public int ID;
-
+        public int ID;
+        public EShowPosition ShowPosition = EShowPosition.MousePosition;
     }
     
     public class GIFPlayItem : MonoBehaviour
@@ -24,7 +24,11 @@ namespace RoundHero
         {
             this.gifPlayData = gifPlayData;
             var gifStr = gifPlayData.ItemType.ToString() + "_" + gifPlayData.ID.ToString();
-            gifPlayer.Gif = gifAssets.GifAssetDict[gifStr];
+            if (gifAssets.GifAssetDict.ContainsKey(gifStr))
+            {
+                gifPlayer.Gif = gifAssets.GifAssetDict[gifStr];
+            }
+            
         }
     }
 }

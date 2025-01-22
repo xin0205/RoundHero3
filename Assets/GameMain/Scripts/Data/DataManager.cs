@@ -11,7 +11,7 @@ namespace RoundHero
         public DataManager()
         {
             var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
-            
+             
             if (hasSetting)
             {
                 DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
@@ -66,7 +66,7 @@ namespace RoundHero
 
         }
         
-        public void Save()
+        public void Save()       
         {
             GameEntry.Setting.SetObject(Constant.Game.GameDataKey, DataGame);
             GameEntry.Setting.Save();

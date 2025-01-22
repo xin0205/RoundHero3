@@ -53,6 +53,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   desc: Tips.HP
+  infoDelta: {x: 1, y: 1}
+  infoParams:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!222 &8618597277754634572
 CanvasRenderer:
   m_ObjectHideFlags: 0

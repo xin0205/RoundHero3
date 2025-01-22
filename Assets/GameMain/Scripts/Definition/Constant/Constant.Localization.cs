@@ -58,7 +58,13 @@ namespace RoundHero
             public const string Message_ConfirmUnCopyCard = "Message.ConfirmUnChangeCard";
             public const string Message_ConfirmUnRemoveCard = "Message.ConfirmUnChangeCard";
             public const string Message_ConfirmSubHeart = "Message.ConfirmSubHeart";
-
+            
+            public const string Info_StandByCardName = "Info.StandByCardName";
+            public const string Info_StandByCardDesc = "Info.StandByCardDesc";
+            public const string Info_PassCardName = "Info.PassCardName";
+            public const string Info_PassCardDesc = "Info.PassCardDesc";
+            public const string Info_ConsumeCardName = "Info.ConsumeCardName";
+            public const string Info_ConsumeCardDesc = "Info.ConsumeCardDesc";
         }
     }
 }

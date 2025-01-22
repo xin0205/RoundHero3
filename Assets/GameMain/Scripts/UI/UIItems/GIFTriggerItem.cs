@@ -4,10 +4,16 @@ using UnityEngine;
 
 namespace RoundHero
 {
+    public enum EShowPosition
+    {
+        BattleLeft,
+        MousePosition,
+    }
+    
     public class GIFTriggerItem : MonoBehaviour
     {
         [SerializeField]
-        private GIFFormData gifFormData;
+        public GIFFormData GifFormData;
 
         private GIFForm gifForm;
         
@@ -19,7 +25,7 @@ namespace RoundHero
                 return;
 
             isOpen = true;
-            var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.GIFForm, gifFormData);
+            var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.GIFForm, GifFormData);
             gifForm = formAsync.Logic as GIFForm;
         }
 

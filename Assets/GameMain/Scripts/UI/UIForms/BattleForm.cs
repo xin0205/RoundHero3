@@ -256,5 +256,26 @@ namespace RoundHero
             BattleMapManager.Instance.NextStep();
             
         }
+        
+        public void StandByCardTipsInfo(InfoFormParams infoFormParams)
+        {
+            infoFormParams.Name = GameEntry.Localization.GetString(Constant.Localization.Info_StandByCardName);
+            infoFormParams.Desc = GameEntry.Localization.GetString(Constant.Localization.Info_StandByCardDesc);
+            
+        }
+        
+        public void PassCardTipsInfo(InfoFormParams infoFormParams)
+        {
+            infoFormParams.Name = GameEntry.Localization.GetString(Constant.Localization.Info_PassCardName);
+            infoFormParams.Desc = GameEntry.Localization.GetString(Constant.Localization.Info_PassCardDesc);
+            
+        }
+        
+        public void ConsumeCardTipsInfo(InfoFormParams infoFormParams)
+        {
+            infoFormParams.Name = GameEntry.Localization.GetString(Constant.Localization.Info_ConsumeCardName);
+            infoFormParams.Desc = GameEntry.Localization.GetString(Constant.Localization.Info_ConsumeCardDesc);
+            
+        }
     }
 }

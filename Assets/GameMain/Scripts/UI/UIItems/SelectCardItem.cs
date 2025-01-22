@@ -1,8 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-
 
 namespace RoundHero
 {
@@ -15,6 +12,8 @@ namespace RoundHero
         [SerializeField] private GameObject useTag;
         [SerializeField] private GameObject unUseTag;
         [SerializeField] private GameObject tag;
+
+        [SerializeField] private GIFTriggerItem gifTriggerItem;
 
         private bool isUse;
         
@@ -42,6 +41,9 @@ namespace RoundHero
                 this.useTag.SetActive(false);
                 tag.SetActive(false);
             }
+            
+            gifTriggerItem.GifFormData.GifPlayData.ItemType = EGIFType.Solider;
+            gifTriggerItem.GifFormData.GifPlayData.ID = cardID;
         }
         
         

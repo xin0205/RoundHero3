@@ -1,4 +1,5 @@
 ﻿
+using CatJson;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -43,9 +44,41 @@ namespace RoundHero
             GameEntry.Entity.HideEntity(procedureStart.StartEntity);
             GameEntry.UI.CloseUIForm(this);
         }
+
+        [JsonCareDefaultValue]
+        public class testD
+        {
+            public int a = -1;
+
+            public testD()
+            {
+                
+            }
+        }
         
         public void StartGame()
         {
+            // var testD = new testD();
+            //
+            // GameEntry.Setting.SetObject("a", testD);
+            // GameEntry.Setting.Save();
+            // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
+            //
+            // testD.a = 0;
+            // GameEntry.Setting.SetObject("a", testD);
+            // GameEntry.Setting.Save();
+            // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
+            //
+            // testD.a = 1;
+            // GameEntry.Setting.SetObject("a", testD);
+            // GameEntry.Setting.Save();
+            // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
+            //
+            // // testD.a = -2;
+            // // GameEntry.Setting.SetObject("a", testD);
+            // // GameEntry.Setting.Save();
+            // // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
+            
             CloseForm();
             procedureStart.StartSelect();
         }

@@ -23,11 +23,11 @@ namespace CatJson
             {
                 object fieldValue = item.Value.GetValue(value);
 
-                if (IsJump(parser, realType,fieldValue))
-                {
-                    //跳过默认值序列化
-                    continue;
-                }
+                // if (IsJump(parser, realType,fieldValue))
+                // {
+                //     //跳过默认值序列化
+                //     continue;
+                // }
                 
                 AppendMember(parser, item.Value.FieldType,item.Key,fieldValue,depth);
                 needRemoveLastComma = true;
@@ -38,11 +38,11 @@ namespace CatJson
             {
                 object propValue = item.Value.GetValue(value);
                 
-                if (IsJump(parser, realType,propValue))
-                {
-                    //跳过默认值序列化
-                    continue;
-                }
+                // if (IsJump(parser, realType,propValue))
+                // {
+                //     //跳过默认值序列化
+                //     continue;
+                // }
 
                 AppendMember(parser, item.Value.PropertyType,item.Key,propValue,depth);
                 needRemoveLastComma = true;

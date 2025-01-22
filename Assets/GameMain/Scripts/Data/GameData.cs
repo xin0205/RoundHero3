@@ -1,8 +1,10 @@
 ﻿
 using System.Collections.Generic;
+using CatJson;
 
 namespace RoundHero
 {
+    [JsonCareDefaultValue]
     public class Data_User
     {
         public string UserID;
@@ -39,6 +41,7 @@ namespace RoundHero
             GamePlayDatas[CurFileIdx] = CurGamePlayData;
         }
     }
+    
     
     public class Data_Game
     {
