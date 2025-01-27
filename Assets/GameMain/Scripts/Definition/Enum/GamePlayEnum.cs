@@ -185,15 +185,23 @@ namespace RoundHero
     {
         Self,
         Other,
-        Around,//周围
+        
+        //Around,//周围
        
+        Direct82Short,
         Cross2Short,//短十字
         Cross2Long,//长十字
         Cross2Extend,//十字_发射
         UnitMaxDirect,
+        Horizontal2Short,
+        Horizontal2Long,
+        Horizontal2Extend,
+        Vertical2Short,
+        Vertical2Long,
+        Vertical2Extend,
 
         HeroDirect,
-        Direct8,//8方向
+        Direct82Long,//8方向
         Direct82Extend,
         Row,
         Column,
@@ -203,7 +211,7 @@ namespace RoundHero
         Direct8_Long_Empty,
 
         Empty,
-        
+        Direct8,
         Null,
         //HeroDirect_Extend,
         //HeroDirect,
@@ -211,13 +219,13 @@ namespace RoundHero
         //X_Short,//短X
         //X_Long,//长X
         //Direct8_Extend,//8方向发射
-        Direct_Extend,
+        //Direct_Extend,
         //Parabola,//抛物线
-        UnitMaxCrossExtend,
-        UnitMaxAround,
-        Select,
+        //UnitMaxCrossExtend,
+        //UnitMaxAround,
+        //Select,
         //UnitMaxXExtend,
-        LessCurHPUnit,
+        //LessCurHPUnit,
     }
 
     public enum EActionTarget

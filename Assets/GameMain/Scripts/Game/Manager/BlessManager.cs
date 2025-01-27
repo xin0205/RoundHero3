@@ -87,7 +87,8 @@ namespace RoundHero
                 var triggerBlessData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1, playerData.BattleHero.Idx,
                     EUnitAttribute.HP, 1, ETriggerDataSubType.Bless);
                 
-                actionData.AddTriggerData(playerData.BattleHero.Idx, triggerBlessData, playerData.BattleHero);
+                actionData.AddEmptyTriggerDataList(playerData.BattleHero.Idx);
+                //actionData.AddTriggerData(playerData.BattleHero.Idx, triggerBlessData, playerData.BattleHero);
                 BattleBuffManager.Instance.CacheTriggerData(triggerBlessData,
                     BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.Idx]
                         .TriggerDatas[playerData.BattleHero.Idx]);

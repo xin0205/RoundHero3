@@ -75,16 +75,20 @@ namespace RoundHero
             while (OpenList.Count != 0)
             {
                 //找出F值最小的点
-                var tempStart = OpenList.MinPoint();
+                var tempStart = MinPoint(ref OpenList);
                 OpenList.RemoveAt(0);
                 CloseList.Add(tempStart);
                 //找出它相邻的点
-                var surroundPoints = SurrroundPoints(tempStart);
+                var surroundPoints = SurroundPoints(tempStart);
                 foreach (Point point in surroundPoints)
                 {
                     if (OpenList.Exists(point))
+                    {
+                        var point2 = OpenList.Get(point);
                         //计算G值, 如果比原来的大, 就什么都不做, 否则设置它的父节点为当前点,并更新G和F
-                        FoundPoint(tempStart, point);
+                        FoundPoint(tempStart, point2);
+                    }
+                        
                     else
                         //如果它们不在开始列表里, 就加入, 并设置父节点,并计算GHF
                         NotFoundPoint(tempStart, end, point);
@@ -93,7 +97,7 @@ namespace RoundHero
                 var endPoint = OpenList.Get(end);
                 if (endPoint != null && WheelCount(endPoint) == 0)
                 {
-                    endPoint.H = OBSTACLE;
+                    //endPoint.H = OBSTACLE;
                     endPoint.CalcF();
                 }
                 
@@ -143,7 +147,7 @@ namespace RoundHero
         private void NotFoundPoint(Point tempStart, Point end, Point point)
         {
             point.ParentPoint = tempStart;
-            point.G = CalcG(tempStart, point);
+            point.G = CalcG(tempStart, point);                    
             point.H = CalcH(end, point);
             point.CalcF();
             OpenList.Add(point);
@@ -182,7 +186,7 @@ namespace RoundHero
         }
 
         //获取某个点周围可以到达的点
-        public List<Point> SurrroundPoints(Point point)
+        public List<Point> SurroundPoints(Point point)
         {
             var surroundPoints = new List<Point>(9);
 
@@ -205,6 +209,7 @@ namespace RoundHero
         //在二维数组对应的位置不为障碍物
         private bool CanPass(int x, int y)
         {
+            //  ||(x == EndCoord.x && y == EndCoord.y)
             return MazeArray[x, y] == EPointType.Empty || MazeArray[x, y] == EPointType.Pass;
         }
         
@@ -230,6 +235,13 @@ namespace RoundHero
                         return IsIgnoreCorner;
                 }
             }
+        }
+        
+        public static Point MinPoint(ref List<Point> points)
+        {
+            points = points.OrderBy(p => p.F).ToList();
+            return points[0];
+            
         }
     }
 
@@ -279,11 +291,7 @@ namespace RoundHero
             return false;
         }
 
-        public static Point MinPoint(this List<Point> points)
-        {
-            points = points.OrderBy(p => p.F).ToList();
-            return points[0];
-        }
+        
 
         public static void Add(this List<Point> points, int x, int y)
         {

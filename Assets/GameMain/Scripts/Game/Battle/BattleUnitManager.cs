@@ -145,7 +145,7 @@ namespace RoundHero
                     if(unitRole != null && unit.UnitRole != unitRole)
                         continue;
                     
-                    if(unit.Idx == exceptUnitID)
+                    if(unit.UnitIdx == exceptUnitID)
                         continue;
                 }
                 
@@ -253,7 +253,7 @@ namespace RoundHero
             
             foreach (var kv in BattleUnitEntities)
             {
-                if (kv.Value.Idx == id)
+                if (kv.Value.UnitIdx == id)
                 {
                     return kv.Value;
                 }
@@ -268,7 +268,7 @@ namespace RoundHero
         {
             var unit = GetUnitByGridPosIdx(gridPosIdx, selfUnitCamp, unitCamp, unitRole);
             if(unit != null) 
-                return unit.Idx;
+                return unit.UnitIdx;
 
             return -1;
         }

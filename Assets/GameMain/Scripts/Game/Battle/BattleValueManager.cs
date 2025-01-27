@@ -39,7 +39,7 @@ namespace RoundHero
             var triggerDatas = BattleFightManager.Instance.GetAttackData(unitID);
             foreach (var triggerData in triggerDatas)
             {
-                var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitID);
+                var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
 
                 if (unit != null)
                 {
@@ -63,8 +63,8 @@ namespace RoundHero
 
         private async void ShowValues(TriggerData triggerData, int entityIdx)
         {
-            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitID);
-            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitID);
+            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
             var value = (int)(triggerData.Value + triggerData.DeltaValue);
             
             Entity entity;

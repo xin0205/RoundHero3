@@ -212,7 +212,7 @@ namespace RoundHero
                     var cardData = BattleManager.Instance.GetCard(cardID);
                     var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardID);
                     
-                    var aroundHeroRange = GameUtility.GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Around, EUnitCamp.Player1);
+                    var aroundHeroRange = GameUtility.GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Direct82Short, EUnitCamp.Player1);
 
                     if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.SubUnitCardEnergy)
                     {
@@ -408,12 +408,12 @@ namespace RoundHero
                             }   
                             else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                             {
-                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.Idx, ne.GridPosIdx);
+                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.UnitIdx, ne.GridPosIdx);
                                 ShowBackupGrids(attackRanges);
                             }
                             else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                             {
-                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.Idx, ne.GridPosIdx);
+                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.UnitIdx, ne.GridPosIdx);
                                 ShowBackupGrids(attackRanges);
                             }
                     
@@ -1665,7 +1665,7 @@ namespace RoundHero
                             
                             BattleManager.Instance.Refresh();
                             BattleFightManager.Instance.SoliderAutoAttack();
-                            BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.Idx);
+                            BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.UnitIdx);
                             
                             ShowBackupGrids(null);
                             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
@@ -1676,13 +1676,13 @@ namespace RoundHero
                         else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                         {
                             BattleManager.Instance.BattleState = EBattleState.SelectHurtUnit;
-                            var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.Idx, ne.GridPosIdx);
+                            var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.UnitIdx, ne.GridPosIdx);
                             ShowBackupGrids(attackRanges);
                         }
                         else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                         {
                             BattleManager.Instance.BattleState = EBattleState.SelectHurtUnit;
-                            var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.Idx, ne.GridPosIdx);
+                            var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.UnitIdx, ne.GridPosIdx);
                             ShowBackupGrids(attackRanges);
                         }
                     
@@ -1777,7 +1777,7 @@ namespace RoundHero
                     var unit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
                         .Idx);
 
-                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.Idx];
+                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx];
 
                     var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
                     unit.Run(moveActionData);
@@ -1806,7 +1806,7 @@ namespace RoundHero
                     var unit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
                         .Idx);
                     
-                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.Idx];
+                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx];
                     
 
                     var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);

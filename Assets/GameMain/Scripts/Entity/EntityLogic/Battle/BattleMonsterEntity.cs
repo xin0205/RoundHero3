@@ -68,19 +68,35 @@ namespace RoundHero
 
         public void OnPointerEnter()
         {
-            var movePaths = BattleFightManager.Instance.GetMovePaths(Idx);
-            Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
-            BattleValueManager.Instance.ShowDisplayValue(Idx);
-            BattleAttackTagManager.Instance.ShowAttackTag(Idx,
-                GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]));
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+                
+            var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
+            if (movePaths != null && movePaths.Count > 0)
+            {
+                Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
+                BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx,
+                    GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]));
+            }
+            
+            BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
+            
         }
         
         public void OnPointerExit()
         {
-            var movePaths = BattleFightManager.Instance.GetMovePaths(Idx);
-            Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+            
+            var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
+            if (movePaths != null && movePaths.Count > 0)
+            {
+                Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
+                BattleAttackTagManager.Instance.UnShowAttackTags();
+            }
+            
             BattleValueManager.Instance.UnShowDisplayValues();
-            BattleAttackTagManager.Instance.UnShowAttackTags();
+            
         }
     }
 }

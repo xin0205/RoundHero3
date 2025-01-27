@@ -465,7 +465,7 @@ namespace RoundHero
                 var maxIdx = 0;
                 var idx = 0;
                 
-                var direct8RangeNest = GameUtility.GetRangeNest(gridPosIdx, EActionType.Direct8, false);
+                var direct8RangeNest = GameUtility.GetRangeNest(gridPosIdx, EActionType.Direct82Long, false);
                 
                 foreach (var list in direct8RangeNest)
                 {

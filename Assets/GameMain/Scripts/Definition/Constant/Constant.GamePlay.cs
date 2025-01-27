@@ -57,7 +57,7 @@ namespace RoundHero
                 new ()
                 {
                     [EUnitStateEffectType.Positive] = new()
-                    {
+                    {       
                         EUnitState.DeBuffUnEffect,
                         //EUnitState.Dodge,
                         EUnitState.AtkPassEnemy,
@@ -105,7 +105,6 @@ namespace RoundHero
             public static Dictionary<EActionType, List<List<Vector2Int>>> ActionTypePoints =
                 new()
                 {
-                    
                     [EActionType.Self] = new List<List<Vector2Int>>()
                     {
                         new List<Vector2Int>()
@@ -385,7 +384,7 @@ namespace RoundHero
                     //     },
                     // },
                 
-                    [EActionType.Around] = new List<List<Vector2Int>>()
+                    [EActionType.Direct82Short] = new List<List<Vector2Int>>()
                     {
                         new List<Vector2Int>()
                         {
@@ -404,7 +403,7 @@ namespace RoundHero
                         },
                     },
                     
-                    [EActionType.Direct8] = new List<List<Vector2Int>>()
+                    [EActionType.Direct82Long] = new List<List<Vector2Int>>()
                     {
                         new List<Vector2Int>()
                         {
@@ -800,9 +799,7 @@ namespace RoundHero
                     // },
                     
                     [EActionType.Empty] = new List<List<Vector2Int>>()
-                    {
-
-                    },
+                    {},
                     
                     [EActionType.Row] = new List<List<Vector2Int>>()
                     {
@@ -832,6 +829,157 @@ namespace RoundHero
                         },
                     },
                     
+                    [EActionType.Horizontal2Short] = new List<List<Vector2Int>>()
+                    {
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 0),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(1, 0),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 0),
+                        },
+                    },
+                    
+                    [EActionType.Horizontal2Long] = new List<List<Vector2Int>>()
+                    {
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 0),
+                            
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(1, 0),
+                            new Vector2Int(2, 0),
+                            new Vector2Int(3, 0),
+                            new Vector2Int(4, 0),
+                            new Vector2Int(5, 0),
+                            new Vector2Int(6, 0),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 0),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
+                        },
+                    },
+                    
+                    [EActionType.Horizontal2Extend] = new List<List<Vector2Int>>()
+                    {
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 0),
+                            
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(1, 0),
+                            new Vector2Int(2, 0),
+                            new Vector2Int(3, 0),
+                            new Vector2Int(4, 0),
+                            new Vector2Int(5, 0),
+                            new Vector2Int(6, 0),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 0),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
+                        },
+                    },
+                    
+                    [EActionType.Vertical2Short] = new List<List<Vector2Int>>()
+                    {
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 0),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 1),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, -1),
+                        },
+                    },
+                    
+                    [EActionType.Vertical2Long] = new List<List<Vector2Int>>()
+                    {
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 0),
+                            
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 1),
+                            new Vector2Int(0, 2),
+                            new Vector2Int(0, 3),
+                            new Vector2Int(0, 4),
+                            new Vector2Int(0, 5),
+                            new Vector2Int(0, 6),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, -1),
+                            new Vector2Int(0, -2),
+                            new Vector2Int(0, -3),
+                            new Vector2Int(0, -4),
+                            new Vector2Int(0, -5),
+                            new Vector2Int(0, -6),
+                        },
+                    },
+                    
+                    [EActionType.Vertical2Extend] = new List<List<Vector2Int>>()
+                    {
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 0),
+                            
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, 1),
+                            new Vector2Int(0, 2),
+                            new Vector2Int(0, 3),
+                            new Vector2Int(0, 4),
+                            new Vector2Int(0, 5),
+                            new Vector2Int(0, 6),
+                        },
+                        
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, -1),
+                            new Vector2Int(0, -2),
+                            new Vector2Int(0, -3),
+                            new Vector2Int(0, -4),
+                            new Vector2Int(0, -5),
+                            new Vector2Int(0, -6),
+                        },
+                    }
                 };
             
 
@@ -1040,9 +1188,9 @@ namespace RoundHero
                 {
                     InitBlesses = new List<int>()
                     {
-                        0,
-                        1,
-                        2,
+                        // 0,
+                        // 1,
+                        // 2,
                         3,
                     },
                     

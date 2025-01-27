@@ -55,7 +55,7 @@ namespace RoundHero
             var entityIdx = curEntityIdx;
             foreach (var triggerData in triggerDatas)
             {
-                var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitID);
+                var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
 
                 if (unit != null)
                 {
@@ -67,10 +67,20 @@ namespace RoundHero
 
             foreach (var triggerData in triggerDatas)
             {
-                var actionUnitID = triggerData.ActionUnitID;
-                var effectUnitID = triggerData.EffectUnitID;
-                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(actionUnitID);
-                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitID);
+                var actionUnitIdx = triggerData.ActionUnitIdx;
+                var effectUnitIdx = triggerData.EffectUnitIdx;
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
+                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+
+                var effectUnitGridPosIdx = effectUnit.GridPosIdx;
+                var movePaths = BattleFightManager.Instance.GetMovePaths(effectUnitIdx);
+                if (movePaths != null && movePaths.Count > 0)
+                {
+                    effectUnitGridPosIdx = movePaths[movePaths.Count - 1];
+                }
+
+                var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
+                
 
                 var attackTagType = GameUtility.IsSubCurHPTrigger(triggerData) ? EAttackTagType.Attack :
                     GameUtility.IsAddCurHPTrigger(triggerData) ? EAttackTagType.Recover : EAttackTagType.UnitState;
@@ -78,7 +88,7 @@ namespace RoundHero
                 var unitState = attackTagType == EAttackTagType.UnitState ? triggerData.UnitState : EUnitState.Empty;
 
                 var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnit.Position, attackStartPos,
-                    effectUnit.Position, attackTagType, unitState, entityIdx);
+                    effectUnitPos, attackTagType, unitState, entityIdx);
                 
                 entityIdx++;
                 //battleRouteEntity.SetCurrent(kv.Value.First() == BattleAreaManager.Instance.CurPointGridPosIdx);

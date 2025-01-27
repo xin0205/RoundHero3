@@ -246,14 +246,14 @@ namespace RoundHero
 
         public void CacheTriggerData(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
-            var actionUnit = GameUtility.GetUnitDataByID(triggerData.ActionUnitID);
+            var actionUnit = GameUtility.GetUnitDataByID(triggerData.ActionUnitIdx);
             
             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                 triggerData.Value + triggerData.DeltaValue < 0)
             {
                 triggerData.Value += actionUnit == null ? 0 : actionUnit.BaseDamage;
 
-                var effectUnit = GameUtility.GetUnitDataByID(triggerData.EffectUnitID);
+                var effectUnit = GameUtility.GetUnitDataByID(triggerData.EffectUnitIdx);
                 //effectUnit.GetAllStateCount(EUnitState.Dodge) <= 0 || 
                 if (effectUnit.GetAllStateCount(EUnitState.UnHurt) <= 0)
                 {
@@ -261,7 +261,7 @@ namespace RoundHero
                     if (Math.Abs(triggerData.Value + triggerData.DeltaValue) >= effectUnit.CurHP)
                     {
                         FuneManager.Instance.CacheUnitKillData(triggerData.OwnUnitID,
-                            triggerData.ActionUnitID, triggerData.EffectUnitID, triggerDatas);
+                            triggerData.ActionUnitIdx, triggerData.EffectUnitIdx, triggerDatas);
                     }
                     //CacheHurtTriggerDatas(triggerData, triggerDatas);
                 }
@@ -295,13 +295,13 @@ namespace RoundHero
                 triggerData.Value + triggerData.DeltaValue < 0))
                 return;
             
-            var actionUnit = BattleFightManager.Instance.GetUnitByID(triggerData.ActionUnitID);
+            var actionUnit = BattleFightManager.Instance.GetUnitByID(triggerData.ActionUnitIdx);
             if(actionUnit == null || actionUnit.CurHP <= 0)
                 return;
             
             BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, actionUnit, triggerData, triggerDatas, EBuffTriggerType.Attack);
             BattleGridPropManager.Instance.AttackTrigger(actionUnit.GridPosIdx, triggerData, triggerDatas);
-            BattleFightManager.Instance.TriggerUnitData(actionUnit.Idx, triggerData.EffectUnitID, actionUnit.GridPosIdx,
+            BattleFightManager.Instance.TriggerUnitData(actionUnit.Idx, triggerData.EffectUnitIdx, actionUnit.GridPosIdx,
                 EBuffTriggerType.Attack, triggerDatas);
         }
         
@@ -312,7 +312,7 @@ namespace RoundHero
                   triggerData.Value + triggerData.DeltaValue < 0))
                 return;
             
-            var effectUnit = BattleFightManager.Instance.GetUnitByID(triggerData.EffectUnitID);
+            var effectUnit = BattleFightManager.Instance.GetUnitByID(triggerData.EffectUnitIdx);
             // || effectUnit.CurHP <= 0
             if(effectUnit == null)
                 return;
@@ -336,7 +336,7 @@ namespace RoundHero
 
             BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, effectUnit, triggerData, triggerDatas, EBuffTriggerType.Hurt);
   
-            BattleFightManager.Instance.TriggerUnitData(effectUnit.Idx, triggerData.ActionUnitID, effectUnit.GridPosIdx, EBuffTriggerType.Hurt, triggerDatas);
+            BattleFightManager.Instance.TriggerUnitData(effectUnit.Idx, triggerData.ActionUnitIdx, effectUnit.GridPosIdx, EBuffTriggerType.Hurt, triggerDatas);
         }
         
         public void BuffsTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit, TriggerData triggerData, List<TriggerData> triggerDatas, EBuffTriggerType buffTriggerType)
@@ -443,7 +443,7 @@ namespace RoundHero
                 
                 if (kv.Value.BuffCount(EBuffID.Spec_UnPlaceEnemyUnit.ToString()) > 0)
                 {
-                    var range = GameUtility.GetRange(kv.Value.GridPosIdx, EActionType.Around);
+                    var range = GameUtility.GetRange(kv.Value.GridPosIdx, EActionType.Direct82Short);
                     posIdxs.AddRange(range);
                 }
                 else
@@ -709,7 +709,8 @@ namespace RoundHero
             
             switch (buffData.BuffTriggerType)
             {
-                case EBuffTriggerType.ActionEnd:
+                case EBuffTriggerType.
+                    ActionEnd:
                     BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.BePass:

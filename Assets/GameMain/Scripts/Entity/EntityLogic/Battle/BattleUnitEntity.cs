@@ -55,7 +55,7 @@ namespace RoundHero
             set => BattleUnitData.GridPosIdx = value;
         }
         
-        public int Idx
+        public int UnitIdx
         {
             get => BattleUnitData.Idx; 
             set => BattleUnitData.Idx = value;
@@ -620,7 +620,7 @@ namespace RoundHero
                 foreach (var triggerActionData in kv.Value)
                 {
                     
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitID);
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitIdx);
                     
                     if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
                         triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
@@ -645,7 +645,7 @@ namespace RoundHero
                 foreach (var triggerActionData in kv.Value)
                 {
                     
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitID);
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitIdx);
                     
                     if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
                         triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
@@ -961,7 +961,7 @@ namespace RoundHero
 
         public void RefreshDamageState()
         {
-            var hurt = BattleFightManager.Instance.GetTotalDelta(this.Idx, EHeroAttribute.CurHP);
+            var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
             this.damage.text = hurt.ToString();
         }
         

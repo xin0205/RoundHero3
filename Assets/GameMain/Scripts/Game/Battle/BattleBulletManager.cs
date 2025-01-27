@@ -24,9 +24,9 @@ namespace RoundHero
             //effectUnit.ActionUnitID = triggerData.ActionUnitID;
 
             
-            if (!TriggerActionDatas.ContainsKey(triggerData.ActionUnitID))
+            if (!TriggerActionDatas.ContainsKey(triggerData.ActionUnitIdx))
             {
-                TriggerActionDatas.Add(triggerData.ActionUnitID, new GameFrameworkMultiDictionary<int, TriggerActionData>());
+                TriggerActionDatas.Add(triggerData.ActionUnitIdx, new GameFrameworkMultiDictionary<int, TriggerActionData>());
             } 
             
             
@@ -41,7 +41,7 @@ namespace RoundHero
             
             var triggerActionData = new TriggerActionData();
             triggerActionData.TriggerData = triggerData.Copy();
-            TriggerActionDatas[triggerData.ActionUnitID].Add(triggerData.EffectUnitID, triggerActionData);
+            TriggerActionDatas[triggerData.ActionUnitIdx].Add(triggerData.EffectUnitIdx, triggerActionData);
         }
         
         public void AddMoveActionData(int actionUnitID, MoveData moveData)
@@ -159,8 +159,8 @@ namespace RoundHero
             {
                 var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
                 
-                UseTriggerData(actionUnitID, effectUnit.Idx);
-                UseMoveActionData(actionUnitID, effectUnit.Idx);
+                UseTriggerData(actionUnitID, effectUnit.UnitIdx);
+                UseMoveActionData(actionUnitID, effectUnit.UnitIdx);
             }
             TriggerActionDatas[actionUnitID].Clear();
             BattleManager.Instance.RefreshView();

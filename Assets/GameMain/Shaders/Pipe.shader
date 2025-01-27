@@ -12,7 +12,7 @@ Shader "Custom/Dynamic Route"
     }
     SubShader
     {
-        Tags { "Queue" = "AlphatTest" "IgnoreProjector" = "True" "RenderType"="TransparentCutout" }
+        Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType"="TransparentCutout" }
         LOD 100
         Cull Off
 //        Pass

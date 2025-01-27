@@ -180,7 +180,7 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.Idx,
+                EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
             };
@@ -196,7 +196,7 @@ namespace RoundHero
                     triggerData = new TriggerData()
                     {
                         TriggerDataType = ETriggerDataType.RoleAttribute,
-                        EffectUnitID = kv.Value.Idx,
+                        EffectUnitIdx = kv.Value.Idx,
                         BattleUnitAttribute = EUnitAttribute.HP,
                         Value = value2,
 
@@ -222,7 +222,7 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.Idx,
+                EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
             };
@@ -241,7 +241,7 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.Idx,
+                EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
             };
@@ -267,7 +267,7 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleAttribute,
-                    EffectUnitID = kv.Value.Idx,
+                    EffectUnitIdx = kv.Value.Idx,
                     BattleUnitAttribute = EUnitAttribute.HP,
                     Value = value,
                 };
@@ -295,7 +295,7 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleAttribute,
-                    EffectUnitID = kv.Value.Idx,
+                    EffectUnitIdx = kv.Value.Idx,
                     BattleUnitAttribute = EUnitAttribute.HP,
                     Value = value,
                 };
@@ -321,7 +321,7 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.Idx,
+                    EffectUnitIdx = kv.Value.Idx,
                     UnitState = EUnitState.AddDmg,
                     Value = value1s[0],
                 };
@@ -383,7 +383,7 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.Idx,
+                    EffectUnitIdx = kv.Value.Idx,
                     UnitState = EUnitState.HurtAddDmg,
                     Value = value1s[1],
                 };
@@ -410,7 +410,7 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.Idx,
+                    EffectUnitIdx = kv.Value.Idx,
                     UnitState = EUnitState.SubDmg,
                     Value = value1s[1],
                 };
@@ -430,7 +430,7 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoleAttribute,
-                EffectUnitID = effectUnit.Idx,
+                EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
                 ChangeHPInstantly = true,
@@ -454,7 +454,7 @@ namespace RoundHero
                     var triggerData = new TriggerData()
                     {
                         TriggerDataType = ETriggerDataType.RoleState,
-                        EffectUnitID = effectUnit.Idx,
+                        EffectUnitIdx = effectUnit.Idx,
                         UnitState = state,
                         Value = -effectUnit.UnitState.UnitStates[state],
                     };
@@ -485,7 +485,7 @@ namespace RoundHero
             {
                 TriggerDataType = ETriggerDataType.RemoveUnit,
                 BattleUnitAttribute = EUnitAttribute.HP,
-                EffectUnitID = effectUnit.Idx,
+                EffectUnitIdx = effectUnit.Idx,
                 Value = -effectUnit.CurHP,
             };
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
@@ -507,7 +507,7 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.Idx,
+                    EffectUnitIdx = kv.Value.Idx,
                     UnitState = state2,
                     Value = value1s[0],
                 };
@@ -522,7 +522,7 @@ namespace RoundHero
             var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
             var battleHero = BattleFightManager.Instance.RoundFightData.GamePlayData.GetPlayerData(unitCamp).BattleHero;
-            var aroundHeroRange = GameUtility.GetRange(battleHero.GridPosIdx, EActionType.Around, unitCamp,
+            var aroundHeroRange = GameUtility.GetRange(battleHero.GridPosIdx, EActionType.Direct82Short, unitCamp,
                 new List<ERelativeCamp>()
                 {
                     ERelativeCamp.Enemy
@@ -541,7 +541,7 @@ namespace RoundHero
                 var triggerData = new TriggerData()
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
-                    EffectUnitID = kv.Value.Idx,
+                    EffectUnitIdx = kv.Value.Idx,
                     UnitState = EUnitState.UnMove,
                     Value = 1,
                 };
@@ -560,13 +560,13 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.RoundBuff,
-                EffectUnitID = battleHero.Idx,
+                EffectUnitIdx = battleHero.Idx,
                 BuffID = buffID,
                 Value = 1,
             };
                 
-            useCardData.AddEmptyTriggerDataList(triggerData.EffectUnitID);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[triggerData.EffectUnitID]);
+            useCardData.AddEmptyTriggerDataList(triggerData.EffectUnitIdx);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[triggerData.EffectUnitIdx]);
         }
         
         // private void AddStates(int buffID, Data_BattleUnit effectUnit, List<float> value1s)
@@ -632,7 +632,7 @@ namespace RoundHero
             var triggerData = new TriggerData()
             {
                 TriggerDataType = ETriggerDataType.Link,
-                EffectUnitID = effectUnit.Idx,
+                EffectUnitIdx = effectUnit.Idx,
                 LinkID = linkID,
             };
             

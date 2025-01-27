@@ -37,24 +37,6 @@ namespace RoundHero
         }
 
         /// <summary>
-        /// 获取AttackTargets。
-        /// </summary>
-        public List<EAttackTarget> AttackTargets
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取AttackType。
-        /// </summary>
-        public EEnemyAttackType AttackType
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取移动类型。
         /// </summary>
         public EActionType MoveType
@@ -162,6 +144,24 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取AttackTargets。
+        /// </summary>
+        public List<EAttackTarget> AttackTargets
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取AttackType。
+        /// </summary>
+        public EEnemyAttackType AttackType
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -174,8 +174,6 @@ namespace RoundHero
             index++;
             m_Id = int.Parse(columnStrings[index++]);
             index++;
-			AttackTargets = DataTableExtension.ParseEAttackTargetList(columnStrings[index++]);
-			AttackType = Enum.Parse<EEnemyAttackType>(columnStrings[index++]);
 			MoveType = Enum.Parse<EActionType>(columnStrings[index++]);
             HP = int.Parse(columnStrings[index++]);
 			OwnBuffs = DataTableExtension.ParseStringList(columnStrings[index++]);
@@ -188,6 +186,8 @@ namespace RoundHero
 			WeaponType = Enum.Parse<EWeaponType>(columnStrings[index++]);
             WeaponID = int.Parse(columnStrings[index++]);
 			AttackCastType = Enum.Parse<EAttackCastType>(columnStrings[index++]);
+			AttackTargets = DataTableExtension.ParseEAttackTargetList(columnStrings[index++]);
+			AttackType = Enum.Parse<EEnemyAttackType>(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -200,8 +200,6 @@ namespace RoundHero
                 using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.UTF8))
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
-					AttackTargets = binaryReader.ReadEAttackTargetList();
-                    AttackType = Enum.Parse<EEnemyAttackType>(binaryReader.ReadString());
                     MoveType = Enum.Parse<EActionType>(binaryReader.ReadString());
                     HP = binaryReader.Read7BitEncodedInt32();
 					OwnBuffs = binaryReader.ReadStringList();
@@ -214,6 +212,8 @@ namespace RoundHero
                     WeaponType = Enum.Parse<EWeaponType>(binaryReader.ReadString());
                     WeaponID = binaryReader.Read7BitEncodedInt32();
                     AttackCastType = Enum.Parse<EAttackCastType>(binaryReader.ReadString());
+					AttackTargets = binaryReader.ReadEAttackTargetList();
+                    AttackType = Enum.Parse<EEnemyAttackType>(binaryReader.ReadString());
                 }
             }
 
