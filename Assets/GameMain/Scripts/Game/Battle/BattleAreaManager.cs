@@ -48,6 +48,7 @@ namespace RoundHero
             GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Subscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
             GameEntry.Event.Subscribe(ClickGridEventArgs.EventId, OnClickGrid);
+            GameEntry.Event.Subscribe(SelectGridEventArgs.EventId, OnSelectGrid);
 
             BattleManager.Instance.BattleData.GridTypes.Clear();
             for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
@@ -80,7 +81,7 @@ namespace RoundHero
                 var gridEntity = await GameEntry.Entity.ShowGridEntityAsync(i,
                     obstacleIdxs.Contains(i) ? EGridType.Obstacle : EGridType.Empty);
 
-                GridEntities.Add(gridEntity.BattleGridEntityData.Id, gridEntity);
+                GridEntities.Add(gridEntity.BattleGridEntityData.GridPosIdx, gridEntity);
 
                 if (gridEntity is IMoveGrid moveGrid)
                 {
@@ -95,6 +96,7 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
             GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
             GameEntry.Event.Unsubscribe(ClickGridEventArgs.EventId, OnClickGrid);
+            GameEntry.Event.Unsubscribe(SelectGridEventArgs.EventId, OnSelectGrid);
             MoveGrids.Clear();
             foreach (var kv in GridEntities)
             {
@@ -1498,6 +1500,15 @@ namespace RoundHero
             TempExchangeGridData.GridPosIdx2 = -1;
             ShowBackupGrids(null);
             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
+        }
+
+        public void OnSelectGrid(object sender, GameEventArgs e)
+        {
+            var ne = e as SelectGridEventArgs;
+            if(GridEntities.ContainsKey(ne.GridPosIdx))
+            {
+                GridEntities[ne.GridPosIdx].ShowSelectGrid(ne.IsSelect);
+            }
         }
 
         public async void OnClickGrid(object sender, GameEventArgs e)

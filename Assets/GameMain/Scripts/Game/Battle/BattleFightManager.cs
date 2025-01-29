@@ -1341,6 +1341,11 @@ namespace RoundHero
             var attackRange = GameUtility.GetRange(enemyData.GridPosIdx, buffData.TriggerRange, EUnitCamp.Enemy,
                 buffData.TriggerUnitCamps, true);
 
+            if (!attackRange.Contains(RoundFightData.GamePlayData.PlayerData.BattleHero.GridPosIdx))
+            {
+                return;
+            }
+
             if (attackRange.Count > 0)
             {
                 BattleUnitManager.Instance.GetBuffValue(RoundFightData.GamePlayData, enemyData,
@@ -1360,77 +1365,77 @@ namespace RoundHero
 
         }
 
-        private void CacheEnemyAttackDatas()
-        {
-
-            foreach (var kv in BattleUnitDatas)
-            {
-                if (kv.Value.UnitCamp != EUnitCamp.Enemy)
-                    continue;
-
-                if (kv.Value.CurHP <= 0)
-                    continue;
-
-
-                if (!RoundFightData.EnemyMovePaths.ContainsKey(kv.Key) ||
-                    RoundFightData.EnemyMovePaths[kv.Key] == null || RoundFightData.EnemyMovePaths[kv.Key].Count <= 0)
-                    continue;
-
-                kv.Value.GridPosIdx =
-                    RoundFightData.EnemyMovePaths[kv.Key][RoundFightData.EnemyMovePaths[kv.Key].Count - 1];
-
-            }
-
-            CacheLinks();
-
-            foreach (var kv in BattleUnitDatas)
-            {
-                if (kv.Value.UnitCamp != EUnitCamp.Enemy)
-                    continue;
-
-                var enemyData = kv.Value as Data_BattleMonster;
-                if (enemyData == null)
-                    continue;
-
-                if (kv.Value.CurHP <= 0)
-                    continue;
-
-                //kv.Value.GetAllStateCount(EUnitState.UnAction) > 0 ||
-                if ((kv.Value.GetAllStateCount(EUnitState.UnAtk) > 0) &&
-                    !GameUtility.ContainRoundState(RoundFightData.GamePlayData, EBuffID.Spec_CurseUnEffect))
-                    continue;
-
-
-                var actionData = new ActionData();
-                actionData.ActionUnitID = enemyData.Idx;
-
-                RoundFightData.EnemyAttackDatas.Add(enemyData.Idx, actionData);
-                var drEnemy = GameEntry.DataTable.GetEnemy(enemyData.MonsterID);
-                var buffData = BattleBuffManager.Instance.GetBuffData(drEnemy.OwnBuffs[0]);
-                
-                var attackRange = GameUtility.GetRange(enemyData.GridPosIdx, buffData.TriggerRange, EUnitCamp.Enemy,
-                    buffData.TriggerUnitCamps, true);
-
-                if (attackRange.Count > 0)
-                {
-                    BattleUnitManager.Instance.GetBuffValue(RoundFightData.GamePlayData, kv.Value,
-                        out List<BuffValue> triggerBuffDatas);
-                    CacheAttackData(EUnitCamp.Enemy, triggerBuffDatas, kv.Value.GridPosIdx, actionData, enemyData.Idx, EBuffTriggerType.ActionEnd);
-                }
-                else
-                {
-                    BattleUnitManager.Instance.GetSecondaryBuffValue(RoundFightData.GamePlayData, kv.Value,
-                        out List<BuffValue> secondaryTriggerBuffDatas);
-                    CacheAttackData(EUnitCamp.Enemy, secondaryTriggerBuffDatas, kv.Value.GridPosIdx, actionData, enemyData.Idx, EBuffTriggerType.ActionEnd);
-                }
-
-                
-                
-
-                CalculateHeroHPDelta(actionData);
-
-            }
-        }
+        // private void CacheEnemyAttackDatas()
+        // {
+        //
+        //     foreach (var kv in BattleUnitDatas)
+        //     {
+        //         if (kv.Value.UnitCamp != EUnitCamp.Enemy)
+        //             continue;
+        //
+        //         if (kv.Value.CurHP <= 0)
+        //             continue;
+        //
+        //
+        //         if (!RoundFightData.EnemyMovePaths.ContainsKey(kv.Key) ||
+        //             RoundFightData.EnemyMovePaths[kv.Key] == null || RoundFightData.EnemyMovePaths[kv.Key].Count <= 0)
+        //             continue;
+        //
+        //         kv.Value.GridPosIdx =
+        //             RoundFightData.EnemyMovePaths[kv.Key][RoundFightData.EnemyMovePaths[kv.Key].Count - 1];
+        //
+        //     }
+        //
+        //     CacheLinks();
+        //
+        //     foreach (var kv in BattleUnitDatas)
+        //     {
+        //         if (kv.Value.UnitCamp != EUnitCamp.Enemy)
+        //             continue;
+        //
+        //         var enemyData = kv.Value as Data_BattleMonster;
+        //         if (enemyData == null)
+        //             continue;
+        //
+        //         if (kv.Value.CurHP <= 0)
+        //             continue;
+        //
+        //         //kv.Value.GetAllStateCount(EUnitState.UnAction) > 0 ||
+        //         if ((kv.Value.GetAllStateCount(EUnitState.UnAtk) > 0) &&
+        //             !GameUtility.ContainRoundState(RoundFightData.GamePlayData, EBuffID.Spec_CurseUnEffect))
+        //             continue;
+        //
+        //
+        //         var actionData = new ActionData();
+        //         actionData.ActionUnitID = enemyData.Idx;
+        //
+        //         RoundFightData.EnemyAttackDatas.Add(enemyData.Idx, actionData);
+        //         var drEnemy = GameEntry.DataTable.GetEnemy(enemyData.MonsterID);
+        //         var buffData = BattleBuffManager.Instance.GetBuffData(drEnemy.OwnBuffs[0]);
+        //         
+        //         var attackRange = GameUtility.GetRange(enemyData.GridPosIdx, buffData.TriggerRange, EUnitCamp.Enemy,
+        //             buffData.TriggerUnitCamps, true);
+        //
+        //         if (attackRange.Count > 0)
+        //         {
+        //             BattleUnitManager.Instance.GetBuffValue(RoundFightData.GamePlayData, kv.Value,
+        //                 out List<BuffValue> triggerBuffDatas);
+        //             CacheAttackData(EUnitCamp.Enemy, triggerBuffDatas, kv.Value.GridPosIdx, actionData, enemyData.Idx, EBuffTriggerType.ActionEnd);
+        //         }
+        //         else
+        //         {
+        //             BattleUnitManager.Instance.GetSecondaryBuffValue(RoundFightData.GamePlayData, kv.Value,
+        //                 out List<BuffValue> secondaryTriggerBuffDatas);
+        //             CacheAttackData(EUnitCamp.Enemy, secondaryTriggerBuffDatas, kv.Value.GridPosIdx, actionData, enemyData.Idx, EBuffTriggerType.ActionEnd);
+        //         }
+        //
+        //         
+        //         
+        //
+        //         CalculateHeroHPDelta(actionData);
+        //
+        //     }
+        // }
 
 
         private void CacheThirdUnitAttackDatas()
@@ -5053,6 +5058,12 @@ namespace RoundHero
                 {
                     SearchPath(curObstacleMask, actionUnitIdx, battleUnitData.GridPosIdx,
                         playerData.BattleHero.GridPosIdx, movePaths, enemyData.MoveType.ToString().Contains("Direct8"));
+                    if (movePaths.ContainsKey(battleUnitData.Idx) && movePaths[battleUnitData.Idx].Count > 0)
+                    {
+                        curObstacleMask[battleUnitData.GridPosIdx] = EGridType.Empty;
+                        curObstacleMask[movePaths[battleUnitData.Idx][movePaths[battleUnitData.Idx].Count - 1]] = EGridType.Unit;
+                    }
+                    
                 }
 
                 

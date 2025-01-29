@@ -9,6 +9,7 @@ using RPGCharacterAnims;
 using RPGCharacterAnims.Actions;
 using RPGCharacterAnims.Lookups;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityGameFramework.Runtime;
 
@@ -1091,6 +1092,27 @@ namespace RoundHero
         protected async virtual Task ShowBattleHurts(int hurt)
         {
             await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
+        }
+        
+        public virtual void OnPointerEnter(BaseEventData baseEventData)
+        {
+            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, true));
+            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Show)); 
+        }
+        
+        public virtual void OnPointerExit(BaseEventData baseEventData)
+        {
+            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, false));
+            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Unshow)); 
+        }
+        
+        public virtual void OnPointerClick(BaseEventData baseEventData)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                GameEntry.Event.Fire(null, ClickGridEventArgs.Create(BattleUnitData.GridPosIdx)); 
+            }
+            
         }
 
     }

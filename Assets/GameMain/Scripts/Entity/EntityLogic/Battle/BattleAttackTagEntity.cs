@@ -55,7 +55,7 @@ namespace RoundHero
             line.endWidth = 0.02f;
             line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
             line.material.SetColor("_Color", red); 
-            line.material.SetInt("_Speed", 20);
+            line.material.SetInt("_Speed", 50);
         }
 
         private void Update()

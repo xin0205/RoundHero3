@@ -409,6 +409,8 @@ namespace RoundHero
             }
             //retGetRange.Clear();
 
+            
+
             if (actionType == EActionType.All)
             {
                 var units = isBattleData
@@ -498,56 +500,116 @@ namespace RoundHero
                     maxCount = unitCount > maxCount ? unitCount : maxCount;
                     idx++;
                 }
+
+                foreach (var matchGridPosIdx in direct8RangeNest[maxIdx])
+                {
+                    retGetRange.Add(matchGridPosIdx);
+                }
                 
-                rangeList.Add(direct8RangeNest[maxIdx]);
+                //rangeList.Add(direct8RangeNest[maxIdx]);
             }
-            // else if (actionType == EActionType.UnitMaxXExtend)
-            // {
-            //     var maxCount = 0;
-            //     var range = GameUtility.GetRange(gridPosIdx, actionType);
-            //     foreach (var rangeGridPosIdx in range)
-            //     {
-            //         var unit = GetUnitByGridPosIdxMoreCamps(rangeGridPosIdx, isBattleData, selfUnitCamp, unitCamps);
-            //             
-            //         if(unit == null)
-            //             continue;
-            //         
-            //         if(unit.CurHP <= 0)
-            //             continue;
-            //         
-            //         //rangeList.Add();
-            //     }
-            // }
-            // else if (actionType == EActionType.Direct)
-            // {
-            //     
-            //     foreach (var list in direct8RangeNest)
-            //     {
-            //         foreach (var posIdx in list)
-            //         {
-            //             var unit = GetUnitByGridPosIdx(posIdx, isBattleData);
-            //
-            //             if (unit != null && unit.UnitRole == EUnitRole.Hero && heroInRangeTrigger)
-            //             {
-            //                 rangeList.Add(list);
-            //                 break;
-            //             }
-            //         }
-            //     }
+             else if (actionType == EActionType.HeroDirect)
+             {
+                 var idx = 0;
+                 var matchIdx = -1;
+                 
+                 var direct8RangeNest = GameUtility.GetRangeNest(gridPosIdx, EActionType.Direct82Long, false);
+                 
+                 foreach (var list in direct8RangeNest)
+                 {
+                     var unitCount = 0;
+                     foreach (var posIdx in list)
+                     {
+                         var unit = GetUnitByGridPosIdxMoreCamps(posIdx, isBattleData, selfUnitCamp, unitCamps);
+                         
+                         if(unit == null)
+                             continue;
+                         
+                         if(unit.CurHP <= 0)
+                             continue;
+                         
+                         if(unit.UnitRole != EUnitRole.Hero)
+                             continue;
+                         
+                         
+                         //
+                         // if(unitCamps.Contains(ERelativeCamp.Enemy)  && selfUnitCamp == unit.UnitCamp)
+                         //     continue;
+                         
+                         
+                         if(posIdx == gridPosIdx)
+                             continue;
+
+                         if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp ||
+                             unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
+                         {
+                             matchIdx = idx;
+                             break;
+                         }
+
+                         
+                     }
             
-                // foreach (var range in rangeList)
-                // {
-                //     for (int i = range.Count - 1; i >= 0; i--)
-                //     {
-                //         var unit = GetUnitByGridPosIdx(range[i], isBattleData);
-                //
-                //         if (unit == null || unit.CurHP <= 0)
-                //         {
-                //             range.RemoveAt(i);
-                //         }
-                //     }
-                // }
-            //}
+                     if (matchIdx != -1)
+                     {
+                         foreach (var matchGridPosIdx in direct8RangeNest[matchIdx])
+                         {
+                             retGetRange.Add(matchGridPosIdx);
+                         }
+                         break;
+                     }
+                     idx++;
+                 }
+            
+                 
+             }
+            //  else if (actionType == EActionType.UnitMaxXExtend)
+            //  {
+            //      var maxCount = 0;
+            //      var range = GameUtility.GetRange(gridPosIdx, actionType);
+            //      foreach (var rangeGridPosIdx in range)
+            //      {
+            //          var unit = GetUnitByGridPosIdxMoreCamps(rangeGridPosIdx, isBattleData, selfUnitCamp, unitCamps);
+            //              
+            //          if(unit == null)
+            //              continue;
+            //          
+            //          if(unit.CurHP <= 0)
+            //              continue;
+            //          
+            //          //rangeList.Add();
+            //      }
+            //  }
+            //  else if (actionType == EActionType.Direct)
+            //  {
+            //      
+            //      foreach (var list in direct8RangeNest)
+            //      {
+            //          foreach (var posIdx in list)
+            //          {
+            //              var unit = GetUnitByGridPosIdx(posIdx, isBattleData);
+            //
+            //              if (unit != null && unit.UnitRole == EUnitRole.Hero && heroInRangeTrigger)
+            //              {
+            //                  rangeList.Add(list);
+            //                  break;
+            //              }
+            //          }
+            //      }
+            //
+            //      foreach (var range in rangeList)
+            //      {
+            //          for (int i = range.Count - 1; i >= 0; i--)
+            //          {
+            //              var unit = GetUnitByGridPosIdx(range[i], isBattleData);
+            //     
+            //              if (unit == null || unit.CurHP <= 0)
+            //              {
+            //                  range.RemoveAt(i);
+            //              }
+            //          }
+            //      }
+            // }
             else if (actionType == EActionType.Cross_Long_Empty)
             {
                 var gridTypes = isBattleData
@@ -1000,7 +1062,11 @@ namespace RoundHero
         {
             
             GetRange(gridPosIdx, moveType, moveRange, null, null, isBattleData);
-            
+
+            if (attackType == EActionType.HeroDirect)
+            {
+                attackType = EActionType.Direct82Long;
+            }
             GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, attackType, heroHurtRange, null, null,
                 isBattleData);
 

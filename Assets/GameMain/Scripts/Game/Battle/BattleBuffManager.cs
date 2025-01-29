@@ -709,8 +709,7 @@ namespace RoundHero
             
             switch (buffData.BuffTriggerType)
             {
-                case EBuffTriggerType.
-                    ActionEnd:
+                case EBuffTriggerType.ActionEnd:
                     BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.BePass:

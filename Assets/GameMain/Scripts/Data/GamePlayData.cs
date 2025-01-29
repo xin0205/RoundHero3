@@ -1515,7 +1515,8 @@ namespace RoundHero
         public Data_GamePlay Copy()
         {
             var data = new Data_GamePlay();
-            
+
+            data.PlayerData = PlayerData.Copy(); 
             data.AreaData = AreaData.Copy();
             data.BattleData = BattleData.Copy();
             data.LastBattleData = LastBattleData.Copy();

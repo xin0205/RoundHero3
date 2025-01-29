@@ -74,7 +74,7 @@ namespace RoundHero
 
                 var effectUnitGridPosIdx = effectUnit.GridPosIdx;
                 var movePaths = BattleFightManager.Instance.GetMovePaths(effectUnitIdx);
-                if (movePaths != null && movePaths.Count > 0)
+                if (movePaths != null && movePaths.Count > 0 && effectUnit.GridPosIdx < actionUnit.GridPosIdx)
                 {
                     effectUnitGridPosIdx = movePaths[movePaths.Count - 1];
                 }

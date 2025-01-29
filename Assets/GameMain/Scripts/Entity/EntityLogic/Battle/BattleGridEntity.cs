@@ -58,16 +58,20 @@ namespace RoundHero
             backupGrid.SetActive(show);
         }
 
+        public void ShowSelectGrid(bool isShow)
+        {
+            selectionGrid.gameObject.SetActive(isShow);
+        }
         
         public void OnPointerEnter(BaseEventData baseEventData)
         {
-            selectionGrid.gameObject.SetActive(true);
+            ShowSelectGrid(true);
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleGridEntityData.GridPosIdx, EShowState.Show)); 
         }
         
         public void OnPointerExit(BaseEventData baseEventData)
         {
-            selectionGrid.gameObject.SetActive(false);
+            ShowSelectGrid(false);
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleGridEntityData.GridPosIdx, EShowState.Unshow)); 
         }
         

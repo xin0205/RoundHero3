@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -66,8 +67,10 @@ namespace RoundHero
 
 
 
-        public void OnPointerEnter()
+        public override void OnPointerEnter(BaseEventData baseEventData)
         {
+            base.OnPointerEnter(baseEventData);
+            
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
                 
@@ -82,9 +85,11 @@ namespace RoundHero
             BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
             
         }
-        
-        public void OnPointerExit()
+
+        public override void OnPointerExit(BaseEventData baseEventData)
         {
+            base.OnPointerExit(baseEventData);
+            
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
             
