@@ -22,7 +22,7 @@ namespace RoundHero
         public EUnitState UnitState = EUnitState.Empty;
         public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
         public string BuffStr;
-        public List<string> Values;
+        //public List<string> Values;
     }
     // public class BuffTriggerDataContext
     // {

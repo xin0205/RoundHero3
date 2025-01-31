@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
@@ -78,12 +79,59 @@ namespace RoundHero
             if (movePaths != null && movePaths.Count > 0)
             {
                 Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
-                BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx,
-                    GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]));
+                BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx);
+                ShowEffectUnitFly(UnitIdx);
             }
             
             BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
             
+        }
+
+        public void ShowEffectUnitFly(int unitIdx)
+        {
+
+            Dictionary<int, MoveUnitData> moveDataDict = new Dictionary<int, MoveUnitData>();
+            
+            if (BattleFightManager.Instance.RoundFightData.EnemyAttackDatas.ContainsKey(unitIdx))
+            {
+                moveDataDict = BattleFightManager.Instance.RoundFightData.EnemyAttackDatas[unitIdx].MoveData
+                    .MoveUnitDatas;
+            }
+            
+            foreach (var kv in moveDataDict)
+            {
+                var moveGridPosIdx = kv.Value.MoveActionData.MoveGridPosIdxs;
+                
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Value.MoveActionData.ActionUnitIdx);
+                actionUnit.Root.position = GameUtility.GridPosIdxToPos(moveGridPosIdx[moveGridPosIdx.Count - 1]);
+
+            }
+            
+            
+
+        }
+
+        
+        public void UnShowEffectUnitFly(int unitIdx)
+        {
+            Dictionary<int, MoveUnitData> moveDataDict = new Dictionary<int, MoveUnitData>();
+            
+            
+            if (BattleFightManager.Instance.RoundFightData.EnemyAttackDatas.ContainsKey(unitIdx))
+            {
+                moveDataDict = BattleFightManager.Instance.RoundFightData.EnemyAttackDatas[unitIdx].MoveData
+                    .MoveUnitDatas;
+            }
+            
+            foreach (var kv in moveDataDict)
+            {
+                var moveGridPosIdx = kv.Value.MoveActionData.MoveGridPosIdxs;
+                    
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Value.MoveActionData.ActionUnitIdx);
+                actionUnit.Root.position = GameUtility.GridPosIdxToPos(moveGridPosIdx[0]);
+
+            }
+
         }
 
         public override void OnPointerExit(BaseEventData baseEventData)
@@ -98,6 +146,7 @@ namespace RoundHero
             {
                 Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
                 BattleAttackTagManager.Instance.UnShowAttackTags();
+                UnShowEffectUnitFly(UnitIdx);
             }
             
             BattleValueManager.Instance.UnShowDisplayValues();

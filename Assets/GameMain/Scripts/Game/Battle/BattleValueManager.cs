@@ -23,20 +23,20 @@ namespace RoundHero
 
         }
         
-        public void ShowDisplayValue(int unitID)
+        public void ShowDisplayValue(int unitIdx)
         {
             UnShowDisplayValues();
-            ShowDisplayValues(unitID);
+            ShowDisplayValues(unitIdx);
         }
 
-        public async void ShowDisplayValues(int unitID)
+        public async void ShowDisplayValues(int unitIdx)
         {
             //isShowDisplayValue = true;
             
             BattleValueEntities.Clear();
             
             var entityIdx = curEntityIdx;
-            var triggerDatas = BattleFightManager.Instance.GetAttackData(unitID);
+            var triggerDatas = BattleFightManager.Instance.GetAttackDatas(unitIdx);
             foreach (var triggerData in triggerDatas)
             {
                 var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
@@ -51,10 +51,11 @@ namespace RoundHero
             var idx = 0;
             foreach (var triggerData in triggerDatas)
             {
-                GameUtility.DelayExcute(0.25f * idx, () =>
-                {
-                    ShowValues(triggerData, entityIdx);
-                });
+                ShowValues(triggerData, entityIdx);
+                // GameUtility.DelayExcute(0.25f * idx, () =>
+                // {
+                //     ShowValues(triggerData, entityIdx);
+                // });
                 idx++;
 
             }
@@ -71,8 +72,18 @@ namespace RoundHero
             if (effectUnit is BattleSoliderEntity solider)
             {
                 var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnit.UnitCamp);
+                
+                var effectUnitPos = effectUnit.Position;
+                
+                var effectUnitFlyGridPosIdx =
+                    BattleFightManager.Instance.GetFlyEndGridPosIdx(actionUnit.UnitIdx, effectUnit.UnitIdx);
+
+                if (effectUnitFlyGridPosIdx != -1)
+                {
+                    effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitFlyGridPosIdx);
+                }
                         
-                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnit.Position, heroEntity.Position,
+                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, heroEntity.Position,
                     value, entityIdx, true);
                         
                 if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showEntityIdx)
@@ -86,10 +97,19 @@ namespace RoundHero
             }
             else
             {
-                var pos = effectUnit.Position;
-                pos.y += 1f;
+                var effectUnitPos = effectUnit.Position;
+                var effectUnitFlyGridPosIdx =
+                    BattleFightManager.Instance.GetFlyEndGridPosIdx(actionUnit.UnitIdx, effectUnit.UnitIdx);
+
+                if (effectUnitFlyGridPosIdx != -1)
+                {
+                    effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitFlyGridPosIdx);
+                }
+                
+                effectUnitPos.y += 1f;
+                
                 entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(actionUnit.Position,
-                    pos, value, entityIdx);
+                    effectUnitPos, value, entityIdx);
                         
                 if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx < showEntityIdx)
                 {

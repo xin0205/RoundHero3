@@ -399,12 +399,12 @@ namespace RoundHero
         
         public void MultiHandleShoot()
         {
-            var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
-            var triggerRange = buffData[0].TriggerRange;
+            var buffDatas = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
+            var triggerRange = buffDatas[0].TriggerRange;
             var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
-            for (int i = 0; i < Constant.Battle.ActionTypePoints[buffData[0].TriggerRange].Count; i++)
+            for (int i = 0; i < Constant.Battle.ActionTypePoints[buffDatas[0].TriggerRange].Count; i++)
             {
-                var range = Constant.Battle.ActionTypePoints[buffData[0].TriggerRange][i];
+                var range = Constant.Battle.ActionTypePoints[buffDatas[0].TriggerRange][i];
                 var bulletData = new BulletData();
                 bulletData.ActionUnitID = BattleUnitData.Idx;
                 bulletData.MoveGridPosIdxs.Add(BattleUnit.GridPosIdx);
@@ -415,11 +415,15 @@ namespace RoundHero
                         continue;
                         
                     var gridPosIdx = GameUtility.GridCoordToPosIdx(deltaCoord);
-                    bulletData.MoveGridPosIdxs.Add(gridPosIdx);
+                   
                     
                     var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
                     if(effectUnit == null)
                         continue;
+                    
+                    if(!GameUtility.CheckUnitCamp(buffDatas[0].TriggerUnitCamps, BattleUnitData.UnitCamp, effectUnit.UnitCamp))
+                        continue;
+
                     
                     var triggerActionDatas =
                         BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.Idx, effectUnit.BattleUnit.Idx);
@@ -431,6 +435,8 @@ namespace RoundHero
                     {
                         bulletData.TriggerActionDataDict.Add(gridPosIdx, triggerActionData);
                     }
+                    
+                    bulletData.MoveGridPosIdxs.Add(gridPosIdx);
 
                     if(triggerActionDatas != null && triggerRange.ToString().Contains("Extend"))
                     {
@@ -458,12 +464,12 @@ namespace RoundHero
             bulletData.MoveGridPosIdxs.AddRange(moveIdxs);
             
             var buffData = BattleUnitManager.Instance.GetBuffDatas(BattleUnit);
-            var flyRange = buffData[0].FlyRange;
+            var triggerRange = buffData[0].TriggerRange;
             var endPosIdx = moveIdxs[moveIdxs.Count - 1];
             var endCoord = GameUtility.GridPosIdxToCoord(endPosIdx);
-            for (int i = 0; i < Constant.Battle.ActionTypePoints[flyRange].Count; i++)
+            for (int i = 0; i < Constant.Battle.ActionTypePoints[triggerRange].Count; i++)
             {
-                var range= Constant.Battle.ActionTypePoints[flyRange][i];
+                var range= Constant.Battle.ActionTypePoints[triggerRange][i];
 
                 foreach (var deltaPos in range)
                 {
@@ -489,7 +495,7 @@ namespace RoundHero
                         bulletData.TriggerActionDataDict.Add(endPosIdx, triggerActionData);
                     }
 
-                    if (triggerActionDatas != null && flyRange.ToString().Contains("Extend"))
+                    if (triggerActionDatas != null && triggerRange.ToString().Contains("Extend"))
                     {
                         break;
                     }
@@ -654,15 +660,11 @@ namespace RoundHero
                         effectName = "EffectCloseSingleAttackEntity";
                         effectPos = EffectAttackPos.position;
                     }
-
-                    
-                    
-                    
-                    
-                    
                     
                     ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                    break;
                 }
+                break;
             }
         }
 
@@ -732,6 +734,8 @@ namespace RoundHero
 
             var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
             
+            
+            
             for (int i = 0; i < moveGridPosIdxs.Count; i++)
             {
                 var moveGridPosIdx = moveGridPosIdxs[i];
@@ -793,10 +797,18 @@ namespace RoundHero
                     animator.SetInteger(AnimationParameters.Jumping, 0);
                     Idle();
                     LookAtHero();
-                    GridPosIdx = moveGridPosIdxs[moveGridPosIdxs.Count - 1];
+                    if (moveGridPosIdxs.Count > 0)
+                    {
+                        GridPosIdx = moveGridPosIdxs[moveGridPosIdxs.Count - 1];
+                    }
+                    
                 }
                 IsMove = false;
-                //BattleManager.Instance.Refresh();
+                if (unitActionState == EUnitActionState.Fly)
+                {
+                    //BattleManager.Instance.Refresh();
+                }
+                //
                 
                 BattleManager.Instance.RefreshView();
                 BattleAreaManager.Instance.RefreshObstacles();

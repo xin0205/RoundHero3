@@ -16,6 +16,7 @@ namespace RoundHero
             if (DisplayHeroEntity != null)
             {
                 GameEntry.Entity.HideEntity(DisplayHeroEntity);
+                DisplayHeroEntity = null;
             }
             
             DisplayHeroEntity = await GameEntry.Entity.ShowDisplayHeroEntityAsync(heroID);

@@ -79,7 +79,7 @@ namespace RoundHero
                 Destroy(explodeParticle);
             });
             
-            GameUtility.DelayExcute(3f, () =>
+            GameUtility.DelayExcute(10f, () =>
             {
 
                 GameEntry.Entity.HideEntity(this);

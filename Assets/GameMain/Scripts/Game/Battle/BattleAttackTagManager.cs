@@ -27,14 +27,14 @@ namespace RoundHero
 
         }
 
-        public void ShowAttackTag(int unitID, Vector3 attackStartPos)
+        public void ShowAttackTag(int unitIdx)
         {
             UnShowAttackTags();
-            ShowAttackTags(unitID, attackStartPos);
+            ShowAttackTags(unitIdx);
         }
 
 
-        public async void ShowAttackTags(int unitID, Vector3 attackStartPos)
+        public async void ShowAttackTags(int unitIdx)
         {
             if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting ||
                 BattleManager.Instance.BattleState == EBattleState.End)
@@ -49,8 +49,11 @@ namespace RoundHero
 
             //isShowEntity = true;
             BattleAttackTagEntities.Clear();
+            
+            var attckMovePaths = BattleFightManager.Instance.GetMovePaths(unitIdx);
+            var attackStartPos = GameUtility.GridPosIdxToPos(attckMovePaths[attckMovePaths.Count - 1]);
 
-            var triggerDatas = BattleFightManager.Instance.GetAttackData(unitID);
+            var triggerDatas = BattleFightManager.Instance.GetAttackDatas(unitIdx);
 
             var entityIdx = curEntityIdx;
             foreach (var triggerData in triggerDatas)
@@ -78,9 +81,10 @@ namespace RoundHero
                 {
                     effectUnitGridPosIdx = movePaths[movePaths.Count - 1];
                 }
+                
+                
 
                 var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
-                
 
                 var attackTagType = GameUtility.IsSubCurHPTrigger(triggerData) ? EAttackTagType.Attack :
                     GameUtility.IsAddCurHPTrigger(triggerData) ? EAttackTagType.Recover : EAttackTagType.UnitState;

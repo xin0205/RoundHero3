@@ -381,23 +381,24 @@ namespace RoundHero
 
         }
 
-        public static List<int> GetRange(int gridPosIdx, EActionType actionType,
-            EUnitCamp? selfUnitCamp = null, List<ERelativeCamp>? unitCamps = null,
-            bool isBattleData = true)
-        {
-            retGetRange.Clear();
-            return GetRange(gridPosIdx, actionType, retGetRange,
-                selfUnitCamp, unitCamps, isBattleData);
-        }
+        // public static List<int> GetRange(int gridPosIdx, EActionType actionType,
+        //     EUnitCamp? selfUnitCamp = null, List<ERelativeCamp>? unitCamps = null,
+        //     bool isBattleData = true)
+        // {
+        //     //retGetRange.Clear(); retGetRange,
+        //     return GetRange(gridPosIdx, actionType, 
+        //         selfUnitCamp, unitCamps, isBattleData);
+        // }
         
         
         private static List<List<int>> rangeList = new (50);
         private static Dictionary<Vector2Int, Vector2Int> cacheCoords = new ();
         
-        public static List<int> GetRange(int gridPosIdx, EActionType actionType, List<int> retGetRange, EUnitCamp? selfUnitCamp = null, List<ERelativeCamp>? unitCamps = null,
+        public static List<int> GetRange(int gridPosIdx, EActionType actionType, EUnitCamp? selfUnitCamp = null, List<ERelativeCamp>? unitCamps = null,
             bool isBattleData = true)
         {
 
+            var retGetRange = new List<int>(); 
             //bool heroInRangeTrigger = false, bool includeCenter = true, 
             
             unitCamps = unitCamps != null && unitCamps.Contains(ERelativeCamp.Empty) ? null : unitCamps;
@@ -1058,16 +1059,16 @@ namespace RoundHero
         }
         
         public static List<int> GetActionGridPosIdxs(int gridPosIdx, EActionType moveType, EActionType attackType,
-            List<int> moveRange, List<int> heroHurtRange, bool isBattleData = true)
+            ref List<int> moveRange, ref List<int> heroHurtRange, bool isBattleData = true)
         {
             
-            GetRange(gridPosIdx, moveType, moveRange, null, null, isBattleData);
+            moveRange = GetRange(gridPosIdx, moveType, null, null, isBattleData);
 
             if (attackType == EActionType.HeroDirect)
             {
                 attackType = EActionType.Direct82Long;
             }
-            GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, attackType, heroHurtRange, null, null,
+            heroHurtRange = GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, attackType, null, null,
                 isBattleData);
 
             var intersectList = moveRange.Intersect(heroHurtRange).ToList();
@@ -1383,14 +1384,14 @@ namespace RoundHero
 
             var retPaths = new List<int>(paths.Count);
             
-            if (paths.Count >= 2)
-            {
-                var coord = paths[paths.Count - 2];
-                if (cacheSearchMaps[coord.x, coord.y] != AStarSearch.EPointType.Empty)
-                {
-                    return retPaths;
-                }
-            }
+            // if (paths.Count >= 2)
+            // {
+            //     var coord = paths[paths.Count - 2];
+            //     if (cacheSearchMaps[coord.x, coord.y] != AStarSearch.EPointType.Empty)
+            //     {
+            //         return retPaths;
+            //     }
+            // }
             
             
 
@@ -1410,6 +1411,16 @@ namespace RoundHero
                 }
 
             }
+
+            if (retPaths.Count > 0)
+            {
+                var endCoord = GridPosIdxToCoord(retPaths[retPaths.Count - 1]);
+                if (cacheSearchMaps[endCoord.x, endCoord.y] != AStarSearch.EPointType.Empty)
+                {
+                    retPaths.RemoveAt(retPaths.Count - 1);
+                }
+            }
+            
 
             return retPaths;
 

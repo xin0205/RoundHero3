@@ -315,7 +315,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
 
                     var tempUnitMovePaths = BattleManager.Instance.TempTriggerData.TempUnitMovePaths =
-                        BattleFightManager.Instance.GetRunPaths(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
+                        BattleFightManager.Instance.GetRunPaths(BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GridTypes, BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
                             ne.GridPosIdx, runPaths);
                     //var realTargetGridPosIdx = BattleManager.Instance.TempTriggerData.TargetGridPosIdx =
                         

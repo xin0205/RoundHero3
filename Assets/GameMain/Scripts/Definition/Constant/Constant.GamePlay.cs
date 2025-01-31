@@ -393,14 +393,48 @@ namespace RoundHero
                         new List<Vector2Int>()
                         {
                             new Vector2Int(-1, 0),
+
+                        },
+                        new List<Vector2Int>()
+                        {
+
                             new Vector2Int(-1, 1),
+
+                        },
+                        new List<Vector2Int>()
+                        {
                             new Vector2Int(0, 1),
+                        },
+                        new List<Vector2Int>()
+                        {
+
                             new Vector2Int(1, 1),
+
+                        },
+                        new List<Vector2Int>()
+                        {
+                            
                             new Vector2Int(1, 0),
+
+                        },
+                        new List<Vector2Int>()
+                        {
+                            
                             new Vector2Int(1, -1),
+
+                        },
+                        new List<Vector2Int>()
+                        {
+                            
                             new Vector2Int(0, -1),
+                        },
+                        new List<Vector2Int>()
+                        {
+                            
                             new Vector2Int(-1, -1),
                         },
+
+                        
                     },
                     
                     [EActionType.Direct82Long] = new List<List<Vector2Int>>()
