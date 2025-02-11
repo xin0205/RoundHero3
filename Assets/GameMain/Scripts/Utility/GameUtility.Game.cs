@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RoundHero
@@ -132,6 +133,25 @@ namespace RoundHero
                 }
                 list[i + 1] = key;
             }
+        }
+
+        public static Dictionary<T1, List<T2>> MergeDict<T1, T2>(Dictionary<T1, List<T2>> d1, Dictionary<T1, List<T2>> d2)
+        {
+            var d3 = new Dictionary<T1, List<T2>>(d1);
+
+            foreach (var kv in d2)
+            {
+                if (d1.ContainsKey(kv.Key))
+                {
+                    d3[kv.Key].AddRange(kv.Value);
+                }
+                else
+                {
+                    d3.Add(kv.Key, kv.Value);
+                }
+            }
+
+            return d3;
         }
     }
 }

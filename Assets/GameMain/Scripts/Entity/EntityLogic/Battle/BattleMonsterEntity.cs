@@ -71,85 +71,73 @@ namespace RoundHero
         public override void OnPointerEnter(BaseEventData baseEventData)
         {
             base.OnPointerEnter(baseEventData);
-            
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+        
+            if(IsMove)
                 return;
-                
-            var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
-            if (movePaths != null && movePaths.Count > 0)
+            
+            if (BattleManager.Instance.BattleState == EBattleState.UseCard)
             {
-                Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
-                BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx);
-                ShowEffectUnitFly(UnitIdx);
+                var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
+                if (movePaths != null && movePaths.Count > 0)
+                {
+                    Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
+                    BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx, false);
+                    BattleFlyDirectManager.Instance.ShowFlyDirect(UnitIdx);
+                    BattleIconManager.Instance.ShowBattleIcon(UnitIdx, EBattleIconType.Collison);
+                    //BattleFlyDirectManager.Instance.ShowEffectUnitFly(UnitIdx);
+                }
+            
+                BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
+            }
+            else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+            {
+                var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
+                BattleAttackTagManager.Instance.ShowAttackTag(actionUnitIdx, false);
+                BattleFlyDirectManager.Instance.ShowFlyDirect(actionUnitIdx);
+                BattleIconManager.Instance.ShowBattleIcon(actionUnitIdx, EBattleIconType.Collison);
+                BattleValueManager.Instance.ShowDisplayValue(actionUnitIdx);
             }
             
-            BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
-            
-        }
-
-        public void ShowEffectUnitFly(int unitIdx)
-        {
-
-            Dictionary<int, MoveUnitData> moveDataDict = new Dictionary<int, MoveUnitData>();
-            
-            if (BattleFightManager.Instance.RoundFightData.EnemyAttackDatas.ContainsKey(unitIdx))
-            {
-                moveDataDict = BattleFightManager.Instance.RoundFightData.EnemyAttackDatas[unitIdx].MoveData
-                    .MoveUnitDatas;
-            }
-            
-            foreach (var kv in moveDataDict)
-            {
-                var moveGridPosIdx = kv.Value.MoveActionData.MoveGridPosIdxs;
-                
-                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Value.MoveActionData.ActionUnitIdx);
-                actionUnit.Root.position = GameUtility.GridPosIdxToPos(moveGridPosIdx[moveGridPosIdx.Count - 1]);
-
-            }
-            
-            
-
         }
 
         
-        public void UnShowEffectUnitFly(int unitIdx)
-        {
-            Dictionary<int, MoveUnitData> moveDataDict = new Dictionary<int, MoveUnitData>();
-            
-            
-            if (BattleFightManager.Instance.RoundFightData.EnemyAttackDatas.ContainsKey(unitIdx))
-            {
-                moveDataDict = BattleFightManager.Instance.RoundFightData.EnemyAttackDatas[unitIdx].MoveData
-                    .MoveUnitDatas;
-            }
-            
-            foreach (var kv in moveDataDict)
-            {
-                var moveGridPosIdx = kv.Value.MoveActionData.MoveGridPosIdxs;
-                    
-                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Value.MoveActionData.ActionUnitIdx);
-                actionUnit.Root.position = GameUtility.GridPosIdxToPos(moveGridPosIdx[0]);
-
-            }
-
-        }
 
         public override void OnPointerExit(BaseEventData baseEventData)
         {
             base.OnPointerExit(baseEventData);
             
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard && BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
                 return;
             
-            var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
-            if (movePaths != null && movePaths.Count > 0)
-            {
-                Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
-                BattleAttackTagManager.Instance.UnShowAttackTags();
-                UnShowEffectUnitFly(UnitIdx);
-            }
+            if(IsMove)
+                return;
+            
+            
             
             BattleValueManager.Instance.UnShowDisplayValues();
+            
+            if (BattleManager.Instance.BattleState == EBattleState.UseCard)
+            {
+                var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
+                if (movePaths != null && movePaths.Count > 0)
+                {
+                    Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
+                    BattleAttackTagManager.Instance.UnShowAttackTags();
+                    BattleFlyDirectManager.Instance.UnShowFlyDirects();
+                    BattleIconManager.Instance.UnShowBattleIcons();
+                    //BattleFlyDirectManager.Instance.UnShowEffectUnitFly(UnitIdx);
+                }
+            
+                BattleValueManager.Instance.UnShowDisplayValues();
+            }
+            else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+            {
+                //var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
+                BattleAttackTagManager.Instance.UnShowAttackTags();
+                BattleFlyDirectManager.Instance.UnShowFlyDirects();
+                BattleIconManager.Instance.UnShowBattleIcons();
+                BattleValueManager.Instance.UnShowDisplayValues();
+            }
             
         }
     }

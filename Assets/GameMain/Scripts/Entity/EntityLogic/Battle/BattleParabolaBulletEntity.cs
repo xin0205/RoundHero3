@@ -115,15 +115,21 @@ namespace RoundHero
                 {
                     foreach (var triggerActionData in BattleBulletEntityData.BulletData.TriggerActionDataDict[endIdx])
                     {
-                        if (triggerActionData.TriggerData != null)
+                        if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                         {
-                            BattleFightManager.Instance.TriggerAction(triggerActionData.TriggerData);
+                            if (triggerActionTriggerData.TriggerData != null)
+                            {
+                                BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
 
+                            }
                         }
 
-                        if (triggerActionData.MoveUnitData != null)
+                        if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
                         {
-                            BattleBulletManager.Instance.UseMoveActionData(triggerActionData.MoveUnitData);
+                            if (triggerActionMoveData.MoveUnitData != null)
+                            {
+                                BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                            }
                         }
 
                         HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();

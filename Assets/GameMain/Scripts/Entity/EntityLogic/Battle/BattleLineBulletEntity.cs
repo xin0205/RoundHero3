@@ -114,17 +114,23 @@ namespace RoundHero
       
                             foreach (var triggerActionData in BattleBulletEntityData.BulletData.TriggerActionDataDict[moveGridPosIdx])
                             {
-                                if (triggerActionData.TriggerData != null)
+                                if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                                 {
-                                    BattleFightManager.Instance.TriggerAction(triggerActionData.TriggerData);
+                                    if (triggerActionTriggerData.TriggerData != null)
+                                    {
+                                        BattleFightManager.Instance.TriggerAction(triggerActionTriggerData.TriggerData);
 
+                                    }
                                 }
-                                
-                                if (triggerActionData.MoveUnitData != null)
+
+                                if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
                                 {
-                                    BattleBulletManager.Instance.UseMoveActionData(triggerActionData.MoveUnitData);
+                                    if (triggerActionMoveData.MoveUnitData != null)
+                                    {
+                                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                                    }
                                 }
-                                
+
                                 BattleManager.Instance.RefreshView();
                             }
                             
@@ -143,7 +149,7 @@ namespace RoundHero
             GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 0.1f, () =>
             {
                 DestoryBulletParticle();
-                BattleBulletManager.Instance.ClearData(BattleBulletEntityData.BulletData.ActionUnitID);
+                //BattleBulletManager.Instance.ClearData(BattleBulletEntityData.BulletData.ActionUnitID);
                 HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
             });
             

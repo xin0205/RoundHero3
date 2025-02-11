@@ -8,6 +8,12 @@ using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
+    // public class SelectCardData
+    // {
+    //     public int CardIdx;
+    //     public int CardID;
+    // }
+    
     public class StartSelectForm : UGuiForm
     {
         private ProcedureStart procedureStart;
@@ -96,15 +102,16 @@ namespace RoundHero
         private void OnSelectHero(object sender, GameEventArgs e)
         {
             var ne = (StartSelect_SelectHeroEventArgs)e;
-            GameManager.Instance.TmpHeroID = ne.HeroID;
+            var heroID = ne.HeroID;
+            //GameManager.Instance.TmpHeroID = ne.HeroID;
             heroIconGridView.RefreshAllShownItem();
             
-            heroSceneEntity.ShowDisplayHeroEntity(GameManager.Instance.TmpHeroID);
+            heroSceneEntity.ShowDisplayHeroEntity(heroID);
 
-            var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.TmpHeroID);
+            var drHero = GameEntry.DataTable.GetHero(heroID);
             
             var heroDescStr =
-                Utility.Text.Format(Constant.Localization.HeroDesc, GameManager.Instance.TmpHeroID); 
+                Utility.Text.Format(Constant.Localization.HeroDesc, heroID); 
             
             heroDescStr = GameEntry.Localization.GetString(heroDescStr);
 
@@ -113,7 +120,7 @@ namespace RoundHero
             energy.text = drHero.HP.ToString();
             
             var heroNameStr =
-                Utility.Text.Format(Constant.Localization.HeroName, GameManager.Instance.TmpHeroID); 
+                Utility.Text.Format(Constant.Localization.HeroName, heroID); 
             
             heroName.text = GameEntry.Localization.GetString(heroNameStr);
 

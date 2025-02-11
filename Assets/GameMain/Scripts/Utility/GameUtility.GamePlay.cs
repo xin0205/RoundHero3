@@ -330,13 +330,23 @@ namespace RoundHero
 
             return unit;
         }
-        public static Data_BattleUnit GetUnitDataByID(int unitID, bool isBattleData = true)
+
+        public static List<Data_BattleUnit> GetUnitsByCamp(EUnitCamp? selfUnitCamp = null,
+            ERelativeCamp? unitCamp = null, bool isBattleData = true)
+        {
+            return isBattleData
+                ? BattleFightManager.Instance.GetUnitsByCamp(selfUnitCamp, unitCamp)
+                : BattleUnitManager.Instance.GetUnitsByCamp(selfUnitCamp, unitCamp);
+
+        }
+
+        public static Data_BattleUnit GetUnitDataByIdx(int unitID, bool isBattleData = true)
         {
             // if (cachePosToUnits.ContainsKey(gridPosIdx))
             //     return cachePosToUnits[gridPosIdx];
             
             var unit = isBattleData
-                ? BattleFightManager.Instance.GetUnitByID(unitID)
+                ? BattleFightManager.Instance.GetUnitByIdx(unitID)
                 : BattleUnitManager.Instance.GetUnitByIdx(unitID)?.BattleUnit;
 
             // if (unit != null)
@@ -509,7 +519,7 @@ namespace RoundHero
                 
                 //rangeList.Add(direct8RangeNest[maxIdx]);
             }
-             else if (actionType == EActionType.HeroDirect)
+            else if (actionType == EActionType.HeroDirect)
              {
                  var idx = 0;
                  var matchIdx = -1;
@@ -1008,7 +1018,7 @@ namespace RoundHero
             var isOblique = ActionTypeMaps[attackType].Contains("Direct8");
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionGridPosIdx);
-            var heroUnitData = GameUtility.GetUnitDataByID(HeroManager.Instance.BattleHeroData.Idx, isBattleData);
+            var heroUnitData = GameUtility.GetUnitDataByIdx(HeroManager.Instance.BattleHeroData.Idx, isBattleData);
             var heroCoord = GameUtility.GridPosIdxToCoord(heroUnitData.GridPosIdx);
     
             if (!isExtendActionType)
@@ -1058,24 +1068,49 @@ namespace RoundHero
 
         }
         
-        public static List<int> GetActionGridPosIdxs(int gridPosIdx, EActionType moveType, EActionType attackType,
+        public static Dictionary<int, List<int>> GetActionGridPosIdxs(EUnitCamp selfCamp, int gridPosIdx, EActionType moveType, EActionType attackType,
             ref List<int> moveRange, ref List<int> heroHurtRange, bool isBattleData = true)
         {
             
-            moveRange = GetRange(gridPosIdx, moveType, null, null, isBattleData);
+            var intersectDict = new Dictionary<int, List<int>>();
+            var relatedEnemyUnits = GameUtility.GetUnitsByCamp(selfCamp, ERelativeCamp.Enemy);
 
+            moveRange.Add(gridPosIdx);
+            moveRange.AddRange(GetRange(gridPosIdx, moveType, null, null, isBattleData));
+            var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
+            relatedEnemyUnits.Sort((unit1, unit2) =>
+            {
+                if (unit2.UnitRole == EUnitRole.Hero)
+                    return -1;
+                
+                var unit1Coord = GameUtility.GridPosIdxToCoord(unit1.GridPosIdx);
+                var unit2Coord = GameUtility.GridPosIdxToCoord(unit2.GridPosIdx);
+                
+                var unit1Dis = Vector2.Distance(unit1Coord, coord);
+                var unit2Dis = Vector2.Distance(unit2Coord, coord);
+
+                if (unit2Dis < unit1Dis)
+                    return -1;
+
+                return 0;
+
+            });
+            
             if (attackType == EActionType.HeroDirect)
             {
                 attackType = EActionType.Direct82Long;
             }
-            heroHurtRange = GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, attackType, null, null,
-                isBattleData);
-
-            var intersectList = moveRange.Intersect(heroHurtRange).ToList();
-
             
+            foreach (var battleUnitData in relatedEnemyUnits)
+            {
+                heroHurtRange = GetRange(battleUnitData.GridPosIdx, attackType, null, null,
+                    isBattleData);
+                 
+                var intersectList = moveRange.Intersect(heroHurtRange).ToList();
+                intersectDict.Add(battleUnitData.Idx, intersectList);
+            }
 
-            return intersectList;
+            return intersectDict;
 
         }
 
@@ -1511,6 +1546,159 @@ namespace RoundHero
             Vector3 normal = (end - start).normalized;
             float distance = Vector3.Distance(start, end);
             return normal * (distance * percent) + start;
+        }
+
+        public static List<List<Vector2Int>> GetRelatedCoords(EActionType actionType, int gridPosIdx1, int gridPosIdx2)
+        {
+            var pointList = new List<List<Vector2Int>>();
+            
+            List<Vector2Int> coord1s = new List<Vector2Int>();
+            List<Vector2Int> coord2s = new List<Vector2Int>();
+            
+            var actionTypeStr = actionType.ToString();
+            var delta = GameUtility.GridPosIdxToCoord(gridPosIdx1) - GameUtility.GridPosIdxToCoord(gridPosIdx2);
+
+            if (actionTypeStr.Contains("Horizontal"))
+            {
+                if (delta.x == 0 && delta.y != 0)
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(-1, 0));
+                        coord2s.Add(new Vector2Int(1, 0));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(-i-1, 0));
+                            coord2s.Add(new Vector2Int(i+1, 0));
+                        }
+                    }
+                }
+                else if (delta.x != 0 && delta.y == 0)
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(0, -1));
+                        coord2s.Add(new Vector2Int(0, 1));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(0, -i-1));
+                            coord2s.Add(new Vector2Int(0, i+1));
+                        }
+                    }
+                }
+                else if ((delta.x > 0 && delta.y < 0) || (delta.x < 0 && delta.y > 0))
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(1, 1));
+                        coord2s.Add(new Vector2Int(-1, -1));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(i+1, i+1));
+                            coord2s.Add(new Vector2Int(-i-1, -i-1));
+                        }
+                    }
+                }
+                else if ((delta.x > 0 && delta.y > 0) || (delta.x < 0 && delta.y < 0))
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(1, -1));
+                        coord2s.Add(new Vector2Int(-1, 1));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(i+1, -i-1));
+                            coord2s.Add(new Vector2Int(-i-1, i+1));
+                        }
+                    }
+                }
+            }
+            else if (actionTypeStr.Contains("Vertical"))
+            {
+                if (delta.x == 0 && delta.y != 0)
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(0, -1));
+                        coord2s.Add(new Vector2Int(0, 1));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(0, -i-1));
+                            coord2s.Add(new Vector2Int(0, i+1));
+                        }
+                    }
+                }
+                else if (delta.x != 0 && delta.y == 0)
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(-1, 0));
+                        coord2s.Add(new Vector2Int(1, 0));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(-i-1, 0));
+                            coord2s.Add(new Vector2Int(i+1, 0));
+                        }
+                    }
+                    
+                }
+                else if ((delta.x > 0 && delta.y < 0) || (delta.x < 0 && delta.y > 0))
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(1, -1));
+                        coord2s.Add(new Vector2Int(-1, 1));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(i+1, -i-1));
+                            coord2s.Add(new Vector2Int(-i-1, i+1));
+                        }
+                    }
+                }
+                else if ((delta.x > 0 && delta.y > 0) || (delta.x < 0 && delta.y < 0))
+                {
+                    if (actionTypeStr.Contains("Short"))
+                    {
+                        coord1s.Add(new Vector2Int(1, 1));
+                        coord2s.Add(new Vector2Int(-1, -1));
+                    }
+                    else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            coord1s.Add(new Vector2Int(i+1, i+1));
+                            coord2s.Add(new Vector2Int(-i-1, -i-1));
+                        }
+                    }
+                    
+                    
+                }
+            }
+            pointList.Add(coord1s);
+            pointList.Add(coord2s);
+
+            return pointList;
         }
 
     }

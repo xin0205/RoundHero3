@@ -38,10 +38,14 @@ namespace RoundHero
             //Constant.Battle.BattleValueVelocity
             var time = dis / Constant.Battle.BattleValueVelocity;
 
-            textStrTween = 
+            if (time < 1f)
+            {
+                time = 1f;
+            }
+            //textStrTween = 
             
             textColTween = DOTween.To(()=> text.color, x => text.color = x, recoverColor, time).SetEase(Ease.InOutQuart);
-            var moveTween = transform.DOLocalMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
+            var moveTween = transform.DOMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
             var absValue = Mathf.Abs(BattleMoveValueEntityData.Value);
             
             textStrTween = DOTween.To(() => text.text, x => text.text = x, "+" + absValue, time)
@@ -56,10 +60,16 @@ namespace RoundHero
             }
             else
             {
-                moveTween.OnComplete(() =>
+                
+                
+                GameUtility.DelayExcute(time, () =>
                 {
                     GameEntry.Entity.HideEntity(this);
                 });
+                // moveTween.OnComplete(() =>
+                // {
+                //     GameEntry.Entity.HideEntity(this);
+                // });
             }
             
             // GameUtility.DelayExcute(time / 2f, () =>

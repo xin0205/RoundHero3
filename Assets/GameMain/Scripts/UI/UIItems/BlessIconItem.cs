@@ -65,7 +65,7 @@ namespace RoundHero
             {
                 Name = blessName,
                 Desc = blessDesc,
-                Position = this.transform.position + new Vector3(0.5f, -0.5f, 0),
+                //Position = this.transform.position + new Vector3(0.5f, -0.5f, 0),
             });
             
             infoForm = uiForm.Logic as InfoForm;

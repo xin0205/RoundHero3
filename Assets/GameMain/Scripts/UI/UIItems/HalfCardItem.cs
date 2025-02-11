@@ -1,4 +1,5 @@
 ﻿using System;
+using GameFramework.Event;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,8 +17,27 @@ namespace RoundHero
         private int CardID = -1;
 
         public Action<int> ClickAction;
-
         
+        
+        [SerializeField] private GameObject unUseTag;
+
+
+        [SerializeField] private GIFTriggerItem gifTriggerItem;
+
+        private bool isUse;
+
+        private void OnEnable()
+        {
+            GameEntry.Event.Subscribe(HoverJoinCardsEventArgs.EventId, OnHoverJoinCards);
+            this.unUseTag.SetActive(false);
+        }
+
+        private void OnDisable()
+        {
+            GameEntry.Event.Unsubscribe(HoverJoinCardsEventArgs.EventId, OnHoverJoinCards);
+        }
+
+
         public void SetCardUI(int cardID)
         {
             CardID = cardID;
@@ -66,6 +86,28 @@ namespace RoundHero
         public void OnClick()
         {
             ClickAction.Invoke(CardID);
+        }
+        
+        public void OnPointerEnter()
+        {
+            GameEntry.Event.Fire(null, HoverJoinCardsEventArgs.Create(CardID, true));
+        }
+
+        public void OnHoverJoinCards(object sender, GameEventArgs e)
+        {
+            var ne = e as HoverJoinCardsEventArgs;
+            if (ne.CardID == CardID)
+            {
+                this.unUseTag.SetActive(ne.IsHover);
+
+            }
+        }
+
+        
+        public void OnPointerExit()
+        {
+            GameEntry.Event.Fire(null, HoverJoinCardsEventArgs.Create(CardID, false));
+            
         }
     }
 }

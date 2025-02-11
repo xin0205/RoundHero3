@@ -19,6 +19,12 @@ namespace RoundHero
         // 负值用于本地生成的临时实体（如特效、FakeObject等）
         private static int s_SerialId = 0;
 
+
+        public static int GetSerialId(this EntityComponent entityComponent)
+        {
+            return s_SerialId;
+        }
+
         public static Entity GetGameEntity(this EntityComponent entityComponent, int entityId)
         {
             UnityGameFramework.Runtime.Entity entity = entityComponent.GetEntity(entityId);

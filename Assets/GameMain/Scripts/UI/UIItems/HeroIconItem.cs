@@ -33,9 +33,23 @@ namespace RoundHero
         }
 
 
-        public void OnClick()
+        public void OnSelectHero()
+        {
+            GameManager.Instance.TmpHeroID = heroID;
+            GameEntry.Event.Fire(null, StartSelect_SelectHeroEventArgs.Create(heroID));
+        }
+        
+        public void OneEnterHeroIcon()
         {
             GameEntry.Event.Fire(null, StartSelect_SelectHeroEventArgs.Create(heroID));
+        }
+        
+        public void OnExitHeroIcon()
+        {
+            if (heroID == GameManager.Instance.TmpHeroID)
+                return;
+            
+            GameEntry.Event.Fire(null, StartSelect_SelectHeroEventArgs.Create(GameManager.Instance.TmpHeroID));
         }
 
     }

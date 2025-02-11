@@ -18,14 +18,14 @@ namespace RoundHero
 
             public static Vector2 GridInterval = new Vector2()
             {
-                x = 0.25f,
-                y = 0.25f,
+                x = 0.05f,
+                y = 0.05f,
             };
 
             public static Vector2 GridLength = new Vector2()
             {
-                x = 2f,
-                y = 2f,
+                x = 1.75f,
+                y = 1.75f,
             };
 
             public static Vector2 GridRange = new Vector2()
@@ -100,6 +100,19 @@ namespace RoundHero
             {
                 EActionType.Cross2Short,
                 EActionType.Cross2Extend,
+                
+            };
+            
+            public static List<EActionType> DynamicRelatedUnitFlyRanges = new List<EActionType>()
+            {
+                EActionType.Cross2Short,
+                EActionType.Cross2Extend,
+                EActionType.Horizontal2Short,
+                EActionType.Horizontal2Long,
+                EActionType.Horizontal2Extend,
+                EActionType.Vertical2Short,
+                EActionType.Vertical2Long,
+                EActionType.Vertical2Extend,
             };
 
             public static Dictionary<EActionType, List<List<Vector2Int>>> ActionTypePoints =

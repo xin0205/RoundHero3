@@ -10,6 +10,8 @@ namespace RoundHero
 
         public Camera UICamera;
 
+        public Canvas Canvas;
+
         [SerializeField] public HeroIcon HeroIcon;
         
 

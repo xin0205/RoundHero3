@@ -10,7 +10,8 @@ namespace RoundHero
     {
         public string Desc;
         public string Name;
-        public Vector2 Position;
+        //public Vector2 Position;
+        public EShowPosition ShowPosition = EShowPosition.MousePosition;
     }
 
     public class InfoForm : UGuiForm
@@ -33,7 +34,42 @@ namespace RoundHero
             name.text = infoFormParams.Name;
             desc.text = infoFormParams.Desc;
 
-            root.transform.position = infoFormParams.Position;
+            //root.transform.localPosition = infoFormParams.Position;
+            Vector3 mousePosition = Input.mousePosition;
+            
+            if (infoFormParams.ShowPosition == EShowPosition.MousePosition)
+            {
+                var pos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
+                var delta = new Vector2(1, 0.5f);
+                if (mousePosition.x < Screen.width / 2)
+                {
+                    pos.x += delta.x;
+                    if (mousePosition.y < Screen.height / 2)
+                    {
+                        pos.y += delta.y;
+                    }
+                    else
+                    {
+                        pos.y -= delta.y;
+                    }
+                }
+                else
+                {
+                    pos.x -= delta.x;
+                    if (mousePosition.y < Screen.height / 2)
+                    {
+                        pos.y += delta.y;
+                    }
+                    else
+                    {
+                        pos.y -= delta.y;
+                    }
+                }
+
+
+                root.transform.position = pos;
+            }
+
 
         }
     }

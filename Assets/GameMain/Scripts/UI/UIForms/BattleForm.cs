@@ -132,7 +132,7 @@ namespace RoundHero
                 if(solider == null)
                     return;
 
-                var fightSoliderData = BattleFightManager.Instance.GetUnitByID(solider.UnitIdx) as Data_BattleSolider;
+                var fightSoliderData = BattleFightManager.Instance.GetUnitByIdx(solider.UnitIdx) as Data_BattleSolider;
                 var soliderEntity = BattleUnitManager.Instance.GetUnitByIdx(solider.UnitIdx) as BattleSoliderEntity;
                 if(fightSoliderData == null)
                     return;

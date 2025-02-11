@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
 
@@ -36,56 +38,81 @@ namespace RoundHero
             BattleValueEntities.Clear();
             
             var entityIdx = curEntityIdx;
-            var triggerDatas = BattleFightManager.Instance.GetAttackDatas(unitIdx);
-            foreach (var triggerData in triggerDatas)
-            {
-                var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
-
-                if (unit != null)
-                {
-                    curEntityIdx++;
-                }
-                    
-            }
+            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unitIdx),
+                BattleFightManager.Instance.GetInDirectAttackDatas(unitIdx));
+            curEntityIdx += triggerDataDict.Count;
+  
+            
+            // foreach (var triggerData in triggerDatas)
+            // {
+            //     var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+            //
+            //     if (unit != null)
+            //     {
+            //         curEntityIdx++;
+            //     }
+            //         
+            // }
 
             var idx = 0;
-            foreach (var triggerData in triggerDatas)
+            foreach (var kv in triggerDataDict)
             {
-                ShowValues(triggerData, entityIdx);
-                // GameUtility.DelayExcute(0.25f * idx, () =>
-                // {
-                //     ShowValues(triggerData, entityIdx);
-                // });
+                var _entityIdx = entityIdx;
+                var values = kv.Value;
+                //ShowValues(kv.Value, entityIdx);
+                GameUtility.DelayExcute(0.25f * idx, () =>
+                {
+                    ShowValues(values, _entityIdx);
+                });
                 idx++;
-
+                entityIdx++;
             }
 
         }
 
-        private async void ShowValues(TriggerData triggerData, int entityIdx)
+        private async void ShowValues(List<TriggerData> triggerDatas, int entityIdx)
         {
-            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
-            var value = (int)(triggerData.Value + triggerData.DeltaValue);
+            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].ActionUnitIdx);
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].EffectUnitIdx);
+
+            var value = 0;
+            foreach (var triggerData in triggerDatas)
+            {
+                value += (int)(triggerData.Value + triggerData.DeltaValue);
+            }
+            
             
             Entity entity;
             if (effectUnit is BattleSoliderEntity solider)
             {
                 var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnit.UnitCamp);
                 
-                var effectUnitPos = effectUnit.Position;
+                var effectUnitPos = effectUnit.Root.position;
                 
-                var effectUnitFlyGridPosIdx =
-                    BattleFightManager.Instance.GetFlyEndGridPosIdx(actionUnit.UnitIdx, effectUnit.UnitIdx);
+                // var effectUnitFlyEndGridPosIdx =
+                //     BattleFightManager.Instance.GetFlyEndGridPosIdx(actionUnit.UnitIdx, effectUnit.UnitIdx);
+                //
+                // if (effectUnitFlyEndGridPosIdx != -1)
+                // {
+                //     effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitFlyEndGridPosIdx);
+                // }
 
-                if (effectUnitFlyGridPosIdx != -1)
-                {
-                    effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitFlyGridPosIdx);
-                }
-                        
-                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, heroEntity.Position,
+                var targetPos = heroEntity.Root.position;
+                
+                // var heroMovePaths = BattleFightManager.Instance.GetMovePaths(heroEntity.UnitIdx, actionUnit.UnitIdx);
+                // if (heroMovePaths != null && heroMovePaths.Count > 0)
+                // {
+                //     targetPos = GameUtility.GridPosIdxToPos(heroMovePaths[heroMovePaths.Count - 1]);
+                // }
+
+                effectUnitPos.y += 1f;
+                targetPos.y += 1f;
+                
+                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, targetPos,
                     value, entityIdx, true);
-                        
+                
+                entity.transform.parent = heroEntity.Root;
+                
                 if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showEntityIdx)
                 {
                     GameEntry.Entity.HideEntity(entity);
@@ -97,19 +124,21 @@ namespace RoundHero
             }
             else
             {
-                var effectUnitPos = effectUnit.Position;
-                var effectUnitFlyGridPosIdx =
-                    BattleFightManager.Instance.GetFlyEndGridPosIdx(actionUnit.UnitIdx, effectUnit.UnitIdx);
-
-                if (effectUnitFlyGridPosIdx != -1)
-                {
-                    effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitFlyGridPosIdx);
-                }
+                var effectUnitPos = effectUnit.Root.position;
+                // var effectUnitFlyGridPosIdx =
+                //     BattleFightManager.Instance.GetFlyEndGridPosIdx(actionUnit.UnitIdx, effectUnit.UnitIdx);
+                //
+                // if (effectUnitFlyGridPosIdx != -1)
+                // {
+                //     effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitFlyGridPosIdx);
+                // }
                 
                 effectUnitPos.y += 1f;
                 
                 entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(actionUnit.Position,
                     effectUnitPos, value, entityIdx);
+
+                //entity.transform.parent = effectUnit.Root;
                         
                 if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx < showEntityIdx)
                 {

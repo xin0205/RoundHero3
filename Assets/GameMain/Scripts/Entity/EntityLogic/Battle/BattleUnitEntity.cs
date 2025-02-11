@@ -158,7 +158,6 @@ namespace RoundHero
             base.OnShow(userData);
             IsMove = false;
             
-            
         }
         
          protected void InitWeaponType(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
@@ -617,7 +616,7 @@ namespace RoundHero
 
         }
         
-        private async void ShowEffectAttackEntity_CloseSingle(GameFrameworkMultiDictionary<int, TriggerActionData> triggerActionDataDict)
+        private async void ShowEffectAttackEntity_CloseSingle(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
         {
             var effectName = "EffectCloseSingleAttackEntity";
             var effectPos = EffectHurtPos.position;
@@ -626,23 +625,26 @@ namespace RoundHero
             {
                 foreach (var triggerActionData in kv.Value)
                 {
-                    
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitIdx);
-                    
-                    if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
-                        triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+                    if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                     {
-                        effectName = "EffectCloseSingleAttackEntity";
-                        effectPos = EffectAttackPos.position;
-                    }
+                        var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.EffectUnitIdx);
+                    
+                        if (triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
+                            triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+                        {
+                            effectName = "EffectCloseSingleAttackEntity";
+                            effectPos = EffectAttackPos.position;
+                        }
 
                     
-                    ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                    }
+                    
                 }
             }
         }
 
-        private async void ShowEffectAttackEntity_CloseMulti(GameFrameworkMultiDictionary<int, TriggerActionData> triggerActionDataDict)
+        private async void ShowEffectAttackEntity_CloseMulti(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
         {
             var effectName = "EffectCloseMultiAttackEntity";
             var effectPos = EffectHurtPos.position;
@@ -651,24 +653,27 @@ namespace RoundHero
             {
                 foreach (var triggerActionData in kv.Value)
                 {
-                    
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.TriggerData.EffectUnitIdx);
-                    
-                    if (triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
-                        triggerActionData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+                    if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                     {
-                        effectName = "EffectCloseSingleAttackEntity";
-                        effectPos = EffectAttackPos.position;
+                        var effectUnit =
+                            BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.EffectUnitIdx);
+
+                        if (triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
+                            triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+                        {
+                            effectName = "EffectCloseSingleAttackEntity";
+                            effectPos = EffectAttackPos.position;
+                        }
+
+                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                        break;
                     }
-                    
-                    ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
-                    break;
                 }
                 break;
             }
         }
 
-        private async void ShowEffectAttackEntity_RemoteMulti(GameFrameworkMultiDictionary<int, TriggerActionData> triggerActionDataDict)
+        private async void ShowEffectAttackEntity_RemoteMulti(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
         {
             
         }
@@ -733,8 +738,6 @@ namespace RoundHero
             //SetAction(unitActionState);
 
             var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
-            
-            
             
             for (int i = 0; i < moveGridPosIdxs.Count; i++)
             {
@@ -804,14 +807,18 @@ namespace RoundHero
                     
                 }
                 IsMove = false;
-                if (unitActionState == EUnitActionState.Fly)
+
+                HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
+                
+                if (BattleManager.Instance.BattleState == EBattleState.UseCard)
                 {
-                    //BattleManager.Instance.Refresh();
+                    BattleManager.Instance.Refresh();
                 }
-                //
+
                 
                 BattleManager.Instance.RefreshView();
                 BattleAreaManager.Instance.RefreshObstacles();
+                
             });
 
             //return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
@@ -965,17 +972,37 @@ namespace RoundHero
 
         public void RefreshHP()
         {
+            
+            hp.gameObject.SetActive(true);
+            damage.gameObject.SetActive(true);
+            
             var curHP = BattleUnitData.CurHP;
             curHP = curHP < 0 ? 0 : curHP;
+            hp.text = curHP.ToString();
             // hp.text = curHP + "/" +
             //           BattleUnitData.MaxHP;
-            hp.text = curHP.ToString();
+            var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
+
+            if (hurt != 0)
+            {
+                damage.text = curHP.ToString();
+            }
+            
         }
 
         public void RefreshDamageState()
         {
+            hp.gameObject.SetActive(false);
+            damage.gameObject.SetActive(true);
             var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
-            this.damage.text = hurt.ToString();
+            if (hurt != 0)
+            {
+                damage.text = hurt.ToString();
+            }
+            else
+            {
+                damage.text = "";
+            }
         }
         
         public virtual void Quit()
@@ -1103,19 +1130,24 @@ namespace RoundHero
         
         protected async virtual Task ShowBattleHurts(int hurt)
         {
-            await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
+            var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
+            hurtEntity.transform.parent = Root;
         }
         
         public virtual void OnPointerEnter(BaseEventData baseEventData)
         {
             GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, true));
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Show)); 
+            RefreshHP();
+            
+            
         }
         
         public virtual void OnPointerExit(BaseEventData baseEventData)
         {
             GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, false));
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Unshow)); 
+            RefreshDamageState();
         }
         
         public virtual void OnPointerClick(BaseEventData baseEventData)

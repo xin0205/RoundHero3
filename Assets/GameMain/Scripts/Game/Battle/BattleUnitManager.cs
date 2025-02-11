@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Animancer;
 using GameFramework.Event;
 using UnityEngine;
 using Random = System.Random;
@@ -198,6 +199,27 @@ namespace RoundHero
             // }
             
         }
+        
+        
+        public List<Data_BattleUnit> GetUnitsByCamp(EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null)
+        {
+            var units = new List<Data_BattleUnit>();
+            foreach (var kv in BattleUnitEntities)
+            {
+                if (unitCamp == ERelativeCamp.Us && kv.Value.UnitCamp == selfUnitCamp ||
+                    unitCamp == ERelativeCamp.Enemy && kv.Value.UnitCamp != selfUnitCamp || 
+                    unitCamp == null)
+                {
+                    units.Add(kv.Value.BattleUnit);
+                }
+            }
+            
+            return units;
+            
+            
+            
+        }
+        
         
         // public IUnit GetUnitByIDMoreCamps(int id, List<EUnitCamp> unitCamps = null,
         //     EActionType? attackType = null)

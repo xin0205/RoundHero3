@@ -63,6 +63,7 @@ namespace RoundHero
         {
             var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
             var heroEntity = HeroManager.Instance.GetHeroEntity(BattleUnitData.UnitCamp);
+            
             await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  heroEntity.ValuePos.position, hurt);
         }
 

@@ -99,8 +99,8 @@ namespace RoundHero
         
         public void HurtRoundStartMoveTrigger(int passUnitID, int bePassUnitID, List<TriggerData> triggerDatas)
         {
-            var passUnit = GameUtility.GetUnitDataByID(passUnitID, true);
-            var bePassUnit = GameUtility.GetUnitDataByID(bePassUnitID, true);
+            var passUnit = GameUtility.GetUnitDataByIdx(passUnitID, true);
+            var bePassUnit = GameUtility.GetUnitDataByIdx(bePassUnitID, true);
 
             if(passUnit == null || bePassUnit == null)
                 return;

@@ -300,5 +300,29 @@ namespace RoundHero
             
             return (BattleAttackTagEntity)task.Logic;
         }
+        
+        public static async Task<BattleFlyDirectEntity> ShowBattleFlyDirectEntityAsync(this EntityComponent entityComponent, int gridPosIdx, ERelativePos direct, int entityIdx)
+        {
+            var data = ReferencePool.Acquire<BattleFlyDirectEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), gridPosIdx, direct, entityIdx);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleFlyDirectEntity),
+                AssetUtility.GetBattleFlyDirectEntityPrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleFlyDirectEntity)task.Logic;
+        }
+        
+        public static async Task<BattleIconEntity> ShowBattleIconEntityAsync(this EntityComponent entityComponent, Vector3 pos, EBattleIconType  battleIconType, int entityIdx)
+        {
+            var data = ReferencePool.Acquire<BattleIconEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), pos, battleIconType, entityIdx);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleIconEntity),
+                AssetUtility.GetBattleIconEntityPrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleIconEntity)task.Logic;
+        }
     }
 }

@@ -121,6 +121,10 @@ namespace RoundHero
         public void OnShowGridDetail(object sender, GameEventArgs e)
         {
             var ne = e as ShowGridDetailEventArgs;
+            if (ne.GridPosIdx == 9)
+            {
+                var a = 5;
+            }
             if (ne.ShowState == EShowState.Show)
             {
                 BattleAreaManager.Instance.CurPointGridPosIdx = ne.GridPosIdx;
@@ -315,7 +319,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
 
                     var tempUnitMovePaths = BattleManager.Instance.TempTriggerData.TempUnitMovePaths =
-                        BattleFightManager.Instance.GetRunPaths(BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GridTypes, BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
+                        BattleFightManager.Instance.GetRunPaths(BattleFightManager.Instance.RoundFightData.GamePlayData.LastBattleData.GridTypes, BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
                             ne.GridPosIdx, runPaths);
                     //var realTargetGridPosIdx = BattleManager.Instance.TempTriggerData.TargetGridPosIdx =
                         
@@ -1896,7 +1900,7 @@ namespace RoundHero
                 {
                     ShowBackupGrids(null);
                     
-                    var unitData = GameUtility.GetUnitDataByID(BattleManager.Instance.TempTriggerData.UnitData.Idx, false);
+                    var unitData = GameUtility.GetUnitDataByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx, false);
                     var unit = BattleUnitManager.Instance.GetUnitByIdx(unitData.Idx);
                     if (unit != null)
                     {

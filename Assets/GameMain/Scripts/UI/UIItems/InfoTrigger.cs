@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace RoundHero
 {
@@ -30,12 +31,18 @@ namespace RoundHero
         {
             isShowInfo = true;
 
+            // var mousePosition = Vector2.zero;
+            // RectTransformUtility.ScreenPointToLocalPointInRectangle(AreaController.Instance.Canvas.transform as RectTransform,
+            //         Input.mousePosition, AreaController.Instance.UICamera, out mousePosition);
+            //
             var infoFormParams = new InfoFormParams()
             {
                 Name = string.IsNullOrEmpty(name) ? "" : GameEntry.Localization.GetString(name),
                 Desc = string.IsNullOrEmpty(desc) ? "" : GameEntry.Localization.GetString(desc),
-                Position = this.transform.position + (Vector3)infoDelta,
+                //Position = mousePosition + infoDelta,
             };
+            
+            
             
             if (infoParams != null)
             {
@@ -47,7 +54,26 @@ namespace RoundHero
             infoForm = uiForm.Logic as InfoForm;
         }
 
-        
+        // public async void ShowInfoInWorld()
+        // {
+        //     isShowInfo = true;
+        //
+        //     var infoFormParams = new InfoFormParams()
+        //     {
+        //         Name = string.IsNullOrEmpty(name) ? "" : GameEntry.Localization.GetString(name),
+        //         Desc = string.IsNullOrEmpty(desc) ? "" : GameEntry.Localization.GetString(desc),
+        //         Position = AreaController.Instance.UICamera.WorldToScreenPoint(this.transform.position) + (Vector3)infoDelta,
+        //     };
+        //     
+        //     if (infoParams != null)
+        //     {
+        //         infoParams.Invoke(infoFormParams);
+        //     }
+        //
+        //     var uiForm = await GameEntry.UI.OpenInfoFormAsync(infoFormParams);
+        //     
+        //     infoForm = uiForm.Logic as InfoForm;
+        // }
         
         
         public void HideInfo()

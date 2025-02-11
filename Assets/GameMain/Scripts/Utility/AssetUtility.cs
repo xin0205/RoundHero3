@@ -399,5 +399,19 @@ namespace RoundHero
 
         }
 
+        public static string GetBattleFlyDirectEntityPrefab()
+        {
+            return "Assets/GameMain/Entities/Battles/BattleFlyDirectEntity.prefab";
+
+        }
+        
+        public static string GetBattleIconEntityPrefab()
+        {
+            return "Assets/GameMain/Entities/Battles/BattleIconEntity.prefab";
+
+        }
+        
+        
+        
     }
 }

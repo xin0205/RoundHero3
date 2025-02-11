@@ -56,7 +56,7 @@ namespace RoundHero
         public void CacheUnitKillData(int ownUnitID, int actionUnitID, int unitID, List<TriggerData> triggerDatas)
         {
             BattleFightManager.Instance.RoundFightData.UseCardDatas.Clear();
-            var unit = BattleFightManager.Instance.GetUnitByID(unitID);
+            var unit = BattleFightManager.Instance.GetUnitByIdx(unitID);
 
             if (unit is Data_BattleSolider solider)
             {
@@ -217,7 +217,7 @@ namespace RoundHero
         private void Kill_AddHeroCurHP(int funeID, int ownUnitID, int actionUnitID, 
             List<TriggerData> triggerDatas)
         {
-            var unit = BattleFightManager.Instance.GetUnitByID(actionUnitID);
+            var unit = BattleFightManager.Instance.GetUnitByIdx(actionUnitID);
             var triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
                 BattleFightManager.Instance.PlayerData.BattleHero.Idx, EUnitAttribute.HP, unit.MaxHP - unit.CurHP, ETriggerDataSubType.Unit);
             triggerDatas.Add(triggerData);
