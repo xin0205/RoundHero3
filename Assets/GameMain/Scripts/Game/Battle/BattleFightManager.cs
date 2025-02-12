@@ -160,6 +160,10 @@ namespace RoundHero
         public bool ChangeHPInstantly = true;
 
         public bool HeroHPDelta = false;
+
+        public int ActionUnitGridPosIdx = -1;
+        public int EffectUnitGridPosIdx = -1;
+
         //public bool AddHeroHP = true;
 
         public TriggerData()
@@ -3102,15 +3106,15 @@ namespace RoundHero
 
 
 
-        public TriggerData BattleRoleAttribute(int ownSoliderID, int actionSoliderID, int effectUnitID,
+        public TriggerData BattleRoleAttribute(int ownSoliderIdx, int actionSoliderIdx, int effectUnitIdx,
             EUnitAttribute attribute, float attributeValue, ETriggerDataSubType triggerDataSubType)
         {
             var triggerData = new TriggerData();
             triggerData.TriggerDataType = ETriggerDataType.RoleAttribute;
             triggerData.TriggerDataSubType = triggerDataSubType;
-            triggerData.OwnUnitID = ownSoliderID;
-            triggerData.ActionUnitIdx = actionSoliderID;
-            triggerData.EffectUnitIdx = effectUnitID;
+            triggerData.OwnUnitID = ownSoliderIdx;
+            triggerData.ActionUnitIdx = actionSoliderIdx;
+            triggerData.EffectUnitIdx = effectUnitIdx;
             triggerData.BattleUnitAttribute = attribute;
             triggerData.Value = attributeValue;
 

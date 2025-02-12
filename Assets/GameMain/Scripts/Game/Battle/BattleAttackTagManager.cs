@@ -74,20 +74,20 @@ namespace RoundHero
             {
                 var triggerData = triggerDatas[0];
                 var actionUnitIdx = triggerData.ActionUnitIdx;
-                var effectUnitIdx = triggerData.EffectUnitIdx;
-                var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
-                var effectUnit = GameUtility.GetUnitDataByIdx(effectUnitIdx);
+                //var effectUnitIdx = triggerData.EffectUnitIdx;
+                //var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
+                //var effectUnit = GameUtility.GetUnitDataByIdx(effectUnitIdx);
 
-                var effectUnitGridPosIdx = effectUnit.GridPosIdx;
-                var movePaths = BattleFightManager.Instance.GetMovePaths(effectUnitIdx);
-                // && effectUnit.GridPosIdx < actionUnit.GridPosIdx
-                if (movePaths != null && movePaths.Count > 0 && isEffectUnitMove)
-                {
-                    effectUnitGridPosIdx = movePaths[movePaths.Count - 1];
-                }
+                // var effectUnitGridPosIdx = effectUnit.GridPosIdx;
+                // var movePaths = BattleFightManager.Instance.GetMovePaths(effectUnitIdx);
+                // // && effectUnit.GridPosIdx < actionUnit.GridPosIdx
+                // if (movePaths != null && movePaths.Count > 0 && isEffectUnitMove)
+                // {
+                //     effectUnitGridPosIdx = movePaths[movePaths.Count - 1];
+                // }
 
-                var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
-                var actionUnitPos = GameUtility.GridPosIdxToPos(actionUnit.GridPosIdx);
+                var effectUnitPos = GameUtility.GridPosIdxToPos(triggerData.EffectUnitGridPosIdx);
+                var actionUnitPos = GameUtility.GridPosIdxToPos(triggerData.ActionUnitGridPosIdx);
 
                 var attackTagType = GameUtility.IsSubCurHPTrigger(triggerData) ? EAttackTagType.Attack :
                     GameUtility.IsAddCurHPTrigger(triggerData) ? EAttackTagType.Recover : EAttackTagType.UnitState;

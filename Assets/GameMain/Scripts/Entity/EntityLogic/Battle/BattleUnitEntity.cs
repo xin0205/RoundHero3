@@ -21,6 +21,9 @@ namespace RoundHero
         [SerializeField] protected TextMesh hp;
         [SerializeField] protected TextMesh damage;
         [SerializeField] protected GameObject uiNode;
+        [SerializeField] protected GameObject hpAndDamageNode;
+        [SerializeField] protected GameObject damageNode;
+        [SerializeField] protected TextMesh damage2;
         //[SerializeField] protected RPGCharacterController Controller;
         
         protected Quaternion cameraQuaternion = Quaternion.identity;
@@ -966,16 +969,15 @@ namespace RoundHero
         
         public virtual void RefreshData()
         {
-            RefreshHP();
+            //RefreshHP();
             RefreshDamageState();
         }
 
         public void RefreshHP()
         {
-            
-            hp.gameObject.SetActive(true);
-            damage.gameObject.SetActive(true);
-            
+            hpAndDamageNode.SetActive(true);
+            damageNode.SetActive(false);
+
             var curHP = BattleUnitData.CurHP;
             curHP = curHP < 0 ? 0 : curHP;
             hp.text = curHP.ToString();
@@ -985,23 +987,28 @@ namespace RoundHero
 
             if (hurt != 0)
             {
-                damage.text = curHP.ToString();
+                damage.text = hurt.ToString();
+            }
+            else
+            {
+                damage.text = "";
             }
             
         }
 
         public void RefreshDamageState()
         {
-            hp.gameObject.SetActive(false);
-            damage.gameObject.SetActive(true);
+            hpAndDamageNode.SetActive(false);
+            damageNode.SetActive(true);
+
             var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
             if (hurt != 0)
             {
-                damage.text = hurt.ToString();
+                damage2.text = hurt.ToString();
             }
             else
             {
-                damage.text = "";
+                damage2.text = "";
             }
         }
         

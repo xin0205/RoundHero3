@@ -207,6 +207,9 @@ namespace RoundHero
                         {
                             triggerData.ChangeHPInstantly = false;
                         }
+
+                        triggerData.ActionUnitGridPosIdx = actionUnit.GridPosIdx;
+                        triggerData.EffectUnitGridPosIdx = realEffectUnit.GridPosIdx;
                         CacheTriggerData(triggerData, triggerDatas);
 
                     }

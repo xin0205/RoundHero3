@@ -33,8 +33,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3628192270226799441}
   - {fileID: 5378250684951447801}
+  - {fileID: 3628192270226799441}
   - {fileID: 109048332359919625}
   - {fileID: 5487001706848574140}
   - {fileID: 8127727932887454644}
@@ -1207,11 +1207,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce1159f53ff44f19bccf86bbf127f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gifFormData:
+  GifFormData:
     GifPlayData:
       ItemType: 0
       ID: 0
-      ShowPosition: 0
+      ShowPosition: 1
 --- !u!1 &8019872775364726988
 GameObject:
   m_ObjectHideFlags: 0
