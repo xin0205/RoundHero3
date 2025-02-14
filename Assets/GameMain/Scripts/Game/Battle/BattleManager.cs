@@ -101,7 +101,7 @@ namespace RoundHero
         public void RefreshView()
         {
 
-            BattleUnitManager.Instance.RefreshDamageState();
+            //BattleUnitManager.Instance.RefreshDamageState();
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
             GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
         }

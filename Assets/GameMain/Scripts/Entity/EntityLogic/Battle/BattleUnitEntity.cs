@@ -969,8 +969,16 @@ namespace RoundHero
         
         public virtual void RefreshData()
         {
-            //RefreshHP();
-            RefreshDamageState();
+            if (IsPointer)
+            {
+                RefreshHP();
+            }
+            else
+            {
+                RefreshDamageState();
+            }
+            
+            
         }
 
         public void RefreshHP()
@@ -1140,9 +1148,12 @@ namespace RoundHero
             var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
             hurtEntity.transform.parent = Root;
         }
+
+        public bool IsPointer = false;
         
         public virtual void OnPointerEnter(BaseEventData baseEventData)
         {
+            IsPointer = true;
             GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, true));
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Show)); 
             RefreshHP();
@@ -1152,6 +1163,7 @@ namespace RoundHero
         
         public virtual void OnPointerExit(BaseEventData baseEventData)
         {
+            IsPointer = false;
             GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, false));
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Unshow)); 
             RefreshDamageState();

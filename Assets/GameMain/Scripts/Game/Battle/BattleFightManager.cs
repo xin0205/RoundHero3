@@ -1913,7 +1913,7 @@ namespace RoundHero
 
                 TriggerUnitData(unitID, bePassUnit == null ? passUnit.Idx : bePassUnit.Idx, gridPosIdx, EBuffTriggerType.Move, triggerDatas);
                 
-                CacheUnitRangeDatas(passUnit.Idx, preGridPosIdx, gridPosIdx, triggerDatas);
+                //CacheUnitRangeDatas(passUnit.Idx, preGridPosIdx, gridPosIdx, triggerDatas);
 
                 if (nextGridPosIdx == preGridPosIdx && bePassUnit != null)
                 {

@@ -40,7 +40,7 @@ namespace RoundHero
             if (infoFormParams.ShowPosition == EShowPosition.MousePosition)
             {
                 var pos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
-                var delta = new Vector2(1, 0.5f);
+                var delta = new Vector2(1.5f,0.75f);
                 if (mousePosition.x < Screen.width / 2)
                 {
                     pos.x += delta.x;

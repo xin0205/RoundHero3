@@ -1211,7 +1211,7 @@ MonoBehaviour:
     GifPlayData:
       ItemType: 0
       ID: 0
-      ShowPosition: 1
+      ShowPosition: 0
 --- !u!1 &8019872775364726988
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,18 +1389,6 @@ PrefabInstance:
     - target: {fileID: 2043804080050367782, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
       propertyPath: m_SizeDelta.y
       value: 230
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043804080050367782, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043804080050367782, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2043804080050367782, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 2043804080050367782, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
       propertyPath: m_LocalPosition.x

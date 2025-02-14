@@ -13,19 +13,19 @@ namespace RoundHero
     
     public enum EWeaponType
     {
-        Sword,
-        Spear,
-        Axe,
-        Bow,
-        Crossbow,
-        Staff,
-        Shield,
-        Mace,
-        Dagger,
-        Item,
-        Pistol,
-        Rifle,
-        Empty,
+        Sword,//剑
+        Spear,//矛
+        Axe,//斧头
+        Bow,//弓
+        Crossbow,//弩
+        Staff,//杖
+        Shield,//盾牌
+        Mace,//锤子
+        Dagger,//匕首
+        Item,//
+        Pistol,//手枪
+        Rifle,//步枪
+        Empty,//
     }
     
     public enum EHeroAttribute

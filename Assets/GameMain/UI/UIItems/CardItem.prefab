@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 1069735466856660906}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 541410869565064798}
@@ -71,6 +71,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2043804080050367782}
     m_Modifications:
+    - target: {fileID: 645958168417165160, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3131446593805558435, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4559589956139492282, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -151,6 +159,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6184208619046824844, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6737811815257700014, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
       propertyPath: m_Name
       value: TacticCardItem
@@ -188,6 +200,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2043804080050367782}
     m_Modifications:
+    - target: {fileID: 645958168417165160, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2867791530408040890, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
       value: 1
@@ -272,6 +288,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6184208619046824844, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6737811815257700014, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
       propertyPath: m_Name
       value: UnitCardItem
@@ -309,6 +329,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2043804080050367782}
     m_Modifications:
+    - target: {fileID: 645958168417165160, guid: 2f25b21eb3b59834fb08ff70d89b617a, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3131446593805558435, guid: 2f25b21eb3b59834fb08ff70d89b617a, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4559589956139492282, guid: 2f25b21eb3b59834fb08ff70d89b617a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -392,6 +420,10 @@ PrefabInstance:
     - target: {fileID: 6737811815257700014, guid: 2f25b21eb3b59834fb08ff70d89b617a, type: 3}
       propertyPath: m_Name
       value: StateCardItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 8255527748199124259, guid: 2f25b21eb3b59834fb08ff70d89b617a, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

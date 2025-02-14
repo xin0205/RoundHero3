@@ -32,6 +32,7 @@ namespace RoundHero
             public const string Message_InitCardCount = "Message.InitCardCount";
             public const string Message_CoinNotEnough = "Message.CoinNotEnough";
             public const string Message_HPNotEnough = "Message.HPNotEnough";
+            public const string Message_HPNotUseAll = "Message.HPNotUseAll";
             public const string Message_Purchase = "Message.Purchase";
             public const string Message_ConfirmEquipFune = "Message.ConfirmEquipFune";
             public const string Message_MaxHeart = "Message.MaxHeart";

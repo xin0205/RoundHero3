@@ -48,9 +48,9 @@ namespace RoundHero
 
             //isShowEntity = true;
             BattleAttackTagEntities.Clear();
-            
-            var attackMovePaths = BattleFightManager.Instance.GetMovePaths(unitIdx);
-            var attackStartPos = GameUtility.GridPosIdxToPos(attackMovePaths[attackMovePaths.Count - 1]);
+             
+            //var attackMovePaths = BattleFightManager.Instance.GetMovePaths(unitIdx);
+            //var attackStartPos = GameUtility.GridPosIdxToPos(attackMovePaths[attackMovePaths.Count - 1]);
 
             var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
 
@@ -94,7 +94,7 @@ namespace RoundHero
 
                 var unitState = attackTagType == EAttackTagType.UnitState ? triggerData.UnitState : EUnitState.Empty;
 
-                var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos, attackStartPos,
+                var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos, actionUnitPos,
                     effectUnitPos, attackTagType, unitState, entityIdx);
                 
                 entityIdx++;

@@ -144,6 +144,22 @@ namespace RoundHero
             {
                 GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
             });
+            
+            // if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            // {
+            //     GameEntry.Event.Fire(null, SwitchActionCampEventArgs.Create(EUnitCamp.Player1));
+            // }
+            // else
+            // {
+            //     if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player1)
+            //     {
+            //         GameEntry.Event.Fire(null, SwitchActionCampEventArgs.Create(EUnitCamp.Player2));
+            //     }
+            //     else if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player2)
+            //     {
+            //         GameEntry.Event.Fire(null, SwitchActionCampEventArgs.Create(EUnitCamp.Player1));
+            //     }
+            // }
         }
 
         public void StartAction()

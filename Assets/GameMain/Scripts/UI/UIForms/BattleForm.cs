@@ -28,6 +28,8 @@ namespace RoundHero
         
         [SerializeField] private GameObject tipsNode;
 
+        [SerializeField] private GameObject endRoundNode;
+        
         [SerializeField] private Text tips;
         
         private ProcedureBattle procedureBattle;
@@ -43,7 +45,8 @@ namespace RoundHero
             GameEntry.Event.Subscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
             GameEntry.Event.Subscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
             GameEntry.Event.Subscribe(RefreshActionCampEventArgs.EventId, OnRefreshActionCamp);
-
+            //GameEntry.Event.Subscribe(SwitchActionCampEventArgs.EventId, OnSwitchActionCamp);
+            
             RefreshEnergy();
             
             //energyBuffBarUItem.Init(BattlePlayerManager.Instance.PlayerData.BattleHero);
@@ -94,6 +97,7 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
             GameEntry.Event.Unsubscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
             GameEntry.Event.Unsubscribe(RefreshActionCampEventArgs.EventId, OnRefreshActionCamp);
+            //GameEntry.Event.Unsubscribe(SwitchActionCampEventArgs.EventId, OnSwitchActionCamp);
         }
 
         public void OnRefreshBattleUI(object sender, GameEventArgs e)
@@ -101,10 +105,55 @@ namespace RoundHero
             RefreshUI();
         }
         
+        // public void OnSwitchActionCamp(object sender, GameEventArgs e)
+        // {
+        //     var ne = e as SwitchActionCampEventArgs;
+        //     if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+        //     {
+        //         if (ne.UnitCamp == EUnitCamp.Enemy)
+        //         {
+        //             endRoundNode.SetActive(false);
+        //         }
+        //         else
+        //         {
+        //             endRoundNode.SetActive(true);
+        //         }
+        //         
+        //     }
+        //     else
+        //     {
+        //         if (GamePlayManager.Instance.GamePlayData.PlayerData.UnitCamp == EUnitCamp.Player1)
+        //         {
+        //             if (ne.UnitCamp == EUnitCamp.Player1)
+        //             {
+        //                 endRoundNode.SetActive(true);
+        //             }
+        //             else
+        //             {
+        //                 endRoundNode.SetActive(false);
+        //             }
+        //         }
+        //         if (GamePlayManager.Instance.GamePlayData.PlayerData.UnitCamp == EUnitCamp.Player2)
+        //         {
+        //             if (ne.UnitCamp == EUnitCamp.Player2)
+        //             {
+        //                 endRoundNode.SetActive(true);
+        //             }
+        //             else
+        //             {
+        //                 endRoundNode.SetActive(false);
+        //             }
+        //         }
+        //
+        //     }
+        // }
+        
         public void OnRefreshActionCamp(object sender, GameEventArgs e)
         {
             var ne = e as RefreshActionCampEventArgs;
             ShowActionTips(ne.IsUs);
+            
+            endRoundNode.SetActive(ne.IsUs);
         }
         
         public void OnRefreshRound(object sender, GameEventArgs e)
@@ -201,6 +250,22 @@ namespace RoundHero
             BattleManager.Instance.EndRound();
             ShowActionTips(false);
             //isEndRound = true;
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                GameEntry.Event.Fire(null, SwitchActionCampEventArgs.Create(EUnitCamp.Enemy));
+            }
+            else
+            {
+                if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player1)
+                {
+                    GameEntry.Event.Fire(null, SwitchActionCampEventArgs.Create(EUnitCamp.Player2));
+                }
+                else if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player2)
+                {
+                    GameEntry.Event.Fire(null, SwitchActionCampEventArgs.Create(EUnitCamp.Player1));
+                }
+            }
+            
         }
         
         

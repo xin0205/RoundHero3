@@ -115,6 +115,7 @@ namespace RoundHero
                 EActionType.Vertical2Extend,
             };
 
+
             public static Dictionary<EActionType, List<List<Vector2Int>>> ActionTypePoints =
                 new()
                 {

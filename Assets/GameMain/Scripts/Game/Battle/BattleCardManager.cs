@@ -372,6 +372,13 @@ namespace RoundHero
             //     return false;
             // }
             
+            if (cardEnergy ==
+                HeroManager.Instance.GetAllCurHP())
+            {
+                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_HPNotUseAll));
+                return false;
+            }
+            
             if (cardEnergy >
                 HeroManager.Instance.GetAllCurHP())
             {
