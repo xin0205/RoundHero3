@@ -121,16 +121,15 @@ namespace RoundHero
         public void OnShowGridDetail(object sender, GameEventArgs e)
         {
             var ne = e as ShowGridDetailEventArgs;
-            if (ne.GridPosIdx == 9)
-            {
-                var a = 5;
-            }
+
             if (ne.ShowState == EShowState.Show)
             {
+                ShowAllGrid(true);
                 BattleAreaManager.Instance.CurPointGridPosIdx = ne.GridPosIdx;
             }
             else if (ne.ShowState == EShowState.Unshow)
             {
+                ShowAllGrid(false);
                 BattleAreaManager.Instance.CurPointGridPosIdx = -1;
             }
 
@@ -2076,6 +2075,14 @@ namespace RoundHero
             GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
         }
 
+
+        public void ShowAllGrid(bool show)
+        {
+            foreach (var kv in GridEntities)
+            {
+                kv.Value.Show(show);
+            }
+        }
         
     }
 }

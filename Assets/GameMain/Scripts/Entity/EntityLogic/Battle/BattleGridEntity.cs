@@ -14,6 +14,7 @@ namespace RoundHero
         [SerializeField] private TextMeshPro posTag;
         [SerializeField] private GameObject selectionGrid;
         [SerializeField] private GameObject backupGrid;
+        [SerializeField] private GameObject grid;
 
         public Vector3 Position
         {
@@ -44,23 +45,33 @@ namespace RoundHero
 
         public void Show(bool active)
         {
-            gameObject.SetActive(BattleGridEntityData.GridType != EGridType.Obstacle && active);
+            grid.SetActive(BattleGridEntityData.GridType != EGridType.Obstacle && active);
         }
 
         public void Refresh()
         {
+            //posTag.text = "";
             var coord = GameUtility.GridPosIdxToCoord(BattleGridEntityData.GridPosIdx);
             posTag.text = coord.x + "," + coord.y + "-" + BattleGridEntityData.GridPosIdx;
         }
 
-        public void ShowBackupGrid(bool show)
+        public void ShowBackupGrid(bool isShow)
         {
-            backupGrid.SetActive(show);
+            if (isShow)
+            {
+                grid.SetActive(false);
+            }
+            backupGrid.SetActive(isShow);
         }
 
         public void ShowSelectGrid(bool isShow)
         {
-            selectionGrid.gameObject.SetActive(isShow);
+            if (isShow)
+            {
+                grid.SetActive(false);
+            }
+            
+            selectionGrid.SetActive(isShow);
         }
         
         public void OnPointerEnter(BaseEventData baseEventData)

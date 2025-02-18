@@ -815,7 +815,7 @@ namespace RoundHero
                 
                 if (BattleManager.Instance.BattleState == EBattleState.UseCard)
                 {
-                    BattleManager.Instance.Refresh();
+                    //BattleManager.Instance.Refresh();
                 }
 
                 
@@ -827,7 +827,7 @@ namespace RoundHero
             //return moveCount * Constant.Unit.MoveTimes[unitActionState] + 0.1f;
         }
 
-        protected virtual void LookAtHero()
+        public virtual void LookAtHero()
         {
             var pos = HeroManager.Instance.HeroEntity.Position;
             roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
@@ -993,14 +993,15 @@ namespace RoundHero
             //           BattleUnitData.MaxHP;
             var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
 
-            if (hurt != 0)
-            {
-                damage.text = hurt.ToString();
-            }
-            else
-            {
-                damage.text = "";
-            }
+            damage.text = hurt > 0 ? "+" + hurt : hurt.ToString();
+            // if (hurt != 0)
+            // {
+            //     
+            // }
+            // else
+            // {
+            //     damage.text = "";
+            // }
             
         }
 

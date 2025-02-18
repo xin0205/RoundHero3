@@ -1081,6 +1081,9 @@ namespace RoundHero
             relatedEnemyUnits.Sort((unit1, unit2) =>
             {
                 if (unit2.UnitRole == EUnitRole.Hero)
+                    return 1;
+                
+                if (unit1.UnitRole == EUnitRole.Hero)
                     return -1;
                 
                 var unit1Coord = GameUtility.GridPosIdxToCoord(unit1.GridPosIdx);
@@ -1090,7 +1093,7 @@ namespace RoundHero
                 var unit2Dis = Vector2.Distance(unit2Coord, coord);
 
                 if (unit2Dis < unit1Dis)
-                    return -1;
+                    return 1;
 
                 return 0;
 

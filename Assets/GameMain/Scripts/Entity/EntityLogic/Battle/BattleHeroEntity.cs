@@ -34,7 +34,7 @@ namespace RoundHero
             //cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
         }
         
-        protected override void LookAtHero()
+        public override void LookAtHero()
         {
 
         }

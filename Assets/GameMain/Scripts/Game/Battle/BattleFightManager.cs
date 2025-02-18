@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameFramework;
+using GameKit.Dependencies.Utilities;
 using UnityEngine;
 
 using UnityGameFramework.Runtime;
@@ -154,6 +155,7 @@ namespace RoundHero
         public ETriggerDataType TriggerDataType = ETriggerDataType.Empty;
         public float Value;
         public float DeltaValue;
+        public float ActualValue;
         public ETriggerResult TriggerResult = ETriggerResult.Continue;
         public EBuffTriggerType BuffTriggerType = EBuffTriggerType.Empty;
 
@@ -790,9 +792,12 @@ namespace RoundHero
                 if(triggerBuffData.BuffData.BuffTriggerType != buffTriggerType)
                     continue;
                 
+                
+                
                 // || attackWithoutHero
                 var range = GameUtility.GetRange(gridPosIdx, triggerBuffData.BuffData.TriggerRange, unitCamp, triggerBuffData.BuffData.TriggerUnitCamps, true);
 
+                var rangeContainHero = false;
                 if (unitCamp == EUnitCamp.Enemy && range.Count > 0)
                 {
                     range.Sort((gridPosIdx1, gridPosIdx2) =>{
@@ -804,7 +809,14 @@ namespace RoundHero
 
                         return 0;
                     });
+                    
+                    var unit = GetUnitByGridPosIdx(range[0]);
+                    if (unit.UnitRole == EUnitRole.Hero && unit.UnitCamp != unitCamp)
+                    {
+                        rangeContainHero = true;
+                    }
                 }
+
                 
                 var isSubCurHP = false;
    
@@ -843,8 +855,11 @@ namespace RoundHero
                     
                     CacheUnitActiveMoveDatas(attackUnitID, rangeGridPosIdx, triggerBuffData.BuffData, actionData);
                     
-                    if(unitCamp == EUnitCamp.Enemy)
+                    if(triggerBuffData.BuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                         break;
+                    // && triggerBuffData.BuffData.FlyRange
+                    // if(unitCamp == EUnitCamp.Enemy)
+                    //     break;
                 }
 
                 // if (isSubCurHP)
@@ -974,7 +989,7 @@ namespace RoundHero
                     CacheUnitMoveDatas(relatedUnit.Idx, flyPaths, moveActionDatas);
 
                     
-                    if (!actionData.MoveData.MoveUnitDatas.ContainsKey(relatedUnit.Idx))
+                    if (!actionData.MoveData.MoveUnitDatas.ContainsKey(relatedUnit.Idx) && moveActionDatas.ContainsKey(relatedUnit.Idx))
                     {
                         actionData.MoveData.MoveUnitDatas.Add(relatedUnit.Idx, new MoveUnitData()
                         {
@@ -1027,20 +1042,24 @@ namespace RoundHero
                 }
                 
                 var moveUnit = GetUnitByIdx(moveUnitIdx);
-                flyPaths = GetFlyPaths(moveUnit.GridPosIdx, flyDirect);
- 
-                CacheUnitMoveDatas(moveUnitIdx, flyPaths, moveActionDatas);
-
-                if (moveActionDatas.Count > 0)
+                if (moveUnit != null)
                 {
-                    actionData.MoveData.MoveUnitDatas.Add(moveUnitIdx, new MoveUnitData()
+                    flyPaths = GetFlyPaths(moveUnit.GridPosIdx, flyDirect);
+ 
+                    CacheUnitMoveDatas(moveUnitIdx, flyPaths, moveActionDatas);
+
+                    if (moveActionDatas.Count > 0)
                     {
-                        UnitID = moveUnitIdx,
-                        MoveActionData = moveActionDatas[moveUnitIdx],
-                        UnitActionState = EUnitActionState.Fly,
-                    });
+                        actionData.MoveData.MoveUnitDatas.Add(moveUnitIdx, new MoveUnitData()
+                        {
+                            UnitID = moveUnitIdx,
+                            MoveActionData = moveActionDatas[moveUnitIdx],
+                            UnitActionState = EUnitActionState.Fly,
+                        });
                         
+                    }
                 }
+                
                 
             }
 
@@ -2514,6 +2533,22 @@ namespace RoundHero
 
             }
 
+            if (triggerValue < 0)
+            {
+                if (Mathf.Abs(triggerValue) > effectUnitOldHP)
+                {
+                    triggerData.ActualValue = -effectUnitOldHP;
+                }
+                else
+                {
+                    triggerData.ActualValue = triggerValue;
+                }
+            }
+            else
+            {
+                triggerData.ActualValue = effectUnitData.CurHP - effectUnitOldHP;
+            }
+            
         }
 
         public void SimulateTriggerData(TriggerData triggerData, List<TriggerData> triggerDatas)
@@ -4547,8 +4582,8 @@ namespace RoundHero
                 {
                     var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
                 
-                    if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
-                        continue;
+                    // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
+                    //     continue;
  
                     unitFlyDict.Add(kv.Key, moveGridPosIdxs);
                 }

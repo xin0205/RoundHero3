@@ -78,7 +78,7 @@ namespace RoundHero
             var value = 0;
             foreach (var triggerData in triggerDatas)
             {
-                value += (int)(triggerData.Value + triggerData.DeltaValue);
+                value += (int)triggerData.ActualValue;// (int)(triggerData.Value + triggerData.DeltaValue);
             }
             
             

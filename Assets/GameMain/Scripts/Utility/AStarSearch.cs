@@ -1,18 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Animancer;
 using UnityEngine;
 
 namespace RoundHero
 {
-    class AStarSearch
+    public class AStarSearch
     {
+        
         public enum EPointType
         {
             Empty = 0,
             Pass = 1,
             Obstacle = 2,
         }
+        
+        public enum EDirection
+        {
+            Left,
+            LeftUp,
+            Up,
+            RightUp,
+            Right,
+            RightDown,
+            Down,
+            LeftDown,
+            None,
+        }
+        
+        public static Dictionary<Vector2Int, EDirection> Coord2DirectMap = new()
+        {
+            [new(-1, 0)] = EDirection.Left,
+
+            [new(-1, 1)] = EDirection.LeftUp,
+
+            [new(0, 1)] = EDirection.Up,
+
+            [new(1, 1)] = EDirection.RightUp,
+
+            [new(1, 0)] = EDirection.Right,
+
+            [new(1, -1)] = EDirection.RightDown,
+
+            [new(0, -1)] = EDirection.Down,
+
+            [new(-1, -1)] = EDirection.LeftDown,
+
+        };
         
         
         private const int OBLIQUE = 10;
@@ -78,6 +113,7 @@ namespace RoundHero
                 var tempStart = MinPoint(ref OpenList);
                 OpenList.RemoveAt(0);
                 CloseList.Add(tempStart);
+     
                 //找出它相邻的点
                 var surroundPoints = SurroundPoints(tempStart);
                 foreach (Point point in surroundPoints)
@@ -136,10 +172,14 @@ namespace RoundHero
         private void FoundPoint(Point tempStart, Point point)
         {
             var G = CalcG(tempStart, point);
-            if (G < point.G)
+            var direction = CalcDirection(tempStart, point);
+            var wheelCount = CalcWheelCount(tempStart, point);
+            if (G < point.G || G == point.G && wheelCount < point.WheelCount)
             {
                 point.ParentPoint = tempStart;
                 point.G = G;
+                point.Direction = direction;
+                point.WheelCount = wheelCount;
                 point.CalcF();
             }
         }
@@ -147,10 +187,34 @@ namespace RoundHero
         private void NotFoundPoint(Point tempStart, Point end, Point point)
         {
             point.ParentPoint = tempStart;
+            point.Direction = CalcDirection(tempStart, point);
+            point.WheelCount = CalcWheelCount(tempStart, point);
             point.G = CalcG(tempStart, point);                    
             point.H = CalcH(end, point);
             point.CalcF();
             OpenList.Add(point);
+        }
+
+
+        private EDirection CalcDirection(Point prePoint, Point curPoint)
+        {
+            if (prePoint == null || curPoint == null)
+                return EDirection.None;
+            
+
+            return CalcDirection(new Vector2Int(prePoint.X, prePoint.Y), new Vector2Int(curPoint.X, curPoint.Y));
+        }
+        
+        private EDirection CalcDirection(Vector2Int preCoord, Vector2Int curCoord)
+        {
+            var deltaCoord = curCoord - preCoord;
+            
+            if (!Coord2DirectMap.ContainsKey(deltaCoord))
+            {
+                return EDirection.None;
+            }
+            
+            return Coord2DirectMap[deltaCoord];
         }
 
         private int CalcG(Point start, Point point)
@@ -178,6 +242,22 @@ namespace RoundHero
             int parentG = point.ParentPoint != null ? point.ParentPoint.G : 0;
             return G + parentG;
         }
+        
+        private int CalcWheelCount(Point start, Point point)
+        {
+            var preDirection = CalcDirection(start.ParentPoint, start);
+            var direction = CalcDirection(start, point);
+
+            if (preDirection == EDirection.None || direction == EDirection.None)
+                return start.WheelCount;
+            
+            if (preDirection == direction)
+                return start.WheelCount;
+
+            return start.WheelCount + 1;
+            
+            
+        }
 
         private int CalcH(Point end, Point point)
         {
@@ -189,16 +269,20 @@ namespace RoundHero
         public List<Point> SurroundPoints(Point point)
         {
             var surroundPoints = new List<Point>(9);
-
+            var coord = new Vector2Int(point.X, point.Y);
+            
+            
             for (int x = point.X - 1; x <= point.X + 1; x++)
                 for (int y = point.Y - 1; y <= point.Y + 1; y++)
                 {
                     if(x < 0 || x >= MazeArray.GetLength(0) || y < 0 || y >= MazeArray.GetLength(1))
                         continue;
+
+                    var direct = CalcDirection(coord, new Vector2Int(x, y));
                     
                     if (!isOblique && Math.Abs(x - point.X) + Math.Abs(y - point.Y) == 1 || isOblique)
                     {
-                        if (CanPass(point, x, y))
+                        if (CanPass(point, x, y, direct))
                             surroundPoints.Add(x, y);
                     }
                     
@@ -218,23 +302,20 @@ namespace RoundHero
             return MazeArray[x, y] == EPointType.Empty;
         }
 
-        public bool CanPass(Point start, int x, int y)
+        public bool CanPass(Point start, int x, int y, EDirection direction)
         {
-            if (!CanPass(x, y) || CloseList.Exists(x, y))
+            //
+            if (!CanPass(x, y) || CloseList.Exists(x, y, direction))
                 return false;
-            else
-            {
-                if (Math.Abs(x - start.X) + Math.Abs(y - start.Y) == 1)
-                    return true;
-                //如果是斜方向移动, 判断是否 "拌脚"
-                else
-                {
-                    if (CanPass(Math.Abs(x - 1), y) && CanPass(x, Math.Abs(y - 1)))
-                        return true;
-                    else
-                        return IsIgnoreCorner;
-                }
-            }
+            if (Math.Abs(x - start.X) + Math.Abs(y - start.Y) == 1)
+                return true;
+                
+            //如果是斜方向移动, 判断是否 "拌脚"
+            if (CanPass(Math.Abs(x - 1), y) && CanPass(x, Math.Abs(y - 1)))
+                return true;
+                
+            return IsIgnoreCorner;
+            
         }
         
         public static Point MinPoint(ref List<Point> points)
@@ -243,6 +324,8 @@ namespace RoundHero
             return points[0];
             
         }
+        
+        
     }
 
     //Point 类型
@@ -254,6 +337,10 @@ namespace RoundHero
         public int H { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+
+        public AStarSearch.EDirection Direction  { get; set; } = AStarSearch.EDirection.None;
+        
+        public int WheelCount { get; set; }
 
         public Point(Vector2Int point)
         {
@@ -270,6 +357,11 @@ namespace RoundHero
         {
             this.F = this.G + this.H;
         }
+        
+        public static Point operator -(Point v1, Point v2)
+        {
+            return new Point(v1.X - v2.X, v1.Y - v2.Y);
+        }
     }
 
 //对 List<Point> 的一些扩展方法
@@ -278,15 +370,15 @@ namespace RoundHero
         public static bool Exists(this List<Point> points, Point point)
         {
             foreach (Point p in points)
-                if ((p.X == point.X) && (p.Y == point.Y))
+                if ((p.X == point.X) && (p.Y == point.Y) && p.Direction == point.Direction)
                     return true;
             return false;
         }
 
-        public static bool Exists(this List<Point> points, int x, int y)
+        public static bool Exists(this List<Point> points, int x, int y, AStarSearch.EDirection direction)
         {
             foreach (Point p in points)
-                if ((p.X == x) && (p.Y == y))
+                if ((p.X == x) && (p.Y == y) && p.Direction == direction)
                     return true;
             return false;
         }
@@ -303,6 +395,14 @@ namespace RoundHero
         {
             foreach (Point p in points)
                 if ((p.X == point.X) && (p.Y == point.Y))
+                    return p;
+            return null;
+        }
+        
+        public static Point Get(this List<Point> points, int x, int y)
+        {
+            foreach (Point p in points)
+                if ((p.X == x) && (p.Y == y))
                     return p;
             return null;
         }

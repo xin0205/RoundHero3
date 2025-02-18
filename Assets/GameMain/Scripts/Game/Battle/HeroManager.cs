@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Steamworks;
+using UnityEngine;
+using Random = System.Random;
 
 namespace RoundHero
 {
@@ -76,9 +77,10 @@ namespace RoundHero
             BattleAreaManager.Instance.RefreshObstacles();
             
             var places = BattleAreaManager.Instance.GetPlaces();
-            var randoms = MathUtility.GetRandomNum(1, 0,
-                places.Count, Random);
-            BattleHeroData.GridPosIdx = places[randoms[0]];
+            // var randoms = MathUtility.GetRandomNum(1, 0,
+            //     places.Count, Random);
+            //BattleHeroData.GridPosIdx = places[center];
+            BattleHeroData.GridPosIdx = GameUtility.GridCoordToPosIdx(new Vector2Int(3, 3));
             
             var heroEntity = await GameEntry.Entity.ShowBattleHeroEntityAsync(BattleHeroData);
             
