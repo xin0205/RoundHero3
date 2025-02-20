@@ -78,14 +78,24 @@ namespace RoundHero
 
             for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
             {
+                var isObstacle = obstacleIdxs.Contains(i);
                 var gridEntity = await GameEntry.Entity.ShowGridEntityAsync(i,
-                    obstacleIdxs.Contains(i) ? EGridType.Obstacle : EGridType.Empty);
+                    isObstacle ? EGridType.Obstacle : EGridType.Empty);
 
                 GridEntities.Add(gridEntity.BattleGridEntityData.GridPosIdx, gridEntity);
 
                 if (gridEntity is IMoveGrid moveGrid)
                 {
                     MoveGrids.Add(gridEntity.BattleGridEntityData.Id, moveGrid);
+                }
+
+                if (isObstacle)
+                {
+                    var obstacleEntity = await GameEntry.Entity.ShowGridPropObstacleEntityAsync(88, i);
+                    if (obstacleEntity is IMoveGrid moveGrid2)
+                    {
+                        MoveGrids.Add(obstacleEntity.GridPropEntityData.Id, moveGrid2);
+                    }
                 }
             }
 

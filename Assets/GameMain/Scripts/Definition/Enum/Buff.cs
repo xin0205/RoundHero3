@@ -244,6 +244,8 @@
 
     public enum EBuffID
     {
+        Spec_MoveDirect,
+        Spec_Obstacle,
         Spec_SubEnergy,
         Spec_AddMaxHP,
         Spec_AddBaseDmg,

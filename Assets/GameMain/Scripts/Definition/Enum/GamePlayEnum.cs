@@ -305,6 +305,7 @@ namespace RoundHero
     public enum EGridPropID
     {
         MoveDirect,
+        Obstacle,
         Empty,
 
     }

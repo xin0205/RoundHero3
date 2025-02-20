@@ -45,7 +45,8 @@ namespace RoundHero
 
         public void Show(bool active)
         {
-            grid.SetActive(BattleGridEntityData.GridType != EGridType.Obstacle && active);
+            //BattleGridEntityData.GridType != EGridType.Obstacle && 
+            grid.SetActive(active);
         }
 
         public void Refresh()

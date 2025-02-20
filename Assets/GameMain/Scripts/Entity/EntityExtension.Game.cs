@@ -168,20 +168,36 @@ namespace RoundHero
             return (GridPropEntity)task.Logic;
         }
         
-        public static async Task<GridPropMoveDirectEntity> ShowGridPropMoveDirectEntityAsync(this EntityComponent entityComponent,
-            int gridPropID, ERelativePos direct, int gridPosIdx)
+        // public static async Task<GridPropMoveDirectEntity> ShowGridPropMoveDirectEntityAsync(this EntityComponent entityComponent,
+        //     int gridPropID, ERelativePos direct, int gridPosIdx)
+        // {
+        //     var data = ReferencePool.Acquire<GridPropMoveDirectEntityData>();
+        //     var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
+        //     var gridPropData = new Data_GridPropMoveDirect(gridPropID, direct, BattleUnitManager.Instance.GetIdx(), gridPosIdx, EUnitCamp.Third);
+        //
+        //     BattleGridPropManager.Instance.GridPropDatas.Add(gridPropData.Idx, gridPropData);
+        //     data.Init(entityComponent.GenerateSerialId(), pos, gridPropData);
+        //
+        //     var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(GridPropMoveDirectEntity),
+        //         AssetUtility.GetGridPropPrefab(gridPropID), Constant.EntityGroup.Unit, 0, data);
+        //     
+        //     return (GridPropMoveDirectEntity)task.Logic;
+        // }
+        
+        public static async Task<GridPropObstacleEntity> ShowGridPropObstacleEntityAsync(this EntityComponent entityComponent,
+            int gridPropID, int gridPosIdx)
         {
-            var data = ReferencePool.Acquire<GridPropMoveDirectEntityData>();
+            var data = ReferencePool.Acquire<GridPropEntityData>();
             var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
-            var gridPropData = new Data_GridPropMoveDirect(gridPropID, direct, BattleUnitManager.Instance.GetIdx(), gridPosIdx, EUnitCamp.Third);
+            var gridPropData = new Data_GridProp(gridPropID, BattleUnitManager.Instance.GetIdx(), gridPosIdx, EUnitCamp.Third);
 
             BattleGridPropManager.Instance.GridPropDatas.Add(gridPropData.Idx, gridPropData);
             data.Init(entityComponent.GenerateSerialId(), pos, gridPropData);
 
-            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(GridPropMoveDirectEntity),
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(GridPropObstacleEntity),
                 AssetUtility.GetGridPropPrefab(gridPropID), Constant.EntityGroup.Unit, 0, data);
             
-            return (GridPropMoveDirectEntity)task.Logic;
+            return (GridPropObstacleEntity)task.Logic;
         }
         
         public static async Task<HeroSceneEntity> ShowHeroSceneEntityAsync(this EntityComponent entityComponent)

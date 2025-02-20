@@ -263,7 +263,7 @@ namespace RoundHero
                     //var ownUnit = GameUtility.GetUnitByID(triggerData.OwnUnitID);
                     if (Math.Abs(triggerData.Value + triggerData.DeltaValue) >= effectUnit.CurHP)
                     {
-                        FuneManager.Instance.CacheUnitKillData(triggerData.OwnUnitID,
+                        FuneManager.Instance.CacheUnitKillData(triggerData.OwnUnitIdx,
                             triggerData.ActionUnitIdx, triggerData.EffectUnitIdx, triggerDatas);
                     }
                     //CacheHurtTriggerDatas(triggerData, triggerDatas);

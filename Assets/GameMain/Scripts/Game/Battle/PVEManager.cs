@@ -225,6 +225,11 @@ namespace RoundHero
             {
                 GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(EBattleState.EndRound));
             }
+
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
+            {
+                BattleManager.Instance.Refresh();
+            }
             
         }
 

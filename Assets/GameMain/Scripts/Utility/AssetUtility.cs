@@ -107,9 +107,11 @@ namespace RoundHero
         
         public static string GetGridPropPrefab(int gridPropID)
         {
-            return "Assets/GameMain/Entities/Battles/GridPropEntity_Action_HurtRoundStart_Range.prefab";
+            return "Assets/GameMain/Entities/Battles/GridPropEntity_Obstacle.prefab";
             //return Utility.Text.Format("Assets/GameMain/Entities/Battles/GridPropEntity_Action_HurtRoundStart_Range.prefab", Enum.GetName(typeof(EGridPropID), gridPropID));
         }
+        
+
         
         public static string GetBattleHeroPrefab(int heroID)
         {
