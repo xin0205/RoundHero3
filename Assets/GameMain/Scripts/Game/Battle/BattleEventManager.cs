@@ -271,7 +271,7 @@ namespace RoundHero
             else if (eventType == EEventType.Random_Fune || eventType == EEventType.Appoint_Fune)
             {
                 var unitFunes = GameEntry.DataTable.GetBuffs(EBuffType.Fune);
-                var funeIdxs = MathUtility.GetRandomNum(randomCount, 0, unitFunes.Length, random);
+                var funeIdxs = MathUtility.GetRandomNum(randomCount, 0, unitFunes.Count, random);
                 foreach (var funeIdx in funeIdxs)
                 {
                     itemIDs.Add(unitFunes[funeIdx].Id);

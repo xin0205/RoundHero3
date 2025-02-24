@@ -380,6 +380,7 @@
 
         
         Empty,
+        None,
 
     }
     
@@ -811,7 +812,7 @@
         Fune,
         EnemyFune,
         EnergyBuff,
-
+        EnemyGlobal
     }
 
 

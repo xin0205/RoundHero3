@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameKit.Dependencies.Utilities;
 using UnityGameFramework.Runtime;
 
@@ -125,13 +126,13 @@ namespace RoundHero
             });
         }
         
-        public static DRBuff[] GetBuffs(this DataTableComponent dataTableComponent, EBuffType buffType)
+        public static List<DRBuff> GetBuffs(this DataTableComponent dataTableComponent, EBuffType buffType)
         {
             var drBuffs = GameEntry.DataTable.GetDataTable<DRBuff>();
             return drBuffs.GetDataRows((t) =>
             {
                 return t.BuffTypes.Contains(buffType);
-            });
+            }).ToList();
         }
         
         // public static DRBuff GetBuff(this DataTableComponent dataTableComponent, string buffID)
@@ -211,6 +212,14 @@ namespace RoundHero
             });
         }
         
-
+        public static List<DREnemy> GetEnemys(this DataTableComponent dataTableComponent, EEnemyType enemyType)
+        {
+            var drEnemies = GameEntry.DataTable.GetDataTable<DREnemy>();
+            return drEnemies.GetDataRows((t) =>
+            {
+                return  t.SpecBuffs[0]!= "None" && (enemyType == EEnemyType.Normal ? t.SpecBuffs[0] == "Empty" : t.SpecBuffs[0] != "Empty");
+            }).ToList();
+        }
+        
     }
 }

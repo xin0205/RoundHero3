@@ -7,7 +7,7 @@ namespace RoundHero
     public class MathUtility
     {
         private static List<int> randomNumList = new List<int>(100);
-        public static List<int> GetRandomNum(int count, int start, int length, Random random = null)
+        public static List<int> GetRandomNum(int count, int start, int length, Random random = null, bool isRepeat = false)
         {
             if (count == 0)
                 return new List<int>();
@@ -38,7 +38,11 @@ namespace RoundHero
 
 
                 randNumList.Add(randomNumList[randIdx]);
-                randomNumList.RemoveAt(randIdx);
+                if (!isRepeat)
+                {
+                    randomNumList.RemoveAt(randIdx);
+                }
+                
                 count--;
             }
             

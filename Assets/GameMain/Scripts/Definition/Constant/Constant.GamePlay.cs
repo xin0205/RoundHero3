@@ -1113,21 +1113,82 @@ namespace RoundHero
             
         }
 
+        public class EnemyGenrateRule
+        {
+            public Dictionary<int, int> RoundGenerateUnitCount = new Dictionary<int, int>();
+            public int EachRoundUnitCount = 0;
+            public int NormalUnitCount;
+            public int EliteUnitCount;
+            public int NormalUnitTypeCount;
+            public int EliteUnitTypeCount;
+            public int GlobalDebuffCount;
+        }
+
         public static class Enemy
         {
-            public static Dictionary<EEnemyType, int> EachTurnGenerateEnemyCounts = new()
+            // public static Dictionary<EEnemyType, int> EachTurnGenerateEnemyCounts = new()
+            // {
+            //     [EEnemyType.Normal] = 3,
+            //     [EEnemyType.Elite] = 1,
+            //     [EEnemyType.Boss] = 1,
+            //
+            // };
+            //
+            // public static Dictionary<EEnemyType, int> EnemyGenerateTurns = new()
+            // {
+            //     [EEnemyType.Normal] = 1,
+            //     [EEnemyType.Elite] = 1,
+            //     [EEnemyType.Boss] = 3,
+            //
+            // };
+            
+            public static Dictionary<EGameDifficulty, EnemyGenrateRule> EnemyGenerateRules = new()
             {
-                [EEnemyType.Normal] = 3,
-                [EEnemyType.Elite] = 1,
-                [EEnemyType.Boss] = 1,
-
-            };
-
-            public static Dictionary<EEnemyType, int> EnemyGenerateTurns = new()
-            {
-                [EEnemyType.Normal] = 1,
-                [EEnemyType.Elite] = 1,
-                [EEnemyType.Boss] = 3,
+                [EGameDifficulty.Difficulty1] = new EnemyGenrateRule()
+                    {
+                        RoundGenerateUnitCount = new Dictionary<int, int>()
+                        {
+                            [0] = 2,
+                            [2] = 1,
+                            [4] = 2,
+                        },
+                        EachRoundUnitCount = 2,
+                        NormalUnitCount = 4,
+                        EliteUnitCount = 2,
+                        NormalUnitTypeCount = 2,
+                        EliteUnitTypeCount = 1,
+                        GlobalDebuffCount = 0,
+                    },
+                [EGameDifficulty.Difficulty2] = new EnemyGenrateRule()
+                {
+                    RoundGenerateUnitCount = new Dictionary<int, int>()
+                    {
+                        [0] = 3,
+                        [2] = 2,
+                        [4] = 3,
+                    },
+                    EachRoundUnitCount = 3,
+                    NormalUnitCount = 3,
+                    EliteUnitCount = 5,
+                    NormalUnitTypeCount = 2,
+                    EliteUnitTypeCount = 2,
+                    GlobalDebuffCount = 2,
+                },
+                [EGameDifficulty.Difficulty3] = new EnemyGenrateRule()
+                {
+                    RoundGenerateUnitCount = new Dictionary<int, int>()
+                    {
+                        [0] = 3,
+                        [2] = 3,
+                        [4] = 3,
+                    },
+                    EachRoundUnitCount = 3,
+                    NormalUnitCount = 2,
+                    EliteUnitCount = 7,
+                    NormalUnitTypeCount = 1,
+                    EliteUnitTypeCount = 3,
+                    GlobalDebuffCount = 3,
+                },
 
             };
 

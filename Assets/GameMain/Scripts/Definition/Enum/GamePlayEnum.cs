@@ -180,6 +180,13 @@ namespace RoundHero
         Elite,
         Boss,
     }
+    
+    public enum EGameDifficulty
+    {
+        Difficulty1,
+        Difficulty2,
+        Difficulty3,
+    }
 
     public enum EActionType
     {

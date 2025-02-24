@@ -63,8 +63,9 @@ namespace RoundHero
             return (BattleCardEntity)task.Logic;
         }
 
+        //int enemyTypeID, 
         public static async Task<BattleMonsterEntity> ShowBattleMonsterEntityAsync(this EntityComponent entityComponent,
-            int monsterID, int enemyTypeID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIDs)
+            int monsterID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIDs)
         {
             var data = ReferencePool.Acquire<BattleMonsterEntityData>();
             var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
@@ -75,7 +76,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, battleEnemyData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMonsterEntity),
-                AssetUtility.GetBattleEnemyPrefab(enemyTypeID), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleEnemyPrefab(monsterID), Constant.EntityGroup.Unit, 0, data);
             
             return (BattleMonsterEntity)task.Logic;
         }

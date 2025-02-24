@@ -1685,6 +1685,7 @@ namespace RoundHero
         public int Round;
         public int UnitIdx;
         public EEnemyType EnemyType;
+        public EGameDifficulty GameDifficulty;
         public Dictionary<EUnitCamp, Data_BattlePlayer> BattlePlayerDatas = new ();
 
         public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new();
@@ -1744,6 +1745,10 @@ namespace RoundHero
             var dataBattle = new Data_Battle();
 
             dataBattle.Round = Round;
+            dataBattle.UnitIdx = UnitIdx;
+            dataBattle.EnemyType = EnemyType;
+            dataBattle.GameDifficulty = GameDifficulty;
+
 
             foreach (var kv in BattleUnitDatas)
             {

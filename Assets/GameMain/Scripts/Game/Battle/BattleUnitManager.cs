@@ -658,7 +658,19 @@ namespace RoundHero
            
         }
 
-
+        public int GetUnitCount(EUnitCamp unitCamp)
+        {
+            var count = 0;
+            foreach (var kv in BattleUnitDatas)
+            {
+                if (kv.Value.UnitCamp == unitCamp)
+                {
+                    count++;
+                }
+            }
+            return count;
+            
+        }
 
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using System.Threading.Tasks;
-
+using GameFramework;
 using GameFramework.Event;
 
 using UnityEngine;
@@ -11,19 +11,24 @@ using Random = System.Random;
 
 namespace RoundHero
 {
+    public class EnemyGenerateData
+    {
+        // public List<int> EliteUnitTypeList = new List<int>();
+        // public List<int>
+        public List<int> GlobalDebuffList = new List<int>();
+        public Dictionary<int, int> RoundGenerateUnitCount = new Dictionary<int, int>();
+        public List<int> UnitList = new List<int>();
+        public int UnitIdx = 0;
+    }
     public class BattleEnemyManager : Singleton<BattleEnemyManager>
     {
-        
-        
+
         //public Dictionary<int, Data_BattleMonster> BattleEnemyDatas => DataManager.Instance.CurUser.GamePlayData.BattleData.BattleEnemies;
-        //public Dictionary<int, List<int>> EnemyMovePaths = new ();
-        
-        
-        
+
         //private int id;
         public Random Random;
         private int randomSeed;
-
+        public EnemyGenerateData EnemyGenerateData = new EnemyGenerateData();
         
 
         public void Init(int randomSeed)
@@ -54,10 +59,54 @@ namespace RoundHero
                 buffValuelist.Add(values);
             }
 
-
+            InitGenerateRole(Random.Next());
         }
 
-        
+        public void InitGenerateRole(int randomSeed)
+        {
+            var random = new Random(randomSeed);
+            
+            var rule = Constant.Enemy.EnemyGenerateRules[BattleManager.Instance.BattleData.GameDifficulty];
+            
+            EnemyGenerateData.RoundGenerateUnitCount = new Dictionary<int, int>(rule.RoundGenerateUnitCount);
+            var normalUnitList = GameEntry.DataTable.GetEnemys(EEnemyType.Normal);
+            var normalUnitTypeRandoms = MathUtility.GetRandomNum(rule.NormalUnitTypeCount, 0, normalUnitList.Count,
+                new Random(random.Next()));
+            var normalUnitRandoms = MathUtility.GetRandomNum(rule.NormalUnitCount, 0, normalUnitTypeRandoms.Count,
+                new Random(random.Next()), true);
+            
+            var eliteUnitList = GameEntry.DataTable.GetEnemys(EEnemyType.Elite);
+            var eliteUnitTypeRandoms = MathUtility.GetRandomNum(rule.EliteUnitTypeCount, 0, eliteUnitList.Count,
+                new Random(random.Next()));
+            var eliteUnitRandoms = MathUtility.GetRandomNum(rule.EliteUnitCount, 0, eliteUnitTypeRandoms.Count,
+                new Random(random.Next()), true);
+
+            var unitList = new List<int>(normalUnitRandoms.Count + eliteUnitRandoms.Count);
+            foreach (var idx in normalUnitRandoms)
+            {
+                unitList.Add(normalUnitList[normalUnitTypeRandoms[idx]].Id);
+            }
+            
+            foreach (var idx in eliteUnitRandoms)
+            {
+                unitList.Add(eliteUnitList[eliteUnitTypeRandoms[idx]].Id);
+            }
+            
+            var unitListRandoms = MathUtility.GetRandomNum(unitList.Count, 0, unitList.Count,
+                new Random(random.Next()));
+
+            foreach (var idx in unitListRandoms)
+            {
+                EnemyGenerateData.UnitList.Add(unitList[idx]);
+            }
+            
+            var globalBuffList = GameEntry.DataTable.GetBuffs(EBuffType.EnemyGlobal);
+            var globalBuffRandoms = MathUtility.GetRandomNum(rule.GlobalDebuffCount, 0, globalBuffList.Count, new Random(random.Next()));
+            foreach (var idx in globalBuffRandoms)
+            {
+                EnemyGenerateData.GlobalDebuffList.Add(globalBuffRandoms[idx]);
+            }
+        }
 
         public void Destory()
         {
@@ -122,23 +171,74 @@ namespace RoundHero
         //
         //     return entityID;
         // }
+
+        
         
         public async Task GenerateEnemies()
         {
-            if(BattleManager.Instance.BattleData.Round >= Constant.Enemy.EnemyGenerateTurns[BattleManager.Instance.BattleData.EnemyType])
-                return;
+            // if(BattleManager.Instance.BattleData.Round >= Constant.Enemy.EnemyGenerateTurns[BattleManager.Instance.BattleData.EnemyType])
+            //     return;
 
+            
             BattleAreaManager.Instance.RefreshObstacles();
             var places = BattleAreaManager.Instance.GetPlaces();
+            
+            var rule = Constant.Enemy.EnemyGenerateRules[BattleManager.Instance.BattleData.GameDifficulty];
+
+
+            var enemyCurCount = BattleUnitManager.Instance.GetUnitCount(EUnitCamp.Enemy);
+            var enemyGenerateCount = 0;
+            
+            if (rule.RoundGenerateUnitCount.ContainsKey(BattleManager.Instance.BattleData.Round))
+            {
+                if (EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] > 0)
+                {
+                    enemyGenerateCount =
+                        EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round];
+                }
+            }
+            else
+            {
+                if (enemyCurCount < rule.EachRoundUnitCount)
+                {
+                    var needCount = rule.EachRoundUnitCount - enemyCurCount;
+                    
+                    for (int i = 0; i < EnemyGenerateData.RoundGenerateUnitCount.Count; i++)
+                    {
+                        var roundCount = EnemyGenerateData.RoundGenerateUnitCount[i];
+                        if (i >= BattleManager.Instance.BattleData.Round)
+                        {
+                            if (roundCount >= needCount)
+                            {
+                                EnemyGenerateData.RoundGenerateUnitCount[i] -= needCount;
+                                enemyGenerateCount += needCount;
+                                
+                            }
+                            else if(roundCount < needCount)
+                            {
+                                EnemyGenerateData.RoundGenerateUnitCount[i] = 0;
+                                enemyGenerateCount += roundCount;
+                            }
+                            
+                            if (enemyGenerateCount >= needCount)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    
+                }
+            }
 
             var enemyIdxs = MathUtility.GetRandomNum(
-                Constant.Enemy.EachTurnGenerateEnemyCounts[BattleManager.Instance.BattleData.EnemyType], 0,
+                enemyGenerateCount, 0,
                 places.Count, Random);
             
-            for (int i = 0; i < Constant.Enemy.EachTurnGenerateEnemyCounts[BattleManager.Instance.BattleData.EnemyType]; i++)
+            for (int i = 0; i < enemyGenerateCount; i++)
             {
-                var randomEnemyType = 0;//Random.Next(0, 3);
-                var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(0, randomEnemyType,  places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
+                var enemyId = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
+                var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(enemyId, places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
+                EnemyGenerateData.UnitIdx++;
                 battleEnemyEntity.LookAtHero();
                 BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx);
                 

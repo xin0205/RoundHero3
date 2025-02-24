@@ -155,7 +155,7 @@ namespace RoundHero
             startGameRandomSeed = 94204398;//2198030
             Log.Debug("randomSeed:" + startGameRandomSeed);
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
-            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EEnemyType.Normal));
+            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
             
             
         }

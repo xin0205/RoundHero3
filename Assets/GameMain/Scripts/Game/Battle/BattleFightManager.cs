@@ -5301,6 +5301,7 @@ namespace RoundHero
             if (unitIdxs.Count > 0)
             {
                 CalculateUnitPaths(unitCamp, unitIdxs, obstacleEnemies, movePaths);
+                
             }
 
         }
