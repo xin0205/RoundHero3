@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-
+using System.Linq;
 using System.Threading.Tasks;
 using GameFramework;
 using GameFramework.Event;
@@ -189,6 +189,7 @@ namespace RoundHero
             var enemyCurCount = BattleUnitManager.Instance.GetUnitCount(EUnitCamp.Enemy);
             var enemyGenerateCount = 0;
             
+
             if (rule.RoundGenerateUnitCount.ContainsKey(BattleManager.Instance.BattleData.Round))
             {
                 if (EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] > 0)
@@ -202,22 +203,28 @@ namespace RoundHero
                 if (enemyCurCount < rule.EachRoundUnitCount)
                 {
                     var needCount = rule.EachRoundUnitCount - enemyCurCount;
+                    var curNeedCount = needCount;
+                    var keys = EnemyGenerateData.RoundGenerateUnitCount.Keys.ToList();
+                    
                     
                     for (int i = 0; i < EnemyGenerateData.RoundGenerateUnitCount.Count; i++)
                     {
-                        var roundCount = EnemyGenerateData.RoundGenerateUnitCount[i];
+                        var idx = keys[i];
+                        var roundCount = EnemyGenerateData.RoundGenerateUnitCount[idx];
                         if (i >= BattleManager.Instance.BattleData.Round)
                         {
-                            if (roundCount >= needCount)
+                            if (roundCount >= curNeedCount)
                             {
-                                EnemyGenerateData.RoundGenerateUnitCount[i] -= needCount;
-                                enemyGenerateCount += needCount;
-                                
+                                EnemyGenerateData.RoundGenerateUnitCount[idx] -= curNeedCount;
+                                enemyGenerateCount += curNeedCount;
+                                curNeedCount = 0;
+
                             }
-                            else if(roundCount < needCount)
+                            else if(roundCount < curNeedCount)
                             {
-                                EnemyGenerateData.RoundGenerateUnitCount[i] = 0;
+                                EnemyGenerateData.RoundGenerateUnitCount[idx] = 0;
                                 enemyGenerateCount += roundCount;
+                                curNeedCount -= roundCount;
                             }
                             
                             if (enemyGenerateCount >= needCount)

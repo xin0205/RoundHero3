@@ -118,7 +118,7 @@ namespace RoundHero
                                 {
                                     if (triggerActionTriggerData.TriggerData != null)
                                     {
-                                        BattleFightManager.Instance.TriggerAction(triggerActionTriggerData.TriggerData);
+                                        BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
 
                                     }
                                 }
@@ -146,7 +146,7 @@ namespace RoundHero
 
             var moveCount = BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count > 1 ? BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count - 1 : 1;
             
-            GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 0.1f, () =>
+            GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 1f, () =>
             {
                 DestoryBulletParticle();
                 //BattleBulletManager.Instance.ClearData(BattleBulletEntityData.BulletData.ActionUnitID);

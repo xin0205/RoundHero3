@@ -162,8 +162,20 @@ namespace RoundHero
             IsMove = false;
             
         }
+
+        protected override void OnHide(bool isShutdown, object userData)
+        {
+            base.OnHide(isShutdown, userData);
+            var unitDescTriggerItem = GetComponent<UnitDescTriggerItem>();
+            if (unitDescTriggerItem != null)
+            {
+                unitDescTriggerItem.CloseForm();
+            }
+        }
+
         
-         protected void InitWeaponType(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
+
+        protected void InitWeaponType(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
         {
             animator.SetBool(AnimationParameters.Moving, false);
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.WeaponUnsheathTrigger);

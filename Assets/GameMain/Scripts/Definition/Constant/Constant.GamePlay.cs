@@ -1144,21 +1144,36 @@ namespace RoundHero
             
             public static Dictionary<EGameDifficulty, EnemyGenrateRule> EnemyGenerateRules = new()
             {
+                // [EGameDifficulty.Difficulty1] = new EnemyGenrateRule()
+                //     {
+                //         RoundGenerateUnitCount = new Dictionary<int, int>()
+                //         {
+                //             [0] = 2,
+                //             [2] = 1,
+                //             [4] = 2,
+                //         },
+                //         EachRoundUnitCount = 2,
+                //         NormalUnitCount = 4,
+                //         EliteUnitCount = 2,
+                //         NormalUnitTypeCount = 2,
+                //         EliteUnitTypeCount = 1,
+                //         GlobalDebuffCount = 0,
+                //     },
                 [EGameDifficulty.Difficulty1] = new EnemyGenrateRule()
+                {
+                    RoundGenerateUnitCount = new Dictionary<int, int>()
                     {
-                        RoundGenerateUnitCount = new Dictionary<int, int>()
-                        {
-                            [0] = 2,
-                            [2] = 1,
-                            [4] = 2,
-                        },
-                        EachRoundUnitCount = 2,
-                        NormalUnitCount = 4,
-                        EliteUnitCount = 2,
-                        NormalUnitTypeCount = 2,
-                        EliteUnitTypeCount = 1,
-                        GlobalDebuffCount = 0,
+                        [0] = 1,
+                        [2] = 0,
+                        [4] = 0,
                     },
+                    EachRoundUnitCount = 1,
+                    NormalUnitCount = 0,
+                    EliteUnitCount = 1,
+                    NormalUnitTypeCount = 0,
+                    EliteUnitTypeCount = 1,
+                    GlobalDebuffCount = 0,
+                },
                 [EGameDifficulty.Difficulty2] = new EnemyGenrateRule()
                 {
                     RoundGenerateUnitCount = new Dictionary<int, int>()

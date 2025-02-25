@@ -12,6 +12,7 @@ namespace RoundHero
         
         private bool isOpen = false;
         
+ 
         public async void OnPointerEnter()
         {
             if(isOpen)
@@ -21,8 +22,8 @@ namespace RoundHero
             var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.UnitDescForm, UnitDescFormData);
             unitDescForm = formAsync.Logic as UnitDescForm;
             
-            
-            
+
+
         }
 
         public void OnPointerExit()
@@ -33,19 +34,32 @@ namespace RoundHero
             isOpen = false;
             if (unitDescForm == null)
                 return;
-                
-            
-            GameEntry.UI.CloseUIForm(unitDescForm);
-            unitDescForm = null;
+
+
+            CloseForm();
         }
 
         private void Update()
         {
-            if (!isOpen && unitDescForm != null)
+            
+            if (unitDescForm != null && !isOpen)
             {
-                GameEntry.UI.CloseUIForm(unitDescForm);
-                unitDescForm = null;
+                CloseForm();
+                //battleUnitEntity = null;
+                //isOpen = false;
             }
+        }
+
+        public void CloseForm()
+        {
+            if (unitDescForm == null)
+                return;
+
+            if(GameEntry.UI.GetUIForm(unitDescForm.UIForm.SerialId) == null)
+                return;
+            
+            GameEntry.UI.CloseUIForm(unitDescForm);
+            unitDescForm = null;
         }
     }
 }

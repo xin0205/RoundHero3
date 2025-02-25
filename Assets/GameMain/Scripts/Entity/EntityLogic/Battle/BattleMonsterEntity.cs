@@ -71,6 +71,9 @@ namespace RoundHero
         public override void OnPointerEnter(BaseEventData baseEventData)
         {
             base.OnPointerEnter(baseEventData);
+            
+            if(CurHP <= 0)
+                return;
         
             if(IsMove)
                 return;
@@ -109,6 +112,9 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState != EBattleState.UseCard && BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
                 return;
             
+            if(CurHP <= 0)
+                return;
+            
             if(IsMove)
                 return;
             
@@ -133,12 +139,23 @@ namespace RoundHero
             else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
             {
                 //var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
-                BattleAttackTagManager.Instance.UnShowAttackTags();
-                BattleFlyDirectManager.Instance.UnShowFlyDirects();
-                BattleIconManager.Instance.UnShowBattleIcons();
-                BattleValueManager.Instance.UnShowDisplayValues();
+                UnShowTags();
             }
             
+        }
+        
+        protected void UnShowTags()
+        {
+            BattleAttackTagManager.Instance.UnShowAttackTags();
+            BattleFlyDirectManager.Instance.UnShowFlyDirects();
+            BattleIconManager.Instance.UnShowBattleIcons();
+            BattleValueManager.Instance.UnShowDisplayValues();
+        }
+
+        protected override void OnHide(bool isShutdown, object userData)
+        {
+            base.OnHide(isShutdown, userData);
+            UnShowTags();
         }
     }
 }

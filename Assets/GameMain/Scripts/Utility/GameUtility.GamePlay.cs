@@ -1007,7 +1007,7 @@ namespace RoundHero
         // }
 
         private static Dictionary<EActionType, string> ActionTypeMaps = new Dictionary<EActionType, string>();
-        public static int GetActionGridPosIdx(int actionGridPosIdx, EActionType attackType, bool isBattleData = true)
+        public static int GetActionGridPosIdx(Dictionary<int, EGridType> obstacleMask, int actionGridPosIdx, EActionType attackType, bool isBattleData = true)
         {
             if (!ActionTypeMaps.ContainsKey(attackType))
             {
@@ -1055,11 +1055,15 @@ namespace RoundHero
                     }
 
                     var stepGridPosIdx = GameUtility.GridCoordToPosIdx(stepCoord);
-                    var unit = GetUnitByGridPosIdx(stepGridPosIdx);
-                    if (unit != null && unit.CurHP > 0)
+                    if (obstacleMask[stepGridPosIdx] != EGridType.Empty)
                     {
                         return -1;
                     }
+                    // var unit = GetUnitByGridPosIdx(stepGridPosIdx);
+                    // if (unit != null && unit.CurHP > 0)
+                    // {
+                    //     return -1;
+                    // }
 
                 }
 

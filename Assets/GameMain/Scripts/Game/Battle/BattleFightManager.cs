@@ -1842,6 +1842,10 @@ namespace RoundHero
 
             var minFullPaths = new List<int>();
 
+            if (movePaths.Count > 0)
+            {
+                passUnit.GridPosIdx = movePaths[0];
+            }
             for (int i = 0; i < movePaths.Count; i++)
             {
                 var preGridPosIdx = passUnit.GridPosIdx;
@@ -4424,13 +4428,13 @@ namespace RoundHero
         public List<int> GetMovePaths(int moveUnitIdx, int actionUnitIdx = -1)
         {
             List<int> movePaths = new List<int>();
-            var uniData = GameUtility.GetUnitDataByIdx(moveUnitIdx);
-            if(RoundFightData.EnemyMovePaths.ContainsKey(moveUnitIdx))
+            var unitData = GameUtility.GetUnitDataByIdx(moveUnitIdx);
+            if(RoundFightData.EnemyMovePaths.ContainsKey(moveUnitIdx) && RoundFightData.EnemyMovePaths[moveUnitIdx] != null && unitData != null)
             {
 
-                if(RoundFightData.EnemyMovePaths[moveUnitIdx].Count > 0 && RoundFightData.EnemyMovePaths[moveUnitIdx][0] != uniData.GridPosIdx)
+                if(RoundFightData.EnemyMovePaths[moveUnitIdx].Count > 0 && RoundFightData.EnemyMovePaths[moveUnitIdx][0] != unitData.GridPosIdx)
                 {
-                    movePaths.Add(uniData.GridPosIdx);
+                    movePaths.Add(unitData.GridPosIdx);
                     movePaths.AddRange(RoundFightData.EnemyMovePaths[moveUnitIdx]);
                 }
                 else
@@ -4452,7 +4456,11 @@ namespace RoundHero
             else
             {
                 //var uniData = GameUtility.GetUnitDataByIdx(moveUnitIdx);
-                movePaths.Add(uniData.GridPosIdx);
+                if (unitData != null)
+                {
+                    movePaths.Add(unitData.GridPosIdx);
+                }
+                
             }
             
             
@@ -5391,7 +5399,10 @@ namespace RoundHero
             {
                 var buffData = cacheBuffDatas[actionUnitIdx];
                 var battleUnitData = RoundFightData.GamePlayData.BattleData.BattleUnitDatas[actionUnitIdx] as Data_BattleMonster;
-                    
+
+                if (battleUnitData.CurHP <= 0)
+                    continue;
+                
                 var enemyData = GameEntry.DataTable.GetEnemy(battleUnitData.MonsterID);
                 
                 retGetRange.Clear();
@@ -5443,7 +5454,7 @@ namespace RoundHero
                         battleUnitData.GridPosIdx = realTargetPosIdx;
                         RefreshUnitGridPosIdx();
                         
-                        var actionGridPosIdx = GameUtility.GetActionGridPosIdx(realTargetPosIdx, buffData.TriggerRange, true);
+                        var actionGridPosIdx = GameUtility.GetActionGridPosIdx(curObstacleMask, realTargetPosIdx, buffData.TriggerRange, true);
                          if (actionGridPosIdx == -1)
                         {
                             battleUnitData.GridPosIdx = oriGridPosIdxs[actionUnitIdx];

@@ -30,12 +30,19 @@ namespace RoundHero
         {
             base.OnOpen(userData);
             UnitDescFormData = (UnitDescFormData)userData;
+            
+            if(BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) == null)
+                return;
 
             var gifPlayData = new GIFPlayData();
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
-                gifPlayData.ItemType = EGIFType.Enemy;
                 var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
+                
+
+                gifPlayData.ItemType = EGIFType.Enemy;
+                
+                
                 gifPlayData.ID = enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID;
 
             }
@@ -47,7 +54,9 @@ namespace RoundHero
                 }
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
-                    var drCard = CardManager.Instance.GetCard(UnitDescFormData.Idx);
+                    // var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
+                    //
+                    // var drCard = CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                     //drCard.CardID
                     gifPlayData.ID = 0;
                     gifPlayData.ItemType = EGIFType.Solider;
@@ -91,11 +100,12 @@ namespace RoundHero
                     unitDescItem.gameObject.SetActive(false);
                     
                     gifPlayData.ItemType = EGIFType.Solider;
-                    var drCard = CardManager.Instance.GetCard(UnitDescFormData.Idx);
+                    var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
+                    var cardData = CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                     var playerCardData = new PlayerCardData()
                     {
-                        CardIdx = UnitDescFormData.Idx,
-                        CardID = drCard.CardID,
+                        CardIdx = cardData.CardIdx,
+                        CardID = cardData.CardID,
                     };
                     
                     playerCardItem.SetItemData(playerCardData, true);

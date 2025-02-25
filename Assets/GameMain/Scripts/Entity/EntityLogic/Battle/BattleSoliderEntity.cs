@@ -27,7 +27,7 @@ namespace RoundHero
             unitDescFormData.UnitCamp = BattleSoliderEntityData.BattleSoliderData.UnitCamp;
             unitDescFormData.UnitRole = EUnitRole.Staff;
 
-            unitDescFormData.Idx = BattleSoliderEntityData.BattleSoliderData.CardIdx;
+            unitDescFormData.Idx = BattleSoliderEntityData.BattleSoliderData.Idx;
 
             
             ShowInit();
