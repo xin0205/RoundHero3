@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FishNet;
 using FishNet.Connection;
 using FishNet.Transporting;
@@ -118,7 +119,10 @@ namespace RoundHero
             ChangeState<ProcedureGamePlay>(procedureOwner);
                 
             var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
-            gamePlayProcedure.ShowMap();
+            //gamePlayProcedure.ShowMap();
+            
+            var random = new Random(GamePlayManager.Instance.GamePlayData.RandomSeed);
+            gamePlayProcedure.StartBattleTest(random.Next());
         }
 
         public void RestartGame()

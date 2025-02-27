@@ -734,6 +734,7 @@ namespace RoundHero
         CloseMulti,
         RemoteSingle,
         RemoteMulti,
+        Empty,
     }
 
 }

@@ -51,7 +51,8 @@ namespace RoundHero
 
         public int GetAllCurHP()
         {
-            return (BattleHeroData.CurHeart - 1) * BattleHeroData.MaxHP + BattleHeroData.CurHP;
+            //(BattleHeroData.CurHeart - 1)
+            return BattleHeroData.CurHeart * BattleHeroData.MaxHP + BattleHeroData.CurHP;
         }
 
         public void Destory()
@@ -76,7 +77,7 @@ namespace RoundHero
         {
             BattleAreaManager.Instance.RefreshObstacles();
             
-            var places = BattleAreaManager.Instance.GetPlaces();
+            //var places = BattleAreaManager.Instance.GetPlaces();
             // var randoms = MathUtility.GetRandomNum(1, 0,
             //     places.Count, Random);
             //BattleHeroData.GridPosIdx = places[center];
@@ -92,6 +93,8 @@ namespace RoundHero
             BattleUnitManager.Instance.BattleUnitEntities.Add(heroEntity.BattleHeroEntityData.BattleHeroData.Idx, heroEntity);
             //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
             HeroEntities.Add(BattleManager.Instance.CurUnitCamp, heroEntity);
+            
+            
         }
         
         // public bool IsHero(int gridPosIdx)

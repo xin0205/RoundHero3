@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -34,6 +35,22 @@ namespace RoundHero
             {
                 ObstacleGOs[i].SetActive(i == randomIdx);
             }
+
+        }
+        
+        public virtual void OnPointerEnter(BaseEventData baseEventData)
+        {
+
+            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, true));
+            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, EShowState.Show)); 
+  
+        }
+        
+        public virtual void OnPointerExit(BaseEventData baseEventData)
+        {
+
+            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, false));
+            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, EShowState.Unshow)); 
 
         }
     }

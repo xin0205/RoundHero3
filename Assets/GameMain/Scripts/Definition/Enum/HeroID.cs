@@ -3,6 +3,7 @@
     public enum EHeroID
     {
         Normal,
+        AddUnitAttack,
         MoreEnergyBuff,
         AddUnitMaxHP,
         SubUnitCardEnergy,

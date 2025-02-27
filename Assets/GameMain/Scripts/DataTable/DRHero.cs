@@ -100,33 +100,6 @@ namespace RoundHero
         }
 
         /// <summary>
-        /// 获取EnergyBuffIntervals。
-        /// </summary>
-        public List<int> EnergyBuffIntervals
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取EnergyBuffIDs。
-        /// </summary>
-        public List<string> EnergyBuffIDs
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取EnergyBuffValues。
-        /// </summary>
-        public List<string> EnergyBuffValues
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取武器持有类型。
         /// </summary>
         public EWeaponHoldingType WeaponHoldingType
@@ -153,6 +126,33 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取EnergyBuffIntervals。
+        /// </summary>
+        public List<int> EnergyBuffIntervals
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取EnergyBuffIDs。
+        /// </summary>
+        public List<string> EnergyBuffIDs
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取EnergyBuffValues。
+        /// </summary>
+        public List<string> EnergyBuffValues
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -172,12 +172,12 @@ namespace RoundHero
 			Values1 = DataTableExtension.ParseStringList(columnStrings[index++]);
 			Values2 = DataTableExtension.ParseStringList(columnStrings[index++]);
 			ActionType = Enum.Parse<EActionType>(columnStrings[index++]);
-			EnergyBuffIntervals = DataTableExtension.ParseInt32List(columnStrings[index++]);
-			EnergyBuffIDs = DataTableExtension.ParseStringList(columnStrings[index++]);
-			EnergyBuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
 			WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(columnStrings[index++]);
 			WeaponType = Enum.Parse<EWeaponType>(columnStrings[index++]);
             WeaponID = int.Parse(columnStrings[index++]);
+			EnergyBuffIntervals = DataTableExtension.ParseInt32List(columnStrings[index++]);
+			EnergyBuffIDs = DataTableExtension.ParseStringList(columnStrings[index++]);
+			EnergyBuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -197,12 +197,12 @@ namespace RoundHero
 					Values1 = binaryReader.ReadStringList();
 					Values2 = binaryReader.ReadStringList();
                     ActionType = Enum.Parse<EActionType>(binaryReader.ReadString());
-					EnergyBuffIntervals = binaryReader.ReadInt32List();
-					EnergyBuffIDs = binaryReader.ReadStringList();
-					EnergyBuffValues = binaryReader.ReadStringList();
                     WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(binaryReader.ReadString());
                     WeaponType = Enum.Parse<EWeaponType>(binaryReader.ReadString());
                     WeaponID = binaryReader.Read7BitEncodedInt32();
+					EnergyBuffIntervals = binaryReader.ReadInt32List();
+					EnergyBuffIDs = binaryReader.ReadStringList();
+					EnergyBuffValues = binaryReader.ReadStringList();
                 }
             }
 

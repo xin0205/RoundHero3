@@ -429,7 +429,7 @@ namespace RoundHero
                         continue;
                         
                     var gridPosIdx = GameUtility.GridCoordToPosIdx(deltaCoord);
-                   
+                    bulletData.MoveGridPosIdxs.Add(gridPosIdx);
                     
                     var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
                     if(effectUnit == null)
@@ -450,7 +450,7 @@ namespace RoundHero
                         bulletData.TriggerActionDataDict.Add(gridPosIdx, triggerActionData);
                     }
                     
-                    bulletData.MoveGridPosIdxs.Add(gridPosIdx);
+                    
 
                     if(triggerActionDatas != null && triggerRange.ToString().Contains("Extend"))
                     {
@@ -460,8 +460,14 @@ namespace RoundHero
                     
                 }
 
-                if (bulletData.MoveGridPosIdxs.Count <= 1)
+                if (bulletData.TriggerActionDataDict.Count <= 0)
+                {
+                    bulletData.MoveGridPosIdxs.Clear();
                     continue;
+                }
+
+                // if (bulletData.MoveGridPosIdxs.Count <= 1)
+                //     continue;
                 
                 GameEntry.Entity.ShowBattleLineBulletEntityAsync(bulletData, ShootPos.position);
                 
@@ -1046,6 +1052,7 @@ namespace RoundHero
         {
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.DeathTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
+            
             
             
             //SetAction(EUnitActionState.Dead);

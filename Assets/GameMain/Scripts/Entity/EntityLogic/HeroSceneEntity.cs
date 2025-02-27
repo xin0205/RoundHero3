@@ -44,7 +44,7 @@ namespace RoundHero
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
-            if (DisplayHeroEntity != null)
+            if (DisplayHeroEntity != null && GameEntry.Entity.GetEntity(DisplayHeroEntity.Id) != null)
             {
                 GameEntry.Entity.HideEntity(DisplayHeroEntity);
                 DisplayHeroEntity = null;

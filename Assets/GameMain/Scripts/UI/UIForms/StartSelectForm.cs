@@ -87,7 +87,7 @@ namespace RoundHero
             
             GameEntry.Event.Fire(null, StartSelect_SelectHeroEventArgs.Create(0));
             
-            startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -289,6 +289,26 @@ namespace RoundHero
             procedureStart.Start();
         }
 
-        
+        public void StartTest()
+        {
+            if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
+            {
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
+                    Constant.Battle.InitCardMaxCount);
+                return;
+            }
+            
+            
+            //GameEntry.UI.CloseUIForm(this);
+            
+            //startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            //startGameRandomSeed = 6036588;//94204398;//2198030
+            // Log.Debug("randomSeed:" + startGameRandomSeed);
+            // GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
+            // GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
+
+
+            GameEntry.UI.OpenUIForm(UIFormId.SelectDifficultyForm, this);
+        }
     }
 }

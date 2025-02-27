@@ -146,13 +146,15 @@ namespace RoundHero
 
             var moveCount = BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count > 1 ? BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count - 1 : 1;
             
+            GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime + 0.05f, () =>
+            {
+                HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
+            });
             GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 1f, () =>
             {
                 DestoryBulletParticle();
-                //BattleBulletManager.Instance.ClearData(BattleBulletEntityData.BulletData.ActionUnitID);
-                HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
+                
             });
-            
             
         }
 

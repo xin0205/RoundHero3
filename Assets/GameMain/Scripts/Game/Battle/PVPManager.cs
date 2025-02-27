@@ -445,5 +445,10 @@ namespace RoundHero
             return BattleEnergyBuffManager.Instance.GetEnergyBuff(unitCamp, heart, hp);
 
         }
+
+        public void ShowGameOver()
+        {
+            
+        }
     }
 }

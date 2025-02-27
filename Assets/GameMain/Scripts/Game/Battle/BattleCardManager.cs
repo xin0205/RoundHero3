@@ -39,6 +39,7 @@ namespace RoundHero
                 
             }
             CardEntities.Clear();
+            HandCardIdxs.Clear();
         }
 
         public void InitCards()

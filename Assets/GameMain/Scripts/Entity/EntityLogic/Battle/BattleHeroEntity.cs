@@ -38,10 +38,23 @@ namespace RoundHero
         {
 
         }
+        
+        public override void Dead()
+        {
+            base.Dead();
+            
+            BattleManager.Instance.ShowGameOver();
+            
+        }
 
         public void UpdateCacheHPDelta()
         {
             ChangeCurHP(BattleHeroEntityData.BattleHeroData.CacheHPDelta, false, false, true, false);
+            
+            if (BattleHeroEntityData.BattleHeroData.CacheHPDelta < 0)
+            {
+                Hurt();
+            }
             BattleHeroEntityData.BattleHeroData.CacheHPDelta = 0;
             //cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
         }

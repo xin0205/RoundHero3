@@ -196,6 +196,8 @@ namespace RoundHero
                 {
                     enemyGenerateCount =
                         EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round];
+                    EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] -=
+                        enemyGenerateCount;
                 }
             }
             else

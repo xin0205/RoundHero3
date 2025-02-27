@@ -115,7 +115,7 @@ namespace RoundHero
         
         public static string GetBattleHeroPrefab(int heroID)
         {
-            return Utility.Text.Format("Assets/GameMain/Entities/Heros/BattleHeroEntity_0.prefab", heroID);
+            return Utility.Text.Format("Assets/GameMain/Entities/Heros/BattleHeroEntity_{0}.prefab", heroID);
         }
         
         public static string GetBattleTipsPrefab()

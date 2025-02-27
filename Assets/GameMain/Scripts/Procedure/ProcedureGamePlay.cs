@@ -91,11 +91,20 @@ namespace RoundHero
 
         public void StartBattle(int randomSeed)
         {
+            
             BattleManager.Instance.Init(randomSeed);
             // DRScene drScene = GameEntry.DataTable.GetScene(1);
             // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(mapForm);
+            ChangeState<ProcedureBattle>(procedureOwner);
+        }
+        
+        public void StartBattleTest(int randomSeed)
+        {
+            
+            BattleManager.Instance.Init(randomSeed);
+
             ChangeState<ProcedureBattle>(procedureOwner);
         }
         

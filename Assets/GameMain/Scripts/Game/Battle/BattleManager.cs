@@ -11,6 +11,8 @@ namespace RoundHero
         public IBattleTypeManager BattleTypeManager;
         
         public TempTriggerData TempTriggerData = new TempTriggerData();
+
+        public ProcedureBattle ProcedureBattle;
         
         public EBattleState BattleState { get => BattleTypeManager.BattleState;
             set => BattleTypeManager.BattleState = value;
@@ -84,6 +86,7 @@ namespace RoundHero
             BattleEnemyManager.Instance.Destory();
             BattleUnitManager.Instance.Destory();
             HeroManager.Instance.Destory();
+            
             //BlessManager.Instance.Destory();
             //BattleBuffManager.Instance.Destory();
             //FightManager.Instance.Destory();
@@ -419,6 +422,18 @@ namespace RoundHero
         public bool IsOddRound()
         {
             return (BattleManager.Instance.BattleData.Round + 1) % 2 != 0;
+        }
+        
+        public void EndBattleTest()
+        {
+            ProcedureBattle.EndBattleTest();
+            
+            
+        }
+
+        public void ShowGameOver()
+        {
+            BattleTypeManager.ShowGameOver();
         }
 
     }

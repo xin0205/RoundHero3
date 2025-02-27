@@ -5,6 +5,12 @@ using Random = System.Random;
 
 namespace RoundHero
 {
+    public enum EGameOver
+    {
+        Success,
+        Failed,
+        None,        
+    }
     public interface IBattleTypeManager
     {
         public EBattleState BattleState { get; set; }
@@ -26,6 +32,8 @@ namespace RoundHero
         public void PlaceUnitCard(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp);
 
         public void Destory();
+
+        public void ShowGameOver();
 
 
     }
@@ -95,11 +103,12 @@ namespace RoundHero
 
             if (BattleState == EBattleState.EndRound)
             {
-                
-                StartTurn();
-                
-                BattleEnemyManager.Instance.GenerateNewEnemies();
-                
+
+                if (CheckGameOver() == EGameOver.None)
+                {
+                    StartTurn();
+                }
+
                 GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
             }
@@ -139,6 +148,9 @@ namespace RoundHero
             BattleCardManager.Instance.RoundAcquireCards(false);
             
             BattleManager.Instance.RoundStartTrigger();
+            
+            BattleEnemyManager.Instance.GenerateNewEnemies();
+            
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
             GameUtility.DelayExcute(1.5f, () =>
             {
@@ -339,6 +351,72 @@ namespace RoundHero
         public void PlaceUnitCard(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp)
         {
             BattleAreaManager.Instance.PlaceUnitCard(cardID, gridPosIdx, playerUnitCamp);
+        }
+
+        public void ShowGameOver()
+        {
+            var gameOver = CheckGameOver();
+            
+            if(gameOver == EGameOver.Success)
+            {
+                GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+                {
+                    IsShowCancel = false,
+                    Message = GameEntry.Localization.GetString(Constant.Localization.Message_BattleTestSuccess),
+                    OnConfirm = () =>
+                    {
+                        BattleManager.Instance.EndBattleTest();
+                    
+                    }
+                
+                });
+
+            }
+
+            else if (gameOver == EGameOver.Failed)
+            {
+                GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+                {
+                    IsShowCancel = false,
+                    Message = GameEntry.Localization.GetString(Constant.Localization.Message_BattleTestFailed),
+                    OnConfirm = () =>
+                    {
+                        BattleManager.Instance.EndBattleTest();
+                    
+                    }
+                
+                });
+
+            }
+
+        }
+        
+        public EGameOver CheckGameOver()
+        {
+            var enemyCount = 0;
+            foreach (var kv in BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount)
+            {
+                enemyCount += kv.Value;
+            }
+
+            enemyCount += BattleUnitManager.Instance.GetUnitsByCamp(EUnitCamp.Player1, ERelativeCamp.Enemy).Count;
+            
+            if(enemyCount <= 0)
+            {
+                
+                
+                return EGameOver.Success;
+            }
+
+            if (HeroManager.Instance.BattleHeroData.CurHP <= 0)
+            {
+                
+                
+                return EGameOver.Failed;
+            }
+
+            return EGameOver.None;
+
         }
     }
 }

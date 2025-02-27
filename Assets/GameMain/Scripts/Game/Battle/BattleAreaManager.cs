@@ -66,14 +66,29 @@ namespace RoundHero
         
         public async Task InitArea()
         {
-            var initIdx = MathUtility.GetRandomNum(Constant.Area.ObstacleCount, 0,
-                Constant.Area.GridSize.x * Constant.Area.GridSize.y, Random);
+            BattleAreaManager.Instance.RefreshObstacles();
+            
+            var places = BattleAreaManager.Instance.GetPlaces();
+            var insidePlaces = new List<int>();
+            foreach (var gridPosIdx in places)
+            {
+                var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
+                if (coord.x == 0 || coord.y == 0 || coord.x == Constant.Area.GridSize.x - 1 ||
+                    coord.y == Constant.Area.GridSize.y - 1)
+                {
+                    continue;
+                }
+                insidePlaces.Add(gridPosIdx);
+            }
+ 
+            var obstacleRandoms = MathUtility.GetRandomNum(Constant.Area.ObstacleCount, 0,
+                insidePlaces.Count, Random);
 
 
             var obstacleIdxs = new List<int>();
             for (int i = 0; i < Constant.Area.ObstacleCount; i++)
             {
-                obstacleIdxs.Add(initIdx[i]);
+                obstacleIdxs.Add(insidePlaces[obstacleRandoms[i]]);
             }
 
             for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
@@ -96,6 +111,9 @@ namespace RoundHero
                     {
                         MoveGrids.Add(obstacleEntity.GridPropEntityData.Id, moveGrid2);
                     }
+                    
+                    BattleGridPropManager.Instance.GridPropEntities.Add(obstacleEntity.GridPropEntityData.Id,
+                        obstacleEntity);
                 }
             }
 

@@ -96,5 +96,7 @@ namespace RoundHero
         GIFForm = 135,
         
         UnitDescForm = 136,
+        
+        SelectDifficultyForm = 137,
     }
 }

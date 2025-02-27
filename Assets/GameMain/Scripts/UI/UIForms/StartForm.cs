@@ -25,12 +25,12 @@ namespace RoundHero
             }
             
             
-            var isStartGame = DataManager.Instance.DataGame.User.CurGamePlayData.PlayerData.BattleHero.HeroID !=
-                              EHeroID.Empty;
-            
-            startGame.SetActive(!isStartGame);
-            continueGame.SetActive(isStartGame);
-            restartGame.SetActive(isStartGame);
+            // var isStartGame = DataManager.Instance.DataGame.User.CurGamePlayData.PlayerData.BattleHero.HeroID !=
+            //                   EHeroID.Empty;
+            //
+            // startGame.SetActive(!isStartGame);
+            // continueGame.SetActive(isStartGame);
+            // restartGame.SetActive(isStartGame);
             
         }
 
@@ -99,6 +99,10 @@ namespace RoundHero
             procedureStart.RestartGame();
         }
 
-        
+        public void StartTest()
+        {
+            CloseForm();
+            procedureStart.RestartGame();
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace RoundHero
         [SerializeField] private GameObject endRoundNode;
         
         [SerializeField] private Text tips;
+        [SerializeField] private Text randomSeed;
         
         private ProcedureBattle procedureBattle;
 
@@ -51,6 +52,8 @@ namespace RoundHero
             
             //energyBuffBarUItem.Init(BattlePlayerManager.Instance.PlayerData.BattleHero);
             tipsNode.SetActive(false);
+            
+            randomSeed.text = GamePlayManager.Instance.GamePlayData.RandomSeed.ToString();
         }
 
         private void ShowRoundTips(int round)
@@ -319,6 +322,13 @@ namespace RoundHero
         {
             procedureBattle.EndBattle();
             BattleMapManager.Instance.NextStep();
+            
+        }
+        
+        public void ExitBattleTest()
+        {
+            BattleManager.Instance.EndBattleTest();
+            
             
         }
         

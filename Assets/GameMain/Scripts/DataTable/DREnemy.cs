@@ -118,6 +118,15 @@ namespace RoundHero
         }
 
         /// <summary>
+        /// 获取SpecBuffValues。
+        /// </summary>
+        public List<string> SpecBuffValues
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 获取武器持有类型。
         /// </summary>
         public EWeaponHoldingType WeaponHoldingType
@@ -192,6 +201,7 @@ namespace RoundHero
 			PassiveBuffs = DataTableExtension.ParseStringList(columnStrings[index++]);
 			PassiveBuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
 			SpecBuffs = DataTableExtension.ParseStringList(columnStrings[index++]);
+			SpecBuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
 			WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(columnStrings[index++]);
 			WeaponType = Enum.Parse<EWeaponType>(columnStrings[index++]);
             WeaponID = int.Parse(columnStrings[index++]);
@@ -219,6 +229,7 @@ namespace RoundHero
 					PassiveBuffs = binaryReader.ReadStringList();
 					PassiveBuffValues = binaryReader.ReadStringList();
 					SpecBuffs = binaryReader.ReadStringList();
+					SpecBuffValues = binaryReader.ReadStringList();
                     WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(binaryReader.ReadString());
                     WeaponType = Enum.Parse<EWeaponType>(binaryReader.ReadString());
                     WeaponID = binaryReader.Read7BitEncodedInt32();

@@ -88,6 +88,11 @@ namespace RoundHero
 
         public void Destory()
         {
+            foreach (var kv in GridPropEntities)
+            {
+                GameEntry.Entity.HideEntity(kv.Value);
+            }
+            GridPropEntities.Clear();
         }
 
         public Data_GridProp GetGridProp(int gridPosIdx)

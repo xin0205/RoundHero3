@@ -66,6 +66,9 @@ namespace RoundHero
             public const string Info_PassCardDesc = "Info.PassCardDesc";
             public const string Info_ConsumeCardName = "Info.ConsumeCardName";
             public const string Info_ConsumeCardDesc = "Info.ConsumeCardDesc";
+            
+            public const string Message_BattleTestSuccess = "Message.BattleTestSuccess";
+            public const string Message_BattleTestFailed = "Message.BattleTestFailed";
         }
     }
 }

@@ -25,38 +25,15 @@ namespace RoundHero
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
 
             //GameEntry.Sound.PlayMusic(0);
-            
 
+            BattleManager.Instance.ProcedureBattle = this;
             InitSuccess = false;
 
             var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
             //DRScene drScene = GameEntry.DataTable.GetScene(1);
             GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(sceneName), Constant.AssetPriority.SceneAsset);
             
-            var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
-            playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
             
-            var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
-            battleForm = battleFormTask.Logic as BattleForm;
-            
-            await BattleAreaManager.Instance.InitArea();
-            await HeroManager.Instance.GenerateHero();
-                
-            await BattleEnemyManager.Instance.GenerateNewEnemies();
-                
-
-            PVEManager.Instance.BattleState = EBattleState.UseCard;
-            BattleCardManager.Instance.RoundAcquireCards(true);
-                
-            BattleAreaManager.Instance.RefreshObstacles();    
-            BattleManager.Instance.RoundStartTrigger();
-            BattleManager.Instance.Refresh();
-            
-            GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
-            GameUtility.DelayExcute(1.5f, () =>
-            {
-                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
-            });
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -78,7 +55,7 @@ namespace RoundHero
             
         }
 
-        public void OnLoadSceneSuccess(object sender, GameEventArgs e)
+        public async void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
             AreaController.Instance.RefreshCameraPlane();
             // var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
@@ -94,6 +71,32 @@ namespace RoundHero
             
             
             InitSuccess = true;
+            
+            var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
+            playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
+            
+            var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
+            battleForm = battleFormTask.Logic as BattleForm;
+            
+            await HeroManager.Instance.GenerateHero();
+            await BattleAreaManager.Instance.InitArea();
+            
+                
+            await BattleEnemyManager.Instance.GenerateNewEnemies();
+                
+
+            PVEManager.Instance.BattleState = EBattleState.UseCard;
+            BattleCardManager.Instance.RoundAcquireCards(true);
+                
+            BattleAreaManager.Instance.RefreshObstacles();    
+            BattleManager.Instance.RoundStartTrigger();
+            BattleManager.Instance.Refresh();
+            
+            GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
+            GameUtility.DelayExcute(1.5f, () =>
+            {
+                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+            });
 
         }
         
@@ -114,6 +117,24 @@ namespace RoundHero
             
             var procedureGamePlay = procedureOwner.CurrentState as ProcedureGamePlay;
             procedureGamePlay.ShowMap();
+        }
+        
+        public void EndBattleTest()
+        {
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                PVEManager.Instance.Exit();
+            }
+            GameEntry.UI.CloseUIForm(playerInfoForm);
+            GameEntry.UI.CloseUIForm(battleForm);
+            BattleManager.Instance.Destory();
+
+            var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
+            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
+            ChangeState<ProcedureStart>(procedureOwner);
+            
+            var procedureStart = procedureOwner.CurrentState as ProcedureStart;
+            procedureStart.RestartGame();
         }
 
     }
