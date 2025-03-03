@@ -206,25 +206,25 @@ namespace RoundHero
             BattleManager.Instance.RefreshView();
         }
 
-        public GameFrameworkMultiDictionary<int, ITriggerActionData> GetTriggerActionDatas(int actionUnitID)
+        public GameFrameworkMultiDictionary<int, ITriggerActionData> GetTriggerActionDatas(int actionUnitIdx)
         {
-            if (!TriggerActionDatas.ContainsKey(actionUnitID))
+            if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
             {
                 return null;
             }
 
-            return TriggerActionDatas[actionUnitID];
+            return TriggerActionDatas[actionUnitIdx];
         }
 
-        public List<ITriggerActionData> GetTriggerActionDatas(int actionUnitID, int effectUnitID)
+        public List<ITriggerActionData> GetTriggerActionDatas(int actionUnitIdx, int effectUnitIdx)
         {
-            var triggerDatas = GetTriggerActionDatas(actionUnitID);
+            var triggerDatas = GetTriggerActionDatas(actionUnitIdx);
             if (triggerDatas == null)
             {
                 return null;
             }
 
-            if (triggerDatas.TryGetValue(effectUnitID, out var triggerActionDatas))
+            if (triggerDatas.TryGetValue(effectUnitIdx, out var triggerActionDatas))
             {
                 return triggerActionDatas.ToList();
             }

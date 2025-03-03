@@ -80,23 +80,20 @@ namespace RoundHero
             
             await HeroManager.Instance.GenerateHero();
             await BattleAreaManager.Instance.InitArea();
-            
-                
             await BattleEnemyManager.Instance.GenerateNewEnemies();
-                
-
+            
             PVEManager.Instance.BattleState = EBattleState.UseCard;
             BattleCardManager.Instance.RoundAcquireCards(true);
                 
-            BattleAreaManager.Instance.RefreshObstacles();    
+            BattleAreaManager.Instance.RefreshObstacles();
             BattleManager.Instance.RoundStartTrigger();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshAll();
+
+            BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
+            BattleFightManager.Instance.EnemyMove();
             
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
-            GameUtility.DelayExcute(1.5f, () =>
-            {
-                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
-            });
+            
 
         }
         

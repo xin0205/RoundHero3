@@ -1391,6 +1391,7 @@ namespace RoundHero
         }
 
         private static AStarSearch.EPointType[,] cacheSearchMaps = new AStarSearch.EPointType[Constant.Area.GridSize.x, Constant.Area.GridSize.y];
+        
         public static List<int> GetPaths(Dictionary<int, EGridType> gridTypes, int startPosIdx, int endPosIdx, bool isQblique = true,
             bool isIgnoreCorner = true)
         {

@@ -128,7 +128,7 @@ namespace RoundHero
                 var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
                 if (movePaths != null && movePaths.Count > 0)
                 {
-                    Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
+                    Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
                     BattleAttackTagManager.Instance.UnShowAttackTags();
                     BattleFlyDirectManager.Instance.UnShowFlyDirects();
                     BattleIconManager.Instance.UnShowBattleIcons();

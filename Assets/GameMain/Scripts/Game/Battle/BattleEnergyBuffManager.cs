@@ -179,7 +179,7 @@ namespace RoundHero
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
             
             BattleBuffManager.Instance.RecoverUseBuffState();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
             
         }
     }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameFramework;
-using GameKit.Dependencies.Utilities;
 using UnityEngine;
 
 using UnityGameFramework.Runtime;
@@ -329,17 +328,14 @@ namespace RoundHero
 
         public void Destory()
         {
+
             RoundFightData.Clear();
         }
 
         public Data_Player PlayerData;
 
-        public void CacheRoundFightData()
+        private void CachePreData()
         {
-            //Log.Debug("CacheRoundFightData");
-
-            //BattleAreaManager.Instance.RefreshObstacles();
-
 
             RoundFightData.Clear();
 
@@ -407,11 +403,6 @@ namespace RoundHero
                 RoundFightData.GamePlayData.BattleData.GridTypes[
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx] = EGridType.TemporaryUnit;
             }
-            if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.NewUnit)
-            {
-                var newUnitID = RoundFightData.TempTriggerData.UnitData.Idx;
-
-            }
             else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.SelectHurtUnit)
             {
                 RoundFightData.GamePlayData.BattleData.GridTypes[
@@ -439,7 +430,22 @@ namespace RoundHero
                 }
 
             }
+            
+            // if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.NewUnit)
+            // {
+            //     var newUnitID = RoundFightData.TempTriggerData.UnitData.Idx;
+            //
+            // }
+        }
 
+        public void CacheRoundFightData()
+        {
+            //Log.Debug("CacheRoundFightData");
+
+            //BattleAreaManager.Instance.RefreshObstacles();
+
+            CachePreData();
+            
             CacheLinks();
             
             CacheUseCardTriggerDatas();
@@ -453,12 +459,38 @@ namespace RoundHero
             
             CalculateEnemyPaths();
             //CacheEnemyMoveDatas();
-            //CacheEnemyAttackDatas();
+            //
             
-            CalculateThirdUnitPaths();
-            CacheThirdUnitMoveDatas();
-            CacheThirdUnitAttackDatas();
+            // CalculateThirdUnitPaths();
+            // CacheThirdUnitMoveDatas();
+            // CacheThirdUnitAttackDatas();
             
+            CacheRoundEndDatas();
+            
+            
+        }
+        
+        public void CacheRoundFightData2()
+        {
+            //Log.Debug("CacheRoundFightData");
+
+            //BattleAreaManager.Instance.RefreshObstacles();
+
+            CachePreData();
+            
+            CacheLinks();
+            
+            CacheUseCardTriggerDatas();
+            CacheSoliderActiveAttackDatas();
+            CacheSoliderAutoAttackDatas();
+            
+            CacheRoundStartDatas();
+            
+            CacheSoliderMoveDatas();
+            CacheSoliderAttackDatas();
+            
+            CacheEnemyAttackDatas();
+
             CacheRoundEndDatas();
             
             
@@ -801,9 +833,15 @@ namespace RoundHero
                 if (unitCamp == EUnitCamp.Enemy && range.Count > 0)
                 {
                     range.Sort((gridPosIdx1, gridPosIdx2) =>{
-                        //var unit1 = GetUnitByGridPosIdx(gridPosIdx1);
+                        var unit1 = GetUnitByGridPosIdx(gridPosIdx1);
                         var unit2 = GetUnitByGridPosIdx(gridPosIdx2);
 
+                        if (unit1 == null)
+                            return 0;
+                        
+                        if (unit2 == null)
+                            return 0;
+                        
                         if (unit2.UnitRole == EUnitRole.Hero)
                             return 1;
 
@@ -813,6 +851,8 @@ namespace RoundHero
                     foreach (var rangeGridPosIdx in range)
                     {
                         var unit = GetUnitByGridPosIdx(rangeGridPosIdx);
+                        if(unit == null)
+                            continue;
                         var relativeCamp = GameUtility.GetRelativeCamp(attackUnit.UnitCamp, unit.UnitCamp);
                         if (relativeCamp == triggerBuffData.BuffData.TriggerUnitCamps[0])
                         {
@@ -1429,6 +1469,22 @@ namespace RoundHero
   
 
             CalculateHeroHPDelta(actionData);
+
+        }
+        
+        public void CacheEnemyAttackDatas()
+        {
+
+            foreach (var kv in BattleUnitDatas)
+            {
+                if (kv.Value.UnitCamp != EUnitCamp.Enemy)
+                    continue;
+
+                if (kv.Value.CurHP <= 0)
+                    continue;
+                
+                CacheEnemyAttackData(kv.Value as Data_BattleMonster);
+            }
 
         }
 
@@ -2132,7 +2188,7 @@ namespace RoundHero
                     RoundFightData.TempTriggerData.UnitData.Idx, RoundFightData.TempTriggerData.TempUnitMovePaths,
                     RoundFightData.SoliderMoveDatas, false);
             }
-
+            Log.Debug("A:" + RoundFightData.SoliderMoveDatas.Count);
         }
         
         
@@ -3718,7 +3774,7 @@ namespace RoundHero
                 
                 var unit = GetUnitByIdx(unitKeys[AcitonUnitIdx]);
                 unit.AttackInRound = true;
-                BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack();
+                BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack(actionData);
                 GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
 
@@ -3858,20 +3914,20 @@ namespace RoundHero
             
             GameUtility.DelayExcute(runTime, () =>
             {
-                if (unitAttackDatas.ContainsKey(unitID))
-                {
-                    var attackTime = UnitAttack(unitID, unitAttackDatas[unitID]);
-                    GameUtility.DelayExcute(attackTime, () =>
-                    {
-                        HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
-                        BattleManager.Instance.ContinueAction();
-                    });
-                }
-                else
-                {
-                    BattleManager.Instance.ContinueAction();
-                }
-                
+                // if (unitAttackDatas.ContainsKey(unitID))
+                // {
+                //     var attackTime = UnitAttack(unitID, unitAttackDatas[unitID]);
+                //     GameUtility.DelayExcute(attackTime, () =>
+                //     {
+                //         HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
+                //         BattleManager.Instance.ContinueAction();
+                //     });
+                // }
+                // else
+                // {
+                //     BattleManager.Instance.ContinueAction();
+                // }
+                BattleManager.Instance.ContinueAction();
                 
             });
         }
@@ -3899,7 +3955,7 @@ namespace RoundHero
                 var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitID);
                 unitEntity.BattleUnit.AttackInRound = true;
                 unitEntity.TargetPosIdx = actionData.TriggerDatas[0][0].EffectUnitGridPosIdx;
-                unitEntity.Attack();
+                unitEntity.Attack(actionData);
                 GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
 
@@ -4318,7 +4374,7 @@ namespace RoundHero
             if (isAttack)
             {
                 Log.Debug("AA:" + unitKeys[AcitonUnitIdx]);
-                BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack();
+                BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack(actionData);
                 GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
             }

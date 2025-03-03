@@ -459,7 +459,7 @@ namespace RoundHero
             //     gridEntity.Show(true);
             // }
             
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
         }
     }
 }

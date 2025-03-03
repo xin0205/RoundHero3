@@ -6,7 +6,7 @@ namespace RoundHero
 {
     public class BulletData
     {
-        public int ActionUnitID = -1;
+        public int ActionUnitIdx = -1;
         public List<int> MoveGridPosIdxs = new List<int>();
         public GameFrameworkMultiDictionary<int, ITriggerActionData> TriggerActionDataDict = new ();
     }

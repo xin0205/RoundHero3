@@ -293,7 +293,7 @@ namespace RoundHero
                         ELinkID.Link_Send_Around_Us);
 
 
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
 
                     //BattleEnemyManager.Instance.ShowEnemyRoutes();
                     GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
@@ -306,7 +306,7 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitData = null;
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
 
-                        BattleManager.Instance.Refresh();
+                        BattleManager.Instance.RefreshEnemyAttackData();
                         GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
                     }
 
@@ -333,7 +333,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
                     BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                     if (ne.ShowState == EShowState.Show)
                     {
                         //BattleEnemyManager.Instance.ShowEnemyRoutes();
@@ -356,7 +356,7 @@ namespace RoundHero
                     //var realTargetGridPosIdx = BattleManager.Instance.TempTriggerData.TargetGridPosIdx =
                         
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx = tempUnitMovePaths[tempUnitMovePaths.Count - 1];
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                     //BattleEnemyManager.Instance.ShowEnemyRoutes();
 
                 }
@@ -366,7 +366,7 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
                     BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();
                     
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                     //BattleEnemyManager.Instance.UnShowEnemyRoutes();
                 }
 
@@ -455,7 +455,7 @@ namespace RoundHero
                                 ShowBackupGrids(attackRanges);
                             }
                     
-                            BattleManager.Instance.Refresh();
+                            BattleManager.Instance.RefreshEnemyAttackData();
                             
                         }
                     }
@@ -463,7 +463,7 @@ namespace RoundHero
                     
                     else
                     {
-                        BattleManager.Instance.Refresh();
+                        BattleManager.Instance.RefreshEnemyAttackData();
                         ShowBackupGrids(null);
                         //BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.ID);
                     }
@@ -477,7 +477,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
                     BattleManager.Instance.TempTriggerData.CardEffectUnitID = -1;
                     //BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.CardID = -1;
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                     
                 }
                 
@@ -500,7 +500,7 @@ namespace RoundHero
                     {
                         BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
                     }
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                 }
 
                 if (ne.ShowState == EShowState.Show)
@@ -1250,7 +1250,7 @@ namespace RoundHero
                 lastMoveCount = moveCount;
                 RefreshGirdEntities();
                 RefreshObstacles();
-                BattleManager.Instance.Refresh();
+                BattleManager.Instance.RefreshEnemyAttackData();
                 //BattleEnemyManager.Instance.ShowEnemyRoutes();
             }
 
@@ -1518,7 +1518,7 @@ namespace RoundHero
             
             RefreshGirdEntities();
             RefreshObstacles();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
         }
 
         public void ClearMoveGrid()
@@ -1710,7 +1710,7 @@ namespace RoundHero
                         {
                             BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.AutoAtk;
                             
-                            BattleManager.Instance.Refresh();
+                            BattleManager.Instance.RefreshEnemyAttackData();
                             BattleFightManager.Instance.SoliderAutoAttack();
                             BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.UnitIdx);
                             
@@ -1831,7 +1831,7 @@ namespace RoundHero
                     GameUtility.DelayExcute(time, () =>
                     {
                         BattleManager.Instance.TempTriggerData.Reset();
-                        BattleManager.Instance.Refresh();
+                        BattleManager.Instance.RefreshEnemyAttackData();
 
                     });
                     
@@ -1858,10 +1858,10 @@ namespace RoundHero
 
                     var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
                     unit.Run(moveActionData);
-                    GameUtility.DelayExcute(time, () => { BattleManager.Instance.Refresh(); });
+                    GameUtility.DelayExcute(time, () => { BattleManager.Instance.RefreshEnemyAttackData(); });
 
                     RefreshObstacles();
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                     //BattleEnemyManager.Instance.UnShowEnemyRoutes();
                     
                     BattleManager.Instance.TempTriggerData.Reset();
@@ -2017,7 +2017,7 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[gridPosIdx1] = gridType2;
             GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[gridPosIdx2] = gridType1;
 
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
         }
 
         public List<IMoveGrid> GetUnits(int gridPosIdx)
@@ -2101,7 +2101,7 @@ namespace RoundHero
             FuneManager.Instance.TriggerUnitUse();
 
             BattleAreaManager.Instance.RefreshObstacles();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
 
             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
             

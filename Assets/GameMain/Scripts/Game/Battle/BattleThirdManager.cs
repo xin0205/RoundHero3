@@ -21,7 +21,7 @@ namespace RoundHero
         public async Task GenerateNewThirdUnits()
         {
             await GenerateThirdUnits();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
             //BattleSoliderManager.Instance.CacheSoliderActionRange();
         }
         

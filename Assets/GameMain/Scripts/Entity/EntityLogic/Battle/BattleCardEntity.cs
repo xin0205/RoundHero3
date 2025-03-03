@@ -138,7 +138,7 @@ namespace RoundHero
             BattleCardManager.Instance.RefreshSelectCard(BattleCardEntityData.CardData.CardIdx);
             
             RefreshCardRect();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
         }
         
         public void OnPointerExit()
@@ -156,7 +156,7 @@ namespace RoundHero
             BattleCardManager.Instance.RefreshSelectCard(-1);
 
             RefreshCardRect();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
             
         }
 

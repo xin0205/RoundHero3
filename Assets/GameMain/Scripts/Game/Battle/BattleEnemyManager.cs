@@ -286,6 +286,15 @@ namespace RoundHero
             return dis;
         }
         
+        // public void EnemyMove()
+        // {
+        //     BattleFightManager.Instance.EnemyMove();
+        // }
+        //
+        // public void EnemyAttack()
+        // {
+        //     BattleFightManager.Instance.EnemyAttack();
+        // }
         
 
         public void StartAction()
@@ -304,7 +313,7 @@ namespace RoundHero
         public async Task GenerateNewEnemies()
         {
             await GenerateEnemies();
-            BattleManager.Instance.Refresh();
+            
             //BattleSoliderManager.Instance.CacheSoliderActionRange();
         }
 
@@ -331,7 +340,7 @@ namespace RoundHero
             
             //RefreshEnemyEntities();
             BattleAreaManager.Instance.RefreshObstacles();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
         }
 
         // public bool InEnemyPaths(int gridPosIdx)

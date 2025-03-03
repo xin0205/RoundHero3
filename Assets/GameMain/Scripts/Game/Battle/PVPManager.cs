@@ -246,7 +246,7 @@ namespace RoundHero
 
                 BattleManager.Instance.RoundStartTrigger();
                 
-                BattleManager.Instance.Refresh();
+                BattleManager.Instance.RefreshEnemyAttackData();
                 
                 InstanceFinder.NetworkManager.ClientManager.Broadcast(new BroadCast_PlayState(EPlayState.InitSuccess));
             }

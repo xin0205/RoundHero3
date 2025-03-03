@@ -93,11 +93,19 @@ namespace RoundHero
             //BattleCurseManager.Instance.Destory();
         }
 
-        public void Refresh()
+        public void RefreshEnemyAttackData()
+        {
+            //BattleFightManager.Instance.CacheEnemyAttackDatas();
+            BattleFightManager.Instance.CacheRoundFightData2();
+            // BattleRouteManager.Instance.ShowEnemyRoute();
+            RefreshView();
+        }
+        
+        public void RefreshAll()
         {
 
             BattleFightManager.Instance.CacheRoundFightData();
-            BattleRouteManager.Instance.ShowEnemyRoute();
+            // BattleRouteManager.Instance.ShowEnemyRoute();
             RefreshView();
         }
         

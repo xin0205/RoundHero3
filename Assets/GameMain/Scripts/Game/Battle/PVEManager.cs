@@ -139,7 +139,7 @@ namespace RoundHero
 
         }
         
-        public void StartTurn()
+        public async void StartTurn()
         {
             BattleManager.Instance.RoundEndTrigger();
             
@@ -149,13 +149,13 @@ namespace RoundHero
             
             BattleManager.Instance.RoundStartTrigger();
             
-            BattleEnemyManager.Instance.GenerateNewEnemies();
+            await BattleEnemyManager.Instance.GenerateNewEnemies();
+            BattleManager.Instance.RefreshAll();
+            BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
+            BattleFightManager.Instance.EnemyMove();
             
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
-            GameUtility.DelayExcute(1.5f, () =>
-            {
-                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
-            });
+            
             
             // if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             // {
@@ -200,25 +200,22 @@ namespace RoundHero
             {
                 BattleFightManager.Instance.RoundStartUnitTrigger();
             }
-            
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
             {
                 BattleFightManager.Instance.SoliderAttack();
             }
-            
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderActiveAttack)
             {
                 BattleFightManager.Instance.SoliderActiveAttack();
             }
-            
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
                 BattleFightManager.Instance.EnemyMove();
             }
-            // if (FightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
-            // {
-            //     FightManager.Instance.EnemyAttack();
-            // }
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
+            {
+                BattleFightManager.Instance.EnemyAttack();
+            }
             
             // if (FightManager.Instance.ActionProgress == EActionProgress.ThirdUnitMove)
             // {
@@ -240,14 +237,22 @@ namespace RoundHero
 
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
             {
-                BattleManager.Instance.Refresh();
+                BattleManager.Instance.RefreshEnemyAttackData();
             }
             
         }
 
         public void NextAction()
         {
-            if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
+            {
+                BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStart;
+                GameUtility.DelayExcute(1.5f, () =>
+                {
+                    GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+                });
+            }
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStartUnit;
             }
@@ -257,12 +262,13 @@ namespace RoundHero
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
             {
-                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
+                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyAttack;
             }
-            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundEnd;
             }
+            
             // else if (FightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
             // {
             //     FightManager.Instance.ActionProgress = EActionProgress.ThirdUnitMove;
@@ -288,7 +294,7 @@ namespace RoundHero
                 BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
                 
                 
-                BattleManager.Instance.Refresh();
+                BattleManager.Instance.RefreshEnemyAttackData();
             }
         }
         
@@ -304,9 +310,6 @@ namespace RoundHero
             }
             
             StartAction();
-
-            
-            
             
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
             GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));

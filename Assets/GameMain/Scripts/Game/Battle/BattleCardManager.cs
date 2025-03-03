@@ -503,7 +503,7 @@ namespace RoundHero
 
             BattleBuffManager.Instance.RecoverUseBuffState();
             BattleFightManager.Instance.UseCardTrigger();
-            BattleManager.Instance.Refresh();
+            BattleManager.Instance.RefreshEnemyAttackData();
             return true;
 
         }
@@ -612,7 +612,7 @@ namespace RoundHero
 
                     BattleBuffManager.Instance.RecoverUseBuffState();
                     
-                    BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                     
                 }
             }
