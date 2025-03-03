@@ -150,6 +150,11 @@ namespace RoundHero
         {
             var ne = e as ShowGridDetailEventArgs;
 
+            if (ne.GridPosIdx == 24)
+            {
+                var A = 5;
+            }
+            
             if (ne.ShowState == EShowState.Show)
             {
                 ShowAllGrid(true);
@@ -344,9 +349,9 @@ namespace RoundHero
                 if (ne.ShowState == EShowState.Show)
                 {
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
-
+                    //BattleFightManager.Instance.RoundFightData.GamePlayData.LastBattleData.GridTypes
                     var tempUnitMovePaths = BattleManager.Instance.TempTriggerData.TempUnitMovePaths =
-                        BattleFightManager.Instance.GetRunPaths(BattleFightManager.Instance.RoundFightData.GamePlayData.LastBattleData.GridTypes, BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
+                        BattleFightManager.Instance.GetRunPaths(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes, BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
                             ne.GridPosIdx, runPaths);
                     //var realTargetGridPosIdx = BattleManager.Instance.TempTriggerData.TargetGridPosIdx =
                         

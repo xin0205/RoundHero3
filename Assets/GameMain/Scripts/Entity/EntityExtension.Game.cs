@@ -293,11 +293,11 @@ namespace RoundHero
             return (BattleParabolaBulletEntity)task.Logic;
         }
         
-        public static async Task<BattleDisplayValueEntity> ShowBattleDisplayValueEntityAsync(this EntityComponent entityComponent, Vector3 pos, Vector3 targetPos, int value, int entityIdx)
+        public static async Task<BattleDisplayValueEntity> ShowBattleDisplayValueEntityAsync(this EntityComponent entityComponent, Vector3 targetPos, int value, int entityIdx)
         {
             var data = ReferencePool.Acquire<BattleDisplayValueEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value, entityIdx);
+            data.Init(entityComponent.GenerateSerialId(), targetPos, value, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleDisplayValueEntity),
                 AssetUtility.GetBattleDisplayValuePrefab(), Constant.EntityGroup.Unit, 0, data);

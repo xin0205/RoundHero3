@@ -959,10 +959,10 @@ namespace RoundHero
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
 
-            GameUtility.DelayExcute(0.15f, () =>
-            {
-                HandleHit();
-            });
+            // GameUtility.DelayExcute(0.15f, () =>
+            // {
+            //     HandleHit();
+            // });
         }
         
         public void RunAttack()
@@ -1083,10 +1083,10 @@ namespace RoundHero
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)HitType.Back1);
 
-            GameUtility.DelayExcute(0.15f, () =>
-            {
-                HandleGetHit();
-            });
+            // GameUtility.DelayExcute(0.15f, () =>
+            // {
+            //     HandleGetHit();
+            // });
             
             // if (UnitActionState == EUnitActionState.Run)
             // {

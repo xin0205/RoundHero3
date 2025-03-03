@@ -135,7 +135,7 @@ namespace RoundHero
                 
                 effectUnitPos.y += 1f;
                 
-                entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(actionUnit.Position,
+                entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
                     effectUnitPos, value, entityIdx);
 
                 //entity.transform.parent = effectUnit.Root;

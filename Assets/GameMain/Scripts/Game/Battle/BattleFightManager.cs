@@ -3376,7 +3376,8 @@ namespace RoundHero
                             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                                 !triggerData.ChangeHPInstantly && hpDelta != 0)
                             {
-                                effectUnitEntity.BattleUnit.CacheHPDelta += hpDelta;
+                                 effectUnitEntity.BattleUnit.CacheHPDelta += hpDelta;
+                                effectUnitEntity.Hurt();
                                 //HeroManager.Instance.HeroEntity.AddHurts(hpDelta);
                                 return;
                             }
@@ -3894,9 +3895,11 @@ namespace RoundHero
             {
                 time += 0.5f;
                 
-                var unit = GetUnitByIdx(unitID);
-                unit.AttackInRound = true;
-                BattleUnitManager.Instance.BattleUnitEntities[unitID].Attack();
+                //var unit = GetUnitByIdx(unitID);
+                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitID);
+                unitEntity.BattleUnit.AttackInRound = true;
+                unitEntity.TargetPosIdx = actionData.TriggerDatas[0][0].EffectUnitGridPosIdx;
+                unitEntity.Attack();
                 GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
 
@@ -4355,27 +4358,28 @@ namespace RoundHero
                     var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
                     Log.Debug("ActionUnitID:" + triggerData.ActionUnitIdx);
                     //!(!triggerData.ChangeHPInstantly && HeroManager.Instance.IsHero(triggerData.EffectUnitID))
-                    if (triggerData.ChangeHPInstantly)
+                    if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
                     {
-                        //actionUnit.Hurt();
-
-                        if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
-                        {
-                            //effectUnit?.Hurt();
-                            TriggerAction(triggerData);
-                        }
-                        else
-                        {
-                            if (triggerData.ActionUnitIdx != -1)
-                            {
-                                actionUnit?.CloseSingleAttack();
-                                //effectUnit.Hurt();
-                                BattleBulletManager.Instance.AddTriggerData(triggerData);
-                            }
-                            
-                        }
-
+                        //effectUnit?.Hurt();
+                        TriggerAction(triggerData);
                     }
+                    else
+                    {
+                        if (triggerData.ActionUnitIdx != -1)
+                        {
+                            actionUnit?.CloseSingleAttack();
+                            //effectUnit.Hurt();
+                            BattleBulletManager.Instance.AddTriggerData(triggerData);
+                        }
+                            
+                    }
+                    // if (triggerData.ChangeHPInstantly)
+                    // {
+                    //     //actionUnit.Hurt();
+                    //
+                    //     
+                    //
+                    // }
                 }
                 
                 // if (unit.CurHP <= 0)

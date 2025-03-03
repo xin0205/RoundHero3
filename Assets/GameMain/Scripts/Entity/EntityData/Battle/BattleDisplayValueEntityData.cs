@@ -8,9 +8,9 @@ namespace RoundHero
         public int EntityIdx;
         public Vector3 TargetPosition;
         
-        public void Init(int entityId, Vector3 pos, Vector3 targetPos, int value, int entityIdx)
+        public void Init(int entityId, Vector3 targetPos, int value, int entityIdx)
         {
-            base.Init(entityId, pos);
+            base.Init(entityId, targetPos);
             this.Value = value;
             this.TargetPosition = targetPos;
             EntityIdx = entityIdx;

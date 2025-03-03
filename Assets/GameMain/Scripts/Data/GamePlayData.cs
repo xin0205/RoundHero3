@@ -496,7 +496,7 @@ namespace RoundHero
         protected void IntervalChangeHP(int changeHP)
         {
             CurHP += changeHP;
-            CurHP = CurHP < 0 ? 0 : CurHP;
+            CurHP = CurHP < -1 ? 0 : CurHP;
             CurHP = CurHP > MaxHP ? MaxHP : CurHP;
         }
 

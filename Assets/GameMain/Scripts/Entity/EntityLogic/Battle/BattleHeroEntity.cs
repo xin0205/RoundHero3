@@ -51,10 +51,19 @@ namespace RoundHero
         {
             ChangeCurHP(BattleHeroEntityData.BattleHeroData.CacheHPDelta, false, false, true, false);
             
-            if (BattleHeroEntityData.BattleHeroData.CacheHPDelta < 0)
+            if (CurHP == 0)
             {
-                Hurt();
+                CurHP = -1;
+                GameUtility.DelayExcute(1.5f, () =>
+                {
+                    Dead();
+                });
+               
             }
+            // if (BattleHeroEntityData.BattleHeroData.CacheHPDelta < 0)
+            // {
+            //     Hurt();
+            // }
             BattleHeroEntityData.BattleHeroData.CacheHPDelta = 0;
             //cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
         }
