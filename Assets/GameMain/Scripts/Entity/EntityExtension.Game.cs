@@ -97,6 +97,22 @@ namespace RoundHero
             return (BattleHeroEntity)task.Logic;
         }
         
+        public static async Task<BattleCoreEntity> ShowBattleCoreEntityAsync(this EntityComponent entityComponent,
+            int coreID, int gridPosIdx, EUnitCamp unitCamp)
+        {
+            var data = ReferencePool.Acquire<BattleCoreEntityData>();
+            var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
+            var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), coreID, gridPosIdx, unitCamp);
+            
+            BattleUnitManager.Instance.BattleUnitDatas.Add(battleCoreData.Idx, battleCoreData);
+            data.Init(entityComponent.GenerateSerialId(), pos, battleCoreData);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleCoreEntity),
+                AssetUtility.GetBattleCorePrefab(coreID), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleCoreEntity)task.Logic;
+        }
+        
         public static async Task<BattleRouteEntity> ShowBattleRouteEntityAsync(this EntityComponent entityComponent, List<int> gridPosIdxs, int entityIdx)
         {
             var data = ReferencePool.Acquire<BattleRouteEntityData>();

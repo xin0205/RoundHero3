@@ -328,8 +328,11 @@ namespace RoundHero
             return unitStateData;
         }
     }
-    
-    
+
+    // public interface IBattleUnit
+    // {
+    //     
+    // }
     
     public class Data_BattleUnit : Data_GridItem
     {
@@ -982,6 +985,37 @@ namespace RoundHero
         public EUnitState UnitState;
     }
     
+    public class Data_BattleCore : Data_BattleUnit
+    {
+
+        public int CorID;
+        
+        public Data_BattleCore()
+        {
+            
+        }
+        
+        public Data_BattleCore(int idx, int coreID, int gridPosIdx, EUnitCamp unitCamp) : base(idx, gridPosIdx,unitCamp, null)
+        {
+            Idx = idx;
+            CorID = coreID;
+            GridPosIdx = gridPosIdx;
+            UnitCamp = unitCamp;
+        }
+        
+        public new Data_BattleCore Copy()
+        {
+            var dataBattleCore = new Data_BattleCore();
+            
+            dataBattleCore.Idx = Idx;
+            dataBattleCore.GridPosIdx = GridPosIdx;
+            dataBattleCore.UnitCamp = UnitCamp;
+            
+
+            return dataBattleCore;
+        }
+    }
+    
     public class Data_GridProp : Data_GridItem
     {
         public int GridPropID;
@@ -1010,6 +1044,7 @@ namespace RoundHero
             return dataGridProp;
         }
     }
+    
 
     public class Data_GridPropLink : Data_GridProp
     {
@@ -1170,6 +1205,7 @@ namespace RoundHero
         public EUnitCamp UnitCamp;
         public List<int> UnusedFuneIdxs = new List<int>();
         
+        
         public Data_BattleHero BattleHero = new();
         public Dictionary<int, Data_Card> CardDatas = new ();
         public Dictionary<int, Data_Fune> FuneDatas = new();
@@ -1207,6 +1243,7 @@ namespace RoundHero
             data.FuneIdx = FuneIdx;
             data.BlessIdx = BlessIdx;
             data.BattleHero = BattleHero.Copy();
+            
             data.PlayerID = PlayerID;
             data.UnitCamp = UnitCamp;
             data.EnergyBuffDatas = new Dictionary<int, Data_EnergyBuff>(EnergyBuffDatas);
@@ -1732,7 +1769,7 @@ namespace RoundHero
                     var card = BattleManager.Instance.GetCard(solider.CardIdx);
                     if (card.CardID == cardID)
                     {
-                        units.Add(kv.Value);
+                        units.Add(kv.Value as Data_BattleUnit);
                     }
                 }
             }
@@ -1764,9 +1801,9 @@ namespace RoundHero
                 {
                     dataBattle.BattleUnitDatas.Add(kv.Key, monster.Copy());
                 }
-                else
+                else  if (kv.Value is Data_BattleCore core)
                 {
-                    dataBattle.BattleUnitDatas.Add(kv.Key, kv.Value.Copy());
+                    dataBattle.BattleUnitDatas.Add(kv.Key, core.Copy());
                 }
                 
             }

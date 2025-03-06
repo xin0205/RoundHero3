@@ -105,6 +105,11 @@ namespace RoundHero
             return Utility.Text.Format("Assets/GameMain/Entities/Enemies/BattleEnemyEntity_0.prefab", enemyTypeID);
         }
         
+        public static string GetBattleCorePrefab(int coreID)
+        {
+            return Utility.Text.Format("Assets/GameMain/Entities/Cores/BattleCoreEntity_0.prefab", coreID);
+        }
+        
         public static string GetGridPropPrefab(int gridPropID)
         {
             return "Assets/GameMain/Entities/Battles/GridPropEntity_Obstacle.prefab";
