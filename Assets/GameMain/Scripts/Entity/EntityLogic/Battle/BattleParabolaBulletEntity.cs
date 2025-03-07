@@ -132,7 +132,7 @@ namespace RoundHero
                             }
                         }
 
-                        HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
+                        HeroManager.Instance.UpdateCacheHPDelta();
                         BattleManager.Instance.RefreshView();
                     }
                 }

@@ -85,7 +85,7 @@ namespace RoundHero
             Entity entity;
             if (effectUnit is BattleSoliderEntity solider)
             {
-                var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnit.UnitCamp);
+                //var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnit.UnitCamp);
                 
                 var effectUnitPos = effectUnit.Root.position;
                 
@@ -97,7 +97,7 @@ namespace RoundHero
                 //     effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitFlyEndGridPosIdx);
                 // }
 
-                var targetPos = heroEntity.Root.position;
+                //var targetPos = heroEntity.Root.position;
                 
                 // var heroMovePaths = BattleFightManager.Instance.GetMovePaths(heroEntity.UnitIdx, actionUnit.UnitIdx);
                 // if (heroMovePaths != null && heroMovePaths.Count > 0)
@@ -106,12 +106,12 @@ namespace RoundHero
                 // }
 
                 effectUnitPos.y += 1f;
-                targetPos.y += 1f;
+                //targetPos.y += 1f;
                 
-                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, targetPos,
+                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, effectUnitPos,
                     value, entityIdx, true);
                 
-                entity.transform.parent = heroEntity.Root;
+                entity.transform.parent = effectUnit.Root;
                 
                 if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showEntityIdx)
                 {

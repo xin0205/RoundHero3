@@ -2012,8 +2012,12 @@ namespace RoundHero
                         bePassUnitIdx = bePassUnit.Idx;
                         var collisionTriggerData = BattleFightManager.Instance.BattleRoleAttribute(unitIdx, unitIdx,
                             bePassUnit.Idx, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
-                        var bePassUnitHeroEntity = HeroManager.Instance.GetHeroEntity(bePassUnit.UnitCamp);
-                        if (bePassUnitHeroEntity != null && bePassUnitHeroEntity.BattleHeroEntityData.BattleHeroData.Idx == bePassUnit.Idx)
+                        // var bePassUnitHeroEntity = HeroManager.Instance.GetHeroEntity(bePassUnit.UnitCamp);
+                        // if (bePassUnitHeroEntity != null && bePassUnitHeroEntity.BattleHeroEntityData.BattleHeroData.Idx == bePassUnit.Idx)
+                        // {
+                        //     collisionTriggerData.ChangeHPInstantly = false;
+                        // }
+                        if (BattleCoreManager.Instance.IsCoreIdx(bePassUnit.Idx))
                         {
                             collisionTriggerData.ChangeHPInstantly = false;
                         }
@@ -2027,8 +2031,13 @@ namespace RoundHero
                         
                     var collisionTriggerData2 = BattleFightManager.Instance.BattleRoleAttribute(bePassUnitIdx, bePassUnitIdx,
                         unitIdx, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
-                    var passUnitHeroEntity = HeroManager.Instance.GetHeroEntity(passUnit.UnitCamp);
-                    if (passUnitHeroEntity!= null && passUnitHeroEntity.BattleHeroEntityData.BattleHeroData.Idx == passUnit.Idx)
+                    // var passUnitHeroEntity = HeroManager.Instance.GetHeroEntity(passUnit.UnitCamp);
+                    // if (passUnitHeroEntity!= null && passUnitHeroEntity.BattleHeroEntityData.BattleHeroData.Idx == passUnit.Idx)
+                    // {
+                    //     collisionTriggerData2.ChangeHPInstantly = false;
+                    // }
+                    
+                    if (BattleCoreManager.Instance.IsCoreIdx(passUnit.Idx))
                     {
                         collisionTriggerData2.ChangeHPInstantly = false;
                     }
@@ -3022,6 +3031,8 @@ namespace RoundHero
             var units = new List<Data_BattleUnit>();
             foreach (var kv in BattleUnitDatas)
             {
+                
+                
                 if (unitCamp == ERelativeCamp.Us && kv.Value.UnitCamp == selfUnitCamp ||
                     unitCamp == ERelativeCamp.Enemy && kv.Value.UnitCamp != selfUnitCamp || 
                     unitCamp == null)
@@ -3432,7 +3443,8 @@ namespace RoundHero
                             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                                 !triggerData.ChangeHPInstantly && hpDelta != 0)
                             {
-                                 effectUnitEntity.BattleUnit.CacheHPDelta += hpDelta;
+                                //effectUnitEntity.BattleUnit.CacheHPDelta += hpDelta;
+                                HeroManager.Instance.BattleHeroData.CacheHPDelta += hpDelta;
                                 effectUnitEntity.Hurt();
                                 //HeroManager.Instance.HeroEntity.AddHurts(hpDelta);
                                 return;
@@ -3440,14 +3452,17 @@ namespace RoundHero
                             
                             if (triggerData.HeroHPDelta && hpDelta != 0)
                             {
-                                var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);
-                
-                                if (heroEntity != null)
-                                {
-                                    heroEntity.BattleUnit.CacheHPDelta += -hpDelta;
-                                    triggerData.HeroHPDelta = false;
-        
-                                }
+                                HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
+                                //HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
+                                triggerData.HeroHPDelta = false;
+                                // var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);
+                                //
+                                // if (heroEntity != null)
+                                // {
+                                //     heroEntity.BattleUnit.CacheHPDelta += -hpDelta;
+                                //     triggerData.HeroHPDelta = false;
+                                //
+                                // }
 
                             }
                             
@@ -5514,14 +5529,14 @@ namespace RoundHero
                         battleUnitData.GridPosIdx = realTargetPosIdx;
                         RefreshUnitGridPosIdx();
                         
-                        var actionGridPosIdx = GameUtility.GetActionGridPosIdx(curObstacleMask, realTargetPosIdx, buffData.TriggerRange, true);
-                         if (actionGridPosIdx == -1)
-                        {
-                            battleUnitData.GridPosIdx = oriGridPosIdxs[actionUnitIdx];
-                            RefreshUnitGridPosIdx();
-
-                            continue;
-                        }
+                        // var actionGridPosIdx = GameUtility.GetActionGridPosIdx(curObstacleMask, realTargetPosIdx, buffData.TriggerRange, true);
+                        //  if (actionGridPosIdx == -1)
+                        // {
+                        //     battleUnitData.GridPosIdx = oriGridPosIdxs[actionUnitIdx];
+                        //     RefreshUnitGridPosIdx();
+                        //
+                        //     continue;
+                        // }
                        
                         RoundFightData.GamePlayData.BattleData.GridTypes[oriGridPosIdxs[actionUnitIdx]] = EGridType.Empty;
                         RoundFightData.GamePlayData.BattleData.GridTypes[realTargetPosIdx] = EGridType.Unit;
@@ -5529,8 +5544,8 @@ namespace RoundHero
                          
                         // curObstacleMask[oriGridPosIdxs[actionUnitIdx]] = EGridType.Empty;
                         // curObstacleMask[realTargetPosIdx] = EGridType.Unit;
-                        battleUnitData.GridPosIdx = realTargetPosIdx;
-                        RefreshUnitGridPosIdx();
+                        // battleUnitData.GridPosIdx = realTargetPosIdx;
+                        // RefreshUnitGridPosIdx();
                         
                         movePaths.Add(actionUnitIdx, realPaths);
                         isFindPath = true;

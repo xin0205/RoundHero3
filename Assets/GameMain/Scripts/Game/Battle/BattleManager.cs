@@ -32,6 +32,7 @@ namespace RoundHero
             // var randoms = MathUtility.GetRandomNum(8, 0,
             //     Constant.Game.RandomRange, Random);
             
+            BattleCoreManager.Instance.Init(Random.Next());
             BattleRouteManager.Instance.Init(Random.Next());
             BattleSoliderManager.Instance.Init(Random.Next());
             BattleThirdUnitManager.Instance.Init(Random.Next());
@@ -86,6 +87,7 @@ namespace RoundHero
             BattleEnemyManager.Instance.Destory();
             BattleUnitManager.Instance.Destory();
             HeroManager.Instance.Destory();
+            BattleCoreManager.Instance.Destory();
             
             //BlessManager.Instance.Destory();
             //BattleBuffManager.Instance.Destory();
@@ -128,7 +130,7 @@ namespace RoundHero
             //     unit.ChangeHP(hpDelta);
             // }
             
-            if (unit is Data_BattleHero)
+            if (unit is Data_BattleCore)
             {
                 if (changeHPInstantly)
                 {

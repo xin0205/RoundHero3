@@ -22,29 +22,31 @@ namespace RoundHero
 
         }
 
+        public Dictionary<EUnitCamp, Data_BattleHero> BattleHeroDatas = new();
+
 
         //private int id;
         public Random Random;
         private int randomSeed;
         
-        public Dictionary<EUnitCamp, BattleHeroEntity> HeroEntities = new ();
+        //public Dictionary<EUnitCamp, BattleHeroEntity> HeroEntities = new ();
         
-        public BattleHeroEntity HeroEntity =>  HeroEntities[PlayerManager.Instance.PlayerData.UnitCamp];
+        //public BattleHeroEntity HeroEntity =>  HeroEntities[PlayerManager.Instance.PlayerData.UnitCamp];
 
-        public BattleHeroEntity GetHeroEntity(EUnitCamp unitCamp)
-        {
-            if (HeroEntities.ContainsKey(unitCamp))
-                return HeroEntities[unitCamp];
-
-            return null;
-        }
+        // public Data_BattleHero GetHeroData(EUnitCamp unitCamp)
+        // {
+        //     if (BattleHeroDatas.ContainsKey(unitCamp))
+        //         return BattleHeroDatas[unitCamp];
+        //
+        //     return null;
+        // }
         
         public void Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
             //HeroEntities.Clear();
-            BattleUnitManager.Instance.BattleUnitDatas.Add(HeroManager.Instance.BattleHeroData.Idx, HeroManager.Instance.BattleHeroData);
+            //BattleUnitManager.Instance.BattleUnitDatas.Add(HeroManager.Instance.BattleHeroData.Idx, HeroManager.Instance.BattleHeroData);
             
             //id = 0;
         }
@@ -57,7 +59,7 @@ namespace RoundHero
 
         public void Destory()
         {
-            HeroEntities.Clear();
+            //HeroEntities.Clear();
         }
 
         // public int GetID()
@@ -75,24 +77,24 @@ namespace RoundHero
 
         public async Task GenerateHero()
         {
-            BattleAreaManager.Instance.RefreshObstacles();
-            
-            //var places = BattleAreaManager.Instance.GetPlaces();
-            // var randoms = MathUtility.GetRandomNum(1, 0,
-            //     places.Count, Random);
-            //BattleHeroData.GridPosIdx = places[center];
-            BattleHeroData.GridPosIdx = GameUtility.GridCoordToPosIdx(new Vector2Int(3, 3));
-            
-            var heroEntity = await GameEntry.Entity.ShowBattleHeroEntityAsync(BattleHeroData);
-            
-            if (heroEntity is IMoveGrid moveGrid)
-            {
-                BattleAreaManager.Instance.MoveGrids.Add(heroEntity.BattleHeroEntityData.Id, moveGrid);
-            }
-            
-            BattleUnitManager.Instance.BattleUnitEntities.Add(heroEntity.BattleHeroEntityData.BattleHeroData.Idx, heroEntity);
-            //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
-            HeroEntities.Add(BattleManager.Instance.CurUnitCamp, heroEntity);
+            // BattleAreaManager.Instance.RefreshObstacles();
+            //
+            // //var places = BattleAreaManager.Instance.GetPlaces();
+            // // var randoms = MathUtility.GetRandomNum(1, 0,
+            // //     places.Count, Random);
+            // //BattleHeroData.GridPosIdx = places[center];
+            // BattleHeroData.GridPosIdx = GameUtility.GridCoordToPosIdx(new Vector2Int(3, 3));
+            //
+            // var heroEntity = await GameEntry.Entity.ShowBattleHeroEntityAsync(BattleHeroData);
+            //
+            // if (heroEntity is IMoveGrid moveGrid)
+            // {
+            //     BattleAreaManager.Instance.MoveGrids.Add(heroEntity.BattleHeroEntityData.Id, moveGrid);
+            // }
+            //
+            // BattleUnitManager.Instance.BattleUnitEntities.Add(heroEntity.BattleHeroEntityData.BattleHeroData.Idx, heroEntity);
+            // //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
+            // HeroEntities.Add(BattleManager.Instance.CurUnitCamp, heroEntity);
             
             
         }
@@ -229,5 +231,17 @@ namespace RoundHero
             }
             
         }
+        
+
+
+        public void UpdateCacheHPDelta()
+        {
+            BattleManager.Instance.ChangeHP(BattleHeroData, BattleHeroData.CacheHPDelta, GamePlayManager.Instance.GamePlayData,
+                EHPChangeType.Action, false, false, true);
+
+            BattleHeroData.CacheHPDelta = 0;
+        }
+        
+        
     }
 }

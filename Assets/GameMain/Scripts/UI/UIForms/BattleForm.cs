@@ -216,7 +216,7 @@ namespace RoundHero
                 BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
 
             var hpDelta =
-                BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.UnitIdx, EHeroAttribute.CurHP);
+                BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.BattleHeroData.Idx, EHeroAttribute.CurHP);
             heroHP.text += "   " + ((hpDelta > 0) ? "+" + hpDelta : hpDelta);
         }
 
@@ -231,7 +231,7 @@ namespace RoundHero
         {
             coin.text = HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.Coin) + "";
             
-            coin.text += "-" + BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.HeroEntity.UnitIdx, EHeroAttribute.Coin);
+            coin.text += "-" + BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.BattleHeroData.Idx, EHeroAttribute.Coin);
         }
         
         private void RefreshRound()

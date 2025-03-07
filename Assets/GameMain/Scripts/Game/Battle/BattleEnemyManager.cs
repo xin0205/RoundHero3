@@ -273,18 +273,18 @@ namespace RoundHero
         
         
         
-        public int GetDis(int enemyID,Vector2Int enemyCoord)
-        {
-            // if (EnemyEntities[monsterID].BattleMonsterEntityData.battleMonsterData.CurHP <=
-            //     0)
-            // {
-            //     return 0;
-            // }
-            
-            var heroCoord = GameUtility.GridPosIdxToCoord(HeroManager.Instance.HeroEntity.BattleHeroEntityData.BattleHeroData.GridPosIdx);
-            var dis = GameUtility.GetDis(enemyCoord, heroCoord);
-            return dis;
-        }
+        // public int GetDis(int enemyID,Vector2Int enemyCoord)
+        // {
+        //     // if (EnemyEntities[monsterID].BattleMonsterEntityData.battleMonsterData.CurHP <=
+        //     //     0)
+        //     // {
+        //     //     return 0;
+        //     // }
+        //     
+        //     var heroCoord = GameUtility.GridPosIdxToCoord(HeroManager.Instance.BattleHeroData.GridPosIdx);
+        //     var dis = GameUtility.GetDis(enemyCoord, heroCoord);
+        //     return dis;
+        // }
         
         // public void EnemyMove()
         // {

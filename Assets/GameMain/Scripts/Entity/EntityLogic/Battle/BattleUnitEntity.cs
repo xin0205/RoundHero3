@@ -860,7 +860,7 @@ namespace RoundHero
                 }
                 IsMove = false;
 
-                HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
+                HeroManager.Instance.UpdateCacheHPDelta();
                 
                 if (BattleManager.Instance.BattleState == EBattleState.UseCard)
                 {
@@ -878,8 +878,8 @@ namespace RoundHero
 
         public virtual void LookAtHero()
         {
-            var pos = HeroManager.Instance.HeroEntity.Position;
-            roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+            //var pos = HeroManager.Instance.HeroEntity.Position;
+            //roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
         }
         
         public void Run(MoveActionData moveActionData)
@@ -981,6 +981,7 @@ namespace RoundHero
             GameUtility.DelayExcute(0.15f, () =>
             {
                 HandleHit();
+                HeroManager.Instance.UpdateCacheHPDelta();
             });
         }
         

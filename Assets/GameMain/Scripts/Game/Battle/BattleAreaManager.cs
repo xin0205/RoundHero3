@@ -1436,7 +1436,7 @@ namespace RoundHero
                     }
                 }
                 else if (kv.Value is BattleSoliderEntity || kv.Value is BattleMonsterEntity ||
-                         kv.Value is BattleHeroEntity)
+                         kv.Value is BattleHeroEntity || kv.Value is BattleCoreEntity)
                 {
                     if (!(BattleManager.Instance.TempTriggerData.UnitData != null &&
                           BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx == kv.Value.GridPosIdx))

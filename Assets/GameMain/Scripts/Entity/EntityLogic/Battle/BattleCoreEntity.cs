@@ -29,6 +29,29 @@ namespace RoundHero
                 Log.Error("Error BattleCoreEntityData");
                 return;
             }
+            
+            BattleUnitData = BattleCoreEntityData.BattleCoreData;
+        }
+        
+        public void UpdateCacheHPDelta()
+        {
+            ChangeCurHP(HeroManager.Instance.BattleHeroData.CacheHPDelta, false, false, true, false);
+            
+            if (CurHP == 0)
+            {
+                CurHP = -1;
+                GameUtility.DelayExcute(1.5f, () =>
+                {
+                    Dead();
+                });
+               
+            }
+            // if (BattleHeroEntityData.BattleHeroData.CacheHPDelta < 0)
+            // {
+            //     Hurt();
+            // }
+            HeroManager.Instance.BattleHeroData.CacheHPDelta = 0;
+            //cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
         }
 
     }

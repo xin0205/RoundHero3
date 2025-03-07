@@ -1001,6 +1001,9 @@ namespace RoundHero
             CorID = coreID;
             GridPosIdx = gridPosIdx;
             UnitCamp = unitCamp;
+            
+            
+            
         }
         
         public new Data_BattleCore Copy()
@@ -1013,6 +1016,20 @@ namespace RoundHero
             
 
             return dataBattleCore;
+        }
+        
+        public override int CurHP
+        {
+            get => HeroManager.Instance.BattleHeroData.CurHP;
+            set => HeroManager.Instance.BattleHeroData.CurHP = value;
+        }
+        
+        
+        public override int MaxHP
+        {
+            // + GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.AddHeroMaxHP, BattleManager.Instance.CurUnitCamp);
+            get => HeroManager.Instance.BattleHeroData.MaxHP;
+            //set => Attribute.SetAttribute(EHeroAttribute.MaxHP, value);
         }
     }
     

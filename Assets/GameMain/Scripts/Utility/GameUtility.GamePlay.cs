@@ -539,7 +539,7 @@ namespace RoundHero
                          if(unit.CurHP <= 0)
                              continue;
                          
-                         if(unit.UnitRole != EUnitRole.Hero)
+                         if(unit is not Data_BattleCore)
                              continue;
                          
                          
@@ -1084,10 +1084,10 @@ namespace RoundHero
             var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
             relatedEnemyUnits.Sort((unit1, unit2) =>
             {
-                if (unit2.UnitRole == EUnitRole.Hero)
+                if (unit2.UnitRole == EUnitRole.Hero && unit1.UnitRole != EUnitRole.Hero)
                     return 1;
                 
-                if (unit1.UnitRole == EUnitRole.Hero)
+                if (unit1.UnitRole == EUnitRole.Hero && unit2.UnitRole != EUnitRole.Hero)
                     return -1;
                 
                 var unit1Coord = GameUtility.GridPosIdxToCoord(unit1.GridPosIdx);
@@ -1098,6 +1098,9 @@ namespace RoundHero
 
                 if (unit2Dis < unit1Dis)
                     return 1;
+                
+                if (unit2Dis > unit1Dis)
+                    return -1;
 
                 return 0;
 

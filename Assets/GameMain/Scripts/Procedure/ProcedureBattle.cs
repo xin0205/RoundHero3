@@ -78,8 +78,9 @@ namespace RoundHero
             var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
             battleForm = battleFormTask.Logic as BattleForm;
             
-            await HeroManager.Instance.GenerateHero();
+            //await HeroManager.Instance.GenerateHero();
             await BattleAreaManager.Instance.InitArea();
+            await BattleCoreManager.Instance.GenerateCores();
             await BattleEnemyManager.Instance.GenerateNewEnemies();
             
             PVEManager.Instance.BattleState = EBattleState.UseCard;
@@ -88,9 +89,12 @@ namespace RoundHero
             BattleAreaManager.Instance.RefreshObstacles();
             BattleManager.Instance.RoundStartTrigger();
             BattleManager.Instance.RefreshAll();
+            
 
             BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
             BattleFightManager.Instance.EnemyMove();
+            
+            BattleManager.Instance.RefreshEnemyAttackData();
             
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
             

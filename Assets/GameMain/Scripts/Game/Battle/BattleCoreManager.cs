@@ -6,16 +6,14 @@ using Random = System.Random;
 
 namespace RoundHero
 {
-    public class BattleCoreManager : Singleton<HeroManager>
+    public class BattleCoreManager : Singleton<BattleCoreManager>
     {
-        
-
 
         //private int id;
         public Random Random;
         private int randomSeed;
         
-        public Dictionary<EUnitCamp, BattleCoreEntity> CoreEntities = new ();
+        public Dictionary<EUnitCamp, Dictionary<int, BattleCoreEntity>> CoreEntities = new ();
         
         
         
@@ -23,17 +21,14 @@ namespace RoundHero
         {
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
-            //HeroEntities.Clear();
-            BattleUnitManager.Instance.BattleUnitDatas.Add(HeroManager.Instance.BattleHeroData.Idx, HeroManager.Instance.BattleHeroData);
             
-            //id = 0;
         }
 
         
 
         public void Destory()
         {
-            //HeroEntities.Clear();
+            CoreEntities.Clear();
         }
 
         // public int GetID()
@@ -41,12 +36,20 @@ namespace RoundHero
         //     return id++;
         // }
 
-        public void InitHeroData(EHeroID heroID)
+        public bool IsCoreIdx(int idx)
         {
-            // BattleHeroData = new Data_BattleHero(BattleUnitManager.Instance.GetIdx(),
-            //     heroID, 0, BattleManager.Instance.CurUnitCamp, new List<int>());
-            // BattleHeroData.UnitRole = EUnitRole.Hero;
-            
+            foreach (var kv in CoreEntities)
+            {
+                foreach (var kv2 in kv.Value)
+                {
+                    if (kv2.Value.UnitIdx == idx)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public async Task GenerateCores()
@@ -54,8 +57,27 @@ namespace RoundHero
             BattleAreaManager.Instance.RefreshObstacles();
             
             var places = BattleAreaManager.Instance.GetPlaces();
-             var randoms = MathUtility.GetRandomNum(3, 0,
+             var randomList = MathUtility.GetRandomNum(3, 0,
                  places.Count, Random);
+
+             foreach (var randomIdx in randomList)
+             {
+                 var coreEntity = await GameEntry.Entity.ShowBattleCoreEntityAsync(0, places[randomIdx], BattleManager.Instance.CurUnitCamp);
+                 if (coreEntity is IMoveGrid moveGrid)
+                 {
+                     BattleAreaManager.Instance.MoveGrids.Add(coreEntity.BattleCoreEntityData.Id, moveGrid);
+                 }
+                 
+                 BattleUnitManager.Instance.BattleUnitEntities.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
+                 //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
+                 if (!CoreEntities.ContainsKey(BattleManager.Instance.CurUnitCamp))
+                 {
+                     CoreEntities.Add(BattleManager.Instance.CurUnitCamp, new Dictionary<int, BattleCoreEntity>());
+                 }
+                 CoreEntities[BattleManager.Instance.CurUnitCamp].Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
+                 //BattleUnitManager.Instance.BattleUnitDatas.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity.BattleCoreEntityData.BattleCoreData);
+                 
+             }
             
             // BattleAreaManager.Instance.RefreshObstacles();
             //

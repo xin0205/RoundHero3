@@ -148,7 +148,7 @@ namespace RoundHero
             
             GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime + 0.05f, () =>
             {
-                HeroManager.Instance.HeroEntity.UpdateCacheHPDelta();
+                HeroManager.Instance.UpdateCacheHPDelta();
             });
             GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 1f, () =>
             {
