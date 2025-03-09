@@ -145,13 +145,7 @@ namespace RoundHero
             
         }
         
-        protected void UnShowTags()
-        {
-            BattleAttackTagManager.Instance.UnShowAttackTags();
-            BattleFlyDirectManager.Instance.UnShowFlyDirects();
-            BattleIconManager.Instance.UnShowBattleIcons();
-            BattleValueManager.Instance.UnShowDisplayValues();
-        }
+        
 
         protected override void OnHide(bool isShutdown, object userData)
         {

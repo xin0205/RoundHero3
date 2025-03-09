@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameFramework;
 using GameFramework.Event;
-
+using Steamworks;
 using UnityEngine;
-
+using UnityGameFramework.Runtime;
 using Random = System.Random;
 
 namespace RoundHero
@@ -19,6 +19,15 @@ namespace RoundHero
         public Dictionary<int, int> RoundGenerateUnitCount = new Dictionary<int, int>();
         public List<int> UnitList = new List<int>();
         public int UnitIdx = 0;
+
+        public void Clear()
+        {
+            GlobalDebuffList.Clear();
+            RoundGenerateUnitCount.Clear();
+            UnitList.Clear();
+            UnitIdx = 0;
+        }
+        
     }
     public class BattleEnemyManager : Singleton<BattleEnemyManager>
     {
@@ -38,7 +47,7 @@ namespace RoundHero
             
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
-
+            EnemyGenerateData.Clear(); 
             //BattleManager.Instance.BattleData.EnemyType = enemyType;
             
             //id = 0;
@@ -64,6 +73,7 @@ namespace RoundHero
 
         public void InitGenerateRole(int randomSeed)
         {
+            Log.Debug("InitGenerateRole:" + randomSeed);
             var random = new Random(randomSeed);
             
             var rule = Constant.Enemy.EnemyGenerateRules[BattleManager.Instance.BattleData.GameDifficulty];

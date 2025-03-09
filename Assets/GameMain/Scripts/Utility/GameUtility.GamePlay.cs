@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameFramework;
+using JetBrains.Annotations;
 using UnityEngine;
 
 
@@ -1073,8 +1074,10 @@ namespace RoundHero
         }
         
         public static Dictionary<int, List<int>> GetActionGridPosIdxs(EUnitCamp selfCamp, int gridPosIdx, EActionType moveType, EActionType attackType,
-            ref List<int> moveRange, ref List<int> heroHurtRange, bool isBattleData = true)
+            List<ERelativeCamp> unitCamps, ref List<int> moveRange, ref List<int> heroHurtRange, bool isBattleData = true)
         {
+
+            var actionUnit = GetUnitByGridPosIdx(gridPosIdx, isBattleData);
             
             var intersectDict = new Dictionary<int, List<int>>();
             var relatedEnemyUnits = GameUtility.GetUnitsByCamp(selfCamp, ERelativeCamp.Enemy);
@@ -1117,6 +1120,99 @@ namespace RoundHero
                     isBattleData);
                  
                 var intersectList = moveRange.Intersect(heroHurtRange).ToList();
+                intersectList.Sort((gridPosIdx1, gridPosIdx2) =>
+                {
+                    var range1 = GetRange(gridPosIdx1, attackType, selfCamp, unitCamps,
+                        isBattleData);
+
+                    var range1EnemyCount = 0;
+                    var range1SoliderCount = 0;
+                    var range1UsCount = 0;
+                    foreach (var rangeGridPosIdx in range1)
+                    {
+                        if(rangeGridPosIdx == gridPosIdx)
+                            continue;
+                        
+                        var unit = GetUnitByGridPosIdx(rangeGridPosIdx, isBattleData);
+                        if (unit != null)
+                        {
+                            
+                            if (unit is Data_BattleSolider)
+                            {
+                                range1SoliderCount += 1;
+                            }
+                            else
+                            {
+
+                                var relatedCamp = GetRelativeCamp(unit.UnitCamp, actionUnit.UnitCamp);
+                                if (relatedCamp == ERelativeCamp.Enemy)
+                                {
+                                    range1EnemyCount += 1;
+                                }
+                                else if (relatedCamp == ERelativeCamp.Us)
+                                {
+                                    range1UsCount += 1;
+                                }
+                            }
+                        }
+                    }
+                    
+                    var range2 = GetRange(gridPosIdx2, attackType, selfCamp, unitCamps,
+                        isBattleData);
+                    
+                    var range2EnemyCount = 0;
+                    var range2SoliderCount = 0;
+                    var range2UsCount = 0;
+                    foreach (var rangeGridPosIdx in range2)
+                    {
+                        if(rangeGridPosIdx == gridPosIdx)
+                            continue;
+                        
+                        var unit = GetUnitByGridPosIdx(rangeGridPosIdx, isBattleData);
+                        if (unit != null)
+                        {
+                            if (unit is Data_BattleSolider)
+                            {
+                                range2SoliderCount += 1;
+                            }
+                            else
+                            {
+                                var relatedCamp = GetRelativeCamp(unit.UnitCamp, actionUnit.UnitCamp);
+                                if (relatedCamp == ERelativeCamp.Enemy)
+                                {
+                                    range2EnemyCount += 1;
+                                }
+                                else if (relatedCamp == ERelativeCamp.Us)
+                                {
+                                    range2UsCount += 1;
+                                }
+                            }
+                            
+                            
+                        }
+                    }
+
+                    if (range1EnemyCount < range2EnemyCount)
+                        return 1;
+                    
+                    if (range1EnemyCount > range2EnemyCount)
+                        return -1;
+                    
+                    if (range1SoliderCount < range2SoliderCount)
+                        return -1;
+                    
+                    if (range1SoliderCount > range2SoliderCount)
+                        return 1;
+                    
+                    if (range1UsCount < range2UsCount)
+                        return -1;
+                    
+                    if (range1UsCount > range2UsCount)
+                        return 1;
+
+                    return 0;
+
+                });
                 intersectDict.Add(battleUnitData.Idx, intersectList);
             }
 

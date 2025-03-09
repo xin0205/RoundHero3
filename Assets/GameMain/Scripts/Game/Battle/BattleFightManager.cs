@@ -783,6 +783,8 @@ namespace RoundHero
                     
                     actionData.AddEmptyTriggerDataList(unit.Idx);
                     var triggerDatas = actionData.TriggerDatas[unit.Idx];
+                    
+                    CacheUnitActiveMoveDatas(attackUnitID, rangeGridPosIdx, triggerBuffData.BuffData, actionData);
 
                     BattleBuffManager.Instance.AutoAttackTrigger(triggerBuffData.BuffData, values,
                         attackUnitID,
@@ -5485,7 +5487,7 @@ namespace RoundHero
                 
                 retGetRange.Add(battleUnitData.GridPosIdx);
                 var intersectDict = GameUtility.GetActionGridPosIdxs(battleUnitData.UnitCamp, battleUnitData.GridPosIdx, enemyData.MoveType,
-                    buffData.TriggerRange, ref retGetRange, ref retGetRange2, true);
+                    buffData.TriggerRange, buffData.TriggerUnitCamps, ref retGetRange, ref retGetRange2, true);
 
                 var isFindPath = false;
                 

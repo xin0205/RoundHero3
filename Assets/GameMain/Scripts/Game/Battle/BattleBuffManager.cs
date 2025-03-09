@@ -827,6 +827,13 @@ namespace RoundHero
                 default:
                     break;
             }
+
+            if (strList.Length >= 8)
+            {
+                buffData.FlyType = Enum.Parse<EFlyType>(strList[6]);
+                buffData.FlyRange = Enum.Parse<EActionType>(strList[7]);
+            }
+            
         }
         
         

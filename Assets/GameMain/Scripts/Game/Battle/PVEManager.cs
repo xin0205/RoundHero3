@@ -151,10 +151,15 @@ namespace RoundHero
             
             await BattleEnemyManager.Instance.GenerateNewEnemies();
             BattleManager.Instance.RefreshAll();
-            BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
-            BattleFightManager.Instance.EnemyMove();
             
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
+            GameUtility.DelayExcute(1f, () =>
+            {
+                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
+                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
+                BattleFightManager.Instance.EnemyMove();
+            });
+ 
             
             
             // if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
@@ -247,6 +252,7 @@ namespace RoundHero
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStart;
+                BattleManager.Instance.RefreshEnemyAttackData();
                 GameUtility.DelayExcute(1.5f, () =>
                 {
                     GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));

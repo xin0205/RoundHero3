@@ -91,13 +91,20 @@ namespace RoundHero
             BattleManager.Instance.RefreshAll();
             
 
-            BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
-            BattleFightManager.Instance.EnemyMove();
-            
-            BattleManager.Instance.RefreshEnemyAttackData();
-            
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
-            
+            GameUtility.DelayExcute(1f, () =>
+            {
+                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
+
+                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
+                BattleFightManager.Instance.EnemyMove();
+            });
+
+
+
+
+
+
 
         }
         
