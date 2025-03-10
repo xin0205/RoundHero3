@@ -66,6 +66,22 @@ namespace RoundHero
         // {
         //     BattleManager.Instance.ChangeHP(BattleUnitData, changeHP,  GamePlayManager.Instance.GamePlayData, EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
         // }
+        public override void LookAtHero()
+        {
+            var attackDatas = BattleFightManager.Instance.GetDirectAttackDatas(BattleMonsterEntityData.BattleMonsterData.Idx);
+            foreach (var kv in attackDatas)
+            {
+                 var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                 if (unitEntity is BattleCoreEntity)
+                 {
+                     var pos = unitEntity.Position;
+                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                 }
+            }
+            
+            
+            
+        }
 
 
 

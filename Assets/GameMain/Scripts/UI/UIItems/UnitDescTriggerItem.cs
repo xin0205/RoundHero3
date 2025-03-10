@@ -1,5 +1,6 @@
 ﻿using UGFExtensions.Await;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -20,7 +21,12 @@ namespace RoundHero
 
             isOpen = true;
             var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.UnitDescForm, UnitDescFormData);
-            unitDescForm = formAsync.Logic as UnitDescForm;
+            if (formAsync != null)
+            {
+                unitDescForm = formAsync.Logic as UnitDescForm;
+            }
+
+            
             
 
 

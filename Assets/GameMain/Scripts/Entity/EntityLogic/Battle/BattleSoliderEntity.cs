@@ -10,6 +10,7 @@ namespace RoundHero
     {
         public BattleSoliderEntityData BattleSoliderEntityData { get; protected set; }
 
+        [SerializeField] private BoxCollider boxCollider;
 
         protected override void OnShow(object userData)
         {
@@ -38,6 +39,14 @@ namespace RoundHero
             AttachWeapon(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);
             
             UnitAttackCastType = drCard.AttackCastType;
+            
+            ShowCollider(true);
+        }
+
+        public void ShowCollider(bool isShow)
+        {
+            boxCollider.enabled = isShow;
+
         }
 
        public override void OnPointerEnter(BaseEventData baseEventData)
@@ -49,29 +58,22 @@ namespace RoundHero
         
             if(IsMove)
                 return;
-            
-            if (BattleManager.Instance.BattleState == EBattleState.UseCard)
+
+            if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
             {
-                var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
-                if (movePaths != null && movePaths.Count > 0)
+                var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+                var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+
+                if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
                 {
-                    Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
                     BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx, false);
                     BattleFlyDirectManager.Instance.ShowFlyDirect(UnitIdx);
                     BattleIconManager.Instance.ShowBattleIcon(UnitIdx, EBattleIconType.Collison);
-                    //BattleFlyDirectManager.Instance.ShowEffectUnitFly(UnitIdx);
+
+                    BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
                 }
+            }
             
-                BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
-            }
-            else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
-            {
-                var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
-                BattleAttackTagManager.Instance.ShowAttackTag(actionUnitIdx, false);
-                BattleFlyDirectManager.Instance.ShowFlyDirect(actionUnitIdx);
-                BattleIconManager.Instance.ShowBattleIcon(actionUnitIdx, EBattleIconType.Collison);
-                BattleValueManager.Instance.ShowDisplayValue(actionUnitIdx);
-            }
             
         }
 
@@ -81,39 +83,33 @@ namespace RoundHero
         {
             base.OnPointerExit(baseEventData);
             
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard && BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-                return;
+            // if(BattleManager.Instance.BattleState != EBattleState.TacticSelectUnit)
+            //     return;
+            //
+            // if(CurHP <= 0)
+            //     return;
+            //
+            // if(IsMove)
+            //     return;
             
-            if(CurHP <= 0)
-                return;
-            
-            if(IsMove)
-                return;
-            
-            
-            
+            // var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+            // var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+            //
+            // if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+            // {
+            //
+            //     BattleValueManager.Instance.UnShowDisplayValues();
+            //     BattleAttackTagManager.Instance.UnShowAttackTags();
+            //     BattleFlyDirectManager.Instance.UnShowFlyDirects();
+            //     BattleIconManager.Instance.UnShowBattleIcons();
+            //     UnShowTags();
+            // }
+
             BattleValueManager.Instance.UnShowDisplayValues();
-            
-            if (BattleManager.Instance.BattleState == EBattleState.UseCard)
-            {
-                var movePaths = BattleFightManager.Instance.GetMovePaths(UnitIdx);
-                if (movePaths != null && movePaths.Count > 0)
-                {
-                    Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
-                    BattleAttackTagManager.Instance.UnShowAttackTags();
-                    BattleFlyDirectManager.Instance.UnShowFlyDirects();
-                    BattleIconManager.Instance.UnShowBattleIcons();
-                    //BattleFlyDirectManager.Instance.UnShowEffectUnitFly(UnitIdx);
-                }
-            
-                BattleValueManager.Instance.UnShowDisplayValues();
-            }
-            else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
-            {
-                //var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
-                UnShowTags();
-            }
-            
+            BattleAttackTagManager.Instance.UnShowAttackTags();
+            BattleFlyDirectManager.Instance.UnShowFlyDirects();
+            BattleIconManager.Instance.UnShowBattleIcons();
+            UnShowTags();
         }
 
         public override void Quit()

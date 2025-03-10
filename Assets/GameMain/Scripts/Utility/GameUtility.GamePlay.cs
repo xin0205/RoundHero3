@@ -1597,12 +1597,18 @@ namespace RoundHero
             return ERelativeCamp.Empty;
         }
         
-        public static int GetEndPosIdx(int startPosIdx, Vector2Int direct)
+        public static int GetEndPosIdx(int startPosIdx, Vector2Int direct, int dis)
         {
+            var idx = 0;
             var endCoord = GameUtility.GridPosIdxToCoord(startPosIdx);
             while (true)
             {
+                idx++;
                 endCoord += direct;
+                if (idx >= dis)
+                {
+                    break;
+                }
                 if (!GameUtility.InGridRange(endCoord))
                 {
                     endCoord -= direct;

@@ -164,6 +164,8 @@ MonoBehaviour:
   UnitAttackCastType: 0
   ValuePos: {fileID: 3119122112232860029}
   TargetPosIdx: 0
+  IsPointer: 0
+  boxCollider: {fileID: 5797164147326279908}
 --- !u!95 &4525250011595830683
 Animator:
   serializedVersion: 5

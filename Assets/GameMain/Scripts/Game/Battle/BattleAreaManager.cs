@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameFramework.Event;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 using Random = System.Random;
@@ -146,15 +147,11 @@ namespace RoundHero
         }
 
         private List<int> runPaths = new List<int>(32);
-        public void OnShowGridDetail(object sender, GameEventArgs e)
+        private BattleSoliderEntity tmpSoliderEntity;
+        public async void OnShowGridDetail(object sender, GameEventArgs e)
         {
             var ne = e as ShowGridDetailEventArgs;
 
-            if (ne.GridPosIdx == 24)
-            {
-                var A = 5;
-            }
-            
             if (ne.ShowState == EShowState.Show)
             {
                 ShowAllGrid(true);
@@ -291,6 +288,19 @@ namespace RoundHero
                     BlessManager.Instance.EachRoundFightCardAddLink(GamePlayManager.Instance.GamePlayData,
                         BattleManager.Instance.TempTriggerData.UnitData, EBlessID.EachRoundFightCardAddLinkSend,
                         ELinkID.Link_Send_Around_Us);
+                    
+                    Log.Debug("show1");
+                    tmpSoliderEntity =
+                        await GameEntry.Entity.ShowBattleSoliderEntityAsync(BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider);
+
+                    tmpSoliderEntity.ShowCollider(false);
+                    if (BattleManager.Instance.TempTriggerData.UnitData == null)
+                    {
+                        BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpSoliderEntity.BattleSoliderEntityData
+                            .BattleSoliderData.Idx);
+                        GameEntry.Entity.HideEntity(tmpSoliderEntity);
+                        tmpSoliderEntity = null;
+                    }
 
 
                     BattleManager.Instance.RefreshEnemyAttackData();
@@ -303,8 +313,16 @@ namespace RoundHero
                     if (BattleManager.Instance.TempTriggerData.UnitData != null &&
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx == ne.GridPosIdx)
                     {
+                        Log.Debug("unshow1");
                         BattleManager.Instance.TempTriggerData.UnitData = null;
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
+                        if (tmpSoliderEntity != null)
+                        {
+                            BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpSoliderEntity.BattleSoliderEntityData
+                                .BattleSoliderData.Idx);
+                            GameEntry.Entity.HideEntity(tmpSoliderEntity);
+                        }
+                        
 
                         BattleManager.Instance.RefreshEnemyAttackData();
                         GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
@@ -458,7 +476,7 @@ namespace RoundHero
                             BattleManager.Instance.RefreshEnemyAttackData();
                             
                         }
-                    }
+                    } 
                     
                     
                     else

@@ -316,6 +316,11 @@ namespace RoundHero
 
             var weaponEntity = await GameEntry.Entity.ShowWeaponEntityAsync(weaponHoldingType, weaponType, weaponID);
 
+            if (this == null || this.Entity == null)
+            {
+                GameEntry.Entity.HideEntity(weaponEntity);
+                return;
+            }
             switch (weaponHoldingType)
             {
                 case EWeaponHoldingType.TwoHand:
@@ -444,7 +449,7 @@ namespace RoundHero
                 }
             }
             
-            // var buffDatas = BattleUnitManager.Instance.GetBuffDatas(BattleUnit)
+            // var buffDatas = ;.Instance.GetBuffDatas(BattleUnit)
             // var triggerRange = buffDatas[0].TriggerRange;
             // var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
             // for (int i = 0; i < Constant.Battle.ActionTypePoints[buffDatas[0].TriggerRange].Count; i++)

@@ -101,6 +101,10 @@ namespace RoundHero
             BattleFightManager.Instance.CacheRoundFightData2();
             // BattleRouteManager.Instance.ShowEnemyRoute();
             RefreshView();
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                kv.Value.LookAtHero();
+            }
         }
         
         public void RefreshAll()
@@ -109,6 +113,7 @@ namespace RoundHero
             BattleFightManager.Instance.CacheRoundFightData();
             // BattleRouteManager.Instance.ShowEnemyRoute();
             RefreshView();
+            
         }
         
         public void RefreshView()

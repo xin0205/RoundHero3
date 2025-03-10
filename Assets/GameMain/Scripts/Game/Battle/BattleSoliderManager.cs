@@ -70,6 +70,7 @@ namespace RoundHero
 
         public void Destory()
         {
+            SoliderEntities.Clear();
             GameEntry.Event.Unsubscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
         }
         

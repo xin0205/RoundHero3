@@ -2,6 +2,7 @@
 using GameFramework.Event;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -20,7 +21,7 @@ namespace RoundHero
         [SerializeField] private Text passCardCount;
         [SerializeField] private Text consumeCardCount;
         [SerializeField] private TextMeshProUGUI energy;
-        [SerializeField] private TextMeshProUGUI heroHP;
+        [SerializeField] private Text heroHP;
         [SerializeField] private TextMeshProUGUI test;
         [SerializeField] private TextMeshProUGUI coin;
         
@@ -32,6 +33,7 @@ namespace RoundHero
         
         [SerializeField] private Text tips;
         [SerializeField] private Text randomSeed;
+        //[SerializeField] private Text coreInfo;
         
         private ProcedureBattle procedureBattle;
 
@@ -54,6 +56,8 @@ namespace RoundHero
             tipsNode.SetActive(false);
             
             randomSeed.text = GamePlayManager.Instance.GamePlayData.RandomSeed.ToString();
+
+            
         }
 
         private void ShowRoundTips(int round)
@@ -172,7 +176,7 @@ namespace RoundHero
             RefreshHeroHP();
             RefreshCoin();
             RefreshLinks();
-
+            //coreInfo.text = HeroManager.Instance.BattleHeroData.CurHP + "/" + HeroManager.Instance.BattleHeroData.CacheHPDelta;
         }
 
         private void RefreshLinks()
@@ -209,14 +213,17 @@ namespace RoundHero
 
         private void RefreshHeroHP()
         {
+            //BattlePlayerManager.Instance.PlayerData.BattleHero.Attribute.GetAttribute(EHeroAttribute.CurHeart) + "/" +
+            //BattlePlayerManager.Instance.PlayerData.BattleHero.Attribute.GetAttribute(EHeroAttribute.MaxHeart) + "-" +
             heroHP.text =
-                BattlePlayerManager.Instance.PlayerData.BattleHero.Attribute.GetAttribute(EHeroAttribute.CurHeart) + "/" +
-                BattlePlayerManager.Instance.PlayerData.BattleHero.Attribute.GetAttribute(EHeroAttribute.MaxHeart) + "-" +
+                
                 BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" +
                 BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
 
-            var hpDelta =
-                BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.BattleHeroData.Idx, EHeroAttribute.CurHP);
+            var hpDelta = BattleFightManager.Instance.PlayerData.BattleHero.CurHP -
+                          HeroManager.Instance.BattleHeroData.CurHP;
+                          ;
+                ;
             heroHP.text += "   " + ((hpDelta > 0) ? "+" + hpDelta : hpDelta);
         }
 

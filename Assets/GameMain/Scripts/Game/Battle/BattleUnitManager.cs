@@ -24,6 +24,7 @@ namespace RoundHero
         public int TargetGridPosIdx = -1;
         public ETempUnitType TriggerType = ETempUnitType.Null;
         public Data_BattleUnit UnitData;
+        //public BattleSoliderEntity BattleSoliderEntity;
         public int UnitOriGridPosIdx = -1;
         public List<int> TempUnitMovePaths = new ();
         public int CardEffectUnitID = -1;
@@ -34,6 +35,7 @@ namespace RoundHero
             TargetGridPosIdx = -1;
             TriggerType = ETempUnitType.Null;
             UnitData = null;
+            //BattleSoliderEntity = null;
             UnitOriGridPosIdx = -1;
             TempUnitMovePaths.Clear();
             CardEffectUnitID = -1;
@@ -358,6 +360,7 @@ namespace RoundHero
             }
         }
         
+        private List<BuffData> tmpBuffDatas = new List<BuffData>();
         public List<BuffData> GetBuffDatas(Data_BattleUnit battleUnit)
         {
             if (battleUnit is Data_BattleSolider soliderData)
@@ -373,7 +376,7 @@ namespace RoundHero
                 return HeroManager.Instance.GetBuffData(heroData.HeroID);
             }
             
-            return null;
+            return tmpBuffDatas;
         }
 
         // public void RoundEnd()
