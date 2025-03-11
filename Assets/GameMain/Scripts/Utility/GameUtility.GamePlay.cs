@@ -252,7 +252,7 @@ namespace RoundHero
 
         //private static List<int> rangeList = new(25);
         
-        public static List<int> GetRange(int gridPosIdx, string actionType, string selfCampStr, string unitCampStr = null, bool isBattleData = true)
+        public static List<int> GetRange(int gridPosIdx, string actionType, string selfCampStr, string unitCampStr, bool isBattleData = true, bool allRange = false)
         {
             //var nActionType = GameUtility.GetEnum<EActionType>(actionType);
             // List<UnitSelection> unitSelections = null;
@@ -284,7 +284,7 @@ namespace RoundHero
                 unitCamps.Add((ERelativeCamp)unitCamp);
             }
             
-            EUnitCamp? selfUnitCamp = null;
+            EUnitCamp selfUnitCamp = EUnitCamp.Empty;
             if (selfCampStr != null)
             {
                 selfUnitCamp = GameUtility.GetEnum<EUnitCamp>(selfCampStr);
@@ -292,7 +292,7 @@ namespace RoundHero
 
             
             
-            return GetRange(gridPosIdx, nActionType, selfUnitCamp, unitCamps, isBattleData);
+            return GetRange(gridPosIdx, nActionType, selfUnitCamp, unitCamps, isBattleData, allRange);
 
         }
         
@@ -405,8 +405,8 @@ namespace RoundHero
         private static List<List<int>> rangeList = new (50);
         private static Dictionary<Vector2Int, Vector2Int> cacheCoords = new ();
         
-        public static List<int> GetRange(int gridPosIdx, EActionType actionType, EUnitCamp? selfUnitCamp = null, List<ERelativeCamp>? unitCamps = null,
-            bool isBattleData = true)
+        public static List<int> GetRange(int gridPosIdx, EActionType actionType, EUnitCamp selfUnitCamp, List<ERelativeCamp> unitCamps,
+            bool isBattleData = true,  bool allRange = false)
         {
 
             var retGetRange = new List<int>(); 
@@ -552,6 +552,7 @@ namespace RoundHero
                          if(posIdx == gridPosIdx)
                              continue;
 
+      
                          if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp ||
                              unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
                          {
@@ -692,7 +693,7 @@ namespace RoundHero
                         
                         var posIdx = GameUtility.GridCoordToPosIdx(targetCoord);
 
-                        if (unitCamps == null)
+                        if (unitCamps == null || allRange)
                         {
                             //range.Add(GridCoordToPosIdx(targetCoord));
                             retGetRange.Add(posIdx);
@@ -1083,7 +1084,7 @@ namespace RoundHero
             var relatedEnemyUnits = GameUtility.GetUnitsByCamp(selfCamp, ERelativeCamp.Enemy);
 
             moveRange.Add(gridPosIdx);
-            moveRange.AddRange(GetRange(gridPosIdx, moveType, null, null, isBattleData));
+            moveRange.AddRange(GetRange(gridPosIdx, moveType, selfCamp, unitCamps, isBattleData, true));
             var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
             relatedEnemyUnits.Sort((unit1, unit2) =>
             {
@@ -1116,8 +1117,8 @@ namespace RoundHero
             
             foreach (var battleUnitData in relatedEnemyUnits)
             {
-                heroHurtRange = GetRange(battleUnitData.GridPosIdx, attackType, null, null,
-                    isBattleData);
+                heroHurtRange = GetRange(battleUnitData.GridPosIdx, attackType, battleUnitData.UnitCamp, null,
+                    isBattleData, true);
                  
                 var intersectList = moveRange.Intersect(heroHurtRange).ToList();
                 intersectList.Sort((gridPosIdx1, gridPosIdx2) =>

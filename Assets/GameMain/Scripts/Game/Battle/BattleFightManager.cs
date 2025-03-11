@@ -148,7 +148,8 @@ namespace RoundHero
         public ELinkID LinkID = ELinkID.Empty;
         //public EBlessID BlessID = EBlessID.Empty;
         //public ECardID CardID = ECardID.Empty;
-        public EBuffID BuffID = EBuffID.Empty;
+        //public EBuffID BuffID = EBuffID.Empty;
+        public BuffValue BuffValue = null;
         public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
         public ETriggerDataSubType TriggerDataSubType = ETriggerDataSubType.Empty;
         public ETriggerDataType TriggerDataType = ETriggerDataType.Empty;
@@ -181,7 +182,8 @@ namespace RoundHero
             triggerData.BattleUnitAttribute = BattleUnitAttribute;
             triggerData.HeroAttribute = HeroAttribute;
             triggerData.LinkID = LinkID;
-            triggerData.BuffID = BuffID;
+            triggerData.BuffValue = BuffValue.Copy();
+            //triggerData.BuffID = BuffID;
             triggerData.CardTriggerType = CardTriggerType;
             triggerData.TriggerDataType = TriggerDataType;
             triggerData.TriggerDataSubType = TriggerDataSubType;
@@ -893,6 +895,8 @@ namespace RoundHero
                             triggerBuffData.ValueList, attackUnitID,
                             attackUnitID,
                             unit.Idx, null, triggerDatas);
+                        
+                        triggerData.BuffValue = triggerBuffData.Copy();
 
                         if (GameUtility.IsSubCurHPTrigger(triggerData))
                         {
@@ -2724,7 +2728,7 @@ namespace RoundHero
                 case ETriggerDataType.RoundBuff:
                     var battlePlayerData =
                         RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(effectUnit.UnitCamp);
-                    battlePlayerData.RoundBuffs.Add(triggerData.BuffID);
+                    //battlePlayerData.RoundBuffs.Add(triggerData.BuffID);
                     break;
                 default:
                     break;
@@ -2820,94 +2824,94 @@ namespace RoundHero
 
         private void CacheUnitLinkIDs()
         {
-            var player1UnLinkPosIdx =
-                BattleBuffManager.Instance.GetUnLinkPosIdxs(RoundFightData.GamePlayData, EUnitCamp.Player1);
-            var player2UnLinkPosIdx =
-                BattleBuffManager.Instance.GetUnLinkPosIdxs(RoundFightData.GamePlayData, EUnitCamp.Player2);
-            var enemyUnLinkPosIdx =
-                BattleBuffManager.Instance.GetUnLinkPosIdxs(RoundFightData.GamePlayData, EUnitCamp.Enemy);
-
-            
-            var propLinkDict = new GameFrameworkMultiDictionary<int, int>();
-
-            foreach (var kv in BattleGridPropManager.Instance.GridPropDatas)
-            {
-                var drGridProp = GameEntry.DataTable.GetGridProp(kv.Value.GridPropID);
-                foreach (var buffID in drGridProp.GridPropIDs)
-                {
-                    var buffStr = Enum.GetName(typeof(EBuffID), buffID);
-
-                    var isLink = Enum.TryParse(buffStr, out ELinkID linkID);
-
-                    if (isLink)
-                    {
-                        var drLink = GameEntry.DataTable.GetLink(linkID);
-                        var range = GameUtility.GetRange(kv.Value.GridPosIdx, drLink.LinkRange);
-                        foreach (var gridPosIdx in range)
-                        { 
-                            propLinkDict.Add(gridPosIdx, drGridProp.Id);
-                        }
-
-                    }
-                }
-            }
-
-            foreach (var kv in BattleUnitDatas)
-            {
-                if (kv.Value.UnitCamp == EUnitCamp.Player1 && player1UnLinkPosIdx.Contains(kv.Value.GridPosIdx))
-                    continue;
-                if (kv.Value.UnitCamp == EUnitCamp.Player2 && player2UnLinkPosIdx.Contains(kv.Value.GridPosIdx))
-                    continue;
-
-                if (kv.Value.UnitCamp == EUnitCamp.Enemy && enemyUnLinkPosIdx.Contains(kv.Value.GridPosIdx))
-                    continue;
-
-
-                foreach (var funeID in kv.Value.FuneIdxs)
-                {
-                    var buffData = BattleBuffManager.Instance.GetBuffData(funeID);
-                    if (buffData == null)
-                        continue;
-                    // if (buffData.BuffTriggerType == EBuffTriggerType.Link)
-                    // {
-                    //     var linkID = GameUtility.FuneIDToLinkID(FuneManager.Instance.GetFuneID(funeID));
-                    //     kv.Value.LinkIDs.Add(linkID);
-                    // }
-                }
-
-                if (propLinkDict.Contains(kv.Value.GridPosIdx))
-                {
-                    foreach (var gridPropID in propLinkDict[kv.Value.GridPosIdx])
-                    {
-                        var drGridProp = GameEntry.DataTable.GetGridProp(gridPropID);
-                        foreach (var buffIDStr in drGridProp.GridPropIDs)
-                        {
-                            var buffStr = Enum.GetName(typeof(EBuffID), buffIDStr);
-                            var linkID = Enum.Parse<ELinkID>(buffStr);
-                            if (linkID != null)
-                            {
-                                kv.Value.LinkIDs.Add(linkID);
-                            }
-                        }
-                    }
-
-                }
-
-                foreach (var linkID in kv.Value.BattleLinkIDs)
-                {
-                    kv.Value.LinkIDs.Add(linkID);
-                }
-                
-                var buffDatas = BattleUnitManager.Instance.GetBuffDatas(kv.Value);
-                foreach (var buffData in buffDatas)
-                {
-                    // if (buffData.BuffTriggerType == EBuffTriggerType.Link)
-                    // {
-                    //     var buffStr = Enum.GetName(typeof(EBuffID), buffData.BuffID);
-                    //     var linkID = Enum.Parse<ELinkID>(buffStr);
-                    //     kv.Value.LinkIDs.Add(linkID);
-                    // }
-                }
+            // var player1UnLinkPosIdx =
+            //     BattleBuffManager.Instance.GetUnLinkPosIdxs(RoundFightData.GamePlayData, EUnitCamp.Player1);
+            // var player2UnLinkPosIdx =
+            //     BattleBuffManager.Instance.GetUnLinkPosIdxs(RoundFightData.GamePlayData, EUnitCamp.Player2);
+            // var enemyUnLinkPosIdx =
+            //     BattleBuffManager.Instance.GetUnLinkPosIdxs(RoundFightData.GamePlayData, EUnitCamp.Enemy);
+            //
+            //
+            // var propLinkDict = new GameFrameworkMultiDictionary<int, int>();
+            //
+            // foreach (var kv in BattleGridPropManager.Instance.GridPropDatas)
+            // {
+            //     var drGridProp = GameEntry.DataTable.GetGridProp(kv.Value.GridPropID);
+            //     foreach (var buffID in drGridProp.GridPropIDs)
+            //     {
+            //         var buffStr = Enum.GetName(typeof(EBuffID), buffID);
+            //
+            //         var isLink = Enum.TryParse(buffStr, out ELinkID linkID);
+            //
+            //         if (isLink)
+            //         {
+            //             var drLink = GameEntry.DataTable.GetLink(linkID);
+            //             var range = GameUtility.GetRange(kv.Value.GridPosIdx, drLink.LinkRange);
+            //             foreach (var gridPosIdx in range)
+            //             { 
+            //                 propLinkDict.Add(gridPosIdx, drGridProp.Id);
+            //             }
+            //
+            //         }
+            //     }
+            // }
+            //
+            // foreach (var kv in BattleUnitDatas)
+            // {
+            //     if (kv.Value.UnitCamp == EUnitCamp.Player1 && player1UnLinkPosIdx.Contains(kv.Value.GridPosIdx))
+            //         continue;
+            //     if (kv.Value.UnitCamp == EUnitCamp.Player2 && player2UnLinkPosIdx.Contains(kv.Value.GridPosIdx))
+            //         continue;
+            //
+            //     if (kv.Value.UnitCamp == EUnitCamp.Enemy && enemyUnLinkPosIdx.Contains(kv.Value.GridPosIdx))
+            //         continue;
+            //
+            //
+            //     foreach (var funeID in kv.Value.FuneIdxs)
+            //     {
+            //         var buffData = BattleBuffManager.Instance.GetBuffData(funeID);
+            //         if (buffData == null)
+            //             continue;
+            //         // if (buffData.BuffTriggerType == EBuffTriggerType.Link)
+            //         // {
+            //         //     var linkID = GameUtility.FuneIDToLinkID(FuneManager.Instance.GetFuneID(funeID));
+            //         //     kv.Value.LinkIDs.Add(linkID);
+            //         // }
+            //     }
+            //
+            //     if (propLinkDict.Contains(kv.Value.GridPosIdx))
+            //     {
+            //         foreach (var gridPropID in propLinkDict[kv.Value.GridPosIdx])
+            //         {
+            //             var drGridProp = GameEntry.DataTable.GetGridProp(gridPropID);
+            //             foreach (var buffIDStr in drGridProp.GridPropIDs)
+            //             {
+            //                 var buffStr = Enum.GetName(typeof(EBuffID), buffIDStr);
+            //                 var linkID = Enum.Parse<ELinkID>(buffStr);
+            //                 if (linkID != null)
+            //                 {
+            //                     kv.Value.LinkIDs.Add(linkID);
+            //                 }
+            //             }
+            //         }
+            //
+            //     }
+            //
+            //     foreach (var linkID in kv.Value.BattleLinkIDs)
+            //     {
+            //         kv.Value.LinkIDs.Add(linkID);
+            //     }
+            //     
+            //     var buffDatas = BattleUnitManager.Instance.GetBuffDatas(kv.Value);
+            //     foreach (var buffData in buffDatas)
+            //     {
+            //         // if (buffData.BuffTriggerType == EBuffTriggerType.Link)
+            //         // {
+            //         //     var buffStr = Enum.GetName(typeof(EBuffID), buffData.BuffID);
+            //         //     var linkID = Enum.Parse<ELinkID>(buffStr);
+            //         //     kv.Value.LinkIDs.Add(linkID);
+            //         // }
+            //     }
 
                 // if (kv.Value is Data_BattleSolider solider)
                 // {
@@ -2937,7 +2941,7 @@ namespace RoundHero
                 // }
 
 
-            }
+            //}
         }
 
         private void CacheUnitLinks()
@@ -3580,7 +3584,7 @@ namespace RoundHero
                     break;
                 case ETriggerDataType.RoundBuff:
                     var battlePlayerData = GamePlayManager.Instance.GamePlayData.BattleData.GetBattlePlayerData(effectUnitEntity.UnitCamp);
-                    battlePlayerData.RoundBuffs.Add(triggerData.BuffID);
+                    //battlePlayerData.RoundBuffs.Add(triggerData.BuffID);
                     break;
                 default:
                     break;

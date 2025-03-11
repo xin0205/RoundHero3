@@ -15,7 +15,7 @@ using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
-    public class BattleUnitEntity : Entity, IMoveGrid
+    public partial class BattleUnitEntity : Entity, IMoveGrid
     {
         [SerializeField] protected Transform roleRoot;
         [SerializeField] protected TextMesh hp;
@@ -316,7 +316,7 @@ namespace RoundHero
 
             var weaponEntity = await GameEntry.Entity.ShowWeaponEntityAsync(weaponHoldingType, weaponType, weaponID);
 
-            if (this == null || this.Entity == null)
+            if (this == null || this.Entity == null || !GameEntry.Entity.HasEntity(this.Id))
             {
                 GameEntry.Entity.HideEntity(weaponEntity);
                 return;
@@ -1240,7 +1240,7 @@ namespace RoundHero
             BattleAttackTagManager.Instance.UnShowAttackTags();
             BattleFlyDirectManager.Instance.UnShowFlyDirects();
             BattleIconManager.Instance.UnShowBattleIcons();
-            BattleValueManager.Instance.UnShowDisplayValues();
+            UnShowDisplayValues();
         }
 
     }

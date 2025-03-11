@@ -1740,11 +1740,11 @@ namespace RoundHero
         public int UnitIdx;
         public EEnemyType EnemyType;
         public EGameDifficulty GameDifficulty;
-        public Dictionary<EUnitCamp, Data_BattlePlayer> BattlePlayerDatas = new ();
+        public Dictionary<EUnitCamp, Data_BattlePlayer> BattlePlayerDatas = new (10);
 
-        public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new();
-        public Dictionary<int, Data_GridProp> GridPropDatas = new();
-        public Dictionary<int, EGridType> GridTypes = new ();
+        public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new(10);
+        public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
+        public Dictionary<int, EGridType> GridTypes = new (100);
         
 
         public Data_Battle()

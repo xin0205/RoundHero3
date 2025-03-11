@@ -22,6 +22,25 @@ namespace RoundHero
         public EUnitState UnitState = EUnitState.Empty;
         public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
         public string BuffStr;
+
+        public BuffData Copy()
+        {
+            var buffData = new BuffData();
+            buffData.BuffTriggerType = BuffTriggerType;
+            buffData.TriggerUnitCamps = new List<ERelativeCamp>(TriggerUnitCamps);
+            buffData.TriggerRange = TriggerRange;
+            buffData.FlyType = FlyType;
+            buffData.FlyRange = FlyRange;
+            buffData.TriggerTargets = new List<ETriggerTarget>(TriggerTargets);
+            buffData.BuffValueType = BuffValueType;
+            buffData.HeroAttribute = HeroAttribute;
+            buffData.UnitAttribute = UnitAttribute;
+            buffData.UnitState = UnitState;
+            buffData.CardTriggerType = CardTriggerType;
+            buffData.BuffStr = BuffStr;
+
+            return buffData;
+        }
         //public List<string> Values;
     }
     // public class BuffTriggerDataContext
@@ -446,7 +465,7 @@ namespace RoundHero
                 
                 if (kv.Value.BuffCount(EBuffID.Spec_UnPlaceEnemyUnit.ToString()) > 0)
                 {
-                    var range = GameUtility.GetRange(kv.Value.GridPosIdx, EActionType.Direct82Short);
+                    var range = GameUtility.GetRange(kv.Value.GridPosIdx, EActionType.Direct82Short, EUnitCamp.Empty, null, false, true);
                     posIdxs.AddRange(range);
                 }
                 else

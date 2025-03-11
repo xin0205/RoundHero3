@@ -70,7 +70,7 @@ namespace RoundHero
                     BattleFlyDirectManager.Instance.ShowFlyDirect(UnitIdx);
                     BattleIconManager.Instance.ShowBattleIcon(UnitIdx, EBattleIconType.Collison);
 
-                    BattleValueManager.Instance.ShowDisplayValue(UnitIdx);
+                    ShowDisplayValue(UnitIdx);
                 }
             }
             
@@ -105,7 +105,7 @@ namespace RoundHero
             //     UnShowTags();
             // }
 
-            BattleValueManager.Instance.UnShowDisplayValues();
+            UnShowDisplayValues();
             BattleAttackTagManager.Instance.UnShowAttackTags();
             BattleFlyDirectManager.Instance.UnShowFlyDirects();
             BattleIconManager.Instance.UnShowBattleIcons();

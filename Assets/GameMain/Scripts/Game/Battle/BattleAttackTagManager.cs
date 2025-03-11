@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
 using Random = System.Random;
 
 namespace RoundHero
@@ -55,7 +55,7 @@ namespace RoundHero
             var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
 
             var entityIdx = curEntityIdx;
-            curEntityIdx += triggerDataDict.Count;
+            
             
             
             // foreach (var triggerData in triggerDatas)
@@ -68,25 +68,19 @@ namespace RoundHero
             //     }
             //         
             // }
+            
+            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(unitIdx);
+            var values = triggerDataDict.Values.ToList();
+            var triggerData = values[0][0];
+                
+            var range = GameUtility.GetRange(triggerData.ActionUnitGridPosIdx, triggerData.BuffValue.BuffData.TriggerRange,
+                actionUnit.UnitCamp, triggerData.BuffValue.BuffData.TriggerUnitCamps, true, true);
+            
+            curEntityIdx += range.Count;
 
-
-            foreach (var triggerDatas in triggerDataDict.Values)
+            foreach (var gridPosIdx in range)
             {
-                var triggerData = triggerDatas[0];
-                var actionUnitIdx = triggerData.ActionUnitIdx;
-                //var effectUnitIdx = triggerData.EffectUnitIdx;
-                //var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
-                //var effectUnit = GameUtility.GetUnitDataByIdx(effectUnitIdx);
-
-                // var effectUnitGridPosIdx = effectUnit.GridPosIdx;
-                // var movePaths = BattleFightManager.Instance.GetMovePaths(effectUnitIdx);
-                // // && effectUnit.GridPosIdx < actionUnit.GridPosIdx
-                // if (movePaths != null && movePaths.Count > 0 && isEffectUnitMove)
-                // {
-                //     effectUnitGridPosIdx = movePaths[movePaths.Count - 1];
-                // }
-
-                var effectUnitPos = GameUtility.GridPosIdxToPos(triggerData.EffectUnitGridPosIdx);
+                var effectUnitPos = GameUtility.GridPosIdxToPos(gridPosIdx);
                 var actionUnitPos = GameUtility.GridPosIdxToPos(triggerData.ActionUnitGridPosIdx);
 
                 var attackTagType = GameUtility.IsSubCurHPTrigger(triggerData) ? EAttackTagType.Attack :
@@ -111,8 +105,57 @@ namespace RoundHero
                 {
                     BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
                 }
-
             }
+
+
+            // foreach (var triggerDatas in triggerDataDict.Values)
+            // {
+            //     var triggerData = triggerDatas[0];
+            //     //GameUtility.GetRange(triggerData.ActionUnitGridPosIdx, triggerData.)
+            //     
+            //     var actionUnitIdx = triggerData.ActionUnitIdx;
+            //     //var effectUnitIdx = triggerData.EffectUnitIdx;
+            //     //var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
+            //     //var effectUnit = GameUtility.GetUnitDataByIdx(effectUnitIdx);
+            //
+            //     // var effectUnitGridPosIdx = effectUnit.GridPosIdx;
+            //     // var movePaths = BattleFightManager.Instance.GetMovePaths(effectUnitIdx);
+            //     // // && effectUnit.GridPosIdx < actionUnit.GridPosIdx
+            //     // if (movePaths != null && movePaths.Count > 0 && isEffectUnitMove)
+            //     // {
+            //     //     effectUnitGridPosIdx = movePaths[movePaths.Count - 1];
+            //     // }
+            //
+            //     
+            //     
+            //
+            //     // var effectUnitPos = GameUtility.GridPosIdxToPos(triggerData.EffectUnitGridPosIdx);
+            //     // var actionUnitPos = GameUtility.GridPosIdxToPos(triggerData.ActionUnitGridPosIdx);
+            //     //
+            //     // var attackTagType = GameUtility.IsSubCurHPTrigger(triggerData) ? EAttackTagType.Attack :
+            //     //     GameUtility.IsAddCurHPTrigger(triggerData) ? EAttackTagType.Recover : EAttackTagType.UnitState;
+            //     //
+            //     // var unitState = attackTagType == EAttackTagType.UnitState ? triggerData.UnitState : EUnitState.Empty;
+            //     //
+            //     // var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos, actionUnitPos,
+            //     //     effectUnitPos, attackTagType, unitState, entityIdx);
+            //     //
+            //     // entityIdx++;
+            //     // //battleRouteEntity.SetCurrent(kv.Value.First() == BattleAreaManager.Instance.CurPointGridPosIdx);
+            //     //
+            //     // // !isShowRoute || 
+            //     // if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showEntityIdx)
+            //     // {
+            //     //     
+            //     //     GameEntry.Entity.HideEntity(battleAttackTagEntity);
+            //     //     //break;
+            //     // }
+            //     // else
+            //     // {
+            //     //     BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
+            //     // }
+            //
+            // }
 
         }
 

@@ -81,7 +81,17 @@ namespace RoundHero
     {
         public BuffData BuffData;
         public List<float> ValueList;
-        public int UnitID;
+        public int UnitIdx;
+
+        public BuffValue Copy()
+        {
+            var buffValue = new BuffValue();
+            buffValue.BuffData = BuffData.Copy();
+            buffValue.ValueList = new List<float>(ValueList);
+            buffValue.UnitIdx = UnitIdx;
+
+            return buffValue;
+        }
     }
 
     
@@ -115,7 +125,7 @@ namespace RoundHero
             return DataManager.Instance.DataGame.User.CurGamePlayData.BattleData.UnitIdx++;
         }
 
-        public int GetTempID()
+        public int GetTempIdx()
         {
             return 999999;
         }
@@ -450,7 +460,7 @@ namespace RoundHero
                 {
                     BuffData = buffData,
                     ValueList = new List<float>(valueList[idx++]),
-                    UnitID = unit.Idx,
+                    UnitIdx = unit.Idx,
                 });
             };
             
@@ -527,7 +537,7 @@ namespace RoundHero
                 {
                     BuffData = BattleBuffManager.Instance.GetBuffData(buffStr),
                     ValueList = valueList[idx++],
-                    UnitID = unit.Idx,
+                    UnitIdx = unit.Idx,
                 });
             };
 

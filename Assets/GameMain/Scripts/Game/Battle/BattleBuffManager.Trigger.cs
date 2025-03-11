@@ -561,7 +561,7 @@ namespace RoundHero
             {
                 TriggerDataType = ETriggerDataType.RoundBuff,
                 EffectUnitIdx = battleHero.Idx,
-                BuffID = buffID,
+                //BuffID = buffID,
                 Value = 1,
             };
                 
