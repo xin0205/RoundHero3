@@ -13,7 +13,8 @@ namespace RoundHero
         public Canvas Canvas;
 
         [SerializeField] public HeroIcon HeroIcon;
-        
+
+        public GameObject UICore;
 
         public void Awake() 
         {

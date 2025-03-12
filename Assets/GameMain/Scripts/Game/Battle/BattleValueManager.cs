@@ -30,6 +30,51 @@ namespace RoundHero
             UnShowDisplayValues();
             ShowDisplayValues(unitIdx);
         }
+        
+        public void ShowHurtDisplayValue(int unitIdx)
+        {
+            UnShowDisplayValues();
+            ShowHurtDisplayValues(unitIdx);
+        }
+        
+        public async void ShowHurtDisplayValues(int unitIdx)
+        {
+            //isShowDisplayValue = true;
+            
+            BattleValueEntities.Clear();
+            
+            var entityIdx = curValueEntityIdx;
+            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(unitIdx),
+                BattleFightManager.Instance.GetHurtInDirectAttackDatas(unitIdx));
+            curValueEntityIdx += triggerDataDict.Count;
+  
+            
+            // foreach (var triggerData in triggerDatas)
+            // {
+            //     var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+            //
+            //     if (unit != null)
+            //     {
+            //         curEntityIdx++;
+            //     }
+            //         
+            // }
+
+            var idx = 0;
+            foreach (var kv in triggerDataDict)
+            {
+                var _entityIdx = entityIdx;
+                var values = kv.Value;
+                //ShowValues(kv.Value, entityIdx);
+                GameUtility.DelayExcute(0.25f * idx, () =>
+                {
+                    ShowValues(values, _entityIdx);
+                });
+                idx++;
+                entityIdx++;
+            }
+
+        }
 
         public async void ShowDisplayValues(int unitIdx)
         {
@@ -113,7 +158,17 @@ namespace RoundHero
                 effectUnitPos.y += 1f;
                 //targetPos.y += 1f;
                 
-                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, effectUnitPos,
+                // var pos = AreaController.Instance.UICamera.WorldToScreenPoint(AreaController.Instance.UICore.transform.position);
+                // var uiCorePos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, Camera.main.transform.position.z));
+                //
+
+                var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
+                    AreaController.Instance.UICore.transform.position);
+                
+                Vector3 position = new Vector3(pos.x, pos.y,  Camera.main.transform.position.z);
+                Vector3 uiCorePos = Camera.main.ScreenToWorldPoint(position);
+                
+                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, uiCorePos,
                     value, entityIdx, true);
                 
                 entity.transform.parent = effectUnit.Root;
@@ -140,6 +195,7 @@ namespace RoundHero
                 // }
                 
                 effectUnitPos.y += 1f;
+                effectUnitPos.z -= 0.3f;
                 
                 entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
                     effectUnitPos, value, entityIdx);

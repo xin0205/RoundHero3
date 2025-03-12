@@ -64,6 +64,7 @@ namespace RoundHero
                 
                 GameUtility.DelayExcute(time, () =>
                 {
+   
                     GameEntry.Entity.HideEntity(this);
                 });
                 // moveTween.OnComplete(() =>
@@ -91,8 +92,8 @@ namespace RoundHero
 
         protected override void OnHide(bool isShutdown, object userData)
         {
+            text.DOKill();
             
-            transform.DOKill();
             textColTween.Kill();
             textStrTween.Kill();
             base.OnHide(isShutdown, userData);

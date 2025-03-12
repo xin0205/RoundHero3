@@ -300,8 +300,8 @@ namespace RoundHero
                     {
                         BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpEntity.BattleSoliderEntityData
                             .BattleSoliderData.Idx);
-                        BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpSoliderEntity.BattleSoliderEntityData
-                            .BattleSoliderData.Idx);
+                        // BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpEntity.BattleSoliderEntityData
+                        //     .BattleSoliderData.Idx);
                         GameEntry.Entity.HideEntity(tmpEntity);
                         BattleManager.Instance.RefreshEnemyAttackData();
                     }
@@ -315,8 +315,8 @@ namespace RoundHero
                         
                         BattleManager.Instance.RefreshEnemyAttackData();
                         
-                        
-                        tmpSoliderEntity.RefreshDamageState();
+                        tmpSoliderEntity.ShowHurtDisplayValue(tmpSoliderEntity.BattleSoliderEntityData.BattleSoliderData.Idx);
+                        //tmpSoliderEntity.RefreshDamageState();
                     }
 
 

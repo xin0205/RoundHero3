@@ -57,7 +57,7 @@ namespace RoundHero
             
             randomSeed.text = GamePlayManager.Instance.GamePlayData.RandomSeed.ToString();
 
-            
+            AreaController.Instance.UICore = heroHP.gameObject;
         }
 
         private void ShowRoundTips(int round)

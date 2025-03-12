@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -9,7 +10,7 @@ namespace RoundHero
         public BattleDisplayValueEntityData BattleDisplayValueEntityData { get; protected set; }
 
         
-        [SerializeField] private TextMesh text;
+        [SerializeField] private TextMeshPro text;
         [SerializeField] private Color hurtColor;
         [SerializeField] private Color recoverColor;
 

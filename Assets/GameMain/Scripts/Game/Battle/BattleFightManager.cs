@@ -4671,6 +4671,125 @@ namespace RoundHero
             return triggerDataDict;
         }
         
+        
+        public Dictionary<int, List<TriggerData>> GetHurtInDirectAttackDatas(int unitIdx)
+        {
+            var triggerDataDict = new Dictionary<int, List<TriggerData>>();
+
+            foreach (var kv in RoundFightData.EnemyAttackDatas)
+            {
+  
+                var triggerDataList = kv.Value.MoveData.MoveUnitDatas.Values.ToList();
+                foreach (var moveUnitData in triggerDataList)
+                {
+                    foreach (var kv2 in moveUnitData.MoveActionData.TriggerDatas)
+                    {
+                        foreach (var triggerData in kv2.Value)
+                        {
+                            if(triggerData.EffectUnitIdx != unitIdx)
+                                continue;
+                            
+                            if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.ActionUnitIdx, new List<TriggerData>());
+                            }
+                            triggerDataDict[triggerData.ActionUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
+            }
+            
+            foreach (var kv in RoundFightData.SoliderActiveAttackDatas)
+            {
+  
+                var triggerDataList = kv.Value.MoveData.MoveUnitDatas.Values.ToList();
+                foreach (var moveUnitData in triggerDataList)
+                {
+                    foreach (var kv2 in moveUnitData.MoveActionData.TriggerDatas)
+                    {
+                        foreach (var triggerData in kv2.Value)
+                        {
+                            if(triggerData.EffectUnitIdx != unitIdx)
+                                continue;
+                            
+                            if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.ActionUnitIdx, new List<TriggerData>());
+                            }
+                            triggerDataDict[triggerData.ActionUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
+  
+            }
+
+            return triggerDataDict;
+        }
+        public Dictionary<int, List<TriggerData>> GetHurtDirectAttackDatas(int unitIdx)
+        {
+            var triggerDataDict = new Dictionary<int, List<TriggerData>>();
+
+            foreach (var kv in RoundFightData.EnemyMoveDatas)
+            {
+                var triggerDataList = kv.Value.TriggerDatas.Values.ToList();
+                foreach (var datas in triggerDataList)
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        if (triggerData.EffectUnitIdx == unitIdx)
+                        {
+                            if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                            }
+                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
+            }
+            
+            foreach (var kv in RoundFightData.EnemyAttackDatas)
+            {
+                var triggerDataList = kv.Value.TriggerDatas.Values.ToList();
+                foreach (var datas in triggerDataList)
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        if (triggerData.EffectUnitIdx == unitIdx)
+                        {
+                            if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                            }
+                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
+            }
+            
+            foreach (var kv in RoundFightData.SoliderActiveAttackDatas)
+            {
+                var triggerDataList = kv.Value.TriggerDatas.Values.ToList();
+                foreach (var datas in triggerDataList)
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        if (triggerData.EffectUnitIdx == unitIdx)
+                        {
+                            if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                            }
+                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
+            }
+
+
+            return triggerDataDict;
+        }
+        
         // public List<int> GetEnemyAttackHurtFlyPaths(int actionUnitIdx, int effectUnitIdx)
         // {
         //     Dictionary<int, MoveUnitData> moveDataDict = new Dictionary<int, MoveUnitData>();
