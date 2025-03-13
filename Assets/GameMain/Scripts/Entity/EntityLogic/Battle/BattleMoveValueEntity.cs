@@ -15,6 +15,7 @@ namespace RoundHero
 
         protected Quaternion cameraQuaternion = Quaternion.identity;
         private Tween textColTween;
+        private Tween moveTween;
         private Tween textStrTween;
         
         protected override void OnShow(object userData)
@@ -44,12 +45,48 @@ namespace RoundHero
             }
             //textStrTween = 
             
-            textColTween = DOTween.To(()=> text.color, x => text.color = x, recoverColor, time).SetEase(Ease.InOutQuart);
-            var moveTween = transform.DOMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
+            textColTween = DOTween.To(()=>
+            {
+                if(text == null)
+                    return Color.white;
+                
+                return text.color;
+            }, x =>
+            {
+                if(text == null)
+                    return;
+                
+                text.color = x;
+            }, recoverColor, time).SetEase(Ease.InOutQuart);
+
+            var targetPos = BattleMoveValueEntityData.TargetPos;
+            moveTween = DOTween.To(()=>
+            {
+                if(transform == null)
+                    return Vector4.zero;
+                
+                return transform.position;
+            }, x =>
+            {
+                if(this == null || transform == null)
+                    return;
+                
+                transform.position = x;
+            }, targetPos, time).SetEase(Ease.InOutQuart);
+            //transform.DOMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
             var absValue = Mathf.Abs(BattleMoveValueEntityData.Value);
-            
-            textStrTween = DOTween.To(() => text.text, x => text.text = x, "+" + absValue, time)
-                    .From("-" + absValue).SetEase(Ease.InOutExpo);
+      
+            textStrTween = DOTween.To(() =>
+                {
+                    if(text == null)
+                        return "";
+                    return text.text;
+                }, x =>
+                {
+                    if(text == null)
+                        return;
+                    text.text = x;
+                }, "+" + absValue, time).From("-" + absValue).SetEase(Ease.InOutExpo);
             
             
             if (BattleMoveValueEntityData.IsLoop)
@@ -92,8 +129,9 @@ namespace RoundHero
 
         protected override void OnHide(bool isShutdown, object userData)
         {
+            moveTween.Pause();
             text.DOKill();
-            
+            moveTween.Kill();
             textColTween.Kill();
             textStrTween.Kill();
             base.OnHide(isShutdown, userData);

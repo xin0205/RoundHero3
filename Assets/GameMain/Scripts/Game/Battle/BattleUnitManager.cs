@@ -82,6 +82,7 @@ namespace RoundHero
         public BuffData BuffData;
         public List<float> ValueList;
         public int UnitIdx;
+        public int TargetGridPosIdx = -1;
 
         public BuffValue Copy()
         {
@@ -89,7 +90,7 @@ namespace RoundHero
             buffValue.BuffData = BuffData.Copy();
             buffValue.ValueList = new List<float>(ValueList);
             buffValue.UnitIdx = UnitIdx;
-
+            buffValue.TargetGridPosIdx = TargetGridPosIdx;
             return buffValue;
         }
     }
@@ -445,7 +446,7 @@ namespace RoundHero
 
         }
 
-        public void GetBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit,out List<BuffValue> triggerBuffDatas)
+        public void GetBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit, out List<BuffValue> triggerBuffDatas, int targetGridPosIdx = -1)
         {
             triggerBuffDatas = new List<BuffValue>();
             
@@ -461,6 +462,7 @@ namespace RoundHero
                     BuffData = buffData,
                     ValueList = new List<float>(valueList[idx++]),
                     UnitIdx = unit.Idx,
+                    TargetGridPosIdx = targetGridPosIdx,
                 });
             };
             

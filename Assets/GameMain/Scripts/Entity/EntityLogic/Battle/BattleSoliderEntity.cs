@@ -10,7 +10,7 @@ namespace RoundHero
     {
         public BattleSoliderEntityData BattleSoliderEntityData { get; protected set; }
 
-        [SerializeField] private BoxCollider boxCollider;
+        
 
         protected override void OnShow(object userData)
         {
@@ -43,11 +43,7 @@ namespace RoundHero
             ShowCollider(true);
         }
 
-        public void ShowCollider(bool isShow)
-        {
-            boxCollider.enabled = isShow;
-
-        }
+        
 
        public override void OnPointerEnter(BaseEventData baseEventData)
         {
@@ -66,11 +62,7 @@ namespace RoundHero
 
                 if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
                 {
-                    BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx, false);
-                    BattleFlyDirectManager.Instance.ShowFlyDirect(UnitIdx);
-                    BattleIconManager.Instance.ShowBattleIcon(UnitIdx, EBattleIconType.Collison);
-
-                    ShowDisplayValue(UnitIdx);
+                    ShowTags(UnitIdx);
                 }
             }
             
@@ -105,10 +97,6 @@ namespace RoundHero
             //     UnShowTags();
             // }
 
-            UnShowDisplayValues();
-            BattleAttackTagManager.Instance.UnShowAttackTags();
-            BattleFlyDirectManager.Instance.UnShowFlyDirects();
-            BattleIconManager.Instance.UnShowBattleIcons();
             UnShowTags();
         }
 
@@ -132,10 +120,16 @@ namespace RoundHero
 
         protected async override Task ShowBattleHurts(int hurt)
         {
-            var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
+            //var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
             //var heroEntity = HeroManager.Instance.GetHeroEntity(BattleUnitData.UnitCamp);
             
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  pos, hurt);
+            var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
+                AreaController.Instance.UICore.transform.position);
+                
+            Vector3 position = new Vector3(pos.x, pos.y,  Camera.main.transform.position.z);
+            Vector3 uiCorePos = Camera.main.ScreenToWorldPoint(position);
+            
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  uiCorePos, hurt);
         }
 
         // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = true)

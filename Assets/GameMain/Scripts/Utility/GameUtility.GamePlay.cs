@@ -1221,32 +1221,76 @@ namespace RoundHero
 
         }
 
-        private static List<List<int>> rangeNestList = new(8)
-        {
-            new List<int>(8),
-            new List<int>(8),
-            new List<int>(8),
-            new List<int>(8),
-            new List<int>(8),
-            new List<int>(8),
-            new List<int>(8),
-            new List<int>(8),
-        };
+        // private static List<List<int>> rangeNestList = new(8)
+        // {
+        //     new List<int>(8),
+        //     new List<int>(8),
+        //     new List<int>(8),
+        //     new List<int>(8),
+        //     new List<int>(8),
+        //     new List<int>(8),
+        //     new List<int>(8),
+        //     new List<int>(8),
+        // };
         public static List<List<int>> GetRangeNest(int gridPosIdx, EActionType actionType, bool inclueCenter = true)
         {
-            foreach (var list in rangeNestList)
+            // foreach (var list in rangeNestList)
+            // {
+            //     list.Clear();
+            // }
+            
+            var rangeNestList = new List<List<int>>(8)
             {
-                list.Clear();
+                new List<int>(8),
+                new List<int>(8),
+                new List<int>(8),
+                new List<int>(8),
+                new List<int>(8),
+                new List<int>(8),
+                new List<int>(8),
+                new List<int>(8),
+            };
+
+            var newActionType = actionType;
+            
+            if (actionType == EActionType.All)
+            {
+                
+            }
+            else if (actionType == EActionType.UnFullCurHPUnit)
+            {
+                
+            }
+            else if (actionType == EActionType.UnitMaxDirect)
+            {
+                
+            }
+            else if (actionType == EActionType.HeroDirect)
+            {
+
+                newActionType = EActionType.Direct82Long;
+
+            }
+            else if (actionType == EActionType.Cross_Long_Empty)
+            {
+                newActionType = EActionType.Cross2Long;
             }
             
             
             var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
             var idx = 0;
-            foreach (var points in Constant.Battle.ActionTypePoints[actionType])
+            foreach (var points in Constant.Battle.ActionTypePoints[newActionType])
             {
                 if (rangeNestList.Count < idx + 1)
                 {
                     rangeNestList.Add(new List<int>());
+                }
+
+                var list = new List<int>();
+                var isMatch = true;
+                if (actionType == EActionType.HeroDirect)
+                {
+                    isMatch = false;
                 }
                 
                 foreach (var point in points)
@@ -1255,11 +1299,39 @@ namespace RoundHero
                         continue;
                     
                     var targetCoord = coord + point;
+                    var targetGridPosIdx = GridCoordToPosIdx(targetCoord);
+                    
                     if (!GameUtility.InGridRange(targetCoord))
                         continue;
                     
-                    rangeNestList[idx].Add(GridCoordToPosIdx(targetCoord));
+                    if (actionType == EActionType.HeroDirect)
+                    {
+                        var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(
+                            targetGridPosIdx);
+
+                        if (unit is BattleCoreEntity)
+                        {
+                            isMatch = true;
+                        }
+                        
+                    }
+                    
+                    
+                    
+                    list.Add(targetGridPosIdx);
+                    
                 }
+
+                if (isMatch)
+                {
+                    rangeNestList[idx].AddRange(list);
+                }
+                
+                if (actionType == EActionType.HeroDirect && isMatch)
+                {
+                    break;
+                }
+                
 
                 idx++;
 

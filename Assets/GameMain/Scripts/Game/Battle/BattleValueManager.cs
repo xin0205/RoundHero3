@@ -13,8 +13,8 @@ namespace RoundHero
         private int curValueEntityIdx = 0;
         private int showValueEntityIdx = 0;
         
-        public Random Random;
-        private int randomSeed;
+        // public Random Random;
+        // private int randomSeed;
 
         // public void Init(int randomSeed)
         // {

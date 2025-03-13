@@ -161,7 +161,7 @@ namespace RoundHero
         public void UseMoveActionData(MoveUnitData moveUnitData)
         {
 
-            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(moveUnitData.UnitID);
+            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(moveUnitData.UnitIdx);
 
             if (moveUnitData.UnitActionState == EUnitActionState.Fly)
             {

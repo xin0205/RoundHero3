@@ -96,10 +96,13 @@ namespace RoundHero
                 return;
             
             //var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
-            BattleAttackTagManager.Instance.ShowAttackTag(UnitIdx, false);
-            BattleFlyDirectManager.Instance.ShowFlyDirect(UnitIdx);
-            BattleIconManager.Instance.ShowBattleIcon(UnitIdx, EBattleIconType.Collison);
-            ShowDisplayValue(UnitIdx);
+
+            if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+            {
+                ShowTags(UnitIdx);
+                
+            }
+            
             
             // if (BattleManager.Instance.BattleState == EBattleState.UseCard)
             // {
@@ -140,10 +143,13 @@ namespace RoundHero
             
             if(IsMove)
                 return;
-            
-            
-            UnShowTags();
-            
+
+            if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+            {
+                UnShowTags();
+
+            }
+
             // UnShowDisplayValues();
             //
             // if (BattleManager.Instance.BattleState == EBattleState.UseCard)

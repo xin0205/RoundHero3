@@ -258,7 +258,7 @@ namespace RoundHero
         public ActionData CacheAttackMostUnit_Attack()
         {
             var actionData = new ActionData();
-            actionData.ActionUnitID = -1;
+            actionData.ActionUnitIdx = -1;
             var triggerDatas = new List<TriggerData>();
 
             foreach (var posIdx in BattleCurseData.AttackRowOrCol_PosIdxs)

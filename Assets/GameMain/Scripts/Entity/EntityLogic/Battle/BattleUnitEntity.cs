@@ -24,6 +24,7 @@ namespace RoundHero
         [SerializeField] protected GameObject hpAndDamageNode;
         [SerializeField] protected GameObject damageNode;
         [SerializeField] protected TextMesh damage2;
+        [SerializeField] private BoxCollider boxCollider;
         //[SerializeField] protected RPGCharacterController Controller;
         
         protected Quaternion cameraQuaternion = Quaternion.identity;
@@ -1235,12 +1236,33 @@ namespace RoundHero
             
         }
         
+        public void ShowTags(int unitIdx)
+        {
+            ShowAttackTags(unitIdx);
+            ShowFlyDirect(unitIdx);
+            BattleIconManager.Instance.ShowBattleIcon(unitIdx, EBattleIconType.Collison);
+            ShowDisplayValues(unitIdx);
+        }
+
+        public void ShowHurtTags(int unitIdx)
+        {
+            ShowHurtAttackTag(unitIdx);
+            ShowHurtFlyDirect(unitIdx);
+            ShowHurtDisplayValue(unitIdx);
+        }
+        
         protected void UnShowTags()
         {
-            BattleAttackTagManager.Instance.UnShowAttackTags();
-            BattleFlyDirectManager.Instance.UnShowFlyDirects();
+            UnShowAttackTags();
+            UnShowFlyDirects();
             BattleIconManager.Instance.UnShowBattleIcons();
             UnShowDisplayValues();
+        }
+        
+        public void ShowCollider(bool isShow)
+        {
+            boxCollider.enabled = isShow;
+
         }
 
     }
