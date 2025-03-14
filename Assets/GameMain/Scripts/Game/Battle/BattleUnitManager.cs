@@ -453,7 +453,7 @@ namespace RoundHero
             if(unit == null)
                 return;
 
-            InternalGetBuffValue(gamePlayData, unit, out List<BuffData> buffDatas, out List<List<float>> valueList);
+            InternalGetBuffValue(unit, out List<BuffData> buffDatas, out List<List<float>> valueList);
             var idx = 0;
             foreach (var buffData in buffDatas)
             {
@@ -490,9 +490,9 @@ namespace RoundHero
             
         }
 
-        private void InternalGetBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit, out  List<BuffData> buffDatas, out List<List<float>> valueList)
+        private void InternalGetBuffValue(Data_BattleUnit unit, out  List<BuffData> buffDatas, out List<List<float>> valueList)
         {
-
+            //Data_GamePlay gamePlayData, 
             if (unit is Data_BattleSolider solider)
             {
                 buffDatas = CardManager.Instance.GetBuffData(solider.CardIdx);

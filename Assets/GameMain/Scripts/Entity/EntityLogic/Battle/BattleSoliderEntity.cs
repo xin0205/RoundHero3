@@ -140,6 +140,10 @@ namespace RoundHero
         //     
         // }
         
-        
+        protected override void OnHide(bool isShutdown, object userData)
+        {
+            base.OnHide(isShutdown, userData);
+            UnShowTags();
+        }
     }
 }

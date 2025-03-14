@@ -1496,6 +1496,17 @@ namespace RoundHero
 
         }
         
+        public static bool IsSubCurHPBuffValue(BuffValue buffValue)
+        {
+            if (buffValue == null)
+                return false;
+            
+            return  buffValue.BuffData.BuffValueType == EBuffValueType.Atrb &&
+                    buffValue.BuffData.UnitAttribute == EUnitAttribute.HP &&
+                    buffValue.ValueList[0] < 0;
+
+        }
+        
         public static bool IsAddCurHPTrigger(TriggerData triggerData)
         {
             if (triggerData == null)
@@ -1678,15 +1689,16 @@ namespace RoundHero
             {
                 idx++;
                 endCoord += direct;
-                if (idx >= dis)
-                {
-                    break;
-                }
                 if (!GameUtility.InGridRange(endCoord))
                 {
                     endCoord -= direct;
                     break;
                 }
+                if (idx >= dis)
+                {
+                    break;
+                }
+                
                     
             }
 

@@ -870,7 +870,7 @@ namespace RoundHero
                 
                 if (BattleManager.Instance.BattleState == EBattleState.UseCard)
                 {
-                    //BattleManager.Instance.Refresh();
+                    BattleManager.Instance.RefreshEnemyAttackData();
                 }
 
                 
@@ -1246,12 +1246,13 @@ namespace RoundHero
 
         public void ShowHurtTags(int unitIdx)
         {
-            ShowHurtAttackTag(unitIdx);
+            ShowHurtAttackTags(unitIdx);
             ShowHurtFlyDirect(unitIdx);
+            BattleIconManager.Instance.ShowBattleIcon(unitIdx, EBattleIconType.Collison);
             ShowHurtDisplayValue(unitIdx);
         }
         
-        protected void UnShowTags()
+        public void UnShowTags()
         {
             UnShowAttackTags();
             UnShowFlyDirects();
