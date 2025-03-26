@@ -153,6 +153,7 @@ namespace RoundHero
             BattleManager.Instance.RefreshAll();
             
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
+            BattleManager.Instance.SwitchActionCamp(false);
             GameUtility.DelayExcute(1f, () =>
             {
                 GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
@@ -253,6 +254,7 @@ namespace RoundHero
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStart;
                 BattleManager.Instance.RefreshEnemyAttackData();
+                BattleManager.Instance.SwitchActionCamp(true);
                 GameUtility.DelayExcute(1.5f, () =>
                 {
                     GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
@@ -318,6 +320,7 @@ namespace RoundHero
             StartAction();
             
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+            BattleManager.Instance.SwitchActionCamp(false);
             GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
         }
         

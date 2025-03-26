@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameFramework;
 using UnityEngine;
 
 using UnityGameFramework.Runtime;
@@ -348,7 +347,7 @@ namespace RoundHero
             RoundFightData.GamePlayData = GamePlayManager.Instance.GamePlayData.Copy();
             RoundFightData.TempTriggerData = BattleManager.Instance.TempTriggerData.Copy();
 
-            PlayerData = RoundFightData.GamePlayData.GetPlayerData(BattleManager.Instance.CurUnitCamp);
+            PlayerData = RoundFightData.GamePlayData.GetPlayerData(PlayerManager.Instance.PlayerData.UnitCamp);
 
             foreach (var kv in ActionUnitIDs)
             {
@@ -1060,7 +1059,7 @@ namespace RoundHero
                     var relatedUnitCoord = GameUtility.GridPosIdxToCoord(relatedUnit.GridPosIdx);
                     flyDirect =  buffData.FlyType == EFlyType.Back ? relatedUnitCoord - effectUnitCoord : effectUnitCoord - relatedUnitCoord;
                     flyPaths = GetFlyPaths(relatedUnit.GridPosIdx, flyDirect, 1);
-                    CacheUnitMoveDatas(relatedUnit.Idx, flyPaths, moveActionDatas, true);
+                    CacheUnitMoveDatas(relatedUnit.Idx, flyPaths, moveActionDatas, EUnitActionState.Fly);
 
                     
                     if (!actionData.MoveData.MoveUnitDatas.ContainsKey(relatedUnit.Idx) && moveActionDatas.ContainsKey(relatedUnit.Idx))
@@ -1080,6 +1079,7 @@ namespace RoundHero
             else
             {
                 var dis = 1;
+                var unitActionState = EUnitActionState.Fly;
                 if (buffData.FlyRange == EActionType.Self)
                 {
                     if (buffData.FlyType == EFlyType.Back)
@@ -1090,6 +1090,7 @@ namespace RoundHero
                     {
                         dis = 99;
                         flyDirect = effectUnitCoord - actionUnitCoord;
+                        unitActionState = EUnitActionState.Rush;
                     }
 
                     moveUnitIdx = actionUnit.Idx;
@@ -1106,7 +1107,7 @@ namespace RoundHero
                         dis = 99;
                         flyDirect = actionUnitCoord - effectUnitCoord;
                     }
-                  
+                      
                     moveUnitIdx = effectUnit.Idx;
                 }
                 else if (buffData.FlyType == EFlyType.SelfPass)
@@ -1119,312 +1120,51 @@ namespace RoundHero
                     flyDirect = actionUnitCoord - effectUnitCoord;
                     moveUnitIdx = effectUnit.Idx;
                 }
-                
-                var moveUnit = GetUnitByIdx(moveUnitIdx);
-                if (moveUnit != null)
-                {
-                    flyPaths = GetFlyPaths(moveUnit.GridPosIdx, flyDirect, dis);
- 
-                    CacheUnitMoveDatas(moveUnitIdx, flyPaths, moveActionDatas, true);
 
-                    if (moveActionDatas.Count > 0)
-                    {
-                        actionData.MoveData.MoveUnitDatas.Add(moveUnitIdx, new MoveUnitData()
-                        {
-                            ActionUnitIdx = triggerData.ActionUnitIdx,
-                            EffectGridPosIdx = effectGridPosIdx,
-                            UnitIdx = moveUnitIdx,
-                            MoveActionData = moveActionDatas[moveUnitIdx],
-                            UnitActionState = EUnitActionState.Fly,
-                        });
-                        
-                    }
-                }
+                CacheUnitFlyMoveDatas(moveUnitIdx, flyDirect, dis, moveActionDatas, actionData, triggerData,
+                    effectGridPosIdx, unitActionState);
+                
+                // if (buffData.FlyType == EFlyType.Rush)
+                // {
+                //     CacheUnitFlyMoveDatas(actionUnit.Idx, effectUnitCoord - actionUnitCoord, 99, moveActionDatas, actionData, triggerData,
+                //         effectGridPosIdx, EUnitActionState.Rush);
+                //     
+                //     // CacheUnitFlyMoveDatas(effectUnit.Idx, effectUnitCoord - actionUnitCoord, 1, moveActionDatas, actionData, triggerData,
+                //     //     effectGridPosIdx, EUnitActionState.Fly);
+                // }
+
+                
                 
                 
             }
-
             
-
-            // switch (buffData.FlyType)
-            // {
-            //     // case EFlyType.CrossBack:
-            //     //     var relatedUnits = GetUnitByGridPosIdx(effectGridPosIdx, buffData.FlyRange);
-            //     //     foreach (var relatedUnit in relatedUnits)
-            //     //     {
-            //     //         var relatedUnitCoord = GameUtility.GridPosIdxToCoord(relatedUnit.GridPosIdx);
-            //     //         flyDirect =  relatedUnitCoord - effectUnitCoord;
-            //     //         flyPaths = GetFlyPaths(relatedUnit.GridPosIdx, flyDirect);
-            //     //         CacheUnitMoveDatas(relatedUnit.ID, flyPaths, moveActionDatas);
-            //     //
-            //     //
-            //     //         if (!actionData.MoveData.MoveUnitDatas.ContainsKey(relatedUnit.ID))
-            //     //         {
-            //     //             actionData.MoveData.MoveUnitDatas.Add(relatedUnit.ID, new MoveUnitData()
-            //     //             {
-            //     //                 UnitID = relatedUnit.ID,
-            //     //                 MoveActionData = moveActionDatas[relatedUnit.ID],
-            //     //                 UnitActionState = EUnitActionState.Fly,
-            //     //             });
-            //     //         
-            //     //         }
-            //     //     }
-            //     //     break;
-            //     // case EFlyType.OtherBack:
-            //     //     flyDirect = effectUnitCoord - actionUnitCoord;
-            //     //         
-            //     //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect);
-            //     //         
-            //     //     
-            //     //     CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
-            //     //
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = effectUnit.ID,
-            //     //             MoveActionData = moveActionDatas[effectUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //         
-            //     //     }
-            //     //
-            //     //     break;
-            //     // case EFlyType.SelfBack:
-            //     //     flyDirect = actionUnitCoord - effectUnitCoord;
-            //     //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, flyDirect);
-            //     //
-            //     //     CacheUnitMoveDatas(actionUnit.ID, flyPaths, moveActionDatas);
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = actionUnit.ID,
-            //     //             MoveActionData = moveActionDatas[actionUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //
-            //     //     }
-            //     //     break;
-            //     // case EFlyType.OtherClose:
-            //     //     flyDirect = actionUnitCoord - effectUnitCoord;
-            //     //         
-            //     //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect);
-            //     //     
-            //     //     for (int i = 0; i < flyPaths.Count; i++)
-            //     //     {
-            //     //         if (flyPaths[i] == actionUnit.GridPosIdx)
-            //     //         {
-            //     //             break;
-            //     //         }
-            //     //         newFlyPaths.Add(flyPaths[i]);
-            //     //     }
-            //     //         
-            //     //     
-            //     //     CacheUnitMoveDatas(effectUnit.ID, newFlyPaths, moveActionDatas);
-            //     //
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = effectUnit.ID,
-            //     //             MoveActionData = moveActionDatas[effectUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //         
-            //     //     }
-            //     //     break;
-            //     // case EFlyType.SelfClose:
-            //     //     flyDirect = effectUnitCoord - actionUnitCoord;
-            //     //         
-            //     //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, flyDirect);
-            //     //     
-            //     //     for (int i = 0; i < flyPaths.Count; i++)
-            //     //     {
-            //     //         if (flyPaths[i] == effectUnit.GridPosIdx)
-            //     //         {
-            //     //             break;
-            //     //         }
-            //     //         newFlyPaths.Add(flyPaths[i]);
-            //     //     }
-            //     //         
-            //     //     
-            //     //     CacheUnitMoveDatas(actionUnit.ID, newFlyPaths, moveActionDatas);
-            //     //
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = actionUnit.ID,
-            //     //             MoveActionData = moveActionDatas[actionUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //         
-            //     //     }
-            //     //     break;
-            //     // case EFlyType.OtherBack1:
-            //     //     flyDirect = effectUnitCoord - actionUnitCoord;
-            //     //     flyDirect = GameUtility.GetDirect(flyDirect);
-            //     //     
-            //     //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(effectUnitCoord + flyDirect));
-            //     //     
-            //     //     CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
-            //     //
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = effectUnit.ID,
-            //     //             MoveActionData = moveActionDatas[effectUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //         
-            //     //     }
-            //     //     break;
-            //     // case EFlyType.SelfBack1:
-            //     //     flyDirect = actionUnitCoord - effectUnitCoord;
-            //     //     flyDirect = GameUtility.GetDirect(flyDirect);
-            //     //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(actionUnitCoord + flyDirect));
-            //     //
-            //     //     CacheUnitMoveDatas(actionUnit.ID, flyPaths, moveActionDatas);
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = actionUnit.ID,
-            //     //             MoveActionData = moveActionDatas[actionUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //
-            //     //     }
-            //     //     break;
-            //     // case EFlyType.OtherClose1:
-            //     //     flyDirect = actionUnitCoord - effectUnitCoord;
-            //     //     flyDirect = GameUtility.GetDirect(flyDirect);    
-            //     //     flyPaths = GetFlyPaths(effectUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(effectUnitCoord + flyDirect));
-            //     //
-            //     //     CacheUnitMoveDatas(effectUnit.ID, flyPaths, moveActionDatas);
-            //     //
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = effectUnit.ID,
-            //     //             MoveActionData = moveActionDatas[effectUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //         
-            //     //     }
-            //     //     break;
-            //     // case EFlyType.SelfClose1:
-            //     //     flyDirect = effectUnitCoord - actionUnitCoord;
-            //     //     flyDirect = GameUtility.GetDirect(flyDirect);    
-            //     //     flyPaths = GetFlyPaths(actionUnit.GridPosIdx, GameUtility.GridCoordToPosIdx(actionUnitCoord + flyDirect));
-            //     //     
-            //     //     for (int i = 0; i < flyPaths.Count; i++)
-            //     //     {
-            //     //         if (flyPaths[i] == effectUnit.GridPosIdx)
-            //     //         {
-            //     //             break;
-            //     //         }
-            //     //         newFlyPaths.Add(flyPaths[i]);
-            //     //     }
-            //     //         
-            //     //     
-            //     //     CacheUnitMoveDatas(actionUnit.ID, newFlyPaths, moveActionDatas);
-            //     //
-            //     //     if (moveActionDatas.Count > 0)
-            //     //     {
-            //     //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.ID, new MoveUnitData()
-            //     //         {
-            //     //             UnitID = actionUnit.ID,
-            //     //             MoveActionData = moveActionDatas[actionUnit.ID],
-            //     //             UnitActionState = EUnitActionState.Fly,
-            //     //         });
-            //     //         
-            //     //     }
-            //     //     break;
-            //     
-            //     case EFlyType.Exchange:
-            //         
-            //         actionData.MoveData.MoveUnitDatas.Add(actionUnit.Idx, new MoveUnitData()
-            //         {
-            //             UnitIdx = actionUnit.Idx,
-            //             MoveActionData = new MoveActionData()
-            //             {
-            //                 MoveUnitIdx = actionUnit.Idx,
-            //                 MoveGridPosIdxs = new List<int>()
-            //                 {
-            //                     actionUnit.GridPosIdx,
-            //                     effectUnit.GridPosIdx,
-            //                 }
-            //             },
-            //             UnitActionState = EUnitActionState.Fly,
-            //         });
-            //         actionData.MoveData.MoveUnitDatas.Add(effectUnit.Idx, new MoveUnitData()
-            //         {
-            //             UnitIdx = effectUnit.Idx,
-            //             MoveActionData = new MoveActionData()
-            //             {
-            //                 MoveUnitIdx = effectUnit.Idx,
-            //                 MoveGridPosIdxs = new List<int>()
-            //                 {
-            //                     effectUnit.GridPosIdx,
-            //                     actionUnit.GridPosIdx,
-            //                 }
-            //             },
-            //             UnitActionState = EUnitActionState.Fly,
-            //         });
-            //         
-            //         break;
-            //     case EFlyType.SelfPass:
-            //         flyDirect = effectUnitCoord - actionUnitCoord;
-            //         flyPaths = GetFlyPaths(actionUnit.GridPosIdx, effectGridPosIdx);
-            //
-            //         CacheUnitMoveDatas(actionUnit.Idx, flyPaths, moveActionDatas, true);
-            //         if (moveActionDatas.Count > 0)
-            //         {
-            //             actionData.MoveData.MoveUnitDatas.Add(actionUnit.Idx, new MoveUnitData()
-            //             {
-            //                 UnitIdx = actionUnit.Idx,
-            //                 MoveActionData = moveActionDatas[actionUnit.Idx],
-            //                 UnitActionState = EUnitActionState.Fly,
-            //             });
-            //
-            //         }
-            //         break;
-            //     case EFlyType.BackToSelf:
-            //         flyDirect = actionUnitCoord - effectUnitCoord;
-            //         flyPaths = GetFlyPaths(effectUnit.GridPosIdx, flyDirect, 1);
-            //
-            //         CacheUnitMoveDatas(effectUnit.Idx, flyPaths, moveActionDatas, true);
-            //         if (moveActionDatas.Count > 0)
-            //         {
-            //             actionData.MoveData.MoveUnitDatas.Add(effectUnit.Idx, new MoveUnitData()
-            //             {
-            //                 UnitIdx = effectUnit.Idx,
-            //                 MoveActionData = moveActionDatas[effectUnit.Idx],
-            //                 UnitActionState = EUnitActionState.Fly,
-            //             });
-            //
-            //         }
-            //         break;
-            //     case EFlyType.Empty:
-            //         break;
-            //     // case EFlyType.AllBack:
-            //     //     break;
-            //     // case EFlyType.AllClose:
-            //     //     break;
-            //     // case EFlyType.CrossOtherBack1:
-            //     //     break;
-            //     
-            //     default:
-            //         break;
-            // }
-            
-            CalculateUnitPaths(EUnitCamp.Third, RoundFightData.ThirdUnitMovePaths);
+            //CalculateUnitPaths(EUnitCamp.Third, RoundFightData.ThirdUnitMovePaths);
         }
-        
+
+
+        private void CacheUnitFlyMoveDatas(int moveUnitIdx, Vector2Int flyDirect, int dis, Dictionary<int, MoveActionData> moveActionDatas, ActionData actionData, TriggerData triggerData, int effectGridPosIdx, EUnitActionState unitActionState)
+        {
+            var moveUnit = GetUnitByIdx(moveUnitIdx);
+            if (moveUnit != null)
+            {
+                var flyPaths = GetFlyPaths(moveUnit.GridPosIdx, flyDirect, dis);
+     
+                CacheUnitMoveDatas(moveUnitIdx, flyPaths, moveActionDatas, unitActionState);
+
+                if (moveActionDatas.Count > 0)
+                {
+                    actionData.MoveData.MoveUnitDatas.Add(moveUnitIdx, new MoveUnitData()
+                    {
+                        ActionUnitIdx = triggerData.ActionUnitIdx,
+                        EffectGridPosIdx = effectGridPosIdx,
+                        UnitIdx = moveUnitIdx,
+                        MoveActionData = moveActionDatas[moveUnitIdx],
+                        UnitActionState = unitActionState,
+                    });
+                            
+                }
+            }
+        }
         private void CacheSoliderAttackDatas()
         {
             CacheLinks();
@@ -1912,7 +1652,7 @@ namespace RoundHero
 
 
         public List<int> CacheUnitMoveDatas(int unitIdx, List<int> movePaths,
-            Dictionary<int, MoveActionData> unitMoveDatas, bool isFly)
+            Dictionary<int, MoveActionData> unitMoveDatas, EUnitActionState unitActionState)
         {
             var passUnit = GetUnitByIdx(unitIdx);
             if (passUnit == null)
@@ -2050,7 +1790,7 @@ namespace RoundHero
                     {
                         bePassUnitIdx = bePassUnit.Idx;
                         var collisionTriggerData = BattleFightManager.Instance.BattleRoleAttribute(unitIdx, unitIdx,
-                            bePassUnit.Idx, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
+                            bePassUnit.Idx, EUnitAttribute.HP, GetCollisionHurt(unitActionState), ETriggerDataSubType.Collision);
                         // var bePassUnitHeroEntity = HeroManager.Instance.GetHeroEntity(bePassUnit.UnitCamp);
                         // if (bePassUnitHeroEntity != null && bePassUnitHeroEntity.BattleHeroEntityData.BattleHeroData.Idx == bePassUnit.Idx)
                         // {
@@ -2069,7 +1809,7 @@ namespace RoundHero
                     
                         
                     var collisionTriggerData2 = BattleFightManager.Instance.BattleRoleAttribute(bePassUnitIdx, bePassUnitIdx,
-                        unitIdx, EUnitAttribute.HP, GetCollisionHurt(), ETriggerDataSubType.Collision);
+                        unitIdx, EUnitAttribute.HP, GetCollisionHurt(unitActionState), ETriggerDataSubType.Collision);
                     // var passUnitHeroEntity = HeroManager.Instance.GetHeroEntity(passUnit.UnitCamp);
                     // if (passUnitHeroEntity!= null && passUnitHeroEntity.BattleHeroEntityData.BattleHeroData.Idx == passUnit.Idx)
                     // {
@@ -2126,7 +1866,7 @@ namespace RoundHero
                 RoundFightData.GamePlayData.BattleData.GridTypes[minFullPaths[minFullPaths.Count - 1]] = EGridType.Unit;
 
                 RefreshUnitGridPosIdx();
-                if (passUnit.UnitCamp == EUnitCamp.Enemy && !isFly)
+                if (passUnit.UnitCamp == EUnitCamp.Enemy && unitActionState == EUnitActionState.Run)
                 {
                     if (!RoundFightData.EnemyAttackDatas.ContainsKey(passUnit.Idx))
                     {
@@ -2234,7 +1974,7 @@ namespace RoundHero
                 //var firstUnitActionSoliders = new List<int>();
                 RoundFightData.TempTriggerData.TempUnitMovePaths = CacheUnitMoveDatas(
                     RoundFightData.TempTriggerData.UnitData.Idx, RoundFightData.TempTriggerData.TempUnitMovePaths,
-                    RoundFightData.SoliderMoveDatas, false);
+                    RoundFightData.SoliderMoveDatas, EUnitActionState.Run);
             }
  
         }
@@ -2260,7 +2000,7 @@ namespace RoundHero
             for (int i = 0; i < movePaths.Count; i++)
             {
                 movePaths[keys[i]] = CacheUnitMoveDatas(keys[i],
-                    movePaths[keys[i]], moveDatas, false);
+                    movePaths[keys[i]], moveDatas, EUnitActionState.Run);
             }
 
         }
@@ -3482,6 +3222,7 @@ namespace RoundHero
                                 !triggerData.ChangeHPInstantly && hpDelta != 0)
                             {
                                 //effectUnitEntity.BattleUnit.CacheHPDelta += hpDelta;
+                                //effectUnitEntity.BattleUnitData.AddHeroHP += hpDelta;
                                 HeroManager.Instance.BattleHeroData.CacheHPDelta += hpDelta;
                                 effectUnitEntity.Hurt();
                                 //HeroManager.Instance.HeroEntity.AddHurts(hpDelta);
@@ -3490,6 +3231,7 @@ namespace RoundHero
                             
                             if (triggerData.HeroHPDelta && hpDelta != 0)
                             {
+                                effectUnitEntity.BattleUnitData.AddHeroHP += hpDelta;
                                 HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
                                 //HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
                                 triggerData.HeroHPDelta = false;
@@ -3820,18 +3562,6 @@ namespace RoundHero
             }
 
             var time = 0.1f;
-            //
-            if (isAttack || actionData.MoveData.MoveUnitDatas.Count > 0 || actionProgress == EActionProgress.SoliderActiveAttack)
-            {
-                time += 1f;
-                
-                var unit = GetUnitByIdx(unitKeys[AcitonUnitIdx]);
-                unit.AttackInRound = true;
-                BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack(actionData);
-                GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
-                GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
-
-            }
             
             var moveTime = 0f;
             var maxMoveTime = 0f;
@@ -3856,6 +3586,20 @@ namespace RoundHero
                     maxMoveTime = moveTime;
                 }
             }
+            //
+            if (isAttack || actionData.MoveData.MoveUnitDatas.Count > 0 || actionProgress == EActionProgress.SoliderActiveAttack)
+            {
+                time += 1f;
+                
+                var unit = GetUnitByIdx(unitKeys[AcitonUnitIdx]);
+                unit.AttackInRound = true;
+                BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack(actionData);
+                GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+                GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
+
+            }
+            
+            
 
             time += maxMoveTime;
 
@@ -4128,6 +3872,7 @@ namespace RoundHero
                 
                     var triggerValue = triggerData.Value + triggerData.DeltaValue;
                     var value = effectUnit.AddHeroHP;
+                    effectUnit.AddHeroHP = 0;
                     
                     if(BattleCurseManager.Instance.CurseIDs.Contains(ECurseID.UnitDeadUnRecoverHeroHP) && effectUnit.CurHP <= 0)
                         continue;
@@ -4136,7 +3881,7 @@ namespace RoundHero
                             EBuffID.Spec_CurseUnEffect))
                         continue;
                     
-                    effectUnit.AddHeroHP = 0;
+                    
                     //triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
                     if (!(triggerData.BattleUnitAttribute == EUnitAttribute.HP && triggerValue < 0))
                         continue;
@@ -4707,7 +4452,7 @@ namespace RoundHero
         }
         
         
-        public Dictionary<int, List<TriggerData>> GetHurtInDirectAttackDatas(int unitIdx)
+        public Dictionary<int, List<TriggerData>> GetHurtInDirectAttackDatas(int effectUnitIdx, int actionUnitIdx = -1)
         {
             var triggerDataDict = new Dictionary<int, List<TriggerData>>();
 
@@ -4721,7 +4466,10 @@ namespace RoundHero
                     {
                         foreach (var triggerData in kv2.Value)
                         {
-                            if(triggerData.EffectUnitIdx != unitIdx)
+                            if(triggerData.EffectUnitIdx != effectUnitIdx)
+                                continue;
+                            
+                            if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                                 continue;
                             
                             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -4744,7 +4492,10 @@ namespace RoundHero
                     {
                         foreach (var triggerData in kv2.Value)
                         {
-                            if(triggerData.EffectUnitIdx != unitIdx)
+                            if(triggerData.EffectUnitIdx != effectUnitIdx)
+                                continue;
+                            
+                            if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                                 continue;
                             
                             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -4760,7 +4511,7 @@ namespace RoundHero
 
             return triggerDataDict;
         }
-        public Dictionary<int, List<TriggerData>> GetHurtDirectAttackDatas(int unitIdx)
+        public Dictionary<int, List<TriggerData>> GetHurtDirectAttackDatas(int effectUnitIdx, int actionUnitIdx = -1)
         {
             var triggerDataDict = new Dictionary<int, List<TriggerData>>();
 
@@ -4771,14 +4522,21 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
-                        if (triggerData.EffectUnitIdx == unitIdx)
+                        if (triggerData.EffectUnitIdx != effectUnitIdx)
                         {
-                            if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
-                            {
-                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
-                            }
-                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                            continue;
                         }
+                        
+                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                        {
+                            continue;
+                        }
+                        
+                        if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                        {
+                            triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                        }
+                        triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
                     }
                 }
             }
@@ -4790,14 +4548,21 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
-                        if (triggerData.EffectUnitIdx == unitIdx)
+                        if (triggerData.EffectUnitIdx != effectUnitIdx)
                         {
-                            if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
-                            {
-                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
-                            }
-                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                            continue;
                         }
+                        
+                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                        {
+                            continue;
+                        }
+                        
+                        if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                        {
+                            triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                        }
+                        triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
                     }
                 }
             }
@@ -4809,14 +4574,21 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
-                        if (triggerData.EffectUnitIdx == unitIdx)
+                        if (triggerData.EffectUnitIdx != effectUnitIdx)
                         {
-                            if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
-                            {
-                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
-                            }
-                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                            continue;
                         }
+                        
+                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                        {
+                            continue;
+                        }
+                        
+                        if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                        {
+                            triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                        }
+                        triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
                     }
                 }
             }
@@ -4965,7 +4737,7 @@ namespace RoundHero
                 
                 foreach (var kv in moveDataDict)
                 {
-                    if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
+                    if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx && actionUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
                         continue;
                     
                     var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
@@ -5851,7 +5623,7 @@ namespace RoundHero
                 }
 
                 movePaths[actionUnitIdx] = CacheUnitMoveDatas(actionUnitIdx,
-                    movePaths[actionUnitIdx], unitCamp == EUnitCamp.Enemy ? RoundFightData.EnemyMoveDatas : RoundFightData.ThirdUnitMoveDatas, false);
+                    movePaths[actionUnitIdx], unitCamp == EUnitCamp.Enemy ? RoundFightData.EnemyMoveDatas : RoundFightData.ThirdUnitMoveDatas, EUnitActionState.Run);
 
                 RefreshObstacleMask();
             }
@@ -6226,9 +5998,18 @@ namespace RoundHero
         
         }
         
-        public int GetCollisionHurt()
+        public int GetCollisionHurt(EUnitActionState unitActionState)
         {
-            return Constant.Battle.CollisionHurt;
+            switch (unitActionState)
+            {
+                case EUnitActionState.Fly:
+                    return Constant.Battle.FlyHurt;
+                case EUnitActionState.Rush:
+                    return Constant.Battle.RushHurt;
+                default:
+                    return 0; 
+            }
+
         }
         
 

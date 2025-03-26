@@ -19,24 +19,23 @@ namespace RoundHero
             ShowDisplayValues(unitIdx);
         }
         
-        public void ShowHurtDisplayValue(int unitIdx)
+        public void ShowHurtDisplayValue(int effectUnitIdx, int actionUnitIdx)
         {
             UnShowDisplayValues();
-            ShowHurtDisplayValues(unitIdx);
+            ShowHurtDisplayValues(effectUnitIdx, actionUnitIdx);
         }
         
-        public async void ShowHurtDisplayValues(int unitIdx)
+        public async void ShowHurtDisplayValues(int effectUnitIdx, int actionUnitIdx)
         {
             //isShowDisplayValue = true;
             
             BattleValueEntities.Clear();
             
             var entityIdx = curValueEntityIdx;
-            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(unitIdx),
-                BattleFightManager.Instance.GetHurtInDirectAttackDatas(unitIdx));
+            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
+                BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
             curValueEntityIdx += triggerDataDict.Count;
-  
-            
+
             // foreach (var triggerData in triggerDatas)
             // {
             //     var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
@@ -61,8 +60,6 @@ namespace RoundHero
                 idx++;
                 entityIdx++;
             }
-            
-            
 
         }
 
@@ -76,6 +73,8 @@ namespace RoundHero
             curValueEntityIdx += triggerDataDict.Count;
   
 
+            
+            
             var idx = 0;
             foreach (var kv in triggerDataDict)
             {
@@ -104,6 +103,9 @@ namespace RoundHero
             {
                 value += (int)triggerData.ActualValue;
             }
+            
+            if(value == 0)
+                return;
             
             
             Entity entity;

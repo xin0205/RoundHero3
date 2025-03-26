@@ -511,6 +511,7 @@ namespace RoundHero
         Recover,
         Quit,
         Fly,
+        Rush,
         Empty,
     }
 
@@ -526,6 +527,7 @@ namespace RoundHero
     {
         Back,
         Close,
+        Rush,
         // Back1,
         // Close1,
         

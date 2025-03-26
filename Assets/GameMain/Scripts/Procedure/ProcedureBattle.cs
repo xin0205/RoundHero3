@@ -92,6 +92,7 @@ namespace RoundHero
             
 
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
+            BattleManager.Instance.SwitchActionCamp(false);
             GameUtility.DelayExcute(1f, () =>
             {
                 GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));

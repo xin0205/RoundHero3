@@ -13,7 +13,7 @@ namespace RoundHero
 
 
 
-        public async void ShowHurtAttackTags(int unitIdx)
+        public async void ShowHurtAttackTags(int effectUnitIdx, int actionUnitIdx)
         {
             if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting ||
                 BattleManager.Instance.BattleState == EBattleState.End)
@@ -23,12 +23,12 @@ namespace RoundHero
 
             BattleAttackTagEntities.Clear();
             
-            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(unitIdx);
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
 
             if (effectUnit == null)
                 return;
 
-            var triggerDataDict = BattleFightManager.Instance.GetHurtDirectAttackDatas(unitIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx);
 
             if (triggerDataDict.Values.Count <= 0)
             {
@@ -45,6 +45,12 @@ namespace RoundHero
             {
                 foreach (var triggerData in triggerDatas)
                 {
+                    if(triggerData.ActionUnitIdx != actionUnitIdx)
+                        continue;
+                    
+                    if(triggerData.EffectUnitIdx != effectUnitIdx)
+                        continue;
+                    
                     var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                     if(actionUnit == null)
                         continue;

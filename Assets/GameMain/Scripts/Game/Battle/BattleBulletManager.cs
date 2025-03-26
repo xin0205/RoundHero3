@@ -171,6 +171,10 @@ namespace RoundHero
             {
                 effectUnitEntity.Run(moveUnitData.MoveActionData.Copy());
             }
+            else if (moveUnitData.UnitActionState == EUnitActionState.Rush)
+            {
+                effectUnitEntity.Rush(moveUnitData.MoveActionData.Copy());
+            }
 
             moveUnitData.MoveActionData.Clear();
 

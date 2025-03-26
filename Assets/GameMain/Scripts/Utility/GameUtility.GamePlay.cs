@@ -1385,7 +1385,7 @@ namespace RoundHero
             var moveGridPosIdx = moveGridPosIdxs[idx];
  
             var pos = GameUtility.GridPosIdxToPos(moveGridPosIdx);
-            if (unitActionState == EUnitActionState.Fly)
+            if (unitActionState == EUnitActionState.Fly || unitActionState == EUnitActionState.Rush)
                 return pos;
             //var nextPos = pos;
 

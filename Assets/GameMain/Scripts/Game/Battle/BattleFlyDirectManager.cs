@@ -16,13 +16,13 @@ namespace RoundHero
             ShowFlyDirects(unitIdx);
         }
         
-        public void ShowHurtFlyDirect(int unitIdx)
+        public void ShowHurtFlyDirect(int effectUnitIdx, int actionUnitIdx)
         {
             UnShowFlyDirects();
-            ShowHurtFlyDirects(unitIdx);
+            ShowHurtFlyDirects(effectUnitIdx, actionUnitIdx);
         }
         
-        public async void ShowHurtFlyDirects(int unitIdx)
+        public async void ShowHurtFlyDirects(int effectUnitIdx, int actionUnitIdx)
         {
 
             BattleFlyDirectEntities.Clear();

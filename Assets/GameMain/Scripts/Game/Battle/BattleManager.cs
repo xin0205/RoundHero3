@@ -451,5 +451,19 @@ namespace RoundHero
             BattleTypeManager.ShowGameOver();
         }
 
+
+        public void SwitchActionCamp(bool isUs)
+        {
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                BattleManager.Instance.CurUnitCamp = isUs ? EUnitCamp.Player1 : EUnitCamp.Enemy;
+            }
+            else if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVP)
+            {
+                BattleManager.Instance.CurUnitCamp = BattleManager.Instance.CurUnitCamp == EUnitCamp.Player1
+                    ? EUnitCamp.Player2
+                    : EUnitCamp.Player1;
+            }
+        }
     }
 }

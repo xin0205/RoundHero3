@@ -128,7 +128,6 @@ MonoBehaviour:
   endRoundNode: {fileID: 3426310962367339554}
   tips: {fileID: 3794507076482548345}
   randomSeed: {fileID: 76883530369121993}
-  coreInfo: {fileID: 1957413738141341735}
 --- !u!114 &8885879051652186973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4760,7 +4759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 409}
+  m_AnchoredPosition: {x: 0, y: 439}
   m_SizeDelta: {x: 0, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2735751517520101025

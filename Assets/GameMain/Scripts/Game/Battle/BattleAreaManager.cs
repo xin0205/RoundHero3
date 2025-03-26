@@ -147,17 +147,12 @@ namespace RoundHero
         }
 
         private List<int> runPaths = new List<int>(32);
-        private BattleUnitEntity tmpUnitEntity;
+        public BattleUnitEntity TmpUnitEntity;
         private int tmpEntityIdx;
         public async void OnShowGridDetail(object sender, GameEventArgs e)
         {
             var ne = e as ShowGridDetailEventArgs;
-
-            if (ne.GridPosIdx == 12)
-            {
-                var a = 5;
-            }
-
+            
             if (ne.ShowState == EShowState.Show)
             {
                 ShowAllGrid(true);
@@ -169,7 +164,7 @@ namespace RoundHero
                 BattleAreaManager.Instance.CurPointGridPosIdx = -1;
             }
 
-            var soliderEntityID = BattleUnitManager.Instance.GetUnitID(ne.GridPosIdx,
+            var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx,
                 BattleManager.Instance.CurUnitCamp, ERelativeCamp.Us, EUnitRole.Staff);
 
             if (ne.ShowState == EShowState.Show)
@@ -312,15 +307,15 @@ namespace RoundHero
                     }
                     else
                     {
-                        tmpUnitEntity = tmpEntity;
-                        tmpUnitEntity.ShowCollider(false);
+                        TmpUnitEntity = tmpEntity;
+                        TmpUnitEntity.ShowCollider(false);
                         
                         BattleUnitManager.Instance.BattleUnitEntities.Add(
-                            tmpUnitEntity.BattleUnit.Idx, tmpUnitEntity);
+                            TmpUnitEntity.BattleUnit.Idx, TmpUnitEntity);
                         
                         BattleManager.Instance.RefreshEnemyAttackData();
                         
-                        tmpUnitEntity.ShowHurtTags(tmpUnitEntity.BattleUnit.Idx);
+                        TmpUnitEntity.ShowHurtTags(TmpUnitEntity.BattleUnit.Idx);
                         //tmpSoliderEntity.RefreshDamageState();
                     }
 
@@ -337,15 +332,7 @@ namespace RoundHero
                         Log.Debug("unshow1");
                         BattleManager.Instance.TempTriggerData.UnitData = null;
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
-                        if (tmpUnitEntity != null && GameEntry.Entity.HasEntity(tmpUnitEntity.Id))
-                        {
-                            tmpUnitEntity.UnShowTags();
-                            
-                            BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpUnitEntity.BattleUnit.Idx);
-                            BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpUnitEntity.BattleUnit.Idx);
-                            GameEntry.Entity.HideEntity(tmpUnitEntity);
-                            tmpUnitEntity = null;
-                        }
+                        HideTmpEntity();
                         
 
                         BattleManager.Instance.RefreshEnemyAttackData();
@@ -401,13 +388,13 @@ namespace RoundHero
                         
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx = tempUnitMovePaths[tempUnitMovePaths.Count - 1];
                     BattleManager.Instance.RefreshEnemyAttackData();
-                    tmpUnitEntity.ShowHurtTags(tmpUnitEntity.BattleUnit.Idx);
+                    TmpUnitEntity.ShowHurtTags(TmpUnitEntity.BattleUnit.Idx);
                     //BattleEnemyManager.Instance.ShowEnemyRoutes();
 
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
-                    tmpUnitEntity.UnShowTags();
+                    TmpUnitEntity.UnShowTags();
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
                     BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();
@@ -536,6 +523,7 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx);
                 if (attackRanges.Contains(ne.GridPosIdx))
                 {
+                    var attackUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
                     var effectUnitEntity = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
                     if (ne.ShowState == EShowState.Show)
                     {
@@ -544,9 +532,14 @@ namespace RoundHero
                         
                         BattleManager.Instance.RefreshEnemyAttackData();
                         
+                        if (attackUnitEntity != null)
+                        {
+                            attackUnitEntity.ShowHurtTags(attackUnitEntity.UnitIdx, effectUnitEntity.UnitIdx);
+                        }
+                        
                         if (effectUnitEntity != null)
                         {
-                            effectUnitEntity.ShowHurtTags(effectUnitEntity.UnitIdx);
+                            effectUnitEntity.ShowHurtTags(effectUnitEntity.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
                         }
                         //BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.SelectHurtUnit;
                     }
@@ -555,6 +548,11 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
                         
                         BattleManager.Instance.RefreshEnemyAttackData();
+                        if (attackUnitEntity != null)
+                        {
+                            attackUnitEntity.UnShowTags();
+                        }
+                        
                         if (effectUnitEntity != null)
                         {
                             effectUnitEntity.UnShowTags();
@@ -572,6 +570,19 @@ namespace RoundHero
                 {
                     //BattleEnemyManager.Instance.UnShowEnemyRoutes();
                 }
+            }
+        }
+
+        public void HideTmpEntity()
+        {
+            if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
+            {
+                TmpUnitEntity.UnShowTags();
+                            
+                BattleUnitManager.Instance.BattleUnitDatas.Remove(TmpUnitEntity.BattleUnit.Idx);
+                BattleUnitManager.Instance.BattleUnitEntities.Remove(TmpUnitEntity.BattleUnit.Idx);
+                GameEntry.Entity.HideEntity(TmpUnitEntity);
+                TmpUnitEntity = null;
             }
         }
 
@@ -1610,17 +1621,19 @@ namespace RoundHero
 
         public async void OnClickGrid(object sender, GameEventArgs e)
         {
+
+
             if (BattleManager.Instance.CurUnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
                 return;
 
             var ne = e as ClickGridEventArgs;
 
-            var heroID = BattleUnitManager.Instance.GetUnitID(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,
+            var heroID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,
                 ERelativeCamp.Us, EUnitRole.Hero);
-            var enemyEntityID = BattleUnitManager.Instance.GetUnitID(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,
+            var enemyEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,
                 ERelativeCamp.Enemy);
             //var cardIndexs = BattleCardManager.Instance.GetCardIndexs(ne.GridPosIdx);
-            var soliderEntityID = BattleUnitManager.Instance.GetUnitID(ne.GridPosIdx,
+            var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx,
                 BattleManager.Instance.CurUnitCamp, ERelativeCamp.Us, EUnitRole.Staff);
 
             if (soliderEntityID != -1)
@@ -1712,12 +1725,7 @@ namespace RoundHero
                     return;
                 }
                 
-                if (tmpUnitEntity != null && GameEntry.Entity.HasEntity(tmpUnitEntity.Id))
-                {
-                    BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpUnitEntity.BattleUnit.Idx);
-                    BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpUnitEntity.BattleUnit.Idx);
-                    GameEntry.Entity.HideEntity(tmpUnitEntity);
-                }
+                HideTmpEntity();
                 
                 BattleManager.Instance.PlaceUnitCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx, ne.GridPosIdx, BattleManager.Instance.CurUnitCamp);
                 
@@ -1748,7 +1756,7 @@ namespace RoundHero
                     //     return;
                     // }
 
-                    tmpUnitEntity = unit;
+                    TmpUnitEntity = unit;
                     BattleManager.Instance.TempTriggerData.UnitData =
                         BattleUnitManager.Instance.GetBattleUnitData(unit);
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
@@ -2010,6 +2018,18 @@ namespace RoundHero
                     if (unitData != null)
                     {
                         //unit.UnitState.RemoveState(EUnitState.ActiveAttack);
+                    }
+                    
+                    var attackUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                    var effectUnitEntity = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
+                    if (attackUnitEntity != null)
+                    {
+                        attackUnitEntity.UnShowTags();
+                    }
+                    
+                    if (effectUnitEntity != null)
+                    {
+                        effectUnitEntity.UnShowTags();
                     }
                     
                     BattleFightManager.Instance.SoliderActiveAttack();

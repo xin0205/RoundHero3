@@ -21,7 +21,7 @@ namespace RoundHero
         public System.Random Random;
         private int randomSeed;
 
-        //public int CurSelectCardID;
+        public int CurSelectCardIdx;
 
 
         public void Init(int randomSeed)
@@ -555,18 +555,8 @@ namespace RoundHero
             
         }
 
-        private string a = "";
-
         public void Update()
         {
-
-            // a = "";
-            // foreach (var kv in CardEntities)
-            // {
-            //     a += kv.Value.transform.localPosition.x + ",";
-            // }
-            // Log.Debug(a);
-            
             if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid ||
                 BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid ||
                 BattleManager.Instance.BattleState == EBattleState.MoveGrid ||
@@ -606,6 +596,12 @@ namespace RoundHero
                     }
                     else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
                     {
+                        BattleManager.Instance.TempTriggerData.Reset();
+                        BattleAreaManager.Instance.ShowBackupGrids(null);
+                    }
+                    else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
+                    {
+                        BattleAreaManager.Instance.HideTmpEntity();
                         BattleManager.Instance.TempTriggerData.Reset();
                         BattleAreaManager.Instance.ShowBackupGrids(null);
                     }
@@ -996,7 +992,7 @@ namespace RoundHero
             }
         }
 
-        public void RefreshSelectCard(int refreshCardID)
+        public void RefreshSelectCard()
         {
             var idx = 0;
             // var selectCardSiblingIdx = 999;
@@ -1007,7 +1003,7 @@ namespace RoundHero
             
             foreach (var kv in CardEntities)
             {
-                if (kv.Key == refreshCardID)
+                if (kv.Key == BattleCardManager.Instance.CurSelectCardIdx)
                 {
                     kv.Value.SetSortingOrder(1000);
                     //kv.Value.gameObject.GetComponent<RectTransform>().SetAsLastSibling();

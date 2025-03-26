@@ -29,7 +29,8 @@ namespace RoundHero
         public List<int> TempUnitMovePaths = new ();
         public int CardEffectUnitID = -1;
         public TriggerBuffData TriggerBuffData = new ();
-
+        
+        
         public void Reset()
         {
             TargetGridPosIdx = -1;
@@ -299,7 +300,7 @@ namespace RoundHero
             return null;
         }
 
-        public int GetUnitID(int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null)
+        public int GetUnitIdx(int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null)
         {
             var unit = GetUnitByGridPosIdx(gridPosIdx, selfUnitCamp, unitCamp, unitRole);
             if(unit != null) 

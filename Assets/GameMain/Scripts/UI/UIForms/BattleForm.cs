@@ -160,6 +160,8 @@ namespace RoundHero
             var ne = e as RefreshActionCampEventArgs;
             ShowActionTips(ne.IsUs);
             
+            
+            
             endRoundNode.SetActive(ne.IsUs);
         }
         

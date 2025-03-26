@@ -1,16 +1,12 @@
 ﻿
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using GameFramework;
-using RPGCharacterAnims;
-using RPGCharacterAnims.Actions;
 using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -36,7 +32,7 @@ namespace RoundHero
         public Transform Root;
 
 
-        protected Data_BattleUnit BattleUnitData { get; set; }
+        public Data_BattleUnit BattleUnitData { get; set; }
         protected bool IsMove = false;
         
         public Transform EffectHurtPos;
@@ -615,8 +611,9 @@ namespace RoundHero
                 case EAttackCastType.RemoteMulti:
                     ShowEffectAttackEntity_RemoteMulti(triggerActionDataDict);
                     break;
+                case EAttackCastType.Empty:
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    break;
             }
             
             // var effectIDs = triggerActionDataDict.Keys.ToList();
@@ -825,7 +822,7 @@ namespace RoundHero
                     
                     if (BattleUnitData.CurHP > 0)
                     {
-                        if (unitActionState == EUnitActionState.Fly)
+                        if (unitActionState == EUnitActionState.Fly || unitActionState == EUnitActionState.Rush)
                         {
                             Fly();
                         }
@@ -902,6 +899,13 @@ namespace RoundHero
 
         }
         
+        public void Rush(MoveActionData moveActionData)
+        {
+            //return
+            Move(EUnitActionState.Rush, moveActionData);
+
+        }
+        
         public void Fly()
         {
             animator.SetInteger(AnimationParameters.Jumping, 2);
@@ -923,18 +927,18 @@ namespace RoundHero
             {
                 case EAttackCastType.CloseSingle:
                     CloseSingleAttack();
-                    
                     break;
                 case EAttackCastType.CloseMulti:
                     CloseMultiAttack();
-                    
                     break;
                 case EAttackCastType.RemoteSingle:
                     RemoteSingleAttack();
                     break;
                 case EAttackCastType.RemoteMulti:
                     RemoteMultiAttack(actionData);
-                    
+                    break;
+                case EAttackCastType.Empty:
+                    EmptyAttack();
                     break;
                 default:
                     break;
@@ -989,6 +993,12 @@ namespace RoundHero
                 HandleHit();
                 HeroManager.Instance.UpdateCacheHPDelta();
             });
+        }
+
+        public void EmptyAttack()
+        {
+            HandleHit();
+            HeroManager.Instance.UpdateCacheHPDelta();
         }
         
         public void CloseSingleAttack()
@@ -1240,23 +1250,23 @@ namespace RoundHero
         {
             ShowAttackTags(unitIdx);
             ShowFlyDirect(unitIdx);
-            BattleIconManager.Instance.ShowBattleIcon(unitIdx, EBattleIconType.Collison);
+            ShowBattleIcon(unitIdx, EBattleIconType.Collison);
             ShowDisplayValues(unitIdx);
         }
 
-        public void ShowHurtTags(int unitIdx)
+        public void ShowHurtTags(int effectUnitIdx, int actionUnitIdx = -1)
         {
-            ShowHurtAttackTags(unitIdx);
-            ShowHurtFlyDirect(unitIdx);
-            BattleIconManager.Instance.ShowBattleIcon(unitIdx, EBattleIconType.Collison);
-            ShowHurtDisplayValue(unitIdx);
+            ShowHurtAttackTags(effectUnitIdx, actionUnitIdx);
+            ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
+            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collison);
+            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
         }
         
         public void UnShowTags()
         {
             UnShowAttackTags();
             UnShowFlyDirects();
-            BattleIconManager.Instance.UnShowBattleIcons();
+            UnShowBattleIcons();
             UnShowDisplayValues();
         }
         

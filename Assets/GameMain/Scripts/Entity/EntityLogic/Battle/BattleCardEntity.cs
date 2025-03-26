@@ -126,16 +126,19 @@ namespace RoundHero
             Log.Debug("Enter");
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
-            
-            
-            
-            BattleCardManager.Instance.PointerCardIdx = BattleCardEntityData.CardIdx;
+
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
+                    return;
+            }
             
             isShow = true;
             ActionGO.SetActive(true);
             transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 50f, 0);
             transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-            BattleCardManager.Instance.RefreshSelectCard(BattleCardEntityData.CardData.CardIdx);
+            BattleCardManager.Instance.CurSelectCardIdx = BattleCardEntityData.CardData.CardIdx; 
+            BattleCardManager.Instance.RefreshSelectCard();
             
             RefreshCardRect();
             BattleManager.Instance.RefreshEnemyAttackData();
@@ -146,6 +149,12 @@ namespace RoundHero
             Log.Debug("Exit");
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
+
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
+                    return;
+            }
             
             
             BattleCardManager.Instance.PointerCardIdx = -1;
@@ -153,7 +162,11 @@ namespace RoundHero
             ActionGO.SetActive(false);
             transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0);
             transform.localScale = new Vector3(1f, 1f, 1f);
-            BattleCardManager.Instance.RefreshSelectCard(-1);
+            if (BattleCardManager.Instance.CurSelectCardIdx == BattleCardEntityData.CardData.CardIdx)
+            {
+                BattleCardManager.Instance.CurSelectCardIdx = -1;
+            }
+            BattleCardManager.Instance.RefreshSelectCard();
 
             RefreshCardRect();
             BattleManager.Instance.RefreshEnemyAttackData();

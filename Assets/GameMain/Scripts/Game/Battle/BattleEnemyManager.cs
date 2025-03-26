@@ -132,7 +132,7 @@ namespace RoundHero
         public void OnShowGridDetail(object sender, GameEventArgs e)
         {
             var ne = e as ShowGridDetailEventArgs;
-            var isEnemy = BattleUnitManager.Instance.GetUnitID(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,ERelativeCamp.Enemy) != -1;
+            var isEnemy = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,ERelativeCamp.Enemy) != -1;
             
 
             if (isEnemy)

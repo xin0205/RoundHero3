@@ -49,7 +49,8 @@ namespace RoundHero
             public static int EachHardCardCount = 5;
 
             public static int InitCardMaxCount = 12;
-            public static int CollisionHurt = -1;
+            public static int RushHurt = -1;
+            public static int FlyHurt = -2;
             public static float BulletShootTime = 0.1f;
             public static float BattleValueVelocity = 4;
 
@@ -1107,7 +1108,7 @@ namespace RoundHero
             {
                 [EUnitActionState.Run] = 0.5f,
                 [EUnitActionState.Fly] = 0.4f,
-                
+                [EUnitActionState.Rush] = 0.4f,
             };
             
             
