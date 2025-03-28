@@ -128,7 +128,7 @@ namespace RoundHero
         //     return retTriggerData;
         // }
         
-        public TriggerData BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> values, int ownUnitID, int actionUnitID,
+        public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> values, int ownUnitID, int actionUnitID,
             int effectUnitID, TriggerData preTriggerData, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
@@ -148,12 +148,13 @@ namespace RoundHero
                 return null;
 
             var buffvalueType = buffData.BuffValueType;
-            TriggerData triggerData = null;
+            var _triggerDatas = new List<TriggerData>();
 
-            var realEffectUnitIDs = BattleFightManager.Instance.GetEffectUnitIDs(buffData, ownUnitID, actionUnitID, effectUnitID ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
+            var realEffectUnitIDs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitID, actionUnitID, effectUnitID ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
             if (realEffectUnitIDs.Count > 0)
             {
+                TriggerData triggerData = null;
                 foreach (var realEffectUnitID in realEffectUnitIDs)
                 {
                     var realEffectUnit = GameUtility.GetUnitDataByIdx(realEffectUnitID);
@@ -219,6 +220,7 @@ namespace RoundHero
 
                     if (triggerData != null)
                     {
+                        _triggerDatas.Add(triggerData);
                         triggerData.BuffTriggerType = buffTriggerType;
                         if (realEffectUnit.UnitRole == EUnitRole.Hero && buffvalueType == EBuffValueType.Atrb &&
                             buffData.UnitAttribute == EUnitAttribute.HP && 
@@ -258,12 +260,12 @@ namespace RoundHero
                 //         1, ECardTriggerType.StandByToPass);
                 //     
                 // }
-                PostTrigger(triggerData, triggerDatas);
+                //PostTrigger(triggerData, triggerDatas);
             }
 
             
 
-            return triggerData;
+            return _triggerDatas;
         }
 
         public void CacheTriggerData(TriggerData triggerData, List<TriggerData> triggerDatas)

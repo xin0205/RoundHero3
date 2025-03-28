@@ -519,32 +519,32 @@ namespace RoundHero
 
         }
         
-        public void GetSecondaryBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit, out List<BuffValue> triggerBuffDatas)
-        {
-            triggerBuffDatas = new List<BuffValue>();
-            
-            var buffStrs = new List<string>();;
-            List<List<float>> valueList = new List<List<float>>();
-            
-            if (unit is Data_BattleMonster monster)
-            {
-                buffStrs = BattleEnemyManager.Instance.GetSecondaryBuff(monster.MonsterID);
-                valueList = BattleEnemyManager.Instance.GetSecondaryBuffValues(monster.MonsterID);
-            }
-
-            var idx = 0;
-            foreach (var buffStr in buffStrs)
-            {
-                idx = 0;
-                triggerBuffDatas.Add(new BuffValue()
-                {
-                    BuffData = BattleBuffManager.Instance.GetBuffData(buffStr),
-                    ValueList = valueList[idx++],
-                    UnitIdx = unit.Idx,
-                });
-            };
-
-        }
+        // public void GetSecondaryBuffValue(Data_GamePlay gamePlayData, Data_BattleUnit unit, out List<BuffValue> triggerBuffDatas)
+        // {
+        //     triggerBuffDatas = new List<BuffValue>();
+        //     
+        //     var buffStrs = new List<string>();;
+        //     List<List<float>> valueList = new List<List<float>>();
+        //     
+        //     if (unit is Data_BattleMonster monster)
+        //     {
+        //         buffStrs = BattleEnemyManager.Instance.GetSecondaryBuff(monster.MonsterID);
+        //         valueList = BattleEnemyManager.Instance.GetSecondaryBuffValues(monster.MonsterID);
+        //     }
+        //
+        //     var idx = 0;
+        //     foreach (var buffStr in buffStrs)
+        //     {
+        //         idx = 0;
+        //         triggerBuffDatas.Add(new BuffValue()
+        //         {
+        //             BuffData = BattleBuffManager.Instance.GetBuffData(buffStr),
+        //             ValueList = valueList[idx++],
+        //             UnitIdx = unit.Idx,
+        //         });
+        //     };
+        //
+        // }
 
 
         public bool OnGridUnitContainCard(int cardID)

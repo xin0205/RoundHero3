@@ -13,26 +13,29 @@ namespace RoundHero
             if (buffTriggerType != buffData.BuffTriggerType)
                 return;
 
-            TriggerData triggerData = null;
 
             
             var isSubCurHP = false;
  
             
-            triggerData = BattleBuffManager.Instance.BuffTrigger(buffTriggerType, buffData, buffValues, ownUnitID, actionUnitID,
+            var _triggerDatas = BattleBuffManager.Instance.BuffTrigger(buffTriggerType, buffData, buffValues, ownUnitID, actionUnitID,
                 effectUnitID, null, triggerDatas, actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
-            if (GameUtility.IsSubCurHPTrigger(triggerData))
+            foreach (var triggerData in _triggerDatas)
             {
-                isSubCurHP = true;
-            }
+                if (GameUtility.IsSubCurHPTrigger(triggerData))
+                {
+                    isSubCurHP = true;
+                }
 
 
-            if (isSubCurHP)
-            {
-                BattleBuffManager.Instance.AttackTrigger(triggerData, triggerDatas);
-                BattleUnitStateManager.Instance.CheckUnitState(actionUnitID, triggerDatas);
+                if (isSubCurHP)
+                {
+                    BattleBuffManager.Instance.AttackTrigger(triggerData, triggerDatas);
+                    BattleUnitStateManager.Instance.CheckUnitState(actionUnitID, triggerDatas);
+                }
             }
+            
 
         }
     

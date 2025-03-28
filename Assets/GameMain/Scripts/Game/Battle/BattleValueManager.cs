@@ -169,7 +169,7 @@ namespace RoundHero
             {
                 if (GameEntry.Entity.HasEntity(kv.Value.Entity.Id))
                 {
-                    GameEntry.Entity.HideEntity(kv.Value.Entity);
+                    GameEntry.Entity.HideEntity(kv.Value);
                 }
               
             }

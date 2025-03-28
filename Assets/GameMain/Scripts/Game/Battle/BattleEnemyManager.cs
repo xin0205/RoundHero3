@@ -255,7 +255,7 @@ namespace RoundHero
             
             for (int i = 0; i < enemyGenerateCount; i++)
             {
-                var enemyId = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
+                var enemyId = 3;//EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
                 var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(enemyId, places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
                 EnemyGenerateData.UnitIdx++;
                 battleEnemyEntity.LookAtHero();
@@ -381,11 +381,11 @@ namespace RoundHero
                 buffDatas.Add(buffData);
             }
             
-            foreach (var buffID in drEnemy.SecondaryBuffs)
-            {
-                var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
-                buffDatas.Add(buffData);
-            }
+            // foreach (var buffID in drEnemy.SecondaryBuffs)
+            // {
+            //     var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+            //     buffDatas.Add(buffData);
+            // }
 
             return buffDatas;
         }
@@ -405,19 +405,19 @@ namespace RoundHero
         //     return drBuffs;
         // }
         
-        public List<string> GetSecondaryBuff(int monsterID)
-        {
-            var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
-            
-            var buffStrs = new List<string>();
-
-            foreach (var buffStr in drEnemy.SecondaryBuffs)
-            {
-                buffStrs.Add(buffStr);
-            }
-
-            return buffStrs;
-        }
+        // public List<string> GetSecondaryBuff(int monsterID)
+        // {
+        //     var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
+        //     
+        //     var buffStrs = new List<string>();
+        //
+        //     foreach (var buffStr in drEnemy.SecondaryBuffs)
+        //     {
+        //         buffStrs.Add(buffStr);
+        //     }
+        //
+        //     return buffStrs;
+        // }
         
         private List<List<float>> buffValuelist = new List<List<float>>();
         public List<List<float>> GetBuffValues(int monsterID)
@@ -448,41 +448,41 @@ namespace RoundHero
                 //valuelist.Add(values);
             }
             
-            foreach (var buffID in drEnemy.SecondaryBuffs)
-            {
-                //var values = new List<float>();
-                foreach (var value in drEnemy.SecondaryValues)
-                {
-                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value);
-                }
-
-                idx++;
-                idx2 = 0;
-                //valuelist.Add(values);
-            }
+            // foreach (var buffID in drEnemy.SecondaryBuffs)
+            // {
+            //     //var values = new List<float>();
+            //     foreach (var value in drEnemy.SecondaryValues)
+            //     {
+            //         buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value);
+            //     }
+            //
+            //     idx++;
+            //     idx2 = 0;
+            //     //valuelist.Add(values);
+            // }
 
             return buffValuelist;
         }
 
-        public List<List<float>> GetSecondaryBuffValues(int monsterID)
-        {
-            var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
-            
-            var valuelist = new List<List<float>>();
-
-            //var idx = 2;
-            foreach (var buffID in drEnemy.SecondaryBuffs)
-            {
-                var values = new List<float>();
-                foreach (var value in drEnemy.SecondaryValues)
-                {
-                    values.Add(BattleBuffManager.Instance.GetBuffValue(value));
-                }
-                valuelist.Add(values);
-            }
-
-            return valuelist;
-        }
+        // public List<List<float>> GetSecondaryBuffValues(int monsterID)
+        // {
+        //     var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
+        //     
+        //     var valuelist = new List<List<float>>();
+        //
+        //     //var idx = 2;
+        //     foreach (var buffID in drEnemy.SecondaryBuffs)
+        //     {
+        //         var values = new List<float>();
+        //         foreach (var value in drEnemy.SecondaryValues)
+        //         {
+        //             values.Add(BattleBuffManager.Instance.GetBuffValue(value));
+        //         }
+        //         valuelist.Add(values);
+        //     }
+        //
+        //     return valuelist;
+        // }
 
     }
 }

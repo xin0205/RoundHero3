@@ -168,7 +168,7 @@ namespace RoundHero
 
             foreach (var kv in BattleIconEntities)
             {
-                GameEntry.Entity.HideEntity(kv.Value.Entity);
+                GameEntry.Entity.HideEntity(kv.Value);
             }
 
             BattleIconEntities.Clear();

@@ -73,42 +73,6 @@ namespace RoundHero
         }
 
         /// <summary>
-        /// 获取SecondaryBuffs。
-        /// </summary>
-        public List<string> SecondaryBuffs
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取Values2。
-        /// </summary>
-        public List<string> SecondaryValues
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取PassiveBuffs。
-        /// </summary>
-        public List<string> PassiveBuffs
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取PassiveBuffValues。
-        /// </summary>
-        public List<string> PassiveBuffValues
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取SpecBuffs。
         /// </summary>
         public List<string> SpecBuffs
@@ -196,10 +160,6 @@ namespace RoundHero
             HP = int.Parse(columnStrings[index++]);
 			OwnBuffs = DataTableExtension.ParseStringList(columnStrings[index++]);
 			OwnBuffValues1 = DataTableExtension.ParseStringList(columnStrings[index++]);
-			SecondaryBuffs = DataTableExtension.ParseStringList(columnStrings[index++]);
-			SecondaryValues = DataTableExtension.ParseStringList(columnStrings[index++]);
-			PassiveBuffs = DataTableExtension.ParseStringList(columnStrings[index++]);
-			PassiveBuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
 			SpecBuffs = DataTableExtension.ParseStringList(columnStrings[index++]);
 			SpecBuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
 			WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(columnStrings[index++]);
@@ -224,10 +184,6 @@ namespace RoundHero
                     HP = binaryReader.Read7BitEncodedInt32();
 					OwnBuffs = binaryReader.ReadStringList();
 					OwnBuffValues1 = binaryReader.ReadStringList();
-					SecondaryBuffs = binaryReader.ReadStringList();
-					SecondaryValues = binaryReader.ReadStringList();
-					PassiveBuffs = binaryReader.ReadStringList();
-					PassiveBuffValues = binaryReader.ReadStringList();
 					SpecBuffs = binaryReader.ReadStringList();
 					SpecBuffValues = binaryReader.ReadStringList();
                     WeaponHoldingType = Enum.Parse<EWeaponHoldingType>(binaryReader.ReadString());

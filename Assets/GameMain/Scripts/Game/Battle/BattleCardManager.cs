@@ -90,8 +90,8 @@ namespace RoundHero
 
         public void RoundAcquireCards(bool firstRound = false)
         {
-            if (BattleManager.Instance.CurUnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
-                return;
+            // if (BattleManager.Instance.CurUnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
+            //     return;
 
             var cardCount = BattleCardManager.Instance.GetEachHardCardCount();
             var eachRoundAcquireCardCount =

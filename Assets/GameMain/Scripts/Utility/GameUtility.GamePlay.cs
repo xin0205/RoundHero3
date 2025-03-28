@@ -1075,7 +1075,7 @@ namespace RoundHero
         }
         
         public static Dictionary<int, List<int>> GetActionGridPosIdxs(EUnitCamp selfCamp, int gridPosIdx, EActionType moveType, EActionType attackType,
-            List<ERelativeCamp> unitCamps, ref List<int> moveRange, ref List<int> heroHurtRange, bool isBattleData = true)
+            List<ERelativeCamp> unitCamps, EBuffTriggerType buffTriggerType,   ref List<int> moveRange, ref List<int> heroHurtRange, bool isBattleData = true)
         {
 
             var actionUnit = GetUnitByGridPosIdx(gridPosIdx, isBattleData);
@@ -1192,6 +1192,9 @@ namespace RoundHero
                             
                         }
                     }
+
+                    if (buffTriggerType == EBuffTriggerType.SelectUnit)
+                        return 0;
 
                     if (range1EnemyCount < range2EnemyCount)
                         return 1;
@@ -1899,5 +1902,53 @@ namespace RoundHero
             return pointList;
         }
 
+
+        public static List<Vector2Int> GetRelatedHorizontalCoords(Vector2Int direct, Vector2Int targetCoord)
+        {
+            var coords = new List<Vector2Int>();
+            if (direct == new Vector2Int(1, 1))
+            {
+                coords.Add(new Vector2Int(-1, 1));
+                coords.Add(new Vector2Int(1, -1));
+            }
+            else if (direct == new Vector2Int(-1, 1))
+            {
+                coords.Add(new Vector2Int(-1, -1));
+                coords.Add(new Vector2Int(1, 1));
+            }
+            else if (direct == new Vector2Int(-1, -1))
+            {
+                coords.Add(new Vector2Int(-1, 1));
+                coords.Add(new Vector2Int(1, -1));
+            }
+            else if (direct == new Vector2Int(1, -1))
+            {
+                coords.Add(new Vector2Int(-1, -1));
+                coords.Add(new Vector2Int(1, 1));
+            }
+            else if (direct == new Vector2Int(0, 1))
+            {
+                coords.Add(new Vector2Int(-1, 0));
+                coords.Add(new Vector2Int(1, 0));
+            }
+            else if (direct == new Vector2Int(-1, 0))
+            {
+                coords.Add(new Vector2Int(0, -1));
+                coords.Add(new Vector2Int(0, 1));
+            }
+            else if (direct == new Vector2Int(0, -1))
+            {
+                coords.Add(new Vector2Int(-1, 0));
+                coords.Add(new Vector2Int(1, 0));
+            }
+            else if (direct == new Vector2Int(1, 0))
+            {
+                coords.Add(new Vector2Int(0, -1));
+                coords.Add(new Vector2Int(0, 1));
+            }
+
+            return coords;
+
+        }
     }
 }

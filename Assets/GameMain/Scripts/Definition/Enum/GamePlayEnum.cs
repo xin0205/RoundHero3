@@ -369,6 +369,7 @@ namespace RoundHero
         All,
         InRange,
         Vertical,
+        Horizontal,
         EffectUnitDirect,
         DeBuffMax,
         MoveMax,

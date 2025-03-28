@@ -1021,6 +1021,7 @@ MonoBehaviour:
   UICamera: {fileID: 1439219965}
   Canvas: {fileID: 1576232206}
   HeroIcon: {fileID: 8346584191069841344, guid: b080fd3e59dfd204f859fb376616d1cd, type: 3}
+  UICore: {fileID: 0}
 --- !u!1 &1439219963
 GameObject:
   m_ObjectHideFlags: 0

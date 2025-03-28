@@ -865,7 +865,7 @@ namespace RoundHero
 
                 HeroManager.Instance.UpdateCacheHPDelta();
                 
-                if (BattleManager.Instance.BattleState == EBattleState.UseCard)
+                if (BattleManager.Instance.BattleState == EBattleState.UseCard && unitActionState != EUnitActionState.Run)
                 {
                     BattleManager.Instance.RefreshEnemyAttackData();
                 }
