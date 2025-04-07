@@ -74,6 +74,8 @@ namespace RoundHero
         public void Destory()
         {
             BattleData.Clear();
+            BattleState = EBattleState.Empty;
+            BattleManager.Instance.TempTriggerData.Reset();
             BattleSoliderManager.Instance.Destory();
             BattleThirdUnitManager.Instance.Destory();
             

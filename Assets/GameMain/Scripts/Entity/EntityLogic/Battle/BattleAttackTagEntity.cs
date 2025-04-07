@@ -1,6 +1,6 @@
-﻿using Unity.VisualScripting;
+﻿
 using UnityEngine;
-using UnityEngine.UIElements;
+
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -38,28 +38,40 @@ namespace RoundHero
             // var centerPoint = GameUtility.GetBetweenPoint(BattleAttackTagEntityData.StartPos,
             //     BattleAttackTagEntityData.TargetPos);
             // centerPoint.y += 1f;
-            //
+            
             // spriteRenderer.transform.position = centerPoint;
-
-            spriteRenderer.transform.position = new Vector3(BattleAttackTagEntityData.TargetPos.x,
-                BattleAttackTagEntityData.TargetPos.y + 0.1f, BattleAttackTagEntityData.TargetPos.z);
-
-            line.gameObject.SetActive(false);
-            //line.positionCount = gridPosIdxs.Count;
-
-            //var idx = 0;
-            // foreach (var gridPosIdx in gridPosIdxs)
-            // {
-            //     var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
-            //     pos.y += 1f;
-            //     line.SetPosition(idx++, pos);
-            // }
             //
-            // line.startWidth = 0.02f;
-            // line.endWidth = 0.02f;
-            // line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
-            // line.material.SetColor("_Color", red); 
-            // line.material.SetInt("_Speed", 10);
+            spriteRenderer.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackPos);
+            line.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackLine);
+
+            
+            if (BattleAttackTagEntityData.ShowAttackPos)
+            {
+                spriteRenderer.transform.position = new Vector3(BattleAttackTagEntityData.TargetPos.x,
+                    BattleAttackTagEntityData.TargetPos.y + 0.1f, BattleAttackTagEntityData.TargetPos.z);
+            }
+            
+
+            //line.gameObject.SetActive(false);
+            if (BattleAttackTagEntityData.ShowAttackLine)
+            {
+                line.positionCount = gridPosIdxs.Count;
+
+                var idx = 0;
+                foreach (var gridPosIdx in gridPosIdxs)
+                {
+                    var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
+                    pos.y += 1f;
+                    line.SetPosition(idx++, pos);
+                }
+            
+                line.startWidth = 0.02f;
+                line.endWidth = 0.02f;
+                line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
+                line.material.SetColor("_Color", red); 
+                line.material.SetInt("_Speed", 50);
+            }
+            
         }
 
         private void Update()

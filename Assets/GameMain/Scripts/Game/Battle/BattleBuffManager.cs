@@ -89,6 +89,7 @@ namespace RoundHero
         public void Clear()
         {
             TriggerBuffType = TriggerBuffType.Empty;
+            CardIdx = -1;
             // BuffID = EBuffID.Empty;
             // CardID = -1;
             EnergyBuffData.Clear();

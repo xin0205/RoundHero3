@@ -103,7 +103,7 @@ namespace RoundHero
             var data = ReferencePool.Acquire<BattleCoreEntityData>();
             var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
             var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), coreID, gridPosIdx, unitCamp);
-            
+            battleCoreData.UnitStateData.AddState(EUnitState.UnMove, 1, EEffectType.Forever);
             BattleUnitManager.Instance.BattleUnitDatas.Add(battleCoreData.Idx, battleCoreData);
             data.Init(entityComponent.GenerateSerialId(), pos, battleCoreData);
 
@@ -261,15 +261,16 @@ namespace RoundHero
         }
         
         public static async Task<BattleMoveValueEntity> ShowBattleMoveValueEntityAsync(this EntityComponent entityComponent,
-            Vector3 pos, Vector3 targetPos, int value, int entityIdx = -1, bool isLoop = false)
+            Vector3 pos, Vector3 targetPos, int value, int entityIdx = -1, bool isLoop = false, bool isAdd = false)
         {
             var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value, entityIdx, isLoop);
+            data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value, entityIdx, isLoop, isAdd);
 
+            Log.Debug("task1");
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveValueEntity),
                 AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, data);
-            
+            Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleMoveValueEntity)task.Logic;
         }
         
@@ -322,11 +323,11 @@ namespace RoundHero
         }
         
         public static async Task<BattleAttackTagEntity> ShowBattleAttackTagEntityAsync(this EntityComponent entityComponent, Vector3 pos, Vector3 startPos, Vector3 targetPos, EAttackTagType attackTagType,
-            EUnitState unitState, int entityIdx = -1)
+            EUnitState unitState, int entityIdx = -1, bool showAttackLine = true, bool showAttackPos = true)
         {
             var data = ReferencePool.Acquire<BattleAttackTagEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), pos, startPos, targetPos, attackTagType, unitState, entityIdx);
+            data.Init(entityComponent.GenerateSerialId(), pos, startPos, targetPos, attackTagType, unitState, entityIdx, showAttackLine, showAttackPos);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleAttackTagEntity),
                 AssetUtility.GetBattleAttackTagPrefab(), Constant.EntityGroup.Unit, 0, data);

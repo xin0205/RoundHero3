@@ -134,6 +134,7 @@ namespace RoundHero
         EndRound,
         ActionExcuting,
         SelectHurtUnit,
+        Empty,
     }
     
     public enum EActionProgress
@@ -694,11 +695,12 @@ namespace RoundHero
         YN,
     }
 
-    public enum EGridPropEffectType
+    public enum EEffectType
     {
         Once,
         Round,
         Forever,
+        Default,
     }
 
     public enum EAttackTarget

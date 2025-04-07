@@ -265,19 +265,46 @@ namespace RoundHero
         // }
     }
 
+    public class UnitStateDetail
+    {
+        public EUnitState UnitState;
+        public int Value = 1;
+        public EEffectType EffectType = EEffectType.Default;
+
+        public UnitStateDetail()
+        {
+            
+        }
+        
+        public UnitStateDetail(UnitStateDetail unitStateDetail)
+        {
+
+            UnitState = unitStateDetail.UnitState;
+            Value = unitStateDetail.Value;
+            EffectType = unitStateDetail.EffectType;
+
+        }
+        
+    }
+
     public class UnitStateData
     {
-        public Dictionary<EUnitState, int> UnitStates = new();
+        public Dictionary<EUnitState, UnitStateDetail> UnitStates = new();
         
-        public void AddState(EUnitState state, int count = 1)
+        public void AddState(EUnitState state, int value = 1, EEffectType effectType = EEffectType.Default)
         {
             if (UnitStates.ContainsKey(state))
             {
-                UnitStates[state] += count;
+                UnitStates[state].Value += value;
             }
             else
             {
-                UnitStates.Add(state, count);
+                UnitStates.Add(state, new UnitStateDetail()
+                {
+                    UnitState = state,
+                    Value = value,
+                    EffectType = effectType,
+                });
             }
             CheckStateCount(state);
         }
@@ -295,16 +322,19 @@ namespace RoundHero
             // {
             //     
             // }
-            UnitStates[state] -= count;
+            UnitStates[state].Value -= count;
             CheckStateCount(state);
 
         }
 
         private void CheckStateCount(EUnitState state)
         {
-            UnitStates[state] = UnitStates[state] < 0 ? 0 : UnitStates[state];
+            if(UnitStates[state] == null)
+                return;
+            
+            UnitStates[state].Value = UnitStates[state].Value < 0 ? 0 : UnitStates[state].Value;
 
-            if (UnitStates[state] <= 0)
+            if (UnitStates[state].Value <= 0)
             {
                 UnitStates.Remove(state);
             }
@@ -314,7 +344,7 @@ namespace RoundHero
         {
             if (UnitStates.ContainsKey(state))
             {
-                return UnitStates[state];
+                return UnitStates[state].Value;
             }
 
             return 0;
@@ -323,7 +353,7 @@ namespace RoundHero
         public UnitStateData Copy()
         {
             var unitStateData = new UnitStateData();
-            unitStateData.UnitStates = new Dictionary<EUnitState, int>(UnitStates);
+            unitStateData.UnitStates = new Dictionary<EUnitState, UnitStateDetail>(UnitStates);
 
             return unitStateData;
         }
@@ -339,7 +369,7 @@ namespace RoundHero
         public virtual int CurHP { get; set; }
         public virtual int MaxHP { get => BaseMaxHP + FuneCount(EBuffID.Spec_AddMaxHP);}
         public int BaseMaxHP { get; set; }
-        public UnitStateData UnitState = new();
+        public UnitStateData UnitStateData = new();
         public bool AttackInRound;
         public EUnitRole UnitRole;
         public int BaseDamage;
@@ -393,7 +423,7 @@ namespace RoundHero
                 return;
             }
 
-            UnitState.AddState(state, count);
+            UnitStateData.AddState(state, count);
         }
 
         public void RemoveState(EUnitState state, int count = 1)
@@ -402,9 +432,9 @@ namespace RoundHero
             {
                 RoundUnitState.RemoveState(state, count);
             }
-            else if (UnitState.GetStateCount(state) > 0)
+            else if (UnitStateData.GetStateCount(state) > 0)
             {
-                UnitState.RemoveState(state, count);
+                UnitStateData.RemoveState(state, count);
             }
 
         }
@@ -412,7 +442,7 @@ namespace RoundHero
         public void RemoveAllState(List<EUnitStateEffectType> buffEffectTypes = null)
         {
             RemoveAllState(RoundUnitState, buffEffectTypes);
-            RemoveAllState(UnitState, buffEffectTypes);
+            RemoveAllState(UnitStateData, buffEffectTypes);
 
         }
 
@@ -439,12 +469,12 @@ namespace RoundHero
 
         public int GetAllStateCount(EUnitState state)
         {
-            return UnitState.GetStateCount(state) + RoundUnitState.GetStateCount(state);
+            return UnitStateData.GetStateCount(state) + RoundUnitState.GetStateCount(state);
         }
         
         public int GetStateCount(EUnitState state)
         {
-            return UnitState.GetStateCount(state);
+            return UnitStateData.GetStateCount(state);
         }
         
         public int GetRoundStateCount(EUnitState state)
@@ -520,11 +550,11 @@ namespace RoundHero
         public int TargetBuffCount(EUnitStateEffectType effectType)
         {
             var targetBuffCount = 0;
-            foreach (var kv in UnitState.UnitStates)
+            foreach (var kv in UnitStateData.UnitStates)
             {
-                if (kv.Value > 0 && Constant.Battle.EffectUnitStates[effectType].Contains(kv.Key))
+                if (kv.Value.Value > 0 && Constant.Battle.EffectUnitStates[effectType].Contains(kv.Key))
                 {
-                    targetBuffCount += kv.Value;
+                    targetBuffCount += kv.Value.Value;
                 }
             }
 
@@ -669,7 +699,7 @@ namespace RoundHero
             dataBattleHero.BaseMaxHP = BaseMaxHP;
             dataBattleHero.Attribute = Attribute.Copy();
             dataBattleHero.UnitCamp = UnitCamp;
-            dataBattleHero.UnitState = UnitState.Copy();
+            dataBattleHero.UnitStateData = UnitStateData.Copy();
             dataBattleHero.AttackInRound = AttackInRound;
             dataBattleHero.UnitRole = UnitRole;
             dataBattleHero.LinkIDs = new List<ELinkID>(LinkIDs);
@@ -815,7 +845,7 @@ namespace RoundHero
             dataBattleUnit.LastCurHP = LastCurHP;
             dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
             dataBattleUnit.BaseMaxHP = BaseMaxHP;
-            dataBattleUnit.UnitState = UnitState.Copy();
+            dataBattleUnit.UnitStateData = UnitStateData.Copy();
             dataBattleUnit.AttackInRound = AttackInRound;
             dataBattleUnit.UnitRole = UnitRole;
             dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
@@ -940,7 +970,7 @@ namespace RoundHero
             dataBattleEnemy.LastCurHPDelta = LastCurHPDelta;
             dataBattleEnemy.BaseMaxHP = BaseMaxHP;
             dataBattleEnemy.UnitCamp = UnitCamp;
-            dataBattleEnemy.UnitState = UnitState.Copy();
+            dataBattleEnemy.UnitStateData = UnitStateData.Copy();
             dataBattleEnemy.AttackInRound = AttackInRound;
             dataBattleEnemy.UnitRole = UnitRole;
             dataBattleEnemy.LinkIDs = new List<ELinkID>(LinkIDs);
@@ -1013,7 +1043,7 @@ namespace RoundHero
             dataBattleCore.Idx = Idx;
             dataBattleCore.GridPosIdx = GridPosIdx;
             dataBattleCore.UnitCamp = UnitCamp;
-            
+            dataBattleCore.UnitStateData = UnitStateData.Copy();
 
             return dataBattleCore;
         }

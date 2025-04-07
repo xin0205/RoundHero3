@@ -255,7 +255,7 @@ namespace RoundHero
             
             for (int i = 0; i < enemyGenerateCount; i++)
             {
-                var enemyId = 3;//EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
+                var enemyId = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
                 var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(enemyId, places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
                 EnemyGenerateData.UnitIdx++;
                 battleEnemyEntity.LookAtHero();

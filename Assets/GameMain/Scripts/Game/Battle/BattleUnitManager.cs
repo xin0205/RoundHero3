@@ -341,7 +341,7 @@ namespace RoundHero
         {
             foreach (var kv in BattleUnitEntities)
             {
-                var keys = kv.Value.BattleUnit.UnitState.UnitStates.Keys.ToList();
+                var keys = kv.Value.BattleUnit.UnitStateData.UnitStates.Keys.ToList();
                 for (int i = 0; i < keys.Count; i++)
                 {
                     //kv.Value.BattleUnit.RemoveState(keys[i]);

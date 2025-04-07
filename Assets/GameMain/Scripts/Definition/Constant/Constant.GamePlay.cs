@@ -24,8 +24,8 @@ namespace RoundHero
 
             public static Vector2 GridLength = new Vector2()
             {
-                x = 1.75f,
-                y = 1.75f,
+                x = 1.65f,
+                y = 1.65f,
             };
 
             public static Vector2 GridRange = new Vector2()
@@ -1154,10 +1154,10 @@ namespace RoundHero
                             [4] = 2,
                         },
                         EachRoundUnitCount = 2,
-                        NormalUnitCount = 4,
-                        EliteUnitCount = 2,
+                        NormalUnitCount = 6,
+                        EliteUnitCount = 0,
                         NormalUnitTypeCount = 2,
-                        EliteUnitTypeCount = 1,
+                        EliteUnitTypeCount = 0,
                         GlobalDebuffCount = 0,
                     },
                 // [EGameDifficulty.Difficulty1] = new EnemyGenrateRule()

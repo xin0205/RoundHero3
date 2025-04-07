@@ -65,6 +65,10 @@ namespace RoundHero
                     ShowTags(UnitIdx);
                 }
             }
+            else
+            {
+                ShowHurtTags(BattleSoliderEntityData.BattleSoliderData.Idx);
+            }
             
             
         }
@@ -129,7 +133,7 @@ namespace RoundHero
             Vector3 position = new Vector3(pos.x, pos.y,  Camera.main.transform.position.z);
             Vector3 uiCorePos = Camera.main.ScreenToWorldPoint(position);
             
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  uiCorePos, hurt);
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  uiCorePos, hurt, -1, true, true);
         }
 
         // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = true)

@@ -1047,7 +1047,7 @@ namespace RoundHero
             
         }
 
-        public void RefreshHP()
+        public virtual void RefreshHP()
         {
             hpAndDamageNode.SetActive(true);
             damageNode.SetActive(false);
@@ -1057,9 +1057,10 @@ namespace RoundHero
             hp.text = curHP.ToString();
             // hp.text = curHP + "/" +
             //           BattleUnitData.MaxHP;
-            var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
-
-            damage.text = hurt > 0 ? "+" + hurt : hurt.ToString();
+            
+            //var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
+            //damage.text = hurt > 0 ? "+" + hurt : hurt.ToString();
+            damage.text = "";
             // if (hurt != 0)
             // {
             //     
@@ -1068,23 +1069,26 @@ namespace RoundHero
             // {
             //     damage.text = "";
             // }
-            
+
         }
 
         public void RefreshDamageState()
         {
             hpAndDamageNode.SetActive(false);
-            damageNode.SetActive(true);
-
-            var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
-            if (hurt != 0)
-            {
-                damage2.text = hurt.ToString();
-            }
-            else
-            {
-                damage2.text = "";
-            }
+            damageNode.SetActive(false);
+            
+            // hpAndDamageNode.SetActive(false);
+            // damageNode.SetActive(true);
+            //
+            // var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
+            // if (hurt != 0)
+            // {
+            //     damage2.text = hurt.ToString();
+            // }
+            // else
+            // {
+            //     damage2.text = "";
+            // }
         }
         
         public virtual void Quit()

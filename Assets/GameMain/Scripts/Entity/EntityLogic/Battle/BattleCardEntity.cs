@@ -134,8 +134,8 @@ namespace RoundHero
             }
             
             isShow = true;
-            ActionGO.SetActive(true);
-            transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 50f, 0);
+            //ActionGO.SetActive(true);
+            transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 140f, 0);
             transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             BattleCardManager.Instance.CurSelectCardIdx = BattleCardEntityData.CardData.CardIdx; 
             BattleCardManager.Instance.RefreshSelectCard();
@@ -159,7 +159,7 @@ namespace RoundHero
             
             BattleCardManager.Instance.PointerCardIdx = -1;
             isShow = false;
-            ActionGO.SetActive(false);
+            //ActionGO.SetActive(false);
             transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0);
             transform.localScale = new Vector3(1f, 1f, 1f);
             if (BattleCardManager.Instance.CurSelectCardIdx == BattleCardEntityData.CardData.CardIdx)
@@ -223,7 +223,7 @@ namespace RoundHero
         
         public void UseCardAnimation(int gridPosIdx = -1)
         {
-            ActionGO.SetActive(false);
+            //ActionGO.SetActive(false);
             isInside = false;
             isHand = false;
             BattleCardManager.Instance.PointerCardIdx = -1;

@@ -173,7 +173,7 @@ namespace RoundHero
             BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas.Add((int)ECurseID.RandomUnitClearDebuff, actionData);
             
             
-            var unitStates = new List<UnitStateData>() { randomUnit.UnitState, randomUnit.RoundUnitState };
+            var unitStates = new List<UnitStateData>() { randomUnit.UnitStateData, randomUnit.RoundUnitState };
 
             foreach (var unitStateData in unitStates)
             {

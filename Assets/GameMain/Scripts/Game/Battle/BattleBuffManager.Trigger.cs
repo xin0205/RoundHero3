@@ -325,8 +325,13 @@ namespace RoundHero
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
                     EffectUnitIdx = kv.Value.Idx,
-                    UnitState = EUnitState.AddDmg,
-                    Value = value1s[0],
+                    UnitStateDetail = new UnitStateDetail()
+                    {
+                        UnitState = EUnitState.AddDmg,
+                        Value = (int)value1s[0],
+                    },
+                    
+                   
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
@@ -387,8 +392,11 @@ namespace RoundHero
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
                     EffectUnitIdx = kv.Value.Idx,
-                    UnitState = EUnitState.HurtAddDmg,
-                    Value = value1s[1],
+                    UnitStateDetail = new UnitStateDetail()
+                    {
+                        UnitState = EUnitState.HurtAddDmg,
+                        Value = (int)value1s[1],
+                    },
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
@@ -414,8 +422,11 @@ namespace RoundHero
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
                     EffectUnitIdx = kv.Value.Idx,
-                    UnitState = EUnitState.SubDmg,
-                    Value = value1s[1],
+                    UnitStateDetail = new UnitStateDetail()
+                    {
+                        UnitState = EUnitState.AddDmg,
+                        Value = (int)value1s[1],
+                    },
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
@@ -448,8 +459,8 @@ namespace RoundHero
         {
             var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            var keyList = effectUnit.UnitState.UnitStates.Keys.ToList();
-            for (int i = effectUnit.UnitState.UnitStates.Count - 1; i >= 0; i--)
+            var keyList = effectUnit.UnitStateData.UnitStates.Keys.ToList();
+            for (int i = effectUnit.UnitStateData.UnitStates.Count - 1; i >= 0; i--)
             {
                 var state = keyList[i];
                 if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(state) && effectUnit.UnitCamp == unitCamp)
@@ -458,8 +469,8 @@ namespace RoundHero
                     {
                         TriggerDataType = ETriggerDataType.RoleState,
                         EffectUnitIdx = effectUnit.Idx,
-                        UnitState = state,
-                        Value = -effectUnit.UnitState.UnitStates[state],
+                        UnitStateDetail = new UnitStateDetail(effectUnit.UnitStateData.UnitStates[state]),
+ 
                     };
             
                     useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
@@ -511,8 +522,11 @@ namespace RoundHero
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
                     EffectUnitIdx = kv.Value.Idx,
-                    UnitState = state2,
-                    Value = value1s[0],
+                    UnitStateDetail = new UnitStateDetail()
+                    {
+                        UnitState = state2,
+                        Value = (int)value1s[0],
+                    },
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
@@ -545,8 +559,11 @@ namespace RoundHero
                 {
                     TriggerDataType = ETriggerDataType.RoleState,
                     EffectUnitIdx = kv.Value.Idx,
-                    UnitState = EUnitState.UnMove,
-                    Value = 1,
+                    UnitStateDetail = new UnitStateDetail()
+                    {
+                        UnitState = EUnitState.UnMove,
+                        Value = 1,
+                    },
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);

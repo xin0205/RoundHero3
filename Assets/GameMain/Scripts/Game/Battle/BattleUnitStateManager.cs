@@ -29,7 +29,7 @@ namespace RoundHero
 
             if (triggerBuffData != null)
             {
-                unit.UnitState.AddState(EUnitState.ActiveAtk);
+                unit.UnitStateData.AddState(EUnitState.ActiveAtk);
             }
         }
 

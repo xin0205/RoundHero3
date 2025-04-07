@@ -127,6 +127,12 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(ClickGridEventArgs.EventId, OnClickGrid);
             GameEntry.Event.Unsubscribe(SelectGridEventArgs.EventId, OnSelectGrid);
             MoveGrids.Clear();
+            if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
+            {
+                GameEntry.Entity.HideEntity(TmpUnitEntity);
+                TmpUnitEntity = null;
+            }
+            
             foreach (var kv in GridEntities)
             {
                 GameEntry.Entity.HideEntity(kv.Value);
@@ -244,9 +250,14 @@ namespace RoundHero
 
                     var triggerBuffData = BattleManager.Instance.TempTriggerData.TriggerBuffData;
                     
-                    var cardID = triggerBuffData.CardIdx;
-                    var cardData = BattleManager.Instance.GetCard(cardID);
-                    var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardID);
+                    var cardIdx = triggerBuffData.CardIdx;
+                    var cardData = BattleManager.Instance.GetCard(cardIdx);
+                    if (cardData == null)
+                    {
+                        return;
+                    }
+                    
+                    var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
                     
                     var aroundHeroRange = GameUtility.GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Direct82Short, EUnitCamp.Player1, null);
 
@@ -263,7 +274,7 @@ namespace RoundHero
 
                     tmpEntityIdx = BattleUnitManager.Instance.GetIdx();
                     BattleManager.Instance.TempTriggerData.UnitData = new Data_BattleSolider(
-                        tmpEntityIdx, cardID,
+                        tmpEntityIdx, cardIdx,
                         ne.GridPosIdx, cardEnergy, BattleManager.Instance.CurUnitCamp,  cardData.FuneIdxs);
                     
                     //AddUnitState
@@ -291,7 +302,7 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitData, EBlessID.EachRoundFightCardAddLinkSend,
                         ELinkID.Link_Send_Around_Us);
                     
-                    Log.Debug("show1");
+
                     var tmpEntity =
                         await GameEntry.Entity.ShowBattleSoliderEntityAsync(BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider);
                     
@@ -329,7 +340,7 @@ namespace RoundHero
                     if (BattleManager.Instance.TempTriggerData.UnitData != null &&
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx == ne.GridPosIdx)
                     {
-                        Log.Debug("unshow1");
+
                         BattleManager.Instance.TempTriggerData.UnitData = null;
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
                         HideTmpEntity();

@@ -154,6 +154,7 @@ MonoBehaviour:
   hpAndDamageNode: {fileID: 8870350651871873727}
   damageNode: {fileID: 5215116472268014210}
   damage2: {fileID: 5896251765905992218}
+  boxCollider: {fileID: 5797164147326279908}
   animator: {fileID: 4525250011595830683}
   leftWeapon: {fileID: 4173331263707445510}
   rightWeapon: {fileID: 8682693444565856127}
@@ -165,7 +166,6 @@ MonoBehaviour:
   ValuePos: {fileID: 3119122112232860029}
   TargetPosIdx: 0
   IsPointer: 0
-  boxCollider: {fileID: 5797164147326279908}
 --- !u!95 &4525250011595830683
 Animator:
   serializedVersion: 5

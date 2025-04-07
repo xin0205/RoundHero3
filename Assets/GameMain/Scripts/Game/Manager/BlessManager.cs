@@ -164,7 +164,7 @@ namespace RoundHero
                     if (kv.Value.CurHP <= 0)
                         continue;
                     
-                    if (kv.Value.UnitState.UnitStates.Count > 0)
+                    if (kv.Value.UnitStateData.UnitStates.Count > 0)
                         continue;
                     
                     var randomBuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.Positive].Count);
@@ -500,11 +500,11 @@ namespace RoundHero
             if (otherEnemies.Count > 0)
             {
                 var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
-                foreach (var kv in unit.UnitState.UnitStates)
+                foreach (var kv in unit.UnitStateData.UnitStates)
                 {
                     if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(kv.Key))
                     {
-                        otherEnemies[randomEnemyIdx].ChangeState(kv.Key, kv.Value);
+                        otherEnemies[randomEnemyIdx].ChangeState(kv.Key, kv.Value.Value);
                     }
                 }
             }

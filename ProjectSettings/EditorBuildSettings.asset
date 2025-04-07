@@ -194,4 +194,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/RawResources/Polygon Arsenal/Demo/Scenes/Interactive/PolyZones.unity
     guid: 704cc03b81f7a8548a23727ad4a7b68d
+  - enabled: 1
+    path: Assets/Test/New Scene.unity
+    guid: 44d50212592f44d4680836a18b8821b8
+  - enabled: 1
+    path: Assets/Test/Scene0.unity
+    guid: 6febccc75a1d6af43b6315989df9a16c
+  - enabled: 1
+    path: Assets/Test/New Scene 1.unity
+    guid: 40172757a9c079043ac9156b6bc434ef
   m_configObjects: {}

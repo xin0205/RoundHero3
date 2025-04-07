@@ -17,20 +17,22 @@ namespace RoundHero
         private Tween textColTween;
         private Tween moveTween;
         private Tween textStrTween;
-        
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
-            
+
             BattleMoveValueEntityData = userData as BattleMoveValueEntityData;
             if (BattleMoveValueEntityData == null)
-            { 
+            {
                 Log.Error("Error BattleMoveValueEntity");
                 return;
             }
 
-            text.text = BattleMoveValueEntityData.Value < 0 ? BattleMoveValueEntityData.Value.ToString() :  "+" + BattleMoveValueEntityData.Value;
-            
+            text.text = BattleMoveValueEntityData.Value < 0
+                ? BattleMoveValueEntityData.Value.ToString()
+                : "+" + BattleMoveValueEntityData.Value;
+
             //text.text = Mathf.Abs(BattleValueEntityData.Value).ToString();
             //text.color = BattleValueEntityData.Value < 0 ? hurtColor : recoverColor;
             text.color = hurtColor;
@@ -44,20 +46,23 @@ namespace RoundHero
                 time = 1f;
             }
             //textStrTween = 
-            
-            textColTween = DOTween.To(()=>
+
+            if (BattleMoveValueEntityData.IsAdd)
             {
-                if(text == null)
-                    return Color.white;
-                
-                return text.color;
-            }, x =>
-            {
-                if(text == null)
-                    return;
-                
-                text.color = x;
-            }, recoverColor, time).SetEase(Ease.InOutQuart);
+                textColTween = DOTween.To(() =>
+                {
+                    if (text == null)
+                        return Color.white;
+
+                    return text.color;
+                }, x =>
+                {
+                    if (text == null)
+                        return;
+
+                    text.color = x;
+                }, recoverColor, time).SetEase(Ease.InOutQuart);
+            }
 
             var targetPos = BattleMoveValueEntityData.TargetPos;
             moveTween = DOTween.To(()=>
@@ -75,8 +80,10 @@ namespace RoundHero
             }, targetPos, time).SetEase(Ease.InOutQuart);
             //transform.DOMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
             var absValue = Mathf.Abs(BattleMoveValueEntityData.Value);
-      
-            textStrTween = DOTween.To(() =>
+
+            if (BattleMoveValueEntityData.IsAdd)
+            {
+                textStrTween = DOTween.To(() =>
                 {
                     if(text == null)
                         return "";
@@ -87,6 +94,8 @@ namespace RoundHero
                         return;
                     text.text = x;
                 }, "+" + absValue, time).From("-" + absValue).SetEase(Ease.InOutExpo);
+            }
+
             
             
             if (BattleMoveValueEntityData.IsLoop)
@@ -129,12 +138,25 @@ namespace RoundHero
 
         protected override void OnHide(bool isShutdown, object userData)
         {
-            moveTween.Pause();
-            text.DOKill();
+            base.OnHide(isShutdown, userData);
+            Log.Debug("OnHide" + BattleMoveValueEntityData.Id);
+            
+            if(moveTween == null)
+                Log.Debug("moveTween");
+            // if(text == null)
+            //     Log.Debug("text");
+            if(textColTween == null)
+                Log.Debug("textColTween");
+            if(textStrTween == null)
+                Log.Debug("textStrTween");
+
+            
+            //moveTween.Pause();
+            //text.DOKill();
             moveTween.Kill();
             textColTween.Kill();
             textStrTween.Kill();
-            base.OnHide(isShutdown, userData);
+            
         }
     }
 }

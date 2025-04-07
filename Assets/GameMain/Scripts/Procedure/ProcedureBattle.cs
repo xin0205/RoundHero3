@@ -72,8 +72,8 @@ namespace RoundHero
             
             InitSuccess = true;
             
-            var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
-            playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
+            // var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
+            // playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
             
             var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
             battleForm = battleFormTask.Logic as BattleForm;
@@ -113,7 +113,7 @@ namespace RoundHero
         {
             HeroManager.Instance.BattleHeroData.CurHP = HeroManager.Instance.BattleHeroData.MaxHP; 
             
-            GameEntry.UI.CloseUIForm(playerInfoForm);
+            //GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(battleForm);
             BattleManager.Instance.Destory();
             
@@ -134,7 +134,7 @@ namespace RoundHero
             {
                 PVEManager.Instance.Exit();
             }
-            GameEntry.UI.CloseUIForm(playerInfoForm);
+            //GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(battleForm);
             BattleManager.Instance.Destory();
 

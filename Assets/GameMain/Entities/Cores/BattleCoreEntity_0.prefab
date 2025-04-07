@@ -333,7 +333,8 @@ MonoBehaviour:
   hpAndDamageNode: {fileID: 8870350651871873727}
   damageNode: {fileID: 5215116472268014210}
   damage2: {fileID: 5896251765905992218}
-  animator: {fileID: 0}
+  boxCollider: {fileID: 0}
+  animator: {fileID: 6330339263858269483}
   leftWeapon: {fileID: 0}
   rightWeapon: {fileID: 0}
   Root: {fileID: 6219312187023188135}

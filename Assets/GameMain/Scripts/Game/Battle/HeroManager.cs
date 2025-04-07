@@ -225,7 +225,7 @@ namespace RoundHero
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
                 if (buffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
                 {
-                    BattleHeroData.UnitState.AddState(EUnitState.AutoAtk);
+                    BattleHeroData.UnitStateData.AddState(EUnitState.AutoAtk);
                     break;
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -52,6 +53,39 @@ namespace RoundHero
             // }
             HeroManager.Instance.BattleHeroData.CacheHPDelta = 0;
             //cacheHPText.text = BattleHeroEntityData.BattleHeroData.CacheHPDelta.ToString();
+        }
+        
+        public override void RefreshHP()
+        {
+            hpAndDamageNode.SetActive(false);
+            damageNode.SetActive(false);
+
+            
+
+        }
+        
+        public override void OnPointerEnter(BaseEventData baseEventData)
+        {
+            base.OnPointerEnter(baseEventData);
+            
+            if(CurHP <= 0)
+                return;
+        
+            if(IsMove)
+                return;
+
+            ShowHurtTags(BattleCoreEntityData.BattleCoreData.Idx);
+            
+            
+        }
+
+        
+
+        public override void OnPointerExit(BaseEventData baseEventData)
+        {
+            base.OnPointerExit(baseEventData);
+
+            UnShowTags();
         }
 
     }
