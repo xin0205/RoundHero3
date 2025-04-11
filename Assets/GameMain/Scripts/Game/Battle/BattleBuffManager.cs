@@ -670,6 +670,7 @@ namespace RoundHero
 
             BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
             //SelectEnemyEntityID = -1;
+            BattleCardManager.Instance.ResetCardUseType();
             BattleCardManager.Instance.ResetCardsPos(true);
         }
         

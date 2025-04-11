@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,8 +19,7 @@ namespace RoundHero
         [SerializeField]
         private Text hp;
         
-        [SerializeField]
-        private GameObject hpGO;
+        [SerializeField] [CanBeNull] private GameObject hpGO;
 
         [SerializeField] private Image Icon;
         
@@ -33,6 +33,29 @@ namespace RoundHero
             
 
             RefreshCardUI();
+        }
+
+        public async void RefreshCardUI(string cardName, string cardDesc, int cardID)
+        {
+            //Icon.sprite = await AssetUtility.GetTacticIcon(cardID);
+            this.cardName.text = cardName;
+            this.desc.text = cardDesc;
+            hpGO?.SetActive(false);
+            RefreshEnergy(-1);
+        }
+
+        public void RefreshEnergy(int energy)
+        {
+            if (energy < 0)
+            {
+                this.energy.text = "?";
+            }
+            else
+            {
+                this.energy.text = energy.ToString();
+            }
+            
+            
         }
 
         public async void RefreshCardUI()
@@ -71,9 +94,12 @@ namespace RoundHero
             // {
             //     cardEnergy -= 1;
             // }
+
+            if (hpGO != null)
+            {
+                hpGO.SetActive(drCard.CardType == ECardType.Unit);
+            }
             
-            
-            //hpGO.SetActive(drCard.CardType == ECardType.Unit);
             energy.text = drCard.Energy < 0 ? "X" : drCard.Energy.ToString();
 
             //var maxHP = BattleUnitManager.Instance.GetUnitHP(CardID);

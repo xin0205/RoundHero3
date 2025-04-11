@@ -849,7 +849,7 @@ namespace RoundHero
 
             GameUtility.DelayExcute(moveCount * Constant.Unit.MoveTimes[unitActionState]  + 0.1f, () =>
             {
-                BattleUnitData.RoundMoveCount += moveCount;
+                BattleUnitData.RoundGridMoveCount += moveCount;
                 if (BattleUnitData.CurHP > 0)
                 {
                     animator.SetInteger(AnimationParameters.Jumping, 0);
@@ -1116,7 +1116,7 @@ namespace RoundHero
             cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
             uiNode.transform.rotation = cameraQuaternion;
 
-            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(hp.transform.position));
+            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(uiNode.transform.position));
             
             uiNode.transform.localScale = Vector3.one *  dis / 12f;
             

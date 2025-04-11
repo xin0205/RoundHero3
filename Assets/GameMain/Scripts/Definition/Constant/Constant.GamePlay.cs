@@ -44,7 +44,7 @@ namespace RoundHero
                 ERelativeCamp.Us
             };
             
-            public static float CardPosInterval = 165;
+            public static float CardPosInterval = 155;
             public static float ViewMaxHandCardCount = 10;
             public static int EachHardCardCount = 5;
 

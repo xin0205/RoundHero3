@@ -21,7 +21,8 @@ namespace RoundHero
         public System.Random Random;
         private int randomSeed;
 
-        public int CurSelectCardIdx;
+        public int CurSelectCardIdx = -1;
+        public int CurSelectCardHandOrder = -1;
 
 
         public void Init(int randomSeed)
@@ -72,18 +73,48 @@ namespace RoundHero
                                   (cardCount - 1);
             }
 
+            var cardOrder = 0;
+
             if (cardCount % 2 == 0)
             {
                 for (int i = -cardCount / 2; i < cardCount / 2; i++)
                 {
-                    cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval);
+                    if (cardOrder < CurSelectCardHandOrder)
+                    {
+                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval - 0.2f * cardPosInterval);
+                    }
+                    else if (cardOrder > CurSelectCardHandOrder && CurSelectCardHandOrder != -1)
+                    {
+                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval + 0.2f * cardPosInterval);
+                    }
+                    else
+                    {
+                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval);
+                    }
+
+                    cardOrder++;
                 }
+                
             }
             else
             {
                 for (int i = -cardCount / 2; i <= cardCount / 2; i++)
                 {
-                    cardPosList.Add(0 + i * cardPosInterval);
+                    if (cardOrder < CurSelectCardHandOrder)
+                    {
+                        cardPosList.Add(0 + i * cardPosInterval - 0.4f * cardPosInterval);
+                    }
+                    else if (cardOrder > CurSelectCardHandOrder && CurSelectCardHandOrder != -1)
+                    {
+                        cardPosList.Add(0 + i * cardPosInterval + 0.4f * cardPosInterval);
+                    }
+                    else
+                    {
+                        cardPosList.Add(0 + i * cardPosInterval);
+                    }
+
+                    cardOrder++;
+
                 }
             }
         }
@@ -323,6 +354,7 @@ namespace RoundHero
 
             BattlePlayerData.PassCards.Clear();
         }
+        
 
         public async void RandomStandByToPass()
         {
@@ -526,6 +558,14 @@ namespace RoundHero
         //     
         // }
 
+        public void ResetCardUseType()
+        {
+            foreach (var kv in CardEntities)
+            {
+                kv.Value.BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
+                kv.Value.RefreshCardUseTypeInfo();
+            }
+        }
         
 
         public void ResetCardsPos(bool forceSortingOrder = false)
@@ -549,6 +589,36 @@ namespace RoundHero
                 cardEntity.MoveCard(
                     new Vector3(cardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
                 cardEntity.transform.localScale = new Vector3(1f, 1f, 1f);
+                idx += 1;
+            }
+
+            
+        }
+        
+        public void SetCardsPos()
+        {
+            SetCardPosList(BattlePlayerData.HandCards.Count);
+
+            var idx = 0;
+
+            foreach (var cardIdx in HandCardIdxs)
+            {
+                if (!CardEntities.ContainsKey(cardIdx))
+                {
+                    continue;
+                }
+                
+
+                var cardEntity = CardEntities[cardIdx];
+                cardEntity.BattleCardEntityData.HandSortingIdx = idx;
+
+                var posy = BattleController.Instance.HandCardPos.localPosition.y;
+                if (cardIdx == CurSelectCardIdx)
+                    posy += 140f;
+                
+                cardEntity.MoveCard(
+                    new Vector3(cardPosList[idx], posy, 0), 0.1f);
+                
                 idx += 1;
             }
 
@@ -1020,6 +1090,14 @@ namespace RoundHero
                 }
 
                 idx++;
+            }
+        }
+
+        public void RefreshCurCardEnergy(int cardEnergy)
+        {
+            if (CardEntities.ContainsKey(CurSelectCardIdx))
+            {
+                CardEntities[CurSelectCardIdx].RefreshEnergy(cardEnergy);
             }
         }
         

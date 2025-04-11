@@ -380,7 +380,7 @@ namespace RoundHero
         public List<ELinkID> LinkIDs = new();
         public List<ELinkID> BattleLinkIDs = new List<ELinkID>();
         public List<int> Links = new();
-        public int RoundMoveCount = 0;
+        public int RoundGridMoveCount = 0;
         public UnitStateData RoundUnitState = new();
         public int AddHeroHP = 0;
         public int RoundMoveTimes = 0;
@@ -535,6 +535,8 @@ namespace RoundHero
 
         public void RoundClear()
         {
+            RoundAttackTimes = 0;
+            RoundGridMoveCount = 0;
             RoundMoveTimes = 0;
             HurtTimes = 0;
             RoundUnitState.UnitStates.Clear();
@@ -706,7 +708,7 @@ namespace RoundHero
             dataBattleHero.FuneIdxs = new List<int>(FuneIdxs);
             dataBattleHero.Links = new List<int>(Links);
             dataBattleHero.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
-            dataBattleHero.RoundMoveCount = RoundMoveCount;
+            dataBattleHero.RoundGridMoveCount = RoundGridMoveCount;
             dataBattleHero.RoundMoveTimes = RoundMoveTimes;
             dataBattleHero.RoundAttackTimes = RoundAttackTimes;
             dataBattleHero.RoundUnitState = RoundUnitState.Copy();
@@ -854,7 +856,7 @@ namespace RoundHero
             dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
             dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
-            dataBattleUnit.RoundMoveCount = RoundMoveCount;
+            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
             dataBattleUnit.Energy = Energy;
             dataBattleUnit.HurtTimes = HurtTimes;
             dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
@@ -979,7 +981,7 @@ namespace RoundHero
             dataBattleEnemy.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
             dataBattleEnemy.RoundMoveTimes = RoundMoveTimes;
             dataBattleEnemy.RoundAttackTimes = RoundAttackTimes;
-            dataBattleEnemy.RoundMoveCount = RoundMoveCount;
+            dataBattleEnemy.RoundGridMoveCount = RoundGridMoveCount;
             dataBattleEnemy.RoundUnitState = RoundUnitState.Copy();
             dataBattleEnemy.HurtTimes = HurtTimes;
             dataBattleEnemy.UnitCamp = UnitCamp;

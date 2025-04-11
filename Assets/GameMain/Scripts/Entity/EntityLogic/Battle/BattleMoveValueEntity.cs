@@ -110,8 +110,11 @@ namespace RoundHero
                 
                 GameUtility.DelayExcute(time, () =>
                 {
-   
-                    GameEntry.Entity.HideEntity(this);
+                    if (GameEntry.Entity.HasEntity(this.Id))
+                    {
+                        GameEntry.Entity.HideEntity(this);
+                    }
+                    
                 });
                 // moveTween.OnComplete(() =>
                 // {

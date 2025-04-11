@@ -48,5 +48,15 @@ namespace RoundHero
         {
             baseCard.RefreshCardUI();
         }
+        
+        public void RefreshCardUI(string cardName, string cardDesc, int cardID)
+        {
+            baseCard.RefreshCardUI(cardName, cardDesc, cardID);
+        }
+        
+        public void RefreshEnergy(int energy)
+        {
+            baseCard.RefreshEnergy(energy);
+        }
     }
 }

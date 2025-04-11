@@ -89,7 +89,7 @@ namespace RoundHero
 
             foreach (var kv in BattleUnitManager.Instance.BattleUnitDatas)
             {
-                if (kv.Value.GetStateCount(EUnitState.HurtEachMove) > 0 && kv.Value.RoundMoveCount <= 0)
+                if (kv.Value.GetStateCount(EUnitState.HurtEachMove) > 0 && kv.Value.RoundGridMoveCount <= 0)
                 {
                     kv.Value.ChangeState(EUnitState.HurtEachMove);
                 }

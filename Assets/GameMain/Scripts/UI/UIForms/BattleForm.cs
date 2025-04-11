@@ -48,6 +48,7 @@ namespace RoundHero
             GameEntry.Event.Subscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
             GameEntry.Event.Subscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
             GameEntry.Event.Subscribe(RefreshActionCampEventArgs.EventId, OnRefreshActionCamp);
+            GameEntry.Event.Subscribe(ShowUnitActionUIEventArgs.EventId, OnShowUnitActionUI);
             //GameEntry.Event.Subscribe(SwitchActionCampEventArgs.EventId, OnSwitchActionCamp);
             
             RefreshEnergy();
@@ -58,6 +59,8 @@ namespace RoundHero
             randomSeed.text = GamePlayManager.Instance.GamePlayData.RandomSeed.ToString();
 
             AreaController.Instance.UICore = heroHP.gameObject;
+            
+            AreaController.Instance.Canvas = this.GetComponent<Canvas>();
         }
 
         private void ShowRoundTips(int round)
@@ -104,6 +107,7 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
             GameEntry.Event.Unsubscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
             GameEntry.Event.Unsubscribe(RefreshActionCampEventArgs.EventId, OnRefreshActionCamp);
+            GameEntry.Event.Unsubscribe(ShowUnitActionUIEventArgs.EventId, OnShowUnitActionUI);
             //GameEntry.Event.Unsubscribe(SwitchActionCampEventArgs.EventId, OnSwitchActionCamp);
         }
 
@@ -155,13 +159,27 @@ namespace RoundHero
         //     }
         // }
         
+        public void OnShowUnitActionUI(object sender, GameEventArgs e)
+        {
+            var ne = e as ShowUnitActionUIEventArgs;
+            
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(ne.UnitPosition);
+ 
+            // 检查是否在摄像机的视野内
+            if (screenPosition.z > 0)
+            {
+                // 将屏幕坐标转换为UI坐标（假定屏幕左下角为原点）
+                RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)AreaController.Instance.Canvas.transform, screenPosition, Camera.main, out Vector2 localPosition);
+                // 现在localPosition包含了相对于Canvas的UI坐标
+                
+            }
+        }
+        
         public void OnRefreshActionCamp(object sender, GameEventArgs e)
         {
             var ne = e as RefreshActionCampEventArgs;
             ShowActionTips(ne.IsUs);
-            
-            
-            
+
             endRoundNode.SetActive(ne.IsUs);
         }
         

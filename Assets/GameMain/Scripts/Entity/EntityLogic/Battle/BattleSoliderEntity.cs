@@ -9,8 +9,7 @@ namespace RoundHero
     public class BattleSoliderEntity : BattleUnitEntity
     {
         public BattleSoliderEntityData BattleSoliderEntityData { get; protected set; }
-
-        
+        [SerializeField] protected GameObject actionNode;
 
         protected override void OnShow(object userData)
         {
@@ -41,20 +40,39 @@ namespace RoundHero
             UnitAttackCastType = drCard.AttackCastType;
             
             ShowCollider(true);
+            actionNode.SetActive(false);
         }
 
-        
+        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+            // actionNode.transform.rotation = cameraQuaternion;
+            // var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(actionNode.transform.position));
+            //
+            // actionNode.transform.localScale = Vector3.one *  dis / 6f;
+            
+
+            
+            
+            
+            
+        }
 
        public override void OnPointerEnter(BaseEventData baseEventData)
         {
             base.OnPointerEnter(baseEventData);
+            
+            
+            
             
             if(CurHP <= 0)
                 return;
         
             if(IsMove)
                 return;
-
+            
+            
+            
             if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
             {
                 var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
@@ -67,6 +85,7 @@ namespace RoundHero
             }
             else
             {
+                //GameEntry.Event.Fire(null, ShowUnitActionUIEventArgs.Create(true, this.transform.position));
                 ShowHurtTags(BattleSoliderEntityData.BattleSoliderData.Idx);
             }
             
@@ -78,6 +97,8 @@ namespace RoundHero
         public override void OnPointerExit(BaseEventData baseEventData)
         {
             base.OnPointerExit(baseEventData);
+            
+            actionNode.SetActive(false);
             
             // if(BattleManager.Instance.BattleState != EBattleState.TacticSelectUnit)
             //     return;
@@ -126,14 +147,16 @@ namespace RoundHero
         {
             //var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
             //var heroEntity = HeroManager.Instance.GetHeroEntity(BattleUnitData.UnitCamp);
+            var uiCorePos = AreaController.Instance.UICore.transform.position;
+            uiCorePos.y -= 0.4f;
             
             var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
-                AreaController.Instance.UICore.transform.position);
+                uiCorePos);
                 
             Vector3 position = new Vector3(pos.x, pos.y,  Camera.main.transform.position.z);
-            Vector3 uiCorePos = Camera.main.ScreenToWorldPoint(position);
+            Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
             
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  uiCorePos, hurt, -1, true, true);
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  uiCoreWorldPos, hurt, -1, false, true);
         }
 
         // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = true)

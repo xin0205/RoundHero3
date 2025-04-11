@@ -471,6 +471,8 @@ namespace RoundHero
                     var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
                     if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
                     {
+                        var actionTimes = unit.BattleUnit.RoundAttackTimes + unit.BattleUnit.RoundMoveTimes;
+                        BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
                         var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(unit.BattleUnit);
                         foreach (var unitBuffData in unitBuffDatas)
                         {
@@ -503,7 +505,11 @@ namespace RoundHero
                             
                         }
                     } 
-                    
+                    else if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString())
+                    {
+                        var actionTimes = unit.BattleUnit.RoundAttackTimes + unit.BattleUnit.RoundMoveTimes;
+                        BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
+                    }
                     
                     else
                     {

@@ -69,6 +69,16 @@ namespace RoundHero
             
             public const string Message_BattleTestSuccess = "Message.BattleTestSuccess";
             public const string Message_BattleTestFailed = "Message.BattleTestFailed";
+            
+            public const string Info_Move = "Info.Move";
+            public const string Info_Attack = "Info.Attack";
+            public const string CardDesc_Move = "CardDesc.Move";
+            public const string CardDesc_Attack = "CardDesc.Attack";
+            public const string CardName_Move = "CardName.Move";
+            public const string CardName_Attack = "CardName.Attack";
+            
+
+
         }
     }
 }

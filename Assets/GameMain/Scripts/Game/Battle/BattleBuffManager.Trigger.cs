@@ -239,7 +239,7 @@ namespace RoundHero
         {
             var useCardData = BattleFightManager.Instance.RoundFightData.BuffData_Use;
 
-            var value = effectUnit.RoundMoveCount * value1s[0] * ratio;
+            var value = effectUnit.RoundGridMoveCount * value1s[0] * ratio;
 
             var triggerData = new TriggerData()
             {
