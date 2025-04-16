@@ -62,6 +62,8 @@ namespace RoundHero
             Random = new Random(randomSeed);
 
         }
+
+        
         
         
         
@@ -366,11 +368,13 @@ namespace RoundHero
                 BattleManager.Instance.BattleState == EBattleState.FuneMoveUnit)
             {
 
+                
                 var moveRanges =
                     BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
                 if (!moveRanges.Contains(ne.GridPosIdx))
                 {
+                    Log.Debug("moveC" + ne.GridPosIdx + ne.ShowState);
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
                     BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();
@@ -389,7 +393,7 @@ namespace RoundHero
 
                 if (ne.ShowState == EShowState.Show)
                 {
-                    
+                    Log.Debug("moveA" + ne.GridPosIdx);
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
                     //BattleFightManager.Instance.RoundFightData.GamePlayData.LastBattleData.GridTypes
                     var tempUnitMovePaths = BattleManager.Instance.TempTriggerData.TempUnitMovePaths =
@@ -405,6 +409,7 @@ namespace RoundHero
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
+                    Log.Debug("moveB" + ne.GridPosIdx);
                     TmpUnitEntity.UnShowTags();
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
@@ -1772,6 +1777,11 @@ namespace RoundHero
                     // {
                     //     return;
                     // }
+                    
+                    if (unit is not BattleSoliderEntity)
+                    {
+                        return;
+                    }
 
                     TmpUnitEntity = unit;
                     BattleManager.Instance.TempTriggerData.UnitData =
@@ -2134,7 +2144,7 @@ namespace RoundHero
                 var moveGridType = kv.Value.GetType();
                 if (kv.Value.GridPosIdx == gridPosIdx && (moveGridType == typeof(BattleMonsterEntity) ||
                                                           moveGridType == typeof(BattleSoliderEntity) ||
-                                                          moveGridType == typeof(BattleHeroEntity)))
+                                                          moveGridType == typeof(BattleCoreEntity)))
                 {
                     moveGirds.Add(kv.Value);
                 }

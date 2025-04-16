@@ -55,19 +55,56 @@ namespace RoundHero
             //line.gameObject.SetActive(false);
             if (BattleAttackTagEntityData.ShowAttackLine)
             {
-                line.positionCount = gridPosIdxs.Count;
-
-                var idx = 0;
-                foreach (var gridPosIdx in gridPosIdxs)
+                if (BattleAttackTagEntityData.AttackCastType == EAttackCastType.ExtendMulti)
                 {
-                    var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
-                    pos.y += 1f;
-                    line.SetPosition(idx++, pos);
+                    line.positionCount = gridPosIdxs.Count;
+                    line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
+                    var idx = 0;
+                    foreach (var gridPosIdx in gridPosIdxs)
+                    {
+                        var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
+                        pos.y += 1f;
+                        line.SetPosition(idx++, pos);
+                    }
                 }
+                else if (BattleAttackTagEntityData.AttackCastType == EAttackCastType.ParabolaMulti)
+                {
+                    var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
+                    var endPos = GameUtility.GridPosIdxToPos(endGridPosIdx) + new Vector3(0, 1f, 0);
+                    
+                    var deg = new Vector2(endPos.x - startPos.x, endPos.z -  startPos.z);
+                    var dis = Vector3.Distance(startPos, endPos);
+                    var radian = Vector2.SignedAngle(new Vector2(1, 0), deg) * Mathf.Deg2Rad;
+
+                    var time = dis * Constant.Battle.ParabolaBulletShootTime / Constant.Area.GridRange.x;
+                    var horizontalVelocity = dis / time;
+
+                    var verticalVelocity = Constant.Battle.G * 0.5f * time;
+
+                    var gridCount = (int)Mathf.Ceil(dis / Constant.Area.GridRange.x);
+                    var lineCount = gridCount * 10;
+                    var intervalTime = time / lineCount;
+
+                    line.positionCount = (int)lineCount;
+                    line.material.SetInt("_Number", 3 * gridCount);
+
+                    var addTime = 0f;
+                    for (int i = 0; i < lineCount; i++)
+                    {
+                        var posY = verticalVelocity * addTime + 0.5f * -Constant.Battle.G * addTime * addTime;
+                        line.SetPosition(i,
+                            startPos + new Vector3(horizontalVelocity * addTime * Mathf.Cos(radian), posY,
+                                horizontalVelocity * addTime * Mathf.Sin(radian)));
+
+                        addTime += intervalTime;
+
+                    }
+                }
+                
             
                 line.startWidth = 0.02f;
                 line.endWidth = 0.02f;
-                line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
+                
                 line.material.SetColor("_Color", red); 
                 line.material.SetInt("_Speed", 50);
             }

@@ -116,7 +116,11 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
             foreach (var kv in BattleUnitEntities)
             {
-                GameEntry.Entity.HideEntity(kv.Value);
+                if (GameEntry.Entity.HasEntity(kv.Value.Id))
+                {
+                    GameEntry.Entity.HideEntity(kv.Value);
+                }
+                
                 
             }
             BattleUnitEntities.Clear();

@@ -70,10 +70,18 @@ namespace RoundHero
             transform.position = Vector3.one * 100; 
             transform.localScale = Vector3.one;
             //GetComponent<Canvas>().sortingOrder = 1000;
-            var drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
+            //var drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
             
-            CardItem.SetCard(BattleCardEntityData.CardData.CardID);
+            
             ActionGO.SetActive(false);
+            
+
+            attackCheckMark.SetActive(false);
+            moveCheckMark.SetActive(false);
+            
+        
+            RefreshCardUseTypeInfo();
+            
         }
 
         protected override void OnHide(bool isShutdown, object userData)
@@ -181,6 +189,12 @@ namespace RoundHero
             BattleCardManager.Instance.SetCardsPos();
             RefreshCardRect();
             BattleManager.Instance.RefreshEnemyAttackData();
+            
+            moveCheckMark.SetActive(false);
+            attackCheckMark.SetActive(false);
+            BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
+
+            RefreshCardUseTypeInfo();
             
         }
 

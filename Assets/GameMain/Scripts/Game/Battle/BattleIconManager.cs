@@ -27,8 +27,8 @@ namespace RoundHero
         
         public async void ShowBattleIcons(int unitIdx, EBattleIconType battleIconType)
         {
-            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting ||
-                BattleManager.Instance.BattleState == EBattleState.End)
+            // ||BattleManager.Instance.BattleState == EBattleState.End
+            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
             {
                 return;
             }
@@ -95,8 +95,8 @@ namespace RoundHero
         
         public async void ShowHurtBattleIcons(int effectUnitIdx, int actionUnitIdx, EBattleIconType battleIconType)
         {
-            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting ||
-                BattleManager.Instance.BattleState == EBattleState.End)
+            // ||BattleManager.Instance.BattleState == EBattleState.End
+            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
             {
                 return;
             }

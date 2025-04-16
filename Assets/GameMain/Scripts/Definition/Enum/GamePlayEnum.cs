@@ -117,7 +117,7 @@ namespace RoundHero
     public enum EBattleState
     {
         //Battle,
-        End,
+        //End,
         UseCard,
         UnitSelectGrid,
         TacticSelectUnit,
@@ -134,7 +134,9 @@ namespace RoundHero
         EndRound,
         ActionExcuting,
         SelectHurtUnit,
+        EndBattle,
         Empty,
+        
     }
     
     public enum EActionProgress
@@ -738,7 +740,8 @@ namespace RoundHero
         CloseSingle,
         CloseMulti,
         RemoteSingle,
-        RemoteMulti,
+        ExtendMulti,
+        ParabolaMulti,
         Empty,
     }
 

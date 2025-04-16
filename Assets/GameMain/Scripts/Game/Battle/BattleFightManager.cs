@@ -347,6 +347,8 @@ namespace RoundHero
 
             RoundFightData.GamePlayData = GamePlayManager.Instance.GamePlayData.Copy();
             RoundFightData.TempTriggerData = BattleManager.Instance.TempTriggerData.Copy();
+            
+            
 
             PlayerData = RoundFightData.GamePlayData.GetPlayerData(PlayerManager.Instance.PlayerData.UnitCamp);
 
@@ -5501,12 +5503,12 @@ namespace RoundHero
             //var unitPaths = new Dictionary<int, Dictionary<int, PathState>>();
             
             var cacheBuffDatas = new Dictionary<int, BuffData>();
-            foreach (var enemyKey in actionUnitIdxs)
+            foreach (var unitkey in actionUnitIdxs)
             {
-                var battleUnit = RoundFightData.GamePlayData.BattleData.BattleUnitDatas[enemyKey] as Data_BattleMonster;
+                var battleUnit = RoundFightData.GamePlayData.BattleData.BattleUnitDatas[unitkey] as Data_BattleMonster;
                 var drEnemy = GameEntry.DataTable.GetEnemy(battleUnit.MonsterID);
                 var buffData = BattleBuffManager.Instance.GetBuffData(drEnemy.OwnBuffs[0]);
-                cacheBuffDatas.Add(enemyKey, buffData);
+                cacheBuffDatas.Add(unitkey, buffData);
             }
             
             var oriGridPosIdxs = new Dictionary<int, int>();
@@ -5611,17 +5613,29 @@ namespace RoundHero
                         break;
                     }
 
-                    if (!isFindPath)
+                    
+
+                    if (isFindPath)
+                        break;
+                }
+                
+                if (!isFindPath)
+                {
+
+                    foreach (var kv in intersectDict)
                     {
                         var unit = GetUnitByIdx(kv.Key);
-                        
+
                         SearchPath(curObstacleMask, actionUnitIdx, battleUnitData.GridPosIdx,
                             unit.GridPosIdx, movePaths,
                             enemyData.MoveType.ToString().Contains("Direct8"));
                         if (movePaths.ContainsKey(battleUnitData.Idx) && movePaths[battleUnitData.Idx].Count > 0)
                         {
-                            RoundFightData.GamePlayData.BattleData.GridTypes[battleUnitData.GridPosIdx] = EGridType.Empty;
-                            RoundFightData.GamePlayData.BattleData.GridTypes[movePaths[battleUnitData.Idx][movePaths[battleUnitData.Idx].Count - 1]] = EGridType.Unit;
+                            RoundFightData.GamePlayData.BattleData.GridTypes[battleUnitData.GridPosIdx] =
+                                EGridType.Empty;
+                            RoundFightData.GamePlayData.BattleData.GridTypes[
+                                    movePaths[battleUnitData.Idx][movePaths[battleUnitData.Idx].Count - 1]] =
+                                EGridType.Unit;
                             RefreshObstacleMask();
                             // curObstacleMask[battleUnitData.GridPosIdx] = EGridType.Empty;
                             // curObstacleMask[movePaths[battleUnitData.Idx][movePaths[battleUnitData.Idx].Count - 1]] =
@@ -5629,9 +5643,6 @@ namespace RoundHero
                             break;
                         }
                     }
-
-                    if (isFindPath)
-                        break;
                 }
                     
                 

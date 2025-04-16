@@ -198,6 +198,9 @@ namespace RoundHero
 
         public void ContinueAction()
         {
+            if(BattleManager.Instance.BattleState == EBattleState.EndBattle)
+                return;
+            
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
             {
                 BattleFightManager.Instance.RoundStartBuffTrigger();
@@ -382,7 +385,7 @@ namespace RoundHero
                     }
                 
                 });
-
+                BattleManager.Instance.BattleState = EBattleState.EndBattle;
             }
 
             else if (gameOver == EGameOver.Failed)
@@ -398,13 +401,18 @@ namespace RoundHero
                     }
                 
                 });
-
+                BattleManager.Instance.BattleState = EBattleState.EndBattle;
             }
+
+            
 
         }
         
         public EGameOver CheckGameOver()
         {
+            if (BattleManager.Instance.BattleState == EBattleState.EndBattle)
+                return EGameOver.None;
+            
             var enemyCount = 0;
             foreach (var kv in BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount)
             {
@@ -415,15 +423,11 @@ namespace RoundHero
             
             if(enemyCount <= 0)
             {
-                
-                
                 return EGameOver.Success;
             }
 
             if (HeroManager.Instance.BattleHeroData.CurHP <= 0)
             {
-                
-                
                 return EGameOver.Failed;
             }
 

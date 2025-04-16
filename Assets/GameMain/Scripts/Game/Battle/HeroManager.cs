@@ -110,6 +110,8 @@ namespace RoundHero
             
             BattleManager.Instance.ChangeHP(BattleHeroData, deltaHP, GamePlayManager.Instance.GamePlayData, hpChangeType, useDefense, addHeroHP, changeHPInstantly);
             
+            BattleManager.Instance.ShowGameOver();
+            
             // var curEnergy = BattleHeroData.Attribute.GetAttribute(EHeroAttribute.CurEnergy);
             // var maxEnergy = BattleHeroData.Attribute.GetAttribute(EHeroAttribute.MaxEnergy);
             //
@@ -240,6 +242,8 @@ namespace RoundHero
                 EHPChangeType.Action, false, false, true);
 
             BattleHeroData.CacheHPDelta = 0;
+            
+            BattleManager.Instance.ShowGameOver();
         }
         
         

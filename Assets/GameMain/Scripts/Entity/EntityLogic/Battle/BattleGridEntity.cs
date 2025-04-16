@@ -39,12 +39,14 @@ namespace RoundHero
                 return;
             }
 
-            Show(true);
+            Show(false);
             Refresh();
         }
 
         public void Show(bool active)
         {
+            if(active && (backupGrid.activeSelf || selectionGrid.activeSelf))
+                return;
             //BattleGridEntityData.GridType != EGridType.Obstacle && 
             grid.SetActive(active);
         }
@@ -63,6 +65,8 @@ namespace RoundHero
                 grid.SetActive(false);
             }
             backupGrid.SetActive(isShow);
+            
+            
         }
 
         public void ShowSelectGrid(bool isShow)
@@ -71,6 +75,7 @@ namespace RoundHero
             {
                 grid.SetActive(false);
             }
+            
             
             selectionGrid.SetActive(isShow);
         }

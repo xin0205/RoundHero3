@@ -34,8 +34,8 @@ namespace RoundHero
 
         public async void ShowEnemyRoutes()
         {
-            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting ||
-                BattleManager.Instance.BattleState == EBattleState.End)
+            // ||BattleManager.Instance.BattleState == EBattleState.End
+            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
             {
                 return;
             }

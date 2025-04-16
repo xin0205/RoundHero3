@@ -84,7 +84,7 @@ namespace RoundHero
         private float dis;
         private float horizontalVelocity = 0f;
         private float verticalVelocity = 0f;
-        private float g = 9.8f;
+        
         public void InitParabola()
         {
             moveTime = 0;
@@ -93,16 +93,16 @@ namespace RoundHero
             var endIdx = BattleBulletEntityData.BulletData.MoveGridPosIdxs[moveGridPosIdx.Count - 1];
 
             startPos = GameUtility.GridPosIdxToPos(startIdx) + new Vector3(0, 1f, 0);
-            endPos = GameUtility.GridPosIdxToPos(endIdx) + new Vector3(0, 1f, 0);;
+            endPos = GameUtility.GridPosIdxToPos(endIdx) + new Vector3(0, 1f, 0);
 
-            var a = new Vector2(endPos.x - startPos.x, endPos.z -  startPos.z);
+            var deg = new Vector2(endPos.x - startPos.x, endPos.z -  startPos.z);
             dis = Vector3.Distance(startPos, endPos);
-            radian = Vector2.SignedAngle(new Vector2(1, 0), a) * Mathf.Deg2Rad;
+            radian = Vector2.SignedAngle(new Vector2(1, 0), deg) * Mathf.Deg2Rad;
 
-            var time = dis * Constant.Battle.BulletShootTime * 4f / Constant.Area.GridRange.x;
+            var time = dis * Constant.Battle.ParabolaBulletShootTime / Constant.Area.GridRange.x;
             horizontalVelocity = dis / time;
 
-            verticalVelocity = g * 0.5f * time;
+            verticalVelocity = Constant.Battle.G * 0.5f * time;
             
             
             //verticalVelocity = Mathf.Sqrt(2 * g * 2.5f);
@@ -148,7 +148,7 @@ namespace RoundHero
             {
                 moveTime += Time.deltaTime;
 
-                var posY = verticalVelocity * moveTime + 0.5f * -g * moveTime * moveTime;
+                var posY = verticalVelocity * moveTime + 0.5f * -Constant.Battle.G * moveTime * moveTime;
                 bulletParticle.transform.position = startPos + new Vector3(horizontalVelocity * moveTime * Mathf.Cos(radian), posY, horizontalVelocity * moveTime * Mathf.Sin(radian));
 
             }

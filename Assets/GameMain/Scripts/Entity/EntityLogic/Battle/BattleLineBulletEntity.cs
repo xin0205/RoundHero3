@@ -94,7 +94,7 @@ namespace RoundHero
                 
                 var tIdx = i;
 
-                var time = Constant.Battle.BulletShootTime * (i - 1);
+                var time = Constant.Battle.LineBulletShootTime * (i - 1);
                 time = time < 0 ? 0 : time;
 
                 GameUtility.DelayExcute(time, () =>
@@ -106,7 +106,7 @@ namespace RoundHero
                     movePos.y = transform.position.y;
                     bulletParticle.transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
 
-                    bulletParticle.transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Battle.BulletShootTime).SetEase(Ease.Linear).OnComplete(() =>
+                    bulletParticle.transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Battle.LineBulletShootTime).SetEase(Ease.Linear).OnComplete(() =>
                     {
                         if (BattleBulletEntityData.BulletData.TriggerActionDataDict.Contains(moveGridPosIdx))
                         {
@@ -146,11 +146,11 @@ namespace RoundHero
 
             var moveCount = BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count > 1 ? BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count - 1 : 1;
             
-            GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime + 0.05f, () =>
+            GameUtility.DelayExcute(moveCount * Constant.Battle.LineBulletShootTime + 0.05f, () =>
             {
                 HeroManager.Instance.UpdateCacheHPDelta();
             });
-            GameUtility.DelayExcute(moveCount * Constant.Battle.BulletShootTime  + 1f, () =>
+            GameUtility.DelayExcute(moveCount * Constant.Battle.LineBulletShootTime  + 1f, () =>
             {
                 DestoryBulletParticle();
                 

@@ -415,7 +415,7 @@ namespace RoundHero
         
         
         
-        public void MultiHandleShoot(ActionData actionData)
+        public void MultiHandleShoot(ActionData actionData, EAttackCastType attackCastType)
         {
             foreach (var kv in actionData.TriggerDatas)
             {
@@ -442,7 +442,16 @@ namespace RoundHero
                         continue;
                     }
 
-                    GameEntry.Entity.ShowBattleLineBulletEntityAsync(bulletData, ShootPos.position);
+                    if (attackCastType == EAttackCastType.ExtendMulti)
+                    {
+                        GameEntry.Entity.ShowBattleLineBulletEntityAsync(bulletData, ShootPos.position);
+                    }
+                    else if (attackCastType == EAttackCastType.ParabolaMulti)
+                    {
+                        GameEntry.Entity.ShowBattleParabolaBulletEntityAsync(bulletData, ShootPos.position);
+                    }
+
+                    
                 }
             }
             
@@ -608,7 +617,10 @@ namespace RoundHero
                     break;
                 case EAttackCastType.RemoteSingle:
                     break;
-                case EAttackCastType.RemoteMulti:
+                case EAttackCastType.ExtendMulti:
+                    ShowEffectAttackEntity_RemoteMulti(triggerActionDataDict);
+                    break;
+                case EAttackCastType.ParabolaMulti:
                     ShowEffectAttackEntity_RemoteMulti(triggerActionDataDict);
                     break;
                 case EAttackCastType.Empty:
@@ -934,8 +946,11 @@ namespace RoundHero
                 case EAttackCastType.RemoteSingle:
                     RemoteSingleAttack();
                     break;
-                case EAttackCastType.RemoteMulti:
-                    RemoteMultiAttack(actionData);
+                case EAttackCastType.ExtendMulti:
+                    ExtendMultiAttack(actionData);
+                    break;
+                case EAttackCastType.ParabolaMulti:
+                    ParabolaMultiAttack(actionData);
                     break;
                 case EAttackCastType.Empty:
                     EmptyAttack();
@@ -962,7 +977,7 @@ namespace RoundHero
             });
         }
         
-        public void RemoteMultiAttack(ActionData actionData)
+        public void ExtendMultiAttack(ActionData actionData)
         {
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
@@ -974,7 +989,23 @@ namespace RoundHero
             });
             GameUtility.DelayExcute(0.15f, () =>
             {
-                MultiHandleShoot(actionData);
+                MultiHandleShoot(actionData, EAttackCastType.ExtendMulti);
+            });
+        }
+        
+        public void ParabolaMultiAttack(ActionData actionData)
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            GameUtility.DelayExcute(1f, () =>
+            {
+                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
+                animator.SetTrigger(AnimationParameters.Trigger);
+            });
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                MultiHandleShoot(actionData, EAttackCastType.ParabolaMulti);
             });
         }
 

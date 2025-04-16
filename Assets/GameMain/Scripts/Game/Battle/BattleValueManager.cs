@@ -117,7 +117,7 @@ namespace RoundHero
 
 
                 effectUnitPos.y += 1f;
-                effectUnitPos.z -= 0.3f;
+                effectUnitPos.z -= 0.5f;
 
                 var entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
                     effectUnitPos, value, entityIdx);

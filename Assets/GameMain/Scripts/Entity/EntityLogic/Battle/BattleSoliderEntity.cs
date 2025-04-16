@@ -62,16 +62,11 @@ namespace RoundHero
         {
             base.OnPointerEnter(baseEventData);
             
-            
-            
-            
             if(CurHP <= 0)
                 return;
         
             if(IsMove)
                 return;
-            
-            
             
             if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
             {
@@ -91,8 +86,6 @@ namespace RoundHero
             
             
         }
-
-        
 
         public override void OnPointerExit(BaseEventData baseEventData)
         {
