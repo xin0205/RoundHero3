@@ -68,13 +68,13 @@ namespace RoundHero
         {
             base.OnPointerEnter(baseEventData);
             
-            if(CurHP <= 0)
-                return;
-        
-            if(IsMove)
-                return;
-
-            ShowHurtTags(BattleCoreEntityData.BattleCoreData.Idx);
+            // if(CurHP <= 0)
+            //     return;
+            //
+            // if(IsMove)
+            //     return;
+            //
+            // ShowHurtTags(BattleCoreEntityData.BattleCoreData.Idx);
             
             
         }
@@ -85,7 +85,7 @@ namespace RoundHero
         {
             base.OnPointerExit(baseEventData);
 
-            UnShowTags();
+            //UnShowTags();
         }
 
     }

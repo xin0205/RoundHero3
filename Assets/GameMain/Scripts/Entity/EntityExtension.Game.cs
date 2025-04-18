@@ -267,10 +267,10 @@ namespace RoundHero
 
             data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value, entityIdx, isLoop, isAdd);
 
-            Log.Debug("task1");
+            //Log.Debug("task1");
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveValueEntity),
                 AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, data);
-            Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
+            //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleMoveValueEntity)task.Logic;
         }
         

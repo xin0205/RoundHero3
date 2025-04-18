@@ -58,31 +58,32 @@ namespace RoundHero
             
         }
 
-       public override void OnPointerEnter(BaseEventData baseEventData)
+        public override void OnPointerEnter(BaseEventData baseEventData)
         {
             base.OnPointerEnter(baseEventData);
             
-            if(CurHP <= 0)
-                return;
-        
-            if(IsMove)
-                return;
-            
-            if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
-            {
-                var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
-                var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
-
-                if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
-                {
-                    ShowTags(UnitIdx);
-                }
-            }
-            else
-            {
-                //GameEntry.Event.Fire(null, ShowUnitActionUIEventArgs.Create(true, this.transform.position));
-                ShowHurtTags(BattleSoliderEntityData.BattleSoliderData.Idx);
-            }
+            // if(CurHP <= 0)
+            //     return;
+            //
+            // if(IsMove)
+            //     return;
+            //
+            // if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
+            // {
+            //     var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+            //     var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+            //
+            //     if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+            //     {
+            //         ShowTags(UnitIdx);
+            //     }
+            // }
+            // else
+            // {
+            //     Log.Debug("Solider:" + GridPosIdx);
+            //     //GameEntry.Event.Fire(null, ShowUnitActionUIEventArgs.Create(true, this.transform.position));
+            //     ShowHurtTags(UnitIdx);
+            // }
             
             
         }
@@ -91,7 +92,7 @@ namespace RoundHero
         {
             base.OnPointerExit(baseEventData);
             
-            actionNode.SetActive(false);
+            //actionNode.SetActive(false);
             
             // if(BattleManager.Instance.BattleState != EBattleState.TacticSelectUnit)
             //     return;
@@ -115,7 +116,7 @@ namespace RoundHero
             //     UnShowTags();
             // }
 
-            UnShowTags();
+            //UnShowTags();
         }
 
         public override void Quit()

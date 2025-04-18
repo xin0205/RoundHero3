@@ -89,19 +89,19 @@ namespace RoundHero
         {
             base.OnPointerEnter(baseEventData);
             
-            if(CurHP <= 0)
-                return;
-        
-            if(IsMove)
-                return;
-            
-            //var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
-
-            if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-            {
-                ShowTags(UnitIdx);
-                
-            }
+            // if(CurHP <= 0)
+            //     return;
+            //
+            // if(IsMove)
+            //     return;
+            //
+            // //var actionUnitIdx = BattleManager.Instance.TempTriggerData.UnitData.Idx;
+            //
+            // if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+            // {
+            //     ShowTags(UnitIdx);
+            //     
+            // }
             
             
             // if (BattleManager.Instance.BattleState == EBattleState.UseCard)
@@ -138,17 +138,17 @@ namespace RoundHero
             // if(BattleManager.Instance.BattleState != EBattleState.UseCard && BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
             //     return;
             
-            if(CurHP <= 0)
-                return;
-            
-            if(IsMove)
-                return;
-
-            if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-            {
-                UnShowTags();
-
-            }
+            // if(CurHP <= 0)
+            //     return;
+            //
+            // if(IsMove)
+            //     return;
+            //
+            // if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+            // {
+            //     UnShowTags();
+            //
+            // }
 
             // UnShowDisplayValues();
             //

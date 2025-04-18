@@ -142,7 +142,7 @@ namespace RoundHero
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
-            Log.Debug("OnHide" + BattleMoveValueEntityData.Id);
+            //Log.Debug("OnHide" + BattleMoveValueEntityData.Id);
             
             if(moveTween == null)
                 Log.Debug("moveTween");

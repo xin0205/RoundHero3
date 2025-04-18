@@ -81,11 +81,11 @@ namespace RoundHero
                 {
                     if (cardOrder < CurSelectCardHandOrder)
                     {
-                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval - 0.2f * cardPosInterval);
+                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval - 0.45f * cardPosInterval);
                     }
                     else if (cardOrder > CurSelectCardHandOrder && CurSelectCardHandOrder != -1)
                     {
-                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval + 0.2f * cardPosInterval);
+                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval + 0.45f * cardPosInterval);
                     }
                     else
                     {
@@ -102,11 +102,11 @@ namespace RoundHero
                 {
                     if (cardOrder < CurSelectCardHandOrder)
                     {
-                        cardPosList.Add(0 + i * cardPosInterval - 0.4f * cardPosInterval);
+                        cardPosList.Add(0 + i * cardPosInterval - 0.45f * cardPosInterval);
                     }
                     else if (cardOrder > CurSelectCardHandOrder && CurSelectCardHandOrder != -1)
                     {
-                        cardPosList.Add(0 + i * cardPosInterval + 0.4f * cardPosInterval);
+                        cardPosList.Add(0 + i * cardPosInterval + 0.45f * cardPosInterval);
                     }
                     else
                     {
@@ -644,6 +644,8 @@ namespace RoundHero
                     }
                     else if (BattleManager.Instance.BattleState == EBattleState.MoveUnit)
                     {
+                        BattleAreaManager.Instance.ResetTmpUnitEntity();
+                        BattleManager.Instance.TempTriggerData.Reset();
                         BattleAreaManager.Instance.ShowBackupGrids(null);
 
                     }
@@ -676,6 +678,7 @@ namespace RoundHero
                         BattleAreaManager.Instance.ShowBackupGrids(null);
                     }
 
+                    
                     BattleBuffManager.Instance.RecoverUseBuffState();
                     
                     BattleManager.Instance.RefreshEnemyAttackData();

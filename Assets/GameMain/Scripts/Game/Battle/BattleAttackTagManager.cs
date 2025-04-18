@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityGameFramework.Runtime;
 using Random = System.Random;
 
 namespace RoundHero
@@ -22,7 +23,7 @@ namespace RoundHero
                 return;
             }
 
-            BattleAttackTagEntities.Clear();
+            //BattleAttackTagEntities.Clear();
             
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
 
@@ -100,7 +101,7 @@ namespace RoundHero
                 return;
             }
             
-            BattleAttackTagEntities.Clear();
+            //BattleAttackTagEntities.Clear();
             
             var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(unitIdx);
             if(actionUnit == null)
@@ -129,16 +130,21 @@ namespace RoundHero
 
             var unitState = attackTagType == EAttackTagType.UnitState ? buffValue.BuffData.UnitState : EUnitState.Empty;
 
+            Log.Debug("InternalShowTag:" + entityIdx);
             var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos, actionUnitPos,
                 effectUnitPos, attackTagType, unitState, actionUnitEntity.UnitAttackCastType, entityIdx, showAttackLine, showAttackPos);
 
+            Log.Debug("Tag Show:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
             if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
             {
+                Log.Debug("Tag hide");
                 GameEntry.Entity.HideEntity(battleAttackTagEntity);
             }
             else
             {
+                
                 BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
+                Log.Debug("Tag add:" + BattleUnitData.Idx + "-" + BattleAttackTagEntities.Count); 
             }
 
             return battleAttackTagEntity;
@@ -234,9 +240,11 @@ namespace RoundHero
         public void UnShowAttackTags()
         {
             showAttackTagEntityIdx = curAttackTagEntityIdx;
+            Log.Debug("UnShowAttackTags:" + showAttackTagEntityIdx + "-" + BattleAttackTagEntities.Count + "-" +  + BattleUnitData.Idx);
 
             foreach (var kv in BattleAttackTagEntities)
             {
+                Log.Debug("HideEntity:" + kv.Value.BattleAttackTagEntityData.EntityIdx);
                 GameEntry.Entity.HideEntity(kv.Value.Entity);
             }
 

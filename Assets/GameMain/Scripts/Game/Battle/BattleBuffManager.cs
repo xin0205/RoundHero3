@@ -667,7 +667,7 @@ namespace RoundHero
             BattleCardManager.Instance.PointerCardIdx = -1;
             //CardUseLine.gameObject.SetActive(false);
 
-
+            
             BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
             //SelectEnemyEntityID = -1;
             BattleCardManager.Instance.ResetCardUseType();

@@ -139,7 +139,7 @@ namespace RoundHero
         
         private void OnPointerEnter()
         {
-            Log.Debug("Enter");
+            //Log.Debug("Enter");
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
 
@@ -164,7 +164,7 @@ namespace RoundHero
         
         public void OnPointerExit()
         {
-            Log.Debug("Exit");
+            //Log.Debug("Exit");
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
 
@@ -247,6 +247,8 @@ namespace RoundHero
             if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
                 return;
 
+            
+            
             UseCardAnimation();
             
 
@@ -257,6 +259,9 @@ namespace RoundHero
             //ActionGO.SetActive(false);
             isInside = false;
             isHand = false;
+            
+            BattleCardManager.Instance.CurSelectCardIdx = -1;
+            BattleCardManager.Instance.CurSelectCardHandOrder = -1;
             BattleCardManager.Instance.PointerCardIdx = -1;
             // switch (BattleCardEntityData.CardData.CardUseType)
             // {
@@ -508,7 +513,7 @@ namespace RoundHero
                 
                 moveCheckMark.SetActive(true);
                 attackCheckMark.SetActive(false);
-                Log.Debug("Move");
+                //Log.Debug("Move");
                 Action();
                 BattleCardEntityData.CardData.CardUseType = ECardUseType.Move;
                 BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr =

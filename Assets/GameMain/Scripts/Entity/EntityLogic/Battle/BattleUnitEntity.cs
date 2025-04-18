@@ -33,7 +33,7 @@ namespace RoundHero
 
 
         public Data_BattleUnit BattleUnitData { get; set; }
-        protected bool IsMove = false;
+        public bool IsMove = false;
         
         public Transform EffectHurtPos;
         public Transform EffectAttackPos;
@@ -805,8 +805,8 @@ namespace RoundHero
             //SetAction(unitActionState);
 
             var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
-            
-            for (int i = 0; i < moveGridPosIdxs.Count; i++)
+            transform.position = moveGridPosIdxs.Count > 0 ? GameUtility.GridPosIdxToPos(moveGridPosIdxs[0]) : transform.position;
+            for (int i = 1; i < moveGridPosIdxs.Count; i++)
             {
                 var moveGridPosIdx = moveGridPosIdxs[i];
 
@@ -824,6 +824,8 @@ namespace RoundHero
                     var moveTIdx = tIdx;
                     var nextMoveGridPosIdx = moveGridPosIdx;
                     var movePos = pos;
+                    Log.Debug("pos:" + this.transform.position.x);
+                    Log.Debug("LookAt:" + pos.x);
 
                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
                     if (unitActionState == EUnitActionState.Fly)
@@ -847,7 +849,7 @@ namespace RoundHero
                         transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
                         {
                             GridPosIdx = nextMoveGridPosIdx;
-                            
+                            Log.Debug("movePos:" + movePos);
                             BattleFightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.Idx);
                         
                         });
@@ -1257,7 +1259,7 @@ namespace RoundHero
         public virtual void OnPointerEnter(BaseEventData baseEventData)
         {
             IsPointer = true;
-            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, true));
+            //GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, true));
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Show)); 
             RefreshHP();
             
@@ -1267,7 +1269,7 @@ namespace RoundHero
         public virtual void OnPointerExit(BaseEventData baseEventData)
         {
             IsPointer = false;
-            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, false));
+            //GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, false));
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Unshow)); 
             RefreshDamageState();
         }
@@ -1309,6 +1311,12 @@ namespace RoundHero
         {
             boxCollider.enabled = isShow;
 
+        }
+
+        public void SetPosition(int gridPosIdx)
+        {
+            this.Position = GameUtility.GridPosIdxToPos(gridPosIdx);
+            
         }
 
     }
