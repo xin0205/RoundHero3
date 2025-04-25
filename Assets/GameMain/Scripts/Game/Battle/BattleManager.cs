@@ -467,7 +467,12 @@ namespace RoundHero
                     : EUnitCamp.Player1;
             }
         }
-        
-        
+
+        public void SetBattleState(EBattleState battleState)
+        {
+            BattleManager.Instance.BattleState = battleState;
+            GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(battleState));
+            
+        }
     }
 }

@@ -186,7 +186,7 @@ namespace RoundHero
                 return;
             
             BattleFightManager.Instance.AcitonUnitIdx = 0;
-            BattleManager.Instance.BattleState = EBattleState.ActionExcuting;
+            BattleManager.Instance.SetBattleState(EBattleState.ActionExcuting);
             BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStartBuff;
             ContinueAction();
             
@@ -385,7 +385,7 @@ namespace RoundHero
                     }
                 
                 });
-                BattleManager.Instance.BattleState = EBattleState.EndBattle;
+                BattleManager.Instance.SetBattleState(EBattleState.EndBattle);
             }
 
             else if (gameOver == EGameOver.Failed)
@@ -401,7 +401,7 @@ namespace RoundHero
                     }
                 
                 });
-                BattleManager.Instance.BattleState = EBattleState.EndBattle;
+                BattleManager.Instance.SetBattleState(EBattleState.EndBattle);
             }
 
             

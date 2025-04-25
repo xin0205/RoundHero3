@@ -161,7 +161,7 @@ namespace RoundHero
             
             if (buffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
             {
-                BattleManager.Instance.BattleState = EBattleState.TacticSelectUnit;
+                BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
                 BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.EnergyBuff;
                 BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData = energyBuffData.Copy();
 

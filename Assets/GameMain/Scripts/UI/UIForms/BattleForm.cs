@@ -308,7 +308,7 @@ namespace RoundHero
                 return;
             }
  
-            BattleManager.Instance.BattleState = EBattleState.UseCard;
+            BattleManager.Instance.SetBattleState(EBattleState.UseCard);
             BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx].UseCardAnimation();
             BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
             

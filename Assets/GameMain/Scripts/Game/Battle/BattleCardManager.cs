@@ -21,8 +21,8 @@ namespace RoundHero
         public System.Random Random;
         private int randomSeed;
 
-        public int CurSelectCardIdx = -1;
-        public int CurSelectCardHandOrder = -1;
+        public int SelectCardIdx = -1;
+        public int SelectCardHandOrder = -1;
 
 
         public void Init(int randomSeed)
@@ -41,6 +41,9 @@ namespace RoundHero
             }
             CardEntities.Clear();
             HandCardIdxs.Clear();
+            SelectCardIdx = -1;
+            SelectCardHandOrder = -1;
+            PointerCardIdx = -1;
         }
 
         public void InitCards()
@@ -79,11 +82,11 @@ namespace RoundHero
             {
                 for (int i = -cardCount / 2; i < cardCount / 2; i++)
                 {
-                    if (cardOrder < CurSelectCardHandOrder)
+                    if (cardOrder < SelectCardHandOrder)
                     {
                         cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval - 0.45f * cardPosInterval);
                     }
-                    else if (cardOrder > CurSelectCardHandOrder && CurSelectCardHandOrder != -1)
+                    else if (cardOrder > SelectCardHandOrder && SelectCardHandOrder != -1)
                     {
                         cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval + 0.45f * cardPosInterval);
                     }
@@ -100,11 +103,11 @@ namespace RoundHero
             {
                 for (int i = -cardCount / 2; i <= cardCount / 2; i++)
                 {
-                    if (cardOrder < CurSelectCardHandOrder)
+                    if (cardOrder < SelectCardHandOrder)
                     {
                         cardPosList.Add(0 + i * cardPosInterval - 0.45f * cardPosInterval);
                     }
-                    else if (cardOrder > CurSelectCardHandOrder && CurSelectCardHandOrder != -1)
+                    else if (cardOrder > SelectCardHandOrder && SelectCardHandOrder != -1)
                     {
                         cardPosList.Add(0 + i * cardPosInterval + 0.45f * cardPosInterval);
                     }
@@ -379,7 +382,7 @@ namespace RoundHero
 
         public bool PreUseCard()
         {
-            BattleManager.Instance.BattleState = EBattleState.TacticSelectUnit;
+            BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
             BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = EBuffID.Spec_MoveUs.ToString();
                     
@@ -424,7 +427,7 @@ namespace RoundHero
 
             if (cardType == ECardType.Unit)
             {
-                BattleManager.Instance.BattleState = EBattleState.UnitSelectGrid;
+                BattleManager.Instance.SetBattleState(EBattleState.UnitSelectGrid);
                 //CardUseLine.gameObject.SetActive(true);
                 // GameEntry.Event.Fire(null,
                 //     RefreshCardUseTipsEventArgs.Create(true, Constant.Localization.Tips_SelectEnemy));
@@ -447,7 +450,7 @@ namespace RoundHero
 
                 if (buffData.BuffTriggerType == EBuffTriggerType.SelectUnit || CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
                 {
-                    BattleManager.Instance.BattleState = EBattleState.TacticSelectUnit;
+                    BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
@@ -456,7 +459,7 @@ namespace RoundHero
                 }
                 else if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveGrid) || CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveAllGrid) )
                 {
-                    BattleManager.Instance.BattleState = EBattleState.MoveGrid;
+                    BattleManager.Instance.SetBattleState(EBattleState.MoveGrid);
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
                     // GameEntry.Event.Fire(null,
                     //     RefreshCardUseTipsEventArgs.Create(true, Constant.Localization.Tips_MoveGrid));
@@ -466,8 +469,7 @@ namespace RoundHero
                 }
                 else if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
                 {
-                    //BattleManager.Instance.BattleState = EBattleState.TacticSelectGrid;
-                    BattleManager.Instance.BattleState = EBattleState.ExchangeSelectGrid;
+                    BattleManager.Instance.SetBattleState(EBattleState.ExchangeSelectGrid);
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
                     return false;
@@ -590,6 +592,7 @@ namespace RoundHero
                     new Vector3(cardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
                 cardEntity.transform.localScale = new Vector3(1f, 1f, 1f);
                 idx += 1;
+                
             }
 
             
@@ -613,7 +616,8 @@ namespace RoundHero
                 cardEntity.BattleCardEntityData.HandSortingIdx = idx;
 
                 var posy = BattleController.Instance.HandCardPos.localPosition.y;
-                if (cardIdx == CurSelectCardIdx)
+                // || cardIdx == PointerCardIdx
+                if (cardIdx == SelectCardIdx)
                     posy += 140f;
                 
                 cardEntity.MoveCard(
@@ -639,47 +643,63 @@ namespace RoundHero
                 {
                     if (BattleManager.Instance.BattleState == EBattleState.MoveGrid)
                     {
-                        BattleAreaManager.Instance.ResetMoveGrid();
-                        //moveGridGO.SetActive(false);
-                    }
-                    else if (BattleManager.Instance.BattleState == EBattleState.MoveUnit)
-                    {
-                        BattleAreaManager.Instance.ResetTmpUnitEntity();
-                        BattleManager.Instance.TempTriggerData.Reset();
-                        BattleAreaManager.Instance.ShowBackupGrids(null);
-
-                    }
-                    else if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
-                    {
-                        if (BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx1 != -1 &&
-                            BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2 != -1)
+                        if (BattleAreaManager.Instance.IsMoveGrid)
                         {
-                            BattleAreaManager.Instance.ExchangeGrid(
-                                BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx1,
-                                BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2);
-                            
+                            BattleAreaManager.Instance.ResetMoveGrid();
+                            RefreshCardConfirm();
+                        }
+                        else
+                        {
+                            BattleBuffManager.Instance.RecoverUseBuffState();
+                            RefreshCardConfirm();
                         }
 
-                        BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx1 = -1;
-                        BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2 = -1;
-                        
-                        BattleAreaManager.Instance.ShowBackupGrids(null);
+                        //moveGridGO.SetActive(false);
+                    }
+                    else
+                    {
+                        if (BattleManager.Instance.BattleState == EBattleState.MoveUnit)
+                        {
+                            BattleAreaManager.Instance.ResetTmpUnitEntity();
+                            BattleManager.Instance.TempTriggerData.Reset();
+                            BattleAreaManager.Instance.ShowBackupGrids(null);
 
+                        }
+                        else if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
+                        {
+                            if (BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx1 != -1 &&
+                                BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2 != -1)
+                            {
+                                BattleAreaManager.Instance.ExchangeGrid(
+                                    BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx1,
+                                    BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2);
+                            
+                            }
+
+                            BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx1 = -1;
+                            BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2 = -1;
+                        
+                            BattleAreaManager.Instance.ShowBackupGrids(null);
+
+                        }
+                        else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+                        {
+                            BattleManager.Instance.TempTriggerData.Reset();
+                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                        }
+                        else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
+                        {
+                            BattleAreaManager.Instance.HideTmpEntity();
+                            BattleManager.Instance.TempTriggerData.Reset();
+                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                        }
+                        
+                        BattleBuffManager.Instance.RecoverUseBuffState();
                     }
-                    else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
-                    {
-                        BattleManager.Instance.TempTriggerData.Reset();
-                        BattleAreaManager.Instance.ShowBackupGrids(null);
-                    }
-                    else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
-                    {
-                        BattleAreaManager.Instance.HideTmpEntity();
-                        BattleManager.Instance.TempTriggerData.Reset();
-                        BattleAreaManager.Instance.ShowBackupGrids(null);
-                    }
+                    
 
                     
-                    BattleBuffManager.Instance.RecoverUseBuffState();
+                    
                     
                     BattleManager.Instance.RefreshEnemyAttackData();
                     
@@ -1076,7 +1096,7 @@ namespace RoundHero
             
             foreach (var kv in CardEntities)
             {
-                if (kv.Key == BattleCardManager.Instance.CurSelectCardIdx)
+                if (kv.Key == BattleCardManager.Instance.SelectCardIdx)
                 {
                     kv.Value.SetSortingOrder(1000);
                     //kv.Value.gameObject.GetComponent<RectTransform>().SetAsLastSibling();
@@ -1098,10 +1118,35 @@ namespace RoundHero
 
         public void RefreshCurCardEnergy(int cardEnergy)
         {
-            if (CardEntities.ContainsKey(CurSelectCardIdx))
+            if (CardEntities.ContainsKey(SelectCardIdx))
             {
-                CardEntities[CurSelectCardIdx].RefreshEnergy(cardEnergy);
+                CardEntities[SelectCardIdx].RefreshEnergy(cardEnergy);
             }
+        }
+        
+        public void UnSelectCard()
+        {
+            
+            foreach (var kv in CardEntities)
+            {
+                //|| PointerCardIdx == kv.Value.BattleCardEntityData.CardData.CardIdx
+                if (SelectCardIdx == kv.Value.BattleCardEntityData.CardData.CardIdx)
+                {
+                    kv.Value.UnSelectCard();
+                    SelectCardIdx = -1;
+                    SelectCardHandOrder = -1;
+                }
+            }
+            PointerCardIdx = -1;
+            
+        }
+
+        public void RefreshCardConfirm()
+        {
+            if(!CardEntities.ContainsKey(SelectCardIdx))
+                return;
+            
+            CardEntities[SelectCardIdx].RefreshCofirm();
         }
         
     }

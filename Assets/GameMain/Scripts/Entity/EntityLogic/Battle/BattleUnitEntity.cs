@@ -90,7 +90,11 @@ namespace RoundHero
         {
             get => BattleUnitData.MaxHP;
         }
+
+        [SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
         
+        //[SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
+
         //public EUnitActionState UnitActionState { get; set; }
 
         //protected int TopLayerIdx;
@@ -1250,8 +1254,25 @@ namespace RoundHero
         
         protected async virtual Task ShowBattleHurts(int hurt)
         {
-            var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
-            hurtEntity.transform.parent = Root;
+            var effectUnitPos = Root.position;
+
+            effectUnitPos.y += 1f;
+
+            var uiCorePos = AreaController.Instance.UICore.transform.position;
+            uiCorePos.y -= 0.4f;
+
+            var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
+                uiCorePos);
+
+            Vector3 position = new Vector3(pos.x, pos.y, Camera.main.transform.position.z);
+            Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
+
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos,
+                uiCoreWorldPos,
+                hurt, -1, false, this is BattleCoreEntity ? false : true);
+            
+            // var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
+            // hurtEntity.transform.parent = Root;
         }
 
         public bool IsPointer = false;
@@ -1260,7 +1281,7 @@ namespace RoundHero
         {
             IsPointer = true;
             //GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, true));
-            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Show)); 
+            //GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Show)); 
             RefreshHP();
             
             
@@ -1270,7 +1291,7 @@ namespace RoundHero
         {
             IsPointer = false;
             //GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, false));
-            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Unshow)); 
+            //GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Unshow)); 
             RefreshDamageState();
         }
         
@@ -1282,18 +1303,34 @@ namespace RoundHero
             }
             
         }
-        
-        public void ShowTags(int unitIdx)
+
+        public void OnPointerEnter()
         {
-            ShowAttackTags(unitIdx);
+            UnitDescTriggerItem.OnPointerEnter();
+        }
+        
+        public void OnPointerExit()
+        {
+            UnitDescTriggerItem.OnPointerExit();
+        }
+        
+        public void ShowTags(int unitIdx, bool isShowAttackPos)
+        {
+            if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+                return;
+            
+            ShowAttackTag(unitIdx, isShowAttackPos);
             ShowFlyDirect(unitIdx);
             ShowBattleIcon(unitIdx, EBattleIconType.Collison);
-            ShowDisplayValues(unitIdx);
+            ShowDisplayValue(unitIdx);
         }
 
         public void ShowHurtTags(int effectUnitIdx, int actionUnitIdx = -1)
         {
-            ShowHurtAttackTags(effectUnitIdx, actionUnitIdx);
+            if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+                return;
+            
+            ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
             ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collison);
             ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
@@ -1307,11 +1344,11 @@ namespace RoundHero
             UnShowDisplayValues();
         }
         
-        public void ShowCollider(bool isShow)
-        {
-            boxCollider.enabled = isShow;
-
-        }
+        // public void ShowCollider(bool isShow)
+        // {
+        //     boxCollider.enabled = isShow;
+        //
+        // }
 
         public void SetPosition(int gridPosIdx)
         {

@@ -14,11 +14,11 @@ namespace RoundHero
         private int showValueEntityIdx = 0;
 
         
-        public void ShowDisplayValue(int unitIdx)
-        {
-            UnShowDisplayValues();
-            ShowDisplayValues(unitIdx);
-        }
+        // public void ShowDisplayValue(int unitIdx)
+        // {
+        //     UnShowDisplayValues();
+        //     ShowDisplayValues(unitIdx);
+        // }
         
         public void ShowHurtDisplayValue(int effectUnitIdx, int actionUnitIdx)
         {
@@ -30,7 +30,7 @@ namespace RoundHero
         {
             //isShowDisplayValue = true;
             
-            BattleValueEntities.Clear();
+            //BattleValueEntities.Clear();
             
             var entityIdx = curValueEntityIdx;
             var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
@@ -73,9 +73,9 @@ namespace RoundHero
 
         }
 
-        public async void ShowDisplayValues(int unitIdx)
+        public async void ShowDisplayValue(int unitIdx)
         {
-            BattleValueEntities.Clear();
+            //BattleValueEntities.Clear();
             
             var entityIdx = curValueEntityIdx;
             var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unitIdx),
@@ -103,6 +103,8 @@ namespace RoundHero
             }
 
         }
+        
+        
 
         private async void InternalShowValue(BattleUnitEntity effectUnit, int value, int entityIdx)
         {

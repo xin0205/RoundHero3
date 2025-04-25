@@ -289,7 +289,7 @@ namespace RoundHero
         public void StartUnitAction()
         {
             BattleFightManager.Instance.AcitonUnitIdx = 0;
-            BattleManager.Instance.BattleState = EBattleState.PlayerAction;
+            BattleManager.Instance.SetBattleState(EBattleState.PlayerAction);
             BattleFightManager.Instance.ActionProgress = EActionProgress.ActionStart;
             ContinueAction();
 
@@ -337,14 +337,14 @@ namespace RoundHero
                 if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player1)
                 {
                     BattleManager.Instance.CurUnitCamp = EUnitCamp.Player2;
-                    BattleManager.Instance.BattleState = EBattleState.EndTurn;
+                    BattleManager.Instance.SetBattleState(EBattleState.EndTurn);
                     BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
                     
                 }
                 else if (BattleManager.Instance.CurUnitCamp == EUnitCamp.Player2)
                 {
                     BattleManager.Instance.CurUnitCamp = EUnitCamp.Player1;
-                    BattleManager.Instance.BattleState = EBattleState.EndRound;
+                    BattleManager.Instance.SetBattleState(EBattleState.EndRound);
                     BattleFightManager.Instance.ActionProgress = EActionProgress.ActionEnd;
                 }
                 

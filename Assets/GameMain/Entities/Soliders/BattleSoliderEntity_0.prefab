@@ -278,12 +278,14 @@ MonoBehaviour:
   leftWeapon: {fileID: 4173331263707445510}
   rightWeapon: {fileID: 8682693444565856127}
   Root: {fileID: 2554678827990261738}
+  IsMove: 0
   EffectHurtPos: {fileID: 937558399482192451}
   EffectAttackPos: {fileID: 958389280808196585}
   ShootPos: {fileID: 5418341277573921378}
   UnitAttackCastType: 0
   ValuePos: {fileID: 3119122112232860029}
   TargetPosIdx: 0
+  UnitDescTriggerItem: {fileID: 1791889717942382168}
   IsPointer: 0
   actionNode: {fileID: 4570298274983250308}
 --- !u!95 &4525250011595830683
@@ -324,7 +326,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.8, y: 2, z: 0.48}
   m_Center: {x: 0, y: 1, z: 0}

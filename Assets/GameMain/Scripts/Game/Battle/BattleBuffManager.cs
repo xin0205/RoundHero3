@@ -662,9 +662,9 @@ namespace RoundHero
         public void RecoverUseBuffState()
         {
             //GameEntry.Event.FireNow(null, RefreshCardUseTipsEventArgs.Create(false));
-            BattleManager.Instance.BattleState = EBattleState.UseCard;
+            BattleManager.Instance.SetBattleState(EBattleState.UseCard);
             BattleAreaManager.Instance.IsMoveGrid = false;
-            BattleCardManager.Instance.PointerCardIdx = -1;
+            BattleCardManager.Instance.UnSelectCard();
             //CardUseLine.gameObject.SetActive(false);
 
             

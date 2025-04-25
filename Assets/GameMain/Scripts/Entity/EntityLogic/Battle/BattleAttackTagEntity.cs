@@ -15,7 +15,8 @@ namespace RoundHero
         [SerializeField]
         private SpriteRenderer spriteRenderer;
         
-        private Color red = new Color(Color.red.r, Color.red.g, Color.red.b, 0.5f);
+        private Color red = new Color(Color.red.r, Color.red.g, Color.red.b, 0.3f);
+        private Color yellow = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.3f);
 
         protected Quaternion cameraQuaternion = Quaternion.identity;
         
@@ -32,8 +33,8 @@ namespace RoundHero
 
             
             var startGridPosIdx = GameUtility.GridPosToPosIdx(BattleAttackTagEntityData.StartPos);
-            var endGridPosIdx = GameUtility.GridPosToPosIdx(BattleAttackTagEntityData.TargetPos);
-            var gridPosIdxs = GameUtility.GetMoveIdxs(startGridPosIdx, endGridPosIdx);
+            var targetGridPosIdx = GameUtility.GridPosToPosIdx(BattleAttackTagEntityData.TargetPos);
+            var gridPosIdxs = GameUtility.GetMoveIdxs(startGridPosIdx, targetGridPosIdx);
 
             // var centerPoint = GameUtility.GetBetweenPoint(BattleAttackTagEntityData.StartPos,
             //     BattleAttackTagEntityData.TargetPos);
@@ -41,15 +42,39 @@ namespace RoundHero
             
             // spriteRenderer.transform.position = centerPoint;
             //
+            //spriteRenderer.color = 
             spriteRenderer.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackPos);
             line.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackLine);
 
-            
+            spriteRenderer.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackPos);
             if (BattleAttackTagEntityData.ShowAttackPos)
             {
                 spriteRenderer.transform.position = new Vector3(BattleAttackTagEntityData.TargetPos.x,
                     BattleAttackTagEntityData.TargetPos.y + 0.1f, BattleAttackTagEntityData.TargetPos.z);
+                
+                // var gridType = GameUtility.GetGridType(targetGridPosIdx, false);
+                // if (gridType == EGridType.Unit || gridType == EGridType.TemporaryUnit)
+                // {
+                //     spriteRenderer.gameObject.SetActive(true);
+                //     spriteRenderer.color = red;
+                // }
+                // else if (gridType == EGridType.Empty)
+                // {
+                //     spriteRenderer.gameObject.SetActive(true);
+                //     spriteRenderer.color = yellow;
+                // }
+                // else
+                // {
+                //     spriteRenderer.gameObject.SetActive(false);
+                // }
+                var gridType = GameUtility.GetGridType(targetGridPosIdx, false);
+                
+                spriteRenderer.gameObject.SetActive(gridType != EGridType.Obstacle);
+                
+                spriteRenderer.color =  BattleAttackTagEntityData.ShowAttackLine ? red : yellow;
             }
+
+            
             
 
             //line.gameObject.SetActive(false);
@@ -70,7 +95,7 @@ namespace RoundHero
                 else if (BattleAttackTagEntityData.AttackCastType == EAttackCastType.ParabolaMulti)
                 {
                     var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
-                    var endPos = GameUtility.GridPosIdxToPos(endGridPosIdx) + new Vector3(0, 1f, 0);
+                    var endPos = GameUtility.GridPosIdxToPos(targetGridPosIdx) + new Vector3(0, 1f, 0);
                     
                     var deg = new Vector2(endPos.x - startPos.x, endPos.z -  startPos.z);
                     var dis = Vector3.Distance(startPos, endPos);

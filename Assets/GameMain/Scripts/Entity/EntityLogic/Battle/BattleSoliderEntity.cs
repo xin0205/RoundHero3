@@ -39,7 +39,7 @@ namespace RoundHero
             
             UnitAttackCastType = drCard.AttackCastType;
             
-            ShowCollider(true);
+            //ShowCollider(true);
             actionNode.SetActive(false);
         }
 

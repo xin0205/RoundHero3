@@ -40,7 +40,11 @@ namespace RoundHero
             //Icon.sprite = await AssetUtility.GetTacticIcon(cardID);
             this.cardName.text = cardName;
             this.desc.text = cardDesc;
-            hpGO?.SetActive(false);
+            if (hpGO != null)
+            {
+                hpGO?.SetActive(false);
+            }
+            
             RefreshEnergy(-1);
         }
 

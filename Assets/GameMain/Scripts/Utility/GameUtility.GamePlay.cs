@@ -103,6 +103,45 @@ namespace RoundHero
             
         }
         
+        public static void GetEnemyText(int enemyID, ref string name, ref string desc)
+        {
+            var enemyName =
+                Utility.Text.Format(Constant.Localization.EnemyName, enemyID); 
+
+            name = GameEntry.Localization.GetString(enemyName);
+
+            // var drBuff = GameEntry.DataTable.GetBuff(buffID);
+            var drEnemy = GameEntry.DataTable.GetEnemy(enemyID);
+
+            var values = new List<float>();
+            foreach (var value in drEnemy.OwnBuffValues1)
+            {
+                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+                if (val != 0)
+                {
+                    values.Add(val);
+                }
+               
+            }
+            
+            foreach (var value in drEnemy.SpecBuffValues)
+            {
+                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+                if (val != 0)
+                {
+                    values.Add(val);
+                }
+            }
+            
+            var enemyDesc =
+                Utility.Text.Format(Constant.Localization.EnemyDesc, enemyID);
+
+            desc = GetStrByValues(GameEntry.Localization.GetString(enemyDesc), values);
+
+            
+            
+        }
+        
         public static void GetBlessText(int blessID, ref string name, ref string desc)
         {
             var blessName =
@@ -1421,12 +1460,31 @@ namespace RoundHero
             var aroundCoord = GridPosIdxToCoord(aroundGridPosIdx);
 
             var deltaCoord = aroundCoord - centerCoord;
-            if (!Constant.Battle.Coord2PosMap.ContainsKey(deltaCoord))
+            if (deltaCoord.x != 0 && deltaCoord.y == 0)
             {
-                return null;
+                deltaCoord.x /= Mathf.Abs(deltaCoord.x);
+                return Constant.Battle.Coord2PosMap[deltaCoord];
+            }
+            else if (deltaCoord.y != 0 && deltaCoord.x == 0)
+            {
+                deltaCoord.y /= Mathf.Abs(deltaCoord.y);
+                return Constant.Battle.Coord2PosMap[deltaCoord];
+            }
+            else if (Mathf.Abs(deltaCoord.x) ==  Mathf.Abs(deltaCoord.y))
+            {
+                deltaCoord.x /= Mathf.Abs(deltaCoord.x);
+                deltaCoord.y /= Mathf.Abs(deltaCoord.y);
+                return Constant.Battle.Coord2PosMap[deltaCoord];
             }
             
-            return Constant.Battle.Coord2PosMap[deltaCoord];
+            return null;
+            
+            // if (!Constant.Battle.Coord2PosMap.ContainsKey(deltaCoord))
+            // {
+            //     return null;
+            // }
+            //
+            // return Constant.Battle.Coord2PosMap[deltaCoord];
         }
         
         public static Vector3 GetMovePos(EUnitActionState unitActionState, List<int> moveGridPosIdxs, int idx, bool hasUnit)
@@ -2012,10 +2070,16 @@ namespace RoundHero
             }
             else
             {
-                if (BattleManager.Instance.BattleData.GridTypes.ContainsKey(gridPosIdx))
+                if (BattleAreaManager.Instance.TmpUnitEntity != null &&
+                    BattleAreaManager.Instance.TmpUnitEntity.GridPosIdx == gridPosIdx)
+                {
+                    return EGridType.TemporaryUnit;
+                }
+                else if (BattleManager.Instance.BattleData.GridTypes.ContainsKey(gridPosIdx))
                 {
                     return BattleManager.Instance.BattleData.GridTypes[gridPosIdx];
                 }
+                
             }
             
             

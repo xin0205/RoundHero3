@@ -870,28 +870,43 @@ namespace RoundHero
                         return 0;
                     });
 
-                    foreach (var rangeGridPosIdx in range)
-                    {
-                        var unit = GetUnitByGridPosIdx(rangeGridPosIdx);
-                        if(unit == null)
-                            continue;
-                        var relativeCamp = GameUtility.GetRelativeCamp(attackUnit.UnitCamp, unit.UnitCamp);
-                        if (relativeCamp == triggerBuffData.BuffData.TriggerUnitCamps[0])
-                        {
-                            rangeContainFirstCamp = true;
-                        }
-                    }
+                    // foreach (var rangeGridPosIdx in range)
+                    // {
+                    //     var unit = GetUnitByGridPosIdx(rangeGridPosIdx);
+                    //     if(unit == null)
+                    //         continue;
+                    //     var relativeCamp = GameUtility.GetRelativeCamp(attackUnit.UnitCamp, unit.UnitCamp);
+                    //     if (relativeCamp == triggerBuffData.BuffData.TriggerUnitCamps[0])
+                    //     {
+                    //         rangeContainFirstCamp = true;
+                    //     }
+                    // }
                     
                     
                 }
 
                 
                 var isSubCurHP = false;
+                
+                
+                
+                
 
-                if (unitCamp == EUnitCamp.Player1 || unitCamp == EUnitCamp.Player2 || rangeContainFirstCamp)
-                {
+                // if (unitCamp == EUnitCamp.Player1 || unitCamp == EUnitCamp.Player2 || rangeContainFirstCamp)
+                // {
+                    var directs = new List<ERelativePos>();
                     foreach (var rangeGridPosIdx in range)
                     {
+                        if (triggerBuffData.BuffData.TriggerRange.ToString().Contains("Long"))
+                        {
+                            var direct = GameUtility.GetRelativePos(gridPosIdx, rangeGridPosIdx);
+                            if (directs.Contains((ERelativePos)direct))
+                            {
+                                continue;
+                            }
+                            directs.Add((ERelativePos)direct);
+                        }
+                        
                         var unit = GetUnitByGridPosIdx(rangeGridPosIdx);
                         if (unit == null)
                             continue;
@@ -945,7 +960,7 @@ namespace RoundHero
                         // if(unitCamp == EUnitCamp.Enemy)
                         //     break;
                     }
-                }
+                //}
                 
 
                 // if (isSubCurHP)
@@ -4268,21 +4283,21 @@ namespace RoundHero
         }
 
         
-        public List<int> GetGridObstacles()
-        {
-            var obstacles = new List<int>(Constant.Area.ObstacleCount);
-            
-            foreach (var kv in BattleAreaManager.Instance.GridEntities)
-            {
-                if (kv.Value.BattleGridEntityData.GridType == EGridType.Obstacle)
-                {
-                    obstacles.Add(kv.Value.BattleGridEntityData.GridPosIdx);
-                    
-                }
-            }
-            
-            return obstacles;
-        }
+        // public List<int> GetGridObstacles()
+        // {
+        //     var obstacles = new List<int>(Constant.Area.ObstacleCount);
+        //     
+        //     foreach (var kv in BattleAreaManager.Instance.GridEntities)
+        //     {
+        //         if (kv.BattleGridEntityData.GridType == EGridType.Obstacle)
+        //         {
+        //             obstacles.Add(kv.BattleGridEntityData.GridPosIdx);
+        //             
+        //         }
+        //     }
+        //     
+        //     return obstacles;
+        // }
         
         public void CalculateEnemyPaths()
         {
@@ -4460,8 +4475,25 @@ namespace RoundHero
                         }
                     }
                 }
-                
-                
+            }
+            
+            if(RoundFightData.SoliderAttackDatas.ContainsKey(unitIdx))
+            {
+                var triggerDataList = RoundFightData.SoliderAttackDatas[unitIdx].TriggerDatas.Values.ToList();
+                foreach (var datas in triggerDataList)
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        if (triggerData.ActionUnitIdx == unitIdx)
+                        {
+                            if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                            }
+                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
             }
 
             return triggerDataDict;

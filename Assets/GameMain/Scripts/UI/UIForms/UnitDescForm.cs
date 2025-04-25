@@ -72,10 +72,13 @@ namespace RoundHero
                 
                 gifPlayData.ItemType = EGIFType.Enemy;
                 
-                var name = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.EnemyName,
-                    gifPlayData.ID));
-                var desc = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.EnemyDesc,
-                    gifPlayData.ID));
+                var name = "";
+                var desc = "";
+                
+                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
+ 
+                GameUtility.GetEnemyText(unitEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID, ref name,
+                    ref desc);
                 
                 var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
                 var power = enemyEntity.BattleMonsterEntityData.BattleMonsterData.CurHP + "/" +

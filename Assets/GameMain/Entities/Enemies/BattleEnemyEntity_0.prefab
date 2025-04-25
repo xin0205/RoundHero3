@@ -61,16 +61,19 @@ MonoBehaviour:
   hpAndDamageNode: {fileID: 6365870991054253586}
   damageNode: {fileID: 7718639620646774319}
   damage2: {fileID: 8255798120322059959}
+  boxCollider: {fileID: 0}
   animator: {fileID: 4107302258608099607}
   leftWeapon: {fileID: 8490208382400611549}
   rightWeapon: {fileID: 2622050021739450375}
   Root: {fileID: 6359363589352143085}
+  IsMove: 0
   EffectHurtPos: {fileID: 2066135726217102810}
   EffectAttackPos: {fileID: 6025886859164801879}
   ShootPos: {fileID: 2796897572946510672}
   UnitAttackCastType: 0
   ValuePos: {fileID: 0}
   TargetPosIdx: 0
+  UnitDescTriggerItem: {fileID: 3000782954099996916}
   IsPointer: 0
 --- !u!95 &4107302258608099607
 Animator:
@@ -110,7 +113,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 0.8, y: 1.92, z: 0.48}
   m_Center: {x: 0, y: 1.02, z: -0.09}
