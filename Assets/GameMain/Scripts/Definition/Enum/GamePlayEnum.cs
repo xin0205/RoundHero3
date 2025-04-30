@@ -199,9 +199,11 @@ namespace RoundHero
         //Around,//周围
        
         Direct82Short,
+        Direct82Parabola,
         Cross2Short,//短十字
         Cross2Long,//长十字
         Cross2Extend,//十字_发射
+        Cross2Parabola,
         UnitMaxDirect,
         Horizontal2Short,
         Horizontal2Long,

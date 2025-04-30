@@ -22,7 +22,7 @@ namespace RoundHero
         
         public void ShowHurtDisplayValue(int effectUnitIdx, int actionUnitIdx)
         {
-            UnShowDisplayValues();
+            //UnShowDisplayValues();
             ShowHurtDisplayValues(effectUnitIdx, actionUnitIdx);
         }
         
@@ -88,7 +88,7 @@ namespace RoundHero
             }
             
   
-            Log.Debug("triggerDataDict.Count:" + triggerDataDict.Count);
+            //Log.Debug("triggerDataDict.Count:" + triggerDataDict.Count);
             
             
             var idx = 0;
@@ -194,10 +194,11 @@ namespace RoundHero
                 // if(value == 0)
                 //     continue;
 
-                GameUtility.DelayExcute(idx * 0.25f, () =>
-                {
-                    InternalShowValue(effectUnit, value, entityIdx++);
-                });
+                // GameUtility.DelayExcute(idx *0f, () =>
+                // {
+                //     InternalShowValue(effectUnit, value, entityIdx++);
+                // });
+                InternalShowValue(effectUnit, value, entityIdx++);
 
                 idx++;
 

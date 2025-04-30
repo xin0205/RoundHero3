@@ -31,7 +31,7 @@ namespace RoundHero
                 return;
             //var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(unitIdx);
             //BattleManager.Instance.TempTriggerData.UnitData.Idx, BattleManager.Instance.TempTriggerData.TargetGridPosIdx
-            var triggerDataDict = BattleFightManager.Instance.GetHurtMoveDatas(effectUnitIdx, effectUnit.GridPosIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetHurtMoveDatas(actionUnitIdx, effectUnit.GridPosIdx);
             
             var entityIdx = curFlyDirectEntityIdx;
             curFlyDirectEntityIdx += triggerDataDict.Count;

@@ -277,6 +277,9 @@ namespace RoundHero
 
         public void EndRound()
         {
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+            
             BattleManager.Instance.EndRound();
             ShowActionTips(false);
             //isEndRound = true;

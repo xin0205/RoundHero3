@@ -144,6 +144,7 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(ClickGridEventArgs.EventId, OnClickGrid);
             GameEntry.Event.Unsubscribe(SelectGridEventArgs.EventId, OnSelectGrid);
             MoveGrids.Clear();
+            moveGridPosIdxs.Clear();
             if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
             {
                 GameEntry.Entity.HideEntity(TmpUnitEntity);
@@ -198,9 +199,6 @@ namespace RoundHero
                     GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 }
             }
-            
-            
-            
 
             // if (BattleManager.Instance.BattleState == EBattleState.UseCard)
             // {
@@ -681,15 +679,23 @@ namespace RoundHero
                         {
                             unit.ShowTags(unit.UnitIdx, true);
                         }
+                        else
+                        {
+                            unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                        }
                     }
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
+                    // unit.OnPointerExit();
+                    // if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                    // {
+                    //     unit.UnShowTags();
+                    // }
+                    
+                    
                     unit.OnPointerExit();
-                    if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-                    {
-                        unit.UnShowTags();
-                    }
+                    unit.UnShowTags();
                 }
             }
             }
@@ -841,7 +847,7 @@ namespace RoundHero
                 {
                     pointerDownInRange = false;
                     UpdateGrid();
-
+                    ShowMoveUnitTags(false);
                 }
             }
 

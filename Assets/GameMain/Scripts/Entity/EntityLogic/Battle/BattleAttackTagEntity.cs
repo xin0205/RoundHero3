@@ -80,7 +80,7 @@ namespace RoundHero
             //line.gameObject.SetActive(false);
             if (BattleAttackTagEntityData.ShowAttackLine)
             {
-                if (BattleAttackTagEntityData.AttackCastType == EAttackCastType.ExtendMulti)
+                if (BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Extend"))
                 {
                     line.positionCount = gridPosIdxs.Count;
                     line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
@@ -92,7 +92,7 @@ namespace RoundHero
                         line.SetPosition(idx++, pos);
                     }
                 }
-                else if (BattleAttackTagEntityData.AttackCastType == EAttackCastType.ParabolaMulti)
+                else if (BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Parabola"))
                 {
                     var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
                     var endPos = GameUtility.GridPosIdxToPos(targetGridPosIdx) + new Vector3(0, 1f, 0);

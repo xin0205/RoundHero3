@@ -137,21 +137,21 @@ namespace RoundHero
             });
         }
 
-        protected async override Task ShowBattleHurts(int hurt)
-        {
-            //var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
-            //var heroEntity = HeroManager.Instance.GetHeroEntity(BattleUnitData.UnitCamp);
-            var uiCorePos = AreaController.Instance.UICore.transform.position;
-            uiCorePos.y -= 0.4f;
-            
-            var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
-                uiCorePos);
-                
-            Vector3 position = new Vector3(pos.x, pos.y,  Camera.main.transform.position.z);
-            Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
-            
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  uiCoreWorldPos, hurt, -1, false, true);
-        }
+        // protected async override Task ShowBattleHurts(int hurt)
+        // {
+        //     //var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);
+        //     //var heroEntity = HeroManager.Instance.GetHeroEntity(BattleUnitData.UnitCamp);
+        //     var uiCorePos = AreaController.Instance.UICore.transform.position;
+        //     uiCorePos.y -= 0.4f;
+        //     
+        //     var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
+        //         uiCorePos);
+        //         
+        //     Vector3 position = new Vector3(pos.x, pos.y,  Camera.main.transform.position.z);
+        //     Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
+        //     
+        //     await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,  uiCoreWorldPos, hurt, -1, false, true);
+        // }
 
         // public override async void ChangeCurHP(int changeHP, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = true)
         // {

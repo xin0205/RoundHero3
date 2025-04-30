@@ -562,8 +562,9 @@ namespace RoundHero
             else if (actionType == EActionType.HeroDirect)
              {
                  var idx = 0;
-                 var matchIdx = -1;
-                 
+                 //var matchIdx = -1;
+                 var maxIdx = -1;
+                 var maxCount = 0;
                  var direct8RangeNest = GameUtility.GetRangeNest(gridPosIdx, EActionType.Direct82Long, false);
                  
                  foreach (var list in direct8RangeNest)
@@ -571,6 +572,9 @@ namespace RoundHero
                      var unitCount = 0;
                      foreach (var posIdx in list)
                      {
+                         if(posIdx == gridPosIdx)
+                             continue;
+                         
                          var unit = GetUnitByGridPosIdxMoreCamps(posIdx, isBattleData, selfUnitCamp, unitCamps);
                          
                          if(unit == null)
@@ -579,41 +583,59 @@ namespace RoundHero
                          if(unit.CurHP <= 0)
                              continue;
                          
-                         if(unit is not Data_BattleCore)
-                             continue;
+                         // if(unit is not Data_BattleCore)
+                         //     continue;
                          
                          
                          //
                          // if(unitCamps.Contains(ERelativeCamp.Enemy)  && selfUnitCamp == unit.UnitCamp)
                          //     continue;
                          
-                         
-                         if(posIdx == gridPosIdx)
-                             continue;
-
-      
-                         if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp ||
-                             unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
+                         if (unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
                          {
-                             matchIdx = idx;
-                             break;
+                             unitCount += unit is Data_BattleCore ? 50 : 10;
+
                          }
+                         
+                         if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp)
+                         {
+                             unitCount += -1;
+
+                         }
+                         
+
+                         // if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp ||
+                         //     unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
+                         // {
+                         //     matchIdx = idx;
+                         //     break;
+                         // }
 
                          
                      }
             
-                     if (matchIdx != -1)
+                     // if (matchIdx != -1)
+                     // {
+                     //     foreach (var matchGridPosIdx in direct8RangeNest[matchIdx])
+                     //     {
+                     //         retGetRange.Add(matchGridPosIdx);
+                     //     }
+                     //     break;
+                     // }
+
+                     if (unitCount > 0)
                      {
-                         foreach (var matchGridPosIdx in direct8RangeNest[matchIdx])
-                         {
-                             retGetRange.Add(matchGridPosIdx);
-                         }
-                         break;
+                         maxIdx = unitCount > maxCount ? idx : maxIdx;
+                         maxCount = unitCount > maxCount ? unitCount : maxCount;
                      }
+                     
                      idx++;
                  }
             
-                 
+                 foreach (var matchGridPosIdx in direct8RangeNest[maxIdx])
+                 {
+                     retGetRange.Add(matchGridPosIdx);
+                 }
              }
             //  else if (actionType == EActionType.UnitMaxXExtend)
             //  {
@@ -1358,7 +1380,6 @@ namespace RoundHero
             }
             else if (actionType == EActionType.HeroDirect)
             {
-
                 newActionType = EActionType.Direct82Long;
 
             }
@@ -1378,11 +1399,11 @@ namespace RoundHero
                 }
 
                 var list = new List<int>();
-                var isMatch = true;
-                if (actionType == EActionType.HeroDirect)
-                {
-                    isMatch = false;
-                }
+                // var isMatch = true;
+                // if (actionType == EActionType.HeroDirect)
+                // {
+                //     isMatch = false;
+                // }
                 
                 foreach (var point in points)
                 {
@@ -1400,10 +1421,10 @@ namespace RoundHero
                         var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(
                             targetGridPosIdx);
 
-                        if (unit is BattleCoreEntity)
-                        {
-                            isMatch = true;
-                        }
+                        // if (unit is BattleCoreEntity)
+                        // {
+                        //     isMatch = true;
+                        // }
                         
                     }
                     
@@ -1412,16 +1433,16 @@ namespace RoundHero
                     list.Add(targetGridPosIdx);
                     
                 }
-
-                if (isMatch)
-                {
-                    rangeNestList[idx].AddRange(list);
-                }
-                
-                if (actionType == EActionType.HeroDirect && isMatch)
-                {
-                    break;
-                }
+                rangeNestList[idx].AddRange(list);
+                // if (isMatch)
+                // {
+                //     rangeNestList[idx].AddRange(list);
+                // }
+                //
+                // if (actionType == EActionType.HeroDirect && isMatch)
+                // {
+                //     break;
+                // }
                 
 
                 idx++;

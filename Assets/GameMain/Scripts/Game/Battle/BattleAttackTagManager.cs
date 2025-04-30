@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using UnityGameFramework.Runtime;
-using Random = System.Random;
 
 namespace RoundHero
 {
@@ -12,9 +11,7 @@ namespace RoundHero
         
         private int curAttackTagEntityIdx = 0;
         private int showAttackTagEntityIdx = 0;
-
-
-
+        
         public async void ShowHurtAttackTag(int effectUnitIdx, int actionUnitIdx)
         {
             // || BattleManager.Instance.BattleState == EBattleState.End
@@ -44,7 +41,6 @@ namespace RoundHero
             }
             
             var entityIdx = curAttackTagEntityIdx;
-            
             
             
             foreach (var triggerDatas in values)
@@ -132,7 +128,7 @@ namespace RoundHero
 
             //Log.Debug("InternalShowTag:" + entityIdx);
             var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos, actionUnitPos,
-                effectUnitPos, attackTagType, unitState, actionUnitEntity.UnitAttackCastType, entityIdx, showAttackLine, showAttackPos);
+                effectUnitPos, attackTagType, unitState, buffValue, entityIdx, showAttackLine, showAttackPos);
 
             //Log.Debug("Tag Show:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
             if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
@@ -163,9 +159,21 @@ namespace RoundHero
                     effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
                 }
             }
+
+            var lists = new List<List<int>>();
             
-            var lists = GameUtility.GetRangeNest(actionUnit.GridPosIdx, buffValue.BuffData.TriggerRange,
-                false);
+
+            if (buffValue.BuffData.TriggerRange == EActionType.HeroDirect)
+            {
+                var list = GameUtility.GetRange(actionUnit.GridPosIdx, buffValue.BuffData.TriggerRange, actionUnit.UnitCamp,
+                    buffValue.BuffData.TriggerUnitCamps);
+                lists.Add(list);
+            }
+            else
+            {
+                lists = GameUtility.GetRangeNest(actionUnit.GridPosIdx, buffValue.BuffData.TriggerRange,
+                    false);
+            }
 
             var isExtend = buffValue.BuffData.TriggerRange.ToString().Contains("Extend");
             
@@ -183,6 +191,8 @@ namespace RoundHero
                 }
             }
 
+            //curAttackTagEntityIdx += effectGridPosIdxs.Count;
+
             foreach (var list in lists)
             {
                 for (int i = 0; i < list.Count; i++)
@@ -198,6 +208,8 @@ namespace RoundHero
 
                     //var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
                     var gridType = GameUtility.GetGridType(gridPosIdx, false);
+                    //effectGridPosIdxs.Contains(gridPosIdx) || ((gridType == EGridType.Empty && i == list.Count - 1) || gridType != EGridType.Empty) && isExtend
+                    //
                     if (!isExtend || (((gridType == EGridType.Empty && i == list.Count - 1) || gridType != EGridType.Empty) && isExtend ))
                     {
                         

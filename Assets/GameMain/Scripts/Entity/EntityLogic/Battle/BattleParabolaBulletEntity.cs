@@ -108,7 +108,7 @@ namespace RoundHero
             //verticalVelocity = Mathf.Sqrt(2 * g * 2.5f);
             GameUtility.DelayExcute(time, () =>
             {
-                
+                     
                 ShowExplodeParticle();
 
                 if (BattleBulletEntityData.BulletData.TriggerActionDataDict.Contains(endIdx))

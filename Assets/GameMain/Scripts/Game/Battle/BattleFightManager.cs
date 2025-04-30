@@ -894,17 +894,22 @@ namespace RoundHero
 
                 // if (unitCamp == EUnitCamp.Player1 || unitCamp == EUnitCamp.Player2 || rangeContainFirstCamp)
                 // {
+                var triggerRangeStr = triggerBuffData.BuffData.TriggerRange.ToString();
                     var directs = new List<ERelativePos>();
                     foreach (var rangeGridPosIdx in range)
                     {
-                        if (triggerBuffData.BuffData.TriggerRange.ToString().Contains("Long"))
+                        if (triggerRangeStr.Contains("Parabola") || triggerRangeStr.Contains("Long"))
                         {
                             var direct = GameUtility.GetRelativePos(gridPosIdx, rangeGridPosIdx);
-                            if (directs.Contains((ERelativePos)direct))
+                            if (direct != null)
                             {
-                                continue;
+                                if (directs.Contains((ERelativePos)direct))
+                                {
+                                    continue;
+                                }
+                                directs.Add((ERelativePos)direct);
                             }
-                            directs.Add((ERelativePos)direct);
+                            
                         }
                         
                         var unit = GetUnitByGridPosIdx(rangeGridPosIdx);
@@ -2840,7 +2845,8 @@ namespace RoundHero
             var units = new List<Data_BattleUnit>();
             foreach (var kv in BattleUnitDatas)
             {
-                
+                if(kv.Value.CurHP <= 0)
+                    continue;
                 
                 if (unitCamp == ERelativeCamp.Us && kv.Value.UnitCamp == selfUnitCamp ||
                     unitCamp == ERelativeCamp.Enemy && kv.Value.UnitCamp != selfUnitCamp || 

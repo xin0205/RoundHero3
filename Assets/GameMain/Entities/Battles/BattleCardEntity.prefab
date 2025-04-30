@@ -1312,8 +1312,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 50
-    m_Right: 50
+    m_Left: 30
+    m_Right: 30
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
@@ -2166,6 +2166,7 @@ GameObject:
   - component: {fileID: 8852283901305859938}
   - component: {fileID: 7585916738905755674}
   - component: {fileID: 3553008331724570292}
+  - component: {fileID: 3332264562375234298}
   m_Layer: 5
   m_Name: Label_Action
   m_TagString: Untagged
@@ -2214,13 +2215,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u786E\u5B9A"
+  m_text: "\u786E\u8BA4\u79FB\u52A8"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87551dd0fd5a7b94db49dbd46f41acc8, type: 2}
   m_sharedMaterial: {fileID: 4773670477278536316, guid: 87551dd0fd5a7b94db49dbd46f41acc8, type: 2}
@@ -2289,6 +2290,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3332264562375234298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4448171891400387070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a4f3c8eae66490a9d8c422b1baaebb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Localization: Button.ConfrimMove
 --- !u!1 &4616486762030182936
 GameObject:
   m_ObjectHideFlags: 0
@@ -4171,6 +4185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7913659389275759875}
+  - component: {fileID: 4595698591699988161}
   m_Layer: 5
   m_Name: Confrim
   m_TagString: Untagged
@@ -4196,8 +4211,24 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -5, y: -26.3}
-  m_SizeDelta: {x: 470, y: 130}
+  m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!111 &4595698591699988161
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8765331055428610655}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 08a73587bd245c947b04eb700cf79df0, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 08a73587bd245c947b04eb700cf79df0, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &9186103156892827866
 GameObject:
   m_ObjectHideFlags: 0

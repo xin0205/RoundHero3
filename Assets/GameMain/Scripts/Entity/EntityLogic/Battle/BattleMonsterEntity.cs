@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
@@ -180,6 +181,23 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             UnShowTags();
+        }
+        
+        protected async override Task ShowBattleHurts(int hurt)
+        {
+            var pos = ValuePos.position;
+
+            var pos2 = Camera.main.WorldToScreenPoint(pos);
+
+            pos2.y += 50f;
+            pos2.z = Camera.main.transform.position.z;
+            Vector3 pos3 = Camera.main.ScreenToWorldPoint(pos2);
+
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,
+                pos3,
+                hurt, -1, false, false);
+            
+
         }
     }
 }
