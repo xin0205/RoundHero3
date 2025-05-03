@@ -322,6 +322,18 @@ namespace RoundHero
             return (BattleDisplayValueEntity)task.Logic;
         }
         
+        public static async Task<BattleValueEntity> ShowBattleValueEntityAsync(this EntityComponent entityComponent, Vector3 targetPos, int value, int entityIdx)
+        {
+            var data = ReferencePool.Acquire<BattleValueEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), targetPos, value, entityIdx);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleValueEntity),
+                AssetUtility.GetBattleValuePrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleValueEntity)task.Logic;
+        }
+        
         public static async Task<BattleAttackTagEntity> ShowBattleAttackTagEntityAsync(this EntityComponent entityComponent, Vector3 pos, Vector3 startPos, Vector3 targetPos, EAttackTagType attackTagType,
             EUnitState unitState, BuffValue buffValue, int entityIdx = -1, bool showAttackLine = true, bool showAttackPos = true)
         {

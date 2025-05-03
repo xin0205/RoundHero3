@@ -103,6 +103,32 @@ namespace RoundHero
             }
 
         }
+
+        public async void ShowActionSort(int sort)
+        {
+            var entityIdx = curValueEntityIdx;
+            curValueEntityIdx += 1;
+            
+            var effectUnitPos = Root.position;
+
+
+            effectUnitPos.y += 1f;
+            effectUnitPos.z -= 0.5f;
+
+            var entity = await GameEntry.Entity.ShowBattleValueEntityAsync(
+                effectUnitPos, sort, entityIdx);
+
+            if ((entity as BattleValueEntity).BattleValueEntityData.EntityIdx <
+                showValueEntityIdx)
+            {
+
+                GameEntry.Entity.HideEntity(entity);
+            }
+            else
+            {
+                BattleValueEntities.Add(entity.Entity.Id, entity);
+            }
+        }
         
         
 
@@ -194,11 +220,11 @@ namespace RoundHero
                 // if(value == 0)
                 //     continue;
 
-                // GameUtility.DelayExcute(idx *0f, () =>
-                // {
-                //     InternalShowValue(effectUnit, value, entityIdx++);
-                // });
-                InternalShowValue(effectUnit, value, entityIdx++);
+                GameUtility.DelayExcute(idx *0.25f, () =>
+                {
+                    InternalShowValue(effectUnit, value, entityIdx++);
+                });
+                //InternalShowValue(effectUnit, value, entityIdx++);
 
                 idx++;
 

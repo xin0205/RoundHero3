@@ -164,7 +164,27 @@ namespace RoundHero
 
         public void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                ShowActionSort(true);
+            }
+            else if (Input.GetKeyUp(KeyCode.Space)) {
+                ShowActionSort(false);
+            }
+            
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
+                    .CurPointGridPosIdx);
 
+                if (unit is BattleMonsterEntity battleMonsterEntity )
+                {
+                    battleMonsterEntity.ShowMoveRange(true);
+                }
+                
+            }
+            else if (Input.GetKeyUp(KeyCode.A)) {
+                BattleAreaManager.Instance.ShowBackupGrids(null);
+            } 
         }
         
         // public int GetEnemyID(int posIdx)
@@ -483,6 +503,27 @@ namespace RoundHero
         //
         //     return valuelist;
         // }
+
+
+        public void ShowActionSort(bool isShow) 
+        {
+            var idx = 1;
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                if(kv.Value.UnitCamp != EUnitCamp.Enemy)
+                    continue;
+
+                if (isShow)
+                {
+                    kv.Value.ShowActionSort(idx++);
+                }
+                else
+                {
+                    kv.Value.UnShowTags();
+                }
+            }
+        }
+        
 
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using GameFramework.Event;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 using Random = System.Random;
@@ -177,6 +174,7 @@ namespace RoundHero
         public async void OnShowGridDetail(object sender, GameEventArgs e)
         {
             var ne = e as ShowGridDetailEventArgs;
+
             
             if (ne.ShowState == EShowState.Show)
             {
@@ -668,7 +666,7 @@ namespace RoundHero
                 }
             
             }
-            else if (unit != null && unit is BattleMonsterEntity)
+            else if (unit != null && unit is BattleMonsterEntity battleMonsterEntity)
             {
                 if (ne.ShowState == EShowState.Show)
                 {
@@ -1801,8 +1799,6 @@ namespace RoundHero
 
         public async void OnClickGrid(object sender, GameEventArgs e)
         {
-
-
             if (BattleManager.Instance.CurUnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
                 return;
 
@@ -1996,7 +1992,7 @@ namespace RoundHero
                             ShowBackupGrids(attackRanges);
                         }
                     
-                        
+                        BattleUnitManager.Instance.UnShowTags();                          
                     }
                     
                         

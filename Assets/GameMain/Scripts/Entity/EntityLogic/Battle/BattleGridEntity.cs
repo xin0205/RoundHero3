@@ -64,6 +64,11 @@ namespace RoundHero
             {
                 grid.SetActive(false);
             }
+            else
+            {
+                grid.SetActive(true);
+            }
+            
             backupGrid.SetActive(isShow);
             
             
@@ -74,6 +79,10 @@ namespace RoundHero
             if (isShow)
             {
                 grid.SetActive(false);
+            }
+            else
+            {
+                grid.SetActive(true);
             }
             
             

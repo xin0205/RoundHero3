@@ -692,6 +692,14 @@ namespace RoundHero
             
         }
 
+
+        public void UnShowTags()
+        {
+            foreach (var kv in BattleUnitEntities)
+            {
+                kv.Value.UnShowTags();
+            }
+        }
         
     }
 }

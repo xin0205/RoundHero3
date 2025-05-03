@@ -382,5 +382,10 @@ namespace RoundHero
             infoFormParams.Desc = GameEntry.Localization.GetString(Constant.Localization.Info_ConsumeCardDesc);
             
         }
+
+        public void ShowActionSort(bool showActionSort)
+        {
+            BattleEnemyManager.Instance.ShowActionSort(showActionSort);
+        }
     }
 }

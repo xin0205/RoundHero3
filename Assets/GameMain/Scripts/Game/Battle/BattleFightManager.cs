@@ -334,7 +334,7 @@ namespace RoundHero
 
         public void Destory()
         {
-
+            AcitonUnitIdx = 0;
             RoundFightData.Clear();
         }
 

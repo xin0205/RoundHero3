@@ -205,6 +205,7 @@ namespace RoundHero
                         case EWeaponType.Staff:
                             animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandStaff);
                             break;
+                        
                         // case EWeaponType.Mace:
                         //     break;
                         // case EWeaponType.Dagger:
@@ -284,6 +285,8 @@ namespace RoundHero
                             break;
                         case EWeaponType.Pistol:
                             animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightPistol);
+                            animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightPistol);
+                            
                             break;
                         // case EWeaponType.Axe:
                         //     break;
@@ -302,7 +305,7 @@ namespace RoundHero
                         default:
                             break;
                     }
-                    
+                    animator.SetInteger(AnimationParameters.Side, (int)Side.Right);
                     break;
                 case EWeaponHoldingType.Empty:
                     break;
@@ -455,7 +458,10 @@ namespace RoundHero
                     {
                         GameEntry.Entity.ShowBattleParabolaBulletEntityAsync(bulletData, ShootPos.position);
                     }
-
+                    else
+                    {
+                        GameEntry.Entity.ShowBattleLineBulletEntityAsync(bulletData, ShootPos.position);
+                    }
                     
                 }
             }

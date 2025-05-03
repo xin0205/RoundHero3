@@ -132,6 +132,11 @@ namespace RoundHero
 
         private void Update()
         {
+            if (BattleManager.Instance.BattleState == EBattleState.EndBattle)
+            {
+                GameEntry.Entity.HideEntity(this);
+            }
+            
             cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
             transform.rotation = cameraQuaternion;
             var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));

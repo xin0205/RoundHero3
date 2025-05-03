@@ -313,6 +313,9 @@ namespace RoundHero
         {
             if (!UnitStates.ContainsKey(state))
                 return;
+            
+            if(UnitStates[state].EffectType == EEffectType.Forever)
+                return;
 
             // if (isAll)
             // {

@@ -400,6 +400,11 @@ namespace RoundHero
             return "Assets/GameMain/Entities/Battles/BattleDisplayValueEntity.prefab";
         }
         
+        public static string GetBattleValuePrefab()
+        {
+            return "Assets/GameMain/Entities/Battles/BattleValueEntity.prefab";
+        }
+        
         public static string GetEffectPrefab(string assetName)
         {
             return $"Assets/GameMain/Entities/Effects/{assetName}.prefab";
