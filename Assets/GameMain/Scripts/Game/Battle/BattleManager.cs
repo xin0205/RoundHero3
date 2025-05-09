@@ -13,6 +13,8 @@ namespace RoundHero
         public TempTriggerData TempTriggerData = new TempTriggerData();
 
         public ProcedureBattle ProcedureBattle;
+
+        public ETutorialStep TutorialStep;
         
         public EBattleState BattleState { get => BattleTypeManager.BattleState;
             set => BattleTypeManager.BattleState = value;
@@ -68,6 +70,7 @@ namespace RoundHero
             BattleAreaManager.Instance.Update();
             BattleCardManager.Instance.Update();
             BattleEnemyManager.Instance.Update();
+            TutorialManager.Instance.Update();
         }
         
 

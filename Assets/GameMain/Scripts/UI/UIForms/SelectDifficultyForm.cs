@@ -25,28 +25,39 @@ namespace RoundHero
             base.OnClose(isShutdown, userData);
         }
 
-        public void D1()
+        public void Difficulty1()
         {
-            D(EGameDifficulty.Difficulty1);
+            Diffculty(EGameDifficulty.Difficulty1);
         }
 
-        public void D2()
+        public void Difficulty2()
         {
-            D(EGameDifficulty.Difficulty2);
+            Diffculty(EGameDifficulty.Difficulty2);
         }
 
-        public void D3()
+        public void Diffculty3()
         {
-            D(EGameDifficulty.Difficulty3);
+            Diffculty(EGameDifficulty.Difficulty3);
         }
 
-        public void D(EGameDifficulty difficulty)
+        public void Diffculty(EGameDifficulty difficulty)
         {
             GameEntry.UI.CloseUIForm(form);
             Close();
 
             //7071044;//
-            var startGameRandomSeed = 26987145;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            int startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            
+            GamePlayManager.Instance.GamePlayData.IsTutorial = true;
+            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
+            {
+                startGameRandomSeed = Constant.Tutorial.RandomSeed;
+            }
+            else
+            {
+                startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            }
+            
             Log.Debug("randomSeed:" + startGameRandomSeed);
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, difficulty));

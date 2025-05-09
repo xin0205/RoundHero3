@@ -75,8 +75,15 @@ namespace RoundHero
             // var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
             // playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
             
+            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
+            {
+                await GameEntry.UI.OpenUIFormAsync(UIFormId.TutorialForm, this);
+            }
+            
             var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
             battleForm = battleFormTask.Logic as BattleForm;
+
+            
             
             //await HeroManager.Instance.GenerateHero();
             await BattleAreaManager.Instance.InitArea();
@@ -143,7 +150,15 @@ namespace RoundHero
             ChangeState<ProcedureStart>(procedureOwner);
             
             var procedureStart = procedureOwner.CurrentState as ProcedureStart;
-            procedureStart.RestartGame();
+            if (TutorialManager.Instance.IsTutorial())
+            {
+                procedureStart.Start();
+            }
+            else
+            {
+                procedureStart.RestartGame();
+            }
+            
         }
 
     }

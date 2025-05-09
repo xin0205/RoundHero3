@@ -22,6 +22,7 @@ namespace RoundHero
         [SerializeField] private Text consumeCardCount;
         [SerializeField] private TextMeshProUGUI energy;
         [SerializeField] private Text heroHP;
+        [SerializeField] private Text coreHPDelta;
         [SerializeField] private TextMeshProUGUI test;
         [SerializeField] private TextMeshProUGUI coin;
         
@@ -61,6 +62,12 @@ namespace RoundHero
             AreaController.Instance.UICore = heroHP.gameObject;
             
             AreaController.Instance.Canvas = this.GetComponent<Canvas>();
+
+            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
+            {
+                BattleManager.Instance.TutorialStep = ETutorialStep.Start;
+                GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
+            }
         }
 
         private void ShowRoundTips(int round)
@@ -236,15 +243,13 @@ namespace RoundHero
             //BattlePlayerManager.Instance.PlayerData.BattleHero.Attribute.GetAttribute(EHeroAttribute.CurHeart) + "/" +
             //BattlePlayerManager.Instance.PlayerData.BattleHero.Attribute.GetAttribute(EHeroAttribute.MaxHeart) + "-" +
             heroHP.text =
-                
                 BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" +
                 BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
 
             var hpDelta = BattleFightManager.Instance.PlayerData.BattleHero.CurHP -
                           HeroManager.Instance.BattleHeroData.CurHP;
-                          ;
-                ;
-            heroHP.text += "   " + ((hpDelta > 0) ? "+" + hpDelta : hpDelta);
+                          
+            coreHPDelta.text = "   " + ((hpDelta > 0) ? "+" + hpDelta : hpDelta);
         }
 
         private void RefreshEnergy()
@@ -277,6 +282,11 @@ namespace RoundHero
 
         public void EndRound()
         {
+            if (TutorialManager.Instance.SwitchStep(ETutorialStep.EndRound) == ETutorialState.UnMatch)
+            {
+                return;
+            }
+            
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
             
@@ -350,6 +360,9 @@ namespace RoundHero
 
         public void TestSuccess()
         {
+            if(TutorialManager.Instance.CheckTutorialEnd())
+                return;
+            
             procedureBattle.EndBattle();
             BattleMapManager.Instance.NextStep();
             
@@ -357,6 +370,9 @@ namespace RoundHero
         
         public void ExitBattleTest()
         {
+            if(!TutorialManager.Instance.CheckTutorialEnd())
+                return;
+            
             BattleManager.Instance.EndBattleTest();
             
             

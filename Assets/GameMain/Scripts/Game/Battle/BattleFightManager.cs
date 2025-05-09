@@ -347,8 +347,6 @@ namespace RoundHero
 
             RoundFightData.GamePlayData = GamePlayManager.Instance.GamePlayData.Copy();
             RoundFightData.TempTriggerData = BattleManager.Instance.TempTriggerData.Copy();
-            
-            
 
             PlayerData = RoundFightData.GamePlayData.GetPlayerData(PlayerManager.Instance.PlayerData.UnitCamp);
 

@@ -10,6 +10,38 @@ namespace RoundHero
     
     public static partial class Constant
     {
+        public static class Tutorial
+        {
+            public static List<int> Obstacles = new List<int>()
+            {
+                8, 17, 26, 30, 39,
+            };
+
+            public static int RandomSeed = 26987145;
+            public static int UseUnitCardGridPosIdx = 20;
+            public static int MoveGridPosIdx = 27;
+
+            public static List<int> Cards = new List<int>()
+            {
+                0, 0, 0, 1, 1, 1, 2, 2, 2, 10000, 10000, 10000
+            };
+
+            public static EnemyGenrateRule EnemyGenrateRule = new EnemyGenrateRule()
+            {
+                RoundGenerateUnitCount = new Dictionary<int, int>()
+                {
+                    [0] = 2,
+                },
+                EachRoundUnitCount = 2,
+                NormalUnitCount = 2,
+                EliteUnitCount = 0,
+                NormalUnitTypeCount = 1,
+                EliteUnitTypeCount = 0,
+                GlobalDebuffCount = 0,
+            };
+
+        }
+        
         public static class Area
         {
             public static Vector2Int GridSize = new Vector2Int(7, 7);

@@ -209,8 +209,8 @@ namespace RoundHero
                     //var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
                     var gridType = GameUtility.GetGridType(gridPosIdx, false);
                     //effectGridPosIdxs.Contains(gridPosIdx) || ((gridType == EGridType.Empty && i == list.Count - 1) || gridType != EGridType.Empty) && isExtend
-                    //
-                    if (!isExtend || (((gridType == EGridType.Empty && i == list.Count - 1) || gridType != EGridType.Empty) && isExtend ))
+                    //!isExtend || (((gridType == EGridType.Empty && i == list.Count - 1) || gridType != EGridType.Empty) && isExtend )
+                    if (effectGridPosIdxs.Contains(gridPosIdx))
                     {
                         
                         await InternalShowTag(actionUnit, gridPosIdx, buffValue, entityIdx, effectGridPosIdxs.Contains(gridPosIdx), showAttackPos);

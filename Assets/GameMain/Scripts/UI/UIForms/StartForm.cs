@@ -101,8 +101,22 @@ namespace RoundHero
 
         public void StartTest()
         {
+            
             CloseForm();
             procedureStart.RestartGame();
+        }
+
+        public void Tutorial()
+        {
+            GamePlayManager.Instance.GamePlayData.IsTutorial = true;
+            Close();
+
+            int startGameRandomSeed = Constant.Tutorial.RandomSeed;
+
+            
+            Log.Debug("randomSeed:" + startGameRandomSeed);
+            GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
+            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
         }
     }
 }

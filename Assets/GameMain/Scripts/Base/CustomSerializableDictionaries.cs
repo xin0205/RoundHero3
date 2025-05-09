@@ -41,4 +41,9 @@ namespace RoundHero
     public class GIFAssetDictionary : SerializableDictionary<string, Gif>
     {
     }
+    
+    [Serializable]
+    public class TutorialStepGODictionary : SerializableDictionary<ETutorialStep, GameObject>
+    {
+    }
 }

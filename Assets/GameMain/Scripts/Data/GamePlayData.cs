@@ -1546,7 +1546,7 @@ namespace RoundHero
 
     public class Data_GamePlay
     {
-        public string GamePlayFileName;
+        //public string GamePlayFileName;
         public Data_Player PlayerData = new ();
         public Data_Map MapData = new ();
         public Data_Area AreaData = new ();
@@ -1558,6 +1558,7 @@ namespace RoundHero
         public Data_Enemy EnemyData = new ();
         public EGamMode GameMode;
         public int RandomSeed = -1;
+        public bool IsTutorial = false;
 
         public Data_GamePlay()
         {
@@ -1611,10 +1612,14 @@ namespace RoundHero
             data.LastBattleData = LastBattleData.Copy();
             data.EnemyData = EnemyData.Copy();
             data.MapData = MapData.Copy();
+            data.IsTutorial = IsTutorial;
+            data.GameMode = GameMode;
+            data.RandomSeed = RandomSeed;
 
             data.PlayerDatas.Clear();
             data.PlayerDataCampDict.Clear();
             data.PlayerDataIDDict.Clear();
+            
             
             foreach (var kv in PlayerDatas)
             {

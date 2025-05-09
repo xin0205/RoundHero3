@@ -275,7 +275,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5220686793963864655}
         m_TargetAssemblyTypeName: RoundHero.SelectDifficultyForm, Assembly-CSharp
-        m_MethodName: D3
+        m_MethodName: Diffculty3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -531,7 +531,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5220686793963864655}
         m_TargetAssemblyTypeName: RoundHero.SelectDifficultyForm, Assembly-CSharp
-        m_MethodName: D1
+        m_MethodName: Difficulty1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -953,7 +953,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5220686793963864655}
         m_TargetAssemblyTypeName: RoundHero.SelectDifficultyForm, Assembly-CSharp
-        m_MethodName: D2
+        m_MethodName: Difficulty2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

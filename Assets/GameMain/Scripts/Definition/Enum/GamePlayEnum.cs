@@ -747,4 +747,27 @@ namespace RoundHero
         Empty,
     }
 
+    public enum ETutorialStep
+    {
+        Start,
+        CoreHP,
+        Core,
+        CoreHPDelta,
+        SelectUnitCard,
+        UseCardEnergy,
+        UnitOwnEnergy,
+        UseUnitCard,
+        SelectMoveCard,
+        CardSwitchMove,
+        SelectMoveUnit,
+        SelectMovePos,
+        SelectAttackCard,
+        CardSwitchAttack,
+        SelectAttackUnit,
+        EndRound,
+        UnitHurt,
+        End,
+        
+    }
+
 }

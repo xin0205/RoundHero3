@@ -307,7 +307,7 @@ namespace RoundHero
             // GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             // GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
 
-
+            
             GameEntry.UI.OpenUIForm(UIFormId.SelectDifficultyForm, this);
         }
     }

@@ -155,7 +155,14 @@ namespace RoundHero
         }
         
         private void OnPointerEnter()
-        {
+        { if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
+              TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
+              TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
+            {
+                return;
+            }
+
+
             //Log.Debug("Enter");
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
@@ -182,6 +189,13 @@ namespace RoundHero
         
         public void OnPointerExit()
         {
+            
+            if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
+                TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
+                TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
+            {
+                return;
+            }
             
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
@@ -248,6 +262,11 @@ namespace RoundHero
         
         public void UseCard()
         {
+            if(TutorialManager.Instance.Switch_SelectUnitCard(this) == ETutorialState.UnMatch &&
+               TutorialManager.Instance.Switch_SelectMoveCard(this) == ETutorialState.UnMatch &&
+               TutorialManager.Instance.Switch_SelectAttackCard(this) == ETutorialState.UnMatch)
+                return;
+            
             if (!Input.GetMouseButtonUp(0))
             {
                 return;
@@ -543,6 +562,11 @@ namespace RoundHero
 
         public void Move()
         {
+            if (TutorialManager.Instance.SwitchStep(ETutorialStep.CardSwitchMove) == ETutorialState.UnMatch)
+            {
+                return;
+            }
+            
             if (BattleCardEntityData.CardData.CardUseType == ECardUseType.Move)
             {
                 
@@ -564,6 +588,11 @@ namespace RoundHero
         
         public void Attack()
         {
+            if (TutorialManager.Instance.SwitchStep(ETutorialStep.CardSwitchAttack) == ETutorialState.UnMatch)
+            {
+                return;
+            }
+            
             
             if (BattleCardEntityData.CardData.CardUseType == ECardUseType.Attack)
             {
@@ -573,8 +602,7 @@ namespace RoundHero
             }
             else
             {
-                
-                
+
                 Log.Debug("Attack");
                 Action();
                 BattleCardEntityData.CardData.CardUseType = ECardUseType.Attack;

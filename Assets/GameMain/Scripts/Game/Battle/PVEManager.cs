@@ -242,6 +242,8 @@ namespace RoundHero
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.NotifyRoundEnd)
             {
                 GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(EBattleState.EndRound));
+                
+                
             }
 
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
@@ -278,6 +280,8 @@ namespace RoundHero
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundEnd;
+
+                TutorialManager.Instance.SwitchStep(ETutorialStep.UnitHurt);
             }
             
             // else if (FightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)

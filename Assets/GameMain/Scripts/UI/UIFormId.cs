@@ -98,5 +98,7 @@ namespace RoundHero
         UnitDescForm = 136,
         
         SelectDifficultyForm = 137,
+        
+        TutorialForm = 138,
     }
 }

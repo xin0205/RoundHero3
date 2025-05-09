@@ -69,27 +69,42 @@ namespace RoundHero
         {
             BattleAreaManager.Instance.RefreshObstacles();
             
-            var places = BattleAreaManager.Instance.GetPlaces();
-            var insidePlaces = new List<int>();
-            foreach (var gridPosIdx in places)
-            {
-                var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
-                if (coord.x == 0 || coord.y == 0 || coord.x == Constant.Area.GridSize.x - 1 ||
-                    coord.y == Constant.Area.GridSize.y - 1)
-                {
-                    continue;
-                }
-                insidePlaces.Add(gridPosIdx);
-            }
+            
  
-            var obstacleRandoms = MathUtility.GetRandomNum(Constant.Area.ObstacleCount, 0,
-                insidePlaces.Count, Random);
-
-
+            var obstacles = new List<int>();
             var obstacleIdxs = new List<int>();
-            for (int i = 0; i < Constant.Area.ObstacleCount; i++)
+
+            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
             {
-                obstacleIdxs.Add(insidePlaces[obstacleRandoms[i]]);
+                obstacles = Constant.Tutorial.Obstacles;
+                
+                for (int i = 0; i < Constant.Area.ObstacleCount; i++)
+                {
+                    obstacleIdxs.Add(obstacles[i]);
+                }
+            }
+            else
+            {
+                var places = BattleAreaManager.Instance.GetPlaces();
+                var insidePlaces = new List<int>();
+                foreach (var gridPosIdx in places)
+                {
+                    var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
+                    if (coord.x == 0 || coord.y == 0 || coord.x == Constant.Area.GridSize.x - 1 ||
+                        coord.y == Constant.Area.GridSize.y - 1)
+                    {
+                        continue;
+                    }
+                    insidePlaces.Add(gridPosIdx);
+                }
+                
+                obstacles = MathUtility.GetRandomNum(Constant.Area.ObstacleCount, 0,
+                    insidePlaces.Count, Random);
+                
+                for (int i = 0; i < Constant.Area.ObstacleCount; i++)
+                {
+                    obstacleIdxs.Add(insidePlaces[obstacles[i]]);
+                }
             }
 
             for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
@@ -1817,6 +1832,8 @@ namespace RoundHero
                 GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
             }
 
+            
+
             if (BattleManager.Instance.BattleState == EBattleState.UseCard)
             {
                 var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
@@ -1883,6 +1900,9 @@ namespace RoundHero
             }
             else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
             {
+                if(TutorialManager.Instance.Switch_UseUnitCard(ne.GridPosIdx) == ETutorialState.UnMatch)
+                    return;
+                
                 if (enemyEntityID != -1)
                 {
                     GameEntry.UI.OpenMessage("AAA");
@@ -1909,6 +1929,10 @@ namespace RoundHero
             }
             else if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
             {
+                if(TutorialManager.Instance.Switch_SelectMoveUnit(ne.GridPosIdx) == ETutorialState.UnMatch &&
+                   TutorialManager.Instance.Switch_SelectAttackUnit(ne.GridPosIdx) == ETutorialState.UnMatch)
+                    return;
+                
                 var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
                 List<ERelativeCamp> relativeCamps = buffData.TriggerUnitCamps;
@@ -2073,6 +2097,9 @@ namespace RoundHero
             }
             else if (BattleManager.Instance.BattleState == EBattleState.MoveUnit)
             {
+                if(TutorialManager.Instance.Switch_SelectMovePos(ne.GridPosIdx) == ETutorialState.UnMatch)
+                    return;
+                
                 var moveRanges =
                     BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
