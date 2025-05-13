@@ -26,10 +26,6 @@ namespace RoundHero
                 unitDescForm = formAsync.Logic as UnitDescForm;
             }
 
-            
-            
-
-
         }
 
         public void OnPointerExit()

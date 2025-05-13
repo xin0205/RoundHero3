@@ -39,12 +39,24 @@ namespace RoundHero
                 playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, blessID));
                 
             }
-            
-            foreach (var cardID in GameManager.Instance.TmpInitCards)
+
+            if (TutorialManager.Instance.IsTutorial())
             {
-                var cardIdx = playerData.CardIdx++;
-                playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
+                foreach (var cardID in Constant.Tutorial.Cards)
+                {
+                    var cardIdx = playerData.CardIdx++;
+                    playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
+                }
             }
+            else
+            {
+                foreach (var cardID in GameManager.Instance.TmpInitCards)
+                {
+                    var cardIdx = playerData.CardIdx++;
+                    playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
+                }
+            }
+            
 
             // var energyBuffDict = new Dictionary<int, string>();
             // var energyBuffIdx = 0;

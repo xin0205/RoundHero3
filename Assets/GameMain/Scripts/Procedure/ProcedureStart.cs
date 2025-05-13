@@ -127,10 +127,16 @@ namespace RoundHero
 
         public void RestartGame()
         {
-            DataManager.Instance.DataGame.Clear();
-            DataManager.Instance.Save();
+            Reset();
             StartSelect();
         }
+
+        public void Reset()
+        {
+            DataManager.Instance.DataGame.Clear();
+            DataManager.Instance.Save();
+        }
+        
 
         
     }

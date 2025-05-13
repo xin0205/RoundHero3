@@ -21,8 +21,8 @@ namespace RoundHero
                 DataGame = new Data_Game();
             }
             
-            // GameEntry.Setting.RemoveAllSettings();
-            // DataGame = new Data_Game();
+            GameEntry.Setting.RemoveAllSettings();
+            DataGame = new Data_Game();
             
         }
         

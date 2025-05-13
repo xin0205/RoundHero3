@@ -15,6 +15,8 @@ namespace RoundHero
         [SerializeField] private Image TacticIcon;
         
         private int CardID = -1;
+        [SerializeField]
+        private int CardSortIdx = -1;
 
         public Action<int> ClickAction;
         
@@ -75,28 +77,35 @@ namespace RoundHero
         
         public void SetItemData(int cardID, int itemIndex,int row,int column)
         {
+            CardSortIdx = itemIndex;
             if (CardID != cardID)
             {
                 CardID = cardID;
                 SetCardUI(cardID);
             }
             
+            // if (CardID != cardID)
+            // {
+            //     CardID = cardID;
+            //     SetCardUI(cardID);
+            // }
+            
         }
 
         public void OnClick()
         {
-            ClickAction.Invoke(CardID);
+            ClickAction.Invoke(CardSortIdx);
         }
         
         public void OnPointerEnter()
         {
-            GameEntry.Event.Fire(null, HoverJoinCardsEventArgs.Create(CardID, true));
+            GameEntry.Event.Fire(null, HoverJoinCardsEventArgs.Create(CardSortIdx, true));
         }
 
         public void OnHoverJoinCards(object sender, GameEventArgs e)
         {
             var ne = e as HoverJoinCardsEventArgs;
-            if (ne.CardID == CardID)
+            if (ne.CardSortIdx == CardSortIdx)
             {
                 this.unUseTag.SetActive(ne.IsHover);
 
@@ -106,7 +115,7 @@ namespace RoundHero
         
         public void OnPointerExit()
         {
-            GameEntry.Event.Fire(null, HoverJoinCardsEventArgs.Create(CardID, false));
+            GameEntry.Event.Fire(null, HoverJoinCardsEventArgs.Create(CardSortIdx, false));
             
         }
     }

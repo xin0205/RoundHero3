@@ -75,7 +75,7 @@ namespace RoundHero
             // var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
             // playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
             
-            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
+            if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
                 await GameEntry.UI.OpenUIFormAsync(UIFormId.TutorialForm, this);
             }

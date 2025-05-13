@@ -9,14 +9,14 @@ namespace RoundHero
         public static readonly int EventId = typeof(HoverJoinCardsEventArgs).GetHashCode();
         public override int Id => EventId;
         
-        public int CardID;
+        public int CardSortIdx;
 
         public bool IsHover;
         
         public static HoverJoinCardsEventArgs Create(int cardID, bool isHover)
         {
             var args = ReferencePool.Acquire<HoverJoinCardsEventArgs>();
-            args.CardID = cardID;
+            args.CardSortIdx = cardID;
             args.IsHover = isHover;
             return args;
         }

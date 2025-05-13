@@ -35,12 +35,12 @@ namespace RoundHero
                 CardItem.SetCard(cardID);
                 
             }
-            isUse = GameManager.Instance.TmpInitCards.Contains(cardID);
-            if (!isUse)
-            {
-                this.useTag.SetActive(false);
-                tag.SetActive(false);
-            }
+            // isUse = GameManager.Instance.TmpInitCards.Contains(cardID);
+            // if (!isUse)
+            // {
+            //     this.useTag.SetActive(false);
+            //     tag.SetActive(false);
+            // }
             
             gifTriggerItem.GifFormData.GifPlayData.ItemType = EGIFType.Solider;
             gifTriggerItem.GifFormData.GifPlayData.ID = cardID;
@@ -50,7 +50,7 @@ namespace RoundHero
         public void OnClick()
         {
             ClickAction.Invoke(cardID);
-            SetUseTag(GameManager.Instance.TmpInitCards.Contains(cardID));
+            //SetUseTag(GameManager.Instance.TmpInitCards.Contains(cardID));
         }
 
         public void SetUseTag(bool isUse)
@@ -63,23 +63,29 @@ namespace RoundHero
         public void OnPointerEnter()
         {
             RefreshUseTag();
-            if (!isUse)
-            {
-                this.useTag.SetActive(true);
-                tag.SetActive(true);
-            }
+            // if (!isUse)
+            // {
+            //     this.useTag.SetActive(true);
+            //     tag.SetActive(true);
+            // }
         }
 
         private void RefreshUseTag()
         {
-            this.useTag.SetActive(!isUse);
-            this.unUseTag.SetActive(isUse);
+            // this.useTag.SetActive(!isUse);
+            // this.unUseTag.SetActive(isUse);
+            // tag.SetActive(true);
+            
+            this.useTag.SetActive(true);
             tag.SetActive(true);
         }
         
         public void OnPointerExit()
         {
-            tag.SetActive(isUse);
+            //tag.SetActive(isUse);
+            
+            
+            tag.SetActive(false);
         }
     }
 }

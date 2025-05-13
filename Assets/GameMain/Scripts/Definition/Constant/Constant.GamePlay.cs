@@ -18,8 +18,9 @@ namespace RoundHero
             };
 
             public static int RandomSeed = 26987145;
-            public static int UseUnitCardGridPosIdx = 20;
-            public static int MoveGridPosIdx = 27;
+            public static int UseUnitCardGridPosIdx = 9;
+            public static int MoveGridPosIdx = 12;
+            public static float StepInterval = 3f;
 
             public static List<int> Cards = new List<int>()
             {
@@ -80,7 +81,8 @@ namespace RoundHero
             public static float ViewMaxHandCardCount = 10;
             public static int EachHardCardCount = 5;
 
-            public static int InitCardMaxCount = 12;
+            public static int SelectInitCardEachCount = 1;
+            public static int InitCardMaxCount = 10;
             public static int RushHurt = -1;
             public static int FlyHurt = -2;
             public static float ParabolaBulletShootTime = 0.4f;

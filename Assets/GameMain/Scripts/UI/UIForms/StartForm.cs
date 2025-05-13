@@ -101,18 +101,44 @@ namespace RoundHero
 
         public void StartTest()
         {
+            if (!GamePlayManager.Instance.GamePlayData.IsTutorial)
+            {
+                GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+                {
+                    IsShowCancel = true,
+                    Message = GameEntry.Localization.GetString(Constant.Localization.Message_TutorailConfirm),
+                    OnConfirm = () =>
+                    {
+                        GamePlayManager.Instance.GamePlayData.IsTutorial = true;
+                        Tutorial();
+
+                    },
+                    OnClose = () =>
+                    {
+                        CloseForm();
+                        procedureStart.RestartGame();
+                    }
+
+                });
+            }
+            else
+            {
+                CloseForm();
+                procedureStart.RestartGame();
+            }
             
-            CloseForm();
-            procedureStart.RestartGame();
+            
         }
 
         public void Tutorial()
         {
+            CloseForm();
+            procedureStart.Reset();
             GamePlayManager.Instance.GamePlayData.IsTutorial = true;
-            Close();
-
+            GamePlayManager.Instance.GamePlayData.
+                IsTutorialBattle = true;
+            
             int startGameRandomSeed = Constant.Tutorial.RandomSeed;
-
             
             Log.Debug("randomSeed:" + startGameRandomSeed);
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;

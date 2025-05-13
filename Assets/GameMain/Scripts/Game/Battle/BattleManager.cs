@@ -33,6 +33,7 @@ namespace RoundHero
             
             // var randoms = MathUtility.GetRandomNum(8, 0,
             //     Constant.Game.RandomRange, Random);
+            TutorialManager.Instance.Init();
             
             BattleCoreManager.Instance.Init(Random.Next());
             BattleRouteManager.Instance.Init(Random.Next());
@@ -49,6 +50,7 @@ namespace RoundHero
             BattleAreaManager.Instance.Init(Random.Next());
             BattleUnitManager.Instance.Init(Random.Next());
             HeroManager.Instance.Init(Random.Next());
+            
             BattleCardManager.Instance.InitCards();
         }
 

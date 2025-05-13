@@ -15,6 +15,8 @@ namespace RoundHero
         [SerializeField] private GameObject selectionGrid;
         [SerializeField] private GameObject backupGrid;
         [SerializeField] private GameObject grid;
+        
+        [SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
 
         public Vector3 Position
         {
@@ -41,6 +43,11 @@ namespace RoundHero
 
             Show(false);
             Refresh();
+            
+            var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
+            unitDescFormData.GridType = BattleGridEntityData.GridType;
+            unitDescFormData.UnitCamp = EUnitCamp.Empty;
+
         }
 
         public void Show(bool active)
@@ -93,6 +100,7 @@ namespace RoundHero
         {
             //Log.Debug("OnPointerEnter" + BattleGridEntityData.Id);
             ShowSelectGrid(true);
+            UnitDescTriggerItem.OnPointerEnter();
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleGridEntityData.GridPosIdx, EShowState.Show)); 
         }
         
@@ -100,6 +108,7 @@ namespace RoundHero
         {
             //Log.Debug("OnPointerExit" + BattleGridEntityData.Id);
             ShowSelectGrid(false);
+            UnitDescTriggerItem.OnPointerExit();
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleGridEntityData.GridPosIdx, EShowState.Unshow)); 
         }
         

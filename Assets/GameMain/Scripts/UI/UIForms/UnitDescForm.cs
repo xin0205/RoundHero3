@@ -2,6 +2,7 @@
 using GameFramework;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace RoundHero
 {
@@ -11,7 +12,8 @@ namespace RoundHero
         public EUnitRole UnitRole;
         public EUnitCamp UnitCamp;
         public int Idx;
-        
+        public EGridType GridType;
+
     }
     
     public class UnitDescForm : UGuiForm
@@ -25,24 +27,23 @@ namespace RoundHero
         
         [SerializeField] private PlayerCardItem playerCardItem;
         [SerializeField] private UnitDescItem unitDescItem;
+        [SerializeField] private GameObject unitBattleData;
+        
+        [SerializeField] private Text actionTimeStr;
         
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
             UnitDescFormData = (UnitDescFormData)userData;
             
-            if(BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) == null)
-                return;
+            // if(BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) == null)
+            //     return;
 
             var gifPlayData = new GIFPlayData();
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
                 var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
-                
-
                 gifPlayData.ItemType = EGIFType.Enemy;
-                
-                
                 gifPlayData.ID = enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID;
 
             }
@@ -69,6 +70,7 @@ namespace RoundHero
             {
                 unitDescItem.gameObject.SetActive(true);
                 playerCardItem.gameObject.SetActive(false);
+                unitBattleData.SetActive(true);
                 
                 gifPlayData.ItemType = EGIFType.Enemy;
                 
@@ -85,34 +87,62 @@ namespace RoundHero
                             enemyEntity.BattleMonsterEntityData.BattleMonsterData.MaxHP;
                 
                 unitDescItem.SetDesc(name, power, desc);
+                actionTimeStr.text = (unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes +
+                                      unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes).ToString();
                 
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
+                unitBattleData.SetActive(true);
+                unitDescItem.gameObject.SetActive(true);
+                playerCardItem.gameObject.SetActive(false);
                 if (UnitDescFormData.UnitRole == EUnitRole.Hero)
                 {
-                    unitDescItem.gameObject.SetActive(true);
-                    playerCardItem.gameObject.SetActive(false);
-                    
                     gifPlayData.ItemType = EGIFType.Hero;
-                    unitDescItem.SetDesc("1", "5", "2323");
+                    unitDescItem.SetDesc(GameEntry.Localization.GetString(Constant.Localization.UI_CoreName),
+                        BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" +
+                        BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP,
+                        GameEntry.Localization.GetString(Constant.Localization.UI_CoreDesc));
                 }
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
-                    playerCardItem.gameObject.SetActive(true);
-                    unitDescItem.gameObject.SetActive(false);
-                    
                     gifPlayData.ItemType = EGIFType.Solider;
-                    var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
-                    var cardData = CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                    var unitEntity =
+                        BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
+                    var cardData =
+                        CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                     var playerCardData = new PlayerCardData()
                     {
                         CardIdx = cardData.CardIdx,
                         CardID = cardData.CardID,
                     };
-                    
+
                     playerCardItem.SetItemData(playerCardData, true);
+                    actionTimeStr.text = (unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes +
+                                          unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes)
+                        .ToString();
                 }
+            }
+            
+            else if (UnitDescFormData.UnitCamp == EUnitCamp.Empty)
+            {
+                unitDescItem.gameObject.SetActive(true);
+                playerCardItem.gameObject.SetActive(false);
+                unitBattleData.SetActive(true);
+                
+                var gridTypeName =
+                    Utility.Text.Format(Constant.Localization.GridTypeName, UnitDescFormData.GridType);
+                
+                var gridTypeDesc =
+                    Utility.Text.Format(Constant.Localization.GridTypeDesc, UnitDescFormData.GridType); 
+
+ 
+                unitDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
+                    "", GameEntry.Localization.GetString(gridTypeDesc));
+            }
+            else
+            {
+                unitBattleData.SetActive(false);
             }
             
             //Vector3 mousePosition = Input.mousePosition;

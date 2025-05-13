@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 6428575628666683769}
   - component: {fileID: 26361000586084602}
   - component: {fileID: 4695562842342328558}
+  - component: {fileID: 4133075548338716648}
   m_Layer: 0
   m_Name: GridEntity
   m_TagString: Untagged
@@ -143,6 +144,7 @@ MonoBehaviour:
   selectionGrid: {fileID: 4867536467573372071}
   backupGrid: {fileID: 2084758997882262032}
   grid: {fileID: 6042601998718694999}
+  UnitDescTriggerItem: {fileID: 4133075548338716648}
 --- !u!65 &26361000586084602
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -225,6 +227,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &4133075548338716648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3498524218785738611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b2aa0ec3944bafba21c6a5d17c5918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnitDescFormData:
+    UnitRole: 0
+    UnitCamp: 4
+    Idx: 0
+    GridType: 0
 --- !u!1 &4867536467573372071
 GameObject:
   m_ObjectHideFlags: 0

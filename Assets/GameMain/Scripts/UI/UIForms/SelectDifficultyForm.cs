@@ -48,15 +48,15 @@ namespace RoundHero
             //7071044;//
             int startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             
-            GamePlayManager.Instance.GamePlayData.IsTutorial = true;
-            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
-            {
-                startGameRandomSeed = Constant.Tutorial.RandomSeed;
-            }
-            else
-            {
-                startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
-            }
+            // GamePlayManager.Instance.GamePlayData.IsTutorial = true;
+            // if (GamePlayManager.Instance.GamePlayData.IsTutorial)
+            // {
+            //     startGameRandomSeed = Constant.Tutorial.RandomSeed;
+            // }
+            // else
+            // {
+            //     startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            // }
             
             Log.Debug("randomSeed:" + startGameRandomSeed);
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;

@@ -10,6 +10,7 @@ namespace RoundHero
     {
         public string Message { get; set; }
         public bool IsShowCancel { get; set; } = true;
+        
 
         public Action OnConfirm
         {

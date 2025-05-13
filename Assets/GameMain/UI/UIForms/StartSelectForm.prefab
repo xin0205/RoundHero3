@@ -6720,7 +6720,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 221762142462388275, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: desc
-      value: Info.SelectCard
+      value: Info.SelectInitCard
       objectReference: {fileID: 0}
     - target: {fileID: 221762142462388275, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: name
@@ -7992,7 +7992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4475915529052259568, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4475915529052259568, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_SizeDelta.y
@@ -8004,7 +8004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4475915529052259568, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -5
+      value: -13.75
       objectReference: {fileID: 0}
     - target: {fileID: 8111883256673197873, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_FontData.m_FontSize

@@ -55,6 +55,7 @@ namespace RoundHero
 
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
 
+
             var randomPassCards = MathUtility.GetRandomNum(keyList.Count, 0, keyList.Count, Random);
             for (int i = 0; i < randomPassCards.Count; i++)
             {
@@ -641,6 +642,9 @@ namespace RoundHero
             {
                 if (Input.GetMouseButtonDown(1))
                 {
+                    if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
+                        return;
+                        
                     if (BattleManager.Instance.BattleState == EBattleState.MoveGrid)
                     {
                         if (BattleAreaManager.Instance.IsMoveGrid)

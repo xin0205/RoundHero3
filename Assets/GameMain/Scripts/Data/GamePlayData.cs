@@ -1558,6 +1558,8 @@ namespace RoundHero
         public Data_Enemy EnemyData = new ();
         public EGamMode GameMode;
         public int RandomSeed = -1;
+        
+        public bool IsTutorialBattle = false;
         public bool IsTutorial = false;
 
         public Data_GamePlay()
@@ -1612,7 +1614,7 @@ namespace RoundHero
             data.LastBattleData = LastBattleData.Copy();
             data.EnemyData = EnemyData.Copy();
             data.MapData = MapData.Copy();
-            data.IsTutorial = IsTutorial;
+            data.IsTutorialBattle = IsTutorialBattle;
             data.GameMode = GameMode;
             data.RandomSeed = RandomSeed;
 

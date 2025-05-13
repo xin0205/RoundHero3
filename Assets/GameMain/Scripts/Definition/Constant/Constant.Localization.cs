@@ -69,6 +69,7 @@ namespace RoundHero
             
             public const string Message_BattleTestSuccess = "Message.BattleTestSuccess";
             public const string Message_BattleTestFailed = "Message.BattleTestFailed";
+            public const string Message_TutorailConfirm = "Message.TutorailConfirm";
             
             public const string Info_Move = "Info.Move";
             public const string Info_Attack = "Info.Attack";
@@ -76,7 +77,13 @@ namespace RoundHero
             public const string CardDesc_Attack = "CardDesc.Attack";
             public const string CardName_Move = "CardName.Move";
             public const string CardName_Attack = "CardName.Attack";
+            public const string UI_CoreName = "UI.CoreName";
+            public const string UI_CoreDesc = "UI.CoreDesc";
             
+            
+            public const string GridTypeName = "GridTypeName.{0}";
+            public const string GridTypeDesc = "GridTypeDesc.{0}";
+ 
 
 
         }

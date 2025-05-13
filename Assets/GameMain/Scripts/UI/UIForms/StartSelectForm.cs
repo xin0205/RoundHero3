@@ -192,7 +192,8 @@ namespace RoundHero
             {
                 item.IsInitHandlerCalled = true;
                 itemScript.Init();
-                itemScript.ClickAction = CardAddOrRemoveBattle;
+                //CardAddOrRemoveBattle;
+                itemScript.ClickAction = CardAddBattle;
             }
             
             itemScript.SetItemData(selectInitCards[itemIndex], itemIndex, row, column);
@@ -230,10 +231,10 @@ namespace RoundHero
 
         public void CardAddBattle(int cardID)
         {
-            if (GameManager.Instance.TmpInitCards.Contains(cardID))
-            {
-                return;
-            }
+            // if (GameManager.Instance.TmpInitCards.Contains(cardID))
+            // {
+            //     return;
+            // }
 
             if (GameManager.Instance.TmpInitCards.Count >= Constant.Battle.InitCardMaxCount)
             {
@@ -243,7 +244,7 @@ namespace RoundHero
                 return;
             }
             
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < Constant.Battle.SelectInitCardEachCount; i++)
             {
                 GameManager.Instance.TmpInitCards.Add(cardID);
             }
@@ -253,9 +254,11 @@ namespace RoundHero
             inBattleGridView.GetComponent<ScrollRect>().normalizedPosition = Vector2.zero;
         }
 
-        public void CardRemoveBattle(int cardID)
+        public void CardRemoveBattle(int cardSortIdx)
         {
-            GameManager.Instance.TmpInitCards.RemoveAll((BattleCardID) => BattleCardID == cardID);
+            GameManager.Instance.TmpInitCards.RemoveAt(cardSortIdx);
+            
+            //GameManager.Instance.TmpInitCards.RemoveAll((BattleCardID) => BattleCardID == cardID);
             
             inBattleGridView.SetListItemCount(GameManager.Instance.TmpInitCards.Count);
             inBattleGridView.RefreshAllShownItem();

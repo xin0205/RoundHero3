@@ -63,7 +63,7 @@ namespace RoundHero
             
             AreaController.Instance.Canvas = this.GetComponent<Canvas>();
 
-            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
+            if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
                 BattleManager.Instance.TutorialStep = ETutorialStep.Start;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
@@ -360,7 +360,10 @@ namespace RoundHero
 
         public void TestSuccess()
         {
-            if(TutorialManager.Instance.CheckTutorialEnd())
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+            
+            if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
                 return;
             
             procedureBattle.EndBattle();
@@ -370,7 +373,10 @@ namespace RoundHero
         
         public void ExitBattleTest()
         {
-            if(!TutorialManager.Instance.CheckTutorialEnd())
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+            
+            if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
                 return;
             
             BattleManager.Instance.EndBattleTest();

@@ -74,7 +74,7 @@ namespace RoundHero
             var obstacles = new List<int>();
             var obstacleIdxs = new List<int>();
 
-            if (GamePlayManager.Instance.GamePlayData.IsTutorial)
+            if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
                 obstacles = Constant.Tutorial.Obstacles;
                 
@@ -631,88 +631,106 @@ namespace RoundHero
             if (!pointerDownInRange)
             {
                 var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
+                
+                //var gridEntity = GetGridEntityByGridPosIdx(ne.GridPosIdx);
+                
             
-            if (unit != null && unit is BattleSoliderEntity)
-            {
-                if (ne.ShowState == EShowState.Show)
+                if (unit != null && unit is BattleSoliderEntity)
                 {
-                    unit.OnPointerEnter();
-                    if (unit.CurHP > 0 && !unit.IsMove)
+                    if (ne.ShowState == EShowState.Show)
                     {
-                        if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
+                        unit.OnPointerEnter();
+                        if (unit.CurHP > 0 && !unit.IsMove)
                         {
-                            var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
-                            var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
-                            if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+                            if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
                             {
-                                unit.ShowTags(unit.UnitIdx, true);
+                                var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+                                var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+                                if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+                                {
+                                    unit.ShowTags(unit.UnitIdx, true);
+                                }
+                                
                             }
-                            
+                            else
+                            {
+                                unit.ShowHurtTags(unit.UnitIdx);
+                            }
                         }
-                        else
+                        
+                
+                    }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        unit.OnPointerExit();
+                        unit.UnShowTags();
+                    }
+                
+                }
+                else if (unit != null && unit is BattleCoreEntity)
+                {
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        unit.OnPointerEnter();
+                        if (unit.CurHP > 0 && !unit.IsMove)
                         {
                             unit.ShowHurtTags(unit.UnitIdx);
                         }
                     }
-                    
-            
-                }
-                else if (ne.ShowState == EShowState.Unshow)
-                {
-                    unit.OnPointerExit();
-                    unit.UnShowTags();
-                }
-            
-            }
-            else if (unit != null && unit is BattleCoreEntity)
-            {
-                if (ne.ShowState == EShowState.Show)
-                {
-                    unit.OnPointerEnter();
-                    if (unit.CurHP > 0 && !unit.IsMove)
+                    else if (ne.ShowState == EShowState.Unshow)
                     {
-                        unit.ShowHurtTags(unit.UnitIdx);
+                        unit.OnPointerExit();
+                        unit.UnShowTags();
                     }
+                
                 }
-                else if (ne.ShowState == EShowState.Unshow)
+                else if (unit != null && unit is BattleMonsterEntity battleMonsterEntity)
                 {
-                    unit.OnPointerExit();
-                    unit.UnShowTags();
-                }
-            
-            }
-            else if (unit != null && unit is BattleMonsterEntity battleMonsterEntity)
-            {
-                if (ne.ShowState == EShowState.Show)
-                {
-                    unit.OnPointerEnter();
-                    if (unit.CurHP > 0 && !unit.IsMove)
+                    if (ne.ShowState == EShowState.Show)
                     {
-                        if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                        unit.OnPointerEnter();
+                        if (unit.CurHP > 0 && !unit.IsMove)
                         {
-                            unit.ShowTags(unit.UnitIdx, true);
-                        }
-                        else
-                        {
-                            unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                            if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                            {
+                                unit.ShowTags(unit.UnitIdx, true);
+                            }
+                            else
+                            {
+                                unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                            }
                         }
                     }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        // unit.OnPointerExit();
+                        // if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                        // {
+                        //     unit.UnShowTags();
+                        // }
+                        
+                        
+                        unit.OnPointerExit();
+                        unit.UnShowTags();
+                    }
                 }
-                else if (ne.ShowState == EShowState.Unshow)
-                {
-                    // unit.OnPointerExit();
-                    // if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-                    // {
-                    //     unit.UnShowTags();
-                    // }
-                    
-                    
-                    unit.OnPointerExit();
-                    unit.UnShowTags();
-                }
+                // else
+                // {
+                //     if (ne.ShowState == EShowState.Show)
+                //     {
+                //         gridEntity.OnPointerEnter();
+                //     }
+                //     else if (ne.ShowState == EShowState.Show)
+                //     {
+                //         gridEntity.OnPointerExit();
+                //     }
+                //     
+                // }
             }
-            }
+
             
+            
+
         }
 
         
