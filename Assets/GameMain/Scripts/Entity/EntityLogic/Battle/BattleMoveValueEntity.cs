@@ -29,6 +29,9 @@ namespace RoundHero
                 return;
             }
 
+            //this.transform.position = BattleMoveValueEntityData.Position;
+            KillTween();
+
             text.text = BattleMoveValueEntityData.Value < 0
                 ? BattleMoveValueEntityData.Value.ToString()
                 : "+" + BattleMoveValueEntityData.Value;
@@ -96,7 +99,10 @@ namespace RoundHero
                 }, "+" + absValue, time).From("-" + absValue).SetEase(Ease.InOutExpo);
             }
 
-            
+            // textColTween.Play();
+            // textStrTween.Play();
+            // moveTween.Play();
+
             
             if (BattleMoveValueEntityData.IsLoop)
             {
@@ -148,23 +154,25 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             //Log.Debug("OnHide" + BattleMoveValueEntityData.Id);
-            
+
+            KillTween();
+
+        }
+
+        private void KillTween()
+        {
             if(moveTween == null)
-                Log.Debug("moveTween");
-            // if(text == null)
-            //     Log.Debug("text");
+                //Log.Debug("moveTween");
+                // if(text == null)
+                //     Log.Debug("text");
             if(textColTween == null)
-                Log.Debug("textColTween");
+               Log.Debug("textColTween");
             if(textStrTween == null)
                 Log.Debug("textStrTween");
-
             
-            //moveTween.Pause();
-            //text.DOKill();
-            moveTween.Kill();
-            textColTween.Kill();
-            textStrTween.Kill();
-            
+            moveTween?.Kill();
+            textColTween?.Kill();
+            textStrTween?.Kill();
         }
     }
 }

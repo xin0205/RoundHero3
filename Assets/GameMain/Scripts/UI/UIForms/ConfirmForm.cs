@@ -10,7 +10,10 @@ namespace RoundHero
     {
         public string Message { get; set; }
         public bool IsShowCancel { get; set; } = true;
-        
+
+        public string ConfirmStr { get; set; }
+        public string CancelStr { get; set; }
+
 
         public Action OnConfirm
         {
@@ -30,6 +33,9 @@ namespace RoundHero
         [SerializeField] private Text message;
         private ConfirmFormParams confirmFormParams;
         [SerializeField] private GameObject cancelButtonGO;
+        
+        [SerializeField] private Text confirmStr;
+        [SerializeField] private Text cancelStr;
 
         protected override void OnOpen(object userData)
         {
@@ -39,6 +45,16 @@ namespace RoundHero
 
             message.text = confirmFormParams.Message;
 
+            if (!string.IsNullOrEmpty(confirmFormParams.ConfirmStr))
+            {
+                confirmStr.text = confirmFormParams.ConfirmStr;
+            }
+            
+            if (!string.IsNullOrEmpty(confirmFormParams.CancelStr))
+            {
+                cancelStr.text = confirmFormParams.CancelStr;
+            }
+            
             cancelButtonGO.SetActive(confirmFormParams.IsShowCancel);
 
         }

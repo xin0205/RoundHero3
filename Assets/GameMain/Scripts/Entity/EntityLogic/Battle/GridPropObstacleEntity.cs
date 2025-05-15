@@ -41,16 +41,16 @@ namespace RoundHero
         public virtual void OnPointerEnter(BaseEventData baseEventData)
         {
 
-            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, true));
-            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, EShowState.Show)); 
+            //GameEntry.Event.Fire(null, SelectGridEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, true));
+            //GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, EShowState.Show)); 
   
         }
         
         public virtual void OnPointerExit(BaseEventData baseEventData)
         {
 
-            GameEntry.Event.Fire(null, SelectGridEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, false));
-            GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, EShowState.Unshow)); 
+            //GameEntry.Event.Fire(null, SelectGridEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, false));
+            //GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(GridPropEntityData.GridPropData.GridPosIdx, EShowState.Unshow)); 
 
         }
     }

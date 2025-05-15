@@ -16,8 +16,11 @@ namespace RoundHero
  
         public async void OnPointerEnter()
         {
-            if(isOpen)
-                return;
+            if (isOpen)
+            {
+                CloseForm();
+            }
+                //return;
 
             isOpen = true;
             var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.UnitDescForm, UnitDescFormData);

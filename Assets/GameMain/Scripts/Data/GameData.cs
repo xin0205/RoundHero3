@@ -11,7 +11,8 @@ namespace RoundHero
         public int CurFileIdx = -1;
         public Dictionary<int, Data_GamePlay> GamePlayDatas = new ();
         public Data_GamePlay CurGamePlayData = new ();
-
+        public List<int> DefaultInitSelectCards = new List<int>();
+        
         public Data_User()
         {
             

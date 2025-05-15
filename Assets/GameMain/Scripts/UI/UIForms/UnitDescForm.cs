@@ -27,6 +27,7 @@ namespace RoundHero
         
         [SerializeField] private PlayerCardItem playerCardItem;
         [SerializeField] private UnitDescItem unitDescItem;
+        [SerializeField] private GridDescItem gridDescItem;
         [SerializeField] private GameObject unitBattleData;
         
         [SerializeField] private Text actionTimeStr;
@@ -66,10 +67,14 @@ namespace RoundHero
             
             gifPlayItem.SetGIF(gifPlayData);
             
+            unitDescItem.gameObject.SetActive(false);
+            playerCardItem.gameObject.SetActive(false);
+            unitBattleData.SetActive(false);
+            gridDescItem.gameObject.SetActive(false);
+            
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
                 unitDescItem.gameObject.SetActive(true);
-                playerCardItem.gameObject.SetActive(false);
                 unitBattleData.SetActive(true);
                 
                 gifPlayData.ItemType = EGIFType.Enemy;
@@ -94,10 +99,11 @@ namespace RoundHero
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
                 unitBattleData.SetActive(true);
-                unitDescItem.gameObject.SetActive(true);
-                playerCardItem.gameObject.SetActive(false);
+                
+
                 if (UnitDescFormData.UnitRole == EUnitRole.Hero)
                 {
+                    unitDescItem.gameObject.SetActive(true);
                     gifPlayData.ItemType = EGIFType.Hero;
                     unitDescItem.SetDesc(GameEntry.Localization.GetString(Constant.Localization.UI_CoreName),
                         BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" +
@@ -106,6 +112,7 @@ namespace RoundHero
                 }
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
+                    playerCardItem.gameObject.SetActive(true);
                     gifPlayData.ItemType = EGIFType.Solider;
                     var unitEntity =
                         BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
@@ -117,7 +124,7 @@ namespace RoundHero
                         CardID = cardData.CardID,
                     };
 
-                    playerCardItem.SetItemData(playerCardData, true);
+                    playerCardItem.SetItemData(playerCardData, false);
                     actionTimeStr.text = (unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes +
                                           unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes)
                         .ToString();
@@ -126,9 +133,7 @@ namespace RoundHero
             
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Empty)
             {
-                unitDescItem.gameObject.SetActive(true);
-                playerCardItem.gameObject.SetActive(false);
-                unitBattleData.SetActive(true);
+                gridDescItem.gameObject.SetActive(true);
                 
                 var gridTypeName =
                     Utility.Text.Format(Constant.Localization.GridTypeName, UnitDescFormData.GridType);
@@ -137,13 +142,10 @@ namespace RoundHero
                     Utility.Text.Format(Constant.Localization.GridTypeDesc, UnitDescFormData.GridType); 
 
  
-                unitDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
-                    "", GameEntry.Localization.GetString(gridTypeDesc));
+                gridDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
+                    GameEntry.Localization.GetString(gridTypeDesc));
             }
-            else
-            {
-                unitBattleData.SetActive(false);
-            }
+
             
             //Vector3 mousePosition = Input.mousePosition;
             

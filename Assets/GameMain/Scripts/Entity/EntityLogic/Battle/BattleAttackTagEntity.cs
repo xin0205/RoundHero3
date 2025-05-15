@@ -92,7 +92,8 @@ namespace RoundHero
                         line.SetPosition(idx++, pos);
                     }
                 }
-                else if (BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Parabola"))
+                // if (BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Parabola"))
+                else
                 {
                     var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
                     var endPos = GameUtility.GridPosIdxToPos(targetGridPosIdx) + new Vector3(0, 1f, 0);

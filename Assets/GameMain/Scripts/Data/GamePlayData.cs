@@ -1559,6 +1559,7 @@ namespace RoundHero
         public EGamMode GameMode;
         public int RandomSeed = -1;
         
+        
         public bool IsTutorialBattle = false;
         public bool IsTutorial = false;
 

@@ -860,8 +860,8 @@ namespace RoundHero
                     var moveTIdx = tIdx;
                     var nextMoveGridPosIdx = moveGridPosIdx;
                     var movePos = pos;
-                    Log.Debug("pos:" + this.transform.position.x);
-                    Log.Debug("LookAt:" + pos.x);
+                    //Log.Debug("pos:" + this.transform.position.x);
+                    //Log.Debug("LookAt:" + pos.x);
 
                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
                     if (unitActionState == EUnitActionState.Fly)
@@ -885,7 +885,7 @@ namespace RoundHero
                         transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Unit.MoveTimes[unitActionState]).SetEase(Ease.Linear).OnComplete(() =>
                         {
                             GridPosIdx = nextMoveGridPosIdx;
-                            Log.Debug("movePos:" + movePos);
+                            //Log.Debug("movePos:" + movePos);
                             BattleFightManager.Instance.MoveEffectAction(unitActionState, moveActionData, moveTIdx, BattleUnitData.Idx);
                         
                         });

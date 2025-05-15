@@ -83,7 +83,11 @@ namespace RoundHero
             
             public const string GridTypeName = "GridTypeName.{0}";
             public const string GridTypeDesc = "GridTypeDesc.{0}";
- 
+
+            public const string UI_BattleTest = "UI.BattleTest";
+            public const string UI_Tutorial = "UI.Tutorial";
+
+
 
 
         }

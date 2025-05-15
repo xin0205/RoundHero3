@@ -98,9 +98,8 @@ namespace RoundHero
         
         public void OnPointerEnter(BaseEventData baseEventData)
         {
-            //Log.Debug("OnPointerEnter" + BattleGridEntityData.Id);
             ShowSelectGrid(true);
-            UnitDescTriggerItem.OnPointerEnter();
+            //UnitDescTriggerItem.OnPointerEnter();
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleGridEntityData.GridPosIdx, EShowState.Show)); 
         }
         
@@ -108,8 +107,22 @@ namespace RoundHero
         {
             //Log.Debug("OnPointerExit" + BattleGridEntityData.Id);
             ShowSelectGrid(false);
-            UnitDescTriggerItem.OnPointerExit();
+            //UnitDescTriggerItem.OnPointerExit();
             GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleGridEntityData.GridPosIdx, EShowState.Unshow)); 
+        }
+        
+        public void OnPointerEnter()
+        {
+
+            UnitDescTriggerItem.OnPointerEnter();
+            
+        }
+        
+        public void OnPointerExit()
+        {
+
+            UnitDescTriggerItem.OnPointerExit();
+            
         }
         
         public void OnPointerClick(BaseEventData baseEventData)

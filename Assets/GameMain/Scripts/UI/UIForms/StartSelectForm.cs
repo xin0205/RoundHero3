@@ -78,6 +78,8 @@ namespace RoundHero
                 selectInitCards.Add(drCard.Id);
             }
             
+            GameManager.Instance.TmpInitCards = DataManager.Instance.DataGame.User.DefaultInitSelectCards;
+            
             selectCardGridView.SetListItemCount(selectInitCards.Count);
             selectCardGridView.RefreshAllShownItem();
 

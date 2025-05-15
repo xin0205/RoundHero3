@@ -26,6 +26,12 @@ namespace RoundHero
                 return;
             }
 
+            if (BattleDisplayValueEntityData.Value == 0)
+            {
+                GameEntry.Entity.HideEntity(this);
+                return;
+            }
+
             var time = 2;
             text.text = BattleDisplayValueEntityData.Value < 0 ? BattleDisplayValueEntityData.Value.ToString() :  "+" + BattleDisplayValueEntityData.Value;
 
