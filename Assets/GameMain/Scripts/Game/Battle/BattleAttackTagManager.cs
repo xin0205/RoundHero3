@@ -27,7 +27,9 @@ namespace RoundHero
             if (effectUnit == null)
                 return;
 
-            var triggerDataDict = BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx);
+            var triggerDataDict =
+                GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
+                                      BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
 
             if (triggerDataDict.Values.Count <= 0)
             {
@@ -47,15 +49,15 @@ namespace RoundHero
             {
                 foreach (var triggerData in triggerDatas)
                 {
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;
                     
-                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
+                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
                         continue;
                     
-                    var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    if(actionUnit == null)
-                        continue;
+                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    // if(actionUnit == null)
+                    //     continue;
 
                     curAttackTagEntityIdx++;
                 }
@@ -67,18 +69,18 @@ namespace RoundHero
             {
                 foreach (var triggerData in triggerDatas)
                 {
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;
                     
-                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
+                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
                         continue;
                     
-                    var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    if(actionUnit == null)
-                        continue;
+                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    // if(actionUnit == null)
+                    //     continue;
                     
 
-                    await InternalShowTag(actionUnit.BattleUnitData, effectUnit.GridPosIdx, triggerData.BuffValue, entityIdx, true, !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx));
+                    await InternalShowTag(triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData.BuffValue, entityIdx, true, !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx), triggerData.TriggerDataSubType == ETriggerDataSubType.Collision);
                     effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
                     entityIdx++;
                     
@@ -112,19 +114,29 @@ namespace RoundHero
             
         }
 
-        private async Task<BattleAttackTagEntity> InternalShowTag(Data_BattleUnit actionUnit, int effectUnitGridPosIdx, BuffValue buffValue,
-            int entityIdx, bool showAttackLine, bool showAttackPos)
+        private async Task<BattleAttackTagEntity> InternalShowTag(int actionGridPosIdx, int effectUnitGridPosIdx, BuffValue buffValue,
+            int entityIdx, bool showAttackLine, bool showAttackPos, bool isCollision)
         {
 
             var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
-            var actionUnitPos = GameUtility.GridPosIdxToPos(actionUnit.GridPosIdx);
+            var actionUnitPos = GameUtility.GridPosIdxToPos(actionGridPosIdx);
 
-            var actionUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(actionUnit.Idx);
+            //var actionUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(actionUnit.Idx);
 
-            var attackTagType = GameUtility.IsSubCurHPBuffValue(buffValue) ? EAttackTagType.Attack :
-                GameUtility.IsSubCurHPBuffValue(buffValue) ? EAttackTagType.Recover : EAttackTagType.UnitState;
-
-            var unitState = attackTagType == EAttackTagType.UnitState ? buffValue.BuffData.UnitState : EUnitState.Empty;
+            EAttackTagType attackTagType;
+            EUnitState unitState;
+            if (isCollision)
+            {
+                attackTagType = EAttackTagType.Attack;
+                unitState = EUnitState.Empty;
+                showAttackLine = false;
+            }
+            else
+            {
+                attackTagType = GameUtility.IsSubCurHPBuffValue(buffValue) ? EAttackTagType.Attack :
+                    GameUtility.IsAddCurHPBuffValue(buffValue) ? EAttackTagType.Recover : EAttackTagType.UnitState;
+                unitState = attackTagType == EAttackTagType.UnitState ? buffValue.BuffData.UnitState : EUnitState.Empty;
+            }
 
             //Log.Debug("InternalShowTag:" + entityIdx);
             var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos, actionUnitPos,
@@ -213,7 +225,7 @@ namespace RoundHero
                     if (effectGridPosIdxs.Contains(gridPosIdx))
                     {
                         
-                        await InternalShowTag(actionUnit, gridPosIdx, buffValue, entityIdx, effectGridPosIdxs.Contains(gridPosIdx), showAttackPos);
+                        await InternalShowTag(actionUnit.GridPosIdx, gridPosIdx, buffValue, entityIdx, effectGridPosIdxs.Contains(gridPosIdx), showAttackPos, false);
                         entityIdx++;
                         
                         

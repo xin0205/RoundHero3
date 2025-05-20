@@ -182,9 +182,20 @@ namespace RoundHero
             BattleCardManager.Instance.SelectCardHandOrder = BattleCardEntityData.HandSortingIdx;
             BattleCardManager.Instance.RefreshSelectCard();
             BattleCardManager.Instance.SetCardsPos();
+
+            BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.UseBuff;
+            BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+            BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = BattleCardEntityData.CardIdx;
             
             RefreshCardRect();
             BattleManager.Instance.RefreshEnemyAttackData();
+
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                
+                kv.Value.ShowTacticHurtDisplayValues(kv.Value.UnitIdx);
+                
+            }
         }
         
         public void OnPointerExit()
@@ -213,10 +224,17 @@ namespace RoundHero
             BattleCardManager.Instance.RefreshSelectCard();
             BattleCardManager.Instance.SetCardsPos();
             
+            BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+            BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Empty;
+            BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = -1;
+            
             
             BattleManager.Instance.RefreshEnemyAttackData();
             
-            
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                kv.Value.UnShowTags();
+            }
             
             
         }

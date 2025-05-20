@@ -49,8 +49,8 @@ namespace RoundHero
             GameEntry.UI.CloseUIForm(form);
             Close();
 
-            //7071044;//60835532;  6762628;//
-            int startGameRandomSeed = 7574947;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            //7071044;//60835532;  6762628; 7574947;
+            int startGameRandomSeed = 14200132;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             
             // GamePlayManager.Instance.GamePlayData.IsTutorial = true;
             // if (GamePlayManager.Instance.GamePlayData.IsTutorial)

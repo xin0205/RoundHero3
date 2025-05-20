@@ -309,6 +309,7 @@ namespace RoundHero
         SingleRound,
         ChangeHP,
         TacticSelectUnit,
+        TacticAtrb,
         RangeTrigger,
     }
 
@@ -375,6 +376,7 @@ namespace RoundHero
         InRange,
         Vertical,
         Horizontal,
+        Staff,
         EffectUnitDirect,
         DeBuffMax,
         MoveMax,
@@ -527,6 +529,7 @@ namespace RoundHero
         UnitState,
         Curse,
         Bless,
+        Tactic
     }
 
     public enum EFlyType

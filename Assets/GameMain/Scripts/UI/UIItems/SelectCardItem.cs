@@ -23,7 +23,7 @@ namespace RoundHero
         
         public void Init()
         {
-            
+            tag.SetActive(false);
         }
         
         public void SetItemData(int cardID, int itemIndex,int row,int column)

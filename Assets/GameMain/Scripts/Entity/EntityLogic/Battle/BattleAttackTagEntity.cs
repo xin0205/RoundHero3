@@ -80,7 +80,7 @@ namespace RoundHero
             //line.gameObject.SetActive(false);
             if (BattleAttackTagEntityData.ShowAttackLine)
             {
-                if (BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Extend"))
+                if (BattleAttackTagEntityData.BuffValue != null && BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Extend"))
                 {
                     line.positionCount = gridPosIdxs.Count;
                     line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));

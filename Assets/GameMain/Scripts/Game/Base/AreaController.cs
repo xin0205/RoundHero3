@@ -16,6 +16,8 @@ namespace RoundHero
 
         public GameObject UICore;
 
+        public GameObject BattleFormRoot;
+
 
         public void Awake() 
         {

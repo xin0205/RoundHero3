@@ -342,7 +342,6 @@ namespace RoundHero
 
         private void CachePreData()
         {
-
             RoundFightData.Clear();
 
             RoundFightData.GamePlayData = GamePlayManager.Instance.GamePlayData.Copy();
@@ -356,9 +355,9 @@ namespace RoundHero
             }
 
             BattleUnitDatas = RoundFightData.GamePlayData.BattleData.BattleUnitDatas;
-            
+
             RefreshUnitGridPosIdx();
-            
+
             foreach (var kv in RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
                 if (kv.Value is Data_BattleHero hero)
@@ -379,7 +378,7 @@ namespace RoundHero
 
             }
 
-            if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.NewUnit)
+            if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.NewUnit)
             {
                 RoundFightData.GamePlayData.BattleData.GridTypes[RoundFightData.TempTriggerData.UnitData.GridPosIdx] =
                     EGridType.TemporaryUnit;
@@ -402,46 +401,56 @@ namespace RoundHero
                         RoundFightData.TempTriggerData.UnitData.GridPosIdx);
                 }
             }
-            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.MoveUnit)
+            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.MoveUnit)
             {
                 RoundFightData.GamePlayData.BattleData.GridTypes[
                     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx] = EGridType.Empty;
                 RoundFightData.GamePlayData.BattleData.GridTypes[
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx] = EGridType.TemporaryUnit;
             }
-            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.SelectHurtUnit)
+            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.SelectHurtUnit)
             {
                 RoundFightData.GamePlayData.BattleData.GridTypes[
                     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx] = EGridType.Empty;
                 RoundFightData.GamePlayData.BattleData.GridTypes[
                     BattleManager.Instance.TempTriggerData.TargetGridPosIdx] = EGridType.TemporaryUnit;
             }
-            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.UseBuff)
+            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.UseBuff)
             {
                 var effectUnit =
-                    RoundFightData.GamePlayData.BattleData.BattleUnitDatas.ContainsKey(BattleManager.Instance.TempTriggerData.CardEffectUnitID)
+                    RoundFightData.GamePlayData.BattleData.BattleUnitDatas.ContainsKey(BattleManager.Instance
+                        .TempTriggerData.CardEffectUnitID)
                         ? RoundFightData.GamePlayData.BattleData.BattleUnitDatas[
                             BattleManager.Instance.TempTriggerData.CardEffectUnitID]
                         : null;
 
                 if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.Card)
                 {
-                    BattleCardManager.Instance.CacheTacticCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
+                    BattleCardManager.Instance.CacheTacticCardData(
+                        BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
                         BattleManager.Instance.CurUnitCamp, effectUnit);
                 }
-                else if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.EnergyBuff)
+                else if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType ==
+                         TriggerBuffType.EnergyBuff)
                 {
-                    BattleCardManager.Instance.CacheTacticCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
+                    BattleCardManager.Instance.CacheTacticCardData(
+                        BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
                         BattleManager.Instance.CurUnitCamp, effectUnit);
                 }
 
             }
-            
+
+            if (BattleCardManager.Instance.PointerCardIdx != -1)
+            {
+                // BattleCardManager.Instance.CacheTacticCardData(BattleCardManager.Instance.,
+                //     BattleManager.Instance.CurUnitCamp, null);
+            }
+
             // if (BattleManager.Instance.TempTriggerData.TriggerType == ETempUnitType.NewUnit)
             // {
             //     var newUnitID = RoundFightData.TempTriggerData.UnitData.Idx;
             //
-            // }
+
         }
 
         public void CacheRoundFightData()
@@ -485,7 +494,7 @@ namespace RoundHero
             CachePreData();
             
             CacheLinks();
-            
+
             CacheUseCardTriggerDatas();
             CacheSoliderActiveAttackDatas();
             CacheSoliderAutoAttackDatas();
@@ -501,6 +510,8 @@ namespace RoundHero
             
             
         }
+        
+
 
         public void CacheUseCardTriggerDatas()
         {
@@ -1432,7 +1443,7 @@ namespace RoundHero
             if (unitData.CurHP <= 0)
                 return;
             
-            if(RoundFightData.TempTriggerData.TriggerType != ETempUnitType.ActiveAtk)
+            if(RoundFightData.TempTriggerData.TriggerType != ETempTriggerType.ActiveAtk)
                 return;
             
             // if (unitData.GetStateCount(EUnitState.ActiveAtk) <= 0)
@@ -1475,7 +1486,7 @@ namespace RoundHero
                 return;
             }
             
-            if(RoundFightData.TempTriggerData.TriggerType != ETempUnitType.AutoAtk)
+            if(RoundFightData.TempTriggerData.TriggerType != ETempTriggerType.AutoAtk)
                 return;
             
             // if (unitData.GetStateCount(EUnitState.AutoAtk) <= 0)
@@ -1837,11 +1848,7 @@ namespace RoundHero
                         
                         BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData, triggerDatas);
                     }
- 
-                    
- 
-                    
-                        
+
                     var collisionTriggerData2 = BattleFightManager.Instance.BattleRoleAttribute(bePassUnitIdx, bePassUnitIdx,
                         unitIdx, EUnitAttribute.HP, GetCollisionHurt(unitActionState), ETriggerDataSubType.Collision);
                     // var passUnitHeroEntity = HeroManager.Instance.GetHeroEntity(passUnit.UnitCamp);
@@ -1866,7 +1873,7 @@ namespace RoundHero
 
                 minFullPaths.Add(gridPosIdx);
 
-                if (passUnit.CurHP <= 0)
+                if (passUnit.CurHP <= 0 && nextGridPosIdx != preGridPosIdx)
                 {
                     //i为终点，表现上，敌人行动终点和我方单位重合，所以，让敌人多走一格，绕过我方单位
                     // if (i == movePaths.Count - 1)
@@ -2003,7 +2010,7 @@ namespace RoundHero
         {
             if (RoundFightData.TempTriggerData.UnitData != null &&
                 RoundFightData.TempTriggerData.UnitData.UnitCamp == PlayerManager.Instance.PlayerData.UnitCamp &&
-                RoundFightData.TempTriggerData.TriggerType == ETempUnitType.MoveUnit)
+                RoundFightData.TempTriggerData.TriggerType == ETempTriggerType.MoveUnit)
             {
                 //var firstUnitActionSoliders = new List<int>();
                 RoundFightData.TempTriggerData.TempUnitMovePaths = CacheUnitMoveDatas(
@@ -4521,7 +4528,7 @@ namespace RoundHero
                             if(triggerData.EffectUnitIdx != effectUnitIdx)
                                 continue;
                             
-                            if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                            if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                                 continue;
                             
                             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -4547,7 +4554,7 @@ namespace RoundHero
                             if(triggerData.EffectUnitIdx != effectUnitIdx)
                                 continue;
                             
-                            if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                            if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                                 continue;
                             
                             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -4642,6 +4649,61 @@ namespace RoundHero
                         }
                         triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
                     }
+                }
+            }
+            
+            // foreach (var kv in RoundFightData.BuffData_Use.TriggerDatas)
+            // {
+            //
+            //     foreach (var triggerData in kv.Value)
+            //     {
+            //         if (triggerData.EffectUnitIdx != effectUnitIdx)
+            //         {
+            //             continue;
+            //         }
+            //             
+            //         if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+            //         {
+            //             continue;
+            //         }
+            //             
+            //         if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+            //         {
+            //             triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+            //         }
+            //         triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+            //     }
+            // }
+
+
+            return triggerDataDict;
+        }
+        
+        public Dictionary<int, List<TriggerData>> GetTacticHurtAttackDatas(int effectUnitIdx)
+        {
+            var triggerDataDict = new Dictionary<int, List<TriggerData>>();
+
+            
+            foreach (var kv in RoundFightData.BuffData_Use.TriggerDatas)
+            {
+
+                foreach (var triggerData in kv.Value)
+                {
+                    if (triggerData.EffectUnitIdx != effectUnitIdx)
+                    {
+                        continue;
+                    }
+                        
+                    // if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                    // {
+                    //     continue;
+                    // }
+                        
+                    if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                    {
+                        triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                    }
+                    triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
                 }
             }
 
@@ -5203,7 +5265,7 @@ namespace RoundHero
             var realEffectUnitIdxs = new List<int>();
             
             var actionUnit = BattleFightManager.Instance.GetUnitByIdx(actionUnitIdx);
-            if (actionUnitGridPosIdx == -1)
+            if (actionUnit != null && actionUnitGridPosIdx == -1)
             {
                 actionUnitGridPosIdx = actionUnit.GridPosIdx;
             }
@@ -5216,6 +5278,25 @@ namespace RoundHero
             {
                 switch (triggerTarget)
                 {
+                    case ETriggerTarget.Staff:
+                        if (buffData.BuffStr.Contains("Tactic"))
+                        {
+                            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+                            {
+                                if(kv.Value.UnitRole != EUnitRole.Staff)
+                                    continue;
+                                
+                                if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != EUnitCamp.Player1)
+                                {
+                                    realEffectUnitIdxs.Add(kv.Value.Idx);
+                                }
+                                else if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == EUnitCamp.Player1)
+                                {
+                                    realEffectUnitIdxs.Add(kv.Value.Idx);
+                                }
+                            }
+                        }
+                        break;
                     case ETriggerTarget.Effect:
                         if (effectUnitIdx != -1)
                         {

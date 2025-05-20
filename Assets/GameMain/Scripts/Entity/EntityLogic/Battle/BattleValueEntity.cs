@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using TMPro;
+﻿using UnityEngine.UI;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -10,12 +9,14 @@ namespace RoundHero
         public BattleValueEntityData BattleValueEntityData { get; protected set; }
 
         
-        [SerializeField] private TextMeshPro text;
+        [SerializeField] private Text text;
         
 
         protected Quaternion cameraQuaternion = Quaternion.identity;
         protected override void OnShow(object userData)
         {
+            transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
+            
             base.OnShow(userData);
             
             BattleValueEntityData = userData as BattleValueEntityData;
@@ -29,7 +30,7 @@ namespace RoundHero
             text.text = BattleValueEntityData.Value.ToString();
 
             
-            transform.position = BattleValueEntityData.TargetPosition;
+            //transform.position = BattleValueEntityData.TargetPosition;
 
         }
 
@@ -41,11 +42,11 @@ namespace RoundHero
 
         private void Update()
         {
-            cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
-            transform.rotation = cameraQuaternion;
-            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
-            
-            transform.localScale = Vector3.one *  dis / 8f;
+            // cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
+            // transform.rotation = cameraQuaternion;
+            // var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
+            //
+            // transform.localScale = Vector3.one *  dis / 8f;
         }
     }
 }

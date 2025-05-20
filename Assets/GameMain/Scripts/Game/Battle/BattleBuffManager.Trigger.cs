@@ -6,7 +6,7 @@ namespace RoundHero
     public partial class BattleBuffManager : Singleton<BattleBuffManager>
     {
     public void BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> buffValues, int ownUnitID,
-            int actionUnitID, int effectUnitID, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
+            int actionUnitID, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
             //var drBuff = BattleBuffManager.Instance.GetBuffData(buffID);
@@ -19,10 +19,17 @@ namespace RoundHero
  
             
             var _triggerDatas = BattleBuffManager.Instance.BuffTrigger(buffTriggerType, buffData, buffValues, ownUnitID, actionUnitID,
-                effectUnitID, null, triggerDatas, actionUnitGridPosIdx, actionUnitPreGridPosIdx);
+                effectUnitIdx, null, triggerDatas, actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
             foreach (var triggerData in _triggerDatas)
             {
+                triggerData.BuffValue = new BuffValue()
+                {
+                    BuffData = buffData,
+                    ValueList = new List<float>(buffValues),
+                    UnitIdx = triggerData.EffectUnitIdx,
+                    TargetGridPosIdx = triggerData.EffectUnitGridPosIdx,
+                };
                 if (GameUtility.IsSubCurHPTrigger(triggerData))
                 {
                     isSubCurHP = true;
@@ -41,6 +48,10 @@ namespace RoundHero
     
         public void CacheBuffData(BuffData buffData, EUnitCamp unitCamp, Data_BattleUnit effectUnit, List<float> value1s, float ratio)
         {
+
+            
+            
+            
             //var buffData =  BattleBuffManager.Instance.GetBuffData(buffID);
             // switch (buffID)
             // {

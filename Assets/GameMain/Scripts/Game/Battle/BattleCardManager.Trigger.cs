@@ -1,16 +1,16 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
+
 
 namespace RoundHero
 {
     public partial class BattleCardManager : Singleton<BattleCardManager>
     {
-        public void CacheTacticCardData(int cardID, EUnitCamp camp, Data_BattleUnit effectUnit)
+        public void CacheTacticCardData(int cardIdx, EUnitCamp camp, Data_BattleUnit effectUnit)
         {
-            var drCard = CardManager.Instance.GetCardTable(cardID);
-            var card = BattleManager.Instance.GetCard(cardID);
-
+            var drCard = CardManager.Instance.GetCardTable(cardIdx);
+            var card = BattleManager.Instance.GetCard(cardIdx);
+            var triggerDatas = new List<TriggerData>();
             foreach (var buffID in drCard.BuffIDs)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
@@ -20,9 +20,16 @@ namespace RoundHero
                     values.Add(GameUtility.GetBuffValue(value));
                 }
                 
-                BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
+                
+                //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
+                //
+                BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, -1, -1,
+                    -1, triggerDatas, -1, -1);
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Tactic;
+                
+                
             }
-
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Add(cardIdx, triggerDatas);
         }
 
         

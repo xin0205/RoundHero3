@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -9,7 +10,7 @@ namespace RoundHero
         public BattleMoveValueEntityData BattleMoveValueEntityData { get; protected set; }
 
         
-        [SerializeField] private TextMesh text;
+        [SerializeField] private Text text;
         [SerializeField] private Color hurtColor;
         [SerializeField] private Color recoverColor;
 
@@ -20,6 +21,8 @@ namespace RoundHero
 
         protected override void OnShow(object userData)
         {
+            transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
+            
             base.OnShow(userData);
 
             BattleMoveValueEntityData = userData as BattleMoveValueEntityData;
@@ -42,7 +45,7 @@ namespace RoundHero
 
             var dis = Vector3.Distance(BattleMoveValueEntityData.TargetPos, transform.position);
             //Constant.Battle.BattleValueVelocity
-            var time = dis / Constant.Battle.BattleValueVelocity;
+            var time = dis / (Constant.Battle.BattleValueVelocity * 100);
 
             if (time < 1f)
             {
@@ -73,13 +76,13 @@ namespace RoundHero
                 if(transform == null)
                     return Vector4.zero;
                 
-                return transform.position;
+                return transform.localPosition;
             }, x =>
             {
                 if(this == null || transform == null)
                     return;
                 
-                transform.position = x;
+                transform.localPosition = x;
             }, targetPos, time).SetEase(Ease.InOutQuart);
             //transform.DOMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
             var absValue = Mathf.Abs(BattleMoveValueEntityData.Value);
@@ -138,16 +141,16 @@ namespace RoundHero
 
         private void Update()
         {
-            if (BattleManager.Instance.BattleState == EBattleState.EndBattle)
-            {
-                GameEntry.Entity.HideEntity(this);
-            }
-            
-            cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
-            transform.rotation = cameraQuaternion;
-            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
-            
-            transform.localScale = Vector3.one *  dis / 8f;
+            // if (BattleManager.Instance.BattleState == EBattleState.EndBattle)
+            // {
+            //     GameEntry.Entity.HideEntity(this);
+            // }
+            //
+            // cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
+            // transform.rotation = cameraQuaternion;
+            // var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
+            //
+            // transform.localScale = Vector3.one *  dis / 8f;
         }
 
         protected override void OnHide(bool isShutdown, object userData)

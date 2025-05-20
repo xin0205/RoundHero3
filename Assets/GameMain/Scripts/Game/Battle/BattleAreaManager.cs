@@ -213,6 +213,425 @@ namespace RoundHero
                 }
             }
             
+            
+
+            // if (BattleManager.Instance.BattleState == EBattleState.UseCard)
+            // {
+            //     if (unit != null)
+            //     {
+            //         var movePaths = BattleFightManager.Instance.GetMovePaths(unit.Idx);
+            //         if (movePaths != null)
+            //         {
+            //             if (ne.ShowState == EShowState.Show)
+            //             {
+            //                 unit.Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
+            //                 BattleValueManager.Instance.ShowDisplayValue(unit.Idx);
+            //                 BattleAttackTagManager.Instance.ShowAttackTag(unit.Idx,
+            //                     GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]));
+            //             }
+            //             else if (ne.ShowState == EShowState.Unshow)
+            //             {
+            //                 unit.Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
+            //                 BattleValueManager.Instance.UnShowDisplayValues();
+            //                 BattleAttackTagManager.Instance.UnShowAttackTags();
+            //             }
+            //         }
+            //     }
+            // }
+            
+            
+            
+            // if (unit != null &&
+            //     BattleManager.Instance.BattleState == EBattleState.ActionSelectUnit)
+            // {
+            //     if (ne.ShowState == EShowState.Show)
+            //     {
+            //         var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+            //         var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+            //         
+            //         if (buffData.BuffTriggerType != EBuffTriggerType.AutoAttack)
+            //         {
+            //             return;
+            //         }
+            //
+            //         BattleManager.Instance.TempTriggerData.UnitData =
+            //             BattleUnitManager.Instance.GetBattleUnitData(unit);
+            //
+            //         BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.AutoAtk;
+            //         
+            //
+            //     }
+            //     else if (ne.ShowState == EShowState.Unshow)
+            //     {
+            //         //BattleManager.Instance.TempTriggerData.Reset();
+            //     }
+            //
+            //     BattleManager.Instance.Refresh();
+            //
+            // }
+
+            if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
+            {
+                var unPlacePosIdxs = BattleBuffManager.Instance.GetUnPlacePosIdxs(GamePlayManager.Instance.GamePlayData);
+
+                if (ne.ShowState == EShowState.Show &&
+                    BattleManager.Instance.BattleData.GridTypes[ne.GridPosIdx] == EGridType.Empty &&
+                    !unPlacePosIdxs.Contains(ne.GridPosIdx))
+                {
+                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.NewUnit;
+
+                    var triggerBuffData = BattleManager.Instance.TempTriggerData.TriggerBuffData;
+                    
+                    var cardIdx = triggerBuffData.CardIdx;
+                    var cardData = BattleManager.Instance.GetCard(cardIdx);
+                    if (cardData != null)
+                    {
+                        var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
+                    
+                        var aroundHeroRange = GameUtility.GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Direct82Short, EUnitCamp.Player1, null);
+
+                        if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.SubUnitCardEnergy)
+                        {
+                            if (aroundHeroRange.Contains(ne.GridPosIdx))
+                            {
+                                var values = HeroManager.Instance.GetHeroBuffValues();
+                                cardEnergy += (int)values[0];
+                                
+                            }
+                            
+                        }
+
+                        tmpEntityIdx = BattleUnitManager.Instance.GetIdx();
+                        BattleManager.Instance.TempTriggerData.UnitData = new Data_BattleSolider(
+                            tmpEntityIdx, cardIdx,
+                            ne.GridPosIdx, cardEnergy, BattleManager.Instance.CurUnitCamp,  cardData.FuneIdxs);
+                        
+                        //AddUnitState
+                        //BattleUnitManager.Instance.TempUnitData.UnitData.AddState(EUnitState.AttackPassUs, 1);
+                        
+                        BattleManager.Instance.TempTriggerData.UnitData.CurHP =
+                            BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
+
+                        if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
+                        {
+
+                            if (aroundHeroRange.Contains(ne.GridPosIdx))
+                            {
+                                var values = HeroManager.Instance.GetHeroBuffValues();
+                                BattleManager.Instance.TempTriggerData.UnitData.BaseMaxHP += (int)values[0];
+                                BattleManager.Instance.TempTriggerData.UnitData.CurHP += (int)values[0];
+                            }
+                            
+                        }
+
+                        BlessManager.Instance.EachRoundFightCardAddLink(GamePlayManager.Instance.GamePlayData,
+                            BattleManager.Instance.TempTriggerData.UnitData, EBlessID.EachRoundFightCardAddLinkReceive,
+                            ELinkID.Link_Receive_Around_Us);
+                        BlessManager.Instance.EachRoundFightCardAddLink(GamePlayManager.Instance.GamePlayData,
+                            BattleManager.Instance.TempTriggerData.UnitData, EBlessID.EachRoundFightCardAddLinkSend,
+                            ELinkID.Link_Send_Around_Us);
+                        
+
+                        var tmpEntity =
+                            await GameEntry.Entity.ShowBattleSoliderEntityAsync(BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider);
+                        
+
+                        if(tmpEntity.UnitIdx < tmpEntityIdx || BattleManager.Instance.TempTriggerData.UnitData == null)
+                        {
+                            BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpEntity.BattleSoliderEntityData
+                                .BattleSoliderData.Idx);
+                            // BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpEntity.BattleSoliderEntityData
+                            //     .BattleSoliderData.Idx);
+                            GameEntry.Entity.HideEntity(tmpEntity);
+                            BattleManager.Instance.RefreshEnemyAttackData();
+                        }
+                        else
+                        {
+                            TmpUnitEntity = tmpEntity;
+                            //TmpUnitEntity.ShowCollider(false);
+                            
+                            BattleUnitManager.Instance.BattleUnitEntities.Add(
+                                TmpUnitEntity.BattleUnit.Idx, TmpUnitEntity);
+                            
+                            BattleManager.Instance.RefreshEnemyAttackData();
+                            
+                            //TmpUnitEntity.ShowHurtTags(TmpUnitEntity.BattleUnit.Idx);
+                            //tmpSoliderEntity.RefreshDamageState();
+                        }
+
+
+                        //BattleEnemyManager.Instance.ShowEnemyRoutes();
+                        GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
+                    }
+                    
+                    
+                    
+                }
+                else if (ne.ShowState == EShowState.Unshow)
+                {
+                    if (BattleManager.Instance.TempTriggerData.UnitData != null &&
+                        BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx == ne.GridPosIdx)
+                    {
+
+                        BattleManager.Instance.TempTriggerData.UnitData = null;
+                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+                        HideTmpEntity();
+                        
+
+                        BattleManager.Instance.RefreshEnemyAttackData();
+                        GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
+                        
+                    }
+
+                    // if (BattleManager.Instance.BattleData.GridTypes[ne.GridPosIdx] == EGridType.TemporaryUnit)
+                    // {
+                    //     BattleManager.Instance.BattleData.GridTypes[ne.GridPosIdx] = EGridType.Empty;
+                    //     
+                    // }
+
+                    //BattleEnemyManager.Instance.UnShowEnemyRoutes();
+
+                }
+            }
+
+            if (BattleManager.Instance.BattleState == EBattleState.MoveUnit ||
+                BattleManager.Instance.BattleState == EBattleState.FuneMoveUnit)
+            {
+
+                
+                var moveRanges =
+                    BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
+                        BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+                if (!moveRanges.Contains(ne.GridPosIdx))
+                {
+                    Log.Debug("moveC" + ne.GridPosIdx + ne.ShowState);
+                    BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
+                        BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
+                    BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();
+                    BattleManager.Instance.RefreshEnemyAttackData();
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        //BattleEnemyManager.Instance.ShowEnemyRoutes();
+                    }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        //BattleEnemyManager.Instance.UnShowEnemyRoutes();
+                    }
+
+                }
+                else
+                {
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        TmpUnitEntity.SetPosition(ne.GridPosIdx);
+                        Log.Debug("moveA" + ne.GridPosIdx);
+                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.MoveUnit;
+                        //BattleFightManager.Instance.RoundFightData.GamePlayData.LastBattleData.GridTypes
+                        var tempUnitMovePaths = BattleManager.Instance.TempTriggerData.TempUnitMovePaths =
+                            BattleFightManager.Instance.GetRunPaths(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes, BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
+                                ne.GridPosIdx, runPaths);
+                        //var realTargetGridPosIdx = BattleManager.Instance.TempTriggerData.TargetGridPosIdx =
+                        
+                        BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx = tempUnitMovePaths[tempUnitMovePaths.Count - 1];
+                        BattleManager.Instance.RefreshEnemyAttackData();
+                        //TmpUnitEntity.ShowHurtTags(TmpUnitEntity.BattleUnit.Idx);
+                    
+                        //BattleEnemyManager.Instance.ShowEnemyRoutes();
+
+                    }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        TmpUnitEntity.SetPosition(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+                        Log.Debug("moveB" + ne.GridPosIdx);
+                    
+                        ResetTmpUnitEntity();
+                    
+                    
+                        //BattleEnemyManager.Instance.UnShowEnemyRoutes();
+                    }
+                }
+
+                
+
+                
+
+            }
+
+            if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
+            {
+                var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
+                if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
+                {
+                    var tempExchangeGridData = BattleAreaManager.Instance.TempExchangeGridData;
+                    if (tempExchangeGridData.GridPosIdx1 != -1 && tempExchangeGridData.GridPosIdx2 == -1 &&
+                        ne.GridPosIdx != tempExchangeGridData.GridPosIdx1)
+                    {
+                        if (ne.ShowState == EShowState.Show)
+                        {
+                            // var grid2 = GetGridEntityByGridPosIdx(tempExchangeGridData.GridPosIdx2);
+                            // grid2.ShowBackupGrid(true);
+                            ExchangeGrid(tempExchangeGridData.GridPosIdx1, ne.GridPosIdx);
+                            //BattleEnemyManager.Instance.ShowEnemyRoutes();
+                        }
+                        else if (ne.ShowState == EShowState.Unshow)
+                        {
+                            ExchangeGrid(tempExchangeGridData.GridPosIdx1, ne.GridPosIdx);
+                            //BattleEnemyManager.Instance.UnShowEnemyRoutes();
+                        }
+                    }
+                }
+
+
+
+            }
+
+            if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
+            {
+                if (ne.ShowState == EShowState.Show)
+                {
+
+                    var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+                    
+                    var drBuff = BattleBuffManager.Instance.GetBuffData(buffStr);
+                    List<ERelativeCamp> relativeCamps = drBuff.TriggerUnitCamps;
+                    
+                    var relativeUnit = BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(ne.GridPosIdx,
+                        BattleManager.Instance.CurUnitCamp,
+                        relativeCamps);
+                    if (relativeUnit != null)
+                    {
+                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.UseBuff;
+                        BattleManager.Instance.TempTriggerData.CardEffectUnitID = relativeUnit.BattleUnit.Idx;
+                        
+                        BattleManager.Instance.TempTriggerData.UnitData =
+                            BattleUnitManager.Instance.GetBattleUnitData(relativeUnit);
+                        
+                        
+                        var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+                        if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+                        {
+                            var actionTimes = relativeUnit.BattleUnit.RoundAttackTimes + relativeUnit.BattleUnit.RoundMoveTimes;
+                            BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
+                            var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(relativeUnit.BattleUnit);
+                            foreach (var unitBuffData in unitBuffDatas)
+                            {
+                                if (!(unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack ||
+                                      unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
+                                      unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid))
+                                {
+                                    continue;
+                                }
+
+                                BattleManager.Instance.TempTriggerData.UnitData =
+                                    BattleUnitManager.Instance.GetBattleUnitData(relativeUnit);
+
+                                if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
+                                {
+                                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.AutoAtk;
+                                }   
+                                else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
+                                {
+                                    var attackRanges = BattleUnitManager.Instance.GetAttackRanges(relativeUnit.UnitIdx, ne.GridPosIdx);
+                                    ShowBackupGrids(attackRanges);
+                                }
+                                else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
+                                {
+                                    var attackRanges = BattleUnitManager.Instance.GetAttackRanges(relativeUnit.UnitIdx, ne.GridPosIdx);
+                                    ShowBackupGrids(attackRanges);
+                                }
+                        
+                                BattleManager.Instance.RefreshEnemyAttackData();
+                                
+                            }
+                        } 
+                        else if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString())
+                        {
+                            var actionTimes = relativeUnit.BattleUnit.RoundAttackTimes + relativeUnit.BattleUnit.RoundMoveTimes;
+                            BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
+                        }
+                        
+                        else
+                        {
+                            BattleManager.Instance.RefreshEnemyAttackData();
+                            ShowBackupGrids(null);
+                            //BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.ID);
+                        }
+
+                    }
+
+                }
+                else if (ne.ShowState == EShowState.Unshow)
+                {
+                    ShowBackupGrids(null);
+                    BattleManager.Instance.TempTriggerData.UnitData = null;
+                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+                    BattleManager.Instance.TempTriggerData.CardEffectUnitID = -1;
+                    //BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.CardID = -1;
+                    BattleManager.Instance.RefreshEnemyAttackData();
+                    
+                }
+                
+            }
+
+            
+            if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+            {
+                var attackRanges =
+                    BattleUnitManager.Instance.GetAttackRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
+                        BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx);
+                if (attackRanges.Contains(ne.GridPosIdx))
+                {
+                    var attackUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                    var effectUnitEntity = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;
+                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.ActiveAtk;
+                        
+                        BattleManager.Instance.RefreshEnemyAttackData();
+                        
+                        if (attackUnitEntity != null)
+                        {
+                            //attackUnitEntity.ShowHurtTags(attackUnitEntity.UnitIdx, effectUnitEntity.UnitIdx);
+                        }
+                        
+                        if (effectUnitEntity != null)
+                        {
+                            //effectUnitEntity.ShowHurtTags(effectUnitEntity.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                        }
+                        //BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.SelectHurtUnit;
+                    }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
+                        
+                        BattleManager.Instance.RefreshEnemyAttackData();
+                        if (attackUnitEntity != null)
+                        {
+                            attackUnitEntity.UnShowTags();
+                        }
+                        
+                        if (effectUnitEntity != null)
+                        {
+                            effectUnitEntity.UnShowTags();
+                        }
+                    }
+                    
+                    
+                }
+
+                if (ne.ShowState == EShowState.Show)
+                {
+                    //BattleEnemyManager.Instance.ShowEnemyRoutes();
+                }
+                else if (ne.ShowState == EShowState.Unshow)
+                {
+                    //BattleEnemyManager.Instance.UnShowEnemyRoutes();
+                }
+            }
+
+
+            
             if (!pointerDownInRange)
             {
                 var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
@@ -319,424 +738,6 @@ namespace RoundHero
                 // }
                 
             }
-
-            // if (BattleManager.Instance.BattleState == EBattleState.UseCard)
-            // {
-            //     if (unit != null)
-            //     {
-            //         var movePaths = BattleFightManager.Instance.GetMovePaths(unit.Idx);
-            //         if (movePaths != null)
-            //         {
-            //             if (ne.ShowState == EShowState.Show)
-            //             {
-            //                 unit.Root.position = GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]);
-            //                 BattleValueManager.Instance.ShowDisplayValue(unit.Idx);
-            //                 BattleAttackTagManager.Instance.ShowAttackTag(unit.Idx,
-            //                     GameUtility.GridPosIdxToPos(movePaths[movePaths.Count - 1]));
-            //             }
-            //             else if (ne.ShowState == EShowState.Unshow)
-            //             {
-            //                 unit.Root.position = GameUtility.GridPosIdxToPos(movePaths[0]);
-            //                 BattleValueManager.Instance.UnShowDisplayValues();
-            //                 BattleAttackTagManager.Instance.UnShowAttackTags();
-            //             }
-            //         }
-            //     }
-            // }
-            
-            
-            
-            // if (unit != null &&
-            //     BattleManager.Instance.BattleState == EBattleState.ActionSelectUnit)
-            // {
-            //     if (ne.ShowState == EShowState.Show)
-            //     {
-            //         var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
-            //         var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
-            //         
-            //         if (buffData.BuffTriggerType != EBuffTriggerType.AutoAttack)
-            //         {
-            //             return;
-            //         }
-            //
-            //         BattleManager.Instance.TempTriggerData.UnitData =
-            //             BattleUnitManager.Instance.GetBattleUnitData(unit);
-            //
-            //         BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.AutoAtk;
-            //         
-            //
-            //     }
-            //     else if (ne.ShowState == EShowState.Unshow)
-            //     {
-            //         //BattleManager.Instance.TempTriggerData.Reset();
-            //     }
-            //
-            //     BattleManager.Instance.Refresh();
-            //
-            // }
-
-            if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
-            {
-                var unPlacePosIdxs = BattleBuffManager.Instance.GetUnPlacePosIdxs(GamePlayManager.Instance.GamePlayData);
-
-                if (ne.ShowState == EShowState.Show &&
-                    BattleManager.Instance.BattleData.GridTypes[ne.GridPosIdx] == EGridType.Empty &&
-                    !unPlacePosIdxs.Contains(ne.GridPosIdx))
-                {
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.NewUnit;
-
-                    var triggerBuffData = BattleManager.Instance.TempTriggerData.TriggerBuffData;
-                    
-                    var cardIdx = triggerBuffData.CardIdx;
-                    var cardData = BattleManager.Instance.GetCard(cardIdx);
-                    if (cardData == null)
-                    {
-                        return;
-                    }
-                    
-                    var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
-                    
-                    var aroundHeroRange = GameUtility.GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Direct82Short, EUnitCamp.Player1, null);
-
-                    if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.SubUnitCardEnergy)
-                    {
-                        if (aroundHeroRange.Contains(ne.GridPosIdx))
-                        {
-                            var values = HeroManager.Instance.GetHeroBuffValues();
-                            cardEnergy += (int)values[0];
-                            
-                        }
-                        
-                    }
-
-                    tmpEntityIdx = BattleUnitManager.Instance.GetIdx();
-                    BattleManager.Instance.TempTriggerData.UnitData = new Data_BattleSolider(
-                        tmpEntityIdx, cardIdx,
-                        ne.GridPosIdx, cardEnergy, BattleManager.Instance.CurUnitCamp,  cardData.FuneIdxs);
-                    
-                    //AddUnitState
-                    //BattleUnitManager.Instance.TempUnitData.UnitData.AddState(EUnitState.AttackPassUs, 1);
-                    
-                    BattleManager.Instance.TempTriggerData.UnitData.CurHP =
-                        BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
-
-                    if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
-                    {
-
-                        if (aroundHeroRange.Contains(ne.GridPosIdx))
-                        {
-                            var values = HeroManager.Instance.GetHeroBuffValues();
-                            BattleManager.Instance.TempTriggerData.UnitData.BaseMaxHP += (int)values[0];
-                            BattleManager.Instance.TempTriggerData.UnitData.CurHP += (int)values[0];
-                        }
-                        
-                    }
-
-                    BlessManager.Instance.EachRoundFightCardAddLink(GamePlayManager.Instance.GamePlayData,
-                        BattleManager.Instance.TempTriggerData.UnitData, EBlessID.EachRoundFightCardAddLinkReceive,
-                        ELinkID.Link_Receive_Around_Us);
-                    BlessManager.Instance.EachRoundFightCardAddLink(GamePlayManager.Instance.GamePlayData,
-                        BattleManager.Instance.TempTriggerData.UnitData, EBlessID.EachRoundFightCardAddLinkSend,
-                        ELinkID.Link_Send_Around_Us);
-                    
-
-                    var tmpEntity =
-                        await GameEntry.Entity.ShowBattleSoliderEntityAsync(BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider);
-                    
-
-                    if(tmpEntity.UnitIdx < tmpEntityIdx || BattleManager.Instance.TempTriggerData.UnitData == null)
-                    {
-                        BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpEntity.BattleSoliderEntityData
-                            .BattleSoliderData.Idx);
-                        // BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpEntity.BattleSoliderEntityData
-                        //     .BattleSoliderData.Idx);
-                        GameEntry.Entity.HideEntity(tmpEntity);
-                        BattleManager.Instance.RefreshEnemyAttackData();
-                    }
-                    else
-                    {
-                        TmpUnitEntity = tmpEntity;
-                        //TmpUnitEntity.ShowCollider(false);
-                        
-                        BattleUnitManager.Instance.BattleUnitEntities.Add(
-                            TmpUnitEntity.BattleUnit.Idx, TmpUnitEntity);
-                        
-                        BattleManager.Instance.RefreshEnemyAttackData();
-                        
-                        //TmpUnitEntity.ShowHurtTags(TmpUnitEntity.BattleUnit.Idx);
-                        //tmpSoliderEntity.RefreshDamageState();
-                    }
-
-
-                    //BattleEnemyManager.Instance.ShowEnemyRoutes();
-                    GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
-                    
-                }
-                else if (ne.ShowState == EShowState.Unshow)
-                {
-                    if (BattleManager.Instance.TempTriggerData.UnitData != null &&
-                        BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx == ne.GridPosIdx)
-                    {
-
-                        BattleManager.Instance.TempTriggerData.UnitData = null;
-                        BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
-                        HideTmpEntity();
-                        
-
-                        BattleManager.Instance.RefreshEnemyAttackData();
-                        GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
-                        
-                    }
-
-                    // if (BattleManager.Instance.BattleData.GridTypes[ne.GridPosIdx] == EGridType.TemporaryUnit)
-                    // {
-                    //     BattleManager.Instance.BattleData.GridTypes[ne.GridPosIdx] = EGridType.Empty;
-                    //     
-                    // }
-
-                    //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-
-                }
-            }
-
-            if (BattleManager.Instance.BattleState == EBattleState.MoveUnit ||
-                BattleManager.Instance.BattleState == EBattleState.FuneMoveUnit)
-            {
-
-                
-                var moveRanges =
-                    BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
-                        BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
-                if (!moveRanges.Contains(ne.GridPosIdx))
-                {
-                    Log.Debug("moveC" + ne.GridPosIdx + ne.ShowState);
-                    BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
-                        BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
-                    BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();
-                    BattleManager.Instance.RefreshEnemyAttackData();
-                    if (ne.ShowState == EShowState.Show)
-                    {
-                        //BattleEnemyManager.Instance.ShowEnemyRoutes();
-                    }
-                    else if (ne.ShowState == EShowState.Unshow)
-                    {
-                        //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-                    }
-
-                    return;
-                }
-
-                if (ne.ShowState == EShowState.Show)
-                {
-                    TmpUnitEntity.SetPosition(ne.GridPosIdx);
-                    Log.Debug("moveA" + ne.GridPosIdx);
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
-                    //BattleFightManager.Instance.RoundFightData.GamePlayData.LastBattleData.GridTypes
-                    var tempUnitMovePaths = BattleManager.Instance.TempTriggerData.TempUnitMovePaths =
-                        BattleFightManager.Instance.GetRunPaths(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes, BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx,
-                            ne.GridPosIdx, runPaths);
-                    //var realTargetGridPosIdx = BattleManager.Instance.TempTriggerData.TargetGridPosIdx =
-                        
-                    BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx = tempUnitMovePaths[tempUnitMovePaths.Count - 1];
-                    BattleManager.Instance.RefreshEnemyAttackData();
-                    //TmpUnitEntity.ShowHurtTags(TmpUnitEntity.BattleUnit.Idx);
-                    
-                    //BattleEnemyManager.Instance.ShowEnemyRoutes();
-
-                }
-                else if (ne.ShowState == EShowState.Unshow)
-                {
-                    TmpUnitEntity.SetPosition(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
-                    Log.Debug("moveB" + ne.GridPosIdx);
-                    
-                    ResetTmpUnitEntity();
-                    
-                    
-                    //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-                }
-
-                
-
-            }
-
-            if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
-            {
-                var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
-                if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
-                {
-                    var tempExchangeGridData = BattleAreaManager.Instance.TempExchangeGridData;
-                    if (tempExchangeGridData.GridPosIdx1 != -1 && tempExchangeGridData.GridPosIdx2 == -1 &&
-                        ne.GridPosIdx != tempExchangeGridData.GridPosIdx1)
-                    {
-                        if (ne.ShowState == EShowState.Show)
-                        {
-                            // var grid2 = GetGridEntityByGridPosIdx(tempExchangeGridData.GridPosIdx2);
-                            // grid2.ShowBackupGrid(true);
-                            ExchangeGrid(tempExchangeGridData.GridPosIdx1, ne.GridPosIdx);
-                            //BattleEnemyManager.Instance.ShowEnemyRoutes();
-                        }
-                        else if (ne.ShowState == EShowState.Unshow)
-                        {
-                            ExchangeGrid(tempExchangeGridData.GridPosIdx1, ne.GridPosIdx);
-                            //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-                        }
-                    }
-                }
-
-
-
-            }
-
-            if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
-            {
-                if (ne.ShowState == EShowState.Show)
-                {
-
-                    var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
-                    
-                    var drBuff = BattleBuffManager.Instance.GetBuffData(buffStr);
-                    List<ERelativeCamp> relativeCamps = drBuff.TriggerUnitCamps;
-                    
-                    var relativeUnit = BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(ne.GridPosIdx,
-                        BattleManager.Instance.CurUnitCamp,
-                        relativeCamps);
-                    if (relativeUnit == null)
-                        return;
-
-                    
-                    
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.UseBuff;
-                    BattleManager.Instance.TempTriggerData.CardEffectUnitID = relativeUnit.BattleUnit.Idx;
-                    
-                    BattleManager.Instance.TempTriggerData.UnitData =
-                        BattleUnitManager.Instance.GetBattleUnitData(relativeUnit);
-                    
-                    
-                    var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
-                    if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
-                    {
-                        var actionTimes = relativeUnit.BattleUnit.RoundAttackTimes + relativeUnit.BattleUnit.RoundMoveTimes;
-                        BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
-                        var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(relativeUnit.BattleUnit);
-                        foreach (var unitBuffData in unitBuffDatas)
-                        {
-                            if (!(unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack ||
-                                  unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
-                                  unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid))
-                            {
-                                continue;
-                            }
-
-                            BattleManager.Instance.TempTriggerData.UnitData =
-                                BattleUnitManager.Instance.GetBattleUnitData(relativeUnit);
-
-                            if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
-                            {
-                                BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.AutoAtk;
-                            }   
-                            else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
-                            {
-                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(relativeUnit.UnitIdx, ne.GridPosIdx);
-                                ShowBackupGrids(attackRanges);
-                            }
-                            else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
-                            {
-                                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(relativeUnit.UnitIdx, ne.GridPosIdx);
-                                ShowBackupGrids(attackRanges);
-                            }
-                    
-                            BattleManager.Instance.RefreshEnemyAttackData();
-                            
-                        }
-                    } 
-                    else if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString())
-                    {
-                        var actionTimes = relativeUnit.BattleUnit.RoundAttackTimes + relativeUnit.BattleUnit.RoundMoveTimes;
-                        BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
-                    }
-                    
-                    else
-                    {
-                        BattleManager.Instance.RefreshEnemyAttackData();
-                        ShowBackupGrids(null);
-                        //BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.ID);
-                    }
-
-                    
-                }
-                else if (ne.ShowState == EShowState.Unshow)
-                {
-                    ShowBackupGrids(null);
-                    BattleManager.Instance.TempTriggerData.UnitData = null;
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
-                    BattleManager.Instance.TempTriggerData.CardEffectUnitID = -1;
-                    //BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.CardID = -1;
-                    BattleManager.Instance.RefreshEnemyAttackData();
-                    
-                }
-                
-            }
-
-            
-            if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
-            {
-                var attackRanges =
-                    BattleUnitManager.Instance.GetAttackRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
-                        BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx);
-                if (attackRanges.Contains(ne.GridPosIdx))
-                {
-                    var attackUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
-                    var effectUnitEntity = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
-                    if (ne.ShowState == EShowState.Show)
-                    {
-                        BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;
-                        BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.ActiveAtk;
-                        
-                        BattleManager.Instance.RefreshEnemyAttackData();
-                        
-                        if (attackUnitEntity != null)
-                        {
-                            //attackUnitEntity.ShowHurtTags(attackUnitEntity.UnitIdx, effectUnitEntity.UnitIdx);
-                        }
-                        
-                        if (effectUnitEntity != null)
-                        {
-                            //effectUnitEntity.ShowHurtTags(effectUnitEntity.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
-                        }
-                        //BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.SelectHurtUnit;
-                    }
-                    else if (ne.ShowState == EShowState.Unshow)
-                    {
-                        BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
-                        
-                        BattleManager.Instance.RefreshEnemyAttackData();
-                        if (attackUnitEntity != null)
-                        {
-                            attackUnitEntity.UnShowTags();
-                        }
-                        
-                        if (effectUnitEntity != null)
-                        {
-                            effectUnitEntity.UnShowTags();
-                        }
-                    }
-                    
-                    
-                }
-
-                if (ne.ShowState == EShowState.Show)
-                {
-                    //BattleEnemyManager.Instance.ShowEnemyRoutes();
-                }
-                else if (ne.ShowState == EShowState.Unshow)
-                {
-                    //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-                }
-            }
-
-
-            
-
             
             
 
@@ -1991,7 +1992,7 @@ namespace RoundHero
                     TmpUnitEntity = unit;
                     BattleManager.Instance.TempTriggerData.UnitData =
                         BattleUnitManager.Instance.GetBattleUnitData(unit);
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
+                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.MoveUnit;
                     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx;
 
@@ -2017,7 +2018,7 @@ namespace RoundHero
 
                         if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
                         {
-                            BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.AutoAtk;
+                            BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.AutoAtk;
                             
                             BattleManager.Instance.RefreshEnemyAttackData();
                             BattleFightManager.Instance.SoliderAutoAttack();
@@ -2055,7 +2056,7 @@ namespace RoundHero
                     //BattleBuffManager.Instance.TriggerBuff();
                     BattleBuffManager.Instance.UseBuff(ne.GridPosIdx);
                     
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
+                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
                     BattleManager.Instance.TempTriggerData.CardEffectUnitID = -1;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
                 }

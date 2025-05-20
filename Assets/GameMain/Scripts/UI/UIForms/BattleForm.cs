@@ -60,6 +60,7 @@ namespace RoundHero
             randomSeed.text = GamePlayManager.Instance.GamePlayData.RandomSeed.ToString();
 
             AreaController.Instance.UICore = heroHP.gameObject;
+            AreaController.Instance.BattleFormRoot = this.gameObject;
             
             AreaController.Instance.Canvas = this.GetComponent<Canvas>();
 

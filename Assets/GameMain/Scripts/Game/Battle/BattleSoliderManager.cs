@@ -10,7 +10,7 @@ namespace RoundHero
         Linkage,
     }
 
-    public enum ETempUnitType
+    public enum ETempTriggerType
     {
         NewUnit,
         MoveUnit,

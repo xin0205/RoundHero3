@@ -1648,6 +1648,17 @@ namespace RoundHero
                     triggerData.Value > 0;
 
         }
+        
+        public static bool IsAddCurHPBuffValue(BuffValue buffValue)
+        {
+            if (buffValue == null)
+                return false;
+            
+            return  buffValue.BuffData.BuffValueType == EBuffValueType.Atrb &&
+                    buffValue.BuffData.UnitAttribute == EUnitAttribute.HP &&
+                    buffValue.ValueList[0] < 0;
+
+        }
 
         public static bool ContainRoundState(Data_GamePlay gamePlay, EBuffID buffID)
         {
@@ -2108,5 +2119,18 @@ namespace RoundHero
 
             return EGridType.Empty;
         }
+        
+        // public static Vector2 WorldToUGUIPosition(Canvas canvas, Camera worldCamera, Camera uiCamera, Vector3 worldPosition)
+        // {
+        //     // 将世界坐标转换为屏幕坐标
+        //     var screenPosition =
+        //         worldCamera.WorldToScreenPoint(
+        //             worldPosition); //RectTransformUtility.WorldToScreenPoint(camera, worldPosition);
+        //     // 将屏幕坐标转换为 UGUI 坐标
+        //     //var uiCamera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+        //     RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform,
+        //         screenPosition, uiCamera, out var localPoint);
+        //     return localPoint;
+        // }
     }
 }

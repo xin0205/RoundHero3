@@ -509,7 +509,7 @@ namespace RoundHero
 
             
             BattleBuffManager.Instance.TriggerBuff();
-            BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
+            BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
 
             RemoveHandCard(cardIdx);

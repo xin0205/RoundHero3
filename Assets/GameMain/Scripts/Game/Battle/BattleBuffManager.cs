@@ -130,7 +130,7 @@ namespace RoundHero
         // }
         
         public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> values, int ownUnitID, int actionUnitID,
-            int effectUnitID, TriggerData preTriggerData, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
+            int effectUnitIdx, TriggerData preTriggerData, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitID);
@@ -151,7 +151,7 @@ namespace RoundHero
             var buffvalueType = buffData.BuffValueType;
             var _triggerDatas = new List<TriggerData>();
 
-            var realEffectUnitIDs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitID, actionUnitID, effectUnitID ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
+            var realEffectUnitIDs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitID, actionUnitID, effectUnitIdx ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
             if (realEffectUnitIDs.Count > 0)
             {
@@ -230,7 +230,12 @@ namespace RoundHero
                             triggerData.ChangeHPInstantly = false;
                         }
 
-                        triggerData.ActionUnitGridPosIdx = actionUnit.GridPosIdx;
+                        if (actionUnit != null)
+                        {
+                            triggerData.ActionUnitGridPosIdx = actionUnit.GridPosIdx;
+                        }
+                        
+                        
                         triggerData.EffectUnitGridPosIdx = realEffectUnit.GridPosIdx;
                         CacheTriggerData(triggerData, triggerDatas);
 
@@ -803,6 +808,9 @@ namespace RoundHero
                     break;
                 case EBuffTriggerType.Spec:
                     BuffParse_Spec(buffKey, strList, buffData);
+                    break;
+                case EBuffTriggerType.TacticAtrb:
+                    BuffParse_Normal(strList, buffData);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -1288,19 +1288,25 @@ namespace RoundHero
         {
             var effectUnitPos = Root.position;
 
-            effectUnitPos.y += 1f;
+            // effectUnitPos.y += 1f;
+            //
+            // var uiCorePos = AreaController.Instance.UICore.transform.position;
+            // uiCorePos.y -= 0.4f;
+            //
+            // var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
+            //     uiCorePos);
+            //
+            // Vector3 position = new Vector3(pos.x, pos.y, Camera.main.transform.position.z);
+            // Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
+            
+            var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+            var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
 
-            var uiCorePos = AreaController.Instance.UICore.transform.position;
-            uiCorePos.y -= 0.4f;
+            uiLocalPoint.y += 100f;
 
-            var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
-                uiCorePos);
-
-            Vector3 position = new Vector3(pos.x, pos.y, Camera.main.transform.position.z);
-            Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
-
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos,
-                uiCoreWorldPos,
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
+                uiCorePos,
                 hurt, -1, false, this is BattleSoliderEntity);
             
             // var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
