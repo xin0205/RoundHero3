@@ -67,6 +67,7 @@ namespace RoundHero
 
                 if (value != 0)
                 {
+                    curValueEntityIdx += 1;
                     InternalShowValue(effectUnit, value, entityIdx++);
                 }
                
@@ -186,17 +187,21 @@ namespace RoundHero
                 var entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
                     uiLocalPoint, value, entityIdx);
 
-                if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx <
-                    showValueEntityIdx)
+                if (GameEntry.Entity.HasEntity(entity.Id))
                 {
+                    if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx <
+                        showValueEntityIdx)
+                    {
 
-                    GameEntry.Entity.HideEntity(entity);
-                }
-                else
-                {
+                        GameEntry.Entity.HideEntity(entity);
+                    }
+                    else
+                    {
                     
-                    BattleValueEntities.Add(entity.Entity.Id, entity);
+                        BattleValueEntities.Add(entity.Id, entity);
+                    }
                 }
+                
 
             }
             else
@@ -221,10 +226,11 @@ namespace RoundHero
 
                 
                 var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+                uiCorePos.y -= 25f;
                 var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
                     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
 
-                uiLocalPoint.y += 100f;
+                uiLocalPoint.y += 50f;
                 
                 var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
                     uiCorePos,
@@ -236,19 +242,23 @@ namespace RoundHero
 
                 //entity.transform.parent = effectUnit.Root;
 
-                if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
+                Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
+                if (GameEntry.Entity.HasEntity(entity.Id))
                 {
+                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
+                    {
 
-                    GameEntry.Entity.HideEntity(entity);
-                }
-                else
-                {
-                    // if (GameEntry.Entity.HasEntity(effectUnit.Entity.Id))
-                    // {
-                    //     GameEntry.Entity.AttachEntity(entity.Entity.Id, effectUnit.Entity.Id);
-                    // }
+                        GameEntry.Entity.HideEntity(entity);
+                    }
+                    else
+                    {
+                        // if (GameEntry.Entity.HasEntity(effectUnit.Entity.Id))
+                        // {
+                        //     GameEntry.Entity.AttachEntity(entity.Entity.Id, effectUnit.Entity.Id);
+                        // }
 
-                    BattleValueEntities.Add(entity.Entity.Id, entity);
+                        BattleValueEntities.Add(entity.Entity.Id, entity);
+                    }
                 }
 
             }
@@ -363,8 +373,9 @@ namespace RoundHero
         
         public void UnShowDisplayValues()
         {
-            showValueEntityIdx = curValueEntityIdx;
             
+            showValueEntityIdx = curValueEntityIdx;
+            Log.Debug("UnShowDisplayValues:" + showValueEntityIdx);
             foreach (var kv in BattleValueEntities)
             {
                 if (GameEntry.Entity.HasEntity(kv.Value.Entity.Id))

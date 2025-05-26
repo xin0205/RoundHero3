@@ -313,7 +313,11 @@ namespace RoundHero
         RangeTrigger,
     }
 
-    
+    public enum EBuffEquipType
+    {
+        Normal,
+        Special,
+    }
 
     public enum EGridPropID
     {

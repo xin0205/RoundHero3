@@ -175,6 +175,7 @@ namespace RoundHero
             foreach (var buffID in drEnemy.Buffs)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+                buffData.BuffEquipType = EBuffEquipType.Normal;
                 buffDatas.Add(buffData);
             }
 

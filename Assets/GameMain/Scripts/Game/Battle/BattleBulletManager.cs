@@ -180,7 +180,7 @@ namespace RoundHero
 
         }
 
-        public void ActionUnitTrigger(int actionUnitIdx)
+        public void ActionUnitTrigger(int actionUnitIdx, int effectUnitIdx = -1)
         {
             if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
             {
@@ -191,8 +191,11 @@ namespace RoundHero
 
             for (int i = triggerActionDataList.Count - 1; i >= 0; i--)
             {
+
                 var triggerActionData = triggerActionDataList[i];
                 var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionData.Key);
+                if(effectUnitIdx != -1 && effectUnit != null && effectUnit.UnitIdx != effectUnitIdx)
+                    continue;
 
                 UseTriggerData(actionUnitIdx, effectUnit.UnitIdx);
                 UseMoveActionData(actionUnitIdx, effectUnit.UnitIdx);
@@ -206,7 +209,7 @@ namespace RoundHero
             //     UseMoveActionData(actionUnitIdx, effectUnit.UnitIdx);
             // }
 
-            TriggerActionDatas[actionUnitIdx].Clear();
+            //TriggerActionDatas[actionUnitIdx].Clear();
             BattleManager.Instance.RefreshView();
         }
 
@@ -303,6 +306,7 @@ namespace RoundHero
                 if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                 {
                     TriggerActionDatas[actionUnitIdx].Remove(effectUnitIdx, triggerActionTriggerData);
+                    break;
                 }
                 
             }

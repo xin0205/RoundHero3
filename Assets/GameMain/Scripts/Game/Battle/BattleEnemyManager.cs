@@ -398,6 +398,14 @@ namespace RoundHero
             foreach (var buffID in drEnemy.OwnBuffs)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+                buffData.BuffEquipType = EBuffEquipType.Normal;
+                buffDatas.Add(buffData);
+            }
+            
+            foreach (var buffID in drEnemy.SpecBuffs)
+            {
+                var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+                buffData.BuffEquipType = EBuffEquipType.Special;
                 buffDatas.Add(buffData);
             }
             
@@ -468,6 +476,20 @@ namespace RoundHero
                 //valuelist.Add(values);
             }
             
+            foreach (var buffID in drEnemy.SpecBuffs)
+            {
+                //var values = new List<float>();
+                foreach (var value in drEnemy.SpecBuffValues)
+                {
+                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value);
+                    //buffValuelist[idx].Add(BattleBuffManager.Instance.GetBuffValue(value));
+                }
+
+                idx++;
+                idx2 = 0;
+                //valuelist.Add(values);
+            }
+            
             // foreach (var buffID in drEnemy.SecondaryBuffs)
             // {
             //     //var values = new List<float>();
@@ -508,18 +530,20 @@ namespace RoundHero
         public void ShowActionSort(bool isShow) 
         {
             var idx = 1;
-            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            
+            
+            
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.EnemyAttackDatas)
             {
-                if(kv.Value.UnitCamp != EUnitCamp.Enemy)
-                    continue;
+                var unit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
 
                 if (isShow)
                 {
-                    kv.Value.ShowActionSort(idx++);
+                    unit.ShowActionSort(idx++);
                 }
                 else
                 {
-                    kv.Value.UnShowTags();
+                    unit.UnShowTags();
                 }
             }
         }

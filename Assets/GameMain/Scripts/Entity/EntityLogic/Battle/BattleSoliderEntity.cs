@@ -32,7 +32,7 @@ namespace RoundHero
 
             
             ShowInit();
-            //animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
+            
             var drCard = CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
             InitWeaponType(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);
             AttachWeapon(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);

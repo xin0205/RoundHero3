@@ -377,10 +377,21 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
             
-            if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
-                return;
+            // if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
+            //     return;
             
-            BattleManager.Instance.EndBattleTest();
+            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            {
+                Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmExitBattle),
+                OnConfirm = () =>
+                {
+                    BattleManager.Instance.EndBattleTest();
+
+                },
+                
+            });
+            
+           
             
             
         }

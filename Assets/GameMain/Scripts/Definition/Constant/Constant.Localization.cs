@@ -59,6 +59,7 @@ namespace RoundHero
             public const string Message_ConfirmUnCopyCard = "Message.ConfirmUnChangeCard";
             public const string Message_ConfirmUnRemoveCard = "Message.ConfirmUnChangeCard";
             public const string Message_ConfirmSubHeart = "Message.ConfirmSubHeart";
+            public const string Message_ConfirmExitBattle = "Message.ConfirmExitBattle";
             
             public const string Info_StandByCardName = "Info.StandByCardName";
             public const string Info_StandByCardDesc = "Info.StandByCardDesc";
@@ -86,6 +87,9 @@ namespace RoundHero
 
             public const string UI_BattleTest = "UI.BattleTest";
             public const string UI_Tutorial = "UI.Tutorial";
+            public const string UI_Confirm = "UI.Confirm";
+            public const string UI_Cancel = "UI.Cancel";
+
 
 
 

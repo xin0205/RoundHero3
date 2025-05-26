@@ -5,21 +5,21 @@ namespace RoundHero
 {
     public partial class BattleBuffManager : Singleton<BattleBuffManager>
     {
-    public void BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> buffValues, int ownUnitID,
+    public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> buffValues, int ownUnitID,
             int actionUnitID, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
             //var drBuff = BattleBuffManager.Instance.GetBuffData(buffID);
             if (buffTriggerType != buffData.BuffTriggerType)
-                return;
+                return null;
 
 
             
             var isSubCurHP = false;
  
             
-            var _triggerDatas = BattleBuffManager.Instance.BuffTrigger(buffTriggerType, buffData, buffValues, ownUnitID, actionUnitID,
-                effectUnitIdx, null, triggerDatas, actionUnitGridPosIdx, actionUnitPreGridPosIdx);
+            var _triggerDatas = BattleBuffManager.Instance.InternalBuffTrigger(buffTriggerType, buffData, buffValues, ownUnitID, actionUnitID,
+                effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
             foreach (var triggerData in _triggerDatas)
             {
@@ -42,8 +42,8 @@ namespace RoundHero
                     BattleUnitStateManager.Instance.CheckUnitState(actionUnitID, triggerDatas);
                 }
             }
-            
 
+            return _triggerDatas;
         }
     
         public void CacheBuffData(BuffData buffData, EUnitCamp unitCamp, Data_BattleUnit effectUnit, List<float> value1s, float ratio)

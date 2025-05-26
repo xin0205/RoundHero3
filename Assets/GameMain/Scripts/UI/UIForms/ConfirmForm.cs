@@ -49,10 +49,18 @@ namespace RoundHero
             {
                 confirmStr.text = confirmFormParams.ConfirmStr;
             }
+            else
+            {
+                confirmStr.text = GameEntry.Localization.GetString(Constant.Localization.UI_Confirm);
+            }
             
             if (!string.IsNullOrEmpty(confirmFormParams.CancelStr))
             {
                 cancelStr.text = confirmFormParams.CancelStr;
+            }
+            else
+            {
+                cancelStr.text = GameEntry.Localization.GetString(Constant.Localization.UI_Cancel);
             }
             
             cancelButtonGO.SetActive(confirmFormParams.IsShowCancel);

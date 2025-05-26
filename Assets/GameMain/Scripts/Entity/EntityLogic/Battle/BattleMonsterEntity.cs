@@ -185,16 +185,21 @@ namespace RoundHero
         
         protected async override Task ShowBattleHurts(int hurt)
         {
-            var pos = ValuePos.position;
+            var effectUnitPos = Root.position;
+            // var pos = ValuePos.position;
+            //
+            // var pos2 = Camera.main.WorldToScreenPoint(pos);
+            //
+            // pos2.y += 50f;
+            // pos2.z = Camera.main.transform.position.z;
+            // Vector3 pos3 = Camera.main.ScreenToWorldPoint(pos2);
+            //
+            var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+            var movePos  = new Vector2(uiLocalPoint.x, uiLocalPoint.y + 100);
 
-            var pos2 = Camera.main.WorldToScreenPoint(pos);
-
-            pos2.y += 50f;
-            pos2.z = Camera.main.transform.position.z;
-            Vector3 pos3 = Camera.main.ScreenToWorldPoint(pos2);
-
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(ValuePos.position,
-                pos3,
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
+                movePos,
                 hurt, -1, false, false);
             
 

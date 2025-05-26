@@ -59,7 +59,7 @@ namespace RoundHero
             GameManager.Instance.TmpInitCards.Clear();
             
             
-            heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
+            //heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
 
             GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
 
@@ -95,8 +95,8 @@ namespace RoundHero
         protected override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
-            GameEntry.Entity.HideEntity(heroSceneEntity);
-            GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
+            //GameEntry.Entity.HideEntity(heroSceneEntity);
+            //GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
             
             GameEntry.Event.Unsubscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
         }
@@ -108,7 +108,7 @@ namespace RoundHero
             //GameManager.Instance.TmpHeroID = ne.HeroID;
             heroIconGridView.RefreshAllShownItem();
             
-            heroSceneEntity.ShowDisplayHeroEntity(heroID);
+            //heroSceneEntity.ShowDisplayHeroEntity(heroID);
 
             var drHero = GameEntry.DataTable.GetHero(heroID);
             

@@ -49,8 +49,8 @@ namespace RoundHero
             GameEntry.UI.CloseUIForm(form);
             Close();
 
-            //7071044;//60835532;  6762628; 7574947;
-            int startGameRandomSeed = 14200132;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            //7071044;//60835532;  6762628; 7574947; 14200132;//
+            int startGameRandomSeed = 58677100;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             
             // GamePlayManager.Instance.GamePlayData.IsTutorial = true;
             // if (GamePlayManager.Instance.GamePlayData.IsTutorial)
@@ -62,7 +62,7 @@ namespace RoundHero
             //     startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             // }
             
-            Log.Debug("randomSeed:" + startGameRandomSeed);
+            //Log.Debug("randomSeed:" + startGameRandomSeed);
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, difficulty));
 

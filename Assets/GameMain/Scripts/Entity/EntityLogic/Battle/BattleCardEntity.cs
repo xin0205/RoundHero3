@@ -659,7 +659,10 @@ namespace RoundHero
 
         private void Action()
         {
-            
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                kv.Value.UnShowTags();
+            }
             BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
             BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = BattleCardEntityData.CardIdx;
