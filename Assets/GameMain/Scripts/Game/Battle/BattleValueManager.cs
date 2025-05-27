@@ -98,34 +98,62 @@ namespace RoundHero
 
         }
 
-        public async void ShowDisplayValue(int unitIdx)
+        public async void ShowDisplayValue(int actionUnitIdx)
         {
             //BattleValueEntities.Clear();
+            var actionUnit =  BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
             
             var entityIdx = curValueEntityIdx;
-            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unitIdx),
-                BattleFightManager.Instance.GetInDirectAttackDatas(unitIdx));
+            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
+                BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
             //curValueEntityIdx += triggerDataDict.Count;
 
             foreach (var kv in triggerDataDict)
             {
-                curValueEntityIdx += kv.Value.Count;
+                curValueEntityIdx += 1;
             }
-            
-  
-            //Log.Debug("triggerDataDict.Count:" + triggerDataDict.Count);
-            
             
             var idx = 0;
             foreach (var kv in triggerDataDict)
             {
-                var _entityIdx = entityIdx;
-                var values = kv.Value;
+                var effectUnit =  BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
                 
-                ShowValues(values, _entityIdx);
-                idx++;
-                entityIdx += kv.Value.Count;
+                if (effectUnit is BattleSoliderEntity)
+                {
+                    ShowValues(kv.Value, entityIdx);
+                    idx++;
+                    entityIdx += kv.Value.Count;
+                }
+                else
+                {
+                    var value = 0;
+                    foreach (var triggerData in kv.Value)
+                    {
+                        value += (int)triggerData.ActualValue;
+                    }
+
+                    if (value != 0)
+                    {
+                        InternalShowValue(effectUnit, value, entityIdx++);
+                    }
+               
+                }
+
             }
+   
+            //Log.Debug("triggerDataDict.Count:" + triggerDataDict.Count);
+            
+            
+            // var idx = 0;
+            // foreach (var kv in triggerDataDict)
+            // {
+            //     var _entityIdx = entityIdx;
+            //     var values = kv.Value;
+            //     
+            //     ShowValues(values, _entityIdx);
+            //     idx++;
+            //     entityIdx += kv.Value.Count;
+            // }
 
         }
 

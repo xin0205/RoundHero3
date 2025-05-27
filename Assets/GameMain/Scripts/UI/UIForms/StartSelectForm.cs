@@ -17,7 +17,7 @@ namespace RoundHero
     public class StartSelectForm : UGuiForm
     {
         private ProcedureStart procedureStart;
-        public LoopGridView heroIconGridView;
+        //public LoopGridView heroIconGridView;
         public LoopGridView selectCardGridView;
         public LoopGridView inBattleGridView;
         private List<int> selectInitCards = new List<int>();
@@ -38,7 +38,7 @@ namespace RoundHero
         {
             base.OnInit(userData);
             
-            heroIconGridView.InitGridView(0, OnHeroIconGetItemByRowColumn);
+            //heroIconGridView.InitGridView(0, OnHeroIconGetItemByRowColumn);
             selectCardGridView.InitGridView(0, OnSelectCardGetItemByRowColumn);
             inBattleGridView.InitGridView(0, OnInBattleCardGetItemByRowColumn);
         }
@@ -61,12 +61,12 @@ namespace RoundHero
             
             //heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
 
-            GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
+            //GameEntry.Event.Subscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
 
             
-            var drHero = GameEntry.DataTable.GetDataTable<DRHero>();
-            heroIconGridView.SetListItemCount(drHero.Count);
-            heroIconGridView.RefreshAllShownItem();
+            // var drHero = GameEntry.DataTable.GetDataTable<DRHero>();
+            // heroIconGridView.SetListItemCount(drHero.Count);
+            // heroIconGridView.RefreshAllShownItem();
  
             var drCards = GameEntry.DataTable.GetDataTable<DRCard>().GetDataRows((t) =>
             {
@@ -98,7 +98,7 @@ namespace RoundHero
             //GameEntry.Entity.HideEntity(heroSceneEntity);
             //GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
             
-            GameEntry.Event.Unsubscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
+            //GameEntry.Event.Unsubscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
         }
         
         private void OnSelectHero(object sender, GameEventArgs e)
@@ -106,7 +106,7 @@ namespace RoundHero
             var ne = (StartSelect_SelectHeroEventArgs)e;
             var heroID = ne.HeroID;
             //GameManager.Instance.TmpHeroID = ne.HeroID;
-            heroIconGridView.RefreshAllShownItem();
+            //heroIconGridView.RefreshAllShownItem();
             
             //heroSceneEntity.ShowDisplayHeroEntity(heroID);
 

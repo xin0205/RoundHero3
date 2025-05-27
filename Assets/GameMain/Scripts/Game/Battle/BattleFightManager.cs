@@ -33,6 +33,8 @@ namespace RoundHero
         public EUnitActionState UnitActionState = EUnitActionState.Empty;
         //public int TargetGridPosIdx;
         public MoveActionData MoveActionData;
+
+        public bool IsTrigger;
         //public EFlyType FlyType = EFlyType.Empty;
 
         public MoveUnitData Copy()
@@ -44,6 +46,7 @@ namespace RoundHero
             moveUnitData.UnitActionState = UnitActionState;
             //moveUnitData.FlyType = FlyType;
             moveUnitData.MoveActionData = MoveActionData.Copy();
+            moveUnitData.IsTrigger = IsTrigger;
 
             return moveUnitData;
         }
@@ -169,6 +172,7 @@ namespace RoundHero
 
         public int ActionUnitGridPosIdx = -1;
         public int EffectUnitGridPosIdx = -1;
+        public bool IsTrigger = false;
 
         //public bool AddHeroHP = true;
 
@@ -198,7 +202,8 @@ namespace RoundHero
             triggerData.TriggerResult = TriggerResult;
             triggerData.ChangeHPInstantly = ChangeHPInstantly;
             triggerData.BuffTriggerType = BuffTriggerType;
-            triggerData.HeroHPDelta = HeroHPDelta;            
+            triggerData.HeroHPDelta = HeroHPDelta;
+            triggerData.IsTrigger = IsTrigger;
             return triggerData;
         }
     }

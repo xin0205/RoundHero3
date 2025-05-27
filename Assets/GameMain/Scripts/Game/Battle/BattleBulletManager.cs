@@ -119,8 +119,9 @@ namespace RoundHero
 
         public void UseTriggerData(TriggerData triggerData)
         {
+            triggerData.IsTrigger = true;
             BattleFightManager.Instance.TriggerAction(triggerData.Copy());
-            ClearTriggerData(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+            ClearTriggerData();
         }
 
         public void UseMoveActionData(int actionUnitIdx, int effectUnitIdx)
@@ -148,7 +149,7 @@ namespace RoundHero
                     }
 
                     UseMoveActionData(triggerActionMoveData.MoveUnitData);
-                    ClearMoveData(actionUnitIdx, effectUnitIdx);
+                    ClearMoveData();
                 }
 
             }
@@ -160,7 +161,7 @@ namespace RoundHero
 
         public void UseMoveActionData(MoveUnitData moveUnitData)
         {
-
+            moveUnitData.IsTrigger = true;
             var effectUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(moveUnitData.UnitIdx);
 
             if (moveUnitData.UnitActionState == EUnitActionState.Fly)
@@ -260,57 +261,106 @@ namespace RoundHero
         //     }
         // }
         //
-        public void ClearMoveData(int actionUnitIdx, int moveUnitIdx)
-        {
-            if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
-            {
-                return;
-            }
+        // public void ClearMoveData(int actionUnitIdx, int moveUnitIdx)
+        // {
+        //     if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
+        //     {
+        //         return;
+        //     }
+        //
+        //     if (!TriggerActionDatas[actionUnitIdx].Contains(moveUnitIdx))
+        //     {
+        //         return;
+        //     }
+        //
+        //     var list = TriggerActionDatas[actionUnitIdx][moveUnitIdx].ToList();
+        //     for (int i = list.Count - 1; i >= 0; i--)
+        //     {
+        //         var triggerActionData = list[i];
+        //
+        //         if (triggerActionData is TriggerActionMoveData triggerActioMoveData)
+        //         {
+        //             TriggerActionDatas[actionUnitIdx].Remove(moveUnitIdx, triggerActioMoveData);
+        //         }
+        //         
+        //     }
+        //     
+        // }
         
-            if (!TriggerActionDatas[actionUnitIdx].Contains(moveUnitIdx))
+        public void ClearMoveData()
+        {
+            foreach (var kv in TriggerActionDatas)
             {
-                return;
-            }
-
-            var list = TriggerActionDatas[actionUnitIdx][moveUnitIdx].ToList();
-            for (int i = list.Count - 1; i >= 0; i--)
-            {
-                var triggerActionData = list[i];
-
-                if (triggerActionData is TriggerActionMoveData triggerActioMoveData)
+                foreach (var kv2 in kv.Value)
                 {
-                    TriggerActionDatas[actionUnitIdx].Remove(moveUnitIdx, triggerActioMoveData);
-                }
+                    var list = kv2.Value.ToList();
+                    for (int i = list.Count - 1; i >= 0; i--)
+                    {
+                        var triggerActionData = list[i];
+
+                        if (triggerActionData is TriggerActionMoveData triggerActioMoveData)
+                        {
+                            if (triggerActioMoveData.MoveUnitData.IsTrigger)
+                            {
+                                TriggerActionDatas[kv.Key].Remove(kv2.Key, triggerActioMoveData);
+                            }
+                        }
                 
+                    }
+                }
             }
-            
+
         }
         
-        public void ClearTriggerData(int actionUnitIdx, int effectUnitIdx)
+        // public void ClearTriggerData(int actionUnitIdx, int effectUnitIdx)
+        // {
+        //     if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
+        //     {
+        //         return;
+        //     }
+        //
+        //     if (!TriggerActionDatas[actionUnitIdx].Contains(effectUnitIdx))
+        //     {
+        //         return;
+        //     }
+        //
+        //     var list = TriggerActionDatas[actionUnitIdx][effectUnitIdx].ToList();
+        //     for (int i = list.Count - 1; i >= 0; i--)
+        //     {
+        //         var triggerActionData = list[i];
+        //
+        //         if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+        //         {
+        //             TriggerActionDatas[actionUnitIdx].Remove(effectUnitIdx, triggerActionTriggerData);
+        //             break;
+        //         }
+        //         
+        //     }
+        //     
+        // }
+
+        public void ClearTriggerData()
         {
-            if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
+            foreach (var kv in TriggerActionDatas)
             {
-                return;
-            }
-        
-            if (!TriggerActionDatas[actionUnitIdx].Contains(effectUnitIdx))
-            {
-                return;
-            }
-
-            var list = TriggerActionDatas[actionUnitIdx][effectUnitIdx].ToList();
-            for (int i = list.Count - 1; i >= 0; i--)
-            {
-                var triggerActionData = list[i];
-
-                if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                foreach (var kv2 in kv.Value)
                 {
-                    TriggerActionDatas[actionUnitIdx].Remove(effectUnitIdx, triggerActionTriggerData);
-                    break;
-                }
+                    var list = kv2.Value.ToList();
+                    for (int i = list.Count - 1; i >= 0; i--)
+                    {
+                        var triggerActionData = list[i];
+
+                        if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                        {
+                            if (triggerActionTriggerData.TriggerData.IsTrigger)
+                            {
+                                TriggerActionDatas[kv.Key].Remove(kv2.Key, triggerActionTriggerData);
+                            }
+                        }
                 
+                    }
+                }
             }
-            
         }
 
         public void ClearMoveData(int actionUnitIdx)
