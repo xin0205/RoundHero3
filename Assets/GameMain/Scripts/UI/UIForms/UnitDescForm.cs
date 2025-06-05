@@ -13,12 +13,12 @@ namespace RoundHero
         public EUnitCamp UnitCamp;
         public int Idx;
         public EGridType GridType;
-
+        public int EntityID = 0;
     }
     
     public class UnitDescForm : UGuiForm
     {
-        private UnitDescFormData UnitDescFormData;
+        public UnitDescFormData UnitDescFormData;
 
         [SerializeField]
         private GameObject root;

@@ -111,6 +111,7 @@ namespace RoundHero
 
         protected override void OnClose(bool isShutdown, object userData)
         {
+            
             base.OnClose(isShutdown, userData);
             GameEntry.Event.Unsubscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
             GameEntry.Event.Unsubscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
@@ -199,45 +200,45 @@ namespace RoundHero
         private void RefreshUI()
         {
             RefreshEnergy();
-            RefreshRound();
+            //RefreshRound();
             RefreshCardCount();
             RefreshHeroHP();
-            RefreshCoin();
-            RefreshLinks();
+            //RefreshCoin();
+            //RefreshLinks();
             //coreInfo.text = HeroManager.Instance.BattleHeroData.CurHP + "/" + HeroManager.Instance.BattleHeroData.CacheHPDelta;
         }
 
-        private void RefreshLinks()
-        {
-            if (BattleAreaManager.Instance.CurPointGridPosIdx != -1)
-            {
-                var solider =
-                    BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance.CurPointGridPosIdx) as BattleSoliderEntity;
-                if(solider == null)
-                    return;
-
-                var fightSoliderData = BattleFightManager.Instance.GetUnitByIdx(solider.UnitIdx) as Data_BattleSolider;
-                var soliderEntity = BattleUnitManager.Instance.GetUnitByIdx(solider.UnitIdx) as BattleSoliderEntity;
-                if(fightSoliderData == null)
-                    return;
-
-                var card = BattleManager.Instance.GetCard(solider.BattleSoliderEntityData.BattleSoliderData.CardIdx);
-
-                var name = "";
-                var desc = "";
-                GameUtility.GetCardText(card.CardID, ref name, ref desc);
-
-                test.text = solider.UnitIdx + "-" + name + "\n";
-                var list = fightSoliderData.Links;
-                foreach (var linkSoliderID in list)
-                {
-                    test.text += linkSoliderID + ",";
-                }
-                
-                test.text += soliderEntity.CurHP +
-                             "/" + soliderEntity.MaxHP;
-            }
-        }
+        // private void RefreshLinks()
+        // {
+        //     if (BattleAreaManager.Instance.CurPointGridPosIdx != -1)
+        //     {
+        //         var solider =
+        //             BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance.CurPointGridPosIdx) as BattleSoliderEntity;
+        //         if(solider == null)
+        //             return;
+        //
+        //         var fightSoliderData = BattleFightManager.Instance.GetUnitByIdx(solider.UnitIdx) as Data_BattleSolider;
+        //         var soliderEntity = BattleUnitManager.Instance.GetUnitByIdx(solider.UnitIdx) as BattleSoliderEntity;
+        //         if(fightSoliderData == null)
+        //             return;
+        //
+        //         var card = BattleManager.Instance.GetCard(solider.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+        //
+        //         var name = "";
+        //         var desc = "";
+        //         GameUtility.GetCardText(card.CardID, ref name, ref desc);
+        //
+        //         test.text = solider.UnitIdx + "-" + name + "\n";
+        //         var list = fightSoliderData.Links;
+        //         foreach (var linkSoliderID in list)
+        //         {
+        //             test.text += linkSoliderID + ",";
+        //         }
+        //         
+        //         test.text += soliderEntity.CurHP +
+        //                      "/" + soliderEntity.MaxHP;
+        //     }
+        // }
 
         private void RefreshHeroHP()
         {
@@ -262,9 +263,9 @@ namespace RoundHero
         
         private void RefreshCoin()
         {
-            coin.text = HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.Coin) + "";
-            
-            coin.text += "-" + BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.BattleHeroData.Idx, EHeroAttribute.Coin);
+            // coin.text = HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(EHeroAttribute.Coin) + "";
+            //
+            // coin.text += "-" + BattleFightManager.Instance.GetTotalDelta(HeroManager.Instance.BattleHeroData.Idx, EHeroAttribute.Coin);
         }
         
         private void RefreshRound()

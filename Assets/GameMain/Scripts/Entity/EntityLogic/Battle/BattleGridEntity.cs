@@ -11,7 +11,7 @@ namespace RoundHero
     {
         public BattleGridEntityData BattleGridEntityData { get; protected set; }
 
-        [SerializeField] private TextMeshPro posTag;
+        [SerializeField] private TextMesh posTag;
         [SerializeField] private GameObject selectionGrid;
         [SerializeField] private GameObject backupGrid;
         [SerializeField] private GameObject grid;

@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.IO;
 
+[ExecuteInEditMode]
 public class ScreenShoot : MonoBehaviour
 {
     
@@ -11,8 +12,10 @@ public class ScreenShoot : MonoBehaviour
     
     void Start()
     {
-        renderTexture = new RenderTexture(256, 256, 16);//尺寸可调节
-        texture2D = new Texture2D(256, 256);
+        renderTexture = new RenderTexture(256, 256, 32);//尺寸可调节
+        renderTexture.format = RenderTextureFormat.ARGB32;
+        texture2D = new Texture2D(256, 256, TextureFormat.RGBA32, false);
+        
         cropCamera.targetTexture = renderTexture;
     }
 

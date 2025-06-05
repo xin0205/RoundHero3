@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 364cbd847a644dea8b476c85aab8711b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commonItem: {fileID: 9156556488243551269}
+  commonDescItem: {fileID: 9156556488243551269}
   coinItem: {fileID: 1275125606129234292}
   mask: {fileID: 6279879955682935469}
 --- !u!1 &3097872209828670040
@@ -501,7 +501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4321491017830088028, guid: e089e7f18e1c4c049b8bbfa3b4951f3e, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4321491017830088028, guid: e089e7f18e1c4c049b8bbfa3b4951f3e, type: 3}
       propertyPath: m_AnchoredPosition.x

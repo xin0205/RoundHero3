@@ -16,6 +16,8 @@ namespace RoundHero
 
         public ETutorialStep TutorialStep;
         
+        
+        
         public EBattleState BattleState { get => BattleTypeManager.BattleState;
             set => BattleTypeManager.BattleState = value;
         }
@@ -78,6 +80,7 @@ namespace RoundHero
 
         public void Destory()
         {
+            
             BattleData.Clear();
             BattleState = EBattleState.Empty;
             BattleManager.Instance.TempTriggerData.Reset();
@@ -479,5 +482,20 @@ namespace RoundHero
             GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(battleState));
             
         }
+        
+        
+        // public UnitDescForm UnitDescForm;
+        // public bool IsOpenUnitDescForm = false;
+        // public void CloseForm()
+        // {
+        //     if (BattleManager.Instance.UnitDescForm == null)
+        //         return;
+        //
+        //     if(GameEntry.UI.GetUIForm(BattleManager.Instance.UnitDescForm.UIForm.SerialId) == null)
+        //         return;
+        //     
+        //     GameEntry.UI.CloseUIForm(BattleManager.Instance.UnitDescForm);
+        //     BattleManager.Instance.UnitDescForm = null;
+        // }
     }
 }

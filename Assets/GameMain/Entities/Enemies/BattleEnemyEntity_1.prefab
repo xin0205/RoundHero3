@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 4465285574356180}
   - component: {fileID: 3403106303381099929}
   - component: {fileID: 4107302258608099607}
-  - component: {fileID: 3331731207602372172}
-  - component: {fileID: 6670099802561039995}
   - component: {fileID: 3000782954099996916}
   m_Layer: 7
   m_Name: BattleEnemyEntity_1
@@ -61,16 +59,19 @@ MonoBehaviour:
   hpAndDamageNode: {fileID: 6365870991054253586}
   damageNode: {fileID: 7718639620646774319}
   damage2: {fileID: 8255798120322059959}
+  boxCollider: {fileID: 0}
   animator: {fileID: 4107302258608099607}
   leftWeapon: {fileID: 8490208382400611549}
   rightWeapon: {fileID: 2622050021739450375}
   Root: {fileID: 6359363589352143085}
+  IsMove: 0
   EffectHurtPos: {fileID: 2066135726217102810}
   EffectAttackPos: {fileID: 6025886859164801879}
   ShootPos: {fileID: 2796897572946510672}
   UnitAttackCastType: 0
-  ValuePos: {fileID: 0}
+  ValuePos: {fileID: 6951684520851523318}
   TargetPosIdx: 0
+  UnitDescTriggerItem: {fileID: 3000782954099996916}
   IsPointer: 0
 --- !u!95 &4107302258608099607
 Animator:
@@ -82,7 +83,7 @@ Animator:
   m_GameObject: {fileID: 1017123011376438}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0dcad412e4df7364880958fbda1ede6b, type: 3}
-  m_Controller: {fileID: 9100000, guid: 95552f4b680cb084abb6076a036ba036, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6b3ec83bb2a8da145a41825f272a97dd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -93,112 +94,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &3331731207602372172
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1017123011376438}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.8, y: 1.92, z: 0.48}
-  m_Center: {x: 0, y: 1.02, z: -0.09}
---- !u!114 &6670099802561039995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1017123011376438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3000782954099996916}
-          m_TargetAssemblyTypeName: RoundHero.UnitDescTriggerItem, Assembly-CSharp
-          m_MethodName: OnPointerExit
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 3403106303381099929}
-          m_TargetAssemblyTypeName: RoundHero.BattleMonsterEntity, Assembly-CSharp
-          m_MethodName: OnPointerExit
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3000782954099996916}
-          m_TargetAssemblyTypeName: RoundHero.UnitDescTriggerItem, Assembly-CSharp
-          m_MethodName: OnPointerEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 3403106303381099929}
-          m_TargetAssemblyTypeName: RoundHero.BattleMonsterEntity, Assembly-CSharp
-          m_MethodName: OnPointerEnter
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3403106303381099929}
-          m_TargetAssemblyTypeName: RoundHero.BattleUnitEntity, Assembly-CSharp
-          m_MethodName: OnPointerClick
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &3000782954099996916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +110,7 @@ MonoBehaviour:
     UnitRole: 1
     UnitCamp: 0
     Idx: 0
+    GridType: 0
 --- !u!1 &1100224370970541572
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +267,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6732677710595369293}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5966487965389289866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6951684520851523318}
+  m_Layer: 7
+  m_Name: ValuePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6951684520851523318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5966487965389289866}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.021340117, y: 1.35575, z: -0.005551739}
+  m_LocalScale: {x: 0.625, y: 0.625, z: 0.625}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6733388782449262343}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6728998248371335747
 GameObject:
@@ -2302,6 +2229,7 @@ Transform:
   - {fileID: 2066135726217102810}
   - {fileID: 6025886859164801879}
   - {fileID: 2796897572946510672}
+  - {fileID: 6951684520851523318}
   m_Father: {fileID: 6359363589352143085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6730382134406189155

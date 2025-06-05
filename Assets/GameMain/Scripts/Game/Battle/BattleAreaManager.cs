@@ -666,6 +666,10 @@ namespace RoundHero
                                 }
                                 
                             }
+                            else if(BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+                            {
+                                unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                            }
                             else
                             {
                                 unit.ShowHurtTags(unit.UnitIdx);
@@ -709,13 +713,20 @@ namespace RoundHero
                         unit.OnPointerEnter();
                         if (unit.CurHP > 0 && !unit.IsMove)
                         {
-                            if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                            if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
                             {
-                                unit.ShowTags(unit.UnitIdx, true);
+                                unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                if (attackUnit != null)
+                                {
+                                    attackUnit.ShowHurtTags(attackUnit.UnitIdx, unit.UnitIdx);
+                                }
+                                
+                                
                             }
                             else
                             {
-                                unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                unit.ShowTags(unit.UnitIdx, true);
                             }
                         }
                     }

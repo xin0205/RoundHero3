@@ -28,8 +28,8 @@ namespace RoundHero
             ShowInit();
             var drEnemy = GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
             InitWeaponType(drEnemy.WeaponHoldingType, drEnemy.WeaponType, drEnemy.WeaponID);
-            AttachWeapon(drEnemy.WeaponHoldingType, drEnemy.WeaponType, drEnemy.WeaponID);
-
+            //AttachWeapon(drEnemy.WeaponHoldingType, drEnemy.WeaponType, drEnemy.WeaponID);
+            
             
             var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
             unitDescFormData.UnitCamp = BattleMonsterEntityData.BattleMonsterData.UnitCamp;

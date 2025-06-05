@@ -1,6 +1,4 @@
 ﻿
-using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
 
@@ -9,7 +7,7 @@ namespace RoundHero
     public class BattleSoliderEntity : BattleUnitEntity
     {
         public BattleSoliderEntityData BattleSoliderEntityData { get; protected set; }
-        [SerializeField] protected GameObject actionNode;
+        //[SerializeField] protected GameObject actionNode;
 
         protected override void OnShow(object userData)
         {
@@ -35,12 +33,16 @@ namespace RoundHero
             
             var drCard = CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
             InitWeaponType(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);
-            AttachWeapon(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);
+            //AttachWeapon(drCard.WeaponHoldingType, drCard.WeaponType, drCard.WeaponID);
+            // GameUtility.DelayExcute(2f, () =>
+            // {
+            //     Idle();
+            // });
             
             UnitAttackCastType = drCard.AttackCastType;
             
             //ShowCollider(true);
-            actionNode.SetActive(false);
+            //actionNode.SetActive(false);
         }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)

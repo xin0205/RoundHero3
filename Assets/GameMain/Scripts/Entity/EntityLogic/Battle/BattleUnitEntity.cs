@@ -178,11 +178,6 @@ namespace RoundHero
 
         protected void InitWeaponType(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
         {
-            
-            animator.SetBool(AnimationParameters.Moving, false);
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.WeaponUnsheathTrigger);
-            animator.SetTrigger(AnimationParameters.Trigger);
-            
             switch (weaponHoldingType)
             {
                 case EWeaponHoldingType.TwoHand:
@@ -223,28 +218,30 @@ namespace RoundHero
                         default:
                             break;
                     }
-                    
-                    animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
+
+                    //animator.SetInteger(AnimationParameters.Side, (int)Side.Dual);
                     break;
                 case EWeaponHoldingType.Left:
                     switch (weaponType)
                     {
                         case EWeaponType.Sword:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftSword);
+                            animator.SetInteger(AnimationParameters.LeftWeapon, (int)Weapon.LeftSword);
                             break;
                         case EWeaponType.Mace:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftMace);
+                            animator.SetInteger(AnimationParameters.LeftWeapon, (int)Weapon.LeftMace);
                             break;
                         case EWeaponType.Dagger:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftDagger);
+                            animator.SetInteger(AnimationParameters.LeftWeapon, (int)Weapon.LeftDagger);
                             break;
                         case EWeaponType.Item:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftItem);
+                            animator.SetInteger(AnimationParameters.LeftWeapon, (int)Weapon.LeftItem);
                             break;
                         case EWeaponType.Pistol:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.LeftPistol);
+                            
                             animator.SetInteger(AnimationParameters.LeftWeapon, (int)Weapon.LeftPistol);
                             break;
+                        
+                        
                         // case EWeaponType.Spear:
                         //     break;
                         // case EWeaponType.Axe:
@@ -265,6 +262,7 @@ namespace RoundHero
                         default:
                             break;
                     }
+                    animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.Shield);
                     animator.SetInteger(AnimationParameters.Side, (int)Side.Left);
                     animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
                     break;
@@ -272,25 +270,24 @@ namespace RoundHero
                     switch (weaponType)
                     {
                         case EWeaponType.Sword:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightSword);
+                            animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightSword);
                             break;
                         case EWeaponType.Spear:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightSpear);
+                            animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightSpear);
                             break;
                         case EWeaponType.Mace:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightMace);
+                            animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightMace);
                             break;
                         case EWeaponType.Dagger:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightDagger);
+                            animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightDagger);
                             break;
                         case EWeaponType.Item:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightItem);
+                            animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightItem);
                             break;
                         case EWeaponType.Pistol:
-                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightPistol);
                             animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightPistol);
-                            
                             break;
+                        
                         // case EWeaponType.Axe:
                         //     break;
                         // case EWeaponType.Bow:
@@ -308,6 +305,7 @@ namespace RoundHero
                         default:
                             break;
                     }
+                    animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.Shield);
                     animator.SetInteger(AnimationParameters.Side, (int)Side.Right);
                     animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
                     break;
@@ -316,6 +314,13 @@ namespace RoundHero
                 default:
                     break;
             }
+
+            
+            //animator.SetBool(AnimationParameters.Moving, true);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.WeaponUnsheathTrigger);
+            //animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            
             
         }
 
@@ -359,7 +364,7 @@ namespace RoundHero
                     ? "Role"
                     : "Role2"));
             
-            Idle();
+            
             RefreshData();
         }
 
@@ -831,6 +836,7 @@ namespace RoundHero
         
         public void Idle()
         {
+
             //animator.SetInteger(AnimationParameters.Weapon, Weapon.Shield);
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.InstantSwitchTrigger);
             animator.SetBool(AnimationParameters.Moving, false);
@@ -1021,16 +1027,19 @@ namespace RoundHero
         
         public void RemoteSingleAttack()
         {
-            
-            
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
-            animator.SetTrigger(AnimationParameters.Trigger);
+
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
-            GameUtility.DelayExcute(1f, () =>
-            {
-                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
-                animator.SetTrigger(AnimationParameters.Trigger);
-            });
+            animator.SetTrigger(AnimationParameters.Trigger);
+            
+            // animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
+            // animator.SetTrigger(AnimationParameters.Trigger);
+            // animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            // GameUtility.DelayExcute(1f, () =>
+            // {
+            //     animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
+            //     animator.SetTrigger(AnimationParameters.Trigger);
+            // });
             GameUtility.DelayExcute(0.15f, () =>
             {
                 SingleHandleShoot();
@@ -1039,12 +1048,12 @@ namespace RoundHero
         
         public void ExtendMultiAttack(ActionData actionData)
         {
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialAttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
             GameUtility.DelayExcute(1f, () =>
             {
-                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
+                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
             });
             GameUtility.DelayExcute(0.15f, () =>
@@ -1055,13 +1064,13 @@ namespace RoundHero
         
         public void ParabolaMultiAttack(ActionData actionData)
         {
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackCastTrigger);
-            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialAttackTrigger);
+            
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            animator.SetTrigger(AnimationParameters.Trigger);
             GameUtility.DelayExcute(1f, () =>
             {
-                
-                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.CastEndTrigger);
+                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
             });
             GameUtility.DelayExcute(0.15f, () =>
@@ -1260,7 +1269,8 @@ namespace RoundHero
             // var animatorClipInfo = animator.GetCurrentAnimatorClipInfo(0);
             // if(animatorClipInfo[0].clip.name == "Unarmed-Idle")
             //     return;
-                
+            
+            
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.ActionTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)EmoteType.Boost);

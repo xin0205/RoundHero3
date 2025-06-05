@@ -102,7 +102,7 @@ namespace RoundHero
         
         public static string GetBattleEnemyPrefab(int enemyTypeID)
         {
-            return Utility.Text.Format("Assets/GameMain/Entities/Enemies/BattleEnemyEntity_0.prefab", enemyTypeID);
+            return Utility.Text.Format("Assets/GameMain/Entities/Enemies/BattleEnemyEntity_{0}.prefab", enemyTypeID);
         }
         
         public static string GetBattleCorePrefab(int coreID)
@@ -203,7 +203,7 @@ namespace RoundHero
         
         public static string GetBattleSoliderPrefab(int cardID)
         {
-            return Utility.Text.Format("Assets/GameMain/Entities/Soliders/BattleSoliderEntity_0.prefab", cardID);
+            return Utility.Text.Format("Assets/GameMain/Entities/Soliders/BattleSoliderEntity_{0}.prefab", cardID);
             
         }
         

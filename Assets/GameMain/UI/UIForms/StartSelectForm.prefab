@@ -87,7 +87,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90cbf5044df44b7996b898f3de21e124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heroIconGridView: {fileID: 0}
   selectCardGridView: {fileID: 7551575582374131780}
   inBattleGridView: {fileID: 221330701076416234}
   heroDesc: {fileID: 0}
@@ -1704,9 +1703,9 @@ MonoBehaviour:
   mPadding:
     m_Left: 20
     m_Right: 20
-    m_Top: 20
+    m_Top: 50
     m_Bottom: 20
-  mItemPadding: {x: 15, y: 0}
+  mItemPadding: {x: 15, y: 15}
   mItemSize: {x: 0, y: 0}
   mItemRecycleDistance: {x: 50, y: 50}
   mItemSnapEnable: 0
@@ -2725,7 +2724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4475915529052259568, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4475915529052259568, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2737,7 +2736,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4475915529052259568, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -13.75
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 8111883256673197873, guid: 31b0a538fb30d9847b576ebfba8c45e7, type: 3}
       propertyPath: m_FontData.m_FontSize

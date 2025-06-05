@@ -84,7 +84,7 @@ namespace RoundHero
             public static int SelectInitCardEachCount = 1;
             public static int InitCardMaxCount = 10;
             public static int RushHurt = -1;
-            public static int FlyHurt = -2;
+            public static int FlyHurt = -1;
             public static float ParabolaBulletShootTime = 0.4f;
             public static float LineBulletShootTime = 0.2f;
             public static float BattleValueVelocity = 4;

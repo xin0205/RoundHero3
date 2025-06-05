@@ -188,6 +188,7 @@ namespace RoundHero
                 return;
             }
 
+
             var triggerActionDataList = TriggerActionDatas[actionUnitIdx].ToList();
 
             for (int i = triggerActionDataList.Count - 1; i >= 0; i--)
@@ -289,78 +290,87 @@ namespace RoundHero
         
         public void ClearMoveData()
         {
-            foreach (var kv in TriggerActionDatas)
-            {
-                foreach (var kv2 in kv.Value)
-                {
-                    var list = kv2.Value.ToList();
-                    for (int i = list.Count - 1; i >= 0; i--)
-                    {
-                        var triggerActionData = list[i];
+            var keys = TriggerActionDatas.Keys.ToList();
+            var values = TriggerActionDatas.Values.ToList();
 
-                        if (triggerActionData is TriggerActionMoveData triggerActioMoveData)
+            for (int i = values.Count - 1; i >= 0; i--)
+            {
+                var list = values[i].ToList();
+                
+                for (int j = list.Count - 1; j >= 0; j--)
+                {
+                    var list2 = list[j].Value.ToList();
+                    
+                    
+                    for (int k = list2.Count - 1; k >= 0; k--)
+                    {
+                        
+                        if (list2[k] is TriggerActionMoveData triggerActioMoveData)
                         {
                             if (triggerActioMoveData.MoveUnitData.IsTrigger)
                             {
-                                TriggerActionDatas[kv.Key].Remove(kv2.Key, triggerActioMoveData);
+                                TriggerActionDatas[keys[i]].Remove(list[j].Key, triggerActioMoveData);
                             }
                         }
-                
                     }
+                    
                 }
             }
-
+   
         }
         
-        // public void ClearTriggerData(int actionUnitIdx, int effectUnitIdx)
-        // {
-        //     if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
-        //     {
-        //         return;
-        //     }
-        //
-        //     if (!TriggerActionDatas[actionUnitIdx].Contains(effectUnitIdx))
-        //     {
-        //         return;
-        //     }
-        //
-        //     var list = TriggerActionDatas[actionUnitIdx][effectUnitIdx].ToList();
-        //     for (int i = list.Count - 1; i >= 0; i--)
-        //     {
-        //         var triggerActionData = list[i];
-        //
-        //         if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
-        //         {
-        //             TriggerActionDatas[actionUnitIdx].Remove(effectUnitIdx, triggerActionTriggerData);
-        //             break;
-        //         }
-        //         
-        //     }
-        //     
-        // }
 
         public void ClearTriggerData()
         {
-            foreach (var kv in TriggerActionDatas)
-            {
-                foreach (var kv2 in kv.Value)
-                {
-                    var list = kv2.Value.ToList();
-                    for (int i = list.Count - 1; i >= 0; i--)
-                    {
-                        var triggerActionData = list[i];
+            
+            var keys = TriggerActionDatas.Keys.ToList();
+            var values = TriggerActionDatas.Values.ToList();
 
-                        if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+            for (int i = values.Count - 1; i >= 0; i--)
+            {
+                var list = values[i].ToList();
+                
+                for (int j = list.Count - 1; j >= 0; j--)
+                {
+                    var list2 = list[j].Value.ToList();
+                    
+                    for (int k = list2.Count - 1; k >= 0; k--)
+                    {
+                        
+                        if (list2[k] is TriggerActionTriggerData triggerActionTriggerData)
                         {
                             if (triggerActionTriggerData.TriggerData.IsTrigger)
                             {
-                                TriggerActionDatas[kv.Key].Remove(kv2.Key, triggerActionTriggerData);
+                                TriggerActionDatas[keys[i]].Remove(list[j].Key, triggerActionTriggerData);
                             }
                         }
-                
                     }
+                    
                 }
             }
+            
+            // foreach (var kv in TriggerActionDatas)
+            // {
+            //     var list = kv.Value.ToList();
+            //     for (int i = list.Count - 1; i >= 0; i--)
+            //     {
+            //         var list2 = list[i].Value.ToList();
+            //         for (int j = list2.Count - 1; j >= 0; j--)
+            //         {
+            //             var triggerActionData = list2[j];
+            //
+            //             if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+            //             {
+            //                 if (triggerActionTriggerData.TriggerData.IsTrigger)
+            //                 {
+            //                     TriggerActionDatas[kv.Key].Remove(list[i].Key, triggerActionTriggerData);
+            //                 }
+            //             }
+            //     
+            //         }
+            //     }
+            //
+            // }
         }
 
         public void ClearMoveData(int actionUnitIdx)
