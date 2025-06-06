@@ -59,8 +59,14 @@ namespace RoundHero
 
         //public int RawSiblingIdx;
 
-        
-        
+        private void OnDisable()
+        {
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                kv.Value.UnShowTags();
+            }
+        }
+
 
         protected override void OnInit(object userData)
         {

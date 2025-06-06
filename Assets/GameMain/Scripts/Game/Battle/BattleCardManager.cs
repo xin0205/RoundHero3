@@ -449,7 +449,9 @@ namespace RoundHero
                 //     return false;
                 // }
 
-                if (buffData.BuffTriggerType == EBuffTriggerType.SelectUnit || CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
+                if (buffData.BuffTriggerType == EBuffTriggerType.TacticSelectUnit ||
+                    buffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
                 {
                     BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;

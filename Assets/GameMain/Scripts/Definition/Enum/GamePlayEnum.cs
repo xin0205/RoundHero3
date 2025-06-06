@@ -375,12 +375,13 @@ namespace RoundHero
         Effect,
         Action,
         Trigger,
-        Hero,
+        Core,
         All,
         InRange,
         Vertical,
         Horizontal,
         Staff,
+        Select,
         EffectUnitDirect,
         DeBuffMax,
         MoveMax,
@@ -572,7 +573,7 @@ namespace RoundHero
         SelfPass,
         BackToSelf,
         Empty,
-        
+       
         //AllBack,
         //AllClose,
         //CrossOtherBack1,
@@ -593,6 +594,7 @@ namespace RoundHero
         UsBuffCount,
         EnemyDeBuffCount,
         EffectUnitHurt,
+         UnitHP,
     }
 
     public enum EMapSite

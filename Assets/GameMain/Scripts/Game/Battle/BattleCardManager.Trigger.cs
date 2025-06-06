@@ -17,14 +17,14 @@ namespace RoundHero
                 var values = new List<float>();
                 foreach (var value in drCard.Values1)
                 {
-                    values.Add(GameUtility.GetBuffValue(value));
+                    values.Add(GameUtility.GetBuffValue(value, effectUnit != null ? effectUnit.Idx : -1));
                 }
                 
                 
                 //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
                 //
                 BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, -1, -1,
-                    -1, triggerDatas, -1, -1);
+                    effectUnit != null ? effectUnit.Idx : -1, triggerDatas, -1, -1);
                 BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Tactic;
                 
                 

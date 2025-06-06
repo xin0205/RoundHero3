@@ -1,4 +1,5 @@
-﻿using UGFExtensions.Await;
+﻿using System;
+using UGFExtensions.Await;
 using UnityEngine;
 
 
@@ -12,7 +13,12 @@ namespace RoundHero
         private UnitDescForm unitDescForm;
         
         private bool isOpen = false;
-        
+
+        private void OnDisable()
+        {
+            CloseForm();
+        }
+
         public async void OnPointerEnter()
         {
             if (unitDescForm != null)
@@ -54,7 +60,7 @@ namespace RoundHero
             CloseForm();
         }
 
-        private void Update()
+        public void Update()
         {
             
             if (unitDescForm != null && BattleAreaManager.Instance.CurPointGridPosIdx == -1)
@@ -72,10 +78,12 @@ namespace RoundHero
 
             if(GameEntry.UI.GetUIForm(unitDescForm.UIForm.SerialId) == null)
                 return;
-            
+
             isOpen = false;
             GameEntry.UI.CloseUIForm(unitDescForm);
             unitDescForm = null;
         }
+
+
     }
 }

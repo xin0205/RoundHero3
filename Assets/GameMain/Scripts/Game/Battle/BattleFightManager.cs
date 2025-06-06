@@ -4409,6 +4409,11 @@ namespace RoundHero
                     {
                         foreach (var triggerData in kv.Value)
                         {
+                            if (triggerData.ActualValue == 0)
+                            {
+                                continue;
+                            }
+                            
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
                                 triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
@@ -4428,6 +4433,11 @@ namespace RoundHero
                     {
                         foreach (var triggerData in kv.Value)
                         {
+                            if (triggerData.ActualValue == 0)
+                            {
+                                continue;
+                            }
+                            
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
                                 triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
@@ -4456,6 +4466,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
@@ -4476,6 +4491,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
@@ -4497,6 +4517,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
@@ -4516,6 +4541,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
@@ -4550,6 +4580,11 @@ namespace RoundHero
                     {
                         foreach (var triggerData in kv2.Value)
                         {
+                            if (triggerData.ActualValue == 0)
+                            {
+                                continue;
+                            }
+                            
                             if(triggerData.EffectUnitIdx != effectUnitIdx)
                                 continue;
                             
@@ -4576,6 +4611,11 @@ namespace RoundHero
                     {
                         foreach (var triggerData in kv2.Value)
                         {
+                            if (triggerData.ActualValue == 0)
+                            {
+                                continue;
+                            }
+                            
                             if(triggerData.EffectUnitIdx != effectUnitIdx)
                                 continue;
                             
@@ -4607,6 +4647,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.EffectUnitIdx != effectUnitIdx)
                         {
                             continue;
@@ -4633,6 +4678,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.EffectUnitIdx != effectUnitIdx)
                         {
                             continue;
@@ -4659,6 +4709,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in datas)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.EffectUnitIdx != effectUnitIdx)
                         {
                             continue;
@@ -4685,6 +4740,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in kv2.Value)
                     {
+                        if (triggerData.ActualValue == 0)
+                        {
+                            continue;
+                        }
+                        
                         if(triggerData.EffectUnitIdx != effectUnitIdx)
                             continue;
                             
@@ -4737,6 +4797,11 @@ namespace RoundHero
 
                 foreach (var triggerData in kv.Value)
                 {
+                    if (triggerData.ActualValue == 0)
+                    {
+                        continue;
+                    }
+                    
                     if (triggerData.EffectUnitIdx != effectUnitIdx)
                     {
                         continue;
@@ -5378,7 +5443,7 @@ namespace RoundHero
 
 
                         break;
-                    case ETriggerTarget.Hero:
+                    case ETriggerTarget.Core:
                         realEffectUnitIdxs.Add(PlayerData.BattleHero.Idx);
                         break;
                     case ETriggerTarget.All:
@@ -5447,6 +5512,9 @@ namespace RoundHero
                             realEffectUnitIdxs.Add(horizontal2Unit.Idx);
                         }
 
+                        break;
+                    case ETriggerTarget.Select:
+                        realEffectUnitIdxs.Add(effectUnitIdx);
                         break;
                     default:
                         break;

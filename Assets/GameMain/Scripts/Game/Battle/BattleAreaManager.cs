@@ -664,6 +664,10 @@ namespace RoundHero
                                 {
                                     unit.ShowTags(unit.UnitIdx, true);
                                 }
+                                else
+                                {
+                                    unit.ShowTacticHurtDisplayValues(unit.UnitIdx);
+                                }
                                 
                             }
                             else if(BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)

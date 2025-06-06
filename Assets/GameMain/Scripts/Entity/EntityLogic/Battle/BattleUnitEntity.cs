@@ -99,6 +99,8 @@ namespace RoundHero
 
         //protected int TopLayerIdx;
 
+        private UnitDescTriggerItem unitDescTriggerItem;
+
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -121,7 +123,8 @@ namespace RoundHero
             //     }
             //     
             // }
-
+            unitDescTriggerItem = GetComponent<UnitDescTriggerItem>();
+            
 
         }
 
@@ -167,11 +170,7 @@ namespace RoundHero
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
-            var unitDescTriggerItem = GetComponent<UnitDescTriggerItem>();
-            if (unitDescTriggerItem != null)
-            {
-                unitDescTriggerItem.CloseForm();
-            }
+            unitDescTriggerItem.CloseForm();
         }
 
         
@@ -373,7 +372,7 @@ namespace RoundHero
             base.OnUpdate(elapseSeconds, realElapseSeconds);
             RefreshRoatation();
             ShowHurts();
-
+            
         }
         
         // public void SetAction(EUnitActionState actionState)
@@ -1337,6 +1336,7 @@ namespace RoundHero
             // Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
             
             var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+            uiCorePos.y -= 25f;
             var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
                 AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
 

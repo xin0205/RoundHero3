@@ -631,11 +631,15 @@ namespace RoundHero
                      
                      idx++;
                  }
-            
-                 foreach (var matchGridPosIdx in direct8RangeNest[maxIdx])
+
+                 if (maxIdx != -1)
                  {
-                     retGetRange.Add(matchGridPosIdx);
+                     foreach (var matchGridPosIdx in direct8RangeNest[maxIdx])
+                     {
+                         retGetRange.Add(matchGridPosIdx);
+                     }
                  }
+                 
              }
             //  else if (actionType == EActionType.UnitMaxXExtend)
             //  {
@@ -1683,7 +1687,7 @@ namespace RoundHero
 
         }
         
-        public static float GetBuffValue(string value)
+        public static float GetBuffValue(string value, int effectUnitIdx = -1)
         {
             if (float.TryParse(value, out float floatValue))
             {
@@ -1693,6 +1697,11 @@ namespace RoundHero
             {
                 switch (valueType)
                 {
+                    case EValueType.UnitHP:
+                        var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+                        if (effectUnit != null)
+                            return effectUnit.CurHP;
+                        break;
                     case EValueType.EffectUnitAttack:
                         break;
                     case EValueType.Empty:
@@ -1709,7 +1718,7 @@ namespace RoundHero
                         throw new ArgumentOutOfRangeException();
                 }
 
-                return 1;
+                return 0;
             }
 
             return 0;

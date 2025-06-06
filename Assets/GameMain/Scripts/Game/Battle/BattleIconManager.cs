@@ -102,10 +102,11 @@ namespace RoundHero
             }
             
             BattleIconEntities.Clear();
-            
-            
-            var triggerDataDict = BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx);
 
+
+            var triggerDataDict =
+                GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx)
+                    ,BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
             var entityIdx = curEntityIdx;
             curEntityIdx += triggerDataDict.Count;
             

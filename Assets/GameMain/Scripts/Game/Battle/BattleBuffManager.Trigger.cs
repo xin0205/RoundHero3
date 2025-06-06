@@ -6,7 +6,7 @@ namespace RoundHero
     public partial class BattleBuffManager : Singleton<BattleBuffManager>
     {
     public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> buffValues, int ownUnitID,
-            int actionUnitID, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
+            int actionUnitIdx, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
             //var drBuff = BattleBuffManager.Instance.GetBuffData(buffID);
@@ -18,7 +18,7 @@ namespace RoundHero
             var isSubCurHP = false;
  
             
-            var _triggerDatas = BattleBuffManager.Instance.InternalBuffTrigger(buffTriggerType, buffData, buffValues, ownUnitID, actionUnitID,
+            var _triggerDatas = BattleBuffManager.Instance.InternalBuffTrigger(buffTriggerType, buffData, buffValues, ownUnitID, actionUnitIdx,
                 effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
             foreach (var triggerData in _triggerDatas)
@@ -39,7 +39,7 @@ namespace RoundHero
                 if (isSubCurHP)
                 {
                     BattleBuffManager.Instance.AttackTrigger(triggerData, triggerDatas);
-                    BattleUnitStateManager.Instance.CheckUnitState(actionUnitID, triggerDatas);
+                    BattleUnitStateManager.Instance.CheckUnitState(actionUnitIdx, triggerDatas);
                 }
             }
 
