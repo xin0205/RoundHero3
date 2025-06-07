@@ -686,6 +686,9 @@ namespace RoundHero
                             BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2 = -1;
                         
                             BattleAreaManager.Instance.ShowBackupGrids(null);
+                            
+                            BattleManager.Instance.SetBattleState(EBattleState.UseCard);
+                            RefreshCardConfirm();
 
                         }
                         else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
@@ -701,6 +704,7 @@ namespace RoundHero
                         }
                         
                         BattleBuffManager.Instance.RecoverUseBuffState();
+
                     }
                     
 

@@ -3,6 +3,7 @@ using System;
 using DG.Tweening;
 using GameFramework.Event;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -52,6 +53,8 @@ namespace RoundHero
 
         [SerializeField] private GameObject ConfirmGO;
 
+        
+        [SerializeField] private Text ConfirmText;
 
         private Rect rect;
         private bool isInside;
@@ -582,6 +585,21 @@ namespace RoundHero
             
             ConfirmGO.SetActive(isConfirm);
             ActionGO.SetActive(!isConfirm);
+
+            if (isConfirm)
+            {
+                if (BattleManager.Instance.BattleState == EBattleState.MoveGrid)
+                {
+                    ConfirmText.text = GameEntry.Localization.GetString(Constant.Localization.Button_ConfrimMove);
+                }
+                else if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
+                {
+                    ConfirmText.text =
+                        GameEntry.Localization.GetString(Constant.Localization.Button_ConfrimExchangeGrid);
+                }
+            }
+            
+            
         }
 
         public void Move()

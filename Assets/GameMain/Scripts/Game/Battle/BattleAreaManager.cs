@@ -198,8 +198,8 @@ namespace RoundHero
             }
             else if (ne.ShowState == EShowState.Unshow)
             {
+                BattleUnitManager.Instance.UnShowTags();
                 ShowAllGrid(false);
-                BattleAreaManager.Instance.CurPointGridPosIdx = -1;
             }
 
             var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx,
@@ -630,7 +630,10 @@ namespace RoundHero
                 }
             }
 
-
+            if (ne.ShowState == EShowState.Unshow)
+            {
+                BattleUnitManager.Instance.UnShowTags();
+            }
             
             if (!pointerDownInRange)
             {
@@ -686,7 +689,7 @@ namespace RoundHero
                     {
                         Log.Debug("1 Exit");
                         unit.OnPointerExit();
-                        unit.UnShowTags();
+                        //unit.UnShowTags();
                     }
                 
                 }
@@ -705,7 +708,7 @@ namespace RoundHero
                     {
                         Log.Debug("2 Exit");
                         unit.OnPointerExit();
-                        unit.UnShowTags();
+                        //unit.UnShowTags();
                     }
                 
                 }
@@ -744,7 +747,7 @@ namespace RoundHero
                         
                         Log.Debug("3 Exit");
                         unit.OnPointerExit();
-                        unit.UnShowTags();
+                        //unit.UnShowTags();
                     }
                 }
                 // else
@@ -2251,6 +2254,8 @@ namespace RoundHero
                     }
 
                 }
+                
+                BattleCardManager.Instance.RefreshCardConfirm();
             }
             else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
             {

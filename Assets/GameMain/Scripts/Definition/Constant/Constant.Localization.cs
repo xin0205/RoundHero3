@@ -89,7 +89,8 @@ namespace RoundHero
             public const string UI_Tutorial = "UI.Tutorial";
             public const string UI_Confirm = "UI.Confirm";
             public const string UI_Cancel = "UI.Cancel";
-
+            public const string Button_ConfrimMove = "Button.ConfrimMove";
+            public const string Button_ConfrimExchangeGrid = "Button.ConfrimExchangeGrid";
 
 
 
