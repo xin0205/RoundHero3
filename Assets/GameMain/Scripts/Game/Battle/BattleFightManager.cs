@@ -433,9 +433,14 @@ namespace RoundHero
 
                 if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.Card)
                 {
-                    BattleCardManager.Instance.CacheTacticCardData(
-                        BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
-                        BattleManager.Instance.CurUnitCamp, effectUnit);
+                    var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+                    if (buffStr != EBuffID.Spec_AttackUs.ToString() && buffStr != EBuffID.Spec_MoveUs.ToString())
+                    {
+                        BattleCardManager.Instance.CacheTacticCardData(
+                            BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
+                            BattleManager.Instance.CurUnitCamp, effectUnit);
+                    }
+    
                 }
                 else if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType ==
                          TriggerBuffType.EnergyBuff)
@@ -868,23 +873,43 @@ namespace RoundHero
                 // || attackWithoutHero
                 
                 var rangeContainFirstCamp = false;
+                var range2 = new List<int>();
                 if (unitCamp == EUnitCamp.Enemy && range.Count > 0)
                 {
-                    range.Sort((gridPosIdx1, gridPosIdx2) =>{
-                        var unit1 = GetUnitByGridPosIdx(gridPosIdx1);
-                        var unit2 = GetUnitByGridPosIdx(gridPosIdx2);
+                    
+                    for (int i = range.Count - 1; i >= 0; i--)
+                    {
+                        var _gridPosIdx = range[i];
+                        var unit = GetUnitByGridPosIdx(_gridPosIdx);
+                        if (unit != null && unit.UnitRole == EUnitRole.Hero)
+                        {
+                            range2.Add(_gridPosIdx);
+                            range.Remove(_gridPosIdx);
+                        }
+                    }
+                    
+                    for (int i = 0; i < range.Count; i++)
+                    {
+                        var _gridPosIdx = range[i];
+                        range2.Add(_gridPosIdx);
+     
+                    }
 
-                        if (unit1 == null)
-                            return 0;
-                        
-                        if (unit2 == null)
-                            return 0;
-                        
-                        if (unit2.UnitRole == EUnitRole.Hero)
-                            return 1;
-
-                        return 0;
-                    });
+                    // range.Sort((gridPosIdx1, gridPosIdx2) =>{
+                    //     var unit1 = GetUnitByGridPosIdx(gridPosIdx1);
+                    //     var unit2 = GetUnitByGridPosIdx(gridPosIdx2);
+                    //
+                    //     if (unit1 == null)
+                    //         return 0;
+                    //     
+                    //     if (unit2 == null)
+                    //         return 0;
+                    //     
+                    //     if (unit2.UnitRole == EUnitRole.Hero)
+                    //         return 1;
+                    //
+                    //     return 0;
+                    // });
 
                     // foreach (var rangeGridPosIdx in range)
                     // {
@@ -900,6 +925,10 @@ namespace RoundHero
                     
                     
                 }
+                else
+                {
+                    range2 = range;
+                }
 
                 
                 var isSubCurHP = false;
@@ -912,7 +941,7 @@ namespace RoundHero
                 // {
                 var triggerRangeStr = triggerBuffData.BuffData.TriggerRange.ToString();
                     var directs = new List<ERelativePos>();
-                    foreach (var rangeGridPosIdx in range)
+                    foreach (var rangeGridPosIdx in range2)
                     {
                         if (triggerRangeStr.Contains("Parabola") || triggerRangeStr.Contains("Long"))
                         {
@@ -5411,7 +5440,7 @@ namespace RoundHero
                         }
                         break;
                     case ETriggerTarget.Effect:
-                        if (effectUnitIdx != -1)
+                        if (effectUnitIdx != -1 && actionUnitIdx  != -1)
                         {
                             var isEnemy = IsEnemy(actionUnitIdx, effectUnitIdx);
                             

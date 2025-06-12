@@ -91,7 +91,7 @@ namespace RoundHero
             get => BattleUnitData.MaxHP;
         }
 
-        [SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
+        [SerializeField] protected UnitDescTriggerItem UnitDescTriggerItem;
         
         //[SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
 
@@ -99,7 +99,6 @@ namespace RoundHero
 
         //protected int TopLayerIdx;
 
-        private UnitDescTriggerItem unitDescTriggerItem;
 
         protected override void OnInit(object userData)
         {
@@ -123,9 +122,6 @@ namespace RoundHero
             //     }
             //     
             // }
-            unitDescTriggerItem = GetComponent<UnitDescTriggerItem>();
-            
-
         }
 
         // public void AfterRunAction()
@@ -165,12 +161,13 @@ namespace RoundHero
             base.OnShow(userData);
             IsMove = false;
             
+            
         }
 
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
-            unitDescTriggerItem.CloseForm();
+            UnitDescTriggerItem.CloseForm();
         }
 
         
@@ -182,6 +179,7 @@ namespace RoundHero
                 case EWeaponHoldingType.TwoHand:
                     switch (weaponType)
                     {
+
                         case EWeaponType.Sword:
                             animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.TwoHandSword);
                             break;
@@ -229,7 +227,6 @@ namespace RoundHero
                         case EWeaponType.Mace:
                             animator.SetInteger(AnimationParameters.LeftWeapon, (int)Weapon.LeftMace);
                             break;
-                        case EWeaponType.Dagger:
                             animator.SetInteger(AnimationParameters.LeftWeapon, (int)Weapon.LeftDagger);
                             break;
                         case EWeaponType.Item:
@@ -1339,12 +1336,13 @@ namespace RoundHero
             uiCorePos.y -= 25f;
             var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
                 AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-
-            uiLocalPoint.y += 100f;
+            var uiLocalPoint2 = uiLocalPoint;
+            uiLocalPoint.y += 25f;
+            uiLocalPoint2.y += 75f;
 
             await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                uiCorePos,
-                hurt, -1, false, this is BattleSoliderEntity);
+                hurt < 0 ? uiCorePos : uiLocalPoint2,
+                hurt, -1, false, this is BattleSoliderEntity && hurt < 0);
             
             // var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
             // hurtEntity.transform.parent = Root;

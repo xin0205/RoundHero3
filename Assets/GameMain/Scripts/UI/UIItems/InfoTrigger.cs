@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityGameFramework.Runtime;
 
@@ -87,6 +88,9 @@ namespace RoundHero
             }
         }
 
-
+        private void OnDisable()
+        {
+            HideInfo();
+        }
     }
 }

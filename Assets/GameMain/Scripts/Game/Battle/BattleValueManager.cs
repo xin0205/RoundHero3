@@ -200,76 +200,46 @@ namespace RoundHero
             
             if (effectUnit is BattleMonsterEntity)
             {
+                // var effectUnitPos = effectUnit.Root.position;
+                //
+                // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+                //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+                //
+                // uiLocalPoint.y += 50f;
+                //
+                // var entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
+                //     uiLocalPoint, value, entityIdx);
+                //
+                // if (GameEntry.Entity.HasEntity(entity.Id))
+                // {
+                //     if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx <
+                //         showValueEntityIdx)
+                //     {
+                //
+                //         GameEntry.Entity.HideEntity(entity);
+                //     }
+                //     else
+                //     {
+                //     
+                //         BattleValueEntities.Add(entity.Id, entity);
+                //     }
+                // }
                 var effectUnitPos = effectUnit.Root.position;
 
-
-                // effectUnitPos.y += 1f;
-                // effectUnitPos.z -= 1.5f;
-
+                
 
                 var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
                     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-
-                uiLocalPoint.y += 50f;
-
-                var entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
-                    uiLocalPoint, value, entityIdx);
-
-                if (GameEntry.Entity.HasEntity(entity.Id))
-                {
-                    if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx <
-                        showValueEntityIdx)
-                    {
-
-                        GameEntry.Entity.HideEntity(entity);
-                    }
-                    else
-                    {
-                    
-                        BattleValueEntities.Add(entity.Id, entity);
-                    }
-                }
+                var uiLocalPoint2 = uiLocalPoint;
                 
-
-            }
-            else
-            {
-                var effectUnitPos = effectUnit.Root.position;
-
-                // effectUnitPos.y += 1f;
-                //
-                // var uiCorePos = AreaController.Instance.UICore.transform.position;
-                // uiCorePos.y -= 0.4f;
-                //
-                // var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
-                //     uiCorePos);
-                //
-                // Vector3 position = new Vector3(pos.x, pos.y, Camera.main.transform.position.z);
-                // Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
-                //
-                // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos,
-                //     uiCoreWorldPos,
-                //     value, entityIdx, true, effectUnit is BattleCoreEntity ? false : true);
-
-
-                
-                var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-                uiCorePos.y -= 25f;
-                var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-
-                uiLocalPoint.y += 50f;
+                uiLocalPoint.y += 25f;
+                uiLocalPoint2.y += 75f;
                 
                 var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                    uiCorePos,
-                    value, entityIdx, true, effectUnit is BattleCoreEntity ? false : true);
+                    uiLocalPoint2,
+                    value, entityIdx, true, effectUnit is BattleSoliderEntity);
 
-                // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                //     uiCorePos,
-                //     hurt, -1, false, this is BattleSoliderEntity);
-
-                //entity.transform.parent = effectUnit.Root;
-
+                
                 Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
@@ -280,10 +250,40 @@ namespace RoundHero
                     }
                     else
                     {
-                        // if (GameEntry.Entity.HasEntity(effectUnit.Entity.Id))
-                        // {
-                        //     GameEntry.Entity.AttachEntity(entity.Entity.Id, effectUnit.Entity.Id);
-                        // }
+
+                        BattleValueEntities.Add(entity.Entity.Id, entity);
+                    }
+                }
+
+            }
+            else
+            {
+                var effectUnitPos = effectUnit.Root.position;
+
+                
+                var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+                uiCorePos.y -= 25f;
+                var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+                var uiLocalPoint2 = uiLocalPoint;
+                uiLocalPoint.y += 25f;
+                uiLocalPoint2.y += 75f;
+                
+                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
+                    value < 0 ? uiCorePos : uiLocalPoint2,
+                    value, entityIdx, true, effectUnit is BattleSoliderEntity && value < 0);
+
+                
+                Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
+                if (GameEntry.Entity.HasEntity(entity.Id))
+                {
+                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
+                    {
+
+                        GameEntry.Entity.HideEntity(entity);
+                    }
+                    else
+                    {
 
                         BattleValueEntities.Add(entity.Entity.Id, entity);
                     }

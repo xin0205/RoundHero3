@@ -245,6 +245,7 @@ MonoBehaviour:
     UnitCamp: 4
     Idx: 0
     GridType: 0
+    EntityID: 0
 --- !u!1 &4867536467573372071
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7350004338427043248
 RectTransform:
   m_ObjectHideFlags: 0

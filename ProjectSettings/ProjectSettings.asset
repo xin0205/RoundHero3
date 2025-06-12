@@ -650,7 +650,8 @@ PlayerSettings:
     Standalone: FISHNET;FISHNET_V4;STEAMWORKS_NET;ENABLE_LOG;FISHNET_UNGENERATEPREFAB
   additionalCompilerArguments: {}
   platformArchitecture: {}
-  scriptingBackend: {}
+  scriptingBackend:
+    Standalone: 0
   il2cppCompilerConfiguration: {}
   il2cppCodeGeneration: {}
   managedStrippingLevel:

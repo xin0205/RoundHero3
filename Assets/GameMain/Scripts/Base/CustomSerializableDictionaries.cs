@@ -2,6 +2,7 @@
 using GifImporter;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 
 namespace RoundHero
@@ -39,6 +40,11 @@ namespace RoundHero
     
     [Serializable]
     public class GIFAssetDictionary : SerializableDictionary<string, Gif>
+    {
+    }
+    
+    [Serializable]
+    public class VideoAssetDictionary : SerializableDictionary<string, VideoClip>
     {
     }
     

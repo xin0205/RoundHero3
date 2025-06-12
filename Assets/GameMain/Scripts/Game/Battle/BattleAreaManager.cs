@@ -200,6 +200,7 @@ namespace RoundHero
             {
                 BattleUnitManager.Instance.UnShowTags();
                 ShowAllGrid(false);
+                BattleAreaManager.Instance.CurPointGridPosIdx = -1;
             }
 
             var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx,

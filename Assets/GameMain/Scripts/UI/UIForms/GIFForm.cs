@@ -1,6 +1,7 @@
 ﻿using System;
 using GifImporter;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -10,13 +11,14 @@ namespace RoundHero
         Hero,
         Solider,
         Enemy,
+        Tactic,
         
     }
     
     [Serializable]
     public class GIFFormData
     {
-        public GIFPlayData GifPlayData;
+        public AnimationPlayData animationPlayData;
         
     }
     
@@ -33,11 +35,11 @@ namespace RoundHero
             base.OnOpen(userData);
             gifFormData = (GIFFormData)userData;
 
-            gifPlayItem.SetGIF(gifFormData.GifPlayData);
+            gifPlayItem.SetGIF(gifFormData.animationPlayData);
 
             Vector3 mousePosition = Input.mousePosition;
             
-            if (gifFormData.GifPlayData.ShowPosition == EShowPosition.MousePosition)
+            if (gifFormData.animationPlayData.ShowPosition == EShowPosition.MousePosition)
             {
                 var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
                 var delta = 2f;
@@ -69,7 +71,7 @@ namespace RoundHero
             
                 gifPlayItem.transform.position = gifPos;
             }
-            else if (gifFormData.GifPlayData.ShowPosition == EShowPosition.BattleLeft)
+            else if (gifFormData.animationPlayData.ShowPosition == EShowPosition.BattleLeft)
             {
                 gifPlayItem.transform.position = battleLeftTransform.position;
             }

@@ -22,12 +22,12 @@ namespace RoundHero
             
             BattleUnitData = BattleSoliderEntityData.BattleSoliderData;
 
-            var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
+            var unitDescFormData = UnitDescTriggerItem.UnitDescFormData;
             unitDescFormData.UnitCamp = BattleSoliderEntityData.BattleSoliderData.UnitCamp;
             unitDescFormData.UnitRole = EUnitRole.Staff;
 
             unitDescFormData.Idx = BattleSoliderEntityData.BattleSoliderData.Idx;
-
+            unitDescFormData.GridType = EGridType.Unit;
             
             ShowInit();
             

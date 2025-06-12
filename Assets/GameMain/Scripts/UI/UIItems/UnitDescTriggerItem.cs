@@ -73,15 +73,19 @@ namespace RoundHero
 
         public void CloseForm()
         {
+            isOpen = false;
             if (unitDescForm == null)
                 return;
 
-            if(GameEntry.UI.GetUIForm(unitDescForm.UIForm.SerialId) == null)
-                return;
 
-            isOpen = false;
-            GameEntry.UI.CloseUIForm(unitDescForm);
+            var form = GameEntry.UI.GetUIForm(unitDescForm.UIForm.SerialId);
             unitDescForm = null;
+            if(form == null)
+                return;
+            
+            
+            GameEntry.UI.CloseUIForm(form);
+            
         }
 
 

@@ -513,7 +513,7 @@ namespace RoundHero
             BattleBuffManager.Instance.TriggerBuff();
             BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
-
+            var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
             RemoveHandCard(cardIdx);
 
             if (BattleManager.Instance.CurUnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
@@ -535,7 +535,15 @@ namespace RoundHero
                 }
             }
 
-            
+            var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitID);
+
+            var cardPos = cardEntity.transform.localPosition;
+            cardPos.y += 100;
+            var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+            uiCorePos.y -= 25f;
+            GameEntry.Entity.ShowBattleMoveValueEntityAsync(cardPos,
+                uiCorePos,
+                - cardEnergy, -1, false, false);
             BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitID);
 
             BattleBuffManager.Instance.RecoverUseBuffState();
@@ -621,7 +629,7 @@ namespace RoundHero
                 var posy = BattleController.Instance.HandCardPos.localPosition.y;
                 // || cardIdx == PointerCardIdx
                 if (cardIdx == SelectCardIdx)
-                    posy += 140f;
+                    posy += Constant.Battle.SelectCardHeight;
                 
                 cardEntity.MoveCard(
                     new Vector3(cardPosList[idx], posy, 0), 0.1f);
@@ -706,11 +714,7 @@ namespace RoundHero
                         BattleBuffManager.Instance.RecoverUseBuffState();
 
                     }
-                    
 
-                    
-                    
-                    
                     BattleManager.Instance.RefreshEnemyAttackData();
                     
                 }
@@ -737,9 +741,9 @@ namespace RoundHero
             return cardCount * 0.15f + 0.15f;
         }
         
-        public int GetCardEnergy(int cardID, int unitID = -1)
+        public int GetCardEnergy(int cardIdx, int unitID = -1)
         {
-            var card = BattleManager.Instance.GetCard(cardID);
+            var card = BattleManager.Instance.GetCard(cardIdx);
             var drCard = GameEntry.DataTable.GetCard(card.CardID);
 
             var cardEnergy = drCard.Energy;
@@ -805,7 +809,7 @@ namespace RoundHero
                 // }
 
                 if (BattleCurseManager.Instance.BattleCurseData.CurseIDs.Contains(ECurseID.OnGirdUnitAddEnergy) &&
-                    BattleUnitManager.Instance.OnGridUnitContainCard(cardID))
+                    BattleUnitManager.Instance.OnGridUnitContainCard(cardIdx))
                 {
                     cardEnergy += 1;
                 }
@@ -1083,11 +1087,11 @@ namespace RoundHero
             return tempIdx;
         }
 
-        public BattleCardEntity GetCardEntity(int cardID)
+        public BattleCardEntity GetCardEntity(int cardIdx)
         {
-            if (CardEntities.ContainsKey(cardID))
+            if (CardEntities.ContainsKey(cardIdx))
             {
-                return CardEntities[cardID];
+                return CardEntities[cardIdx];
             }
             else
             {

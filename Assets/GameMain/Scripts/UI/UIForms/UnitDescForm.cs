@@ -23,7 +23,7 @@ namespace RoundHero
         [SerializeField]
         private GameObject root;
 
-        [SerializeField] private GIFPlayItem gifPlayItem;
+        [SerializeField] private VideoPlayItem videoPlayItem;
         
         [SerializeField] private PlayerCardItem playerCardItem;
         [SerializeField] private UnitDescItem unitDescItem;
@@ -40,33 +40,33 @@ namespace RoundHero
             // if(BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) == null)
             //     return;
 
-            var gifPlayData = new GIFPlayData();
+            var animationPlayData = new AnimationPlayData();
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
                 var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
-                gifPlayData.ItemType = EGIFType.Enemy;
-                gifPlayData.ID = enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID;
+                animationPlayData.GifType = EGIFType.Enemy;
+                animationPlayData.ID = enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID;
 
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
                 if (UnitDescFormData.UnitRole == EUnitRole.Hero)
                 {
-                    gifPlayData.ItemType = EGIFType.Hero;
+                    animationPlayData.GifType = EGIFType.Hero;
                 }
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
-                    // var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
+                    var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
                     //
-                    // var drCard = CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
-                    //drCard.CardID
-                    gifPlayData.ID = 0;
-                    gifPlayData.ItemType = EGIFType.Solider;
+                    var drCard = CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                    //
+                    animationPlayData.ID = drCard.CardID;
+                    animationPlayData.GifType = EGIFType.Solider;
                 }
             }
             
-            gifPlayItem.SetGIF(gifPlayData);
             
+            videoPlayItem.gameObject.SetActive(false);
             unitDescItem.gameObject.SetActive(false);
             playerCardItem.gameObject.SetActive(false);
             unitBattleData.SetActive(false);
@@ -76,8 +76,8 @@ namespace RoundHero
             {
                 unitDescItem.gameObject.SetActive(true);
                 unitBattleData.SetActive(true);
-                
-                gifPlayData.ItemType = EGIFType.Enemy;
+                videoPlayItem.gameObject.SetActive(true);
+                videoPlayItem.SetVideo(animationPlayData);
                 
                 var name = "";
                 var desc = "";
@@ -99,12 +99,13 @@ namespace RoundHero
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
                 unitBattleData.SetActive(true);
+                videoPlayItem.gameObject.SetActive(true);
+                videoPlayItem.SetVideo(animationPlayData);
                 
-
                 if (UnitDescFormData.UnitRole == EUnitRole.Hero)
                 {
                     unitDescItem.gameObject.SetActive(true);
-                    gifPlayData.ItemType = EGIFType.Hero;
+                    animationPlayData.GifType = EGIFType.Hero;
                     unitDescItem.SetDesc(GameEntry.Localization.GetString(Constant.Localization.UI_CoreName),
                         BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" +
                         BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP,
@@ -113,7 +114,7 @@ namespace RoundHero
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
                     playerCardItem.gameObject.SetActive(true);
-                    gifPlayData.ItemType = EGIFType.Solider;
+                    animationPlayData.GifType = EGIFType.Solider;
                     var unitEntity =
                         BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
                     var cardData =
@@ -178,6 +179,15 @@ namespace RoundHero
             // }
             //
             // root.transform.position = gifPos;
+        }
+        
+        public void Update()
+        {
+            if (BattleAreaManager.Instance.CurPointGridPosIdx == -1)
+            {
+                Close();
+
+            }
         }
     }
 }

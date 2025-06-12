@@ -31,12 +31,12 @@ namespace RoundHero
             //AttachWeapon(drEnemy.WeaponHoldingType, drEnemy.WeaponType, drEnemy.WeaponID);
             
             
-            var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
+            var unitDescFormData = UnitDescTriggerItem.UnitDescFormData;
             unitDescFormData.UnitCamp = BattleMonsterEntityData.BattleMonsterData.UnitCamp;
             unitDescFormData.UnitRole = EUnitRole.Staff;
 
             unitDescFormData.Idx = BattleMonsterEntityData.BattleMonsterData.Idx;
-
+            unitDescFormData.GridType = EGridType.Unit;
             
             
             

@@ -85,6 +85,7 @@ MonoBehaviour:
   attackInfoTrigger: {fileID: 627394785257821896}
   ConfirmGO: {fileID: 8765331055428610655}
   ConfirmText: {fileID: 1041348506905405741}
+  videoTriggerItem: {fileID: 7458937991756294197}
 --- !u!223 &906767259617834939
 Canvas:
   m_ObjectHideFlags: 0
@@ -3530,7 +3531,7 @@ GameObject:
   - component: {fileID: 5378250684951447801}
   - component: {fileID: 4520884573289336397}
   - component: {fileID: 4905151174592351994}
-  - component: {fileID: 5462492384926845554}
+  - component: {fileID: 7458937991756294197}
   m_Layer: 9
   m_Name: BG
   m_TagString: Untagged
@@ -3596,7 +3597,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5462492384926845554
+--- !u!114 &7458937991756294197
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3605,12 +3606,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7763080209061675976}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce1159f53ff44f19bccf86bbf127f34, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cec31526b7f4cd4a85279431585bff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GifFormData:
-    GifPlayData:
-      ItemType: 0
+  VideoFormData:
+    AnimationPlayData:
+      GifType: 0
       ID: 0
       ShowPosition: 0
 --- !u!1 &8019872775364726988
@@ -4881,7 +4882,7 @@ PrefabInstance:
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5462492384926845554}
+      objectReference: {fileID: 7458937991756294197}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -4889,7 +4890,7 @@ PrefabInstance:
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5462492384926845554}
+      objectReference: {fileID: 7458937991756294197}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -4944,7 +4945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RoundHero.GIFTriggerItem, Assembly-CSharp
+      value: RoundHero.VideoTriggerItem, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -4952,7 +4953,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RoundHero.GIFTriggerItem, Assembly-CSharp
+      value: RoundHero.VideoTriggerItem, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName

@@ -100,5 +100,7 @@ namespace RoundHero
         SelectDifficultyForm = 137,
         
         TutorialForm = 138,
+        
+        VideoForm = 139,
     }
 }

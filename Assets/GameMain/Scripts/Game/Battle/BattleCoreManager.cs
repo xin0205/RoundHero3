@@ -57,7 +57,7 @@ namespace RoundHero
             BattleAreaManager.Instance.RefreshObstacles();
             
             var places = BattleAreaManager.Instance.GetPlaces();
-             var randomList = MathUtility.GetRandomNum(3, 0,
+             var randomList = MathUtility.GetRandomNum(Constant.Battle.CoreCount, 0,
                  places.Count, Random);
 
              foreach (var randomIdx in randomList)

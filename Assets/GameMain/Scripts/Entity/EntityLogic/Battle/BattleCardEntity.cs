@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
+
 namespace RoundHero
 {
     public enum ECardUseType
@@ -55,6 +56,9 @@ namespace RoundHero
 
         
         [SerializeField] private Text ConfirmText;
+        
+        [SerializeField]
+        private VideoTriggerItem videoTriggerItem;
 
         private Rect rect;
         private bool isInside;
@@ -106,7 +110,12 @@ namespace RoundHero
             
         
             RefreshCardUseTypeInfo();
-            
+
+            videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.BattleLeft;
+            var drCard = GameEntry.DataTable.GetCard(BattleCardEntityData.CardData.CardID);
+            videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;
+            videoTriggerItem.VideoFormData.AnimationPlayData.ID = BattleCardEntityData.CardData.CardID;
+
         }
 
         protected override void OnHide(bool isShutdown, object userData)
@@ -287,7 +296,7 @@ namespace RoundHero
             });
         }
         
-        public void UseCard()
+        public async void UseCard()
         {
             if(TutorialManager.Instance.Switch_SelectUnitCard(this) == ETutorialState.UnMatch &&
                TutorialManager.Instance.Switch_SelectMoveCard(this) == ETutorialState.UnMatch &&
@@ -316,7 +325,6 @@ namespace RoundHero
             if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
                 return;
 
-            
             
             UseCardAnimation();
             
@@ -355,6 +363,12 @@ namespace RoundHero
             // }
             
             transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, 0.2f);
+            
+            
+
+            
+            
+           
             //GetComponent<Canvas>().sortingOrder =  1000;
 
             GameUtility.DelayExcute(0.4f, () =>

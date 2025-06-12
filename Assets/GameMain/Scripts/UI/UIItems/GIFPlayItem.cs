@@ -2,13 +2,14 @@
 using GifImporter;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.Video;
 
 namespace RoundHero
 {
     [Serializable]
-    public class GIFPlayData
+    public class AnimationPlayData
     {
-        public EGIFType ItemType;
+        public EGIFType GifType;
         public int ID;
         public EShowPosition ShowPosition = EShowPosition.MousePosition;
     }
@@ -18,12 +19,13 @@ namespace RoundHero
         [SerializeField] private GifPlayer gifPlayer;
         [SerializeField] private GIFAssets gifAssets;
 
-        private GIFPlayData gifPlayData;
 
-        public void SetGIF(GIFPlayData gifPlayData)
+        private AnimationPlayData _animationPlayData;
+
+        public void SetGIF(AnimationPlayData animationPlayData)
         {
-            this.gifPlayData = gifPlayData;
-            var gifStr = gifPlayData.ItemType.ToString() + "_" + gifPlayData.ID.ToString();
+            this._animationPlayData = animationPlayData;
+            var gifStr = animationPlayData.GifType.ToString() + "_" + animationPlayData.ID.ToString();
             if (gifAssets.GifAssetDict.ContainsKey(gifStr))
             {
                 gifPlayer.Gif = gifAssets.GifAssetDict[gifStr];

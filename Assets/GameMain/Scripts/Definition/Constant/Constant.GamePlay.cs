@@ -46,7 +46,7 @@ namespace RoundHero
         public static class Area
         {
             public static Vector2Int GridSize = new Vector2Int(7, 7);
-            public static int ObstacleCount = 5;
+            public static int ObstacleCount = 0;
             public static int MaxRoleInGrid = 1;
 
             public static Vector2 GridInterval = new Vector2()
@@ -80,6 +80,8 @@ namespace RoundHero
             public static float CardPosInterval = 155;
             public static float ViewMaxHandCardCount = 10;
             public static int EachHardCardCount = 5;
+            public static int CoreCount = 1;
+            public static int SelectCardHeight = 10;
 
             public static int SelectInitCardEachCount = 1;
             public static int InitCardMaxCount = 10;
@@ -1298,13 +1300,13 @@ namespace RoundHero
                     {
                         RoundGenerateUnitCount = new Dictionary<int, int>()
                         {
-                            [0] = 2,
+                            [0] = 1,
                             [2] = 1,
-                            [4] = 2,
+                            [4] = 1,
                         },
-                        EachRoundUnitCount = 2,
+                        EachRoundUnitCount = 1,
                         NormalUnitCount = 0,
-                        EliteUnitCount = 6,
+                        EliteUnitCount = 3,
                         NormalUnitTypeCount = 0,
                         EliteUnitTypeCount = 1,
                         GlobalDebuffCount = 0,

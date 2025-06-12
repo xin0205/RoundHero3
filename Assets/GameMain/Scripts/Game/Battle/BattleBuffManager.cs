@@ -130,11 +130,11 @@ namespace RoundHero
         //     return retTriggerData;
         // }
         
-        private List<TriggerData> InternalBuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> values, int ownUnitID, int actionUnitID,
+        private List<TriggerData> InternalBuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> values, int ownUnitIdx, int actionUnitIdx,
             int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
-            var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitID);
+            var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
             //     !GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData, ECardID.RoundDeBuffUnEffect))
             // {
@@ -152,7 +152,7 @@ namespace RoundHero
             var buffvalueType = buffData.BuffValueType;
             var _triggerDatas = new List<TriggerData>();
         
-            var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitID, actionUnitID, effectUnitIdx ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
+            var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitIdx, actionUnitIdx, effectUnitIdx ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
         
             if (realEffectUnitIdxs.Count > 0)
             {
@@ -164,12 +164,12 @@ namespace RoundHero
                     switch (buffvalueType)
                     {
                         case EBuffValueType.Hero:
-                            triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitID, actionUnitID,
+                            triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitIdx, actionUnitIdx,
                                 realEffectUnitIdx, buffData.HeroAttribute, values[0]);
                             
                             break;
                         case EBuffValueType.Atrb:
-                            triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitID, actionUnitID,
+                            triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitIdx, actionUnitIdx,
                                 realEffectUnitIdx, buffData.UnitAttribute, values[0], ETriggerDataSubType.Unit);
                             break;
                         case EBuffValueType.State:
@@ -183,7 +183,7 @@ namespace RoundHero
                                 //     break;
                             }
         
-                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitID, actionUnitID, realEffectUnitIdx,
+                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 unitState, values[0], ETriggerDataType.RoleState);
                             var addEnemyMoreDebuff =
                                 BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
@@ -207,11 +207,11 @@ namespace RoundHero
                             //         value = Math.Abs(BattleUnitManager.Instance.GetDamage(effectUnitID)) - 1;
                             //         break;
                             // }
-                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitID, actionUnitID, realEffectUnitIdx,
+                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 buffData.UnitState, values[0], ETriggerDataType.RoundRoleState);
                             break;
                         case EBuffValueType.Card:
-                            triggerData = BattleFightManager.Instance.Hero_Card(ownUnitID, actionUnitID, realEffectUnitIdx,
+                            triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 values[0], buffData.CardTriggerType);
                             break;
                         

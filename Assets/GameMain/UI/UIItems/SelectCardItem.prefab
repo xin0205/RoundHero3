@@ -239,7 +239,7 @@ GameObject:
   - component: {fileID: 3165861610604313420}
   - component: {fileID: 2633150277188848425}
   - component: {fileID: 4154093742677697982}
-  - component: {fileID: 8480295205971040968}
+  - component: {fileID: 2165463889649225690}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -389,8 +389,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 8480295205971040968}
-          m_TargetAssemblyTypeName: RoundHero.GIFTriggerItem, Assembly-CSharp
+        - m_Target: {fileID: 2165463889649225690}
+          m_TargetAssemblyTypeName: RoundHero.VideoTriggerItem, Assembly-CSharp
           m_MethodName: OnPointerEnter
           m_Mode: 1
           m_Arguments:
@@ -417,8 +417,8 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 8480295205971040968}
-          m_TargetAssemblyTypeName: RoundHero.GIFTriggerItem, Assembly-CSharp
+        - m_Target: {fileID: 2165463889649225690}
+          m_TargetAssemblyTypeName: RoundHero.VideoTriggerItem, Assembly-CSharp
           m_MethodName: OnPointerExit
           m_Mode: 1
           m_Arguments:
@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5038fb5227e9485ea47f70a182f37990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8480295205971040968
+--- !u!114 &2165463889649225690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -450,12 +450,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3681602432792030473}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce1159f53ff44f19bccf86bbf127f34, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cec31526b7f4cd4a85279431585bff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GifFormData:
-    GifPlayData:
-      ItemType: 0
+  VideoFormData:
+    AnimationPlayData:
+      GifType: 0
       ID: 0
       ShowPosition: 1
 --- !u!1 &4905353502174006129
@@ -514,7 +514,7 @@ MonoBehaviour:
   useTag: {fileID: 7281835002841775670}
   unUseTag: {fileID: 1584658124502360723}
   tag: {fileID: 9057243948031662024}
-  gifTriggerItem: {fileID: 8480295205971040968}
+  videoTriggerItem: {fileID: 2165463889649225690}
 --- !u!114 &2732088054621064461
 MonoBehaviour:
   m_ObjectHideFlags: 0

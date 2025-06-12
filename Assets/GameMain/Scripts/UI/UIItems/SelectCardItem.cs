@@ -13,7 +13,7 @@ namespace RoundHero
         [SerializeField] private GameObject unUseTag;
         [SerializeField] private GameObject tag;
 
-        [SerializeField] private GIFTriggerItem gifTriggerItem;
+        [SerializeField] private VideoTriggerItem videoTriggerItem;
 
         private bool isUse;
         
@@ -42,8 +42,8 @@ namespace RoundHero
             //     tag.SetActive(false);
             // }
             
-            gifTriggerItem.GifFormData.GifPlayData.ItemType = EGIFType.Solider;
-            gifTriggerItem.GifFormData.GifPlayData.ID = cardID;
+            videoTriggerItem.VideoFormData.AnimationPlayData.GifType = EGIFType.Solider;
+            videoTriggerItem.VideoFormData.AnimationPlayData.ID = cardID;
         }
         
         
