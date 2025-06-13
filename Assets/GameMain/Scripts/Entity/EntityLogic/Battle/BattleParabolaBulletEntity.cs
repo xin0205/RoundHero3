@@ -23,6 +23,14 @@ namespace RoundHero
         private GameObject shootParticle;
         
         private GameObject[] trails;
+        
+        // public float initialSpeed = 10f;   // 初始速度
+        // public float launchAngle = 45f;
+        // public float gravity = -9.81f;     // 重力加速度
+        //
+        // private Vector3 startPosition;     // 起始位置
+        // private Vector3 initialVelocity;   // 初始速度向量
+        // private float elapsedTime;
 
         protected override void OnShow(object userData)
         {
@@ -54,6 +62,16 @@ namespace RoundHero
         {
             bulletParticle = Instantiate(bulletParticleTemp, transform.position, transform.rotation) as GameObject;
             bulletParticle.transform.parent = transform;
+            
+            // startPosition = transform.position;
+            // elapsedTime = 0f;
+            //
+            // float angleRad = launchAngle * Mathf.Deg2Rad;
+            // initialVelocity = new Vector3(
+            //     initialSpeed * Mathf.Cos(angleRad),
+            //     initialSpeed * Mathf.Sin(angleRad),
+            //     0
+            // );
         }
         
         private void ShowExplodeParticle()
@@ -150,6 +168,12 @@ namespace RoundHero
 
                 var posY = verticalVelocity * moveTime + 0.5f * -Constant.Battle.G * moveTime * moveTime;
                 bulletParticle.transform.position = startPos + new Vector3(horizontalVelocity * moveTime * Mathf.Cos(radian), posY, horizontalVelocity * moveTime * Mathf.Sin(radian));
+
+                var nextTime = moveTime + Time.deltaTime;
+                 var posY2 = verticalVelocity * nextTime + 0.5f * -Constant.Battle.G * nextTime * nextTime;
+                 var pos = startPos + new Vector3(horizontalVelocity * nextTime * Mathf.Cos(radian), posY2,
+                     horizontalVelocity * nextTime * Mathf.Sin(radian));
+                bulletParticle.transform.LookAt(pos);
 
             }
             

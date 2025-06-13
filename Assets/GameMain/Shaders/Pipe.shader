@@ -12,21 +12,17 @@ Shader "Custom/Dynamic Route"
     }
     SubShader
     {
-        Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType"="TransparentCutout" }
+        Tags { "Queue" = "Overlay" "IgnoreProjector" = "True" "RenderType"="Transparent" }
         LOD 100
         Cull Off
-//        Pass
-//        {
-//            ZWrite On
-//            ColorMask 0
-//        }
+
+        ZWrite Off  // 关闭深度写入
+        ZTest Always // 总是通过深度测试
+        
 
         Pass
         {
 
-            //ZWrite Off
-//            Blend SrcAlpha OneMinusSrcAlpha
-            
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

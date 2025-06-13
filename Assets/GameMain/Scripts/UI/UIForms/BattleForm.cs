@@ -375,8 +375,8 @@ namespace RoundHero
         
         public void ExitBattleTest()
         {
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-                return;
+            // if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+            //     return;
             
             // if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
             //     return;

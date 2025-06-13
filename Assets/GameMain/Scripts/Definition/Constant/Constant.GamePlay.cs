@@ -80,8 +80,8 @@ namespace RoundHero
             public static float CardPosInterval = 155;
             public static float ViewMaxHandCardCount = 10;
             public static int EachHardCardCount = 5;
-            public static int CoreCount = 1;
-            public static int SelectCardHeight = 10;
+            public static int CoreCount = 3;
+            public static int SelectCardHeight = 100;
 
             public static int SelectInitCardEachCount = 1;
             public static int InitCardMaxCount = 10;
@@ -1300,15 +1300,15 @@ namespace RoundHero
                     {
                         RoundGenerateUnitCount = new Dictionary<int, int>()
                         {
-                            [0] = 1,
-                            [2] = 1,
-                            [4] = 1,
+                            [0] = 2,
+                            [2] = 2,
+                            [4] = 2,
                         },
                         EachRoundUnitCount = 1,
-                        NormalUnitCount = 0,
-                        EliteUnitCount = 3,
-                        NormalUnitTypeCount = 0,
-                        EliteUnitTypeCount = 1,
+                        NormalUnitCount = 6,    
+                        EliteUnitCount = 0,
+                        NormalUnitTypeCount = 1,
+                        EliteUnitTypeCount = 0,
                         GlobalDebuffCount = 0,
                     },
                 // [EGameDifficulty.Difficulty1] = new EnemyGenrateRule()

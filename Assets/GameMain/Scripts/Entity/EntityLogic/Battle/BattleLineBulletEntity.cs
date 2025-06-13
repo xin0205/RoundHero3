@@ -105,6 +105,7 @@ namespace RoundHero
                     var moveGridPosIdx = BattleBulletEntityData.BulletData.MoveGridPosIdxs[moveTIdx];
                     movePos.y = transform.position.y;
                     bulletParticle.transform.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                    
 
                     bulletParticle.transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Battle.LineBulletShootTime).SetEase(Ease.Linear).OnComplete(() =>
                     {

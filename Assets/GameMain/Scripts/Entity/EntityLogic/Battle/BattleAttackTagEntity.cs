@@ -128,10 +128,10 @@ namespace RoundHero
                 }
                 
             
-                line.startWidth = 0.02f;
-                line.endWidth = 0.02f;
+                line.startWidth = 0.08f;
+                line.endWidth = 0.08f;
                 
-                line.material.SetColor("_Color", red); 
+                line.material.SetColor("_Color", yellow); 
                 line.material.SetInt("_Speed", 50);
             }
             
