@@ -57,12 +57,23 @@ namespace RoundHero
             BattleAreaManager.Instance.RefreshObstacles();
             
             var places = BattleAreaManager.Instance.GetPlaces();
+            var places2 = new List<int>();
+            foreach (var place in places)
+            {
+                var coord = GameUtility.GridPosIdxToCoord(place);
+                if (!(coord.x == 0 || coord.y == 0 || coord.x == Constant.Area.GridSize.x - 1 ||
+                    coord.y == Constant.Area.GridSize.y - 1))
+                {
+                    places2.Add(place);
+                }
+            }
+            
              var randomList = MathUtility.GetRandomNum(Constant.Battle.CoreCount, 0,
-                 places.Count, Random);
+                 places2.Count, Random);
 
              foreach (var randomIdx in randomList)
              {
-                 var coreEntity = await GameEntry.Entity.ShowBattleCoreEntityAsync(0, places[randomIdx], BattleManager.Instance.CurUnitCamp);
+                 var coreEntity = await GameEntry.Entity.ShowBattleCoreEntityAsync(0, places2[randomIdx], BattleManager.Instance.CurUnitCamp);
                  if (coreEntity is IMoveGrid moveGrid)
                  {
                      BattleAreaManager.Instance.MoveGrids.Add(coreEntity.BattleCoreEntityData.Id, moveGrid);

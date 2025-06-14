@@ -643,12 +643,12 @@ namespace RoundHero
                 var gridEntity = GetGridEntityByGridPosIdx(ne.GridPosIdx);
                 if (ne.ShowState == EShowState.Show)
                 {
-                    Log.Debug("4 Enter");
+                    //Log.Debug("4 Enter");
                     gridEntity.OnPointerEnter();
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
-                    Log.Debug("4 Exit");
+                    //Log.Debug("4 Exit");
                     gridEntity.OnPointerExit();
                 }
             
@@ -656,7 +656,7 @@ namespace RoundHero
                 {
                     if (ne.ShowState == EShowState.Show)
                     {
-                        Log.Debug("1 Enter");
+                        //Log.Debug("1 Enter");
                         unit.OnPointerEnter();
                         if (unit.CurHP > 0 && !unit.IsMove)
                         {
@@ -688,7 +688,7 @@ namespace RoundHero
                     }
                     else if (ne.ShowState == EShowState.Unshow)
                     {
-                        Log.Debug("1 Exit");
+                        //Log.Debug("1 Exit");
                         unit.OnPointerExit();
                         //unit.UnShowTags();
                     }
@@ -698,7 +698,7 @@ namespace RoundHero
                 {
                     if (ne.ShowState == EShowState.Show)
                     {
-                        Log.Debug("2 Enter");
+                        //Log.Debug("2 Enter");
                         unit.OnPointerEnter();
                         if (unit.CurHP > 0 && !unit.IsMove)
                         {
@@ -707,7 +707,7 @@ namespace RoundHero
                     }
                     else if (ne.ShowState == EShowState.Unshow)
                     {
-                        Log.Debug("2 Exit");
+                        //Log.Debug("2 Exit");
                         unit.OnPointerExit();
                         //unit.UnShowTags();
                     }
@@ -717,7 +717,7 @@ namespace RoundHero
                 {
                     if (ne.ShowState == EShowState.Show)
                     {
-                        Log.Debug("3 Enter");
+                        //Log.Debug("3 Enter");
                         unit.OnPointerEnter();
                         if (unit.CurHP > 0 && !unit.IsMove)
                         {
@@ -746,7 +746,7 @@ namespace RoundHero
                         //     unit.UnShowTags();
                         // }
                         
-                        Log.Debug("3 Exit");
+                        //Log.Debug("3 Exit");
                         unit.OnPointerExit();
                         //unit.UnShowTags();
                     }

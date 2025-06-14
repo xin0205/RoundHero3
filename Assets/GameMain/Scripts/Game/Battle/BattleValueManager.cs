@@ -403,7 +403,7 @@ namespace RoundHero
         {
             
             showValueEntityIdx = curValueEntityIdx;
-            Log.Debug("UnShowDisplayValues:" + showValueEntityIdx);
+            //Log.Debug("UnShowDisplayValues:" + showValueEntityIdx);
             foreach (var kv in BattleValueEntities)
             {
                 if (GameEntry.Entity.HasEntity(kv.Value.Entity.Id))

@@ -73,7 +73,7 @@ namespace RoundHero
 
         public void InitGenerateRole(int randomSeed)
         {
-            Log.Debug("InitGenerateRole:" + randomSeed);
+            //Log.Debug("InitGenerateRole:" + randomSeed);
             var random = new Random(randomSeed);
             
             var rule = Constant.Enemy.EnemyGenerateRules[BattleManager.Instance.BattleData.GameDifficulty];
