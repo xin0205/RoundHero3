@@ -1,4 +1,7 @@
-﻿using GameFramework;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GameFramework;
 using GameFramework.Event;
 using TMPro;
 using UnityEngine;
@@ -421,6 +424,72 @@ namespace RoundHero
         public void ShowActionSort(bool showActionSort)
         {
             BattleEnemyManager.Instance.ShowActionSort(showActionSort);
+        }
+
+        public async void ResetAction()
+        {
+            GamePlayManager.Instance.GamePlayData.LastRoundBattleData.Clear();
+
+            BattleManager.Instance.Destory();
+            BattleManager.Instance.Subscribe();
+            await ResetArea();
+
+        }
+        
+        public async Task ResetArea()
+        {
+            var battleData =
+                GamePlayManager.Instance.GamePlayData.LastActionBattleData.Copy();
+            GamePlayManager.Instance.GamePlayData.LastActionBattleData.Clear();
+            
+            foreach (var kv in battleData.GridTypes)
+            {
+                BattleAreaManager.Instance.GenerateGridEntity(kv.Key, kv.Value);
+            }
+            
+            foreach (var kv in battleData.BattleUnitDatas)
+            {
+                if (kv.Value is Data_BattleCore battleCore)
+                {
+                    var coreEntity = await BattleCoreManager.Instance.GenerateCoreEntity(kv.Value.GridPosIdx);
+                    coreEntity.BattleCoreEntityData.BattleCoreData = battleCore.Copy();
+
+                }
+                else if (kv.Value is Data_BattleSolider battleSolider)
+                {
+                    var soliderEntity = await BattleAreaManager.Instance.GenerateSolider(battleSolider);
+                    soliderEntity.BattleSoliderEntityData.BattleSoliderData = battleSolider.Copy();
+
+                }
+                else if (kv.Value is Data_BattleMonster battleMonster)
+                {
+                    var enemyEntity = await BattleEnemyManager.Instance.GenerateEnemy(battleMonster.MonsterID, battleMonster.GridPosIdx);
+                    enemyEntity.BattleMonsterEntityData.BattleMonsterData = battleMonster.Copy();
+
+                }
+                
+            }
+
+            var battlePlayerData = battleData.BattlePlayerDatas[EUnitCamp.Player1];
+            BattleCardManager.Instance.SetCardPosList(battlePlayerData.HandCards.Count);
+            var idx = 0;
+            foreach (var  cardIdx in battlePlayerData.HandCards)
+            {
+                var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx, idx);
+
+                card.transform.position = BattleController.Instance.StandByCardPos.position;
+                card.SetSortingOrder(idx * 10);
+                card.AcquireCard(new Vector2(BattleCardManager.Instance.CardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y),
+                    idx * 0.15f + 0.15f);
+                
+                BattleCardManager.Instance.AddHandCard(card);
+                idx++;
+            }
+
+            GamePlayManager.Instance.GamePlayData.BattleData = battleData.Copy();
+            GamePlayManager.Instance.InitPlayerData();
+            BattleManager.Instance.SetBattleState(EBattleState.UseCard);
+            BattleManager.Instance.RefreshEnemyAttackData();
         }
     }
 }

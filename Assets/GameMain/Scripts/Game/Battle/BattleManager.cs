@@ -105,6 +105,42 @@ namespace RoundHero
             //BattleCurseManager.Instance.Destory();
         }
 
+        public void Subscribe()
+        {
+            BattleSoliderManager.Instance.Subscribe();
+            //BattleThirdUnitManager.Instance.Subscribe();
+            
+            // BattleGridPropManager.Instance.Subscribe();
+            // BattleBuffManager.Instance.Subscribe();
+            // BattleFightManager.Instance.Subscribe();
+            // BattleCurseManager.Instance.Subscribe();
+            // BattleCardManager.Instance.Subscribe();
+            BattleAreaManager.Instance.Subscribe();
+            
+            BattleEnemyManager.Instance.Subscribe();
+            BattleUnitManager.Instance.Subscribe();
+            // HeroManager.Instance.Subscribe();
+            // BattleCoreManager.Instance.Subscribe();
+        }
+        
+        public void Unsubscribe()
+        {
+            BattleSoliderManager.Instance.Unsubscribe();
+            //BattleThirdUnitManager.Instance.Unsubscribe();
+            
+            // BattleGridPropManager.Instance.Unsubscribe();
+            // BattleBuffManager.Instance.Unsubscribe();
+            // BattleFightManager.Instance.Unsubscribe();
+            // BattleCurseManager.Instance.Unsubscribe();
+            // BattleCardManager.Instance.Unsubscribe();
+            BattleAreaManager.Instance.Unsubscribe();
+            
+            BattleEnemyManager.Instance.Unsubscribe();
+            BattleUnitManager.Instance.Unsubscribe();
+            // HeroManager.Instance.Unsubscribe();
+            // BattleCoreManager.Instance.Unsubscribe();
+        }
+
         public void RefreshEnemyAttackData()
         {
             //BattleFightManager.Instance.CacheEnemyAttackDatas();
@@ -497,5 +533,10 @@ namespace RoundHero
         //     GameEntry.UI.CloseUIForm(BattleManager.Instance.UnitDescForm);
         //     BattleManager.Instance.UnitDescForm = null;
         // }
+
+        public void RecordLastActionBattleData()
+        {
+            GamePlayManager.Instance.GamePlayData.RecordLastAction();
+        }
     }
 }

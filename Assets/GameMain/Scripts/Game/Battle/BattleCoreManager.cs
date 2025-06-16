@@ -73,21 +73,9 @@ namespace RoundHero
 
              foreach (var randomIdx in randomList)
              {
-                 var coreEntity = await GameEntry.Entity.ShowBattleCoreEntityAsync(0, places2[randomIdx], BattleManager.Instance.CurUnitCamp);
-                 if (coreEntity is IMoveGrid moveGrid)
-                 {
-                     BattleAreaManager.Instance.MoveGrids.Add(coreEntity.BattleCoreEntityData.Id, moveGrid);
-                 }
-                 
-                 BattleUnitManager.Instance.BattleUnitEntities.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
-                 //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
-                 if (!CoreEntities.ContainsKey(BattleManager.Instance.CurUnitCamp))
-                 {
-                     CoreEntities.Add(BattleManager.Instance.CurUnitCamp, new Dictionary<int, BattleCoreEntity>());
-                 }
-                 CoreEntities[BattleManager.Instance.CurUnitCamp].Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
+                 GenerateCoreEntity(places2[randomIdx]);
                  //BattleUnitManager.Instance.BattleUnitDatas.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity.BattleCoreEntityData.BattleCoreData);
-                 
+
              }
             
             // BattleAreaManager.Instance.RefreshObstacles();
@@ -112,7 +100,24 @@ namespace RoundHero
             
         }
 
-        
+        public async Task<BattleCoreEntity> GenerateCoreEntity(int gridPosIdx)
+        {
+            var coreEntity = await GameEntry.Entity.ShowBattleCoreEntityAsync(0, gridPosIdx, BattleManager.Instance.CurUnitCamp);
+            if (coreEntity is IMoveGrid moveGrid)
+            {
+                BattleAreaManager.Instance.MoveGrids.Add(coreEntity.BattleCoreEntityData.Id, moveGrid);
+            }
+                 
+            BattleUnitManager.Instance.BattleUnitEntities.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
+            //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
+            if (!CoreEntities.ContainsKey(BattleManager.Instance.CurUnitCamp))
+            {
+                CoreEntities.Add(BattleManager.Instance.CurUnitCamp, new Dictionary<int, BattleCoreEntity>());
+            }
+            CoreEntities[BattleManager.Instance.CurUnitCamp].Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
+            
+            return coreEntity;
+        }
         
 
     }

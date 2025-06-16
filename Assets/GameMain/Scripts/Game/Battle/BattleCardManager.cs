@@ -9,7 +9,7 @@ namespace RoundHero
 {
     public partial class BattleCardManager : Singleton<BattleCardManager>
     {
-        private List<float> cardPosList = new();
+        public List<float> CardPosList { get;  } = new();
         public Dictionary<int, BattleCardEntity> CardEntities = new();
         public int PointerCardIdx = -1;
         public List<int> HandCardIdxs = new();
@@ -68,7 +68,7 @@ namespace RoundHero
 
         public void SetCardPosList(int cardCount)
         {
-            cardPosList.Clear();
+            CardPosList.Clear();
 
             var cardPosInterval = Constant.Battle.CardPosInterval;
             if (cardCount > Constant.Battle.ViewMaxHandCardCount)
@@ -85,15 +85,15 @@ namespace RoundHero
                 {
                     if (cardOrder < SelectCardHandOrder)
                     {
-                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval - 0.45f * cardPosInterval);
+                        CardPosList.Add(cardPosInterval / 2f + i * cardPosInterval - 0.45f * cardPosInterval);
                     }
                     else if (cardOrder > SelectCardHandOrder && SelectCardHandOrder != -1)
                     {
-                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval + 0.45f * cardPosInterval);
+                        CardPosList.Add(cardPosInterval / 2f + i * cardPosInterval + 0.45f * cardPosInterval);
                     }
                     else
                     {
-                        cardPosList.Add(cardPosInterval / 2f + i * cardPosInterval);
+                        CardPosList.Add(cardPosInterval / 2f + i * cardPosInterval);
                     }
 
                     cardOrder++;
@@ -106,15 +106,15 @@ namespace RoundHero
                 {
                     if (cardOrder < SelectCardHandOrder)
                     {
-                        cardPosList.Add(0 + i * cardPosInterval - 0.45f * cardPosInterval);
+                        CardPosList.Add(0 + i * cardPosInterval - 0.45f * cardPosInterval);
                     }
                     else if (cardOrder > SelectCardHandOrder && SelectCardHandOrder != -1)
                     {
-                        cardPosList.Add(0 + i * cardPosInterval + 0.45f * cardPosInterval);
+                        CardPosList.Add(0 + i * cardPosInterval + 0.45f * cardPosInterval);
                     }
                     else
                     {
-                        cardPosList.Add(0 + i * cardPosInterval);
+                        CardPosList.Add(0 + i * cardPosInterval);
                     }
 
                     cardOrder++;
@@ -196,7 +196,7 @@ namespace RoundHero
                     card = CardEntities[BattlePlayerData.HandCards[idx]];
                     card.BattleCardEntityData.HandSortingIdx = idx;
                     card.MoveCard(
-                        new Vector3(cardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
+                        new Vector3(CardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
                     card.SetSortingOrder(idx * 10);
                 }
                 else
@@ -205,7 +205,7 @@ namespace RoundHero
 
                     card.transform.position = initPosition;
                     card.SetSortingOrder(idx * 10);
-                    card.AcquireCard(new Vector2(cardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y),
+                    card.AcquireCard(new Vector2(CardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y),
                          idx * 0.15f + 0.15f);
 
                     AddHandCard(card);
@@ -499,12 +499,16 @@ namespace RoundHero
             // {
             //     ret = UseCard(cardID);
             // }
+            
+            
 
             return UseCard(cardIdx);
         }
 
         public bool UseCard(int cardIdx, int unitID = -1)
         {
+            BattleManager.Instance.RecordLastActionBattleData();
+            
             BattlePlayerData.RoundUseCardCount += 1;
 
             var card = BattleManager.Instance.GetCard(cardIdx);
@@ -600,7 +604,7 @@ namespace RoundHero
                 
                 cardEntity.SetSortingOrder(idx * 10, forceSortingOrder);
                 cardEntity.MoveCard(
-                    new Vector3(cardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
+                    new Vector3(CardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
                 cardEntity.transform.localScale = new Vector3(1f, 1f, 1f);
                 idx += 1;
                 
@@ -632,7 +636,7 @@ namespace RoundHero
                     posy += Constant.Battle.SelectCardHeight;
                 
                 cardEntity.MoveCard(
-                    new Vector3(cardPosList[idx], posy, 0), 0.1f);
+                    new Vector3(CardPosList[idx], posy, 0), 0.1f);
                 
                 idx += 1;
             }

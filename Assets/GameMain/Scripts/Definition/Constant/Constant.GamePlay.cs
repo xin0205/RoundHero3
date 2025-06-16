@@ -91,6 +91,7 @@ namespace RoundHero
             public static float LineBulletShootTime = 0.2f;
             public static float BattleValueVelocity = 4;
             public static float G = 9.8f / 2f;
+            public static int ObstacleGridID = 88;
 
             public static Dictionary<EUnitStateEffectType, List<EUnitState>> EffectUnitStates =
                 new ()
@@ -1304,10 +1305,10 @@ namespace RoundHero
                             [2] = 2,
                             [4] = 2,
                         },
-                        EachRoundUnitCount = 1,
+                        EachRoundUnitCount = 2,
                         NormalUnitCount = 6,    
                         EliteUnitCount = 0,
-                        NormalUnitTypeCount = 1,
+                        NormalUnitTypeCount = 2,
                         EliteUnitTypeCount = 0,
                         GlobalDebuffCount = 0,
                     },

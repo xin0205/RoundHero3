@@ -103,7 +103,7 @@ namespace RoundHero
             var data = ReferencePool.Acquire<BattleCoreEntityData>();
             var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
             var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), coreID, gridPosIdx, unitCamp);
-            battleCoreData.UnitStateData.AddState(EUnitState.UnMove, 1, EEffectType.Forever);
+            //battleCoreData.UnitStateData.AddState(EUnitState.UnMove, 1, EEffectType.Forever);
             BattleUnitManager.Instance.BattleUnitDatas.Add(battleCoreData.Idx, battleCoreData);
             data.Init(entityComponent.GenerateSerialId(), pos, battleCoreData);
 

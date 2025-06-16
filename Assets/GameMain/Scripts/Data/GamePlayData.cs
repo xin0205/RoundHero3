@@ -1551,7 +1551,8 @@ namespace RoundHero
         public Data_Map MapData = new ();
         public Data_Area AreaData = new ();
         public Data_Battle BattleData = new ();
-        public Data_Battle LastBattleData = new ();
+        public Data_Battle LastRoundBattleData = new ();
+        public Data_Battle LastActionBattleData = new ();
         public List<Data_Player> PlayerDatas = new();
         public Dictionary<ulong, Data_Player> PlayerDataIDDict = new ();
         public Dictionary<EUnitCamp, Data_Player> PlayerDataCampDict = new ();
@@ -1612,7 +1613,8 @@ namespace RoundHero
             data.PlayerData = PlayerData.Copy(); 
             data.AreaData = AreaData.Copy();
             data.BattleData = BattleData.Copy();
-            data.LastBattleData = LastBattleData.Copy();
+            data.LastRoundBattleData = LastRoundBattleData.Copy();
+            data.LastActionBattleData = LastActionBattleData.Copy();
             data.EnemyData = EnemyData.Copy();
             data.MapData = MapData.Copy();
             data.IsTutorialBattle = IsTutorialBattle;
@@ -1637,9 +1639,14 @@ namespace RoundHero
             BattleData.RoundInit();
         }
 
+        public void RecordLastAction()
+        {
+            LastActionBattleData = BattleData.Copy();
+        }
+
         public void RoundClear()
         {
-            LastBattleData = BattleData.Copy();
+            LastRoundBattleData = BattleData.Copy();
             BattleData.RoundClear();
 
             EnemyData.RoundClear();

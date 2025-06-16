@@ -439,7 +439,7 @@ namespace RoundHero
         public int GetHurtTimes(Data_GamePlay gamePlayData, EBuffID buffID)
         {
             var hurtTimes = 0;
-            foreach (var kv in gamePlayData.LastBattleData.BattleUnitDatas)
+            foreach (var kv in gamePlayData.LastRoundBattleData.BattleUnitDatas)
             {
                 if (kv.Value.BuffCount(buffID.ToString()) > 0 && kv.Value.HurtTimes > 0)
                 {

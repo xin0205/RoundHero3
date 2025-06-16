@@ -7,9 +7,9 @@ namespace RPGCharacterAnims
 	{
 		static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
 		{
-			SetupMessageWindow window = ( SetupMessageWindow )EditorWindow.GetWindow(typeof(SetupMessageWindow), true, "Load Input and Layer Presets");
-			window.maxSize = new Vector2(290f, 190f);
-			window.minSize = window.maxSize;
+			// SetupMessageWindow window = ( SetupMessageWindow )EditorWindow.GetWindow(typeof(SetupMessageWindow), true, "Load Input and Layer Presets");
+			// window.maxSize = new Vector2(290f, 190f);
+			// window.minSize = window.maxSize;
 		}
 	}
 

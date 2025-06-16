@@ -108,7 +108,8 @@ namespace RoundHero
                 BattleFightManager.Instance.EnemyMove();
             });
 
-
+            GamePlayManager.Instance.GamePlayData.LastActionBattleData =
+                GamePlayManager.Instance.GamePlayData.BattleData.Copy();
 
 
 

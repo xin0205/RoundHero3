@@ -109,11 +109,11 @@ namespace RoundHero
         {
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
-            GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+            Subscribe();
         }
         public void Destory()
         {
-            GameEntry.Event.Unsubscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+            Unsubscribe();
             foreach (var kv in BattleUnitEntities)
             {
                 if (GameEntry.Entity.HasEntity(kv.Value.Id))
@@ -124,6 +124,16 @@ namespace RoundHero
                 
             }
             BattleUnitEntities.Clear();
+        }
+        
+        public void Subscribe()
+        {
+            GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+        }
+
+        public void Unsubscribe()
+        {
+            GameEntry.Event.Unsubscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
         }
 
         public int GetIdx()

@@ -61,7 +61,7 @@ namespace RoundHero
         public void Init(int randomSeed)
         {
             
-            GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+            Subscribe();
             this.randomSeed = randomSeed;
             Random = new System.Random(this.randomSeed);
             //id = 0;
@@ -71,6 +71,16 @@ namespace RoundHero
         public void Destory()
         {
             SoliderEntities.Clear();
+            Unsubscribe();
+        }
+        
+        public void Subscribe()
+        {
+            GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+        }
+
+        public void Unsubscribe()
+        {
             GameEntry.Event.Unsubscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
         }
         

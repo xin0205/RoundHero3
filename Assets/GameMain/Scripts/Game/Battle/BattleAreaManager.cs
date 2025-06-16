@@ -44,10 +44,7 @@ namespace RoundHero
 
         public void Init(int randomSeed)
         {
-            GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
-            GameEntry.Event.Subscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
-            GameEntry.Event.Subscribe(ClickGridEventArgs.EventId, OnClickGrid);
-            GameEntry.Event.Subscribe(SelectGridEventArgs.EventId, OnSelectGrid);
+            Subscribe();
 
             BattleManager.Instance.BattleData.GridTypes.Clear();
             for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
@@ -68,9 +65,7 @@ namespace RoundHero
         public async Task InitArea()
         {
             BattleAreaManager.Instance.RefreshObstacles();
-            
-            
- 
+
             var obstacles = new List<int>();
             var obstacleIdxs = new List<int>();
 
@@ -110,30 +105,39 @@ namespace RoundHero
             for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
             {
                 var isObstacle = obstacleIdxs.Contains(i);
-                var gridEntity = await GameEntry.Entity.ShowGridEntityAsync(i,
-                    isObstacle ? EGridType.Obstacle : EGridType.Empty);
+                
+                await GenerateGridEntity(i, isObstacle ? EGridType.Obstacle : EGridType.Empty);
 
-                GridEntities.Add(gridEntity);
-                GridEntitiesMap.Add(i, gridEntity);
-
-                if (gridEntity is IMoveGrid moveGrid)
-                {
-                    MoveGrids.Add(gridEntity.BattleGridEntityData.Id, moveGrid);
-                }
-
-                if (isObstacle)
-                {
-                    var obstacleEntity = await GameEntry.Entity.ShowGridPropObstacleEntityAsync(88, i);
-                    if (obstacleEntity is IMoveGrid moveGrid2)
-                    {
-                        MoveGrids.Add(obstacleEntity.GridPropEntityData.Id, moveGrid2);
-                    }
-                    
-                    BattleGridPropManager.Instance.GridPropEntities.Add(obstacleEntity.GridPropEntityData.Id,
-                        obstacleEntity);
-                }
             }
 
+        }
+
+
+        public async Task GenerateGridEntity(int gridPosIdx, EGridType gridType)
+        {
+            var gridEntity = await GameEntry.Entity.ShowGridEntityAsync(gridPosIdx,
+                gridType);
+                
+            GridEntities.Add(gridEntity);
+            GridEntitiesMap.Add(gridPosIdx, gridEntity);
+
+            if (gridEntity is IMoveGrid moveGrid)
+            {
+                MoveGrids.Add(gridEntity.BattleGridEntityData.Id, moveGrid);
+            }
+
+            if (gridType == EGridType.Obstacle)
+            {
+                var obstacleEntity =
+                    await GameEntry.Entity.ShowGridPropObstacleEntityAsync(Constant.Battle.ObstacleGridID, gridPosIdx);
+                if (obstacleEntity is IMoveGrid moveGrid2)
+                {
+                    MoveGrids.Add(obstacleEntity.GridPropEntityData.Id, moveGrid2);
+                }
+                    
+                BattleGridPropManager.Instance.GridPropEntities.Add(obstacleEntity.GridPropEntityData.Id,
+                    obstacleEntity);
+            }
         }
 
         public void ResetTmpUnitEntity()
@@ -151,10 +155,7 @@ namespace RoundHero
 
         public void Destory()
         {
-            GameEntry.Event.Unsubscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
-            GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
-            GameEntry.Event.Unsubscribe(ClickGridEventArgs.EventId, OnClickGrid);
-            GameEntry.Event.Unsubscribe(SelectGridEventArgs.EventId, OnSelectGrid);
+            Unsubscribe();
             MoveGrids.Clear();
             moveGridPosIdxs.Clear();
             if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
@@ -171,7 +172,22 @@ namespace RoundHero
             GridEntities.Clear();
             GridEntitiesMap.Clear();
         }
+        
+        public void Subscribe()
+        {
+            GameEntry.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
+            GameEntry.Event.Subscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
+            GameEntry.Event.Subscribe(ClickGridEventArgs.EventId, OnClickGrid);
+            GameEntry.Event.Subscribe(SelectGridEventArgs.EventId, OnSelectGrid);
+        }
 
+        public void Unsubscribe()
+        {
+            GameEntry.Event.Unsubscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
+            GameEntry.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
+            GameEntry.Event.Unsubscribe(ClickGridEventArgs.EventId, OnClickGrid);
+            GameEntry.Event.Unsubscribe(SelectGridEventArgs.EventId, OnSelectGrid);
+        }
 
 
         public void Update()
@@ -2432,19 +2448,8 @@ namespace RoundHero
                 BattleBuffManager.Instance.UseBuff(gridPosIdx);
                 
             }
-            
-            var battleSoliderEntity =
-                await GameEntry.Entity.ShowBattleSoliderEntityAsync(BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider);
-            
-            BattleUnitManager.Instance.BattleUnitEntities.Add(
-                battleSoliderEntity.BattleSoliderEntityData.BattleSoliderData.Idx, battleSoliderEntity);
 
-            if (battleSoliderEntity is IMoveGrid moveGrid)
-            {
-                BattleAreaManager.Instance.MoveGrids.Add(battleSoliderEntity.BattleSoliderEntityData.Id, moveGrid);
-            }
-
-            BattleSoliderManager.Instance.RefreshSoliderEntities();
+            GenerateSolider(BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider);
             
             BattleManager.Instance.TempTriggerData.Reset();
 
@@ -2456,6 +2461,26 @@ namespace RoundHero
             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
             
             GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
+        }
+
+        public async Task<BattleSoliderEntity> GenerateSolider(Data_BattleSolider battleSolider)
+        {
+            var battleSoliderEntity =
+                await GameEntry.Entity.ShowBattleSoliderEntityAsync(battleSolider);
+            
+            BattleUnitManager.Instance.BattleUnitEntities.Add(
+                battleSoliderEntity.BattleSoliderEntityData.BattleSoliderData.Idx, battleSoliderEntity);
+
+            if (battleSoliderEntity is IMoveGrid moveGrid)
+            {
+                BattleAreaManager.Instance.MoveGrids.Add(battleSoliderEntity.BattleSoliderEntityData.Id, moveGrid);
+            }
+
+            BattleSoliderManager.Instance.RefreshSoliderEntities();
+
+            //BattleManager.Instance.RecordLastActionBattleData();
+
+            return battleSoliderEntity;
         }
 
 

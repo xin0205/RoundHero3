@@ -42,7 +42,8 @@ namespace RoundHero
 
         public void Init(int randomSeed)
         {
-            GameEntry.Event.Subscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
+            Subscribe();
+            
             //GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
             
             this.randomSeed = randomSeed;
@@ -120,8 +121,18 @@ namespace RoundHero
 
         public void Destory()
         {
-            GameEntry.Event.Unsubscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
+            Unsubscribe();
             //GameEntry.Event.Unsubscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
+        }
+        
+        public void Subscribe()
+        {
+            GameEntry.Event.Subscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
+        }
+
+        public void Unsubscribe()
+        {
+            GameEntry.Event.Unsubscribe(ShowGridDetailEventArgs.EventId, OnShowGridDetail);
         }
         
         // public int GetID()
@@ -275,32 +286,40 @@ namespace RoundHero
             
             for (int i = 0; i < enemyGenerateCount; i++)
             {
-                var enemyId = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
-                var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(enemyId, places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
-                EnemyGenerateData.UnitIdx++;
-                battleEnemyEntity.LookAtHero();
-                BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx);
+                var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
+
+                GenerateEnemy(enemyID, places[enemyIdxs[i]]);
                 
-                var enemyGenerateAddDebuff = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EnemyGenerateAddDebuff, BattleManager.Instance.CurUnitCamp);
-                if (enemyGenerateAddDebuff != null )
-                {
-                    var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Count);
-                    var randomDeBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative][randomDebuffIdx];
-                    battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ChangeState(randomDeBuff);
-                }
                 
-                BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx, battleEnemyEntity);
-                //RefreshEnemyEntities();
-                
-                if (battleEnemyEntity is IMoveGrid moveGrid)
-                {
-                    BattleAreaManager.Instance.MoveGrids.Add(battleEnemyEntity.BattleMonsterEntityData.Id, moveGrid);
-                }
             }
         }
 
 
-        
+        public async Task<BattleMonsterEntity> GenerateEnemy(int enemyID, int gridPosIdx)
+        {
+            var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(enemyID, gridPosIdx, EUnitCamp.Enemy, new List<int>());
+            EnemyGenerateData.UnitIdx++;
+            battleEnemyEntity.LookAtHero();
+            BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx);
+                
+            var enemyGenerateAddDebuff = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EnemyGenerateAddDebuff, BattleManager.Instance.CurUnitCamp);
+            if (enemyGenerateAddDebuff != null )
+            {
+                var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Count);
+                var randomDeBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative][randomDebuffIdx];
+                battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ChangeState(randomDeBuff);
+            }
+                
+            BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx, battleEnemyEntity);
+            //RefreshEnemyEntities();
+                
+            if (battleEnemyEntity is IMoveGrid moveGrid)
+            {
+                BattleAreaManager.Instance.MoveGrids.Add(battleEnemyEntity.BattleMonsterEntityData.Id, moveGrid);
+            }
+
+            return battleEnemyEntity;
+        }
         
         
         // public int GetDis(int enemyID,Vector2Int enemyCoord)
