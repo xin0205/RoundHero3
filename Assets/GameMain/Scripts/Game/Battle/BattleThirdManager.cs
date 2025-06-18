@@ -36,7 +36,9 @@ namespace RoundHero
             
             for (int i = 0; i < 1; i++)
             {
-                var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(0, places[enemyIdxs[i]], EUnitCamp.Third, new List<int>());
+                var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), 0, places[enemyIdxs[i]], EUnitCamp.Third, new List<int>());
+                
+                var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(battleEnemyData);
                 
                 BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx, battleEnemyEntity);
                 RefreshEntities();

@@ -43,7 +43,11 @@ namespace RoundHero
             UnitAttackCastType = drEnemy.AttackCastType;
         }
 
-        
+        public override Data_BattleUnit BattleUnitData 
+        {
+            get =>  BattleMonsterEntityData.BattleMonsterData; 
+            set =>  BattleMonsterEntityData.BattleMonsterData = value as Data_BattleMonster;
+        }
 
         public override void Dead()
         {

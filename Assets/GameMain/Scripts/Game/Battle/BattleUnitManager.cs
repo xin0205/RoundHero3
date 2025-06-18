@@ -238,7 +238,7 @@ namespace RoundHero
                     unitCamp == ERelativeCamp.Enemy && kv.Value.UnitCamp != selfUnitCamp || 
                     unitCamp == null)
                 {
-                    units.Add(kv.Value.BattleUnit);
+                    units.Add(kv.Value.BattleUnitData);
                 }
             }
             
@@ -335,19 +335,19 @@ namespace RoundHero
             
             foreach (var kv in BattleUnitEntities)
             {
-                if (kv.Value.BattleUnit is Data_BattleMonster monster)
+                if (kv.Value.BattleUnitData is Data_BattleMonster monster)
                 {
                     monster.IsCalculateAction = false;
                 }
                 
-                if (kv.Value.BattleUnit is Data_BattleSolider solider)
+                if (kv.Value.BattleUnitData is Data_BattleSolider solider)
                 {
                     solider.RoundMoveTimes = 0;
                     solider.RoundAttackTimes = 0;
 
                 }
 
-                kv.Value.BattleUnit.AddHeroHP = 0;
+                kv.Value.BattleUnitData.AddHeroHP = 0;
             }
         }
 
@@ -355,7 +355,7 @@ namespace RoundHero
         {
             foreach (var kv in BattleUnitEntities)
             {
-                var keys = kv.Value.BattleUnit.UnitStateData.UnitStates.Keys.ToList();
+                var keys = kv.Value.BattleUnitData.UnitStateData.UnitStates.Keys.ToList();
                 for (int i = 0; i < keys.Count; i++)
                 {
                     //kv.Value.BattleUnit.RemoveState(keys[i]);
@@ -654,7 +654,7 @@ namespace RoundHero
         public List<int> GetAttackRanges(int unitID, int gridPosIdx)
         {
             var rangeList = new List<int>();
-            var battleUnitData = GetUnitByIdx(unitID)?.BattleUnit;
+            var battleUnitData = GetUnitByIdx(unitID)?.BattleUnitData;
             if(battleUnitData == null)
                 return rangeList;
             

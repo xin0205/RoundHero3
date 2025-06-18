@@ -42,6 +42,12 @@ namespace RoundHero
             
         }
         
+        public override Data_BattleUnit BattleUnitData 
+        {
+            get =>  BattleCoreEntityData.BattleCoreData; 
+            set =>  BattleCoreEntityData.BattleCoreData = value as Data_BattleCore;
+        }
+        
         public void UpdateCacheHPDelta()
         {
             ChangeCurHP(HeroManager.Instance.BattleHeroData.CacheHPDelta, false, false, true, false);

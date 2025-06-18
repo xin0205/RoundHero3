@@ -91,8 +91,8 @@ namespace RoundHero
             public const string UI_Cancel = "UI.Cancel";
             public const string Button_ConfrimMove = "Button.ConfrimMove";
             public const string Button_ConfrimExchangeGrid = "Button.ConfrimExchangeGrid";
-
-
+            public const string Message_ResetActionTimesNotEnough = "Message.ResetActionTimesNotEnough";
+            public const string Message_UnResetAction = "Message.UnResetAction";
 
 
         }

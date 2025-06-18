@@ -32,7 +32,7 @@ namespace RoundHero
         public Transform Root;
 
 
-        public Data_BattleUnit BattleUnitData { get; set; }
+        public virtual Data_BattleUnit BattleUnitData { get; set; }
         public bool IsMove = false;
         
         public Transform EffectHurtPos;
@@ -62,11 +62,11 @@ namespace RoundHero
             set => BattleUnitData.Idx = value;
         }
 
-        public Data_BattleUnit BattleUnit
-        {
-            get => BattleUnitData; 
-            set => BattleUnitData = value;
-        }
+        // public Data_BattleUnit BattleUnit
+        // {
+        //     get => BattleUnitData; 
+        //     set => BattleUnitData = value;
+        // }
 
         public EUnitCamp UnitCamp
         {
@@ -546,7 +546,7 @@ namespace RoundHero
         {
             var bulletData = new BulletData();
             bulletData.ActionUnitIdx = BattleUnitData.Idx;
-            var moveIdxs = GameUtility.GetMoveIdxs(BattleUnit.GridPosIdx, TargetPosIdx);
+            var moveIdxs = GameUtility.GetMoveIdxs(BattleUnitData.GridPosIdx, TargetPosIdx);
             bulletData.MoveGridPosIdxs.AddRange(moveIdxs);
             var endPosIdx = moveIdxs[moveIdxs.Count - 1];
             
@@ -863,6 +863,8 @@ namespace RoundHero
             //SetAction(unitActionState);
 
             var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
+            
+            GridPosIdx = moveGridPosIdxs.Count > 0 ? moveGridPosIdxs[0] : GridPosIdx;
             transform.position = moveGridPosIdxs.Count > 0 ? GameUtility.GridPosIdxToPos(moveGridPosIdxs[0]) : transform.position;
             for (int i = 1; i < moveGridPosIdxs.Count; i++)
             {

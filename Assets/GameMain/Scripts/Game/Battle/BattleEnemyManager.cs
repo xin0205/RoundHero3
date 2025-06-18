@@ -288,16 +288,20 @@ namespace RoundHero
             {
                 var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
 
-                GenerateEnemy(enemyID, places[enemyIdxs[i]]);
+                var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
+                    places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
+                battleEnemyData.UnitRole = EUnitRole.Staff;
+                
+                GenerateEnemy(battleEnemyData);
                 
                 
             }
         }
 
 
-        public async Task<BattleMonsterEntity> GenerateEnemy(int enemyID, int gridPosIdx)
+        public async Task<BattleMonsterEntity> GenerateEnemy(Data_BattleMonster battleMonsterData)
         {
-            var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(enemyID, gridPosIdx, EUnitCamp.Enemy, new List<int>());
+            var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(battleMonsterData);
             EnemyGenerateData.UnitIdx++;
             battleEnemyEntity.LookAtHero();
             BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx);

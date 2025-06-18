@@ -3339,7 +3339,7 @@ namespace RoundHero
                             if (triggerValue < 0)
                             {
                                 
-                                effectUnitEntity.BattleUnit.HurtTimes += 1;
+                                effectUnitEntity.BattleUnitData.HurtTimes += 1;
                                 
                                 effectUnitEntity.Hurt();
                             } 
@@ -3350,30 +3350,30 @@ namespace RoundHero
 
                             if (triggerData.UnitStateDetail.UnitState == EUnitState.HurtEachMove || triggerData.UnitStateDetail.UnitState == EUnitState.HurtRoundStart)
                             {
-                                effectUnitEntity.BattleUnit.RemoveState(triggerData.UnitStateDetail.UnitState);
+                                effectUnitEntity.BattleUnitData.RemoveState(triggerData.UnitStateDetail.UnitState);
                             }
                             
                             if (actionUnitEntity != null)
                             {
                                 if (triggerData.UnitStateDetail.UnitState == EUnitState.AtkPassUs ||
                                     triggerData.UnitStateDetail.UnitState == EUnitState.AtkPassEnemy &&
-                                    actionUnitEntity.BattleUnit.GetStateCount(triggerData.UnitStateDetail.UnitState) > 0)
+                                    actionUnitEntity.BattleUnitData.GetStateCount(triggerData.UnitStateDetail.UnitState) > 0)
                                 {
-                                    actionUnitEntity.BattleUnit.RemoveState(triggerData.UnitStateDetail.UnitState);
+                                    actionUnitEntity.BattleUnitData.RemoveState(triggerData.UnitStateDetail.UnitState);
                                 }
                             }
                             
                             break;
                         case EUnitAttribute.MaxHP:
                             var recover = (int) (triggerData.Value + triggerData.DeltaValue);
-                            effectUnitEntity.BattleUnit.BaseMaxHP += recover;
+                            effectUnitEntity.BattleUnitData.BaseMaxHP += recover;
                             effectUnitEntity.ChangeCurHP(recover, true, true, true);
                             break;
                         case EUnitAttribute.Empty:
                             break;
                         case EUnitAttribute.BaseDamage:
                             var damage = (int) (triggerData.Value + triggerData.DeltaValue);
-                            effectUnitEntity.BattleUnit.BaseDamage += damage;
+                            effectUnitEntity.BattleUnitData.BaseDamage += damage;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -3390,7 +3390,7 @@ namespace RoundHero
                         effectUnitEntity.Recover();    
                     }
                     
-                    effectUnitEntity.BattleUnit.ChangeState(triggerData.UnitStateDetail.UnitState, triggerValue);
+                    effectUnitEntity.BattleUnitData.ChangeState(triggerData.UnitStateDetail.UnitState, triggerValue);
                     break;
                 case ETriggerDataType.RoundRoleState:
                     // if (actionUnitEntity != null && actionUnitEntity.ID != effectUnitEntity.ID)
@@ -3398,7 +3398,7 @@ namespace RoundHero
                     //     actionUnitEntity.Attack();
                     // }
                     effectUnitEntity.Hurt();
-                    effectUnitEntity.BattleUnit.ChangeRoundState(triggerData.UnitStateDetail.UnitState, (int)(triggerData.Value + triggerData.DeltaValue));
+                    effectUnitEntity.BattleUnitData.ChangeRoundState(triggerData.UnitStateDetail.UnitState, (int)(triggerData.Value + triggerData.DeltaValue));
                     break;
                 case ETriggerDataType.Card:
                     switch (triggerData.CardTriggerType)
@@ -3438,14 +3438,14 @@ namespace RoundHero
                     }
                     break;
                 case ETriggerDataType.Link:
-                    effectUnitEntity.BattleUnit.BattleLinkIDs.Add(triggerData.LinkID);
+                    effectUnitEntity.BattleUnitData.BattleLinkIDs.Add(triggerData.LinkID);
                     break;
                 case ETriggerDataType.RemoveUnit:
-                    effectUnitEntity.BattleUnit.RemoveAllState();
+                    effectUnitEntity.BattleUnitData.RemoveAllState();
                     effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly);
                     if (triggerValue < 0)
                     {
-                        effectUnitEntity.BattleUnit.HurtTimes += 1;
+                        effectUnitEntity.BattleUnitData.HurtTimes += 1;
                         effectUnitEntity.Hurt();
                     }
                     break;

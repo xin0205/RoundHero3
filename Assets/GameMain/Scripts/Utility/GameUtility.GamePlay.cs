@@ -361,7 +361,7 @@ namespace RoundHero
             
             var unit = isBattleData
                 ? BattleFightManager.Instance.GetUnitByGridPosIdx(gridPosIdx)
-                : BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx)?.BattleUnit;
+                : BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx)?.BattleUnitData;
 
             // if (unit != null)
             // {
@@ -387,7 +387,7 @@ namespace RoundHero
             
             var unit = isBattleData
                 ? BattleFightManager.Instance.GetUnitByIdx(unitID)
-                : BattleUnitManager.Instance.GetUnitByIdx(unitID)?.BattleUnit;
+                : BattleUnitManager.Instance.GetUnitByIdx(unitID)?.BattleUnitData;
 
             // if (unit != null)
             // {
@@ -402,7 +402,7 @@ namespace RoundHero
         {
             var unit = isBattleData
                 ? BattleFightManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx, selfUnitCamp, unitCamps)
-                : BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx, selfUnitCamp, unitCamps)?.BattleUnit;
+                : BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx, selfUnitCamp, unitCamps)?.BattleUnitData;
         
             return unit;
         }

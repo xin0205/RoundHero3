@@ -41,7 +41,11 @@ namespace RoundHero
         
         public static string GetLocalizedStrings<T>(this LocalizationComponent localizationComponent, string localizationStr, List<T> vals)
         {
-            if (vals.Count == 1)
+            if (vals.Count == 0)
+            {
+                return GetString(localizationComponent, localizationStr);;
+            }
+            else if (vals.Count == 1)
             {
                 return GetLocalizedString(localizationComponent, localizationStr, vals[0]);
 

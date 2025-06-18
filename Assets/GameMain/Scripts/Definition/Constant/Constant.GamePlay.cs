@@ -82,6 +82,7 @@ namespace RoundHero
             public static int EachHardCardCount = 5;
             public static int CoreCount = 3;
             public static int SelectCardHeight = 100;
+            public static int ResetActionTimes = 3;
 
             public static int SelectInitCardEachCount = 1;
             public static int InitCardMaxCount = 10;

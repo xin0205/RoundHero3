@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityGameFramework.Runtime;
@@ -17,6 +18,7 @@ namespace RoundHero
         
         private InfoForm infoForm;
 
+        private List<string> descParams = new List<string>();
         
         public UnityEvent<InfoFormParams> infoParams; 
         
@@ -29,6 +31,12 @@ namespace RoundHero
             }
         }
 
+        public void SetDescParams(List<string> paramList)
+        {
+            descParams = paramList;
+
+        }
+
         public async void ShowInfo()
         {
             isShowInfo = true;
@@ -37,10 +45,11 @@ namespace RoundHero
             // RectTransformUtility.ScreenPointToLocalPointInRectangle(AreaController.Instance.Canvas.transform as RectTransform,
             //         Input.mousePosition, AreaController.Instance.UICamera, out mousePosition);
             //
+            
             var infoFormParams = new InfoFormParams()
             {
                 Name = string.IsNullOrEmpty(name) ? "" : GameEntry.Localization.GetString(name),
-                Desc = string.IsNullOrEmpty(desc) ? "" : GameEntry.Localization.GetString(desc),
+                Desc = string.IsNullOrEmpty(desc) ? "" : GameEntry.Localization.GetLocalizedStrings(desc, descParams),
                 //Position = mousePosition + infoDelta,
             };
             

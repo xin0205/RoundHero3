@@ -73,7 +73,9 @@ namespace RoundHero
 
              foreach (var randomIdx in randomList)
              {
-                 GenerateCoreEntity(places2[randomIdx]);
+                 var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), 0, places2[randomIdx],
+                     BattleManager.Instance.CurUnitCamp);
+                 GenerateCoreEntity(battleCoreData);
                  //BattleUnitManager.Instance.BattleUnitDatas.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity.BattleCoreEntityData.BattleCoreData);
 
              }
@@ -100,9 +102,9 @@ namespace RoundHero
             
         }
 
-        public async Task<BattleCoreEntity> GenerateCoreEntity(int gridPosIdx)
+        public async Task<BattleCoreEntity> GenerateCoreEntity(Data_BattleCore battleCoreData)
         {
-            var coreEntity = await GameEntry.Entity.ShowBattleCoreEntityAsync(0, gridPosIdx, BattleManager.Instance.CurUnitCamp);
+            var coreEntity = await GameEntry.Entity.ShowBattleCoreEntityAsync(battleCoreData);
             if (coreEntity is IMoveGrid moveGrid)
             {
                 BattleAreaManager.Instance.MoveGrids.Add(coreEntity.BattleCoreEntityData.Id, moveGrid);

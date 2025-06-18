@@ -40,6 +40,8 @@ namespace RoundHero
         //[SerializeField] private Text coreInfo;
         
         private ProcedureBattle procedureBattle;
+        
+        [SerializeField] private InfoTrigger resetActionInfoTrigger;
 
         private bool isEndRound = false;
         // private List<A> As = new ();
@@ -56,6 +58,12 @@ namespace RoundHero
             //GameEntry.Event.Subscribe(SwitchActionCampEventArgs.EventId, OnSwitchActionCamp);
             
             RefreshEnergy();
+
+            resetActionInfoTrigger.SetDescParams(new List<string>()
+            {
+                BattleManager.Instance.BattleData.ResetActionTimes.ToString(),
+                Constant.Battle.ResetActionTimes.ToString()
+            });
             
             //energyBuffBarUItem.Init(BattlePlayerManager.Instance.PlayerData.BattleHero);
             tipsNode.SetActive(false);
@@ -209,6 +217,11 @@ namespace RoundHero
             //RefreshCoin();
             //RefreshLinks();
             //coreInfo.text = HeroManager.Instance.BattleHeroData.CurHP + "/" + HeroManager.Instance.BattleHeroData.CacheHPDelta;
+            resetActionInfoTrigger.SetDescParams(new List<string>()
+            {
+                BattleManager.Instance.BattleData.ResetActionTimes.ToString(),
+                Constant.Battle.ResetActionTimes.ToString()
+            });
         }
 
         // private void RefreshLinks()
@@ -428,6 +441,18 @@ namespace RoundHero
 
         public async void ResetAction()
         {
+            if (GamePlayManager.Instance.GamePlayData.LastActionBattleData == null)
+            {
+                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_UnResetAction));
+                return;
+            }
+            
+            if (GamePlayManager.Instance.GamePlayData.BattleData.ResetActionTimes <= 0)
+            {
+                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_ResetActionTimesNotEnough));
+                return;
+            }
+            
             GamePlayManager.Instance.GamePlayData.LastRoundBattleData.Clear();
 
             BattleManager.Instance.Destory();
@@ -438,38 +463,61 @@ namespace RoundHero
         
         public async Task ResetArea()
         {
+            
+
             var battleData =
                 GamePlayManager.Instance.GamePlayData.LastActionBattleData.Copy();
             GamePlayManager.Instance.GamePlayData.LastActionBattleData.Clear();
+            GamePlayManager.Instance.GamePlayData.LastActionBattleData = null;
             
+            GamePlayManager.Instance.GamePlayData.PlayerData = 
+            GamePlayManager.Instance.GamePlayData.PlayerDataCampDict[GamePlayManager.Instance.GamePlayData.LastActionPlayerData.UnitCamp] =
+                GamePlayManager.Instance.GamePlayData.LastActionPlayerData.Copy();
+            GamePlayManager.Instance.GamePlayData.LastActionPlayerData.Clear();
+
+            battleData.ResetActionTimes -= 1;
+            GamePlayManager.Instance.GamePlayData.BattleData = battleData.Copy();
+
+            
+            //GamePlayManager.Instance.GamePlayData.BattleData.GridTypes.Clear();
             foreach (var kv in battleData.GridTypes)
             {
                 BattleAreaManager.Instance.GenerateGridEntity(kv.Key, kv.Value);
             }
             
+            GamePlayManager.Instance.GamePlayData.BattleData.BattleUnitDatas.Clear();
             foreach (var kv in battleData.BattleUnitDatas)
             {
                 if (kv.Value is Data_BattleCore battleCore)
                 {
-                    var coreEntity = await BattleCoreManager.Instance.GenerateCoreEntity(kv.Value.GridPosIdx);
-                    coreEntity.BattleCoreEntityData.BattleCoreData = battleCore.Copy();
+                    var battleCoreData = battleCore.Copy();
+                    await BattleCoreManager.Instance.GenerateCoreEntity(battleCoreData);
+
 
                 }
                 else if (kv.Value is Data_BattleSolider battleSolider)
                 {
-                    var soliderEntity = await BattleAreaManager.Instance.GenerateSolider(battleSolider);
-                    soliderEntity.BattleSoliderEntityData.BattleSoliderData = battleSolider.Copy();
-
+                    var battleSoliderData = battleSolider.Copy();
+                    await BattleAreaManager.Instance.GenerateSolider(battleSoliderData);
+                    // BattleUnitManager.Instance.BattleUnitDatas.Remove(soliderEntity.BattleUnitData.Idx);
+                    // soliderEntity.BattleUnitData = battleSolider.Copy();
+                    // BattleUnitManager.Instance.BattleUnitDatas.Add(soliderEntity.BattleUnitData.Idx, soliderEntity.BattleUnitData);
                 }
                 else if (kv.Value is Data_BattleMonster battleMonster)
                 {
-                    var enemyEntity = await BattleEnemyManager.Instance.GenerateEnemy(battleMonster.MonsterID, battleMonster.GridPosIdx);
-                    enemyEntity.BattleMonsterEntityData.BattleMonsterData = battleMonster.Copy();
 
+                    var battleEnemyData = battleMonster.Copy();
+                    
+                    await BattleEnemyManager.Instance.GenerateEnemy(battleEnemyData);
+                    
+                    // BattleUnitManager.Instance.BattleUnitDatas.Remove(enemyEntity.BattleUnitData.Idx);
+                    // enemyEntity.BattleUnitData = battleMonster.Copy();
+                    // BattleUnitManager.Instance.BattleUnitDatas.Add(enemyEntity.BattleUnitData.Idx, enemyEntity.BattleUnitData);
                 }
                 
             }
 
+            GamePlayManager.Instance.GamePlayData.BattleData.BattlePlayerDatas[EUnitCamp.Player1].HandCards.Clear();
             var battlePlayerData = battleData.BattlePlayerDatas[EUnitCamp.Player1];
             BattleCardManager.Instance.SetCardPosList(battlePlayerData.HandCards.Count);
             var idx = 0;
@@ -483,13 +531,17 @@ namespace RoundHero
                     idx * 0.15f + 0.15f);
                 
                 BattleCardManager.Instance.AddHandCard(card);
+                GamePlayManager.Instance.GamePlayData.BattleData.BattlePlayerDatas[EUnitCamp.Player1].HandCards.Add(cardIdx);
+                
+                
                 idx++;
             }
 
-            GamePlayManager.Instance.GamePlayData.BattleData = battleData.Copy();
             GamePlayManager.Instance.InitPlayerData();
             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
             BattleManager.Instance.RefreshEnemyAttackData();
+            
+            
         }
     }
 }

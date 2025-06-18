@@ -44,6 +44,12 @@ namespace RoundHero
             //ShowCollider(true);
             //actionNode.SetActive(false);
         }
+        
+        public override Data_BattleUnit BattleUnitData 
+        {
+            get =>  BattleSoliderEntityData.BattleSoliderData; 
+            set =>  BattleSoliderEntityData.BattleSoliderData = value as Data_BattleSolider;
+        }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {

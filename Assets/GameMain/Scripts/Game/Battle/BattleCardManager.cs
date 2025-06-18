@@ -505,7 +505,7 @@ namespace RoundHero
             return UseCard(cardIdx);
         }
 
-        public bool UseCard(int cardIdx, int unitID = -1)
+        public bool UseCard(int cardIdx, int unitIdx = -1)
         {
             BattleManager.Instance.RecordLastActionBattleData();
             
@@ -539,7 +539,7 @@ namespace RoundHero
                 }
             }
 
-            var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitID);
+            var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitIdx);
 
             var cardPos = cardEntity.transform.localPosition;
             cardPos.y += 100;
@@ -548,7 +548,7 @@ namespace RoundHero
             GameEntry.Entity.ShowBattleMoveValueEntityAsync(cardPos,
                 uiCorePos,
                 - cardEnergy, -1, false, false);
-            BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitID);
+            BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitIdx);
 
             BattleBuffManager.Instance.RecoverUseBuffState();
             BattleFightManager.Instance.UseCardTrigger();
@@ -762,11 +762,11 @@ namespace RoundHero
                         break;
                     case ECardUseType.Attack:
                         //unitEntity.BattleUnit.RoundAttackTimes += 1;
-                        cardEnergy = unitEntity.BattleUnit.RoundAttackTimes;
+                        cardEnergy = unitEntity.BattleUnitData.RoundAttackTimes;
                         break;
                     case ECardUseType.Move:
                         //unitEntity.BattleUnit.RoundMoveTimes += 1;
-                        cardEnergy = unitEntity.BattleUnit.RoundMoveTimes;
+                        cardEnergy = unitEntity.BattleUnitData.RoundMoveTimes;
                         break;
             
                 }
