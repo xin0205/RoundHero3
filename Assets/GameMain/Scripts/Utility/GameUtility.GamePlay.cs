@@ -1395,63 +1395,67 @@ namespace RoundHero
             
             var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
             var idx = 0;
-            foreach (var points in Constant.Battle.ActionTypePoints[newActionType])
+            if (Constant.Battle.ActionTypePoints.ContainsKey(newActionType))
             {
-                if (rangeNestList.Count < idx + 1)
+                foreach (var points in Constant.Battle.ActionTypePoints[newActionType])
                 {
-                    rangeNestList.Add(new List<int>());
-                }
-
-                var list = new List<int>();
-                // var isMatch = true;
-                // if (actionType == EActionType.HeroDirect)
-                // {
-                //     isMatch = false;
-                // }
-                
-                foreach (var point in points)
-                {
-                    if(!inclueCenter && point == Vector2Int.zero)
-                        continue;
-                    
-                    var targetCoord = coord + point;
-                    var targetGridPosIdx = GridCoordToPosIdx(targetCoord);
-                    
-                    if (!GameUtility.InGridRange(targetCoord))
-                        continue;
-                    
-                    if (actionType == EActionType.HeroDirect)
+                    if (rangeNestList.Count < idx + 1)
                     {
-                        var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(
-                            targetGridPosIdx);
-
-                        // if (unit is BattleCoreEntity)
-                        // {
-                        //     isMatch = true;
-                        // }
-                        
+                        rangeNestList.Add(new List<int>());
                     }
+
+                    var list = new List<int>();
+                    // var isMatch = true;
+                    // if (actionType == EActionType.HeroDirect)
+                    // {
+                    //     isMatch = false;
+                    // }
+                
+                    foreach (var point in points)
+                    {
+                        if(!inclueCenter && point == Vector2Int.zero)
+                            continue;
+                    
+                        var targetCoord = coord + point;
+                        var targetGridPosIdx = GridCoordToPosIdx(targetCoord);
+                    
+                        if (!GameUtility.InGridRange(targetCoord))
+                            continue;
+                    
+                        if (actionType == EActionType.HeroDirect)
+                        {
+                            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(
+                                targetGridPosIdx);
+
+                            // if (unit is BattleCoreEntity)
+                            // {
+                            //     isMatch = true;
+                            // }
+                        
+                        }
                     
                     
                     
-                    list.Add(targetGridPosIdx);
+                        list.Add(targetGridPosIdx);
                     
-                }
-                rangeNestList[idx].AddRange(list);
-                // if (isMatch)
-                // {
-                //     rangeNestList[idx].AddRange(list);
-                // }
-                //
-                // if (actionType == EActionType.HeroDirect && isMatch)
-                // {
-                //     break;
-                // }
+                    }
+                    rangeNestList[idx].AddRange(list);
+                    // if (isMatch)
+                    // {
+                    //     rangeNestList[idx].AddRange(list);
+                    // }
+                    //
+                    // if (actionType == EActionType.HeroDirect && isMatch)
+                    // {
+                    //     break;
+                    // }
                 
 
-                idx++;
+                    idx++;
 
+                }
             }
+            
         
             return rangeNestList;
         
@@ -1836,6 +1840,7 @@ namespace RoundHero
         {
             var idx = 0;
             var endCoord = GameUtility.GridPosIdxToCoord(startPosIdx);
+            direct = GameUtility.GetDirect(direct);
             while (true)
             {
                 idx++;
@@ -1897,12 +1902,12 @@ namespace RoundHero
             return normal * (distance * percent) + start;
         }
 
-        public static List<List<Vector2Int>> GetRelatedCoords(EActionType actionType, int gridPosIdx1, int gridPosIdx2)
+        public static List<Vector2Int> GetRelatedCoords(EActionType actionType, int gridPosIdx1, int gridPosIdx2)
         {
             var pointList = new List<List<Vector2Int>>();
             
             List<Vector2Int> coord1s = new List<Vector2Int>();
-            List<Vector2Int> coord2s = new List<Vector2Int>();
+            //List<Vector2Int> coord2s = new List<Vector2Int>();
             
             var actionTypeStr = actionType.ToString();
             var delta = GameUtility.GridPosIdxToCoord(gridPosIdx1) - GameUtility.GridPosIdxToCoord(gridPosIdx2);
@@ -1914,14 +1919,14 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(-1, 0));
-                        coord2s.Add(new Vector2Int(1, 0));
+                        coord1s.Add(new Vector2Int(1, 0));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
-                            coord1s.Add(new Vector2Int(-i-1, 0));
-                            coord2s.Add(new Vector2Int(i+1, 0));
+                            coord1s.Add(new Vector2Int(-i - 1, 0));
+                            coord1s.Add(new Vector2Int(i + 1, 0));
                         }
                     }
                 }
@@ -1930,14 +1935,14 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(0, -1));
-                        coord2s.Add(new Vector2Int(0, 1));
+                        coord1s.Add(new Vector2Int(0, 1));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
-                            coord1s.Add(new Vector2Int(0, -i-1));
-                            coord2s.Add(new Vector2Int(0, i+1));
+                            coord1s.Add(new Vector2Int(0, -i - 1));
+                            coord1s.Add(new Vector2Int(0, i + 1));
                         }
                     }
                 }
@@ -1946,14 +1951,14 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(1, 1));
-                        coord2s.Add(new Vector2Int(-1, -1));
+                        coord1s.Add(new Vector2Int(-1, -1));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
                             coord1s.Add(new Vector2Int(i+1, i+1));
-                            coord2s.Add(new Vector2Int(-i-1, -i-1));
+                            coord1s.Add(new Vector2Int(-i-1, -i-1));
                         }
                     }
                 }
@@ -1962,14 +1967,14 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(1, -1));
-                        coord2s.Add(new Vector2Int(-1, 1));
+                        coord1s.Add(new Vector2Int(-1, 1));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
                             coord1s.Add(new Vector2Int(i+1, -i-1));
-                            coord2s.Add(new Vector2Int(-i-1, i+1));
+                            coord1s.Add(new Vector2Int(-i-1, i+1));
                         }
                     }
                 }
@@ -1981,14 +1986,14 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(0, -1));
-                        coord2s.Add(new Vector2Int(0, 1));
+                        coord1s.Add(new Vector2Int(0, 1));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
                             coord1s.Add(new Vector2Int(0, -i-1));
-                            coord2s.Add(new Vector2Int(0, i+1));
+                            coord1s.Add(new Vector2Int(0, i+1));
                         }
                     }
                 }
@@ -1997,14 +2002,14 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(-1, 0));
-                        coord2s.Add(new Vector2Int(1, 0));
+                        coord1s.Add(new Vector2Int(1, 0));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
                             coord1s.Add(new Vector2Int(-i-1, 0));
-                            coord2s.Add(new Vector2Int(i+1, 0));
+                            coord1s.Add(new Vector2Int(i+1, 0));
                         }
                     }
                     
@@ -2014,14 +2019,14 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(1, -1));
-                        coord2s.Add(new Vector2Int(-1, 1));
+                        coord1s.Add(new Vector2Int(-1, 1));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
                             coord1s.Add(new Vector2Int(i+1, -i-1));
-                            coord2s.Add(new Vector2Int(-i-1, i+1));
+                            coord1s.Add(new Vector2Int(-i-1, i+1));
                         }
                     }
                 }
@@ -2030,24 +2035,64 @@ namespace RoundHero
                     if (actionTypeStr.Contains("Short"))
                     {
                         coord1s.Add(new Vector2Int(1, 1));
-                        coord2s.Add(new Vector2Int(-1, -1));
+                        coord1s.Add(new Vector2Int(-1, -1));
                     }
                     else if (actionTypeStr.Contains("Long") || actionTypeStr.Contains("Extends"))
                     {
                         for (int i = 0; i < 6; i++)
                         {
                             coord1s.Add(new Vector2Int(i+1, i+1));
-                            coord2s.Add(new Vector2Int(-i-1, -i-1));
+                            coord1s.Add(new Vector2Int(-i-1, -i-1));
                         }
                     }
                     
                     
                 }
             }
-            pointList.Add(coord1s);
-            pointList.Add(coord2s);
+            else if (actionType == EActionType.LineExtend)
+            {
+                var actionUnitCoord = GameUtility.GridPosIdxToCoord(gridPosIdx1);
+                var effectUnitCoord = GameUtility.GridPosIdxToCoord(gridPosIdx2);
+                var direct = actionUnitCoord - effectUnitCoord;
+                direct = GameUtility.GetDirect(direct);
 
-            return pointList;
+                for (int i = 0; i < Constant.Area.GridSize.x; i++)
+                {
+                    var endPosIdx = GameUtility.GetEndPosIdx(gridPosIdx1, direct, i + 1);
+                    if (endPosIdx != gridPosIdx1)
+                    {
+                        var endPosUnit = GameUtility.GetUnitByGridPosIdx(endPosIdx);
+                        if (endPosUnit != null)
+                        {
+                            coord1s.Add(GameUtility.GridPosIdxToCoord(endPosUnit.GridPosIdx));
+                        }
+                        
+                        // if (endPosUnit != null)
+                        // {
+                        //     var isEndPosEnemy = BattleFightManager.Instance.IsEnemy(gridPosIdx1, endPosUnit.Idx);
+                        //     
+                        //     if (isEndPosEnemy && buffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy))
+                        //     {
+                        //         coord1s.Add(GameUtility.GridPosIdxToCoord(endPosUnit.GridPosIdx));
+                        //         
+                        //         
+                        //         break;
+                        //     }
+                        //     else if (!isEndPosEnemy && buffData.TriggerUnitCamps.Contains(ERelativeCamp.Us))
+                        //     {
+                        //         coord1s.Add(GameUtility.GridPosIdxToCoord(endPosUnit.GridPosIdx));
+                        //         break;
+                        //     }
+                        //
+                        // }
+                    }
+                                
+                }
+            }
+            //pointList.Add(coord1s);
+            //pointList.Add(coord2s);
+
+            return coord1s;
         }
 
 

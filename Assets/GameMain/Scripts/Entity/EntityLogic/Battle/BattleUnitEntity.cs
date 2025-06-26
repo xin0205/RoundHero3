@@ -367,6 +367,9 @@ namespace RoundHero
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
+            if(BattleManager.Instance.BattleState == EBattleState.Empty)
+                return;
+            
             RefreshRoatation();
             ShowHurts();
             

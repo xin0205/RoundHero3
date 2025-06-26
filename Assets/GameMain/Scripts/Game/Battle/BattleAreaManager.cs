@@ -157,7 +157,7 @@ namespace RoundHero
         {
             Unsubscribe();
             MoveGrids.Clear();
-            moveGridPosIdxs.Clear();
+            MoveGridPosIdxs.Clear();
             if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
             {
                 GameEntry.Entity.HideEntity(TmpUnitEntity);
@@ -694,7 +694,23 @@ namespace RoundHero
                             }
                             else if(BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
                             {
-                                unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                if (attackUnit != null)
+                                {
+                                    attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                                }
+                                
+                                //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                            }
+                            else if(BattleManager.Instance.BattleState == EBattleState.MoveUnit)
+                            {
+                                var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                if (attackUnit != null)
+                                {
+                                    attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                                }
+                                
+                                //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
                             }
                             else
                             {
@@ -741,11 +757,11 @@ namespace RoundHero
                         {
                             if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
                             {
-                                unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
                                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
                                 if (attackUnit != null)
                                 {
-                                    attackUnit.ShowHurtTags(attackUnit.UnitIdx, unit.UnitIdx);
+                                    attackUnit.ShowTags(attackUnit.UnitIdx, true);
                                 }
                                 
                                 
@@ -795,7 +811,7 @@ namespace RoundHero
             }
         }
 
-        private Dictionary<int, int> moveGridPosIdxs = new Dictionary<int, int>();
+        public Dictionary<int, int> MoveGridPosIdxs = new Dictionary<int, int>();
 
         public void UpdateMoveGrid()
         {
@@ -877,7 +893,7 @@ namespace RoundHero
                             var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
                             var isAllMove = buffData.BuffStr == EBuffID.Spec_MoveAllGrid.ToString();
                             
-                            moveGridPosIdxs.Clear();
+                            MoveGridPosIdxs.Clear();
                             
                             foreach (var kv in MoveGrids)
                             {
@@ -886,22 +902,22 @@ namespace RoundHero
 
                                 if (MoveDirection == EDirection.Horizonal && (isAllMove || coord.y == pointDownCoord.y))
                                 {
-                                    moveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
+                                    MoveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
                                 }
                                 else if (MoveDirection == EDirection.Vertial && (isAllMove || coord.x == pointDownCoord.x))
                                 {
-                                    moveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
+                                    MoveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
                                 }
                                 else if (MoveDirection == EDirection.XRight && !isAllMove &&
                                          coord.x - pointDownCoord.x == coord.y - pointDownCoord.y)
                                 {
-                                    moveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
+                                    MoveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
 
                                 }
                                 else if (MoveDirection == EDirection.XLeft && !isAllMove &&
                                          coord.x - pointDownCoord.x == pointDownCoord.y - coord.y)
                                 {
-                                    moveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
+                                    MoveGridPosIdxs.Add(kv.Key, kv.Value.GridPosIdx);
                                 }
                             }
                         }
@@ -941,7 +957,7 @@ namespace RoundHero
             var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
             var isAllMove = buffData.BuffStr == EBuffID.Spec_MoveAllGrid.ToString();
 
-            foreach (var kv in moveGridPosIdxs)
+            foreach (var kv in MoveGridPosIdxs)
             {
                 var moveGrid = MoveGrids[kv.Key];
                 
@@ -1544,7 +1560,7 @@ namespace RoundHero
         private void UpdateGrid()
         {
             IsMoveGrid = true;
-            foreach (var kv in moveGridPosIdxs)
+            foreach (var kv in MoveGridPosIdxs)
             {
                 var moveGrid = MoveGrids[kv.Key];
                 if (moveGrid.GridPosIdx == kv.Value)
@@ -1594,7 +1610,7 @@ namespace RoundHero
                 if (isShow)
                 {
                     kv.Value.UnShowTags();
-                    if(!moveGridPosIdxs.ContainsValue(kv.Value.GridPosIdx))
+                    if(!MoveGridPosIdxs.ContainsValue(kv.Value.GridPosIdx))
                         continue;
                     
                     kv.Value.ShowTags(kv.Value.UnitIdx, false);
@@ -1832,7 +1848,7 @@ namespace RoundHero
             if (IsMoveGrid)
             {
                 //UpdateGrid(pointDownCoord, MoveDirection, -allMoveDelta);
-                foreach (var kv in moveGridPosIdxs)
+                foreach (var kv in MoveGridPosIdxs)
                 {
                     var moveGrid = MoveGrids[kv.Key];
                     moveGrid.GridPosIdx = kv.Value;
@@ -2453,7 +2469,7 @@ namespace RoundHero
             var battleSoliderData = (BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider).Copy();
             //battleSoliderData.UnitRole = EUnitRole.Staff;
             battleSoliderData.Idx = BattleUnitManager.Instance.GetIdx();
-            GenerateSolider(battleSoliderData);
+            await GenerateSolider(battleSoliderData);
             
             BattleManager.Instance.TempTriggerData.Reset();
 

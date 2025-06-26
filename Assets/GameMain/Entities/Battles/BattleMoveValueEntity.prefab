@@ -64,8 +64,8 @@ MonoBehaviour:
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0, w: 1}
   text: {fileID: 7953876016525079706}
-  hurtColor: {r: 0.74509805, g: 0.37254903, b: 0.34509805, a: 1}
-  recoverColor: {r: 0.30588236, g: 0.67058825, b: 0.4431373, a: 1}
+  hurtColor: {r: 1, g: 0.06862745, b: 0, a: 1}
+  recoverColor: {r: 0, g: 1, b: 0.37634397, a: 1}
 --- !u!1 &8505322582351504153
 GameObject:
   m_ObjectHideFlags: 0

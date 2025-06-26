@@ -225,6 +225,7 @@ namespace RoundHero
         Empty,
         Direct8,
         Null,
+        LineExtend,
         //HeroDirect_Extend,
         //HeroDirect,
         //X_Extend,//X_发射
@@ -373,6 +374,7 @@ namespace RoundHero
     public enum ETriggerTarget
     {
         Effect,
+        Direct2Short,
         Action,
         Trigger,
         Core,
@@ -382,6 +384,7 @@ namespace RoundHero
         Horizontal,
         Staff,
         Select,
+        LineExtend,
         EffectUnitDirect,
         DeBuffMax,
         MoveMax,
@@ -526,6 +529,8 @@ namespace RoundHero
         Fly,
         Rush,
         Empty,
+        Throw,
+
     }
 
     public enum EActionDataType

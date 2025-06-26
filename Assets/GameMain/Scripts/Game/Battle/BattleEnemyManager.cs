@@ -231,15 +231,13 @@ namespace RoundHero
             var enemyGenerateCount = 0;
             
 
-            if (rule.RoundGenerateUnitCount.ContainsKey(BattleManager.Instance.BattleData.Round))
+            if (rule.RoundGenerateUnitCount.ContainsKey(BattleManager.Instance.BattleData.Round) &&
+                EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] >= rule.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round])
             {
-                if (EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] > 0)
-                {
-                    enemyGenerateCount =
-                        EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round];
-                    EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] -=
-                        enemyGenerateCount;
-                }
+                enemyGenerateCount =
+                    EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round];
+                EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] -=
+                    enemyGenerateCount;
             }
             else
             {
@@ -254,7 +252,7 @@ namespace RoundHero
                     {
                         var idx = keys[i];
                         var roundCount = EnemyGenerateData.RoundGenerateUnitCount[idx];
-                        if (i >= BattleManager.Instance.BattleData.Round)
+                        if (idx >= BattleManager.Instance.BattleData.Round)
                         {
                             if (roundCount >= curNeedCount)
                             {
@@ -286,14 +284,14 @@ namespace RoundHero
             
             for (int i = 0; i < enemyGenerateCount; i++)
             {
-                var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx];//Random.Next(0, 3);
+                var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];//Random.Next(0, 3);
 
                 var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
                     places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
                 battleEnemyData.UnitRole = EUnitRole.Staff;
                 
-                GenerateEnemy(battleEnemyData);
-                
+                await GenerateEnemy(battleEnemyData);
+
                 
             }
         }
@@ -302,7 +300,7 @@ namespace RoundHero
         public async Task<BattleMonsterEntity> GenerateEnemy(Data_BattleMonster battleMonsterData)
         {
             var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(battleMonsterData);
-            EnemyGenerateData.UnitIdx++;
+            
             battleEnemyEntity.LookAtHero();
             BattleCurseManager.Instance.AllUnitDodgeSubHeartDamageDict_Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx);
                 

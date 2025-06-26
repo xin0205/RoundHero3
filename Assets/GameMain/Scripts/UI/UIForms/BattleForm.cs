@@ -308,6 +308,7 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
             
+            BattleManager.Instance.RecordLastActionBattleData();
             BattleManager.Instance.EndRound();
             //ShowActionTips(false);
             //isEndRound = true;
@@ -463,16 +464,21 @@ namespace RoundHero
         
         public async Task ResetArea()
         {
-            
-
             var battleData =
                 GamePlayManager.Instance.GamePlayData.LastActionBattleData.Copy();
             GamePlayManager.Instance.GamePlayData.LastActionBattleData.Clear();
             GamePlayManager.Instance.GamePlayData.LastActionBattleData = null;
             
+            // GamePlayManager.Instance.GamePlayData.PlayerDataIDDict[GamePlayManager.Instance.GamePlayData.LastActionPlayerData.PlayerID] =
+            //     GamePlayManager.Instance.GamePlayData.PlayerDataCampDict[GamePlayManager.Instance.GamePlayData.LastActionPlayerData.UnitCamp] =
+            
             GamePlayManager.Instance.GamePlayData.PlayerData = 
-            GamePlayManager.Instance.GamePlayData.PlayerDataCampDict[GamePlayManager.Instance.GamePlayData.LastActionPlayerData.UnitCamp] =
                 GamePlayManager.Instance.GamePlayData.LastActionPlayerData.Copy();
+            
+            GamePlayManager.Instance.GamePlayData.ClearPlayerDataList();
+            GamePlayManager.Instance.GamePlayData.AddPlayerData(GamePlayManager.Instance.GamePlayData.PlayerData);
+            
+            
             GamePlayManager.Instance.GamePlayData.LastActionPlayerData.Clear();
 
             battleData.ResetActionTimes -= 1;

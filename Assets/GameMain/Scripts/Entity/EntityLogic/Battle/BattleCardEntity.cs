@@ -1,7 +1,9 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using GameFramework.Event;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -18,6 +20,7 @@ namespace RoundHero
     
     public class BattleCardEntity : Entity
     {
+
         public BattleCardEntityData BattleCardEntityData { get; protected set; }
 
         [SerializeField]
@@ -158,6 +161,7 @@ namespace RoundHero
                 isInside = rect.Contains(Input.mousePosition);
                 if (isInside)
                 {
+                    Log.Debug("inSide:" + BattleCardEntityData.CardIdx);
                     OnPointerEnter();
                 }
             }
@@ -167,6 +171,7 @@ namespace RoundHero
                 isInside = rect.Contains(Input.mousePosition);
                 if (!isInside)
                 {
+                    Log.Debug("no inSide:" + BattleCardEntityData.CardIdx);
                     OnPointerExit();
                 }
             }
@@ -271,10 +276,24 @@ namespace RoundHero
             attackInfoTrigger.HideInfo();
         }
 
+        private Tween moveTween; 
         public void MoveCard(Vector2 pos, float time)
         {
-            transform.DOKill(false);
-            transform.DOLocalMove(new Vector3(pos.x, pos.y, 0), time);
+            if (moveTween != null)
+            {
+                moveTween.Kill(false);
+            }
+            
+            //transform.DOKill(false);
+            moveTween = transform.DOLocalMove(new Vector3(pos.x, pos.y, 0), time);
+            GameUtility.DelayExcute(time, () =>
+            {
+                if (moveTween != null)
+                {
+                    moveTween.Kill(false);
+              }
+                
+            });
             RefreshInHandCard(time);
         }
         
@@ -283,7 +302,8 @@ namespace RoundHero
             MoveCard(pos, time);
             transform.localScale = Vector3.zero;
             transform.DOScale(Vector3.one, time);
-            RefreshInHandCard(time);
+           
+            //RefreshInHandCard(time);
         }
 
         private void RefreshInHandCard(float time)
@@ -756,7 +776,35 @@ namespace RoundHero
             }
             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
             BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx].UseCardAnimation();
+
+            var moveGridPosIdx = new Dictionary<int, int>();
+            if (battleState == EBattleState.MoveGrid)
+            {
+                
+                foreach (var kv in BattleAreaManager.Instance.MoveGrids)
+                {
+                    moveGridPosIdx.Add(kv.Key, kv.Value.GridPosIdx);
+                }
+                
+                foreach (var kv in BattleAreaManager.Instance.MoveGridPosIdxs)
+                {
+                    var moveGrid = BattleAreaManager.Instance.MoveGrids[kv.Key];
+                    moveGrid.GridPosIdx = kv.Value;
+                }
+            }
+
+            
+            
             BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
+            
+            if (battleState == EBattleState.MoveGrid)
+            {
+                foreach (var kv in BattleAreaManager.Instance.MoveGrids)
+                {
+                    kv.Value.GridPosIdx = moveGridPosIdx[kv.Key];
+
+                }
+            }
             
             if (battleState == EBattleState.MoveGrid)
             {

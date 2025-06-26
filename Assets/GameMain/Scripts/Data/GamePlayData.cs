@@ -1583,7 +1583,7 @@ namespace RoundHero
 
         }
 
-        public void Clear()
+        public void ClearPlayerDataList()
         {
             PlayerDatas.Clear();
             PlayerDataCampDict.Clear();

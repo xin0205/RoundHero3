@@ -541,6 +541,7 @@ namespace RoundHero
 
             var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitIdx);
 
+            
             var cardPos = cardEntity.transform.localPosition;
             cardPos.y += 100;
             var uiCorePos = AreaController.Instance.UICore.transform.localPosition;

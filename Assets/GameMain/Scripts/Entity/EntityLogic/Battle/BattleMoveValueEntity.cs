@@ -37,19 +37,19 @@ namespace RoundHero
 
             text.text = BattleMoveValueEntityData.Value < 0
                 ? BattleMoveValueEntityData.Value.ToString()
-                : "+" + BattleMoveValueEntityData.Value;
+                : BattleMoveValueEntityData.Value > 0 ? "+" + BattleMoveValueEntityData.Value : BattleMoveValueEntityData.Value.ToString();
 
             //text.text = Mathf.Abs(BattleValueEntityData.Value).ToString();
             //text.color = BattleValueEntityData.Value < 0 ? hurtColor : recoverColor;
             text.color = hurtColor;
 
-            var dis = Vector3.Distance(BattleMoveValueEntityData.TargetPos, transform.position);
+            var dis = Vector3.Distance(BattleMoveValueEntityData.TargetPos, CachedTransform.localPosition);
             //Constant.Battle.BattleValueVelocity
             var time = dis / (Constant.Battle.BattleValueVelocity * 100);
 
-            if (time < 1f)
+            if (time < 2f)
             {
-                time = 1f;
+                time = 2f;
             }
             //textStrTween = 
 

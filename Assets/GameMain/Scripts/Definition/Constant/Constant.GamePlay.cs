@@ -154,6 +154,7 @@ namespace RoundHero
                 EActionType.Vertical2Short,
                 EActionType.Vertical2Long,
                 EActionType.Vertical2Extend,
+                //EActionType.LineExtend,
             };
 
 
@@ -1262,6 +1263,7 @@ namespace RoundHero
                 [EUnitActionState.Run] = 0.5f,
                 [EUnitActionState.Fly] = 0.4f,
                 [EUnitActionState.Rush] = 0.4f,
+                [EUnitActionState.Throw] = 0.4f,
             };
             
             

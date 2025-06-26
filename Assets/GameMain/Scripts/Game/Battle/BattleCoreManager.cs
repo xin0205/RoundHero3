@@ -75,7 +75,7 @@ namespace RoundHero
              {
                  var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), 0, places2[randomIdx],
                      BattleManager.Instance.CurUnitCamp);
-                 GenerateCoreEntity(battleCoreData);
+                 await GenerateCoreEntity(battleCoreData);
                  //BattleUnitManager.Instance.BattleUnitDatas.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity.BattleCoreEntityData.BattleCoreData);
 
              }
