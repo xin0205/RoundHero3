@@ -110,7 +110,7 @@ namespace RoundHero
             if (eachRoundAcquireCardCount > 0)
             {
                 var drConsumeCardAcquireNewCard = GameEntry.DataTable.GetBless(EBlessID.ConsumeCardAddRandomCard);
-                var newCardIDs = BattleCardManager.Instance.AddRandomCard(BattleBuffManager.Instance.GetBuffValue(drConsumeCardAcquireNewCard.Values1[0]) * eachRoundAcquireCardCount);
+                var newCardIDs = BattleCardManager.Instance.AddRandomCard((int)BattleBuffManager.Instance.GetBuffValue(drConsumeCardAcquireNewCard.Values1[0]) * eachRoundAcquireCardCount);
                 for (int i = 0; i < newCardIDs.Count; i++)
                 {
                     var newCardID = newCardIDs[i];
@@ -140,8 +140,8 @@ namespace RoundHero
                     if (kv.Value.CurHP <= 0)
                         continue;
                     
-                    var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Count);
-                    var randomDeBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative][randomDebuffIdx];
+                    var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Count);
+                    var randomDeBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff][randomDebuffIdx];
                     kv.Value.ChangeState(randomDeBuff, eachRoundAddAllEnemyDebuffCount);
                     
                 }
@@ -167,9 +167,9 @@ namespace RoundHero
                     if (kv.Value.UnitStateData.UnitStates.Count > 0)
                         continue;
                     
-                    var randomBuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.Positive].Count);
-                    var randomBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Positive][randomBuffIdx];
-                    kv.Value.ChangeState(randomBuff, BattleBuffManager.Instance.GetBuffValue(drAddBuffToNoBuffUs.Values1[0]) * addBuffToNoBuffUsCount);
+                    var randomBuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.Buff].Count);
+                    var randomBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Buff][randomBuffIdx];
+                    kv.Value.ChangeState(randomBuff, (int)BattleBuffManager.Instance.GetBuffValue(drAddBuffToNoBuffUs.Values1[0]) * addBuffToNoBuffUsCount);
                     
                 }
                 
@@ -243,7 +243,7 @@ namespace RoundHero
                     {
                         var drBless = GameEntry.DataTable.GetBless(EBlessID.EachUseCardAcquireCard);
                         eachUseCardAcquireCard.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]);
-                        BattleCardManager.Instance.AcquireCards(BattleBuffManager.Instance.GetBuffValue(drBless.Values1[1]));
+                        BattleCardManager.Instance.AcquireCards((int)BattleBuffManager.Instance.GetBuffValue(drBless.Values1[1]));
                     }
                     
                 }
@@ -305,7 +305,7 @@ namespace RoundHero
                     {
                         if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp)
                         {
-                            BattleManager.Instance.ChangeHP(kv.Value, BattleBuffManager.Instance.GetBuffValue(drBless.Values1[1]), gamePlayData, EHPChangeType.Unit);
+                            BattleManager.Instance.ChangeHP(kv.Value, (int)BattleBuffManager.Instance.GetBuffValue(drBless.Values1[1]), gamePlayData, EHPChangeType.Unit);
                         }
                     }
                 }
@@ -334,7 +334,7 @@ namespace RoundHero
                     if (eachUseCardDoubleDamage.Value == 0)
                     {
                         eachUseCardDoubleDamage.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]);
-                        playerData.BattleHero.ChangeState(EUnitState.HurtSubDmg, BattleBuffManager.Instance.GetBuffValue(drBless.Values1[1]));
+                        playerData.BattleHero.ChangeState(EUnitState.HurtSubDmg, (int)BattleBuffManager.Instance.GetBuffValue(drBless.Values1[1]));
                     }
                 }
 
@@ -420,7 +420,7 @@ namespace RoundHero
             if (noHandCardAcquireCard != null && playerBattleData.HandCards.Count <= 0)
             {
                 var drBless = GameEntry.DataTable.GetBless(EBlessID.NoHandCardAcquireCard);
-                BattleCardManager.Instance.AcquireCards(BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]));
+                BattleCardManager.Instance.AcquireCards((int)BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]));
 
             }
         }
@@ -448,7 +448,7 @@ namespace RoundHero
                 (gamePlayData.BattleData.EnemyType == EEnemyType.Boss ||
                  gamePlayData.BattleData.EnemyType == EEnemyType.Elite))
             {
-                HeroManager.Instance.ChangeHP(BattleBuffManager.Instance.GetBuffValue(drHeroHPEachRoundInBigFight.Values1[0]), EHPChangeType.Bless, true, false, true);
+                HeroManager.Instance.ChangeHP((int)BattleBuffManager.Instance.GetBuffValue(drHeroHPEachRoundInBigFight.Values1[0]), EHPChangeType.Bless, true, false, true);
             }
         }
         
@@ -502,7 +502,7 @@ namespace RoundHero
                 var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
                 foreach (var kv in unit.UnitStateData.UnitStates)
                 {
-                    if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(kv.Key))
+                    if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(kv.Key))
                     {
                         otherEnemies[randomEnemyIdx].ChangeState(kv.Key, kv.Value.Value);
                     }

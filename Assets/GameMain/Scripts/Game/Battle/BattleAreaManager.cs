@@ -369,6 +369,7 @@ namespace RoundHero
                             TmpUnitEntity = tmpEntity;
                             //TmpUnitEntity.ShowCollider(false);
                             
+                            BattleUnitManager.Instance.BattleUnitDatas.Add(battleSoliderData.Idx, battleSoliderData);
                             BattleUnitManager.Instance.BattleUnitEntities.Add(
                                 TmpUnitEntity.BattleUnitData.Idx, TmpUnitEntity);
                             
@@ -800,13 +801,20 @@ namespace RoundHero
 
         public void HideTmpEntity()
         {
-            if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
+            if (TmpUnitEntity != null)
             {
+                Log.Debug("TmpUnitEntity != null:" + TmpUnitEntity.BattleUnitData.Idx + "-" + BattleUnitManager.Instance.BattleUnitDatas.Count);
                 TmpUnitEntity.UnShowTags();
                             
                 BattleUnitManager.Instance.BattleUnitDatas.Remove(TmpUnitEntity.BattleUnitData.Idx);
+                Log.Debug("22:" + BattleUnitManager.Instance.BattleUnitDatas.Count);
                 BattleUnitManager.Instance.BattleUnitEntities.Remove(TmpUnitEntity.BattleUnitData.Idx);
-                GameEntry.Entity.HideEntity(TmpUnitEntity);
+                if(GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
+                {
+                    Log.Debug("HasEntity(TmpUnitEntity.Id)");
+                    GameEntry.Entity.HideEntity(TmpUnitEntity);
+                }
+                
                 TmpUnitEntity = null;
             }
         }
@@ -2488,6 +2496,7 @@ namespace RoundHero
             var battleSoliderEntity =
                 await GameEntry.Entity.ShowBattleSoliderEntityAsync(battleSoliderData);
             
+            BattleUnitManager.Instance.BattleUnitDatas.Add(battleSoliderData.Idx, battleSoliderData);
             BattleUnitManager.Instance.BattleUnitEntities.Add(
                 battleSoliderEntity.BattleSoliderEntityData.BattleSoliderData.Idx, battleSoliderEntity);
 

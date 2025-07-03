@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -76,9 +77,17 @@ namespace RoundHero
             return buffDatas;
         }
         
-        public List<List<float>> GetBuffValues(int cardID)
+        public List<List<float>> GetBuffValues(int soliderIdx)
         {
-            var drCard = GetCardTable(cardID);
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(soliderIdx) as BattleSoliderEntity;
+            Log.Debug("GetBuffValues:" + BattleUnitManager.Instance.BattleUnitDatas.Count + "-" + BattleUnitManager.Instance.BattleUnitEntities.Count);
+
+            if (effectUnit == null)
+            {
+                Log.Debug("AA");
+            }
+            
+            var drCard = CardManager.Instance.GetCardTable(effectUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
             
             var valuelist = new List<List<float>>();
 
@@ -88,7 +97,7 @@ namespace RoundHero
                 var values = new List<float>();
                 foreach (var value in drCard.GetValues(idx++))
                 {
-                    var targetValue = GameUtility.GetBuffValue(value);
+                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx);
                     values.Add(targetValue);
   
                 }
@@ -116,7 +125,7 @@ namespace RoundHero
                 value = values[valueIdx];
             }
 
-            return GameUtility.GetBuffValue(value);
+            return BattleBuffManager.Instance.GetBuffValue(value);
 
         }
 
@@ -130,7 +139,7 @@ namespace RoundHero
             foreach (var drBuff in drBuffs)
             {
                 var values = drCard.GetValues(idx++);
-                var value = GameUtility.GetBuffValue(values[0]);
+                var value = BattleBuffManager.Instance.GetBuffValue(values[0]);
      
                 if (drBuff.UnitAttribute == EUnitAttribute.HP && value <= 0)
                 {

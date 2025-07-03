@@ -445,7 +445,19 @@ namespace RoundHero
                     
                     var bulletData = new BulletData();
                     bulletData.ActionUnitIdx = triggerData.ActionUnitIdx;
-                    var paths = GameUtility.GetMoveIdxs(triggerData.ActionUnitGridPosIdx, triggerData.EffectUnitGridPosIdx);
+                    List<int> paths;
+                    var triggerRange = triggerData.BuffValue.BuffData.TriggerRange.ToString(); 
+                    if (triggerRange.Contains("Extend"))
+                    {
+                        paths = GameUtility.GetMoveIdxs(triggerData.ActionUnitGridPosIdx, triggerData.EffectUnitGridPosIdx);
+                    }
+                    else
+                    {
+                        paths = new List<int>();
+                        paths.Add(triggerData.ActionUnitGridPosIdx);
+                        paths.Add(triggerData.EffectUnitGridPosIdx);
+                    }
+                    
                     bulletData.MoveGridPosIdxs.AddRange(paths);
                     
                     var triggerActionDatas =
@@ -464,7 +476,7 @@ namespace RoundHero
                         continue;
                     }
 
-                    var triggerRange = triggerData.BuffValue.BuffData.TriggerRange.ToString(); 
+                    
                     if (triggerRange.Contains("Extend"))
                     {
                         GameEntry.Entity.ShowBattleLineBulletEntityAsync(bulletData, ShootPos.position);

@@ -244,6 +244,9 @@
 
     public enum EBuffID
     {
+        Spec_MoveGrid,
+        Spec_ExchangeGrid,
+        
         Spec_MoveDirect,
         Spec_Obstacle,
         Spec_SubEnergy,
@@ -331,13 +334,13 @@
         Hurt_Enemy_Empty_Hero_Card_StandByToPass,
         BattleStart_Self_Us_Action_Round_UnBeMove,
         BattleStart_Empty_Empty_HeroToEnemy_State_UnMove,
-        Spec_MoveGrid,
+        
         Spec_MoveUs,
         Spec_AttackUs,
         Spec_MoveAllGrid,
         Spec_ChangeDirect,
         Spec_ActionEnemy,
-        Spec_ExchangeGrid,
+        
         Spec_SubCardEnergy,
         Spec_AtkPassEnemyAddDmg_AtkPassUsAddDmg,
         Spec_HurtSubDmgAddHP,

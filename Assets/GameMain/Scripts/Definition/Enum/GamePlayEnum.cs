@@ -224,8 +224,9 @@ namespace RoundHero
 
         Empty,
         Direct8,
-        Null,
         LineExtend,
+        DeBuff,
+        Buff,
         //HeroDirect_Extend,
         //HeroDirect,
         //X_Extend,//X_发射
@@ -311,6 +312,7 @@ namespace RoundHero
         ChangeHP,
         TacticSelectUnit,
         TacticAtrb,
+        TacticClearBuff,
         RangeTrigger,
     }
 
@@ -385,6 +387,7 @@ namespace RoundHero
         Staff,
         Select,
         LineExtend,
+        EffectChain,
         EffectUnitDirect,
         DeBuffMax,
         MoveMax,
@@ -430,6 +433,7 @@ namespace RoundHero
         BuffAddMore,
         
         ActiveAction,
+        DeBuff,
         Empty,
     }
 
@@ -504,8 +508,9 @@ namespace RoundHero
 
     public enum EUnitStateEffectType
     {
-        Positive,
-        Negative,
+        Buff,
+        DeBuff,
+        Empty,
     }
 
     public enum EGamMode
@@ -600,6 +605,8 @@ namespace RoundHero
         EnemyDeBuffCount,
         EffectUnitHurt,
          UnitHP,
+        DeBuff,
+        Buff,
     }
 
     public enum EMapSite

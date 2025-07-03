@@ -70,8 +70,9 @@ namespace RoundHero
             var pos = GameUtility.GridPosIdxToPos(battleMonsterData.GridPosIdx);
             //var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), monsterID, gridPosIdx, unitCamp, funeIDs);
             //battleEnemyData.UnitRole = EUnitRole.Staff;
-            //battleEnemyData.ChangeState(EUnitState.HurtRoundStart);
-            BattleUnitManager.Instance.BattleUnitDatas.Add(battleMonsterData.Idx, battleMonsterData);
+            
+            battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 2);
+            
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMonsterEntity),
@@ -121,7 +122,7 @@ namespace RoundHero
             var pos = GameUtility.GridPosIdxToPos(battleCoreData.GridPosIdx);
             
             battleCoreData.UnitStateData.AddState(EUnitState.UnMove, 1, EEffectType.Forever);
-            BattleUnitManager.Instance.BattleUnitDatas.Add(battleCoreData.Idx, battleCoreData);
+            
             data.Init(entityComponent.GenerateSerialId(), pos, battleCoreData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleCoreEntity),
@@ -190,9 +191,9 @@ namespace RoundHero
             
             var card = BattleManager.Instance.GetCard(battleSoliderData.CardIdx);
             
-            BattleUnitManager.Instance.BattleUnitDatas.Add(battleSoliderData.Idx, battleSoliderData);
+            
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
-
+            //battleSoliderData.ChangeState(EUnitState.AddDmg, 2);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
             data.Init(entityComponent.GenerateSerialId(), pos, battleSoliderData);
 

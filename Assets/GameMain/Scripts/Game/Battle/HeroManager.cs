@@ -190,7 +190,7 @@ namespace RoundHero
             
             foreach (var value in drHero.Values1)
             {
-                var targerValue = GameUtility.GetBuffValue(value);
+                var targerValue = BattleBuffManager.Instance.GetBuffValue(value);
                 values.Add(targerValue);
 
             }
@@ -211,7 +211,7 @@ namespace RoundHero
                 var values = new List<float>();
                 foreach (var value in drHero.GetValues(idx++))
                 {
-                    var targetValue = GameUtility.GetBuffValue(value);
+                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value);
                     values.Add(targetValue);
                 }
                 valuelist.Add(values);

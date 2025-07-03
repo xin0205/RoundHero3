@@ -109,7 +109,8 @@ namespace RoundHero
             {
                 BattleAreaManager.Instance.MoveGrids.Add(coreEntity.BattleCoreEntityData.Id, moveGrid);
             }
-                 
+            
+            BattleUnitManager.Instance.BattleUnitDatas.Add(battleCoreData.Idx, battleCoreData);
             BattleUnitManager.Instance.BattleUnitEntities.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
             //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
             if (!CoreEntities.ContainsKey(BattleManager.Instance.CurUnitCamp))

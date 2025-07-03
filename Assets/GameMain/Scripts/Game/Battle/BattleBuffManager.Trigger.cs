@@ -5,7 +5,7 @@ namespace RoundHero
 {
     public partial class BattleBuffManager : Singleton<BattleBuffManager>
     {
-    public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> buffValues, int ownUnitIdx,
+        public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<string> buffValues, int ownUnitIdx,
             int actionUnitIdx, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
@@ -14,36 +14,32 @@ namespace RoundHero
                 return null;
 
 
-            
-            var isSubCurHP = false;
- 
-            
             var _triggerDatas = BattleBuffManager.Instance.InternalBuffTrigger(buffTriggerType, buffData, buffValues, ownUnitIdx, actionUnitIdx,
                 effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
-            foreach (var triggerData in _triggerDatas)
-            {
-                triggerData.BuffValue = new BuffValue()
-                {
-                    BuffData = buffData,
-                    ValueList = new List<float>(buffValues),
-                    UnitIdx = triggerData.EffectUnitIdx,
-                    TargetGridPosIdx = triggerData.EffectUnitGridPosIdx,
-                };
-                if (GameUtility.IsSubCurHPTrigger(triggerData))
-                {
-                    isSubCurHP = true;
-                }
-
-
-                if (isSubCurHP)
-                {
-                    BattleBuffManager.Instance.AttackTrigger(triggerData, triggerDatas);
-                    BattleUnitStateManager.Instance.CheckUnitState(actionUnitIdx, triggerDatas);
-                }
-            }
+            // foreach (var triggerData in _triggerDatas)
+            // {
+            //     
+            // }
 
             return _triggerDatas;
+        }
+        
+        public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> buffValues, int ownUnitIdx,
+            int actionUnitIdx, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
+            int actionUnitPreGridPosIdx = -1)
+        {
+
+            var values = new List<string>();
+
+            foreach (var buffValue in buffValues)
+            {
+                values.Add(buffValue.ToString());
+            }
+            
+            
+            return BuffTrigger(buffTriggerType, buffData, values, ownUnitIdx,
+                actionUnitIdx, effectUnitIdx, triggerDatas,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
         }
     
         public void CacheBuffData(BuffData buffData, EUnitCamp unitCamp, Data_BattleUnit effectUnit, List<float> value1s, float ratio)
@@ -274,7 +270,7 @@ namespace RoundHero
                 if(unitCamp == kv.Value.UnitCamp)
                     continue;
                 
-                var debuffCount = kv.Value.TargetBuffCount(EUnitStateEffectType.Negative);
+                var debuffCount = kv.Value.TargetBuffCount(EUnitStateEffectType.DeBuff);
 
                 var value = debuffCount * value1s[0] * ratio;
 
@@ -302,7 +298,7 @@ namespace RoundHero
                 if(kv.Value.UnitCamp != unitCamp)
                     continue;
                 
-                var buffCount = kv.Value.TargetBuffCount(EUnitStateEffectType.Positive);
+                var buffCount = kv.Value.TargetBuffCount(EUnitStateEffectType.Buff);
 
                 var value = buffCount * value1s[0] * ratio;
      
@@ -474,7 +470,7 @@ namespace RoundHero
             for (int i = effectUnit.UnitStateData.UnitStates.Count - 1; i >= 0; i--)
             {
                 var state = keyList[i];
-                if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(state) && effectUnit.UnitCamp == unitCamp)
+                if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(state) && effectUnit.UnitCamp == unitCamp)
                 {
                     var triggerData = new TriggerData()
                     {
@@ -670,6 +666,12 @@ namespace RoundHero
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
             BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDatas[effectUnit.Idx]);
 
-        }    
+        }
+        
+        public void Spec_ClearBuff(TriggerData triggerData)
+        {
+            var unit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+            unit.BattleUnitData.RemoveAllState(triggerData.BuffValue.BuffData.UnitStateEffectTypes);
+        }
     }
 }

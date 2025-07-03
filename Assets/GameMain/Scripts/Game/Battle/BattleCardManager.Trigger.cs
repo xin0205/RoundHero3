@@ -14,11 +14,11 @@ namespace RoundHero
             foreach (var buffID in drCard.BuffIDs)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
-                var values = new List<float>();
-                foreach (var value in drCard.Values1)
-                {
-                    values.Add(GameUtility.GetBuffValue(value, effectUnit != null ? effectUnit.Idx : -1));
-                }
+                var values = drCard.Values1;
+                // foreach (var value in drCard.Values1)
+                // {
+                //     values.Add(BattleBuffManager.Instance.GetBuffValue(value, effectUnit != null ? effectUnit.Idx : -1));
+                // }
                 
                 
                 //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);

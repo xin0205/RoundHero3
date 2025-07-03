@@ -208,7 +208,7 @@ namespace RoundHero
             var fValues = new List<float>();
             foreach (var value in values)
             {
-                fValues.Add(GetBuffValue(value));
+                fValues.Add(BattleBuffManager.Instance.GetBuffValue(value));
             }
 
             return GetStrByValues(str, fValues, showSign);
@@ -479,6 +479,31 @@ namespace RoundHero
                         continue;
                     
                     if (unitCamps.Contains(ERelativeCamp.Enemy) && !unitCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == selfUnitCamp)
+                        continue;
+                    
+                    retGetRange.Add(kv.Value.GridPosIdx);
+                }
+            }
+            else if (actionType == EActionType.DeBuff)
+            {
+                var units = isBattleData
+                    ? BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas
+                    : BattleUnitManager.Instance.BattleUnitDatas;
+                foreach (var kv in units)
+                {
+                    if(unitCamps == null)
+                        continue;
+                    
+                    if(kv.Value.CurHP <= 0)
+                        continue;
+                    
+                    if (unitCamps.Contains(ERelativeCamp.Us) && !unitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != selfUnitCamp)
+                        continue;
+                    
+                    if (unitCamps.Contains(ERelativeCamp.Enemy) && !unitCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == selfUnitCamp)
+                        continue;
+
+                    if (kv.Value.GetStateCountByEffectType(EUnitStateEffectType.DeBuff) >= 0)
                         continue;
                     
                     retGetRange.Add(kv.Value.GridPosIdx);
@@ -768,7 +793,7 @@ namespace RoundHero
                         }
                         else
                         {
-
+ 
                              if (!isExtendActionType)
                              {
                                  var unit = GetUnitByGridPosIdxMoreCamps(posIdx, isBattleData, selfUnitCamp,
@@ -1691,42 +1716,42 @@ namespace RoundHero
 
         }
         
-        public static float GetBuffValue(string value, int effectUnitIdx = -1)
-        {
-            if (float.TryParse(value, out float floatValue))
-            {
-                return floatValue;
-            }
-            else if(Enum.TryParse(value, out EValueType valueType))
-            {
-                switch (valueType)
-                {
-                    case EValueType.UnitHP:
-                        var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
-                        if (effectUnit != null)
-                            return effectUnit.CurHP;
-                        break;
-                    case EValueType.EffectUnitAttack:
-                        break;
-                    case EValueType.Empty:
-                        break;
-                    case EValueType.HandCardCount:
-                        break;
-                    case EValueType.UnitCount:
-                        break;
-                    case EValueType.UsBuffCount:
-                        break;
-                    case EValueType.EnemyDeBuffCount:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                return 0;
-            }
-
-            return 0;
-        }
+        // public static float GetBuffValue(string value, int effectUnitIdx = -1)
+        // {
+        //     if (float.TryParse(value, out float floatValue))
+        //     {
+        //         return floatValue;
+        //     }
+        //     else if(Enum.TryParse(value, out EValueType valueType))
+        //     {
+        //         switch (valueType)
+        //         {
+        //             case EValueType.UnitHP:
+        //                 var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+        //                 if (effectUnit != null)
+        //                     return effectUnit.CurHP;
+        //                 break;
+        //             case EValueType.EffectUnitAttack:
+        //                 break;
+        //             case EValueType.Empty:
+        //                 break;
+        //             case EValueType.HandCardCount:
+        //                 break;
+        //             case EValueType.UnitCount:
+        //                 break;
+        //             case EValueType.UsBuffCount:
+        //                 break;
+        //             case EValueType.EnemyDeBuffCount:
+        //                 break;
+        //             default:
+        //                 throw new ArgumentOutOfRangeException();
+        //         }
+        //
+        //         return 0;
+        //     }
+        //
+        //     return 0;
+        // }
 
         private static AStarSearch.EPointType[,] cacheSearchMaps = new AStarSearch.EPointType[Constant.Area.GridSize.x, Constant.Area.GridSize.y];
         

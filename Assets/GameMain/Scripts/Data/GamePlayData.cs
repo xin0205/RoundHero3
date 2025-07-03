@@ -267,7 +267,7 @@ namespace RoundHero
 
     public class UnitStateDetail
     {
-        public EUnitState UnitState;
+        public EUnitState UnitState = EUnitState.Empty;
         public int Value = 1;
         public EEffectType EffectType = EEffectType.Default;
 
@@ -283,6 +283,16 @@ namespace RoundHero
             Value = unitStateDetail.Value;
             EffectType = unitStateDetail.EffectType;
 
+        }
+
+        public UnitStateDetail Copy()
+        {
+            var unitStateDetail = new UnitStateDetail();
+            unitStateDetail.UnitState = UnitState;
+            unitStateDetail.Value = Value;
+            unitStateDetail.EffectType = EffectType;
+
+            return unitStateDetail;
         }
         
     }
@@ -353,10 +363,31 @@ namespace RoundHero
             return 0;
         }
         
+        public int GetStateCountByEffectType(EUnitStateEffectType effectType)
+        {
+            var count = 0;
+            foreach (var kv in UnitStates)
+            {
+                if (Constant.Battle.EffectUnitStates[effectType].Contains(kv.Key))
+                {
+                    count += kv.Value.Value;
+                }
+                
+                
+            }
+
+            return count;
+
+        }
+        
         public UnitStateData Copy()
         {
             var unitStateData = new UnitStateData();
-            unitStateData.UnitStates = new Dictionary<EUnitState, UnitStateDetail>(UnitStates);
+            unitStateData.UnitStates = new Dictionary<EUnitState, UnitStateDetail>();
+            foreach (var kv in UnitStates)
+            {
+                unitStateData.UnitStates.Add(kv.Key, kv.Value.Copy());
+            }
 
             return unitStateData;
         }
@@ -420,7 +451,7 @@ namespace RoundHero
             //     return;
 
 
-            if (GetStateCount(EUnitState.DeBuffUnEffect) > 0  && Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(state))
+            if (GetStateCount(EUnitState.DeBuffUnEffect) > 0  && Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(state))
             {
                 RemoveState(EUnitState.DeBuffUnEffect, -1);
                 return;
@@ -478,6 +509,11 @@ namespace RoundHero
         public int GetStateCount(EUnitState state)
         {
             return UnitStateData.GetStateCount(state);
+        }
+        
+        public int GetStateCountByEffectType(EUnitStateEffectType effectType)
+        {
+            return UnitStateData.GetStateCountByEffectType(effectType);
         }
         
         public int GetRoundStateCount(EUnitState state)
@@ -1330,7 +1366,7 @@ namespace RoundHero
                 var drFune = GameEntry.DataTable.GetBuff(kv.Value.FuneID);
                 if(drFune == null)
                     continue;
-                FuneDatas[kv.Key].Value = BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
+                FuneDatas[kv.Key].Value = (int)BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
             }
 
             foreach (var kv in CardDatas)

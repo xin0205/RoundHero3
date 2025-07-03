@@ -97,7 +97,7 @@ namespace RoundHero
             public static Dictionary<EUnitStateEffectType, List<EUnitState>> EffectUnitStates =
                 new ()
                 {
-                    [EUnitStateEffectType.Positive] = new()
+                    [EUnitStateEffectType.Buff] = new()
                     {       
                         EUnitState.DeBuffUnEffect,
                         //EUnitState.Dodge,
@@ -106,7 +106,7 @@ namespace RoundHero
                         EUnitState.AddDmg,
                         EUnitState.HurtSubDmg,
                     },
-                    [EUnitStateEffectType.Negative] = new()
+                    [EUnitStateEffectType.DeBuff] = new()
                     {
                         EUnitState.HurtRoundStart,
                         EUnitState.HurtEachMove,

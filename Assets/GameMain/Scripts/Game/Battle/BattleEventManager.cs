@@ -319,7 +319,7 @@ namespace RoundHero
                 var drFune = GameEntry.DataTable.GetBuff(eventValue);
                 var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
                 
-                FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, value));
+                FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, (int)value));
                 BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(funeIdx);
             }
             else if (eventType == EEventType.Appoint_Fune)
@@ -329,7 +329,7 @@ namespace RoundHero
                 var drFune = GameEntry.DataTable.GetBuff(eventValue);
                 var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
                 
-                FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, value));
+                FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, (int)value));
                 BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(funeIdx);
             }
             else if (eventType == EEventType.Random_Bless)

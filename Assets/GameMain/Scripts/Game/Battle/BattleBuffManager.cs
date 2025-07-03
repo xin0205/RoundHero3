@@ -16,6 +16,7 @@ namespace RoundHero
         public EActionType FlyRange = EActionType.Empty;
         public List<ETriggerTarget> TriggerTargets = new List<ETriggerTarget>();
         public EBuffValueType BuffValueType = EBuffValueType.Empty;
+        public List<EUnitStateEffectType> UnitStateEffectTypes = new List<EUnitStateEffectType>();
         public bool RangeTrigger;
         public EHeroAttribute HeroAttribute = EHeroAttribute.Empty;
         public EUnitAttribute UnitAttribute = EUnitAttribute.Empty;
@@ -23,6 +24,7 @@ namespace RoundHero
         public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
         public string BuffStr;
         public EBuffEquipType BuffEquipType = EBuffEquipType.Normal;
+        
 
         public BuffData Copy()
         {
@@ -130,7 +132,7 @@ namespace RoundHero
         //     return retTriggerData;
         // }
         
-        private List<TriggerData> InternalBuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<float> values, int ownUnitIdx, int actionUnitIdx,
+        private List<TriggerData> InternalBuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<string> values, int ownUnitIdx, int actionUnitIdx,
             int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
             int actionUnitPreGridPosIdx = -1)
         {
@@ -146,7 +148,7 @@ namespace RoundHero
                 return null;
             
             if(buffTriggerType == EBuffTriggerType.UseCard && 
-               (BattlePlayerManager.Instance.BattlePlayerData.RoundUseCardCount <= 0 || BattlePlayerManager.Instance.BattlePlayerData.RoundUseCardCount % values[1] != 0))
+               (BattlePlayerManager.Instance.BattlePlayerData.RoundUseCardCount <= 0 || BattlePlayerManager.Instance.BattlePlayerData.RoundUseCardCount % int.Parse(values[1]) != 0))
                 return null;
         
             var buffvalueType = buffData.BuffValueType;
@@ -160,17 +162,23 @@ namespace RoundHero
                 foreach (var realEffectUnitIdx in realEffectUnitIdxs)
                 {
                     var realEffectUnit = GameUtility.GetUnitDataByIdx(realEffectUnitIdx);
+                    
+                    var buffValues = new List<float>();
+                    foreach (var value in values)
+                    {
+                        buffValues.Add(BattleBuffManager.Instance.GetBuffValue(value, realEffectUnit != null ? realEffectUnit.Idx : -1));
+                    }
         
                     switch (buffvalueType)
                     {
                         case EBuffValueType.Hero:
                             triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitIdx, actionUnitIdx,
-                                realEffectUnitIdx, buffData.HeroAttribute, values[0]);
+                                realEffectUnitIdx, buffData.HeroAttribute, buffValues[0]);
                             
                             break;
                         case EBuffValueType.Atrb:
                             triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitIdx, actionUnitIdx,
-                                realEffectUnitIdx, buffData.UnitAttribute, values[0], ETriggerDataSubType.Unit);
+                                realEffectUnitIdx, buffData.UnitAttribute, buffValues[0], ETriggerDataSubType.Unit);
                             break;
                         case EBuffValueType.State:
                             var unitState = buffData.UnitState;
@@ -184,14 +192,14 @@ namespace RoundHero
                             }
         
                             triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
-                                unitState, values[0], ETriggerDataType.RoleState);
+                                unitState, buffValues[0], ETriggerDataType.RoleState);
                             var addEnemyMoreDebuff =
                                 BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
                                     EBlessID.AddEnemyMoreDebuff, BattleManager.Instance.CurUnitCamp);
         
         
                             if (addEnemyMoreDebuff != null &&
-                                Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(buffData.UnitState) &&
+                                Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(buffData.UnitState) &&
                                 realEffectUnit != null &&
                                 realEffectUnit.UnitCamp != actionUnit.UnitCamp)
                             {
@@ -208,13 +216,22 @@ namespace RoundHero
                             //         break;
                             // }
                             triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
-                                buffData.UnitState, values[0], ETriggerDataType.RoundRoleState);
+                                buffData.UnitState, buffValues[0], ETriggerDataType.RoundRoleState);
                             break;
                         case EBuffValueType.Card:
                             triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
-                                values[0], buffData.CardTriggerType);
+                                buffValues[0], buffData.CardTriggerType);
                             break;
-                        
+                        case EBuffValueType.Empty:
+                            triggerData = new TriggerData();
+                            triggerData.EffectUnitIdx = realEffectUnitIdx;
+                            triggerData.BuffValue = new BuffValue()
+                            {
+                                BuffData = buffData,
+                                
+                            }
+                            
+                            break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -244,6 +261,27 @@ namespace RoundHero
                         
                         triggerData.EffectUnitGridPosIdx = realEffectUnit != null ? realEffectUnit.GridPosIdx : -1;
                         CacheTriggerData(triggerData, triggerDatas);
+                        
+                        var isSubCurHP = false;
+                        
+                        triggerData.BuffValue = new BuffValue()
+                        {
+                            BuffData = buffData,
+                            ValueList = new List<float>(buffValues),
+                            UnitIdx = triggerData.EffectUnitIdx,
+                            TargetGridPosIdx = triggerData.EffectUnitGridPosIdx,
+                        };
+                        if (GameUtility.IsSubCurHPTrigger(triggerData))
+                        {
+                            isSubCurHP = true;
+                        }
+
+
+                        if (isSubCurHP)
+                        {
+                            BattleBuffManager.Instance.AttackTrigger(triggerData, triggerDatas);
+                            BattleUnitStateManager.Instance.CheckUnitState(actionUnitIdx, triggerDatas);
+                        }
         
                     }
                 }
@@ -819,6 +857,9 @@ namespace RoundHero
                 case EBuffTriggerType.TacticAtrb:
                     BuffParse_Normal(strList, buffData);
                     break;
+                case EBuffTriggerType.TacticClearBuff:
+                    BuffParse_ClearBuff(strList, buffData);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -874,6 +915,30 @@ namespace RoundHero
             
         }
         
+        
+        public void BuffParse_ClearBuff(string[] strList, BuffData buffData)
+        {
+            buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
+            
+            var unitCamps = strList[2].Split("2");
+            foreach (var unitCamp in unitCamps)
+            {
+                buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
+            }
+            
+            var triggerTargets = strList[3].Split("2");
+            foreach (var triggerTarget in triggerTargets)
+            {
+                buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
+            }
+            
+            var unitStateEffectTypes = strList[4].Split("2");;
+            foreach (var unitStateEffectType in unitStateEffectTypes)
+            {
+                buffData.UnitStateEffectTypes.Add(Enum.Parse<EUnitStateEffectType>(unitStateEffectType));
+            }
+            
+        }
         
         public void BuffParse_Pass(string[] strList, BuffData buffData)
         {
@@ -1049,13 +1114,71 @@ namespace RoundHero
                     break;
             }
             
+            
+        }
+        
+        public float GetBuffValue(string value, int effectUnitIdx = -1)
+        {
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+            var absValue = value;
+            var valueTag = 1;
+            if (value.Contains("-"))
+            {
+                absValue = value.Remove(0, 1);
+                valueTag = -1;
+            }
+
+            
+            if (float.TryParse(absValue, out float floatValue))
+            {
+                return floatValue * valueTag;
+            }
+            else if(Enum.TryParse(absValue, out EValueType valueType))
+            {
+                switch (valueType)
+                {
+                    case EValueType.UnitHP:
+                        
+                        if (effectUnit != null)
+                            return effectUnit.CurHP * valueTag;
+                        break;
+                    case EValueType.EffectUnitAttack:
+                        break;
+                    case EValueType.Empty:
+                        break;
+                    case EValueType.HandCardCount:
+                        break;
+                    case EValueType.UnitCount:
+                        break;
+                    case EValueType.UsBuffCount:
+                        break;
+                    case EValueType.EnemyDeBuffCount:
+                        break;
+                    case EValueType.DeBuff:
+                        if (effectUnit != null)
+                            return effectUnit.BattleUnitData.GetStateCountByEffectType(EUnitStateEffectType.DeBuff) * valueTag;
+                        break;
+                    case EValueType.Buff:
+                        if (effectUnit != null)
+                            return effectUnit.BattleUnitData.GetStateCountByEffectType(EUnitStateEffectType.Buff) * valueTag;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return 0;
+            }
+
+            return 0;
         }
 
-        public int GetBuffValue(string value)
-        {
-            int.TryParse(value, out int resValue);
-            return resValue;
-        }
+        // public int GetBuffValue(string value)
+        // {
+        //     int.TryParse(value, out int resValue);
+        //     return resValue;
+        // }
+
+        
 
     }
 }

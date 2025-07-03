@@ -136,7 +136,7 @@ namespace RoundHero
             {
                 var drEachRoundAcquireCard = GameEntry.DataTable.GetBless(EBlessID.EachRoundAcquireCard);
 
-                cardCount += BattleBuffManager.Instance.GetBuffValue(drEachRoundAcquireCard.Values1[0]) * eachRoundAcquireCardCount;
+                cardCount += (int)BattleBuffManager.Instance.GetBuffValue(drEachRoundAcquireCard.Values1[0]) * eachRoundAcquireCardCount;
             }
 
             var unuseCount =
@@ -170,7 +170,7 @@ namespace RoundHero
                 var value1 = BattleBuffManager.Instance.GetBuffValue(drUseCardNextRoundAcquireCard.Values1[1]);
                 if (BattlePlayerData.LastRoundUseCardCount <= value0)
                 {
-                    eachHandCardCount += value1 * 
+                    eachHandCardCount += (int)value1 * 
                                          useCardNextRoundAcquireCardCount;
                 }
             }
@@ -261,7 +261,7 @@ namespace RoundHero
             {
                 var drConsumeCardAcquireNewCard = GameEntry.DataTable.GetBless(EBlessID.ConsumeCardAddRandomCard);
                 var value0 = BattleBuffManager.Instance.GetBuffValue(drConsumeCardAcquireNewCard.Values1[0]);
-                var newCardIdxs = AddRandomCard(value0);
+                var newCardIdxs = AddRandomCard((int)value0);
                 for (int i = 0; i < newCardIdxs.Count; i++)
                 {
                     var newCardIdx = newCardIdxs[i];
@@ -292,7 +292,7 @@ namespace RoundHero
                 {
                     var drUseCardNextRoundAcquireCard = GameEntry.DataTable.GetBless(EBlessID.BattleStartAcquireCard);
                     var value0 = BattleBuffManager.Instance.GetBuffValue(drUseCardNextRoundAcquireCard.Values1[0]);
-                    cardCount += value0 * startFightAcquireCardCount;
+                    cardCount += (int)value0 * startFightAcquireCardCount;
                 }
 
                 for (int i = BattlePlayerData.StandByCards.Count - 1; i >= 0; i--)
@@ -441,7 +441,7 @@ namespace RoundHero
             else if (cardType == ECardType.Tactic)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[0]);
-                var value = GameUtility.GetBuffValue(drCard.Values1[0]);
+                var value = BattleBuffManager.Instance.GetBuffValue(drCard.Values1[0]);
                 
                 // if (BattleCurseManager.Instance.IsTacticCardUnDamage(card.CardID) &&
                 //     buffData.UnitAttribute == EUnitAttribute.CurHP && value < 0)

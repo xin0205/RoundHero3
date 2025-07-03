@@ -511,20 +511,20 @@ namespace RoundHero
             if (unit is Data_BattleSolider solider)
             {
                 buffDatas = CardManager.Instance.GetBuffData(solider.CardIdx);
-                valueList = CardManager.Instance.GetBuffValues(solider.CardIdx);
+                valueList = CardManager.Instance.GetBuffValues(solider.Idx);
             }
             else if (unit is Data_BattleMonster monster)
             {
                 buffDatas = BattleEnemyManager.Instance.GetBuffData(monster.MonsterID);
-                valueList = BattleEnemyManager.Instance.GetBuffValues(monster.MonsterID);
+                valueList = BattleEnemyManager.Instance.GetBuffValues(monster.Idx);
             }
-            else if (unit is Data_BattleHero hero)
-            {
-                buffDatas = HeroManager.Instance.GetBuffData(hero.HeroID);
-                valueList = HeroManager.Instance.GetBuffValues(hero.HeroID);
-
-
-            }
+            // else if (unit is Data_BattleHero hero)
+            // {
+            //     buffDatas = HeroManager.Instance.GetBuffData(hero.HeroID);
+            //     valueList = HeroManager.Instance.GetBuffValues(hero.HeroID);
+            //
+            //
+            // }
             else
             {
                 buffDatas = new List<BuffData>();

@@ -179,7 +179,7 @@ namespace RoundHero
             {
                 foreach (var unitState in unitStateData.UnitStates.Keys.ToList())
                 {
-                    if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Contains(unitState))
+                    if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(unitState))
                     {
                         actionData.AddEmptyTriggerDataList(randomUnit.Idx);
                         var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[randomUnit.Idx], -1, -1, randomUnit.Idx,

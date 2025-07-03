@@ -307,11 +307,12 @@ namespace RoundHero
             var enemyGenerateAddDebuff = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EnemyGenerateAddDebuff, BattleManager.Instance.CurUnitCamp);
             if (enemyGenerateAddDebuff != null )
             {
-                var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Count);
-                var randomDeBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative][randomDebuffIdx];
+                var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Count);
+                var randomDeBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff][randomDebuffIdx];
                 battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ChangeState(randomDeBuff);
             }
                 
+            BattleUnitManager.Instance.BattleUnitDatas.Add(battleMonsterData.Idx, battleMonsterData);
             BattleUnitManager.Instance.BattleUnitEntities.Add(battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.Idx, battleEnemyEntity);
             //RefreshEnemyEntities();
                 
@@ -469,9 +470,11 @@ namespace RoundHero
         // }
         
         private List<List<float>> buffValuelist = new List<List<float>>();
-        public List<List<float>> GetBuffValues(int monsterID)
+        public List<List<float>> GetBuffValues(int enemyIdx)
         {
-            var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(enemyIdx) as BattleMonsterEntity;
+            
+            var drEnemy = GameEntry.DataTable.GetEnemy(effectUnit.BattleMonsterEntityData.BattleMonsterData.MonsterID);
 
             for (int i = 0; i < 10; i++)
             {
@@ -488,7 +491,7 @@ namespace RoundHero
                 //var values = new List<float>();
                 foreach (var value in drEnemy.OwnBuffValues1)
                 {
-                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value);
+                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value, enemyIdx);
                     //buffValuelist[idx].Add(BattleBuffManager.Instance.GetBuffValue(value));
                 }
 
@@ -502,7 +505,7 @@ namespace RoundHero
                 //var values = new List<float>();
                 foreach (var value in drEnemy.SpecBuffValues)
                 {
-                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value);
+                    buffValuelist[idx][idx2++] = BattleBuffManager.Instance.GetBuffValue(value, enemyIdx);
                     //buffValuelist[idx].Add(BattleBuffManager.Instance.GetBuffValue(value));
                 }
 

@@ -196,10 +196,10 @@ namespace RoundHero
             }
         }
 
-        public List<float> GetValues(int gridPropID, int idx)
+        public List<string> GetValues(int gridPropID, int idx)
         {
             var drGridProp = GameEntry.DataTable.GetGridProp(gridPropID);
-            return new List<float>(){1};
+            return new List<string>(){"1"};
         }
         
         public bool Contain(int gridPropID, EGridPropID eGridPropID)
