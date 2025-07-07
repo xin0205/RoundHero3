@@ -522,6 +522,16 @@ namespace RoundHero
                 }
                 
             }
+            
+            GamePlayManager.Instance.GamePlayData.BattleData.GridPropDatas.Clear();
+            foreach (var kv in battleData.GridPropDatas)
+            {
+                var gridPropData = kv.Value.Copy();
+                await BattleGridPropManager.Instance.GenerateGridProp(gridPropData);
+                
+                
+                
+            }
 
             GamePlayManager.Instance.GamePlayData.BattleData.BattlePlayerDatas[EUnitCamp.Player1].HandCards.Clear();
             var battlePlayerData = battleData.BattlePlayerDatas[EUnitCamp.Player1];

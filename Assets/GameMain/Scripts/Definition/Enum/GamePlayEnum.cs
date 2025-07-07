@@ -120,7 +120,9 @@ namespace RoundHero
         //End,
         UseCard,
         UnitSelectGrid,
+        PropSelectGrid,
         TacticSelectUnit,
+        TacticSelectGrid,
         //ActionSelectUnit,
         //AttackSelectUnit,
         //MoveSelectUnit,
@@ -264,6 +266,7 @@ namespace RoundHero
         Unit,
         Tactic,
         State,
+        Prop,
     }
 
     public enum ETriggerType
@@ -313,6 +316,8 @@ namespace RoundHero
         TacticSelectUnit,
         TacticAtrb,
         TacticClearBuff,
+        TacticSelectGrid,
+        TacticProp,
         RangeTrigger,
     }
 
@@ -487,6 +492,7 @@ namespace RoundHero
         State,
         Card,
         RoundState,
+        ClearBuff,
         // UnitAttribute,
         // HeroAttribute,
         // UnitState,

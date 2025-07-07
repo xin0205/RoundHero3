@@ -24,10 +24,11 @@ namespace RoundHero
         public int TargetGridPosIdx = -1;
         public ETempTriggerType TriggerType = ETempTriggerType.Null;
         public Data_BattleUnit UnitData;
+        public Data_GridProp PropData;
         //public BattleSoliderEntity BattleSoliderEntity;
         public int UnitOriGridPosIdx = -1;
         public List<int> TempUnitMovePaths = new ();
-        public int CardEffectUnitID = -1;
+        //public int CardEffectUnitIdx = -1;
         public TriggerBuffData TriggerBuffData = new ();
         
         
@@ -39,7 +40,7 @@ namespace RoundHero
             //BattleSoliderEntity = null;
             UnitOriGridPosIdx = -1;
             TempUnitMovePaths.Clear();
-            CardEffectUnitID = -1;
+            //CardEffectUnitIdx = -1;
             TriggerBuffData.Clear();
             
         }
@@ -70,7 +71,7 @@ namespace RoundHero
             
             tempTriggerData.UnitOriGridPosIdx = UnitOriGridPosIdx;
             tempTriggerData.TempUnitMovePaths = new List<int>(TempUnitMovePaths);
-            tempTriggerData.CardEffectUnitID = CardEffectUnitID;
+            //tempTriggerData.CardEffectUnitIdx = CardEffectUnitIdx;
             tempTriggerData.TriggerBuffData = TriggerBuffData.Copy();
 
             return tempTriggerData;

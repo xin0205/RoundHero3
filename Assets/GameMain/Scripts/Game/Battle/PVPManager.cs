@@ -440,6 +440,16 @@ namespace RoundHero
             });
         }
         
+        public void PlaceProp(int propID, int gridPosIdx, EUnitCamp playerUnitCamp)
+        {
+            // InstanceFinder.NetworkManager.ClientManager.Broadcast(new BroadCast_UseCard()
+            // {
+            //     CardID = cardID,
+            //     PlaceGridPosIdx = gridPosIdx,
+            //     PlayerUnitCamp = playerUnitCamp,
+            // });
+        }
+        
         public Data_EnergyBuff GetEnergyBuff(EUnitCamp unitCamp, int heart, int hp)
         {
             return BattleEnergyBuffManager.Instance.GetEnergyBuff(unitCamp, heart, hp);

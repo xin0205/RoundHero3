@@ -426,6 +426,11 @@ namespace RoundHero
             BattleTypeManager.PlaceUnitCard(cardID, gridPosIdx, playerUnitCamp);
         }
         
+        public void PlaceProp(int propID, int gridPosIdx, EUnitCamp playerUnitCamp)
+        {
+            BattleTypeManager.PlaceProp(propID, gridPosIdx, playerUnitCamp);
+        }
+        
         public void EndRound()
         {
             

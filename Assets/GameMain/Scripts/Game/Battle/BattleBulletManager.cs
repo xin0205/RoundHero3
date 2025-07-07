@@ -55,6 +55,22 @@ namespace RoundHero
             TriggerActionDatas[triggerData.ActionUnitIdx].Add(triggerData.EffectUnitIdx, triggerActionData);
 
         }
+        
+        public void AddTriggerDataByEffect(TriggerData triggerData)
+        {
+
+            if (!TriggerActionDatas.ContainsKey(triggerData.EffectUnitIdx))
+            {
+                TriggerActionDatas.Add(triggerData.EffectUnitIdx,
+                    new GameFrameworkMultiDictionary<int, ITriggerActionData>());
+            }
+
+            var triggerActionData = new TriggerActionTriggerData();
+            triggerActionData.TriggerData = triggerData.Copy();
+            TriggerActionDatas[triggerData.EffectUnitIdx].Add(triggerData.EffectUnitIdx, triggerActionData);
+
+        }
+
 
         public void AddMoveActionData(int actionUnitIdx, MoveData moveData)
         {
@@ -191,7 +207,6 @@ namespace RoundHero
             {
                 return;
             }
-
 
             var triggerActionDataList = TriggerActionDatas[actionUnitIdx].ToList();
 

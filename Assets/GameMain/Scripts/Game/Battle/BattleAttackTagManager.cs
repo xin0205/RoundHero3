@@ -80,7 +80,7 @@ namespace RoundHero
                     //     continue;
                     
 
-                    await InternalShowTag(triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData.BuffValue, entityIdx, true, !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx), triggerData.TriggerDataSubType == ETriggerDataSubType.Collision);
+                    await InternalShowTag(triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData.BuffValue, entityIdx, actionUnitIdx != Constant.Battle.CardTriggerIdx, !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx), triggerData.TriggerDataSubType == ETriggerDataSubType.Collision);
                     effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
                     entityIdx++;
                     

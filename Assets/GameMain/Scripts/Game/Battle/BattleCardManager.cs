@@ -438,6 +438,15 @@ namespace RoundHero
                 return false;
 
             }
+            if (cardType == ECardType.Prop)
+            {
+                BattleManager.Instance.SetBattleState(EBattleState.PropSelectGrid);
+
+                BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                return false;
+
+            }
             else if (cardType == ECardType.Tactic)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[0]);
@@ -454,6 +463,24 @@ namespace RoundHero
                     CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
                 {
                     BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
+                    
+                    return false;
+                }
+                else if (buffData.BuffTriggerType == EBuffTriggerType.TacticSelectGrid)
+                {
+                    BattleManager.Instance.SetBattleState(EBattleState.TacticSelectGrid);
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
+                    
+                    return false;
+                }
+                else if (buffData.BuffTriggerType == EBuffTriggerType.TacticProp)
+                {
+                    BattleManager.Instance.SetBattleState(EBattleState.TacticSelectGrid);
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
@@ -554,6 +581,9 @@ namespace RoundHero
             BattleBuffManager.Instance.RecoverUseBuffState();
             BattleFightManager.Instance.UseCardTrigger();
             BattleManager.Instance.RefreshEnemyAttackData();
+            
+            HeroManager.Instance.UpdateCacheHPDelta();
+            
             return true;
 
         }
@@ -652,7 +682,9 @@ namespace RoundHero
                 BattleManager.Instance.BattleState == EBattleState.MoveGrid ||
                 BattleManager.Instance.BattleState == EBattleState.MoveUnit ||
                 BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit ||
-                BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+                BattleManager.Instance.BattleState == EBattleState.TacticSelectGrid ||
+                BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit ||
+                BattleManager.Instance.BattleState == EBattleState.PropSelectGrid)
 
             {
                 if (Input.GetMouseButtonDown(1))
@@ -711,7 +743,13 @@ namespace RoundHero
                         }
                         else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
                         {
-                            BattleAreaManager.Instance.HideTmpEntity();
+                            BattleAreaManager.Instance.HideTmpUnitEntity();
+                            BattleManager.Instance.TempTriggerData.Reset();
+                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                        }
+                        else if (BattleManager.Instance.BattleState == EBattleState.PropSelectGrid)
+                        {
+                            BattleAreaManager.Instance.HideTmpPropEntity();
                             BattleManager.Instance.TempTriggerData.Reset();
                             BattleAreaManager.Instance.ShowBackupGrids(null);
                         }

@@ -32,15 +32,19 @@ namespace RoundHero
             {
                 baseCard = tacticCard;
             }
+            else if (drCard.CardType == ECardType.Prop)
+            {
+                baseCard = tacticCard;
+            }
             else if (drCard.CardType == ECardType.State)
             {
                 baseCard = stateCard;
             }
             
             unitCard.gameObject.SetActive(drCard.CardType == ECardType.Unit);
-            tacticCard.gameObject.SetActive(drCard.CardType == ECardType.Tactic);
+            tacticCard.gameObject.SetActive(drCard.CardType == ECardType.Tactic || drCard.CardType == ECardType.Prop);
             stateCard.gameObject.SetActive(drCard.CardType == ECardType.State);
-            
+
             baseCard.SetCardUI(CardID);
         }
 

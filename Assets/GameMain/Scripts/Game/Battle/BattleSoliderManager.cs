@@ -13,6 +13,7 @@ namespace RoundHero
     public enum ETempTriggerType
     {
         NewUnit,
+        NewProp,
         MoveUnit,
         UseBuff,
         SelectHurtUnit,

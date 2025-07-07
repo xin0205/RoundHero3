@@ -45,6 +45,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取值。
+        /// </summary>
+        public List<string> Values
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -58,6 +67,7 @@ namespace RoundHero
             m_Id = int.Parse(columnStrings[index++]);
             index++;
 			GridPropIDs = DataTableExtension.ParseStringList(columnStrings[index++]);
+			Values = DataTableExtension.ParseStringList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -71,6 +81,7 @@ namespace RoundHero
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
 					GridPropIDs = binaryReader.ReadStringList();
+					Values = binaryReader.ReadStringList();
                 }
             }
 

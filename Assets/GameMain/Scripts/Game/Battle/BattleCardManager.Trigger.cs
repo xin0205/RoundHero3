@@ -6,7 +6,7 @@ namespace RoundHero
 {
     public partial class BattleCardManager : Singleton<BattleCardManager>
     {
-        public void CacheTacticCardData(int cardIdx, EUnitCamp camp, Data_BattleUnit effectUnit)
+        public void CacheTacticCardData(int cardIdx, EUnitCamp camp, Data_BattleUnit effectUnit, int actionUnitGridPosidx)
         {
             var drCard = CardManager.Instance.GetCardTable(cardIdx);
             var card = BattleManager.Instance.GetCard(cardIdx);
@@ -23,13 +23,15 @@ namespace RoundHero
                 
                 //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
                 //
-                BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, -1, -1,
-                    effectUnit != null ? effectUnit.Idx : -1, triggerDatas, -1, -1);
+                BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, -1, Constant.Battle.CardTriggerIdx,
+                    effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx);
                 BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Tactic;
                 
                 
             }
             BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Add(cardIdx, triggerDatas);
+            
+            BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas);
         }
 
         

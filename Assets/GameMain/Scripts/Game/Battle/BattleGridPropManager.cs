@@ -22,19 +22,19 @@ namespace RoundHero
             Random = new System.Random(this.randomSeed);
         }
 
-        public async Task GenerateGridItems(int gridPropID)
+        public async Task GenerateGridProp(Data_GridProp gridPropData)
         {
             BattleAreaManager.Instance.RefreshObstacles();
             var places = BattleAreaManager.Instance.GetPlaces();
 
-            var enemyIdxs = MathUtility.GetRandomNum(
+            var placeIdx = MathUtility.GetRandomNum(
                 1, 0,
                 places.Count, Random);
 
             for (int i = 0; i < 1; i++)
             {
                 var battleGridPropEntity =
-                    await GameEntry.Entity.ShowBattleGridPropEntityAsync(gridPropID, places[enemyIdxs[i]]);
+                    await GameEntry.Entity.ShowBattleGridPropEntityAsync(gridPropData);
 
                 BattleGridPropManager.Instance.GridPropEntities.Add(battleGridPropEntity.GridPropEntityData.Id,
                     battleGridPropEntity);

@@ -7,6 +7,12 @@ namespace RoundHero
     {
         public GridPropEntityData GridPropEntityData { get; protected set; }
         
+        public Data_GridProp GridPropData
+        {
+            get =>  GridPropEntityData.GridPropData; 
+            set =>  GridPropEntityData.GridPropData = value as Data_GridProp;
+        }
+        
         public virtual Vector3 Position
         {
             get => transform.position; 

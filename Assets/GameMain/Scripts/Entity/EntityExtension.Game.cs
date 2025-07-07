@@ -121,7 +121,7 @@ namespace RoundHero
             var data = ReferencePool.Acquire<BattleCoreEntityData>();
             var pos = GameUtility.GridPosIdxToPos(battleCoreData.GridPosIdx);
             
-            battleCoreData.UnitStateData.AddState(EUnitState.UnMove, 1, EEffectType.Forever);
+            //battleCoreData.UnitStateData.AddState(EUnitState.UnMove, 1, EEffectType.Forever);
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleCoreData);
 
@@ -193,7 +193,7 @@ namespace RoundHero
             
             
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
-            //battleSoliderData.ChangeState(EUnitState.AddDmg, 2);
+            battleSoliderData.ChangeState(EUnitState.AddDmg, 2);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
             data.Init(entityComponent.GenerateSerialId(), pos, battleSoliderData);
 
@@ -204,17 +204,17 @@ namespace RoundHero
         }
         
         public static async Task<GridPropEntity> ShowBattleGridPropEntityAsync(this EntityComponent entityComponent,
-            int gridPropID, int gridPosIdx)
+            Data_GridProp gridPropData)
         {
             var data = ReferencePool.Acquire<GridPropEntityData>();
-            var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
-            var gridPropData = new Data_GridProp(gridPropID, BattleUnitManager.Instance.GetIdx(), gridPosIdx, EUnitCamp.Third);
+            var pos = GameUtility.GridPosIdxToPos(gridPropData.GridPosIdx);
+            //var gridPropData = new Data_GridProp(gridPropID, BattleUnitManager.Instance.GetIdx(), gridPosIdx, EUnitCamp.Third);
 
-            BattleGridPropManager.Instance.GridPropDatas.Add(gridPropData.Idx, gridPropData);
+            //BattleGridPropManager.Instance.GridPropDatas.Add(gridPropData.Idx, gridPropData);
             data.Init(entityComponent.GenerateSerialId(), pos, gridPropData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(GridPropEntity),
-                AssetUtility.GetGridPropPrefab(gridPropID), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetGridPropPrefab(gridPropData.GridPropID), Constant.EntityGroup.Unit, 0, data);
             
             return (GridPropEntity)task.Logic;
         }
@@ -242,7 +242,7 @@ namespace RoundHero
             var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
             var gridPropData = new Data_GridProp(gridPropID, BattleUnitManager.Instance.GetIdx(), gridPosIdx, EUnitCamp.Third);
 
-            BattleGridPropManager.Instance.GridPropDatas.Add(gridPropData.Idx, gridPropData);
+            
             data.Init(entityComponent.GenerateSerialId(), pos, gridPropData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(GridPropObstacleEntity),

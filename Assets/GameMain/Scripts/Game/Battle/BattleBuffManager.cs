@@ -181,16 +181,18 @@ namespace RoundHero
                                 realEffectUnitIdx, buffData.UnitAttribute, buffValues[0], ETriggerDataSubType.Unit);
                             break;
                         case EBuffValueType.State:
+                            
+                            // switch (buffData.BuffTriggerType)
+                            // {
+                            //     case EBuffTriggerType.TacticClearBuff:
+                            //         
+                            //     // case EBuffID.Hurt_HeroAddDebuff:
+                            //     //     var randomDebuffIdx = Random.Next(0,
+                            //     //         Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Count);
+                            //     //     unitState = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative][randomDebuffIdx];
+                            //     //     break;
+                            // }
                             var unitState = buffData.UnitState;
-                            switch (buffData.BuffStr)
-                            {
-                                // case EBuffID.Hurt_HeroAddDebuff:
-                                //     var randomDebuffIdx = Random.Next(0,
-                                //         Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative].Count);
-                                //     unitState = Constant.Battle.EffectUnitStates[EUnitStateEffectType.Negative][randomDebuffIdx];
-                                //     break;
-                            }
-        
                             triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 unitState, buffValues[0], ETriggerDataType.RoleState);
                             var addEnemyMoreDebuff =
@@ -222,14 +224,14 @@ namespace RoundHero
                             triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 buffValues[0], buffData.CardTriggerType);
                             break;
-                        case EBuffValueType.Empty:
+                        case EBuffValueType.ClearBuff:
                             triggerData = new TriggerData();
                             triggerData.EffectUnitIdx = realEffectUnitIdx;
-                            triggerData.BuffValue = new BuffValue()
-                            {
-                                BuffData = buffData,
-                                
-                            }
+                            // triggerData.BuffValue = new BuffValue()
+                            // {
+                            //     BuffData = buffData,
+                            //     
+                            // }
                             
                             break;
                         default:
@@ -525,6 +527,14 @@ namespace RoundHero
                     posIdxs.Add(kv.Value.GridPosIdx);
                 }
             }
+            
+            foreach (var kv in gamePlayData.BattleData.GridPropDatas)
+            {
+                if(exceptUnitCamps != null && exceptUnitCamps.Contains(kv.Value.UnitCamp))
+                    continue;
+                
+                posIdxs.Add(kv.Value.GridPosIdx);
+            }
 
             return posIdxs;
         }
@@ -789,7 +799,7 @@ namespace RoundHero
                     break;
                 case EBuffTriggerType.BePass:
                 case EBuffTriggerType.Pass:
-                    BuffParse_Pass(strList, buffData);
+                    BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.Move:
                     BuffParse_Normal(strList, buffData);
@@ -835,6 +845,9 @@ namespace RoundHero
                 case EBuffTriggerType.TacticSelectUnit:
                     BuffParse_TacticSelectUnit(strList, buffData);
                     break;
+                case EBuffTriggerType.TacticSelectGrid:
+                    BuffParse_TacticSelectGrid(strList, buffData);
+                    break;
                 case EBuffTriggerType.SelectGrid:
                     BuffParse_SelectGrid(strList, buffData);
                     break;
@@ -860,6 +873,10 @@ namespace RoundHero
                 case EBuffTriggerType.TacticClearBuff:
                     BuffParse_ClearBuff(strList, buffData);
                     break;
+                case EBuffTriggerType.TacticProp:
+                    BuffParse_TacticProp(strList, buffData);
+                    break;
+                    
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -873,7 +890,7 @@ namespace RoundHero
         {
             buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
             
-            var unitCamps = strList[2].Split("2");
+            var unitCamps = strList[2].Split("|");
             foreach (var unitCamp in unitCamps)
             {
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
@@ -918,9 +935,10 @@ namespace RoundHero
         
         public void BuffParse_ClearBuff(string[] strList, BuffData buffData)
         {
+            buffData.BuffValueType = EBuffValueType.ClearBuff;
             buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
             
-            var unitCamps = strList[2].Split("2");
+            var unitCamps = strList[2].Split("|");
             foreach (var unitCamp in unitCamps)
             {
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
@@ -939,57 +957,67 @@ namespace RoundHero
             }
             
         }
-        
-        public void BuffParse_Pass(string[] strList, BuffData buffData)
-        {
-            var unitCamps = strList[1].Split("2");
-            foreach (var unitCamp in unitCamps)
-            {
-                buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
-            }
-            
-            var triggerTargets = strList[2].Split("2");
-            foreach (var triggerTarget in triggerTargets)
-            {
-                buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
-            }
-            
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[3]);
 
-            switch (buffData.BuffValueType)
-            {
-                case EBuffValueType.Atrb:
-                    buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[4]);
-                    break;
-                case EBuffValueType.Hero:
-                    buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[4]);
-                    break;
-                case EBuffValueType.State:
-                    buffData.UnitState = Enum.Parse<EUnitState>(strList[4]);
-                    break;
-                case EBuffValueType.Card:
-                    buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[4]);
-                    break;
-                case EBuffValueType.Empty:
-                    break;
-                default:
-                    break;
-            }
+
+        public void BuffParse_TacticProp(string[] strList, BuffData buffData)
+        {
+            var drGridProp = GameEntry.DataTable.GetGridProp(int.Parse(strList[1]));
+            var gridPropStrList = drGridProp.GridPropIDs[0].Split("_");
+            BuffParse_Normal(gridPropStrList, buffData);
         }
-        
+
+        // public void BuffParse_Pass(string[] strList, BuffData buffData)
+        // {
+        //     buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
+        //     
+        //     var unitCamps = strList[2].Split("|");
+        //     foreach (var unitCamp in unitCamps)
+        //     {
+        //         buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
+        //     }
+        //     
+        //     var triggerTargets = strList[3].Split("2");
+        //     foreach (var triggerTarget in triggerTargets)
+        //     {
+        //         buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
+        //     }
+        //     
+        //     buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
+        //
+        //     switch (buffData.BuffValueType)
+        //     {
+        //         case EBuffValueType.Atrb:
+        //             buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
+        //             break;
+        //         case EBuffValueType.Hero:
+        //             buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
+        //             break;
+        //         case EBuffValueType.State:
+        //             buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
+        //             break;
+        //         case EBuffValueType.Card:
+        //             buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
+        //             break;
+        //         case EBuffValueType.Empty:
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
+        //
         public void BuffParse_SelectUnit(string[] strList, BuffData buffData)
         {
             
             buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
 
             
-            var unitCamps = strList[2].Split("2");
+            var unitCamps = strList[2].Split("|");
             foreach (var unitCamp in unitCamps)
             {
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
             }
             
-            var triggerTargets = strList[3].Split("2");
+            var triggerTargets = strList[3].Split("|");
             foreach (var triggerTarget in triggerTargets)
             {
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
@@ -1030,7 +1058,7 @@ namespace RoundHero
             buffData.FlyRange = Enum.Parse<EActionType>(strList[2]);
             buffData.TriggerRange = Enum.Parse<EActionType>(strList[3]);
             
-            var unitCamps = strList[4].Split("2");
+            var unitCamps = strList[4].Split("|");
             foreach (var unitCamp in unitCamps)
             {
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
@@ -1066,33 +1094,75 @@ namespace RoundHero
         
         public void BuffParse_TacticSelectUnit(string[] strList, BuffData buffData)
         {
-            var unitCamps = strList[1].Split("2");
+            buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
+            
+            var unitCamps = strList[2].Split("|");
             foreach (var unitCamp in unitCamps)
             {
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
             }
             
-            var triggerTargets = strList[2].Split("2");
+            var triggerTargets = strList[3].Split("2");
             foreach (var triggerTarget in triggerTargets)
             {
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
 
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[3]);
+            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
 
             switch (buffData.BuffValueType)
             {
                 case EBuffValueType.Atrb:
-                    buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[4]);
+                    buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
                 case EBuffValueType.Hero:
-                    buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[4]);
+                    buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
                 case EBuffValueType.State:
-                    buffData.UnitState = Enum.Parse<EUnitState>(strList[4]);
+                    buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
                     break;
                 case EBuffValueType.Card:
-                    buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[4]);
+                    buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
+                    break;
+                case EBuffValueType.Empty:
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        public void BuffParse_TacticSelectGrid(string[] strList, BuffData buffData)
+        {
+            
+            buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
+            
+            var unitCamps = strList[2].Split("|");
+            foreach (var unitCamp in unitCamps)
+            {
+                buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
+            }
+            
+            var triggerTargets = strList[3].Split("2");
+            foreach (var triggerTarget in triggerTargets)
+            {
+                buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
+            }
+            
+            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
+
+            switch (buffData.BuffValueType)
+            {
+                case EBuffValueType.Atrb:
+                    buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
+                    break;
+                case EBuffValueType.Hero:
+                    buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
+                    break;
+                case EBuffValueType.State:
+                    buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
+                    break;
+                case EBuffValueType.Card:
+                    buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
                     break;
                 case EBuffValueType.Empty:
                     break;

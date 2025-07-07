@@ -31,6 +31,9 @@ namespace RoundHero
 
         public void PlaceUnitCard(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp);
 
+        public void PlaceProp(int propID, int gridPosIdx, EUnitCamp playerUnitCamp);
+
+        
         public void Destory();
 
         public void ShowGameOver();
@@ -372,6 +375,11 @@ namespace RoundHero
         public void PlaceUnitCard(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp)
         {
             BattleAreaManager.Instance.PlaceUnitCard(cardID, gridPosIdx, playerUnitCamp);
+        }
+        
+        public void PlaceProp(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp)
+        {
+            BattleAreaManager.Instance.PlaceProp(cardID, gridPosIdx, playerUnitCamp);
         }
 
         public void ShowGameOver()
