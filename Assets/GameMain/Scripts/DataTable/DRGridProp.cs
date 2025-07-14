@@ -48,7 +48,7 @@ namespace RoundHero
         /// <summary>
         /// 获取值。
         /// </summary>
-        public List<string> Values
+        public List<string> Values0
         {
             get;
             private set;
@@ -67,7 +67,7 @@ namespace RoundHero
             m_Id = int.Parse(columnStrings[index++]);
             index++;
 			GridPropIDs = DataTableExtension.ParseStringList(columnStrings[index++]);
-			Values = DataTableExtension.ParseStringList(columnStrings[index++]);
+			Values0 = DataTableExtension.ParseStringList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -81,7 +81,7 @@ namespace RoundHero
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
 					GridPropIDs = binaryReader.ReadStringList();
-					Values = binaryReader.ReadStringList();
+					Values0 = binaryReader.ReadStringList();
                 }
             }
 
@@ -89,9 +89,45 @@ namespace RoundHero
             return true;
         }
 
+        private KeyValuePair<int, List<string>>[] m_Values = null;
+
+        public int ValuesCount
+        {
+            get
+            {
+                return m_Values.Length;
+            }
+        }
+
+        public List<string> GetValues(int id)
+        {
+            foreach (KeyValuePair<int, List<string>> i in m_Values)
+            {
+                if (i.Key == id)
+                {
+                    return i.Value;
+                }
+            }
+
+            throw new GameFrameworkException(Utility.Text.Format("GetValues with invalid id '{0}'.", id));
+        }
+
+        public List<string> GetValuesAt(int index)
+        {
+            if (index < 0 || index >= m_Values.Length)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("GetValuesAt with invalid index '{0}'.", index));
+            }
+
+            return m_Values[index].Value;
+        }
+
         private void GeneratePropertyArray()
         {
-
+            m_Values = new KeyValuePair<int, List<string>>[]
+            {
+                new KeyValuePair<int, List<string>>(0, Values0),
+            };
         }
     }
 }

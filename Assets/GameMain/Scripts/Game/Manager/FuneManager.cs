@@ -24,9 +24,9 @@ namespace RoundHero
             return PlayerManager.Instance.PlayerData.FuneIdx++;
         }
         
-        public DRBuff GetBuffTable(int funeID)
+        public DRBuff GetBuffTable(int funeIdx)
         {
-            var funeData = GetFuneData(funeID);
+            var funeData = GetFuneData(funeIdx);
             return GameEntry.DataTable.GetBuff(funeData.FuneID);
 
         }

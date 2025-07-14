@@ -198,8 +198,13 @@ namespace RoundHero
 
         public List<string> GetValues(int gridPropID, int idx)
         {
+
             var drGridProp = GameEntry.DataTable.GetGridProp(gridPropID);
-            return new List<string>(){"1"};
+            if (drGridProp == null)
+                return new List<string>();
+            
+            return drGridProp.GetValues(idx);
+            
         }
         
         public bool Contain(int gridPropID, EGridPropID eGridPropID)
@@ -211,6 +216,30 @@ namespace RoundHero
         {
             var drGridProp = GameEntry.DataTable.GetGridProp(gridPropID);
             return drGridProp.GridPropIDs.Contains(buffIDStr);
+        }
+
+        public bool IsStayProp(int propID)
+        {
+            var isStayProp = false;
+            var drProp = GameEntry.DataTable.GetGridProp(propID);
+            var buffData = BattleBuffManager.Instance.GetBuffData(drProp.GridPropIDs[0]);
+
+            return buffData.BuffTriggerType == EBuffTriggerType.Stay;
+        }
+
+        public void TriggerStayPropState(int gridPosIdx, Data_BattleUnit unit, EUnitState state)
+        {
+            var prop = BattleGridPropManager.Instance.GetGridProp(gridPosIdx);
+            if (prop != null)
+            {
+                var drProp = GameEntry.DataTable.GetGridProp(prop.GridPropID);
+                var buffData = BattleBuffManager.Instance.GetBuffData(drProp.GridPropIDs[0]);
+                var buffValue = BattleBuffManager.Instance.GetBuffValue(drProp.GetValues(0)[0]);
+                if (buffData.BuffTriggerType == EBuffTriggerType.Stay && buffData.UnitState == state)
+                {
+                    unit.ChangeState(buffData.UnitState, (int)buffValue);
+                }
+            }
         }
         
     }

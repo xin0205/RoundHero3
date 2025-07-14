@@ -97,6 +97,13 @@ namespace RoundHero
     //     }
     //
     // }
+    public enum ECardDestination
+    {
+        Pass,
+        Consume,
+        StandBy,
+    }
+        
 
     public class Data_Card
     {
@@ -108,7 +115,8 @@ namespace RoundHero
         public List<ELinkID> RoundLinkIDs = new();
         public int UseCardDamageRatio = 0;
         public bool UnUse = false;
-        public bool IsUseConsume = false;
+        //public bool IsUseConsume = false;
+        public ECardDestination CardDestination = ECardDestination.Pass;
         public ECardUseType CardUseType;
 
         public Data_Card()
@@ -143,6 +151,11 @@ namespace RoundHero
             {
                 var funeData = FuneManager.Instance.GetFuneData(funeIdx);
                 var drBuff = GameEntry.DataTable.GetBuff(funeData.FuneID);
+                if (drBuff.BuffIDs.Contains(funeBuffID.ToString()))
+                {
+                    count += 1;
+                }
+                
                 // if (GameUtility.StringToEnum<EBuffID>(drBuff.BuffID).Contains(funeBuffID)）
                 // {
                 //     if (unUse && funeData.Value > 0 || !unUse)
@@ -268,7 +281,7 @@ namespace RoundHero
     public class UnitStateDetail
     {
         public EUnitState UnitState = EUnitState.Empty;
-        public int Value = 1;
+        public int Value = 0;
         public EEffectType EffectType = EEffectType.Default;
 
         public UnitStateDetail()
@@ -1033,7 +1046,7 @@ namespace RoundHero
         public override int BuffCount(string buffStr)
         {
             var count = 0;
-            var drBuffs = BattleEnemyManager.Instance.GetBuffData(MonsterID);
+            var drBuffs = BattleEnemyManager.Instance.GetBuffData(Idx);
             foreach (var buffData in drBuffs)
             {
                 if (buffStr == buffData.BuffStr)

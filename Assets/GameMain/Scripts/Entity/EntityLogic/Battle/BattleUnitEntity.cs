@@ -639,16 +639,16 @@ namespace RoundHero
 
         }
         
-        public async void HandleHit()
+        public async void HandleHit(EAttackCastType unitAttackCastType)
         {
-            await ShowEffectAttackEntity();
+            await ShowEffectAttackEntity(unitAttackCastType);
 
             BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.Idx);
         }
         
         public async void HandleHit(int actionUnitIdx, int effectUnitIx)
         {
-            await ShowEffectAttackEntity();
+            await ShowEffectAttackEntity(UnitAttackCastType);
 
             BattleBulletManager.Instance.ActionUnitTrigger(actionUnitIdx, effectUnitIx);
         }
@@ -675,10 +675,10 @@ namespace RoundHero
         }
 
         //private EffectEntity effectAttackEntity;
-        private async Task ShowEffectAttackEntity()
+        private async Task ShowEffectAttackEntity(EAttackCastType unitAttackCastType)
         {
             var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerActionDatas(this.BattleUnitData.Idx);
-            switch (UnitAttackCastType)
+            switch (unitAttackCastType)
             {
                 case EAttackCastType.CloseSingle:
                     ShowEffectAttackEntity_CloseSingle(triggerActionDataDict);
@@ -1104,14 +1104,14 @@ namespace RoundHero
             });
             GameUtility.DelayExcute(0.15f, () =>
             {
-                HandleHit();
+                HandleHit(EAttackCastType.CloseMulti);
                 HeroManager.Instance.UpdateCacheHPDelta();
             });
         }
 
         public void EmptyAttack()
         {
-            HandleHit();
+            HandleHit(EAttackCastType.Empty);
             HeroManager.Instance.UpdateCacheHPDelta();
         }
         
@@ -1123,7 +1123,7 @@ namespace RoundHero
 
             GameUtility.DelayExcute(0.15f, () =>
             {
-                HandleHit();
+                HandleHit(EAttackCastType.CloseSingle);
             });
         }
         
@@ -1408,15 +1408,15 @@ namespace RoundHero
             UnitDescTriggerItem.OnPointerExit();
         }
         
-        public void ShowTags(int unitIdx, bool isShowAttackPos)
+        public void ShowTags(int actionUnitIdx, bool isShowAttackPos)
         {
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
             
-            ShowAttackTag(unitIdx, isShowAttackPos);
-            ShowFlyDirect(unitIdx);
-            ShowBattleIcon(unitIdx, EBattleIconType.Collison);
-            ShowDisplayValue(unitIdx);
+            ShowAttackTag(actionUnitIdx, isShowAttackPos);
+            ShowFlyDirect(actionUnitIdx);
+            ShowBattleIcon(actionUnitIdx, EBattleIconType.Collison);
+            ShowDisplayValue(actionUnitIdx);
         }
 
         public void ShowHurtTags(int effectUnitIdx, int actionUnitIdx = -1)

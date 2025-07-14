@@ -10,6 +10,7 @@ namespace RoundHero
     {
         public string Message { get; set; }
         public bool IsShowCancel { get; set; } = true;
+        public bool IsCloseAvailable { get; set; } = true;
 
         public string ConfirmStr { get; set; }
         public string CancelStr { get; set; }
@@ -78,6 +79,9 @@ namespace RoundHero
          
         public void OnCloseButtonClick()
         {
+            if (!confirmFormParams.IsCloseAvailable)
+                return;
+            
             Close();
 
             if (confirmFormParams.OnClose != null)

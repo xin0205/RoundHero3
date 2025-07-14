@@ -377,9 +377,9 @@ namespace RoundHero
             BattleAreaManager.Instance.PlaceUnitCard(cardID, gridPosIdx, playerUnitCamp);
         }
         
-        public void PlaceProp(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp)
+        public void PlaceProp(int propID, int gridPosIdx, EUnitCamp playerUnitCamp)
         {
-            BattleAreaManager.Instance.PlaceProp(cardID, gridPosIdx, playerUnitCamp);
+            BattleAreaManager.Instance.PlaceProp(propID, gridPosIdx, playerUnitCamp);
         }
 
         public void ShowGameOver()
@@ -407,13 +407,14 @@ namespace RoundHero
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
                 {
                     IsShowCancel = false,
+                    IsCloseAvailable = false,
                     Message = GameEntry.Localization.GetString(Constant.Localization.Message_BattleTestFailed),
                     OnConfirm = () =>
                     {
                         BattleManager.Instance.EndBattleTest();
                     
-                    }
-                
+                    },
+ 
                 });
                 BattleManager.Instance.SetBattleState(EBattleState.EndBattle);
             }

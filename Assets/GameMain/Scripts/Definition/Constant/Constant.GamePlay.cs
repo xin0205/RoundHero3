@@ -93,7 +93,7 @@ namespace RoundHero
             public static float BattleValueVelocity = 4;
             public static float G = 9.8f / 2f;
             public static int ObstacleGridID = 88;
-            public static int CardTriggerIdx = -99999999;
+            public static int UnUnitTriggerIdx = -99999999;
 
             public static Dictionary<EUnitStateEffectType, List<EUnitState>> EffectUnitStates =
                 new ()
@@ -106,6 +106,7 @@ namespace RoundHero
                         EUnitState.CounterAtk,
                         EUnitState.AddDmg,
                         EUnitState.HurtSubDmg,
+                        EUnitState.SubHPAddSelfHP,
                     },
                     [EUnitStateEffectType.DeBuff] = new()
                     {

@@ -138,6 +138,7 @@ namespace RoundHero
         SelectHurtUnit,
         EndBattle,
         Empty,
+        Animation,
         
     }
     
@@ -307,7 +308,7 @@ namespace RoundHero
         Collision,
         SelectUnit,
         SelectGrid,
-        Use,
+        //Use,
         SelectCard,
         AutoAttack,
         AddDeBuff,
@@ -319,12 +320,15 @@ namespace RoundHero
         TacticSelectGrid,
         TacticProp,
         RangeTrigger,
+        Stay,
+        Use,
     }
 
     public enum EBuffEquipType
     {
         Normal,
         Special,
+        Fune,
     }
 
     public enum EGridPropID
@@ -398,6 +402,7 @@ namespace RoundHero
         MoveMax,
         Direct,
         LessCurHPUnit,
+        Hero,
         Empty,
     }
 
@@ -470,7 +475,9 @@ namespace RoundHero
         Unit,
         Curse,
         Collision,
+        State,
         Empty,
+        
     }
 
     public enum EUnitType
@@ -550,7 +557,8 @@ namespace RoundHero
         UnitState,
         Curse,
         Bless,
-        Tactic
+        Tactic,
+        Fune,
     }
 
     public enum EFlyType

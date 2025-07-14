@@ -396,7 +396,7 @@ namespace RoundHero
             }
             else if (battleUnit is Data_BattleMonster monsterData)
             {
-                return BattleEnemyManager.Instance.GetBuffData(monsterData.MonsterID);
+                return BattleEnemyManager.Instance.GetBuffData(monsterData.Idx);
             }
             else if (battleUnit is Data_BattleHero heroData)
             {
@@ -516,7 +516,7 @@ namespace RoundHero
             }
             else if (unit is Data_BattleMonster monster)
             {
-                buffDatas = BattleEnemyManager.Instance.GetBuffData(monster.MonsterID);
+                buffDatas = BattleEnemyManager.Instance.GetBuffData(monster.Idx);
                 valueList = BattleEnemyManager.Instance.GetBuffValues(monster.Idx);
             }
             // else if (unit is Data_BattleHero hero)

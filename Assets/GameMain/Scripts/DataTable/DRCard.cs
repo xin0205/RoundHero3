@@ -57,7 +57,7 @@ namespace RoundHero
         /// <summary>
         /// 获取值。
         /// </summary>
-        public List<string> Values1
+        public List<string> Values0
         {
             get;
             private set;
@@ -66,7 +66,7 @@ namespace RoundHero
         /// <summary>
         /// 获取值2。
         /// </summary>
-        public List<string> Values2
+        public List<string> Values1
         {
             get;
             private set;
@@ -158,8 +158,8 @@ namespace RoundHero
             index++;
 			BuffIDs = DataTableExtension.ParseStringList(columnStrings[index++]);
 			CardType = Enum.Parse<ECardType>(columnStrings[index++]);
+			Values0 = DataTableExtension.ParseStringList(columnStrings[index++]);
 			Values1 = DataTableExtension.ParseStringList(columnStrings[index++]);
-			Values2 = DataTableExtension.ParseStringList(columnStrings[index++]);
             Energy = int.Parse(columnStrings[index++]);
             HP = int.Parse(columnStrings[index++]);
 			MoveType = Enum.Parse<EActionType>(columnStrings[index++]);
@@ -182,8 +182,8 @@ namespace RoundHero
                     m_Id = binaryReader.Read7BitEncodedInt32();
 					BuffIDs = binaryReader.ReadStringList();
                     CardType = Enum.Parse<ECardType>(binaryReader.ReadString());
+					Values0 = binaryReader.ReadStringList();
 					Values1 = binaryReader.ReadStringList();
-					Values2 = binaryReader.ReadStringList();
                     Energy = binaryReader.Read7BitEncodedInt32();
                     HP = binaryReader.Read7BitEncodedInt32();
                     MoveType = Enum.Parse<EActionType>(binaryReader.ReadString());
@@ -236,8 +236,8 @@ namespace RoundHero
         {
             m_Values = new KeyValuePair<int, List<string>>[]
             {
+                new KeyValuePair<int, List<string>>(0, Values0),
                 new KeyValuePair<int, List<string>>(1, Values1),
-                new KeyValuePair<int, List<string>>(2, Values2),
             };
         }
     }

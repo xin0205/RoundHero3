@@ -75,7 +75,7 @@ namespace RoundHero
             var drCard = GameEntry.DataTable.GetCard(cardID);
 
             var values = new List<float>();
-            foreach (var value in drCard.Values1)
+            foreach (var value in drCard.Values0)
             {
                 var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
                 if (val != 0)
@@ -85,7 +85,7 @@ namespace RoundHero
                
             }
             
-            foreach (var value in drCard.Values2)
+            foreach (var value in drCard.Values1)
             {
                 var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
                 if (val != 0)

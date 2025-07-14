@@ -281,6 +281,7 @@ namespace RoundHero
         {
             if (moveTween != null)
             {
+                moveTween.Pause();
                 moveTween.Kill(false);
             }
             
@@ -393,7 +394,22 @@ namespace RoundHero
 
             GameUtility.DelayExcute(0.4f, () =>
             {
-                ToPassCard(0.2f);
+                switch (BattleCardEntityData.CardData.CardDestination)
+                {
+                    case ECardDestination.Pass:
+                        ToPassCard(0.2f);
+                        break;
+                    case ECardDestination.Consume:
+                        ToConsumeCard(0.2f);
+                        break;
+                    case ECardDestination.StandBy:
+                        ToStandByCard(0.2f);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
+                
 
             });
 

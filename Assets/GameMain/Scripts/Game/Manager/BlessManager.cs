@@ -118,7 +118,8 @@ namespace RoundHero
                     {
                          BattleCardManager.Instance.NewCardToHand(newCardID);
                          var card = BattleManager.Instance.GetCard(newCardID);
-                         card.IsUseConsume = true;
+                         //card.IsUseConsume = true;
+                         card.CardDestination = ECardDestination.Consume;
                     });
                 }
                 

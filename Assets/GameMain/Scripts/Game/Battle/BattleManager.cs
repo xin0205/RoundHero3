@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Data;
+using UnityEngine;
 using Random = System.Random;
 
 namespace RoundHero
@@ -185,7 +186,7 @@ namespace RoundHero
             {
                 if (changeHPInstantly)
                 {
-                    unit.ChangeHP(hpDelta);
+                    gamePlayData.PlayerData.BattleHero.ChangeHP(hpDelta);
                 }
             }
             else
@@ -216,6 +217,10 @@ namespace RoundHero
             
             if (value < 0 && useDefense)
             {
+                BattleGridPropManager.Instance.TriggerStayPropState(unit.GridPosIdx,
+                    unit, EUnitState.HurtSubDmg);
+                
+                
                 var defenseCount = unit.GetAllStateCount(EUnitState.HurtSubDmg);
                 if (defenseCount > 0)
                 {

@@ -411,9 +411,13 @@ namespace RoundHero
         //     return false;
         // }
         
-        public List<BuffData> GetBuffData(int monsterID)
+        
+        
+        public List<BuffData> GetBuffData(int unitIdx)
         {
-            var drEnemy = RoundHero.GameEntry.DataTable.GetEnemy(monsterID);
+            var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitIdx) as BattleMonsterEntity;
+            var drEnemy =
+                GameEntry.DataTable.GetEnemy(unitEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
             
             var buffDatas = new List<BuffData>();
 
@@ -431,11 +435,17 @@ namespace RoundHero
                 buffDatas.Add(buffData);
             }
             
-            // foreach (var buffID in drEnemy.SecondaryBuffs)
-            // {
-            //     var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
-            //     buffDatas.Add(buffData);
-            // }
+            foreach (var funeIdx in unitEntity.BattleUnitData.FuneIdxs)
+            {
+                var drBuff = FuneManager.Instance.GetBuffTable(funeIdx);
+                foreach (var buffIDStr in drBuff.BuffIDs)
+                {
+                    var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
+                    buffData.BuffEquipType = EBuffEquipType.Fune;
+                    buffDatas.Add(buffData);
+                }
+                
+            }
 
             return buffDatas;
         }

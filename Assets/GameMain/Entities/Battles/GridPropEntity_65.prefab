@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 207423737211969129}
   - component: {fileID: 2667289331354315427}
   - component: {fileID: 4993987504369279074}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Env_Rock_Cliff_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   - component: {fileID: 8942025887419959554}
   - component: {fileID: 6628316113733385672}
   - component: {fileID: 6760926542179707169}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Env_Rock_Cliff_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 8441704619105924181}
   - component: {fileID: 5963332060277227679}
   - component: {fileID: 7849130018160245154}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Env_Rock_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 7645262612995298739}
   - component: {fileID: 5619817917655294329}
   - component: {fileID: 7494777824055118016}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Env_Rock_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

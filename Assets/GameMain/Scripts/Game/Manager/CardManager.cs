@@ -61,17 +61,30 @@ namespace RoundHero
             return (int)(value * (1 + card.UseCardDamageRatio));
         }
         
-        public List<BuffData> GetBuffData(int cardID)
+        public List<BuffData> GetBuffData(int cardIdx)
         {
-            var drCard = GetCardTable(cardID);
+            var drCard = GetCardTable(cardIdx);
             
             var buffDatas = new List<BuffData>();
 
-            foreach (var buffID in drCard.BuffIDs)
+            foreach (var buffIDStr in drCard.BuffIDs)
             {
-                var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+                var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
                 buffData.BuffEquipType = EBuffEquipType.Normal;
                 buffDatas.Add(buffData);
+            }
+
+            var cardData = GetCard(cardIdx);
+            foreach (var funeIdx in cardData.FuneIdxs)
+            {
+                var drBuff = FuneManager.Instance.GetBuffTable(funeIdx);
+                foreach (var buffIDStr in drBuff.BuffIDs)
+                {
+                    var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
+                    buffData.BuffEquipType = EBuffEquipType.Fune;
+                    buffDatas.Add(buffData);
+                }
+                
             }
 
             return buffDatas;
@@ -79,19 +92,19 @@ namespace RoundHero
         
         public List<List<float>> GetBuffValues(int soliderIdx)
         {
-            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(soliderIdx) as BattleSoliderEntity;
+            var soliderUnit = BattleUnitManager.Instance.GetUnitByIdx(soliderIdx) as BattleSoliderEntity;
             Log.Debug("GetBuffValues:" + BattleUnitManager.Instance.BattleUnitDatas.Count + "-" + BattleUnitManager.Instance.BattleUnitEntities.Count);
 
-            if (effectUnit == null)
+            if (soliderUnit == null)
             {
                 Log.Debug("AA");
             }
             
-            var drCard = CardManager.Instance.GetCardTable(effectUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+            var drCard = CardManager.Instance.GetCardTable(soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
             
             var valuelist = new List<List<float>>();
 
-            var idx = 1;
+            var idx = 0;
             foreach (var buffID in drCard.BuffIDs)
             {
                 var values = new List<float>();
@@ -100,6 +113,20 @@ namespace RoundHero
                     var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx);
                     values.Add(targetValue);
   
+                }
+                valuelist.Add(values);
+            }
+            
+            var cardData = GetCard(soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+            foreach (var funeIdx in cardData.FuneIdxs)
+            {
+                var drBuff = FuneManager.Instance.GetBuffTable(funeIdx);
+                var values = new List<float>();
+                foreach (var buffValue in drBuff.BuffValues)
+                {
+                    var value = BattleBuffManager.Instance.GetBuffValue(buffValue);
+                    values.Add(value);
+                    
                 }
                 valuelist.Add(values);
             }

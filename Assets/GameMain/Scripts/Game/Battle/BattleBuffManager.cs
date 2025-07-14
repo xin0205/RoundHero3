@@ -155,7 +155,12 @@ namespace RoundHero
             var _triggerDatas = new List<TriggerData>();
         
             var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitIdx, actionUnitIdx, effectUnitIdx ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
-        
+
+            if (buffvalueType == EBuffValueType.Card)
+            {
+                realEffectUnitIdxs.Add(-1);
+            }
+            
             if (realEffectUnitIdxs.Count > 0)
             {
                 TriggerData triggerData = null;
@@ -244,11 +249,13 @@ namespace RoundHero
                         _triggerDatas.Add(triggerData);
                         triggerData.BuffTriggerType = buffTriggerType;
                         //realEffectUnit.UnitRole == EUnitRole.Hero && 
+                        
+                        //buffTriggerType != EBuffTriggerType.Use && 
                         if (realEffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx ||
                             (realEffectUnit != null && realEffectUnit.UnitRole == EUnitRole.Hero) &&
                             buffvalueType == EBuffValueType.Atrb &&
                             buffData.UnitAttribute == EUnitAttribute.HP &&
-                            (buffTriggerType != EBuffTriggerType.Use && buffTriggerType != EBuffTriggerType.UseCard))
+                            (buffTriggerType != EBuffTriggerType.UseCard))
 
                         {
               
@@ -360,7 +367,6 @@ namespace RoundHero
             }
             
             
-
             HurtTrigger(triggerData, triggerDatas);
         }
         
@@ -532,6 +538,13 @@ namespace RoundHero
             {
                 if(exceptUnitCamps != null && exceptUnitCamps.Contains(kv.Value.UnitCamp))
                     continue;
+                
+                var isStayProp = BattleGridPropManager.Instance.IsStayProp(kv.Value.GridPropID);
+                if (isStayProp)
+                {
+                    continue;
+                }
+
                 
                 posIdxs.Add(kv.Value.GridPosIdx);
             }
@@ -808,6 +821,9 @@ namespace RoundHero
                 case EBuffTriggerType.Attack:
                     BuffParse_Normal(strList, buffData);
                     break;
+                case EBuffTriggerType.Stay:
+                    BuffParse_Normal(strList, buffData);
+                    break;
                 case EBuffTriggerType.Hurt:
                     break;
                 case EBuffTriggerType.Dead:
@@ -815,6 +831,10 @@ namespace RoundHero
                 case EBuffTriggerType.Kill:
                     break;
                 case EBuffTriggerType.UseCard:
+                    
+                    break;
+                case EBuffTriggerType.Use:
+                    BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.Link:
                     break;
@@ -851,8 +871,7 @@ namespace RoundHero
                 case EBuffTriggerType.SelectGrid:
                     BuffParse_SelectGrid(strList, buffData);
                     break;
-                case EBuffTriggerType.Use:
-                    break;
+                
                 case EBuffTriggerType.SelectCard:
                     break;
                 case EBuffTriggerType.AutoAttack:
@@ -896,7 +915,7 @@ namespace RoundHero
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
             }
             
-            var triggerTargets = strList[3].Split("2");
+            var triggerTargets = strList[3].Split("|");
             foreach (var triggerTarget in triggerTargets)
             {
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
@@ -1247,6 +1266,7 @@ namespace RoundHero
         //     int.TryParse(value, out int resValue);
         //     return resValue;
         // }
+        
 
         
 

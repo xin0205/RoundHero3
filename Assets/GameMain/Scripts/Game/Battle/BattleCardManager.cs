@@ -54,12 +54,20 @@ namespace RoundHero
             BattlePlayerData.ConsumeCards.Clear();
 
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
-
+            var funeIdx = FuneManager.Instance.GetIdx();
+            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 25));
+            BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+            
+            funeIdx = FuneManager.Instance.GetIdx();
+            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 3));
+            BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
 
             var randomPassCards = MathUtility.GetRandomNum(keyList.Count, 0, keyList.Count, Random);
             for (int i = 0; i < randomPassCards.Count; i++)
             {
                 var cardIdx = keyList[randomPassCards[i]];
+                
+                
                 //var drCard = CardManager.Instance.GetCardTable(cardIdx);
 
                 BattlePlayerData.StandByCards.Add(cardIdx);
@@ -273,11 +281,41 @@ namespace RoundHero
 
         }
 
-        public void ToStandByCard(int cardID)
+        public async Task ToStandByCard(int cardIdx)
         {
-            BattlePlayerData.HandCards.Remove(cardID);
-            BattlePlayerData.StandByCards.Add(cardID);
+            BattlePlayerData.HandCards.Remove(cardIdx);
+            var oriStandByCards = new List<int>(BattlePlayerData.StandByCards);
+            BattlePlayerData.StandByCards.Clear();
+            BattlePlayerData.StandByCards.Add(cardIdx);
+            foreach (var standByCard in oriStandByCards)
+            {
+                BattlePlayerData.StandByCards.Add(standByCard);
+            }
 
+            // if(BattlePlayerData.StandByCards.Contains(cardIdx))
+            //     return;
+            //
+            // var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
+            // AddHandCard(card);
+            //
+            //
+            // if (BattlePlayerData.StandByCards.Contains(cardIdx))
+            // {
+            //     BattlePlayerData.StandByCards.Remove(cardIdx);
+            //     BattlePlayerData.HandCards.Add(cardIdx);
+            //     card.StandByCardToHand(0.5f);
+            // }
+            // else if (BattlePlayerData.PassCards.Contains(cardIdx))
+            // {
+            //     BattlePlayerData.PassCards.Remove(cardIdx);
+            //     BattlePlayerData.HandCards.Add(cardIdx);
+            //     card.PassCardToHand(0.5f);
+            // }
+            //
+            // GameUtility.DelayExcute(0.5f, () =>
+            // {
+            //     ResetCardsPos(true);
+            // });
         }
 
 
@@ -450,7 +488,7 @@ namespace RoundHero
             else if (cardType == ECardType.Tactic)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[0]);
-                var value = BattleBuffManager.Instance.GetBuffValue(drCard.Values1[0]);
+                var value = BattleBuffManager.Instance.GetBuffValue(drCard.Values0[0]);
                 
                 // if (BattleCurseManager.Instance.IsTacticCardUnDamage(card.CardID) &&
                 //     buffData.UnitAttribute == EUnitAttribute.CurHP && value < 0)
@@ -555,15 +593,23 @@ namespace RoundHero
                 //     ToStandByCard(cardID);
                 // }
                 // else
-                //card.FuneCount(EFuneID.EachRound_AddCurHP) > 0 || 
-                if (card.IsUseConsume)
+                //card.FuneCount(EFuneID.EachRound_AddCurHP) > 0 ||
+                switch (card.CardDestination)
                 {
-                    ToConsumeCard(cardIdx);
+                    case ECardDestination.Pass:
+                        ToPassCard(cardIdx);
+                        break;
+                    case ECardDestination.Consume:
+                        ToConsumeCard(cardIdx);
+                        break;
+                    case ECardDestination.StandBy:
+                        ToStandByCard(cardIdx);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
-                else
-                {
-                    ToPassCard(cardIdx);
-                }
+                
+                
             }
 
             var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitIdx);
