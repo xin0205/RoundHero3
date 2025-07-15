@@ -103,30 +103,54 @@ namespace RoundHero
 
         }
 
-        public void UseTriggerData(int actionUnitID, int effectUnitID)
+        public void UseTriggerData(int actionUnitIdx, int effectUnitIdx)
         {
 
 
-            if (!TriggerActionDatas.ContainsKey(actionUnitID))
-            {
-                return;
-            }
+            // if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
+            // {
+            //     return;
+            // }
+            //
+            // if (effectUnitIdx != -1 && !TriggerActionDatas[actionUnitIdx].Contains(effectUnitIdx))
+            // {
+            //     return;
+            // }
 
-            if (!TriggerActionDatas[actionUnitID].Contains(effectUnitID))
+            foreach (var kv in TriggerActionDatas)
             {
-                return;
-            }
-
-            var triggerActionDatas = TriggerActionDatas[actionUnitID][effectUnitID];
-
-            foreach (var triggerActionData in triggerActionDatas)
-            {
-                if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                var list = kv.Value.ToList();
+                for (int i = list.Count - 1; i >= 0; i--)
                 {
-                    UseTriggerData(triggerActionTriggerData.TriggerData);
-                }
+                    var list2 = list[i].Value.ToList();
+                    for (int j = list2.Count - 1; j >= 0; j--)
+                    {
+                        var triggerActionData = list2[j];
+                        if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                        {
+                            // if(effectUnitIdx != -1 && effectUnitIdx != triggerActionTriggerData.TriggerData.EffectUnitIdx)
+                            //     continue;
+                            //     
+                            // if(actionUnitIdx != -1 && actionUnitIdx != triggerActionTriggerData.TriggerData.ActionUnitIdx)
+                            //     continue;
 
+                            UseTriggerData(triggerActionTriggerData.TriggerData);
+                        }
+                    }
+                }
+                
             }
+
+            // var triggerActionDatas = TriggerActionDatas[actionUnitIdx][effectUnitIdx];
+            //
+            // foreach (var triggerActionData in triggerActionDatas)
+            // {
+            //     if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+            //     {
+            //         UseTriggerData(triggerActionTriggerData.TriggerData);
+            //     }
+            //
+            // }
 
 
 
@@ -218,8 +242,8 @@ namespace RoundHero
                 if(effectUnitIdx != -1 && effectUnit != null && effectUnit.UnitIdx != effectUnitIdx)
                     continue;
 
-                UseTriggerData(actionUnitIdx, effectUnit.UnitIdx);
-                UseMoveActionData(actionUnitIdx, effectUnit.UnitIdx);
+                UseTriggerData(actionUnitIdx, effectUnit == null ? -1 : effectUnit.UnitIdx);
+                UseMoveActionData(actionUnitIdx, effectUnit == null ? -1 : effectUnit.UnitIdx);
             }
             
             // foreach (var kv in TriggerActionDatas[actionUnitIdx])

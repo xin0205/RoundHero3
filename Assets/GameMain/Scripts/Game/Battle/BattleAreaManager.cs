@@ -353,7 +353,7 @@ namespace RoundHero
                         
                         var battleSoliderData = (BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider).Copy();
                         
-                        battleSoliderData.Idx = BattleUnitManager.Instance.GetIdx();
+                        //battleSoliderData.Idx = BattleUnitManager.Instance.GetIdx();
                         var tmpEntity =
                             await GameEntry.Entity.ShowBattleSoliderEntityAsync(battleSoliderData);
                         

@@ -1001,7 +1001,7 @@ namespace RoundHero
             var drEnemy = GameEntry.DataTable.GetEnemy(monsterID);
 
             BaseMaxHP = drEnemy.HP;
-            CurHP = MaxHP;
+            CurHP = 3;//MaxHP;
             LastCurHP = CurHP;
             BaseDamage = 0;//BattleEnemyManager.Instance.GetDamage(monsterID);
             UnitRole = EUnitRole.Staff;

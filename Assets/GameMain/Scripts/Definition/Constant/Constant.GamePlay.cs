@@ -159,6 +159,7 @@ namespace RoundHero
                 //EActionType.LineExtend,
             };
 
+            public static Dictionary<ECardPos, Vector3> CardPos;
 
             public static Dictionary<EActionType, List<List<Vector2Int>>> ActionTypePoints =
                 new()

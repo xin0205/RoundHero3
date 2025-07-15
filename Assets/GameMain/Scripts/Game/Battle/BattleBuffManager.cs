@@ -827,8 +827,10 @@ namespace RoundHero
                 case EBuffTriggerType.Hurt:
                     break;
                 case EBuffTriggerType.Dead:
+                    BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.Kill:
+                    BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.UseCard:
                     

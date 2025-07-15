@@ -71,7 +71,7 @@ namespace RoundHero
             //var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), monsterID, gridPosIdx, unitCamp, funeIDs);
             //battleEnemyData.UnitRole = EUnitRole.Staff;
             
-            battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 1);
+            //battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 1);
             //battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 1);
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);

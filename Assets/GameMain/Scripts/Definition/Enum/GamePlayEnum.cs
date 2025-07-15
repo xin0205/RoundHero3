@@ -64,10 +64,12 @@ namespace RoundHero
         AddCard,
         ToHand,
         ToStandBy,
+        ToConsume,
         ToPass,
-        EffectToComsume,
-        StandByToComsume,
-        ComsumeToStandBy,
+        EffectToConsume,
+        StandByToConsume,
+        CConsumeToStandBy,
+        ConsumeToHand,
         StandByToPass,
         AddSpecificCard,
         ConsumeSpecificCard,
@@ -805,4 +807,14 @@ namespace RoundHero
         
     }
 
+    
+    public enum ECardPos
+    {
+        Center,
+        StandBy,
+        Pass,
+        Consume,
+        Hand,
+        Default
+    }
 }

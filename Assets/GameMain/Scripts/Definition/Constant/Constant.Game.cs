@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameFramework.Localization;
+using UnityEngine;
 
 namespace RoundHero
 {
@@ -12,6 +13,8 @@ namespace RoundHero
             public const string VersionKey = "Version";
             public const int RandomRange = 99999999;
 
+            
+            
             public static Dictionary<Language, string> Languages = new Dictionary<Language, string>()
             {
                 [Language.ChineseSimplified] = "简体中文",

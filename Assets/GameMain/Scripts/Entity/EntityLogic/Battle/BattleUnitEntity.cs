@@ -795,6 +795,8 @@ namespace RoundHero
                     {
                         var effectUnit =
                             BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.EffectUnitIdx);
+                        if(effectUnit == null)
+                            continue;
 
                         if (triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
                             triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)

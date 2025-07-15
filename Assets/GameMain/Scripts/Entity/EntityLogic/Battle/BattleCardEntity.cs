@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameFramework.Event;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -16,6 +15,13 @@ namespace RoundHero
         Raw, 
         Attack, 
         Move,
+    }
+
+    public enum ECardShowType
+    {
+        ShowToUnshow,
+        UnshowToShow,
+        ShowToShow,
     }
     
     public class BattleCardEntity : Entity
@@ -397,13 +403,16 @@ namespace RoundHero
                 switch (BattleCardEntityData.CardData.CardDestination)
                 {
                     case ECardDestination.Pass:
-                        ToPassCard(0.2f);
+                        //ToPassCard(0.2f);
+                        MoveCard(ECardPos.Default, ECardPos.Pass);
                         break;
                     case ECardDestination.Consume:
-                        ToConsumeCard(0.2f);
+                        //ToConsumeCard(0.2f);
+                        MoveCard(ECardPos.Default, ECardPos.Consume);
                         break;
                     case ECardDestination.StandBy:
-                        ToStandByCard(0.2f);
+                        //ToStandByCard(0.2f);
+                        MoveCard(ECardPos.Default, ECardPos.StandBy);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -447,98 +456,167 @@ namespace RoundHero
             transform.localScale = Vector3.one / 2f;
         }
         
-        public void ToPassCard(float time)
+        
+
+        
+
+        public void MoveCard(ECardPos from, ECardPos to, float time = 0.4f)
         {
-            isHand = false;
-            transform.DOLocalMove(BattleController.Instance.PassCardPos.localPosition, time);
-            
-            transform.localScale = Vector3.one;
-            transform.DOScale(Vector3.zero, time).OnComplete(() =>
+            if (from != ECardPos.Default)
             {
-                GameEntry.Entity.HideEntity(this);
-            });
-        }
-        
-        public void ToStandByCard(float time)
-        {
-            isHand = false;
-            transform.DOLocalMove(BattleController.Instance.StandByCardPos.localPosition, time);
+                transform.localPosition = Constant.Battle.CardPos[from];
+            }
             
-            transform.localScale = Vector3.one;
-            transform.DOScale(Vector3.zero, time).OnComplete(() =>
+            transform.DOLocalMove(Constant.Battle.CardPos[to], time);
+
+            var fromShow = from == ECardPos.Center || from == ECardPos.Hand;
+            var toShow = to == ECardPos.Center || from == ECardPos.Hand;
+            
+            transform.localScale = fromShow || !toShow ? Vector3.one : Vector3.zero;
+            transform.DOScale(toShow ? Vector3.one : Vector3.zero, time);
+
+            if (from == ECardPos.Hand)
             {
-                GameEntry.Entity.HideEntity(this);
-            });
-        }
-        
-        public void ToConsumeCard(float time)
-        {
-            isHand = false;
-            transform.DOLocalMove(BattleController.Instance.ConsumeCardPos.localPosition, time);
+                isHand = false;
+            }
             
-            transform.localScale = Vector3.one;
-            transform.DOScale(Vector3.zero, time).OnComplete(() =>
+            if (to == ECardPos.Hand)
             {
-                GameEntry.Entity.HideEntity(this);
-            });
-        }
-        
-        public void StandByCardToHand(float time)
-        {
-            transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
-            transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
-            
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, time);
-            
-            RefreshInHandCard(time);
-        }
-        
-        public void PassCardToHand(float time)
-        {
-            transform.localPosition = BattleController.Instance.PassCardPos.localPosition;
-            transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
-            
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, time);
-            RefreshInHandCard(time);
-        }
-        
-        public void NewCardToHand(float time)
-        {
-            transform.localScale = Vector3.one;
-            transform.localPosition = BattleController.Instance.CenterPos.localPosition;
-            transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
-            RefreshInHandCard(time);
-            
-        }
-        
-        public void NewCardToStandBy(float time)
-        {
-            isHand = false;
-            transform.localScale = Vector3.one;
-            transform.localPosition = BattleController.Instance.CenterPos.localPosition;
-            transform.DOLocalMove(BattleController.Instance.StandByCardPos.localPosition, time);
-            
-            transform.DOScale(Vector3.zero, time).OnComplete(() =>
+                RefreshInHandCard(time);
+            }
+
+            if (!toShow)
             {
-                GameEntry.Entity.HideEntity(this);
-            });
-            
+                GameUtility.DelayExcute(time, () =>
+                {
+                    GameEntry.Entity.HideEntity(this);
+                });
+            }
+
         }
+        // public void ToPassCard(float time)
+        // {
+        //     isHand = false;
+        //     transform.DOLocalMove(BattleController.Instance.PassCardPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.one;
+        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
+        //     {
+        //         GameEntry.Entity.HideEntity(this);
+        //     });
+        // }
         
-        public void NewCardToPass(float time)
-        {
-            isHand = false;
-            transform.localScale = Vector3.one;
-            transform.localPosition = BattleController.Instance.CenterPos.localPosition;
-            transform.DOLocalMove(BattleController.Instance.PassCardPos.localPosition, time);
-            
-            transform.DOScale(Vector3.zero, time).OnComplete(() =>
-            {
-                GameEntry.Entity.HideEntity(this);
-            });
-        }
+        // public void ToStandByCard(float time)
+        // {
+        //     isHand = false;
+        //     transform.DOLocalMove(BattleController.Instance.StandByCardPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.one;
+        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
+        //     {
+        //         GameEntry.Entity.HideEntity(this);
+        //     });
+        // }
+        
+        // public void ToConsumeCard(float time)
+        // {
+        //     isHand = false;
+        //     transform.DOLocalMove(BattleController.Instance.ConsumeCardPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.one;
+        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
+        //     {
+        //         GameEntry.Entity.HideEntity(this);
+        //     });
+        // }
+        
+        // public void StandByCardToHand(float time)
+        // {
+        //     transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.zero;
+        //     transform.DOScale(Vector3.one, time);
+        //     
+        //     RefreshInHandCard(time);
+        // }
+        
+        // public void PassCardToHand(float time)
+        // {
+        //     transform.localPosition = BattleController.Instance.PassCardPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.zero;
+        //     transform.DOScale(Vector3.one, time);
+        //     RefreshInHandCard(time);
+        // }
+        
+        // public void PassCardToCenter(float time)
+        // {
+        //     transform.localPosition = BattleController.Instance.PassCardPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.zero;
+        //     transform.DOScale(Vector3.one, time);
+        //     
+        //     
+        // }
+        
+        
+        // public void StandByToCenter(float time)
+        // {
+        //     transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.zero;
+        //     transform.DOScale(Vector3.one, time);
+        // }
+        // public void ConsumeCardToHand(float time)
+        // {
+        //     transform.localPosition = BattleController.Instance.ConsumeCardPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
+        //     
+        //     transform.localScale = Vector3.zero;
+        //     transform.DOScale(Vector3.one, time);
+        //     
+        // }
+        
+
+        // public void NewCardToHand(float time)
+        // {
+        //     transform.localScale = Vector3.one;
+        //     transform.localPosition = BattleController.Instance.CenterPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
+        //     RefreshInHandCard(time);
+        //     
+        // }
+        
+        // public void NewCardToStandBy(float time)
+        // {
+        //     isHand = false;
+        //     transform.localScale = Vector3.one;
+        //     transform.localPosition = BattleController.Instance.CenterPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.StandByCardPos.localPosition, time);
+        //     
+        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
+        //     {
+        //         GameEntry.Entity.HideEntity(this);
+        //     });
+        //     
+        // }
+        
+        // public void NewCardToPass(float time)
+        // {
+        //     isHand = false;
+        //     transform.localScale = Vector3.one;
+        //     transform.localPosition = BattleController.Instance.CenterPos.localPosition;
+        //     transform.DOLocalMove(BattleController.Instance.PassCardPos.localPosition, time);
+        //     
+        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
+        //     {
+        //         GameEntry.Entity.HideEntity(this);
+        //     });
+        // }
 
 
         

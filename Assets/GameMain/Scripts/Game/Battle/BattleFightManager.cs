@@ -173,7 +173,7 @@ namespace RoundHero
         public int ActionUnitGridPosIdx = -1;
         public int EffectUnitGridPosIdx = -1;
         public bool IsTrigger = false;
-        public int TriggerCardIdx;
+        public int TriggerCardIdx = -1;
 
         //public bool AddHeroHP = true;
 
@@ -395,8 +395,9 @@ namespace RoundHero
             {
                 BattleCardManager.Instance.CacheUseCardData(
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
-                    BattleManager.Instance.CurUnitCamp, null, BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
-                
+                    BattleManager.Instance.CurUnitCamp, null, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
+                    BattleManager.Instance.TempTriggerData.UnitData.Idx);
+
                 // RoundFightData.GamePlayData.BattleData.GridTypes[RoundFightData.TempTriggerData.UnitData.GridPosIdx] =
                 //     EGridType.TemporaryUnit;
                 //
@@ -451,7 +452,7 @@ namespace RoundHero
                     {
                         BattleCardManager.Instance.CacheUseCardData(
                             BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
-                            BattleManager.Instance.CurUnitCamp, effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
+                            BattleManager.Instance.CurUnitCamp, effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx, Constant.Battle.UnUnitTriggerIdx);
                     }
                     
     
@@ -3579,22 +3580,34 @@ namespace RoundHero
                             
                             if (actionUnit is Data_BattleSolider solider)
                             {
-                                BattleCardManager.Instance.ToHandCards(solider.CardIdx);
+                                BattleCardManager.Instance.AnimationToHandCards(solider.CardIdx);
                             }
                             
                             break;
-                        case ECardTriggerType.ToStandBy:
-                            if (actionUnit is Data_BattleSolider solider2)
+                        case ECardTriggerType.ToConsume:
+                            if (triggerData.TriggerCardIdx != -1)
                             {
-                                BattleCardManager.Instance.ToStandByCard(solider2.CardIdx);
+                                var cardEntity = BattleCardManager.Instance.GetCardEntity(triggerData.TriggerCardIdx);
+                                cardEntity.BattleCardEntityData.CardData.CardDestination = ECardDestination.Consume;
+                                
                             }
-                            else if (triggerData.TriggerCardIdx != -1)
+                            else if (actionUnit is Data_BattleSolider solider3)
+                            {
+                                BattleCardManager.Instance.AnimationToConsumeCards(solider3.CardIdx);
+                            }
+                            break;
+                        case ECardTriggerType.ToStandBy:
+                            if (triggerData.TriggerCardIdx != -1)
                             {
                                 var cardEntity = BattleCardManager.Instance.GetCardEntity(triggerData.TriggerCardIdx);
                                 cardEntity.BattleCardEntityData.CardData.CardDestination = ECardDestination.StandBy;
                                 
                             }
-                            
+                            else if (actionUnit is Data_BattleSolider solider2)
+                            {
+                                BattleCardManager.Instance.ToStandByCards(solider2.CardIdx);
+                            }
+                             
                             
                             break;
                         
@@ -3614,6 +3627,9 @@ namespace RoundHero
                             BattleCardManager.Instance.RandomStandByToPass();
                             break;
                         case ECardTriggerType.Empty:
+                            break;
+                        case ECardTriggerType.ConsumeToHand:
+                            BattleCardManager.Instance.AnimationConsumeToHand();
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
