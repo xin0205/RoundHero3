@@ -134,7 +134,7 @@ namespace RoundHero
         
         private List<TriggerData> InternalBuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<string> values, int ownUnitIdx, int actionUnitIdx,
             int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
-            int actionUnitPreGridPosIdx = -1)
+            int actionUnitPreGridPosIdx = -1, int cardIdx = -1)
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
@@ -158,7 +158,7 @@ namespace RoundHero
 
             if (buffvalueType == EBuffValueType.Card)
             {
-                realEffectUnitIdxs.Add(-1);
+                realEffectUnitIdxs.Add(effectUnitIdx);
             }
             
             if (realEffectUnitIdxs.Count > 0)
@@ -171,7 +171,8 @@ namespace RoundHero
                     var buffValues = new List<float>();
                     foreach (var value in values)
                     {
-                        buffValues.Add(BattleBuffManager.Instance.GetBuffValue(value, realEffectUnit != null ? realEffectUnit.Idx : -1));
+                        
+                        buffValues.Add(BattleBuffManager.Instance.GetBuffValue(value, realEffectUnitIdx, cardIdx));
                     }
         
                     switch (buffvalueType)
@@ -228,9 +229,12 @@ namespace RoundHero
                         case EBuffValueType.Card:
                             triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 buffValues[0], buffData.CardTriggerType);
+                            triggerData.EffectUnitIdx = realEffectUnitIdx;
                             break;
                         case EBuffValueType.ClearBuff:
                             triggerData = new TriggerData();
+                            triggerData.TriggerDataType = ETriggerDataType.ClearBuff;
+                            triggerData.UnitStateEffectTypes = buffData.UnitStateEffectTypes;
                             triggerData.EffectUnitIdx = realEffectUnitIdx;
                             // triggerData.BuffValue = new BuffValue()
                             // {
@@ -378,7 +382,7 @@ namespace RoundHero
                 return;
             
             var actionUnit = BattleFightManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-            if(actionUnit == null || actionUnit.CurHP <= 0)
+            if(actionUnit == null || !actionUnit.Exist())
                 return;
             
             BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, actionUnit, triggerData, triggerDatas, EBuffTriggerType.Attack);
@@ -439,7 +443,7 @@ namespace RoundHero
                     continue;
                 
                 BuffTrigger(buffTriggerType,
-                    triggerBuffData.BuffData, triggerBuffData.ValueList, unit.Idx, unit.Idx, unit.Idx,
+                    triggerBuffData.BuffData, triggerBuffData.ValueList, triggerData.EffectUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
                     triggerDatas);
     
             }
@@ -763,9 +767,10 @@ namespace RoundHero
         {
             if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.Card)
             {
-                BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx]
-                    .UseCardAnimation(gridPosIdx);
-                BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx, unitID);
+                var cardIdx = BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx;
+                BattleCardManager.Instance.CardEntities[cardIdx].UseCardAnimation(gridPosIdx);
+                BattleCardManager.Instance.UseCard(cardIdx, unitID);
+                
             }
             else if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.EnergyBuff)
             {
@@ -1208,7 +1213,7 @@ namespace RoundHero
             
         }
         
-        public float GetBuffValue(string value, int effectUnitIdx = -1)
+        public float GetBuffValue(string value, int effectUnitIdx = -1, int cardIdx = -1)
         {
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
             var absValue = value;
@@ -1241,6 +1246,33 @@ namespace RoundHero
                         break;
                     case EValueType.UnitCount:
                         break;
+                    case EValueType.UsStaffCount:
+                        var usStaffCount = 0;
+                        foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+                        {
+                            if (kv.Value.UnitCamp == PlayerManager.Instance.PlayerData.UnitCamp &&
+                                kv.Value.BattleUnitData.UnitRole == EUnitRole.Staff)
+                            {
+                                usStaffCount++;
+                            }
+                        }
+
+                        return usStaffCount;
+                        break;
+                    case EValueType.EnemyCount:
+                        var enemyCount = 0;
+                        foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+                        {
+                            if (kv.Value.UnitCamp != EUnitCamp.Third &&
+                                kv.Value.UnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
+
+                            {
+                                enemyCount++;
+                            }
+                        }
+
+                        return enemyCount;
+                        break;
                     case EValueType.UsBuffCount:
                         break;
                     case EValueType.EnemyDeBuffCount:
@@ -1252,6 +1284,26 @@ namespace RoundHero
                     case EValueType.Buff:
                         if (effectUnit != null)
                             return effectUnit.BattleUnitData.GetStateCountByEffectType(EUnitStateEffectType.Buff) * valueTag;
+                        break;
+                    case EValueType.CardEnergy:
+                        if (cardIdx != -1)
+                        {
+                            return BattleCardManager.Instance.GetCardEnergy(cardIdx);
+                        }
+                        break;
+                    case EValueType.SubEnergy:
+                        if (cardIdx != -1)
+                        {
+                            var drCard = CardManager.Instance.GetCardTable(cardIdx);
+                            
+                            var cardEnergy = drCard.Energy;
+                            var actualCardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
+                            var energyDelta = actualCardEnergy - cardEnergy;
+                            if (energyDelta < 0)
+                                return -energyDelta;
+
+                            return 0;
+                        }
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

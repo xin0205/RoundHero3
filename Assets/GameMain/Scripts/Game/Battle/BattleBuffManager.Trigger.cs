@@ -7,7 +7,7 @@ namespace RoundHero
     {
         public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<string> buffValues, int ownUnitIdx,
             int actionUnitIdx, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
-            int actionUnitLastGridPosIdx = -1)
+            int actionUnitLastGridPosIdx = -1, int cardIdx = -1)
         {
             //var drBuff = BattleBuffManager.Instance.GetBuffData(buffID);
             if (buffTriggerType != buffData.BuffTriggerType)
@@ -15,7 +15,7 @@ namespace RoundHero
 
 
             var _triggerDatas = BattleBuffManager.Instance.InternalBuffTrigger(buffTriggerType, buffData, buffValues, ownUnitIdx, actionUnitIdx,
-                effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitLastGridPosIdx);
+                effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitLastGridPosIdx, cardIdx);
 
             // foreach (var triggerData in _triggerDatas)
             // {
@@ -200,7 +200,7 @@ namespace RoundHero
             
             foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
-                if (kv.Value.UnitCamp == camp && kv.Value.CurHP > 0)
+                if (kv.Value.UnitCamp == camp && kv.Value.Exist())
                 {
                     var value2 =  value1s[0] * ratio;
                     triggerData = new TriggerData()

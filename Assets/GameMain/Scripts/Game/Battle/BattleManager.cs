@@ -359,7 +359,7 @@ namespace RoundHero
                 }
             }
 
-            if (unit.CurHP <= 0 && 
+            if (!unit.Exist() && 
                 unit.UnitCamp == EUnitCamp.Enemy &&
                 BattleCurseManager.Instance.CurseIDs.Contains(ECurseID.AllUnitDodgeSubHeartDamage) &&
                 BattleCurseManager.Instance.GetAllUnitDodgeSubHeartDamageValue(gamePlayData, unit.Idx) > 0 && 
@@ -426,9 +426,9 @@ namespace RoundHero
             BattleTypeManager.NextAction();
         }
 
-        public void PlaceUnitCard(int cardID, int gridPosIdx, EUnitCamp playerUnitCamp)
+        public void PlaceUnitCard(int cardIdx, int gridPosIdx, EUnitCamp playerUnitCamp)
         {
-            BattleTypeManager.PlaceUnitCard(cardID, gridPosIdx, playerUnitCamp);
+            BattleTypeManager.PlaceUnitCard(cardIdx, gridPosIdx, playerUnitCamp);
         }
         
         public void PlaceProp(int propID, int gridPosIdx, EUnitCamp playerUnitCamp)

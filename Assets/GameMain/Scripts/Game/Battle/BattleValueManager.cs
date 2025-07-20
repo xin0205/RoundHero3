@@ -240,7 +240,7 @@ namespace RoundHero
                     value, entityIdx, true, effectUnit is BattleSoliderEntity);
 
                 
-                Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
+                //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
                     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
@@ -274,7 +274,7 @@ namespace RoundHero
                     value, entityIdx, true, effectUnit is BattleSoliderEntity && value < 0);
 
                 
-                Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
+                //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
                     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)

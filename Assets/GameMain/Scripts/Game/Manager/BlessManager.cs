@@ -138,7 +138,7 @@ namespace RoundHero
                     if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp)
                         continue;
                     
-                    if (kv.Value.CurHP <= 0)
+                    if (!kv.Value.Exist())
                         continue;
                     
                     var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Count);
@@ -162,7 +162,7 @@ namespace RoundHero
                     if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp)
                         continue;
                     
-                    if (kv.Value.CurHP <= 0)
+                    if (!kv.Value.Exist())
                         continue;
                     
                     if (kv.Value.UnitStateData.UnitStates.Count > 0)
@@ -472,7 +472,12 @@ namespace RoundHero
         
         public void DeadTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit)
         {
-            if (unit.CurHP > 0)
+            if (unit.Exist())
+            {
+                return;
+            }
+            
+            if (unit.FuneCount(EBuffID.Spec_UnDead) > 0)
             {
                 return;
             }
@@ -492,7 +497,7 @@ namespace RoundHero
             var otherEnemies = new List<Data_BattleUnit>();
             foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
             {
-                if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp && kv.Value.CurHP > 0)
+                if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp && kv.Value.Exist())
                 {
                     otherEnemies.Add(kv.Value);
                 }

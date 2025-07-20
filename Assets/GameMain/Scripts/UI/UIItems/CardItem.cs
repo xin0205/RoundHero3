@@ -17,12 +17,13 @@ namespace RoundHero
         private BaseCard stateCard;
         
         private int CardID = -1;
-
+        private int CardIdx = -1;
         
-        public void SetCard(int cardID)
+        public void SetCard(int cardID, int cardIdx = -1)
         {
 
             CardID = cardID;
+            CardIdx = cardIdx;
             var drCard = GameEntry.DataTable.GetCard(CardID);
             if (drCard.CardType == ECardType.Unit)
             {
@@ -45,7 +46,7 @@ namespace RoundHero
             tacticCard.gameObject.SetActive(drCard.CardType == ECardType.Tactic || drCard.CardType == ECardType.Prop);
             stateCard.gameObject.SetActive(drCard.CardType == ECardType.State);
 
-            baseCard.SetCardUI(CardID);
+            baseCard.SetCardUI(CardID, CardIdx);
         }
 
         public void Refresh()

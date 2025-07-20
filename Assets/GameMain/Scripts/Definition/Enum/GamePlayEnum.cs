@@ -68,13 +68,15 @@ namespace RoundHero
         ToPass,
         EffectToConsume,
         StandByToConsume,
-        CConsumeToStandBy,
+        ConsumeToStandBy,
         ConsumeToHand,
         StandByToPass,
         AddSpecificCard,
         ConsumeSpecificCard,
         SelectCard,
         CardSubEnergy,
+        CardEnergy,
+        MaxHP,
         Empty,                                                  
     }
 
@@ -468,6 +470,7 @@ namespace RoundHero
         RemoveUnit,
         RoundBuff,
         Curse,
+        ClearBuff,
         Empty,
     }
     
@@ -623,6 +626,10 @@ namespace RoundHero
          UnitHP,
         DeBuff,
         Buff,
+        UsStaffCount,
+        EnemyCount,
+        CardEnergy,
+        SubEnergy,
     }
 
     public enum EMapSite

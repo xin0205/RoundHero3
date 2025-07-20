@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameFramework.Event;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -72,6 +73,7 @@ namespace RoundHero
         private Rect rect;
         private bool isInside;
         private bool isHand;
+        private bool isUsing;
 
         //public int RawSiblingIdx;
 
@@ -167,7 +169,7 @@ namespace RoundHero
                 isInside = rect.Contains(Input.mousePosition);
                 if (isInside)
                 {
-                    Log.Debug("inSide:" + BattleCardEntityData.CardIdx);
+                    //Log.Debug("inSide:" + BattleCardEntityData.CardIdx);
                     OnPointerEnter();
                 }
             }
@@ -177,19 +179,23 @@ namespace RoundHero
                 isInside = rect.Contains(Input.mousePosition);
                 if (!isInside)
                 {
-                    Log.Debug("no inSide:" + BattleCardEntityData.CardIdx);
+                    //Log.Debug("no inSide:" + BattleCardEntityData.CardIdx);
                     OnPointerExit();
                 }
             }
         }
         
         private void OnPointerEnter()
-        { if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
+        { 
+            if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
               TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
               TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
             {
                 return;
             }
+
+            if (isUsing)
+                return;
 
 
             //Log.Debug("Enter");
@@ -205,7 +211,8 @@ namespace RoundHero
             //isShow = true;
             ActionGO.SetActive(true);
             //transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 140f, 0);
-            transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            ScaleCard(1, 1.2f, 0.01f);
+            //transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             BattleCardManager.Instance.PointerCardIdx = BattleCardEntityData.CardData.CardIdx;
             BattleCardManager.Instance.SelectCardIdx = BattleCardEntityData.CardData.CardIdx;
             BattleCardManager.Instance.SelectCardHandOrder = BattleCardEntityData.HandSortingIdx;
@@ -273,8 +280,12 @@ namespace RoundHero
             
             //isShow = false;
             ActionGO.SetActive(false);
-            transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0);
-            transform.localScale = new Vector3(1f, 1f, 1f);
+            MoveCard(new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0),
+                0.1f);
+            
+            //transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0);
+            //transform.localScale = new Vector3(1f, 1f, 1f);
+            ScaleCard(-1, 1, 0.01f);
             RefreshCardRect();
             BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
             RefreshCardUseTypeInfo();
@@ -282,33 +293,67 @@ namespace RoundHero
             attackInfoTrigger.HideInfo();
         }
 
-        private Tween moveTween; 
+        private Tween moveTween;
+         
         public void MoveCard(Vector2 pos, float time)
         {
             if (moveTween != null)
             {
-                moveTween.Pause();
+                //moveTween.Pause();
                 moveTween.Kill(false);
+                moveTween = null;
             }
             
             //transform.DOKill(false);
             moveTween = transform.DOLocalMove(new Vector3(pos.x, pos.y, 0), time);
-            GameUtility.DelayExcute(time, () =>
+            GameUtility.DelayExcute(time + 0.01f, () =>
             {
                 if (moveTween != null)
                 {
-                    moveTween.Kill(false);
-              }
+                    moveTween.Kill(true);
+                }
                 
             });
             RefreshInHandCard(time);
         }
         
+        private Tween scaleTween;
+        public void ScaleCard(float from, float to, float time)
+        {
+            // from = 1;
+            // to = 1;
+            if (scaleTween != null)
+            {
+                //scaleTween.Pause();
+                scaleTween.Kill(false);
+                scaleTween = null;
+            }
+            
+            //transform.DOKill(false);
+            if (from != -1)
+            {
+                transform.localScale = new Vector3(from, from, from);
+            }
+            
+            scaleTween = transform.DOScale(to, time);
+            GameUtility.DelayExcute(time + 0.01f, () =>
+            {
+                if (scaleTween != null)
+                {
+                    scaleTween.Kill(false);
+                    //scaleTween = null;
+                }
+                
+            });
+
+        }
+        
         public void AcquireCard(Vector2 pos, float time)
         {
             MoveCard(pos, time);
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, time);
+            ScaleCard(0, 1, time);
+            // transform.localScale = Vector3.zero;
+            // transform.DOScale(Vector3.one, time);
            
             //RefreshInHandCard(time);
         }
@@ -363,10 +408,14 @@ namespace RoundHero
             //ActionGO.SetActive(false);
             isInside = false;
             isHand = false;
+            isUsing = true;
             
             BattleCardManager.Instance.SelectCardIdx = -1;
             BattleCardManager.Instance.SelectCardHandOrder = -1;
             BattleCardManager.Instance.PointerCardIdx = -1;
+
+            
+            
             // switch (BattleCardEntityData.CardData.CardUseType)
             // {
             //     case ECardUseType.Raw:
@@ -389,13 +438,11 @@ namespace RoundHero
             //         throw new ArgumentOutOfRangeException();
             // }
 
-            transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, 0.2f);
-            
-            
+            //transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, 0.2f);
 
-            
-            
-           
+            //MoveCard(BattleController.Instance.CenterPos.localPosition, 0.2f);
+            MoveCard(ECardPos.Default, ECardPos.Center, 0.2f);
+
             //GetComponent<Canvas>().sortingOrder =  1000;
 
             GameUtility.DelayExcute(0.4f, () =>
@@ -427,8 +474,13 @@ namespace RoundHero
         public void RemoveCard()
         {
             isHand = false;
-            transform.localScale = Vector3.one;
-            transform.DOScale(BattleController.Instance.CenterPos.localPosition, 0.25f).OnComplete(() =>
+            ScaleCard(-1, 1, 0.01f);
+            //transform.localScale = Vector3.one;
+            // transform.DOScale(BattleController.Instance.CenterPos.localPosition, 0.25f).OnComplete(() =>
+            // {
+            //     GameEntry.Entity.HideEntity(this);
+            // });
+            GameUtility.DelayExcute(0.25f, () =>
             {
                 GameEntry.Entity.HideEntity(this);
             });
@@ -437,23 +489,31 @@ namespace RoundHero
         public void ShowInPassCard()
         {
             isHand = false;
-            transform.localPosition = BattleController.Instance.PassCardPos.localPosition;
+            // transform.localPosition = BattleController.Instance.PassCardPos.localPosition;
+            // transform.localScale = Vector3.one / 2f;
             
-            transform.localScale = Vector3.one / 2f;
+            MoveCard(ECardPos.Default, ECardPos.Pass, 0.01f);
+            ScaleCard(-1, 0.5f, 0.01f);
         }
         
         public void ShowInStandByCard()
         {
             isHand = false;
-            transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
-            transform.localScale = Vector3.one / 2f;
+            // transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
+            // transform.localScale = Vector3.one / 2f;
+            
+            MoveCard(ECardPos.Default, ECardPos.StandBy, 0.01f);
+            ScaleCard(-1, 0.5f, 0.01f);
         }
         
         public void ShowInConsumeCard()
         {
             isHand = false;
-            transform.localPosition = BattleController.Instance.ConsumeCardPos.localPosition;
-            transform.localScale = Vector3.one / 2f;
+            // transform.localPosition = BattleController.Instance.ConsumeCardPos.localPosition;
+            // transform.localScale = Vector3.one / 2f;
+            
+            MoveCard(ECardPos.Default, ECardPos.Consume, 0.01f);
+            ScaleCard(-1, 0.5f, 0.01f);
         }
         
         
@@ -467,14 +527,16 @@ namespace RoundHero
                 transform.localPosition = Constant.Battle.CardPos[from];
             }
             
-            transform.DOLocalMove(Constant.Battle.CardPos[to], time);
+            MoveCard(Constant.Battle.CardPos[to], time);
+            //transform.DOLocalMove(Constant.Battle.CardPos[to], time);
 
             var fromShow = from == ECardPos.Center || from == ECardPos.Hand;
-            var toShow = to == ECardPos.Center || from == ECardPos.Hand;
+            var toShow = to == ECardPos.Center || to == ECardPos.Hand;
             
-            transform.localScale = fromShow || !toShow ? Vector3.one : Vector3.zero;
-            transform.DOScale(toShow ? Vector3.one : Vector3.zero, time);
-
+            //transform.localScale = fromShow || !toShow ? Vector3.one : Vector3.zero;
+            //transform.DOScale(toShow ? Vector3.one : Vector3.zero, time);
+            ScaleCard(fromShow || !toShow ? 1 : 0, toShow ? 1 : 0, time);
+            
             if (from == ECardPos.Hand)
             {
                 isHand = false;
@@ -489,6 +551,7 @@ namespace RoundHero
             {
                 GameUtility.DelayExcute(time, () =>
                 {
+                    isUsing = false;
                     GameEntry.Entity.HideEntity(this);
                 });
             }
@@ -690,7 +753,7 @@ namespace RoundHero
 
         public void RefreshInfo()
         {
-            CardItem.SetCard(BattleCardEntityData.CardData.CardID);
+            CardItem.SetCard(BattleCardEntityData.CardData.CardID, BattleCardEntityData.CardData.CardIdx);
         }
 
         public void OnRefreshInfo(object sender, GameEventArgs e)
@@ -786,10 +849,14 @@ namespace RoundHero
 
         public void RefreshCardUseTypeInfo()
         {
+            if (BattleCardEntityData.CardData.CardID == 0)
+            {
+                var a = 5;
+            }
             switch (BattleCardEntityData.CardData.CardUseType)
             {
                 case ECardUseType.Raw:
-                    CardItem.SetCard(BattleCardEntityData.CardData.CardID);
+                    CardItem.SetCard(BattleCardEntityData.CardData.CardID, BattleCardEntityData.CardData.CardIdx);
                     break;
                 case ECardUseType.Attack:
 

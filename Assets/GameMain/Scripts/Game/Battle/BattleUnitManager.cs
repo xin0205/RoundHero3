@@ -593,6 +593,10 @@ namespace RoundHero
             {
                 return monsterEntity.BattleMonsterEntityData.BattleMonsterData;
             }
+            else if (unit is BattleCoreEntity coreEntity)
+            {
+                return coreEntity.BattleCoreEntityData.BattleCoreData;
+            }
 
             return null;
         }

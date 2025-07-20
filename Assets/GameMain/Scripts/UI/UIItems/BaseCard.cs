@@ -21,13 +21,12 @@ namespace RoundHero
         [SerializeField] private Image Icon;
         
         private int CardID = -1;
-
+        private int CardIdx = -1;
         
-        public void SetCardUI(int cardID)
+        public void SetCardUI(int cardID, int cardIdx = -1)
         {
-
             CardID = cardID;
-            
+            CardIdx = cardIdx;
 
             RefreshCardUI();
         }
@@ -67,7 +66,11 @@ namespace RoundHero
             if (drCard.CardType == ECardType.Unit)
             {
                 Icon.sprite = await AssetUtility.GetFollowerIcon(CardID);
-                hp.text = drCard.HP.ToString();
+
+                var maxHP = BattleCardManager.Instance.GetCardMaxHP(CardID, CardIdx);
+                
+                hp.text = maxHP.ToString();
+                
             }
             else if (drCard.CardType == ECardType.Tactic)
             {
@@ -100,8 +103,16 @@ namespace RoundHero
             {
                 hpGO.SetActive(drCard.CardType == ECardType.Unit);
             }
+
+            var _energy = drCard.Energy;
+
+            if (CardIdx != -1)
+            {
+                _energy = BattleCardManager.Instance.GetCardEnergy(CardIdx);
+            }
             
-            energy.text = drCard.Energy < 0 ? "X" : drCard.Energy.ToString();
+
+            energy.text = _energy < 0 ? "X" : _energy.ToString();
 
             //var maxHP = BattleUnitManager.Instance.GetUnitHP(CardID);
 

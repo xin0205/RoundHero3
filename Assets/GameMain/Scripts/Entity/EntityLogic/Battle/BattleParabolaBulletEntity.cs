@@ -120,7 +120,7 @@ namespace RoundHero
             var time = dis * Constant.Battle.ParabolaBulletShootTime / Constant.Area.GridRange.x;
             horizontalVelocity = dis / time;
 
-            verticalVelocity = Constant.Battle.G * 0.5f * time;
+            verticalVelocity = Constant.Battle.G * 0.5f *  time;
             
             
             //verticalVelocity = Mathf.Sqrt(2 * g * 2.5f);

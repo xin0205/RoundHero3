@@ -47,9 +47,9 @@ namespace RoundHero
             //Constant.Battle.BattleValueVelocity
             var time = dis / (Constant.Battle.BattleValueVelocity * 100);
 
-            if (time < 2f)
+            if (time < 1.5f)
             {
-                time = 2f;
+                time += 1.5f;
             }
             //textStrTween = 
 
@@ -164,14 +164,21 @@ namespace RoundHero
 
         private void KillTween()
         {
-            if(moveTween == null)
-                //Log.Debug("moveTween");
-                // if(text == null)
-                //     Log.Debug("text");
-            if(textColTween == null)
-               Log.Debug("textColTween");
-            if(textStrTween == null)
+            if (moveTween == null)
+            {
+                Log.Debug("moveTween");
+            }
+            
+            if (textColTween == null)
+            {
+                Log.Debug("textColTween");
+            }
+
+            if (textStrTween == null)
+            {
                 Log.Debug("textStrTween");
+            }
+               
             
             moveTween?.Kill();
             textColTween?.Kill();

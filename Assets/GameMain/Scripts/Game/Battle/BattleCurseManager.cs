@@ -346,14 +346,14 @@ namespace RoundHero
                 
         }
 
-        public int SameUnitSameCurHP_GetUnitHP(int cardID)
+        public int SameUnitSameCurHP_GetUnitHP(int cardIdx)
         {
-            var card = BattleManager.Instance.GetCard(cardID);
-            var drCard = CardManager.Instance.GetCardTable(cardID);
-            var hp = drCard.HP + card.FuneCount(EBuffID.Spec_AddMaxHP);
+            var card = BattleManager.Instance.GetCard(cardIdx);
+            var drCard = CardManager.Instance.GetCardTable(cardIdx);
+            var hp = BattleCardManager.Instance.GetCardMaxHP(cardIdx) + card.FuneCount(EBuffID.Spec_AddMaxHP);
             
             if (BattleManager.Instance.TempTriggerData.UnitData is Data_BattleSolider solider &&
-                solider.CardIdx == cardID)
+                solider.CardIdx == cardIdx)
             {
                 hp = BattleManager.Instance.TempTriggerData.UnitData.MaxHP;
             }

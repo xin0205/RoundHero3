@@ -93,7 +93,7 @@ namespace RoundHero
         public List<List<float>> GetBuffValues(int soliderIdx)
         {
             var soliderUnit = BattleUnitManager.Instance.GetUnitByIdx(soliderIdx) as BattleSoliderEntity;
-            Log.Debug("GetBuffValues:" + BattleUnitManager.Instance.BattleUnitDatas.Count + "-" + BattleUnitManager.Instance.BattleUnitEntities.Count);
+            //Log.Debug("GetBuffValues:" + BattleUnitManager.Instance.BattleUnitDatas.Count + "-" + BattleUnitManager.Instance.BattleUnitEntities.Count);
 
             if (soliderUnit == null)
             {
@@ -110,7 +110,7 @@ namespace RoundHero
                 var values = new List<float>();
                 foreach (var value in drCard.GetValues(idx++))
                 {
-                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx);
+                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx, soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                     values.Add(targetValue);
   
                 }
@@ -124,7 +124,7 @@ namespace RoundHero
                 var values = new List<float>();
                 foreach (var buffValue in drBuff.BuffValues)
                 {
-                    var value = BattleBuffManager.Instance.GetBuffValue(buffValue);
+                    var value = BattleBuffManager.Instance.GetBuffValue(buffValue, soliderIdx, soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                     values.Add(value);
                     
                 }

@@ -42,7 +42,7 @@ namespace RoundHero
             
             //OnDropAction = onPointUpAction;
             
-            CardItem.SetCard(this.playerCardData.CardID);
+            CardItem.SetCard(this.playerCardData.CardID,this.playerCardData.CardIdx);
             ShowAllFune(idShowAllFune);
             Refresh();
             

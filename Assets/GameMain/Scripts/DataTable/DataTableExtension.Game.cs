@@ -126,6 +126,15 @@ namespace RoundHero
             });
         }
         
+        public static DRBuff GetBuff(this DataTableComponent dataTableComponent, EBuffID buffID)
+        {
+            var drBuffs = GameEntry.DataTable.GetDataTable<DRBuff>();
+            return drBuffs.GetDataRow((t) =>
+            {
+                return t.BuffIDs.Contains(buffID.ToString());
+            });
+        }
+        
         public static List<DRBuff> GetBuffs(this DataTableComponent dataTableComponent, EBuffType buffType)
         {
             var drBuffs = GameEntry.DataTable.GetDataTable<DRBuff>();

@@ -415,11 +415,14 @@ namespace RoundHero
         
         public List<BuffData> GetBuffData(int unitIdx)
         {
+            var buffDatas = new List<BuffData>();
             var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitIdx) as BattleMonsterEntity;
+            if (unitEntity == null)
+                return buffDatas;
+            
+            
             var drEnemy =
                 GameEntry.DataTable.GetEnemy(unitEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
-            
-            var buffDatas = new List<BuffData>();
 
             foreach (var buffID in drEnemy.OwnBuffs)
             {

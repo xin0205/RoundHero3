@@ -438,7 +438,7 @@ namespace RoundHero
                 {
                     if (triggerData.BuffValue.BuffData.BuffEquipType != EBuffEquipType.Normal)
                     {
-                        HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+                        //HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
                         continue;
                     }
                         
@@ -911,7 +911,7 @@ namespace RoundHero
                     }
                     
                     
-                    if (BattleUnitData.CurHP > 0)
+                    if (BattleUnitData.Exist())
                     {
                         if (unitActionState == EUnitActionState.Fly || unitActionState == EUnitActionState.Rush)
                         {
@@ -941,7 +941,7 @@ namespace RoundHero
             GameUtility.DelayExcute(moveCount * Constant.Unit.MoveTimes[unitActionState]  + 0.1f, () =>
             {
                 BattleUnitData.RoundGridMoveCount += moveCount;
-                if (BattleUnitData.CurHP > 0)
+                if (BattleUnitData.Exist())
                 {
                     animator.SetInteger(AnimationParameters.Jumping, 0);
                     Idle();
@@ -1169,7 +1169,7 @@ namespace RoundHero
             damageNode.SetActive(false);
 
             var curHP = BattleUnitData.CurHP;
-            curHP = curHP < 0 ? 0 : curHP;
+            curHP = curHP < 0 && BattleUnitData.FuneCount(EBuffID.Spec_UnDead) <= 0 ? 0 : curHP;
             hp.text = curHP.ToString();
             // hp.text = curHP + "/" +
             //           BattleUnitData.MaxHP;
@@ -1267,7 +1267,7 @@ namespace RoundHero
             
             
 
-            if (CurHP == 0)
+            if (CurHP == 0 && BattleUnitData.FuneCount(EBuffID.Spec_UnDead) <= 0)
             {
                 CurHP = -1;
                 GameUtility.DelayExcute(1.5f, () =>

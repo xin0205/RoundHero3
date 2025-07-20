@@ -118,7 +118,10 @@ namespace RoundHero
         //public bool IsUseConsume = false;
         public ECardDestination CardDestination = ECardDestination.Pass;
         public ECardUseType CardUseType;
-
+        public int EnergyDelta = 0;
+        public int MaxHPDelta = 0;
+        public int DmgDelta = 0;
+        
         public Data_Card()
         {
 
@@ -144,13 +147,16 @@ namespace RoundHero
             return dataCard;
         }
 
-        public int FuneCount(EBuffID funeBuffID, bool unUse = false)
+        //, bool unUse = false
+        public int FuneCount(EBuffID funeBuffID)
         {
             var count = 0;
             foreach (var funeIdx in FuneIdxs)
             {
                 var funeData = FuneManager.Instance.GetFuneData(funeIdx);
                 var drBuff = GameEntry.DataTable.GetBuff(funeData.FuneID);
+                
+                //unUse && drBuff.BuffIDs.Contains(funeBuffID.ToString()) || !unUse
                 if (drBuff.BuffIDs.Contains(funeBuffID.ToString()))
                 {
                     count += 1;
@@ -168,9 +174,6 @@ namespace RoundHero
 
             return count;
         }
-
-        
-        
 
         public void RoundClear()
         {
@@ -581,7 +584,7 @@ namespace RoundHero
         protected void IntervalChangeHP(int changeHP)
         {
             CurHP += changeHP;
-            CurHP = CurHP <= -1 ? 0 : CurHP;
+            CurHP = CurHP <= 0 && FuneCount(EBuffID.Spec_UnDead) <= 0 ? 0 : CurHP;
             CurHP = CurHP > MaxHP ? MaxHP : CurHP;
         }
 
@@ -615,12 +618,21 @@ namespace RoundHero
             return targetBuffCount;
         }
         
-        public int FuneCount(EBuffID funeID, bool unUse = false)
+        //, bool unUse = false
+        public int FuneCount(EBuffID funeID)
         {
             var count = 0;
             foreach (var _funeID in FuneIdxs)
             {
                 var funeData = FuneManager.Instance.GetFuneData(_funeID);
+                var drBuff = GameEntry.DataTable.GetBuff(funeData.FuneID);
+                //unUse && drBuff.BuffIDs.Contains(funeID.ToString()) || !unUse
+                if (drBuff.BuffIDs.Contains(funeID.ToString()))
+                {
+                    count += 1;
+                }
+                
+                
                 // if (funeData.FuneID == funeID)
                 // {
                 //     if (unUse && funeData.Value > 0 || !unUse)
@@ -633,6 +645,12 @@ namespace RoundHero
 
             return count;
         }
+
+        public bool Exist()
+        {
+            return CurHP > 0 || CurHP <= 0 && FuneCount(EBuffID.Spec_UnDead) > 0;
+        }
+        
         
         // public Data_Fune GetFune(EBuffID funeID, bool unUse = false)
         // {
@@ -871,18 +889,23 @@ namespace RoundHero
 
         }
 
-        public Data_BattleSolider(int idx, int cardIdx, int gridPosIdx, int energy, EUnitCamp unitCamp, List<int> funeIdxs) : base(
-            idx, gridPosIdx, unitCamp, funeIdxs)
+        public Data_BattleSolider(int idx, int cardIdx, int gridPosIdx, EUnitCamp unitCamp) : base(idx, gridPosIdx,
+            unitCamp, new List<int>())
         {
             CardIdx = cardIdx;
-            Energy = energy;
-            var card = BattleManager.Instance.GetCard(cardIdx);
-            var drCard = CardManager.Instance.GetCardTable(cardIdx);
-            BaseMaxHP = drCard.HP;
+            RefreshCardData();
+            
+            UnitRole = EUnitRole.Staff;
+        }
+
+        public void RefreshCardData()
+        {
+            var card = BattleManager.Instance.GetCard(CardIdx);
+            Energy = BattleCardManager.Instance.GetCardEnergy(CardIdx);
+            BaseMaxHP = BattleCardManager.Instance.GetCardMaxHP(card.CardID, card.CardIdx);
             CurHP = MaxHP;
             LastCurHP = CurHP;
-            UnitRole = EUnitRole.Staff;
-            FuneIdxs = funeIdxs;
+            FuneIdxs = card.FuneIdxs;
             BattleLinkIDs = new List<ELinkID>(card.RoundLinkIDs);
         }
 
@@ -1771,7 +1794,7 @@ namespace RoundHero
         public bool RoundIsAttack;
         
         
-        public List<EBuffID> RoundBuffs = new ();
+        public List<EBuffID> BattleBuffs = new ();
 
         public Data_BattlePlayer Copy()
         {
@@ -1784,7 +1807,7 @@ namespace RoundHero
             data.RoundUseCardCount = RoundUseCardCount;
             data.LastRoundUseCardCount = LastRoundUseCardCount;
             data.RoundIsAttack = RoundIsAttack;
-            data.RoundBuffs = new List<EBuffID>(RoundBuffs);
+            data.BattleBuffs = new List<EBuffID>(BattleBuffs);
             
 
             return data;
@@ -1819,7 +1842,7 @@ namespace RoundHero
             LastRoundUseCardCount = RoundUseCardCount;
             RoundUseCardCount = 0;
             RoundIsAttack = false;
-            RoundBuffs.Clear();
+            BattleBuffs.Clear();
             
         }
 
@@ -1832,7 +1855,7 @@ namespace RoundHero
             RoundUseCardCount = 0;
             LastRoundUseCardCount = 0;
             RoundIsAttack = false;
-            RoundBuffs.Clear();
+            BattleBuffs.Clear();
         }
     }
 
@@ -2001,7 +2024,7 @@ namespace RoundHero
             var unitCount = 0;
             foreach (var kv in BattleUnitDatas)
             {
-                if (kv.Value.CurHP > 0 &&
+                if (kv.Value.Exist() &&
                     ((targetCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == selfCamp) ||
                      (targetCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != selfCamp)) && 
                     roles.Contains(kv.Value.UnitRole))
