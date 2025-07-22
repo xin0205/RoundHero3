@@ -59,16 +59,16 @@ namespace RoundHero
             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
             
             funeIdx = FuneManager.Instance.GetIdx();
-            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 13));
+            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 22));
             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
             
-            funeIdx = FuneManager.Instance.GetIdx();
-            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
-            BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
-            
-            funeIdx = FuneManager.Instance.GetIdx();
-            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 12));
-            BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
+            // funeIdx = FuneManager.Instance.GetIdx();
+            // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
+            // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
+            //
+            // funeIdx = FuneManager.Instance.GetIdx();
+            // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 12));
+            // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].MaxHPDelta += 10;
 
             foreach (var kv in BattlePlayerManager.Instance.PlayerData.CardDatas)
@@ -1101,7 +1101,7 @@ namespace RoundHero
                         {
                             if (cardEnergy > 0)
                             {
-                                cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff.BuffValues[0]);
+                                cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff.GetValues(0)[0]);
 
                             }
                                 
@@ -1117,7 +1117,7 @@ namespace RoundHero
                 var drBuff2 = GameEntry.DataTable.GetBuff(EBuffID.Spec_NextCardSubEnergy);
                 if (cardEnergy > 0)
                 {
-                    cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff2.BuffValues[0]);
+                    cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff2.GetValues(0)[0]);
                 }
             }
             

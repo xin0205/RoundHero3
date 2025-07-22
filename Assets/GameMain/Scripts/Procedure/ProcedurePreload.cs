@@ -33,7 +33,7 @@ namespace RoundHero
             "Enemy",
             "Buff",
             //"Fune",
-            "Link",
+            //"Link",
             "Bless",
             "GridProp",
             //"EnergyBuff",

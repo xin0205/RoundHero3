@@ -90,7 +90,7 @@ namespace RoundHero
             return buffDatas;
         }
         
-        public List<List<float>> GetBuffValues(int soliderIdx)
+        public List<List<float>> GetBuffValues(int soliderIdx, TriggerData preTriggerData = null)
         {
             var soliderUnit = BattleUnitManager.Instance.GetUnitByIdx(soliderIdx) as BattleSoliderEntity;
             //Log.Debug("GetBuffValues:" + BattleUnitManager.Instance.BattleUnitDatas.Count + "-" + BattleUnitManager.Instance.BattleUnitEntities.Count);
@@ -110,25 +110,35 @@ namespace RoundHero
                 var values = new List<float>();
                 foreach (var value in drCard.GetValues(idx++))
                 {
-                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx, soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx, soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx, preTriggerData);
                     values.Add(targetValue);
   
                 }
+
                 valuelist.Add(values);
             }
-            
+            idx = 0;
             var cardData = GetCard(soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+            
             foreach (var funeIdx in cardData.FuneIdxs)
             {
                 var drBuff = FuneManager.Instance.GetBuffTable(funeIdx);
-                var values = new List<float>();
-                foreach (var buffValue in drBuff.BuffValues)
+                var funeValues = new List<float>();
+                foreach (var buffID in drBuff.BuffIDs)
                 {
-                    var value = BattleBuffManager.Instance.GetBuffValue(buffValue, soliderIdx, soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
-                    values.Add(value);
-                    
+                    foreach (var buffValue in drBuff.GetValues(idx))
+                    {
+                        var value = BattleBuffManager.Instance.GetBuffValue(buffValue, soliderIdx,
+                            soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx, preTriggerData);
+                        funeValues.Add(value);
+
+                    }
+                    valuelist.Add(funeValues);
+                    idx++;
                 }
-                valuelist.Add(values);
+
+                idx = 0;
+                
             }
 
             return valuelist;

@@ -129,6 +129,9 @@ namespace RoundHero
                     if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;
                     
+                    if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
+                        continue;
+                    
                     // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                     // if(actionUnit == null)
                     //     continue;
@@ -146,7 +149,9 @@ namespace RoundHero
                     if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;
 
-
+                    if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
+                        continue;
+                    
                     await InternalShowTag(triggerData.ActionUnitGridPosIdx, triggerData.EffectUnitGridPosIdx,
                         triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
                         !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx),

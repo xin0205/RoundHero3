@@ -182,7 +182,7 @@ namespace RoundHero
             //     unit.ChangeHP(hpDelta);
             // }
             
-            if (unit is Data_BattleCore)
+            if (unit is Data_BattleCore || unit is Data_BattleHero)
             {
                 if (changeHPInstantly)
                 {
@@ -200,7 +200,9 @@ namespace RoundHero
 
         }
 
-        public int ChangeHP(Data_BattleUnit unit, int value, Data_GamePlay gamePlayData,  EHPChangeType hpChangeType, bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = false)
+        public int ChangeHP(Data_BattleUnit unit, int value, Data_GamePlay gamePlayData, EHPChangeType hpChangeType,
+            bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = false)
+
         {
             if(unit == null)
                 return 0;

@@ -46,9 +46,18 @@ namespace RoundHero
         }
 
         /// <summary>
-        /// 获取BuffValues。
+        /// 获取值。
         /// </summary>
-        public List<string> BuffValues
+        public List<string> Values0
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取值2。
+        /// </summary>
+        public List<string> Values1
         {
             get;
             private set;
@@ -76,7 +85,8 @@ namespace RoundHero
             m_Id = int.Parse(columnStrings[index++]);
             index++;
 			BuffIDs = DataTableExtension.ParseStringList(columnStrings[index++]);
-			BuffValues = DataTableExtension.ParseStringList(columnStrings[index++]);
+			Values0 = DataTableExtension.ParseStringList(columnStrings[index++]);
+			Values1 = DataTableExtension.ParseStringList(columnStrings[index++]);
 			BuffTypes = DataTableExtension.ParseEBuffTypeList(columnStrings[index++]);
 
             GeneratePropertyArray();
@@ -91,7 +101,8 @@ namespace RoundHero
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
 					BuffIDs = binaryReader.ReadStringList();
-					BuffValues = binaryReader.ReadStringList();
+					Values0 = binaryReader.ReadStringList();
+					Values1 = binaryReader.ReadStringList();
 					BuffTypes = binaryReader.ReadEBuffTypeList();
                 }
             }
@@ -100,9 +111,46 @@ namespace RoundHero
             return true;
         }
 
+        private KeyValuePair<int, List<string>>[] m_Values = null;
+
+        public int ValuesCount
+        {
+            get
+            {
+                return m_Values.Length;
+            }
+        }
+
+        public List<string> GetValues(int id)
+        {
+            foreach (KeyValuePair<int, List<string>> i in m_Values)
+            {
+                if (i.Key == id)
+                {
+                    return i.Value;
+                }
+            }
+
+            throw new GameFrameworkException(Utility.Text.Format("GetValues with invalid id '{0}'.", id));
+        }
+
+        public List<string> GetValuesAt(int index)
+        {
+            if (index < 0 || index >= m_Values.Length)
+            {
+                throw new GameFrameworkException(Utility.Text.Format("GetValuesAt with invalid index '{0}'.", index));
+            }
+
+            return m_Values[index].Value;
+        }
+
         private void GeneratePropertyArray()
         {
-
+            m_Values = new KeyValuePair<int, List<string>>[]
+            {
+                new KeyValuePair<int, List<string>>(0, Values0),
+                new KeyValuePair<int, List<string>>(1, Values1),
+            };
         }
     }
 }

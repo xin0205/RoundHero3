@@ -32,7 +32,7 @@ namespace RoundHero
     {
         CurHeart,
         MaxHeart,
-        CurHP,
+        HP,
         MaxHP,
         Damage,
         // CurEnergy,
@@ -309,7 +309,7 @@ namespace RoundHero
         OtherEnterRange,
         OtherLeaveRange,
         ActiveAttack,
-        Collision,
+        Collide,
         SelectUnit,
         SelectGrid,
         //Use,
@@ -461,7 +461,7 @@ namespace RoundHero
 
     public enum ETriggerDataType
     {
-        Hero,
+        HeroAtrb,
         RoleAttribute,
         RoleState,
         RoundRoleState,
@@ -471,6 +471,7 @@ namespace RoundHero
         RoundBuff,
         Curse,
         ClearBuff,
+        TransferBuff,
         Empty,
     }
     
@@ -500,11 +501,12 @@ namespace RoundHero
     public enum EBuffValueType
     {
         Atrb,
-        Hero,
+        HeroAtrb,
         State,
         Card,
         RoundState,
         ClearBuff,
+        TransferBuff,
         // UnitAttribute,
         // HeroAttribute,
         // UnitState,
@@ -630,6 +632,7 @@ namespace RoundHero
         EnemyCount,
         CardEnergy,
         SubEnergy,
+        OverflowDmg,
     }
 
     public enum EMapSite

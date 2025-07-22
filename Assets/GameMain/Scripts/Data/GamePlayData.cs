@@ -708,8 +708,8 @@ namespace RoundHero
         
         public override int CurHP
         {
-            get => (int) Attribute.GetAttribute(EHeroAttribute.CurHP);
-            set => Attribute.SetAttribute(EHeroAttribute.CurHP, value);
+            get => (int) Attribute.GetAttribute(EHeroAttribute.HP);
+            set => Attribute.SetAttribute(EHeroAttribute.HP, value);
         }
         
         public int CurHeart
@@ -1024,7 +1024,7 @@ namespace RoundHero
             var drEnemy = GameEntry.DataTable.GetEnemy(monsterID);
 
             BaseMaxHP = drEnemy.HP;
-            CurHP = 3;//MaxHP;
+            CurHP = MaxHP;
             LastCurHP = CurHP;
             BaseDamage = 0;//BattleEnemyManager.Instance.GetDamage(monsterID);
             UnitRole = EUnitRole.Staff;
@@ -1402,7 +1402,7 @@ namespace RoundHero
                 var drFune = GameEntry.DataTable.GetBuff(kv.Value.FuneID);
                 if(drFune == null)
                     continue;
-                FuneDatas[kv.Key].Value = (int)BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
+                FuneDatas[kv.Key].Value = (int)BattleBuffManager.Instance.GetBuffValue(drFune.GetValues(0)[0]);
             }
 
             foreach (var kv in CardDatas)

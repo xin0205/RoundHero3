@@ -24,7 +24,7 @@ namespace RoundHero
         public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
         public string BuffStr;
         public EBuffEquipType BuffEquipType = EBuffEquipType.Normal;
-        
+        public ETriggerTarget TriggerInitiator = ETriggerTarget.Empty;
 
         public BuffData Copy()
         {
@@ -134,7 +134,7 @@ namespace RoundHero
         
         private List<TriggerData> InternalBuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<string> values, int ownUnitIdx, int actionUnitIdx,
             int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
-            int actionUnitPreGridPosIdx = -1, int cardIdx = -1)
+            int actionUnitPreGridPosIdx = -1, int cardIdx = -1, TriggerData preTriggerData = null)
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
@@ -172,12 +172,12 @@ namespace RoundHero
                     foreach (var value in values)
                     {
                         
-                        buffValues.Add(BattleBuffManager.Instance.GetBuffValue(value, realEffectUnitIdx, cardIdx));
+                        buffValues.Add(BattleBuffManager.Instance.GetBuffValue(value, realEffectUnitIdx, cardIdx, preTriggerData));
                     }
         
                     switch (buffvalueType)
                     {
-                        case EBuffValueType.Hero:
+                        case EBuffValueType.HeroAtrb:
                             triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitIdx, actionUnitIdx,
                                 realEffectUnitIdx, buffData.HeroAttribute, buffValues[0]);
                             
@@ -242,6 +242,17 @@ namespace RoundHero
                             //     
                             // }
                             
+                            break;
+                        case EBuffValueType.TransferBuff:
+                            triggerData = new TriggerData();
+                            triggerData.TriggerDataType = ETriggerDataType.TransferBuff;
+                            triggerData.UnitStateEffectTypes = buffData.UnitStateEffectTypes;
+                            if(buffData.TriggerInitiator == ETriggerTarget.Effect)
+                                triggerData.ActionUnitIdx = effectUnitIdx;
+                            else if(buffData.TriggerInitiator == ETriggerTarget.Action)
+                                triggerData.ActionUnitIdx = actionUnitIdx;    
+                            
+                            triggerData.EffectUnitIdx = realEffectUnitIdx;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -427,7 +438,7 @@ namespace RoundHero
         
         public void BuffsTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit, TriggerData triggerData, List<TriggerData> triggerDatas, EBuffTriggerType buffTriggerType)
         {
-            BattleUnitManager.Instance.GetBuffValue(gamePlayData, unit, out List<BuffValue> triggerBuffDatas);
+            BattleUnitManager.Instance.GetBuffValue(gamePlayData, unit, out List<BuffValue> triggerBuffDatas, -1, triggerData);
             
             if(triggerBuffDatas == null)
                 return;
@@ -444,7 +455,7 @@ namespace RoundHero
                 
                 BuffTrigger(buffTriggerType,
                     triggerBuffData.BuffData, triggerBuffData.ValueList, triggerData.EffectUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
-                    triggerDatas);
+                    triggerDatas, -1, -1, triggerData);
     
             }
            
@@ -864,7 +875,8 @@ namespace RoundHero
                     break;
                 case EBuffTriggerType.ActiveAttack:
                     break;
-                case EBuffTriggerType.Collision:
+                case EBuffTriggerType.Collide:
+                    BuffParse_Collide(strList, buffData);
                     break;
                 case EBuffTriggerType.SelectUnit:
                     BuffParse_SelectUnit(strList, buffData);
@@ -885,6 +897,7 @@ namespace RoundHero
                     BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.AddDeBuff:
+                    BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.SingleRound:
                     break;
@@ -935,7 +948,7 @@ namespace RoundHero
                 case EBuffValueType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.Hero:
+                case EBuffValueType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
                 case EBuffValueType.State:
@@ -943,6 +956,11 @@ namespace RoundHero
                     break;
                 case EBuffValueType.Card:
                     buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
+                    break;
+                case EBuffValueType.ClearBuff:
+                    var unitStateEffectTypesStr = strList[5].Split("|");
+                    
+                    buffData.UnitStateEffectTypes = GameUtility.GetEnums<EUnitStateEffectType>(unitStateEffectTypesStr.ToList());
                     break;
                 case EBuffValueType.Empty:
                     break;
@@ -954,6 +972,34 @@ namespace RoundHero
             {
                 buffData.FlyType = Enum.Parse<EFlyType>(strList[6]);
                 buffData.FlyRange = Enum.Parse<EActionType>(strList[7]);
+            }
+            
+        }
+        
+        public void BuffParse_Collide(string[] strList, BuffData buffData)
+        {
+
+            var unitCamps = strList[1].Split("|");
+            foreach (var unitCamp in unitCamps)
+            {
+                buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
+            }
+            
+            buffData.TriggerInitiator = Enum.Parse<ETriggerTarget>(strList[2]);
+
+            
+            var triggerTargets = strList[3].Split("|");
+            foreach (var triggerTarget in triggerTargets)
+            {
+                buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
+            }
+            
+            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
+            
+            var unitStateEffectTypes = strList[5].Split("|");;
+            foreach (var unitStateEffectType in unitStateEffectTypes)
+            {
+                buffData.UnitStateEffectTypes.Add(Enum.Parse<EUnitStateEffectType>(unitStateEffectType));
             }
             
         }
@@ -976,7 +1022,7 @@ namespace RoundHero
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
             
-            var unitStateEffectTypes = strList[4].Split("2");;
+            var unitStateEffectTypes = strList[4].Split("|");;
             foreach (var unitStateEffectType in unitStateEffectTypes)
             {
                 buffData.UnitStateEffectTypes.Add(Enum.Parse<EUnitStateEffectType>(unitStateEffectType));
@@ -1055,7 +1101,7 @@ namespace RoundHero
                 case EBuffValueType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.Hero:
+                case EBuffValueType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
                 case EBuffValueType.State:
@@ -1102,7 +1148,7 @@ namespace RoundHero
                 case EBuffValueType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[7]);
                     break;
-                case EBuffValueType.Hero:
+                case EBuffValueType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[7]);
                     break;
                 case EBuffValueType.State:
@@ -1141,7 +1187,7 @@ namespace RoundHero
                 case EBuffValueType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.Hero:
+                case EBuffValueType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
                 case EBuffValueType.State:
@@ -1181,7 +1227,7 @@ namespace RoundHero
                 case EBuffValueType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.Hero:
+                case EBuffValueType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
                 case EBuffValueType.State:
@@ -1213,7 +1259,7 @@ namespace RoundHero
             
         }
         
-        public float GetBuffValue(string value, int effectUnitIdx = -1, int cardIdx = -1)
+        public float GetBuffValue(string value, int effectUnitIdx = -1, int cardIdx = -1, TriggerData preTriggerData = null)
         {
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
             var absValue = value;
@@ -1305,6 +1351,15 @@ namespace RoundHero
                             return 0;
                         }
                         break;
+                    case EValueType.OverflowDmg:
+                        if (preTriggerData != null)
+                        {
+                            var delta = Math.Abs(preTriggerData.Value + preTriggerData.DeltaValue) -
+                                        Math.Abs(preTriggerData.ActualValue);
+                            return delta > 0 ? delta : 0;
+                        }
+                        break;
+                        
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -1320,9 +1375,22 @@ namespace RoundHero
         //     int.TryParse(value, out int resValue);
         //     return resValue;
         // }
-        
 
-        
+
+        public void TransferBuff(Data_BattleUnit actionUnit, Data_BattleUnit effectUnit, TriggerData triggerData)
+        {
+            foreach (var kv in actionUnit.UnitStateData.UnitStates)
+            {
+                foreach (var unitStateEffectType in triggerData.UnitStateEffectTypes)
+                {
+                    if (Constant.Battle.EffectUnitStates[unitStateEffectType].Contains(kv.Key))
+                    {
+                        effectUnit.ChangeState(kv.Key, kv.Value.Value);
+                    }
+                }
+            }
+            actionUnit.RemoveAllState(triggerData.UnitStateEffectTypes);
+        }
 
     }
 }

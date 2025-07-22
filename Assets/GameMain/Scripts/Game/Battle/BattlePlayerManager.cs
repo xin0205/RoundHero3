@@ -26,7 +26,7 @@ namespace RoundHero
             {
                 var funeIdx = playerData.FuneIdx++;
                 var drFune = GameEntry.DataTable.GetBuff(funeID);
-                var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.BuffValues[0]);
+                var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.GetValues(0)[0]);
                 playerData.FuneDatas.Add(funeIdx, new Data_Fune(funeIdx, funeID, (int)value));
                 playerData.UnusedFuneIdxs.Add(funeIdx);
             }

@@ -37,10 +37,11 @@ namespace RoundHero
             foreach (var funeIdx in card.FuneIdxs)
             {
                 var drBuff = FuneManager.Instance.GetBuffTable(funeIdx);
+                var idx = 0;
                 foreach (var buffIDStr in drBuff.BuffIDs)
                 {
                     var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
-                    var values = drBuff.BuffValues;
+                    var values = drBuff.GetValues(idx++);
 
                     BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, actionUnitIdx,
                         effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx);

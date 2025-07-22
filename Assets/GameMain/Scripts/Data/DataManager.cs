@@ -10,6 +10,7 @@ namespace RoundHero
         
         public DataManager()
         {
+
             var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
              
             if (hasSetting)

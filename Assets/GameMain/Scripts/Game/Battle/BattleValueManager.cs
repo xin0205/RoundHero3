@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -117,8 +118,19 @@ namespace RoundHero
             foreach (var kv in triggerDataDict)
             {
                 var effectUnit =  BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
-                
-                if (effectUnit is BattleSoliderEntity)
+
+                if (kv.Key == PlayerManager.Instance.PlayerData.BattleHero.Idx)
+                {
+                    var value = 0;
+                    foreach (var triggerData in kv.Value)
+                    {
+                        ShowHeroValue(triggerData.ActionUnitGridPosIdx, (int)triggerData.ActualValue, entityIdx);
+                        idx++;
+                        entityIdx += kv.Value.Count;
+                    }
+
+                }
+                else if (effectUnit is BattleSoliderEntity)
                 {
                     ShowValues(kv.Value, entityIdx);
                     idx++;
@@ -187,7 +199,39 @@ namespace RoundHero
             }
         }
         
-        
+        private async Task ShowHeroValue(int gridPosIdx, int value, int entityIdx)
+        {
+            var gridPos = GameUtility.GridPosIdxToPos(gridPosIdx);
+            gridPos.y += 1f;
+                
+            var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+            uiCorePos.y -= 25f;
+            var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), gridPos);
+            //var uiLocalPoint2 = uiLocalPoint;
+            uiLocalPoint.y += 25f;
+            //uiLocalPoint2.y += 75f;
+                
+            var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
+                uiCorePos,
+                value, entityIdx, true, false);
+
+                
+            //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
+            if (GameEntry.Entity.HasEntity(entity.Id))
+            {
+                if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
+                {
+
+                    GameEntry.Entity.HideEntity(entity);
+                }
+                else
+                {
+
+                    BattleValueEntities.Add(entity.Entity.Id, entity);
+                }
+            }
+        }
 
         private async void InternalShowValue(BattleUnitEntity effectUnit, int value, int entityIdx)
         {

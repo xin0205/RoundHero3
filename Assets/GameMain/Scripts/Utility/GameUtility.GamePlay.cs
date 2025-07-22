@@ -22,16 +22,20 @@ namespace RoundHero
             var drBuff = GameEntry.DataTable.GetBuff(funeID);
             
             var values = new List<float>();
-            foreach (var value in drBuff.BuffValues)
+            var idx = 0;
+            foreach (var buffID in drBuff.BuffIDs)
             {
-                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
-                if (val != 0)
+                foreach (var value in drBuff.GetValues(idx++))
                 {
-                    values.Add(val);
+                    var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+                    if (val != 0)
+                    {
+                        values.Add(val);
+                    }
+
                 }
-               
             }
-            
+            idx = 0;
             var buffDesc =
                 Utility.Text.Format(Constant.Localization.FuneDesc, funeID.ToString());
 
