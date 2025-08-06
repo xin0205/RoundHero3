@@ -438,13 +438,26 @@ namespace RoundHero
                 {
                     if (triggerData.BuffValue.BuffData.BuffEquipType != EBuffEquipType.Normal)
                     {
-                        //HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+                        //死亡，溢出的伤害，攻击对方 需要下行代码
+                        if (triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+                            triggerData.BattleUnitAttribute == EUnitAttribute.HP)
+                        {
+                            HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+                        }
+                            
                         continue;
                     }
                         
                     
                     var bulletData = new BulletData();
                     bulletData.ActionUnitIdx = triggerData.ActionUnitIdx;
+                    var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    if (actionUnit != null)
+                    {
+                        bulletData.EffectColor = BattleUnitManager.Instance.GetEffectColor(actionUnit);
+                    }
+                    
+                    
                     List<int> paths;
                     var triggerRange = triggerData.BuffValue.BuffData.TriggerRange.ToString(); 
                     if (triggerRange.Contains("Extend"))
@@ -479,7 +492,28 @@ namespace RoundHero
                     
                     if (triggerRange.Contains("Extend"))
                     {
-                        GameEntry.Entity.ShowBattleLineBulletEntityAsync(bulletData, ShootPos.position);
+                        foreach (var triggerActionData in bulletData.TriggerActionDataDict[triggerData.EffectUnitGridPosIdx])
+                        {
+                            if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                            {
+                                if (triggerActionTriggerData.TriggerData != null)
+                                {
+                                    BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
+
+                                }
+                            }
+
+                            if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                            {
+                                if (triggerActionMoveData.MoveUnitData != null)
+                                {
+                                    BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                                }
+                            }
+
+                            BattleManager.Instance.RefreshView();
+                        }
+                        GameEntry.Entity.ShowBattleBeamBulletEntityAsync(bulletData, ShootPos.position);
                     }
                     else if (triggerRange.Contains("Parabola"))
                     {
@@ -689,10 +723,13 @@ namespace RoundHero
                 case EAttackCastType.RemoteSingle:
                     break;
                 case EAttackCastType.ExtendMulti:
-                    ShowEffectAttackEntity_RemoteMulti(triggerActionDataDict);
+                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
                     break;
                 case EAttackCastType.ParabolaMulti:
-                    ShowEffectAttackEntity_RemoteMulti(triggerActionDataDict);
+                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
+                    break;
+                case EAttackCastType.LineMulti:
+                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
                     break;
                 case EAttackCastType.Empty:
                 default:
@@ -774,8 +811,13 @@ namespace RoundHero
                             effectPos = EffectAttackPos.position;
                         }
 
-                    
-                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                        var actionUnit =
+                            BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.ActionUnitIdx);
+                        if(actionUnit == null)
+                            continue;
+
+                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position,
+                            BattleUnitManager.Instance.GetEffectColor(actionUnit));
                     }
                     
                 }
@@ -804,8 +846,14 @@ namespace RoundHero
                             effectName = "EffectCloseSingleAttackEntity";
                             effectPos = EffectAttackPos.position;
                         }
+                        
+                        var actionUnit =
+                            BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.ActionUnitIdx);
+                        if(actionUnit == null)
+                            continue;
 
-                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position);
+                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position,
+                            BattleUnitManager.Instance.GetEffectColor(actionUnit));
                         break;
                     }
                 }
@@ -813,28 +861,28 @@ namespace RoundHero
             }
         }
 
-        private async void ShowEffectAttackEntity_RemoteMulti(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
+        private async void ShowEffectAttackEntity_Empty(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
         {
             
         }
 
         
-        private async void ShowEffectAttackEntity(string effectName, Vector3 effectPos, Vector3 lookAtPos)
+        private async void ShowEffectAttackEntity(string effectName, Vector3 effectPos, Vector3 lookAtPos, EColor effectColor)
         {
-            var effectAttackEntity = await GameEntry.Entity.ShowEffectEntityAsync(effectName, effectPos);
+            var effectAttackEntity = await GameEntry.Entity.ShowBattleEffectEntityAsync(effectName, effectPos, effectColor);
 
             if (lookAtPos != Vector3.zero)
             {
                 effectAttackEntity.transform.LookAt(new Vector3(lookAtPos.x, effectAttackEntity.transform.position.y, lookAtPos.z));
             }
             
-            if (!effectAttackEntity.AutoHide)
-            {
-                GameUtility.DelayExcute(1f, () =>
-                {
-                    GameEntry.Entity.HideEntity(effectAttackEntity);
-                });
-            }
+            // if (!effectAttackEntity.AutoHide)
+            // {
+            //     GameUtility.DelayExcute(1f, () =>
+            //     {
+            //         GameEntry.Entity.HideEntity(effectAttackEntity);
+            //     });
+            // }
         }
         
         public void FootL()
@@ -904,7 +952,19 @@ namespace RoundHero
                     //Log.Debug("pos:" + this.transform.position.x);
                     //Log.Debug("LookAt:" + pos.x);
 
-                    roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                    
+                    
+
+                    if (tIdx != moveGridPosIdxs.Count - 1 && (unitActionState == EUnitActionState.Rush ||
+                                                              unitActionState == EUnitActionState.Fly))
+                    {
+                        roleRoot.LookAt(new Vector3(pos.x, transform.position.y - 1.5f, pos.z));
+                    }
+                    else
+                    {
+                        roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                    }
+                    
                     if (unitActionState == EUnitActionState.Fly)
                     {
                         roleRoot.Rotate(new Vector3(0, 1, 0), 180);
@@ -916,6 +976,7 @@ namespace RoundHero
                         if (unitActionState == EUnitActionState.Fly || unitActionState == EUnitActionState.Rush)
                         {
                             Fly();
+                            
                         }
                         else
                         {
@@ -945,6 +1006,7 @@ namespace RoundHero
                 {
                     animator.SetInteger(AnimationParameters.Jumping, 0);
                     Idle();
+                    
                     LookAtHero();
                     if (moveGridPosIdxs.Count > 0)
                     {
@@ -1028,6 +1090,9 @@ namespace RoundHero
                 case EAttackCastType.ExtendMulti:
                     ExtendMultiAttack(actionData);
                     break;
+                case EAttackCastType.LineMulti:
+                    LineMultiAttack(actionData);
+                    break;
                 case EAttackCastType.ParabolaMulti:
                     ParabolaMultiAttack(actionData);
                     break;
@@ -1071,6 +1136,18 @@ namespace RoundHero
                 animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
             });
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                MultiHandleShoot(actionData);
+            });
+        }
+        
+        public void LineMultiAttack(ActionData actionData)
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+
             GameUtility.DelayExcute(0.15f, () =>
             {
                 MultiHandleShoot(actionData);
@@ -1240,16 +1317,21 @@ namespace RoundHero
         
         private async void ShowEffectHurtEntity()
         {
-            var effectHurt = await GameEntry.Entity.ShowEffectEntityAsync("EffectHurtEntity", EffectHurtPos.position);
+            //var effectHurt = await GameEntry.Entity.ShowBattleEffectEntityAsync("EffectHurtEntity", EffectHurtPos.position);
             //effectHurt.transform.parent = EffectHurtPos;
+        }
+
+        public virtual void HurtAnimation()
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.GetHitTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)HitType.Back1);
         }
 
         public void Hurt()
         {
-            
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.GetHitTrigger);
-            animator.SetTrigger(AnimationParameters.Trigger);
-            animator.SetInteger(AnimationParameters.Action, (int)HitType.Back1);
+
+            HurtAnimation();
 
             // GameUtility.DelayExcute(0.15f, () =>
             // {
@@ -1270,7 +1352,7 @@ namespace RoundHero
             if (CurHP == 0 && BattleUnitData.FuneCount(EBuffID.Spec_UnDead) <= 0)
             {
                 CurHP = -1;
-                GameUtility.DelayExcute(1.5f, () =>
+                GameUtility.DelayExcute(1f, () =>
                 {
                     Dead();
                 });
@@ -1351,18 +1433,31 @@ namespace RoundHero
             // Vector3 position = new Vector3(pos.x, pos.y, Camera.main.transform.position.z);
             // Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
             
-            var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-            uiCorePos.y -= 25f;
-            var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-            var uiLocalPoint2 = uiLocalPoint;
-            uiLocalPoint.y += 25f;
-            uiLocalPoint2.y += 75f;
+            // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+            // uiCorePos.y -= 25f;
+            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+            // var uiLocalPoint2 = uiLocalPoint;
+            // uiLocalPoint.y += 25f;
+            // uiLocalPoint2.y += 75f;
 
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                hurt < 0 ? uiCorePos : uiLocalPoint2,
-                hurt, -1, false, this is BattleSoliderEntity && hurt < 0);
+            var moveParams = new MoveParams()
+            {
+                FollowGO = this.gameObject,
+                DeltaPos = new Vector2(0, 125f),
+                IsUIGO = false,
+            };
             
+            var targetMoveParams = new MoveParams()
+            {
+                FollowGO = AreaController.Instance.UICore,
+                DeltaPos = new Vector2(0, -25f),
+                IsUIGO = true,
+            };
+            
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, -1, false,
+                this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+            //
             // var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
             // hurtEntity.transform.parent = Root;
         }
@@ -1410,14 +1505,14 @@ namespace RoundHero
             UnitDescTriggerItem.OnPointerExit();
         }
         
-        public void ShowTags(int actionUnitIdx, bool isShowAttackPos)
+        public void ShowTags(int actionUnitIdx, bool isShowAttackPos = true)
         {
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
             
             ShowAttackTag(actionUnitIdx, isShowAttackPos);
             ShowFlyDirect(actionUnitIdx);
-            ShowBattleIcon(actionUnitIdx, EBattleIconType.Collison);
+            ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
             ShowDisplayValue(actionUnitIdx);
         }
 
@@ -1428,7 +1523,7 @@ namespace RoundHero
             
             ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
-            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collison);
+            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
             ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
         }
         

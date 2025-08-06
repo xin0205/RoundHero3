@@ -7,6 +7,8 @@ namespace RoundHero
     public class BattleCoreEntity : BattleUnitEntity
     {
         public BattleCoreEntityData BattleCoreEntityData { get; protected set; }
+
+        [SerializeField] private ShakeGameObject shakeGameObject;
         
         public virtual Vector3 Position
         {
@@ -100,6 +102,17 @@ namespace RoundHero
             base.OnPointerExit(baseEventData);
 
             //UnShowTags();
+        }
+        
+        public override void HurtAnimation()
+        {
+            shakeGameObject.Shake();
+        }
+        
+        public override void Dead()
+        {
+            
+            
         }
 
     }

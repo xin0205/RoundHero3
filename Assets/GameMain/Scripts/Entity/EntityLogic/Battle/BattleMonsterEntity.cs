@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -74,14 +75,29 @@ namespace RoundHero
         public override void LookAtHero()
         {
             var attackDatas = BattleFightManager.Instance.GetDirectAttackDatas(BattleMonsterEntityData.BattleMonsterData.Idx);
+            var isLook = false;
             foreach (var kv in attackDatas)
             {
                  var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
                  if (unitEntity is BattleCoreEntity)
                  {
+                     isLook = true;
                      var pos = unitEntity.Position;
                      roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
                  }
+            }
+
+            if (!isLook && attackDatas.Count > 0)
+            {
+                var list = attackDatas.Keys.ToList();
+                
+                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(list[0]);
+                if (unitEntity != null)
+                {
+                    var pos = unitEntity.Position;
+                    roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                }
+                
             }
             
             
@@ -198,14 +214,28 @@ namespace RoundHero
             // pos2.z = Camera.main.transform.position.z;
             // Vector3 pos3 = Camera.main.ScreenToWorldPoint(pos2);
             //
-            var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-            var movePos  = new Vector2(uiLocalPoint.x, uiLocalPoint.y + 100);
-
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                movePos,
-                hurt, -1, false, false);
             
+            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+            // var movePos  = new Vector2(uiLocalPoint.x, uiLocalPoint.y + 100);
+            
+            var moveParams = new MoveParams()
+            {
+                FollowGO = this.gameObject,
+                DeltaPos = new Vector2(0, 25f),
+                IsUIGO = false,
+            };
+            
+            var targetMoveParams = new MoveParams()
+            {
+                FollowGO = this.gameObject,
+                DeltaPos = new Vector2(0, 125f),
+                IsUIGO = false,
+            };
+            
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, -1, false,
+                this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+
 
         }
         

@@ -71,8 +71,8 @@ namespace RoundHero
             //var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), monsterID, gridPosIdx, unitCamp, funeIDs);
             //battleEnemyData.UnitRole = EUnitRole.Staff;
             
-            battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 1);
-            //battleMonsterData.ChangeState(EUnitState.AddDmg, 1);
+            //battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 1);
+            battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 1);
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);
 
@@ -294,19 +294,37 @@ namespace RoundHero
         //     
         //     return (BattleHurtEntity)task.Logic;
         // }
-        
-        public static async Task<BattleMoveValueEntity> ShowBattleMoveValueEntityAsync(this EntityComponent entityComponent,
-            Vector3 pos, Vector3 targetPos, int value, int entityIdx = -1, bool isLoop = false, bool isAdd = false)
+
+        public static async Task<BattleMoveValueEntity> ShowBattleMoveValueEntityAsync(
+            this EntityComponent entityComponent,
+            int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+            MoveParams moveParams = null, MoveParams targetMoveParams = null)
         {
             var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), pos, targetPos, value, entityIdx, isLoop, isAdd);
+            data.Init(entityComponent.GenerateSerialId(), startValue, endValue, entityIdx, isLoop, isAdd, moveParams,
+                targetMoveParams);
 
             //Log.Debug("task1");
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveValueEntity),
                 AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, data);
             //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleMoveValueEntity)task.Logic;
+        }
+        
+        public static async Task<BattleMoveIconEntity> ShowBattleMoveIconEntityAsync(this EntityComponent entityComponent,
+            EUnitState unitState, int entityIdx = -1, bool isLoop = false, MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        {
+            var data = ReferencePool.Acquire<BattleMoveIconEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), unitState, entityIdx, isLoop, moveParams,
+                targetMoveParams);
+
+            //Log.Debug("task1");
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveIconEntity),
+                AssetUtility.GetBattleMoveIconPrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleMoveIconEntity)task.Logic;
         }
         
         public static async Task<EffectEntity> ShowEffectEntityAsync(this EntityComponent entityComponent, string assetName, Vector3 pos)
@@ -321,6 +339,18 @@ namespace RoundHero
             return (EffectEntity)task.Logic;
         }
         
+        public static async Task<BattleEffectEntity> ShowBattleEffectEntityAsync(this EntityComponent entityComponent, string assetName, Vector3 pos, EColor color)
+        {
+            var data = ReferencePool.Acquire<BattleEffectEntityData>();
+            
+            data.Init(entityComponent.GenerateSerialId(), pos, color);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleEffectEntity),
+                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleEffectEntity)task.Logic;
+        }
+        
         public static async Task<BattleLineBulletEntity> ShowBattleLineBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData, Vector3 shootPos)
         {
             var data = ReferencePool.Acquire<BattleBulletEntityData>();
@@ -331,6 +361,18 @@ namespace RoundHero
                 AssetUtility.GetBattleLineBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
             
             return (BattleLineBulletEntity)task.Logic;
+        }
+        
+        public static async Task<BattleBeamBulletEntity> ShowBattleBeamBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData, Vector3 shootPos)
+        {
+            var data = ReferencePool.Acquire<BattleBulletEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), shootPos, bulletData);
+
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleBeamBulletEntity),
+                AssetUtility.GetBattleBeamBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
+            
+            return (BattleBeamBulletEntity)task.Logic;
         }
         
         public static async Task<BattleParabolaBulletEntity> ShowBattleParabolaBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData, Vector3 shootPos)
@@ -397,8 +439,11 @@ namespace RoundHero
         public static async Task<BattleIconEntity> ShowBattleIconEntityAsync(this EntityComponent entityComponent, Vector3 pos, EBattleIconType  battleIconType, int entityIdx)
         {
             var data = ReferencePool.Acquire<BattleIconEntityData>();
-
-            data.Init(entityComponent.GenerateSerialId(), pos, battleIconType, entityIdx);
+            
+            var uiPos = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), pos);
+            
+            data.Init(entityComponent.GenerateSerialId(), uiPos, battleIconType, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleIconEntity),
                 AssetUtility.GetBattleIconEntityPrefab(), Constant.EntityGroup.Unit, 0, data);

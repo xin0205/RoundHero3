@@ -199,6 +199,11 @@ namespace RoundHero
             return "Assets/GameMain/Entities/Bullets/LineBullet.prefab";
         }
         
+        public static string GetBattleBeamBulletPrefab()
+        {
+            return "Assets/GameMain/Entities/Bullets/BeamBullet.prefab";
+        }
+        
         public static string GetBattleSoliderPrefab(int cardID)
         {
             return Utility.Text.Format("Assets/GameMain/Entities/Soliders/BattleSoliderEntity_{0}.prefab", cardID);
@@ -228,9 +233,36 @@ namespace RoundHero
             }
             else
             {
-                return GameEntry.Resource.LoadSpriteAsync(GetHeroIconName(0));
+                return GetEmpty();;
             }
 
+        }
+        
+        public static string GetUnitStateIconName(EUnitState unitState)
+        {
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/UnitStates/{0}.png", unitState.ToString());
+            
+        }
+        
+        public static Task<Sprite> GetUnitStateIcon(EUnitState unitState)
+        {
+            var assetName = GetUnitStateIconName(unitState);
+            if (GameEntry.Resource.HasAsset(assetName) != HasAssetResult.NotExist)
+            {
+                return GameEntry.Resource.LoadSpriteAsync(assetName);
+            }
+            else
+            {
+                return GetEmpty();
+            }
+
+        }
+        
+        public static async Task<Sprite> GetEmpty()
+        { 
+            return await GameEntry.Resource.LoadSpriteAsync("Assets/GameMain/UI/UISprites/Common/Block.png");
+
+            
         }
         
         public static string GetBlessIconName(int blessID)
@@ -390,6 +422,12 @@ namespace RoundHero
         public static string GetBattleMoveValuePrefab()
         {
             return $"Assets/GameMain/Entities/Battles/BattleMoveValueEntity.prefab";
+
+        }
+        
+        public static string GetBattleMoveIconPrefab()
+        {
+            return $"Assets/GameMain/Entities/Battles/BattleMoveIconEntity.prefab";
 
         }
         

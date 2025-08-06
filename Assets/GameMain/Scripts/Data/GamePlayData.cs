@@ -1275,7 +1275,7 @@ namespace RoundHero
             BlessID = blessID;
             
             var drBless = GameEntry.DataTable.GetBless(blessID);
-            Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]);
+            Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
         }
 
         public Data_Bless Copy()
@@ -1419,7 +1419,7 @@ namespace RoundHero
                     drBless.BlessID == EBlessID.EachRoundUseTacticCardAttackAllEnemy)
                 {
                     
-                    kv.Value.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]);
+                    kv.Value.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
                 }
             }
         }
@@ -1427,6 +1427,8 @@ namespace RoundHero
         public bool Contain(EBlessID blessID)
         {
             var drBless = GameEntry.DataTable.GetBless(blessID);
+            if (drBless == null)
+                return false;
             foreach (var kv in BlessDatas)
             {
                 if (kv.Value.BlessID == drBless.Id)
@@ -1440,6 +1442,8 @@ namespace RoundHero
         {
             var idx = 0;
             var drBless = GameEntry.DataTable.GetBless(blessID);
+            if (drBless == null)
+                return idx;
             foreach (var kv in BlessDatas)
             {
                 if (kv.Value.BlessID == drBless.Id)
@@ -1452,6 +1456,9 @@ namespace RoundHero
         public Data_Bless GetUsefulBless(EBlessID blessID)
         {
             var drBless = GameEntry.DataTable.GetBless(blessID);
+            if (drBless == null)
+                return null;
+            
             foreach (var kv in BlessDatas)
             {
                 if (kv.Value.BlessID == drBless.Id && kv.Value.Value >= 0)
@@ -1683,7 +1690,7 @@ namespace RoundHero
         {
             var data = new Data_GamePlay();
 
-            data.PlayerData = PlayerData.Copy();
+            //data.PlayerData = PlayerData.Copy();
             data.LastActionPlayerData = LastActionPlayerData?.Copy();
             data.AreaData = AreaData.Copy();
             data.BattleData = BattleData.Copy();
@@ -1702,7 +1709,12 @@ namespace RoundHero
             
             foreach (var kv in PlayerDatas)
             {
-                data.AddPlayerData(kv.Copy());
+                var playerData = kv.Copy();
+                data.AddPlayerData(playerData);
+                if (kv.UnitCamp == PlayerData.UnitCamp)
+                {
+                    data.PlayerData = playerData;
+                }
             }
 
             return data;

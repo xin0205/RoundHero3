@@ -423,6 +423,11 @@ namespace RoundHero
                 TriggerActionDatas[actionUnitIdx].Clear();
             }
         }
+
+        public void Destory()
+        {
+            TriggerActionDatas.Clear();
+        }
     }
 
 }

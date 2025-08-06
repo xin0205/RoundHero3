@@ -8,6 +8,7 @@ namespace RoundHero
     {
         public int ActionUnitIdx = -1;
         public List<int> MoveGridPosIdxs = new List<int>();
+        public EColor EffectColor;
         public GameFrameworkMultiDictionary<int, ITriggerActionData> TriggerActionDataDict = new ();
     }
     

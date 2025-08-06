@@ -10,11 +10,11 @@ namespace RoundHero
         public BattleBulletEntityData BattleBulletEntityData { get; protected set; }
         
         [SerializeField]
-        private GameObject explodeParticleTemp;
+        private EColorGODictionary explodeParticleTemps;
         [SerializeField]
-        private GameObject bulletParticleTemp;
+        private EColorGODictionary bulletParticleTemps;
         [SerializeField]
-        private GameObject shootParticleTemp;
+        private EColorGODictionary shootParticleTemps;
         [SerializeField]
         private GameObject[] trailParticles;
 
@@ -22,7 +22,7 @@ namespace RoundHero
         private GameObject bulletParticle;
         private GameObject shootParticle;
         
-        private GameObject[] trails;
+        //private GameObject[] trails;
         
         // public float initialSpeed = 10f;   // 初始速度
         // public float launchAngle = 45f;
@@ -49,8 +49,10 @@ namespace RoundHero
 
         private void ShowShootParticle()
         {
-            shootParticle = Instantiate(shootParticleTemp, transform.position, transform.rotation) as GameObject;
+            var color = BattleBulletEntityData.BulletData.EffectColor;
+            shootParticle = Instantiate(shootParticleTemps[color], transform.position, transform.rotation) as GameObject;
             shootParticle.transform.parent = transform;
+            shootParticle.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             
             GameUtility.DelayExcute(2f, () =>
             {
@@ -60,9 +62,10 @@ namespace RoundHero
         
         private void ShowBulletParticle()
         {
-            bulletParticle = Instantiate(bulletParticleTemp, transform.position, transform.rotation) as GameObject;
+            var color = BattleBulletEntityData.BulletData.EffectColor;
+            bulletParticle = Instantiate(bulletParticleTemps[color], transform.position, transform.rotation) as GameObject;
             bulletParticle.transform.parent = transform;
-            
+            bulletParticle.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             // startPosition = transform.position;
             // elapsedTime = 0f;
             //
@@ -76,10 +79,11 @@ namespace RoundHero
         
         private void ShowExplodeParticle()
         {
-            explodeParticle = Instantiate(explodeParticleTemp, transform.position, transform.rotation) as GameObject;
+            var color = BattleBulletEntityData.BulletData.EffectColor;
+            explodeParticle = Instantiate(explodeParticleTemps[color], transform.position, transform.rotation) as GameObject;
             explodeParticle.transform.parent = transform;
             explodeParticle.transform.position = bulletParticle.transform.position;
-         
+            explodeParticle.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             Destroy(bulletParticle);
             bulletParticle = null;
             

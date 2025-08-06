@@ -34,9 +34,9 @@ namespace RoundHero
             foreach (var blessID in Constant.Hero.InitDatas[unitCamp].InitBlesses)
             {
                 var blessIdx = playerData.BlessIdx++;
-                //var drBless = GameEntry.DataTable.GetBless(blessID);
+                var drBless = GameEntry.DataTable.GetBless(blessID);
                 
-                playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, blessID));
+                playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, drBless.Id));
                 
             }
 

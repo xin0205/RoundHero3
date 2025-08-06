@@ -156,16 +156,18 @@ namespace RoundHero
         
             var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitIdx, actionUnitIdx, effectUnitIdx ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
 
-            if (buffvalueType == EBuffValueType.Card)
-            {
-                realEffectUnitIdxs.Add(effectUnitIdx);
-            }
+            // if (buffvalueType == EBuffValueType.Card)
+            // {
+            //     realEffectUnitIdxs.Add(effectUnitIdx);
+            // }
             
             if (realEffectUnitIdxs.Count > 0)
             {
-                TriggerData triggerData = null;
+                var isSubCurHP = false;
+                
                 foreach (var realEffectUnitIdx in realEffectUnitIdxs)
                 {
+                    TriggerData triggerData = null;
                     var realEffectUnit = GameUtility.GetUnitDataByIdx(realEffectUnitIdx);
                     
                     var buffValues = new List<float>();
@@ -286,7 +288,7 @@ namespace RoundHero
                         triggerData.EffectUnitGridPosIdx = realEffectUnit != null ? realEffectUnit.GridPosIdx : -1;
                         CacheTriggerData(triggerData, triggerDatas);
                         
-                        var isSubCurHP = false;
+                        
                         
                         triggerData.BuffValue = new BuffValue()
                         {
@@ -299,16 +301,17 @@ namespace RoundHero
                         {
                             isSubCurHP = true;
                         }
-
-
+                        
                         if (isSubCurHP)
                         {
                             BattleBuffManager.Instance.AttackTrigger(triggerData, triggerDatas);
                             BattleUnitStateManager.Instance.CheckUnitState(actionUnitIdx, triggerDatas);
                         }
-        
+
                     }
                 }
+                
+                
             }
             else
             {
@@ -456,6 +459,31 @@ namespace RoundHero
                 BuffTrigger(buffTriggerType,
                     triggerBuffData.BuffData, triggerBuffData.ValueList, triggerData.EffectUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
                     triggerDatas, -1, -1, triggerData);
+    
+            }
+           
+        }
+        
+        public void BuffsTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit, List<TriggerData> triggerDatas, EBuffTriggerType buffTriggerType)
+        {
+            BattleUnitManager.Instance.GetBuffValue(gamePlayData, unit, out List<BuffValue> triggerBuffDatas, -1, null);
+            
+            if(triggerBuffDatas == null)
+                return;
+            
+            var idx = -1;
+            foreach (var triggerBuffData in triggerBuffDatas)
+            {
+                idx++;
+                if(triggerBuffData.BuffData.BuffTriggerType != buffTriggerType)
+                    continue;
+                
+                if(triggerBuffData.BuffData.RangeTrigger)
+                    continue;
+                
+                BuffTrigger(buffTriggerType,
+                    triggerBuffData.BuffData, triggerBuffData.ValueList, unit.Idx, unit.Idx, unit.Idx,
+                    triggerDatas, -1, -1, null);
     
             }
            
@@ -841,6 +869,7 @@ namespace RoundHero
                     BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.Hurt:
+                    BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.Dead:
                     BuffParse_Normal(strList, buffData);
@@ -854,6 +883,10 @@ namespace RoundHero
                 case EBuffTriggerType.Use:
                     BuffParse_Normal(strList, buffData);
                     break;
+                case EBuffTriggerType.StartMove:
+                    BuffParse_Normal(strList, buffData);
+                    break;
+                    
                 case EBuffTriggerType.Link:
                     break;
                 case EBuffTriggerType.Trigger:
@@ -1303,7 +1336,7 @@ namespace RoundHero
                             }
                         }
 
-                        return usStaffCount;
+                        return usStaffCount * valueTag;
                         break;
                     case EValueType.EnemyCount:
                         var enemyCount = 0;
@@ -1317,7 +1350,7 @@ namespace RoundHero
                             }
                         }
 
-                        return enemyCount;
+                        return enemyCount * valueTag;
                         break;
                     case EValueType.UsBuffCount:
                         break;
@@ -1334,7 +1367,7 @@ namespace RoundHero
                     case EValueType.CardEnergy:
                         if (cardIdx != -1)
                         {
-                            return BattleCardManager.Instance.GetCardEnergy(cardIdx);
+                            return BattleCardManager.Instance.GetCardEnergy(cardIdx) * valueTag;
                         }
                         break;
                     case EValueType.SubEnergy:
@@ -1346,7 +1379,7 @@ namespace RoundHero
                             var actualCardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
                             var energyDelta = actualCardEnergy - cardEnergy;
                             if (energyDelta < 0)
-                                return -energyDelta;
+                                return -energyDelta * valueTag;
 
                             return 0;
                         }
@@ -1356,7 +1389,7 @@ namespace RoundHero
                         {
                             var delta = Math.Abs(preTriggerData.Value + preTriggerData.DeltaValue) -
                                         Math.Abs(preTriggerData.ActualValue);
-                            return delta > 0 ? delta : 0;
+                            return (delta > 0 ? delta : 0) * valueTag;
                         }
                         break;
                         

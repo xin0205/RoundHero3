@@ -99,7 +99,7 @@ namespace RoundHero
             BattleUnitManager.Instance.Destory();
             HeroManager.Instance.Destory();
             BattleCoreManager.Instance.Destory();
-            
+            BattleBulletManager.Instance.Destory();
             //BlessManager.Instance.Destory();
             //BattleBuffManager.Instance.Destory();
             //FightManager.Instance.Destory();
@@ -249,8 +249,14 @@ namespace RoundHero
             
             var heroEachHurtUnDamage = gamePlayData.GetUsefulBless(EBlessID.HeroEachHurtUnDamage, BattleManager.Instance.CurUnitCamp);
             var drHeroEachHurtUnDamage = GameEntry.DataTable.GetBless(EBlessID.HeroEachHurtUnDamage);
-            var value0 = BattleBuffManager.Instance.GetBuffValue(drHeroEachHurtUnDamage.Values1[0]);
-            var value1 = BattleBuffManager.Instance.GetBuffValue(drHeroEachHurtUnDamage.Values1[1]);
+            var value0 = 0f;
+            var value1 = 0f;
+            if (drHeroEachHurtUnDamage != null)
+            {
+                value0 = BattleBuffManager.Instance.GetBuffValue(drHeroEachHurtUnDamage.Values0[0]);
+                value1 = BattleBuffManager.Instance.GetBuffValue(drHeroEachHurtUnDamage.Values0[1]);
+            }
+               
 
 
             if (heroEachHurtUnDamage != null && unit.UnitCamp == BattleManager.Instance.CurUnitCamp && hero != null && value <= 0)

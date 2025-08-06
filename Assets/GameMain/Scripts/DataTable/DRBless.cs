@@ -48,7 +48,7 @@ namespace RoundHero
         /// <summary>
         /// 获取值。
         /// </summary>
-        public List<string> Values1
+        public List<string> Values0
         {
             get;
             private set;
@@ -67,7 +67,7 @@ namespace RoundHero
             m_Id = int.Parse(columnStrings[index++]);
             index++;
 			BlessID = Enum.Parse<EBlessID>(columnStrings[index++]);
-			Values1 = DataTableExtension.ParseStringList(columnStrings[index++]);
+			Values0 = DataTableExtension.ParseStringList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -81,7 +81,7 @@ namespace RoundHero
                 {
                     m_Id = binaryReader.Read7BitEncodedInt32();
                     BlessID = Enum.Parse<EBlessID>(binaryReader.ReadString());
-					Values1 = binaryReader.ReadStringList();
+					Values0 = binaryReader.ReadStringList();
                 }
             }
 
@@ -126,7 +126,7 @@ namespace RoundHero
         {
             m_Values = new KeyValuePair<int, List<string>>[]
             {
-                new KeyValuePair<int, List<string>>(1, Values1),
+                new KeyValuePair<int, List<string>>(0, Values0),
             };
         }
     }

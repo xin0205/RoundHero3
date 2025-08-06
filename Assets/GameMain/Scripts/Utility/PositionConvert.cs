@@ -23,10 +23,10 @@ namespace RoundHero
         /// <param name="screenPoint">屏幕坐标</param>
         /// <param name="planeZ">距离摄像机 Z 平面的距离</param>
         /// <returns></returns>
-        public static Vector3 ScreenPointToWorldPoint(Vector2 screenPoint, float planeZ)
+        public static Vector3 ScreenPointToWorldPoint(Vector2 screenPoint)
         {
             // Camera.main 世界摄像机
-            Vector3 position = new Vector3(screenPoint.x, screenPoint.y, planeZ);
+            Vector3 position = new Vector3(screenPoint.x, screenPoint.y, -Camera.main.transform.position.z);
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(position);
             return worldPoint;
         }
@@ -89,7 +89,26 @@ namespace RoundHero
 
             return uiLocalPoint;
         }
-
+        
+        // public static Vector3 UILocalPointToWorldPoint(Vector2 uilocalPoint)
+        // {
+        //     var screenPoint = PositionConvert.UIPointToScreenPoint(uilocalPoint);
+        //     var uiLocalPoint = PositionConvert.ScreenPointToWorldPoint(
+        //         screenPoint);
+        //
+        //     return uiLocalPoint;
+        // }
+        // /// <summary>
+        // /// 将UI本地坐标转换为世界坐标
+        // /// </summary>
+        // /// <param name="uiRect">UI元素的RectTransform</param>
+        // /// <param name="localPosition">UI元素的本地坐标（相对于自身RectTransform）</param>
+        // /// <returns>转换后的世界坐标</returns>
+        // public static Vector3 ConvertUILocalToWorld(RectTransform uiRect, Vector2 localPosition)
+        // {
+        //     // 将UI本地坐标转换为世界坐标（考虑Canvas的渲染模式）
+        //     return uiRect.TransformPoint(localPosition);
+        // }
     }
 
 

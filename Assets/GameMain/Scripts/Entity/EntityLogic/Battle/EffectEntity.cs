@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace RoundHero
+﻿namespace RoundHero
 {
     public class EffectEntity : Entity
     {

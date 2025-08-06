@@ -29,7 +29,7 @@ namespace RoundHero
             BattleManager.Instance.ProcedureBattle = this;
             InitSuccess = false;
 
-            var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
+            var sceneName = "Scene2"; //+ BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
             //DRScene drScene = GameEntry.DataTable.GetScene(1);
             GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(sceneName), Constant.AssetPriority.SceneAsset);
             
@@ -145,7 +145,7 @@ namespace RoundHero
             GameEntry.UI.CloseUIForm(battleForm);
             BattleManager.Instance.Destory();
 
-            var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
+            var sceneName = "Scene2";// + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
             GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
             ChangeState<ProcedureStart>(procedureOwner);
             

@@ -11,6 +11,8 @@ namespace RoundHero
         protected Quaternion cameraQuaternion = Quaternion.identity;
         protected override void OnShow(object userData)
         {
+            transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
+
             base.OnShow(userData);
             
             BattleIconEntityData = userData as BattleIconEntityData;
@@ -24,11 +26,11 @@ namespace RoundHero
         
         private void Update()
         {
-            cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
-            transform.rotation = cameraQuaternion;
-            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
-            
-            transform.localScale = Vector3.one *  dis / 8f;
+            // cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
+            // transform.rotation = cameraQuaternion;
+            // var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
+            //
+            // transform.localScale = Vector3.one *  dis / 8f;
         }
     }
 }

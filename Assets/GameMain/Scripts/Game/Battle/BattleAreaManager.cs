@@ -822,8 +822,8 @@ namespace RoundHero
                     //Log.Debug("4 Exit");
                     gridEntity.OnPointerExit();
                 }
-            
-                if (unit != null && unit is BattleSoliderEntity)
+
+                if (unit != null)
                 {
                     if (ne.ShowState == EShowState.Show)
                     {
@@ -876,6 +876,7 @@ namespace RoundHero
                                     GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(unit.UnitIdx),
                                         BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit.UnitIdx));
 
+                                var idx = 0;
                                 foreach (var kv in hurtTriggerDataDict)
                                 {
                                     foreach (var triggerData in kv.Value)
@@ -883,7 +884,11 @@ namespace RoundHero
                                         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                                         if (actionUnit != null)
                                         {
-                                            actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                                            GameUtility.DelayExcute(0.25f * idx, () =>
+                                            {
+                                                actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                                            });
+                                            idx++;
                                         }
                                     }
                                 }
@@ -907,6 +912,7 @@ namespace RoundHero
                             }
                             else
                             {
+                                unit.ShowTags(unit.UnitIdx);
                                 unit.ShowHurtTags(unit.UnitIdx);
                             }
                         }
@@ -919,83 +925,196 @@ namespace RoundHero
                         unit.OnPointerExit();
                         //unit.UnShowTags();
                     }
+                }
                 
-                }
-                else if (unit != null && unit is BattleCoreEntity)
-                {
-                    if (ne.ShowState == EShowState.Show)
-                    {
-                        //Log.Debug("2 Enter");
-                        unit.OnPointerEnter();
-                        if (unit.BattleUnitData.Exist() && !unit.IsMove)
-                        {
-                            if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
-                            {
-                                unit.ShowHurtTags(unit.UnitIdx, Constant.Battle.UnUnitTriggerIdx);
-  
-                            }
-                            else
-                            {
-                                unit.ShowHurtTags(unit.UnitIdx);
-                            }
-                            
-                        }
-                    }
-                    else if (ne.ShowState == EShowState.Unshow)
-                    {
-                        //Log.Debug("2 Exit");
-                        unit.OnPointerExit();
-                        //unit.UnShowTags();
-                    }
-                
-                }
-                else if (unit != null && unit is BattleMonsterEntity battleMonsterEntity)
-                {
-                    if (ne.ShowState == EShowState.Show)
-                    {
-                        //Log.Debug("3 Enter");
-                        unit.OnPointerEnter();
-                        if (unit.BattleUnitData.Exist() && !unit.IsMove)
-                        {
-                            if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
-                            {
-                                //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
-                                var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
-                                if (attackUnit != null)
-                                {
-                                    attackUnit.ShowTags(attackUnit.UnitIdx, true);
-                                }
-                                
-                                
-                            }
-                            else if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
-                            {
-                                unit.ShowHurtTags(unit.UnitIdx, Constant.Battle.UnUnitTriggerIdx);
-  
-                            }
-                            else
-                            {
-                                unit.ShowTags(unit.UnitIdx, true);
-                            }
-                        }
-                    }
-                    else if (ne.ShowState == EShowState.Unshow)
-                    {
-                        // unit.OnPointerExit();
-                        // if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-                        // {
-                        //     unit.UnShowTags();
-                        // }
-                        
-                        //Log.Debug("3 Exit");
-                        unit.OnPointerExit();
-                        //unit.UnShowTags();
-                    }
-                }
-                // else
+            
+                // if (unit != null && unit is BattleSoliderEntity)
                 // {
-                //    
+                //     if (ne.ShowState == EShowState.Show)
+                //     {
+                //         //Log.Debug("1 Enter");
+                //         unit.OnPointerEnter();
+                //         if (unit.BattleUnitData.Exist() && !unit.IsMove)
+                //         {
+                //             if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
+                //             {
+                //                 var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+                //                 var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+                //                 if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+                //                 {
+                //                     unit.ShowTags(unit.UnitIdx, true);
+                //                 }
+                //                 else
+                //                 {
+                //                     unit.ShowTacticHurtDisplayValues(unit.UnitIdx);
+                //                 }
+                //                 
+                //             }
+                //             else if(BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+                //             {
+                //                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //                 if (attackUnit != null)
+                //                 {
+                //                     attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                //                 }
+                //                 
+                //                 //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //             }
+                //             // else if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
+                //             // {
+                //             //     unit.ShowHurtTags(unit.UnitIdx, Constant.Battle.CardTriggerIdx);
+                //             //
+                //             // }
+                //             else if(BattleManager.Instance.BattleState == EBattleState.MoveUnit)
+                //             {
+                //                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //                 if (attackUnit != null)
+                //                 {
+                //                     attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                //                 }
+                //                 
+                //                 //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //             }
+                //             else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
+                //             {
+                //                 var hurtTriggerDataDict =
+                //                     GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(unit.UnitIdx),
+                //                         BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit.UnitIdx));
+                //
+                //                 var idx = 0;
+                //                 foreach (var kv in hurtTriggerDataDict)
+                //                 {
+                //                     foreach (var triggerData in kv.Value)
+                //                     {
+                //                         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                //                         if (actionUnit != null)
+                //                         {
+                //                             GameUtility.DelayExcute(0.25f * idx, () =>
+                //                             {
+                //                                 actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                //                             });
+                //                             idx++;
+                //                         }
+                //                     }
+                //                 }
+                //                 
+                //                 var triggerDataDict =
+                //                     GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unit.UnitIdx),
+                //                         BattleFightManager.Instance.GetInDirectAttackDatas(unit.UnitIdx));
+                //                 
+                //                 foreach (var kv in triggerDataDict)
+                //                 {
+                //                     foreach (var triggerData in kv.Value)
+                //                     {
+                //                         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                //                         if (actionUnit != null)
+                //                         {
+                //                             actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                //                         }
+                //                     }
+                //                 }
+                //                 
+                //             }
+                //             else
+                //             {
+                //                 unit.ShowTags(unit.UnitIdx);
+                //                 unit.ShowHurtTags(unit.UnitIdx);
+                //             }
+                //         }
+                //         
+                //
+                //     }
+                //     else if (ne.ShowState == EShowState.Unshow)
+                //     {
+                //         //Log.Debug("1 Exit");
+                //         unit.OnPointerExit();
+                //         //unit.UnShowTags();
+                //     }
+                //
                 // }
+                // else if (unit != null && unit is BattleCoreEntity)
+                // {
+                //     if (ne.ShowState == EShowState.Show)
+                //     {
+                //         //Log.Debug("2 Enter");
+                //         unit.OnPointerEnter();
+                //         if (unit.BattleUnitData.Exist() && !unit.IsMove)
+                //         {
+                //             if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+                //             {
+                //                 //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //                 if (attackUnit != null)
+                //                 {
+                //                     attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                //                 }
+                //                 
+                //                 
+                //             }
+                //             else if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
+                //             {
+                //                 unit.ShowHurtTags(unit.UnitIdx, Constant.Battle.UnUnitTriggerIdx);
+                //
+                //             }
+                //             else
+                //             {
+                //                 unit.ShowHurtTags(unit.UnitIdx);
+                //             }
+                //             
+                //         }
+                //     }
+                //     else if (ne.ShowState == EShowState.Unshow)
+                //     {
+                //         //Log.Debug("2 Exit");
+                //         unit.OnPointerExit();
+                //         //unit.UnShowTags();
+                //     }
+                //
+                // }
+                // else if (unit != null && unit is BattleMonsterEntity battleMonsterEntity)
+                // {
+                //     if (ne.ShowState == EShowState.Show)
+                //     {
+                //         //Log.Debug("3 Enter");
+                //         unit.OnPointerEnter();
+                //         if (unit.BattleUnitData.Exist() && !unit.IsMove)
+                //         {
+                //             if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
+                //             {
+                //                 //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                //                 if (attackUnit != null)
+                //                 {
+                //                     attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                //                 }
+                //                 
+                //                 
+                //             }
+                //             else if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
+                //             {
+                //                 unit.ShowHurtTags(unit.UnitIdx, Constant.Battle.UnUnitTriggerIdx);
+                //
+                //             }
+                //             else
+                //             {
+                //                 unit.ShowTags(unit.UnitIdx, true);
+                //             }
+                //         }
+                //     }
+                //     else if (ne.ShowState == EShowState.Unshow)
+                //     {
+                //         // unit.OnPointerExit();
+                //         // if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                //         // {
+                //         //     unit.UnShowTags();
+                //         // }
+                //         
+                //         //Log.Debug("3 Exit");
+                //         unit.OnPointerExit();
+                //         //unit.UnShowTags();
+                //     }
+                // }
+
                 
             }
             

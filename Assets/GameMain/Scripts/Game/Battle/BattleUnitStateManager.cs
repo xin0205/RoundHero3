@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace RoundHero
 {
@@ -97,26 +99,33 @@ namespace RoundHero
 
         }
         
-        public void HurtRoundStartMoveTrigger(int passUnitID, int bePassUnitID, List<TriggerData> triggerDatas)
+        public async Task HurtRoundStartMoveTrigger(int passUnitIdx, int bePassUnitIdx, List<TriggerData> triggerDatas)
         {
-            var passUnit = GameUtility.GetUnitDataByIdx(passUnitID, true);
-            var bePassUnit = GameUtility.GetUnitDataByIdx(bePassUnitID, true);
+            var passUnit = GameUtility.GetUnitDataByIdx(passUnitIdx, true);
+            var bePassUnit = GameUtility.GetUnitDataByIdx(bePassUnitIdx, true);
 
             if(passUnit == null || bePassUnit == null)
                 return;
             
             if (passUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
-                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnitID, passUnitID, bePassUnitID,
+                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnitIdx, passUnitIdx, bePassUnitIdx,
                     EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
+                triggerData.TriggerDataSubType = ETriggerDataSubType.State;
                 BattleBuffManager.Instance.PostTrigger(triggerData, triggerDatas);
+                
+                
                 
             }
             if (bePassUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
-                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,bePassUnitID, bePassUnitID, passUnitID,
+                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,bePassUnitIdx, bePassUnitIdx, passUnitIdx,
                     EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
+                triggerData.TriggerDataSubType = ETriggerDataSubType.State;
                 BattleBuffManager.Instance.PostTrigger(triggerData, triggerDatas);
+                
+                
+                
             }
         }
         
@@ -177,6 +186,43 @@ namespace RoundHero
             //     FightManager.Instance.SimulateTriggerData(subDamageTriggerData, triggerDatas);
             //     triggerDatas.Add(subDamageTriggerData);
             // }
+        }
+
+        public async Task AnimationRemoveUnitState(EUnitState unitState, BattleUnitEntity unitEntity, Transform parent = null)
+        {
+            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), unitEntity.Position);
+            // var uiLocalPoint2 = uiLocalPoint;
+            // uiLocalPoint.y += 100f;
+            // uiLocalPoint2.y += 50f;
+            var moveParams = new MoveParams()
+            {
+                
+                FollowGO = unitEntity.gameObject,
+                DeltaPos = new Vector2(0, 25f),
+                IsUIGO = false,
+            };
+            
+            var targetMoveParams = new MoveParams()
+            {
+                FollowGO = unitEntity.gameObject,
+                DeltaPos = new Vector2(0, 125f),
+                IsUIGO = false,
+            };
+            
+            await GameEntry.Entity.ShowBattleMoveIconEntityAsync(unitState, -1, false, moveParams, targetMoveParams);
+            
+            
+            
+           
+            
+            // if (parent != null)
+            // {
+            //     moveIconEntity.transform.SetParent(parent);
+            //     moveIconEntity.transform.position = unitEntity.Position;
+            //     moveIconEntity.transform.localScale = new Vector3(1f, 1f, 1f);
+            // }
+            
         }
     }
 }

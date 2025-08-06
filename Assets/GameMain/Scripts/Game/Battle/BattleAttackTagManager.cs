@@ -151,8 +151,12 @@ namespace RoundHero
 
                     if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                         continue;
+
+                    var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
+                    if(ownUnit == null)
+                        continue;
                     
-                    await InternalShowTag(triggerData.ActionUnitGridPosIdx, triggerData.EffectUnitGridPosIdx,
+                    await InternalShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
                         triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
                         !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx),
                         triggerData.TriggerDataSubType == ETriggerDataSubType.Collision);

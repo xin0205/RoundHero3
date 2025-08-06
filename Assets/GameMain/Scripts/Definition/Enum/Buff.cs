@@ -254,6 +254,7 @@
         Spec_SameUnitSubEnergy,
         Spec_UnDead,
         Spec_NextCardSubEnergy,
+        Spec_AddFlyRange,
         Spec_DeadClearBuff,
         Spec_MoveDirect,
         Spec_Obstacle,
@@ -823,12 +824,14 @@
 
     public enum EBlessID
     {
+        ConsumeCardAddCurHP,
+        AddCurHPByAttackDamage,
         HeroRebirth,
         HeroDodgeSubHeartDamage,
-        ConsumeCardAddCurHP,
+        
         UnUseCardAddCurHP,
         EachRoundAddCurHPInBigBattle,
-        AddCurHPByAttackDamage,
+        
         HeroKillEnemyAddMaxHP,
         RoundEndAddCurHPByUnitCountInBattle,
         HeroKillEnemyAddCurHP,

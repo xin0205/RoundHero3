@@ -10,11 +10,11 @@ namespace RoundHero
         public BattleBulletEntityData BattleBulletEntityData { get; protected set; }
         
         [SerializeField]
-        private GameObject explodeParticleTemp;
+        private EColorGODictionary explodeParticleTemps;
         [SerializeField]
-        private GameObject bulletParticleTemp;
+        private EColorGODictionary bulletParticleTemps;
         [SerializeField]
-        private GameObject shootParticleTemp;
+        private EColorGODictionary shootParticleTemps;
         [SerializeField]
         private GameObject[] trailParticles;
 
@@ -42,7 +42,8 @@ namespace RoundHero
 
         private void ShowShootParticle()
         {
-            shootParticle = Instantiate(shootParticleTemp, transform.position, transform.rotation) as GameObject;
+            var color = BattleBulletEntityData.BulletData.EffectColor;
+            shootParticle = Instantiate(shootParticleTemps[color], transform.position, transform.rotation) as GameObject;
             shootParticle.transform.parent = transform;
             
             GameUtility.DelayExcute(2f, () =>
@@ -53,7 +54,8 @@ namespace RoundHero
         
         private void ShowBulletParticle()
         {
-            bulletParticle = Instantiate(bulletParticleTemp, transform.position, transform.rotation) as GameObject;
+            var color = BattleBulletEntityData.BulletData.EffectColor;
+            bulletParticle = Instantiate(bulletParticleTemps[color], transform.position, transform.rotation) as GameObject;
             bulletParticle.transform.parent = transform;
         }
 
@@ -68,7 +70,8 @@ namespace RoundHero
         
         private void ShowExplodeParticle()
         {
-            explodeParticle = Instantiate(explodeParticleTemp, transform.position, transform.rotation) as GameObject;
+            var color = BattleBulletEntityData.BulletData.EffectColor;
+            explodeParticle = Instantiate(explodeParticleTemps[0], transform.position, transform.rotation) as GameObject;
             explodeParticle.transform.parent = transform;
             explodeParticle.transform.position = bulletParticle.transform.position;
          
@@ -77,13 +80,14 @@ namespace RoundHero
             GameUtility.DelayExcute(2f, () =>
             {
                 Destroy(explodeParticle);
-            });
-            
-            GameUtility.DelayExcute(10f, () =>
-            {
-
                 GameEntry.Entity.HideEntity(this);
             });
+            
+            // GameUtility.DelayExcute(10f, () =>
+            // {
+            //
+            //     GameEntry.Entity.HideEntity(this);
+            // });
         }
 
         private void Move()

@@ -16,9 +16,15 @@ namespace RoundHero
 
         protected Quaternion cameraQuaternion = Quaternion.identity;
         private Tween textColTween;
-        private Tween moveTween;
+        //private Tween moveTween;
         private Tween textStrTween;
+        
+        private string positiveStartValue;
+        private string positiveEndValue;
 
+        private string negativeStartValue;
+        private string negativeEndValue;
+        
         protected override void OnShow(object userData)
         {
             transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
@@ -33,156 +39,234 @@ namespace RoundHero
             }
 
             //this.transform.position = BattleMoveValueEntityData.Position;
-            KillTween();
+            //KillTween();
 
-            text.text = BattleMoveValueEntityData.Value < 0
-                ? BattleMoveValueEntityData.Value.ToString()
-                : BattleMoveValueEntityData.Value > 0 ? "+" + BattleMoveValueEntityData.Value : BattleMoveValueEntityData.Value.ToString();
-
+            
             //text.text = Mathf.Abs(BattleValueEntityData.Value).ToString();
-            //text.color = BattleValueEntityData.Value < 0 ? hurtColor : recoverColor;
-            text.color = hurtColor;
+            //text.color = BattleMoveValueEntityData.StartValue < 0 ? hurtColor : recoverColor;
+            //text.color = hurtColor;
 
-            var dis = Vector3.Distance(BattleMoveValueEntityData.TargetPos, CachedTransform.localPosition);
+            this.time = 0;
+            this.timeEnd = 0;
+
+            //var dis = Vector3.Distance(BattleMoveValueEntityData.TargetPos, CachedTransform.localPosition);
             //Constant.Battle.BattleValueVelocity
-            var time = dis / (Constant.Battle.BattleValueVelocity * 100);
-
-            if (time < 1.5f)
-            {
-                time += 1.5f;
-            }
+            // var time = 0f;//dis / (Constant.Battle.BattleValueVelocity * 100);
+            //
+            // if (time < 1.5f)
+            // {
+            //     time += 1.5f;
+            // }
             //textStrTween = 
 
-            if (BattleMoveValueEntityData.IsAdd)
-            {
-                textColTween = DOTween.To(() =>
-                {
-                    if (text == null)
-                        return Color.white;
+            // if (BattleMoveValueEntityData.IsAdd)
+            // {
+            //     textColTween = DOTween.To(() =>
+            //     {
+            //         if (text == null)
+            //             return Color.white;
+            //
+            //         return text.color;
+            //     }, x =>
+            //     {
+            //         if (text == null)
+            //             return;
+            //
+            //         text.color = x;
+            //     }, recoverColor, time).SetEase(Ease.InOutQuart);
+            // }
 
-                    return text.color;
-                }, x =>
-                {
-                    if (text == null)
-                        return;
-
-                    text.color = x;
-                }, recoverColor, time).SetEase(Ease.InOutQuart);
-            }
-
-            var targetPos = BattleMoveValueEntityData.TargetPos;
-            moveTween = DOTween.To(()=>
-            {
-                if(transform == null)
-                    return Vector4.zero;
-                
-                return transform.localPosition;
-            }, x =>
-            {
-                if(this == null || transform == null)
-                    return;
-                
-                transform.localPosition = x;
-            }, targetPos, time).SetEase(Ease.InOutQuart);
+            // var targetPos = BattleMoveValueEntityData.TargetPos;
+            // moveTween = DOTween.To(()=>
+            // {
+            //     if(transform == null)
+            //         return Vector4.zero;
+            //     
+            //     return transform.localPosition;
+            // }, x =>
+            // {
+            //     if(this == null || transform == null)
+            //         return;
+            //     
+            //     transform.localPosition = x;
+            // }, targetPos, time).SetEase(Ease.InOutQuart);
+            
             //transform.DOMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
-            var absValue = Mathf.Abs(BattleMoveValueEntityData.Value);
+            var absStartValue = Mathf.Abs(BattleMoveValueEntityData.StartValue);
+            var absEndValue = Mathf.Abs(BattleMoveValueEntityData.EndValue);
 
-            if (BattleMoveValueEntityData.IsAdd)
-            {
-                textStrTween = DOTween.To(() =>
-                {
-                    if(text == null)
-                        return "";
-                    return text.text;
-                }, x =>
-                {
-                    if(text == null)
-                        return;
-                    text.text = x;
-                }, "+" + absValue, time).From("-" + absValue).SetEase(Ease.InOutExpo);
-            }
+            positiveStartValue = "+" + absStartValue;
+            positiveEndValue = "+" + absEndValue;
+            
+            negativeStartValue = BattleMoveValueEntityData.StartValue < 0 ? "-" + absStartValue.ToString() : absStartValue.ToString();
+            negativeEndValue = BattleMoveValueEntityData.EndValue < 0 ? "-" + absEndValue.ToString() : absEndValue.ToString();
+            
+            text.text = BattleMoveValueEntityData.StartValue < 0
+                ? negativeStartValue
+                : BattleMoveValueEntityData.StartValue > 0 ? positiveStartValue: negativeStartValue;
+
+            text.color = BattleMoveValueEntityData.StartValue < 0 ? hurtColor : recoverColor;
+            
+            // if (BattleMoveValueEntityData.IsAdd)
+            // {
+            //     textStrTween = DOTween.To(() =>
+            //     {
+            //         if(text == null)
+            //             return "";
+            //         return text.text;
+            //     }, x =>
+            //     {
+            //         if(text == null)
+            //             return;
+            //         text.text = x;
+            //     }, "+" + absEndValue, time).From("-" + absStartValue).SetEase(Ease.InOutExpo);
+            // }
 
             // textColTween.Play();
             // textStrTween.Play();
             // moveTween.Play();
 
             
-            if (BattleMoveValueEntityData.IsLoop)
-            {
-                textColTween.SetLoops(-1);
-                textStrTween.SetLoops(-1);
-                moveTween.SetLoops(-1);
-            }
-            else
-            {
-                
-                
-                GameUtility.DelayExcute(time, () =>
-                {
-                    if (GameEntry.Entity.HasEntity(this.Id))
-                    {
-                        GameEntry.Entity.HideEntity(this);
-                    }
-                    
-                });
-                // moveTween.OnComplete(() =>
-                // {
-                //     GameEntry.Entity.HideEntity(this);
-                // });
-            }
+            // if (BattleMoveValueEntityData.IsLoop)
+            // {
+            //     textColTween.SetLoops(-1);
+            //     textStrTween.SetLoops(-1);
+            //     //moveTween.SetLoops(-1);
+            // }
+            // else
+            // {
+            //     
+            //     
+            //     // GameUtility.DelayExcute(time, () =>
+            //     // {
+            //     //     if (GameEntry.Entity.HasEntity(this.Id))
+            //     //     {
+            //     //         GameEntry.Entity.HideEntity(this);
+            //     //     }
+            //     //     
+            //     // });
+            //     // moveTween.OnComplete(() =>
+            //     // {
+            //     //     GameEntry.Entity.HideEntity(this);
+            //     // });
+            // }
             
             // GameUtility.DelayExcute(time / 2f, () =>
             // {
             //     text.text = "+" + Mathf.Abs(BattleMoveValueEntityData.Value);
             // });
+            
+            if (BattleMoveValueEntityData.FollowParams.IsUIGO)
+            {
+                startPos = BattleMoveValueEntityData.FollowParams.FollowGO.transform.localPosition;
+                startPos += BattleMoveValueEntityData.FollowParams.DeltaPos;
+            }
+            
+            if (BattleMoveValueEntityData.TargetFollowParams.IsUIGO)
+            {
+                endPos = BattleMoveValueEntityData.TargetFollowParams.FollowGO.transform.localPosition;
+                endPos += BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
+            }
+        }
+
+        private float time = 0f;
+        private float timeEnd = 0f;
+        private Vector2 startPos = Vector2.zero;
+        private Vector2 endPos = Vector2.zero;
+        private void Update()
+        {
+            time += Time.deltaTime;
+
+            
+            if (!BattleMoveValueEntityData.FollowParams.IsUIGO)
+            {
+                startPos = PositionConvert.WorldPointToUILocalPoint(
+                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveValueEntityData.FollowParams.FollowGO.transform.localPosition);
+                startPos += BattleMoveValueEntityData.FollowParams.DeltaPos;
+            }
+            
+            if (!BattleMoveValueEntityData.TargetFollowParams.IsUIGO)
+            {
+                endPos = PositionConvert.WorldPointToUILocalPoint(
+                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveValueEntityData.TargetFollowParams.FollowGO.transform.localPosition);
+                endPos += BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
+            }
+
+            
+            
+            this.transform.localPosition = Vector2.Lerp(startPos, endPos, time * 0.8f);
+            
+            if (BattleMoveValueEntityData.IsAdd)
+            {
+                if (time >= 0.5f * 0.8f)
+                {
+                    text.text = positiveEndValue;
+                    text.color = recoverColor;
+                }
+                else
+                {
+                    text.text = negativeEndValue;
+                    text.color = hurtColor;
+                }
+  
+            }
+            
+
+            if((Vector2)this.transform.localPosition == endPos)
+            {
+                timeEnd += Time.deltaTime;
+                if (timeEnd > 0.5f)
+                {
+                    timeEnd = 0f;
+                    if (BattleMoveValueEntityData.IsLoop )
+                    {
+                        time = 0;
+                    }
+                    else
+                    {
+                        if (GameEntry.Entity.HasEntity(this.Id))
+                        {
+                            GameEntry.Entity.HideEntity(this);
+                        }
+                    }
+                }
+                
+            }
+            
         }
 
         
-
-        private void Update()
-        {
-            // if (BattleManager.Instance.BattleState == EBattleState.EndBattle)
-            // {
-            //     GameEntry.Entity.HideEntity(this);
-            // }
-            //
-            // cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
-            // transform.rotation = cameraQuaternion;
-            // var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(transform.position));
-            //
-            // transform.localScale = Vector3.one *  dis / 8f;
-        }
 
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
             //Log.Debug("OnHide" + BattleMoveValueEntityData.Id);
 
-            KillTween();
+            //KillTween();
 
         }
 
-        private void KillTween()
-        {
-            if (moveTween == null)
-            {
-                Log.Debug("moveTween");
-            }
-            
-            if (textColTween == null)
-            {
-                Log.Debug("textColTween");
-            }
-
-            if (textStrTween == null)
-            {
-                Log.Debug("textStrTween");
-            }
-               
-            
-            moveTween?.Kill();
-            textColTween?.Kill();
-            textStrTween?.Kill();
-        }
+        // private void KillTween()
+        // {
+        //     // if (moveTween == null)
+        //     // {
+        //     //     Log.Debug("moveTween");
+        //     // }
+        //     
+        //     if (textColTween == null)
+        //     {
+        //         Log.Debug("textColTween");
+        //     }
+        //
+        //     if (textStrTween == null)
+        //     {
+        //         Log.Debug("textStrTween");
+        //     }
+        //        
+        //     
+        //     //moveTween?.Kill();
+        //     textColTween?.Kill();
+        //     textStrTween?.Kill();
+        // }
     }
 }

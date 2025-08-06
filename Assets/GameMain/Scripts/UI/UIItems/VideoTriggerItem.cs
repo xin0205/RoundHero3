@@ -21,7 +21,7 @@ namespace RoundHero
 
             isOpen = true;
             var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.VideoForm, VideoFormData);
-            videoForm = formAsync.Logic as VideoForm;
+            videoForm = formAsync?.Logic as VideoForm;
         }
 
         public void OnPointerExit()

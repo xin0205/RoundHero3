@@ -144,6 +144,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取EffectColor。
+        /// </summary>
+        public EColor EffectColor
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -168,6 +177,7 @@ namespace RoundHero
 			WeaponType = Enum.Parse<EWeaponType>(columnStrings[index++]);
             WeaponID = int.Parse(columnStrings[index++]);
 			AttackCastType = Enum.Parse<EAttackCastType>(columnStrings[index++]);
+			EffectColor = Enum.Parse<EColor>(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -192,6 +202,7 @@ namespace RoundHero
                     WeaponType = Enum.Parse<EWeaponType>(binaryReader.ReadString());
                     WeaponID = binaryReader.Read7BitEncodedInt32();
                     AttackCastType = Enum.Parse<EAttackCastType>(binaryReader.ReadString());
+                    EffectColor = Enum.Parse<EColor>(binaryReader.ReadString());
                 }
             }
 

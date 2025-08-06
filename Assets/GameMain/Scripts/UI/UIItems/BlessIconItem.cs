@@ -34,7 +34,7 @@ namespace RoundHero
             }
 
             var drBless = GameEntry.DataTable.GetBless(blessID);
-            var deltaValue = BattleBuffManager.Instance.GetBuffValue(drBless.Values1[0]) - blessData.Value;
+            var deltaValue = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]) - blessData.Value;
             Value.gameObject.SetActive(deltaValue != 0);
             if (deltaValue != 0)
             {

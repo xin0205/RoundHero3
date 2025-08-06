@@ -180,12 +180,12 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 0),
-                            new Vector2Int(-2, 0),
-                            new Vector2Int(-3, 0),
-                            new Vector2Int(-4, 0),
-                            new Vector2Int(-5, 0),
-                            new Vector2Int(-6, 0),
+                            new Vector2Int(0, 1),
+                            new Vector2Int(0, 2),
+                            new Vector2Int(0, 3),
+                            new Vector2Int(0, 4),
+                            new Vector2Int(0, 5),
+                            new Vector2Int(0, 6),
                         },
                         new List<Vector2Int>()
                         {
@@ -207,13 +207,15 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(0, 1),
-                            new Vector2Int(0, 2),
-                            new Vector2Int(0, 3),
-                            new Vector2Int(0, 4),
-                            new Vector2Int(0, 5),
-                            new Vector2Int(0, 6),
+                            new Vector2Int(-1, 0),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
                         },
+                        
+                        
                     },
                     
                     [EActionType.Cross2Short] = new List<List<Vector2Int>>()
@@ -224,7 +226,7 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 0),
+                            new Vector2Int(0, 1),
 
                         },
                         new List<Vector2Int>()
@@ -239,9 +241,12 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(0, 1),
+                            new Vector2Int(-1, 0),
 
                         },
+                        
+                        
+                        
                     },
                     
                     [EActionType.Cross2Long] = new List<List<Vector2Int>>()
@@ -252,12 +257,12 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 0),
-                            new Vector2Int(-2, 0),
-                            new Vector2Int(-3, 0),
-                            new Vector2Int(-4, 0),
-                            new Vector2Int(-5, 0),
-                            new Vector2Int(-6, 0),
+                            new Vector2Int(0, 1),
+                            new Vector2Int(0, 2),
+                            new Vector2Int(0, 3),
+                            new Vector2Int(0, 4),
+                            new Vector2Int(0, 5),
+                            new Vector2Int(0, 6),
                         },
                         new List<Vector2Int>()
                         {
@@ -279,13 +284,14 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(0, 1),
-                            new Vector2Int(0, 2),
-                            new Vector2Int(0, 3),
-                            new Vector2Int(0, 4),
-                            new Vector2Int(0, 5),
-                            new Vector2Int(0, 6),
+                            new Vector2Int(-1, 0),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
                         },
+                        
                     },
                     
                     [EActionType.Cross2Parabola] = new List<List<Vector2Int>>()
@@ -296,11 +302,11 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-2, 0),
-                            new Vector2Int(-3, 0),
-                            new Vector2Int(-4, 0),
-                            new Vector2Int(-5, 0),
-                            new Vector2Int(-6, 0),
+                            new Vector2Int(0, 2),
+                            new Vector2Int(0, 3),
+                            new Vector2Int(0, 4),
+                            new Vector2Int(0, 5),
+                            new Vector2Int(0, 6),
                         },
                         new List<Vector2Int>()
                         {
@@ -320,12 +326,13 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(0, 2),
-                            new Vector2Int(0, 3),
-                            new Vector2Int(0, 4),
-                            new Vector2Int(0, 5),
-                            new Vector2Int(0, 6),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
                         },
+                        
                     },
                     
                     [EActionType.Cross_Long_Empty] = new List<List<Vector2Int>>()
@@ -336,12 +343,12 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 0),
-                            new Vector2Int(-2, 0),
-                            new Vector2Int(-3, 0),
-                            new Vector2Int(-4, 0),
-                            new Vector2Int(-5, 0),
-                            new Vector2Int(-6, 0),
+                            new Vector2Int(0, 1),
+                            new Vector2Int(0, 2),
+                            new Vector2Int(0, 3),
+                            new Vector2Int(0, 4),
+                            new Vector2Int(0, 5),
+                            new Vector2Int(0, 6),
                         },
                         new List<Vector2Int>()
                         {
@@ -352,6 +359,7 @@ namespace RoundHero
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
                         },
+                        
                         new List<Vector2Int>()
                         {
                             new Vector2Int(0, -1),
@@ -363,13 +371,15 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(0, 1),
-                            new Vector2Int(0, 2),
-                            new Vector2Int(0, 3),
-                            new Vector2Int(0, 4),
-                            new Vector2Int(0, 5),
-                            new Vector2Int(0, 6),
+                            new Vector2Int(-1, 0),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
                         },
+
+                        
                     },
                     
                     // [EActionType.X_Extend] = new List<List<Vector2Int>>()
@@ -492,17 +502,6 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 0),
-
-                        },
-                        new List<Vector2Int>()
-                        {
-
-                            new Vector2Int(-1, 1),
-
-                        },
-                        new List<Vector2Int>()
-                        {
                             new Vector2Int(0, 1),
                         },
                         new List<Vector2Int>()
@@ -511,6 +510,7 @@ namespace RoundHero
                             new Vector2Int(1, 1),
 
                         },
+                        
                         new List<Vector2Int>()
                         {
                             
@@ -533,8 +533,18 @@ namespace RoundHero
                             
                             new Vector2Int(-1, -1),
                         },
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 0),
 
-                        
+                        },
+                        new List<Vector2Int>()
+                        {
+
+                            new Vector2Int(-1, 1),
+
+                        },
+
                     },
                     
                     [EActionType.Direct82Long] = new List<List<Vector2Int>>()
@@ -542,33 +552,6 @@ namespace RoundHero
                         new List<Vector2Int>()
                         {
                             new Vector2Int(0, 0),
-                        },
-                        new List<Vector2Int>()
-                        {
-                            new Vector2Int(-1, 0),
-                            new Vector2Int(-2, 0),
-                            new Vector2Int(-3, 0),
-                            new Vector2Int(-4, 0),
-                            new Vector2Int(-5, 0),
-                            new Vector2Int(-6, 0),
-                        },
-                        new List<Vector2Int>()
-                        {
-                            new Vector2Int(1, 0),
-                            new Vector2Int(2, 0),
-                            new Vector2Int(3, 0),
-                            new Vector2Int(4, 0),
-                            new Vector2Int(5, 0),
-                            new Vector2Int(6, 0),
-                        },
-                        new List<Vector2Int>()
-                        {
-                            new Vector2Int(0, -1),
-                            new Vector2Int(0, -2),
-                            new Vector2Int(0, -3),
-                            new Vector2Int(0, -4),
-                            new Vector2Int(0, -5),
-                            new Vector2Int(0, -6),
                         },
                         new List<Vector2Int>()
                         {
@@ -581,15 +564,6 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, -1),
-                            new Vector2Int(-2, -2),
-                            new Vector2Int(-3, -3),
-                            new Vector2Int(-4, -4),
-                            new Vector2Int(-5, -5),
-                            new Vector2Int(-6, -6),
-                        },
-                        new List<Vector2Int>()
-                        {
                             new Vector2Int(1, 1),
                             new Vector2Int(2, 2),
                             new Vector2Int(3, 3),
@@ -599,12 +573,12 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 1),
-                            new Vector2Int(-2, 2),
-                            new Vector2Int(-3, 3),
-                            new Vector2Int(-4, 4),
-                            new Vector2Int(-5, 5),
-                            new Vector2Int(-6, 6),
+                            new Vector2Int(1, 0),
+                            new Vector2Int(2, 0),
+                            new Vector2Int(3, 0),
+                            new Vector2Int(4, 0),
+                            new Vector2Int(5, 0),
+                            new Vector2Int(6, 0),
                         },
                         new List<Vector2Int>()
                         {
@@ -615,6 +589,44 @@ namespace RoundHero
                             new Vector2Int(5, -5),
                             new Vector2Int(6, -6),
                         },
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, -1),
+                            new Vector2Int(0, -2),
+                            new Vector2Int(0, -3),
+                            new Vector2Int(0, -4),
+                            new Vector2Int(0, -5),
+                            new Vector2Int(0, -6),
+                        },
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, -1),
+                            new Vector2Int(-2, -2),
+                            new Vector2Int(-3, -3),
+                            new Vector2Int(-4, -4),
+                            new Vector2Int(-5, -5),
+                            new Vector2Int(-6, -6),
+                        },
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 0),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
+                        },
+
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 1),
+                            new Vector2Int(-2, 2),
+                            new Vector2Int(-3, 3),
+                            new Vector2Int(-4, 4),
+                            new Vector2Int(-5, 5),
+                            new Vector2Int(-6, 6),
+                        },
+                        
                     },
                     
                     [EActionType.Direct82Parabola] = new List<List<Vector2Int>>()
@@ -780,48 +792,12 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 0),
-                            new Vector2Int(-2, 0),
-                            new Vector2Int(-3, 0),
-                            new Vector2Int(-4, 0),
-                            new Vector2Int(-5, 0),
-                            new Vector2Int(-6, 0),
-                        },
-                        new List<Vector2Int>()
-                        {
-                            new Vector2Int(1, 0),
-                            new Vector2Int(2, 0),
-                            new Vector2Int(3, 0),
-                            new Vector2Int(4, 0),
-                            new Vector2Int(5, 0),
-                            new Vector2Int(6, 0),
-                        },
-                        new List<Vector2Int>()
-                        {
-                            new Vector2Int(0, -1),
-                            new Vector2Int(0, -2),
-                            new Vector2Int(0, -3),
-                            new Vector2Int(0, -4),
-                            new Vector2Int(0, -5),
-                            new Vector2Int(0, -6),
-                        },
-                        new List<Vector2Int>()
-                        {
                             new Vector2Int(0, 1),
                             new Vector2Int(0, 2),
                             new Vector2Int(0, 3),
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
-                        },
-                        new List<Vector2Int>()
-                        {
-                            new Vector2Int(-1, -1),
-                            new Vector2Int(-2, -2),
-                            new Vector2Int(-3, -3),
-                            new Vector2Int(-4, -4),
-                            new Vector2Int(-5, -5),
-                            new Vector2Int(-6, -6),
                         },
                         new List<Vector2Int>()
                         {
@@ -834,12 +810,12 @@ namespace RoundHero
                         },
                         new List<Vector2Int>()
                         {
-                            new Vector2Int(-1, 1),
-                            new Vector2Int(-2, 2),
-                            new Vector2Int(-3, 3),
-                            new Vector2Int(-4, 4),
-                            new Vector2Int(-5, 5),
-                            new Vector2Int(-6, 6),
+                            new Vector2Int(1, 0),
+                            new Vector2Int(2, 0),
+                            new Vector2Int(3, 0),
+                            new Vector2Int(4, 0),
+                            new Vector2Int(5, 0),
+                            new Vector2Int(6, 0),
                         },
                         new List<Vector2Int>()
                         {
@@ -849,6 +825,43 @@ namespace RoundHero
                             new Vector2Int(4, -4),
                             new Vector2Int(5, -5),
                             new Vector2Int(6, -6),
+                        },
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(0, -1),
+                            new Vector2Int(0, -2),
+                            new Vector2Int(0, -3),
+                            new Vector2Int(0, -4),
+                            new Vector2Int(0, -5),
+                            new Vector2Int(0, -6),
+                        },
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, -1),
+                            new Vector2Int(-2, -2),
+                            new Vector2Int(-3, -3),
+                            new Vector2Int(-4, -4),
+                            new Vector2Int(-5, -5),
+                            new Vector2Int(-6, -6),
+                        },
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 0),
+                            new Vector2Int(-2, 0),
+                            new Vector2Int(-3, 0),
+                            new Vector2Int(-4, 0),
+                            new Vector2Int(-5, 0),
+                            new Vector2Int(-6, 0),
+                        },
+
+                        new List<Vector2Int>()
+                        {
+                            new Vector2Int(-1, 1),
+                            new Vector2Int(-2, 2),
+                            new Vector2Int(-3, 3),
+                            new Vector2Int(-4, 4),
+                            new Vector2Int(-5, 5),
+                            new Vector2Int(-6, 6),
                         },
                     },
                     
@@ -1265,7 +1278,7 @@ namespace RoundHero
             {
                 [EUnitActionState.Run] = 0.5f,
                 [EUnitActionState.Fly] = 0.4f,
-                [EUnitActionState.Rush] = 0.4f,
+                [EUnitActionState.Rush] = 0.3f,
                 [EUnitActionState.Throw] = 0.4f,
             };
             
@@ -1307,9 +1320,9 @@ namespace RoundHero
                     {
                         RoundGenerateUnitCount = new Dictionary<int, int>()
                         {
-                            [0] = 2,
+                            [0] = 4,
                             [2] = 2,
-                            [4] = 2,
+                            //[4] = 2,
                         },
                         EachRoundUnitCount = 2,
                         NormalUnitCount = 6,    
@@ -1445,7 +1458,7 @@ namespace RoundHero
         public class InitData
         {
             public int Coin = 350;
-            public List<int> InitBlesses = new List<int>();
+            public List<EBlessID> InitBlesses = new List<EBlessID>();
             public List<int> InitFunes = new List<int>();
             public List<InitCardData> InitCards = new();
         }
@@ -1469,8 +1482,9 @@ namespace RoundHero
             {
                 [EUnitCamp.Player1] = new InitData()
                 {
-                    InitBlesses = new List<int>()
+                    InitBlesses = new List<EBlessID>()
                     {
+                        EBlessID.AddCurHPByAttackDamage,
                         // 0,
                         // 1,
                         // 2,

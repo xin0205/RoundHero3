@@ -56,20 +56,24 @@ namespace RoundHero
             }
             else
             {
-                var value = 0;
+                var startValue = 0;
+                var endValue = 0;
 
                 foreach (var kv in triggerDataDict)
                 {
                     foreach (var triggerData in kv.Value)
                     {
-                        value += (int)triggerData.ActualValue;
+                        startValue += (int)triggerData.ActualValue;
+                        endValue += BlessManager.Instance.AddCurHPByAttackDamage()
+                            ? (int)(triggerData.Value + triggerData.DeltaValue)
+                            : (int)triggerData.ActualValue;
                     }
                 }
 
-                if (value != 0)
+                if (startValue != 0)
                 {
                     curValueEntityIdx += 1;
-                    InternalShowValue(effectUnit, value, entityIdx++);
+                    InternalShowValue(effectUnit, startValue, endValue, entityIdx++);
                 }
                
             }
@@ -138,15 +142,19 @@ namespace RoundHero
                 }
                 else
                 {
-                    var value = 0;
+                    var startValue = 0;
+                    var endValue = 0;
                     foreach (var triggerData in kv.Value)
                     {
-                        value += (int)triggerData.ActualValue;
+                        startValue += (int)triggerData.ActualValue;
+                        endValue += BlessManager.Instance.AddCurHPByAttackDamage()
+                            ? (int)(triggerData.Value + triggerData.DeltaValue)
+                            : (int)triggerData.ActualValue;
                     }
 
-                    if (value != 0)
+                    if (startValue != 0)
                     {
-                        InternalShowValue(effectUnit, value, entityIdx++);
+                        InternalShowValue(effectUnit, startValue, endValue, entityIdx++);
                     }
                
                 }
@@ -201,39 +209,61 @@ namespace RoundHero
         
         private async Task ShowHeroValue(int gridPosIdx, int value, int entityIdx)
         {
-            var gridPos = GameUtility.GridPosIdxToPos(gridPosIdx);
-            gridPos.y += 1f;
-                
-            var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-            uiCorePos.y -= 25f;
-            var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), gridPos);
+            // var gridPos = GameUtility.GridPosIdxToPos(gridPosIdx);
+            // gridPos.y += 1f;
+            //     
+            // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+            // uiCorePos.y -= 25f;
+            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), gridPos);
+            // uiLocalPoint.y += 25f;
+            
             //var uiLocalPoint2 = uiLocalPoint;
-            uiLocalPoint.y += 25f;
             //uiLocalPoint2.y += 75f;
-                
-            var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                uiCorePos,
-                value, entityIdx, true, false);
+              
+            ////AQA
+            // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
+            //     uiCorePos,
+            //     value, value, entityIdx, true, false);
+            
+            var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
+            var moveParams = new MoveParams()
+            {
+                FollowGO = gridEntity.gameObject,
+                DeltaPos = new Vector2(0, 1f),
+                IsUIGO = false,
+            };
+            
+            var targetMoveParams = new MoveParams()
+            {
+                FollowGO = AreaController.Instance.UICore,
+                DeltaPos = new Vector2(0, 25f),
+                IsUIGO = true,
+            };
 
-                
+            var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(value, value, entityIdx, true, false,
+                moveParams,
+                targetMoveParams);
+
+
+            //AQA
             //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
             if (GameEntry.Entity.HasEntity(entity.Id))
             {
                 if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
                 {
-
+            
                     GameEntry.Entity.HideEntity(entity);
                 }
                 else
                 {
-
+            
                     BattleValueEntities.Add(entity.Entity.Id, entity);
                 }
             }
         }
 
-        private async void InternalShowValue(BattleUnitEntity effectUnit, int value, int entityIdx)
+        private async void InternalShowValue(BattleUnitEntity effectUnit, int startValue, int endValue, int entityIdx)
         {
             
             if (effectUnit == null)
@@ -268,33 +298,52 @@ namespace RoundHero
                 //         BattleValueEntities.Add(entity.Id, entity);
                 //     }
                 // }
-                var effectUnitPos = effectUnit.Root.position;
+                //var effectUnitPos = effectUnit.Root.position;
 
                 
 
-                var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-                var uiLocalPoint2 = uiLocalPoint;
+                // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+                //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+                // var uiLocalPoint2 = uiLocalPoint;
+                //
+                // uiLocalPoint.y += 25f;
+                // uiLocalPoint2.y += 75f;
+                //AQA
+                // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
+                //     uiLocalPoint2,
+                //     startValue, endValue, entityIdx, true, effectUnit is BattleSoliderEntity);
                 
-                uiLocalPoint.y += 25f;
-                uiLocalPoint2.y += 75f;
-                
-                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                    uiLocalPoint2,
-                    value, entityIdx, true, effectUnit is BattleSoliderEntity);
+                var moveParams = new MoveParams()
+                {
+                    FollowGO = effectUnit.gameObject,
+                    DeltaPos = new Vector2(0, 25f),
+                    IsUIGO = false,
+                };
+            
+                var targetMoveParams = new MoveParams()
+                {
+                    FollowGO = effectUnit.gameObject,
+                    DeltaPos = new Vector2(0, 75f),
+                    IsUIGO = false,
+                };
 
-                
+                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, entityIdx,
+                    true, effectUnit is BattleSoliderEntity,
+                    moveParams,
+                    targetMoveParams);
+
+                //AQA
                 //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
                     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
                     {
-
+                
                         GameEntry.Entity.HideEntity(entity);
                     }
                     else
                     {
-
+                
                         BattleValueEntities.Add(entity.Entity.Id, entity);
                     }
                 }
@@ -302,33 +351,54 @@ namespace RoundHero
             }
             else
             {
-                var effectUnitPos = effectUnit.Root.position;
+                // var effectUnitPos = effectUnit.Root.position;
+                //
+                //
+                // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+                // uiCorePos.y -= 25f;
+                // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+                //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+                // var uiLocalPoint2 = uiLocalPoint;
+                // uiLocalPoint.y += 25f;
+                // uiLocalPoint2.y += 75f;
+                
+                //AQA
+                // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
+                //     startValue < 0 ? uiCorePos : uiLocalPoint2,
+                //     startValue, endValue, entityIdx, true, effectUnit is BattleSoliderEntity && startValue < 0);
 
                 
-                var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-                uiCorePos.y -= 25f;
-                var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-                var uiLocalPoint2 = uiLocalPoint;
-                uiLocalPoint.y += 25f;
-                uiLocalPoint2.y += 75f;
-                
-                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                    value < 0 ? uiCorePos : uiLocalPoint2,
-                    value, entityIdx, true, effectUnit is BattleSoliderEntity && value < 0);
+                var moveParams = new MoveParams()
+                {
+                    FollowGO = effectUnit.gameObject,
+                    DeltaPos = new Vector2(0, 25f),
+                    IsUIGO = false,
+                };
+            
+                var targetMoveParams = new MoveParams()
+                {
+                    FollowGO = startValue < 0 ? AreaController.Instance.UICore :  effectUnit.gameObject,
+                    DeltaPos = new Vector2(0, startValue < 0 ? -25f : 75f),
+                    IsUIGO = startValue < 0,
+                };
 
-                
+                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, entityIdx, true,
+                    effectUnit is BattleSoliderEntity && startValue < 0,
+                    moveParams,
+                    targetMoveParams);
+
+                //AQA
                 //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
                     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
                     {
-
+                
                         GameEntry.Entity.HideEntity(entity);
                     }
                     else
                     {
-
+                
                         BattleValueEntities.Add(entity.Entity.Id, entity);
                     }
                 }
@@ -349,13 +419,16 @@ namespace RoundHero
             var idx = 0;
             foreach (var triggerData in triggerDatas)
             {
-                var value = (int)triggerData.ActualValue;
+                var startvalue = (int)triggerData.ActualValue;
+                var endValue = BlessManager.Instance.AddCurHPByAttackDamage()
+                    ? (int)(triggerData.Value + triggerData.DeltaValue)
+                    : (int)triggerData.ActualValue;
                 // if(value == 0)
                 //     continue;
 
                 GameUtility.DelayExcute(idx *0.25f, () =>
                 {
-                    InternalShowValue(effectUnit, value, entityIdx++);
+                    InternalShowValue(effectUnit, startvalue, endValue, entityIdx++);
                 });
                 //InternalShowValue(effectUnit, value, entityIdx++);
 

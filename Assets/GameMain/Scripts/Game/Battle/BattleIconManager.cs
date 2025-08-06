@@ -36,7 +36,8 @@ namespace RoundHero
             BattleIconEntities.Clear();
             
             
-            var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
+            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unitIdx),
+                BattleFightManager.Instance.GetInDirectAttackDatas(unitIdx));
 
             var entityIdx = curEntityIdx;
             curEntityIdx += triggerDataDict.Count;
@@ -65,11 +66,12 @@ namespace RoundHero
                         var pos1 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
                         var pos2 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 2]);
 
-                        var centerPos = (pos1 + pos2) / 2.0f;
+                        //(pos1 + pos2) / 2.0f
+                        var centerPos = pos2;
                         centerPos.y += 1f;
                         
                         var battleIconEntity =
-                            await GameEntry.Entity.ShowBattleIconEntityAsync(centerPos, EBattleIconType.Collison, entityIdx);
+                            await GameEntry.Entity.ShowBattleIconEntityAsync(centerPos, EBattleIconType.Collision, entityIdx);
                         
                         entityIdx++;
 
@@ -134,11 +136,12 @@ namespace RoundHero
                         var pos1 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
                         var pos2 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 2]);
 
-                        var centerPos = (pos1 + pos2) / 2.0f;
+                        //var centerPos = (pos1 + pos2) / 2.0f;
+                        var centerPos = pos2;
                         centerPos.y += 1f;
                         
                         var battleIconEntity =
-                            await GameEntry.Entity.ShowBattleIconEntityAsync(centerPos, EBattleIconType.Collison, entityIdx);
+                            await GameEntry.Entity.ShowBattleIconEntityAsync(centerPos, EBattleIconType.Collision, entityIdx);
                         
                         entityIdx++;
 

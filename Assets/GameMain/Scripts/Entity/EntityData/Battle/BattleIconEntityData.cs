@@ -4,7 +4,7 @@ namespace RoundHero
 {
     public enum EBattleIconType
     {
-        Collison,
+        Collision,
     }
     
     public class BattleIconEntityData : EntityData

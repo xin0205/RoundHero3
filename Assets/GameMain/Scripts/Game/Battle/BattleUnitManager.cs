@@ -600,6 +600,24 @@ namespace RoundHero
 
             return null;
         }
+        
+        public EColor GetEffectColor(BattleUnitEntity unit)
+        {
+            if (unit is BattleSoliderEntity soliderEntity)
+            {
+                var drCard = CardManager.Instance.GetCardTable(soliderEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                
+                return drCard.EffectColor;
+
+            }
+            else if (unit is BattleMonsterEntity monsterEntity)
+            {
+                var drEnemy = GameEntry.DataTable.GetEnemy(monsterEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
+                return drEnemy.EffectColor;
+            }
+
+            return EColor.Blue;
+        }
 
         public EActionType GetMoveType(int unitID)
         {

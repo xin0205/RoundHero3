@@ -52,4 +52,14 @@ namespace RoundHero
     public class TutorialStepGODictionary : SerializableDictionary<ETutorialStep, GameObject>
     {
     }
+    
+    [Serializable]
+    public class EColorGODictionary : SerializableDictionary<EColor, GameObject>
+    {
+    }
+    
+    // [Serializable]
+    // public class UnitStateSpriteDictionary : SerializableDictionary<EUnitState, Sprite>
+    // {
+    // }
 }

@@ -326,6 +326,7 @@ namespace RoundHero
         RangeTrigger,
         Stay,
         Use,
+        StartMove,
     }
 
     public enum EBuffEquipType
@@ -791,6 +792,7 @@ namespace RoundHero
         RemoteSingle,
         ExtendMulti,
         ParabolaMulti,
+        LineMulti,
         Empty,
     }
 
@@ -826,5 +828,15 @@ namespace RoundHero
         Consume,
         Hand,
         Default
+    }
+    
+    public enum EColor
+    {
+        Blue,
+        Green,
+        Pink,
+        Purple,
+        Yellow,
+        Red,
     }
 }
