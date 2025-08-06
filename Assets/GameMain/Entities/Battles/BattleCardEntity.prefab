@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3334259066294112754}
   - component: {fileID: 906767259617834939}
   - component: {fileID: 2119816460734165677}
+  - component: {fileID: 4961554440136780537}
+  - component: {fileID: 685717117239060014}
   m_Layer: 5
   m_Name: BattleCardEntity
   m_TagString: Untagged
@@ -86,6 +88,8 @@ MonoBehaviour:
   ConfirmGO: {fileID: 8765331055428610655}
   ConfirmText: {fileID: 1041348506905405741}
   videoTriggerItem: {fileID: 7458937991756294197}
+  moveGameObject: {fileID: 4961554440136780537}
+  scaleGameObject: {fileID: 685717117239060014}
 --- !u!223 &906767259617834939
 Canvas:
   m_ObjectHideFlags: 0
@@ -126,6 +130,30 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4961554440136780537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3427f3a28d1b4e398ee2f9b33d26b9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &685717117239060014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47fda6aa8c9e4a7fbef9b5b5e636afdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &114060595483577989
 GameObject:
   m_ObjectHideFlags: 0

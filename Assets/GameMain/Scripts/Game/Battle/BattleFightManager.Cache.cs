@@ -427,9 +427,10 @@ namespace RoundHero
                 {
                     
                     var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
-                    // if ((!string.IsNullOrEmpty(buffStr) && buffStr != EBuffID.Spec_AttackUs.ToString() && buffStr != EBuffID.Spec_MoveUs.ToString()) ||
-                    //     string.IsNullOrEmpty(buffStr))
-                    if (!string.IsNullOrEmpty(buffStr) && buffStr != EBuffID.Spec_AttackUs.ToString() && buffStr != EBuffID.Spec_MoveUs.ToString())
+                    //if (!string.IsNullOrEmpty(buffStr) && buffStr != EBuffID.Spec_AttackUs.ToString() && buffStr != EBuffID.Spec_MoveUs.ToString())
+
+                    if ((!string.IsNullOrEmpty(buffStr) && buffStr != EBuffID.Spec_AttackUs.ToString() && buffStr != EBuffID.Spec_MoveUs.ToString()) ||
+                        string.IsNullOrEmpty(buffStr))
                     {
                         BattleCardManager.Instance.CacheUseCardData(
                             BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,

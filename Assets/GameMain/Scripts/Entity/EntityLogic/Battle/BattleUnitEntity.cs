@@ -1,6 +1,7 @@
 ﻿
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using GameFramework;
@@ -519,6 +520,7 @@ namespace RoundHero
                     {
                         GameEntry.Entity.ShowBattleParabolaBulletEntityAsync(bulletData, ShootPos.position);
                     }
+                    
                     else
                     {
                         GameEntry.Entity.ShowBattleParabolaBulletEntityAsync(bulletData, ShootPos.position);
@@ -823,6 +825,39 @@ namespace RoundHero
                 }
             }
         }
+        
+        private async void ShowEffectAttackEntity_LineMulti(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
+        {
+            var effectName = "EffectLineMultiAttackEntity";
+            var effectPos = EffectHurtPos.position;
+            var gridPosIdxs = new List<int>();
+            foreach (var kv in triggerActionDataDict)
+            {
+                foreach (var triggerActionData in kv.Value)
+                {
+                    if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                    {
+                        var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.EffectUnitIdx);
+                    
+                        if(effectUnit != null)
+                            gridPosIdxs.Add(effectUnit.GridPosIdx);
+                    }
+                    
+                }
+            }
+            
+
+            var firstTriggerData = triggerActionDataDict[triggerActionDataDict.First().Key].First() as TriggerActionTriggerData;
+            var actionUnit =
+                BattleUnitManager.Instance.GetUnitByIdx(firstTriggerData.TriggerData.ActionUnitIdx);
+            if (actionUnit != null)
+            {
+                var effectAttackEntity = await GameEntry.Entity.ShowLineMultiEffectEntityAsync(effectName, effectPos, BattleUnitManager.Instance.GetEffectColor(actionUnit), gridPosIdxs);
+
+            }
+            
+
+        }
 
         private async void ShowEffectAttackEntity_CloseMulti(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
         {
@@ -869,7 +904,7 @@ namespace RoundHero
         
         private async void ShowEffectAttackEntity(string effectName, Vector3 effectPos, Vector3 lookAtPos, EColor effectColor)
         {
-            var effectAttackEntity = await GameEntry.Entity.ShowBattleEffectEntityAsync(effectName, effectPos, effectColor);
+            var effectAttackEntity = await GameEntry.Entity.ShowCommonEffectEntityAsync(effectName, effectPos, effectColor);
 
             if (lookAtPos != Vector3.zero)
             {
@@ -1147,10 +1182,29 @@ namespace RoundHero
             animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+            
+            
+            
+            var gridPosIdxs = new List<int>();
+            foreach (var kv in actionData.TriggerDatas)
+            {
+                foreach (var triggerData in kv.Value)
+                {
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                    
+                    if(effectUnit != null)
+                        gridPosIdxs.Add(effectUnit.GridPosIdx);
+                }
+                
+            }
 
             GameUtility.DelayExcute(0.15f, () =>
             {
-                MultiHandleShoot(actionData);
+                var effectName = "EffectLineMultiAttackEntity";
+                GameEntry.Entity.ShowLineMultiEffectEntityAsync(effectName, transform.position, BattleUnitManager.Instance.GetEffectColor(this), gridPosIdxs);
+                BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.Idx);
+                HeroManager.Instance.UpdateCacheHPDelta();
+                //MultiHandleShoot(actionData);
             });
         }
         

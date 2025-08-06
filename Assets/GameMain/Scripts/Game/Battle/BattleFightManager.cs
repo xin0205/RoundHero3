@@ -593,7 +593,7 @@ namespace RoundHero
 
 
 
-                if (actionUnitData.GetStateCount(EUnitState.SubDmg) > 0)
+                if (actionUnitData != null && actionUnitData.GetStateCount(EUnitState.SubDmg) > 0)
                 {
                     var subDamageTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
                         actionUnitData.Idx, actionUnitData.Idx, EUnitState.SubDmg, -1, ETriggerDataType.RoleState);

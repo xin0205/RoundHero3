@@ -70,6 +70,12 @@ namespace RoundHero
         [SerializeField]
         private VideoTriggerItem videoTriggerItem;
 
+        [SerializeField]
+        private MoveGameObject moveGameObject;
+        
+        [SerializeField]
+        private ScaleGameObject scaleGameObject;
+        
         private Rect rect;
         private bool isInside;
         private bool isHand;
@@ -297,54 +303,67 @@ namespace RoundHero
          
         public void MoveCard(Vector2 pos, float time)
         {
-            if (moveTween != null)
-            {
-                //moveTween.Pause();
-                moveTween.Kill(false);
-                moveTween = null;
-            }
+            moveGameObject.Move(this.transform.localPosition, new Vector3(pos.x, pos.y, 0), time);
             
-            //transform.DOKill(false);
-            moveTween = transform.DOLocalMove(new Vector3(pos.x, pos.y, 0), time);
-            GameUtility.DelayExcute(time + 0.01f, () =>
-            {
-                if (moveTween != null)
-                {
-                    moveTween.Kill(true);
-                }
-                
-            });
+            // if (moveTween != null)
+            // {
+            //     //moveTween.Pause();
+            //     moveTween.Kill(false);
+            //     moveTween = null;
+            // }
+            //
+            // //transform.DOKill(false);
+            // moveTween = transform.DOLocalMove(new Vector3(pos.x, pos.y, 0), time);
+            // GameUtility.DelayExcute(time + 0.01f, () =>
+            // {
+            //     if (moveTween != null)
+            //     {
+            //         moveTween.Kill(true);
+            //     }
+            //     
+            // });
             RefreshInHandCard(time);
         }
         
         private Tween scaleTween;
         public void ScaleCard(float from, float to, float time)
         {
+            Vector3 startScale;
+            if (from == -1)
+            {
+                startScale = transform.localScale; 
+            }
+            else
+            {
+                startScale = new Vector3(from, from, from);
+            }
+            
+            scaleGameObject.Scale(startScale, new Vector3(to, to, to), time);
             // from = 1;
             // to = 1;
-            if (scaleTween != null)
-            {
-                //scaleTween.Pause();
-                scaleTween.Kill(false);
-                scaleTween = null;
-            }
-            
-            //transform.DOKill(false);
-            if (from != -1)
-            {
-                transform.localScale = new Vector3(from, from, from);
-            }
-            
-            scaleTween = transform.DOScale(to, time);
-            GameUtility.DelayExcute(time + 0.01f, () =>
-            {
-                if (scaleTween != null)
-                {
-                    scaleTween.Kill(false);
-                    //scaleTween = null;
-                }
-                
-            });
+            // if (scaleTween != null)
+            // {
+            //     //scaleTween.Pause();
+            //     scaleTween.Kill(false);
+            //     scaleTween = null;
+            // }
+            //
+            // //transform.DOKill(false);
+            // if (from != -1)
+            // {
+            //     transform.localScale = new Vector3(from, from, from);
+            // }
+            //
+            // scaleTween = transform.DOScale(to, time);
+            // GameUtility.DelayExcute(time + 0.01f, () =>
+            // {
+            //     if (scaleTween != null)
+            //     {
+            //         scaleTween.Kill(false);
+            //         //scaleTween = null;
+            //     }
+            //     
+            // });
 
         }
         

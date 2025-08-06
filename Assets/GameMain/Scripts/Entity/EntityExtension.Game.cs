@@ -339,16 +339,28 @@ namespace RoundHero
             return (EffectEntity)task.Logic;
         }
         
-        public static async Task<BattleEffectEntity> ShowBattleEffectEntityAsync(this EntityComponent entityComponent, string assetName, Vector3 pos, EColor color)
+        public static async Task<CommonEffectEntity> ShowCommonEffectEntityAsync(this EntityComponent entityComponent, string assetName, Vector3 pos, EColor color)
         {
-            var data = ReferencePool.Acquire<BattleEffectEntityData>();
+            var data = ReferencePool.Acquire<CommonEffectEntityData>();
             
             data.Init(entityComponent.GenerateSerialId(), pos, color);
 
-            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleEffectEntity),
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(CommonEffectEntity),
                 AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Unit, 0, data);
             
-            return (BattleEffectEntity)task.Logic;
+            return (CommonEffectEntity)task.Logic;
+        }
+        
+        public static async Task<LineMultiEffectEntity> ShowLineMultiEffectEntityAsync(this EntityComponent entityComponent, string assetName, Vector3 pos, EColor color, List<int> gridPosIdxs)
+        {
+            var data = ReferencePool.Acquire<LineMultiEffectEntityData>();
+            
+            data.Init(entityComponent.GenerateSerialId(), pos, color, gridPosIdxs);
+        
+            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(LineMultiEffectEntity),
+                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Unit, 0, data);
+            
+            return (LineMultiEffectEntity)task.Logic;
         }
         
         public static async Task<BattleLineBulletEntity> ShowBattleLineBulletEntityAsync(this EntityComponent entityComponent, BulletData bulletData, Vector3 shootPos)

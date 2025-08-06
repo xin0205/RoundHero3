@@ -3,32 +3,27 @@ using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
-    public class BattleEffectEntity : EffectEntity
+    public class CommonEffectEntity : EffectEntity
     {
         [SerializeField]
-        private EColorGODictionary effectPrefabs;
+        protected EColorGODictionary effectPrefabs;
 
-        private GameObject effectPrefab;
+        protected GameObject effectPrefab;
 
         
-        public BattleEffectEntityData BattleEffectEntityData { get; protected set; }
+        public CommonEffectEntityData CommonEffectEntityData { get; protected set; }
         
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
-            BattleEffectEntityData = userData as BattleEffectEntityData;
-            if (BattleEffectEntityData == null)
+            CommonEffectEntityData = userData as CommonEffectEntityData;
+            if (CommonEffectEntityData == null)
             {
-                Log.Error("Error BattleEffectEntityData");
+                Log.Error("Error CommonEffectEntityData");
                 return;
             }
 
-            ShowEffect();
-        }
-        
-        private void ShowEffect()
-        {
-            var color = BattleEffectEntityData.EffectColor;
+            var color = CommonEffectEntityData.EffectColor;
             foreach (var kv in effectPrefabs)
             {
                 if(kv.Value == null)
@@ -36,6 +31,11 @@ namespace RoundHero
                 kv.Value.SetActive(kv.Key == color);
   
             }
+        }
+        
+        protected virtual void ShowEffect()
+        {
+            
             
             
             

@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RoundHero
 {
-    public class BattleEffectEntityData : EntityData
+    public class CommonEffectEntityData : EntityData
     {
         public EColor EffectColor;
+        
         
         public void Init(int entityId, Vector3 pos, EColor color)
         {
