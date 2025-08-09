@@ -81,7 +81,7 @@ namespace RoundHero
             public static float ViewMaxHandCardCount = 10;
             public static int EachHardCardCount = 5;
             public static int CoreCount = 3;
-            public static int SelectCardHeight = 100;
+            public static int SelectCardHeight = 105;
             public static int ResetActionTimes = 3;
 
             public static int SelectInitCardEachCount = 1;
@@ -1320,9 +1320,9 @@ namespace RoundHero
                     {
                         RoundGenerateUnitCount = new Dictionary<int, int>()
                         {
-                            [0] = 4,
+                            [0] = 2,
                             [2] = 2,
-                            //[4] = 2,
+                            [4] = 2,
                         },
                         EachRoundUnitCount = 2,
                         NormalUnitCount = 6,    

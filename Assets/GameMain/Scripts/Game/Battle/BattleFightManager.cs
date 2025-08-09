@@ -1258,7 +1258,7 @@ namespace RoundHero
 
             AcitonUnitIdx++;
 
-            GameUtility.DelayExcute(isAttack ? 1.5f : 0.5f, () =>
+            GameUtility.DelayExcute(isAttack ? 1f : 0.5f, () =>
             {
                 BattleManager.Instance.ContinueAction();
             });

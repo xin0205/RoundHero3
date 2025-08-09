@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -177,6 +178,12 @@ namespace RoundHero
         {
             time += Time.deltaTime;
 
+            
+            if(BattleMoveValueEntityData.FollowParams.FollowGO.IsDestroyed())
+                return;
+            
+            if(BattleMoveValueEntityData.TargetFollowParams.FollowGO.IsDestroyed())
+                return;
             
             if (!BattleMoveValueEntityData.FollowParams.IsUIGO)
             {

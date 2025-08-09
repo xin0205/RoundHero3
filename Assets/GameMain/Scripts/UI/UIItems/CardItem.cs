@@ -63,5 +63,11 @@ namespace RoundHero
         {
             baseCard.RefreshEnergy(energy);
         }
+
+        public void SetIconVisible(bool isVisible)
+        {
+            baseCard.SetIconVisible(isVisible);
+            
+        }
     }
 }

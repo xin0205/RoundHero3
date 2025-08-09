@@ -646,21 +646,22 @@ namespace RoundHero
             //     ret = UseCard(cardID);
             // }
             
-            
-
+            var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
+            cardEntity.UseCardAnimation();
             return UseCard(cardIdx);
         }
+
+        
 
         public bool UseCard(int cardIdx, int unitIdx = -1)
         {
             var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitIdx);
             
             
-            var drCard = CardManager.Instance.GetCardTable(cardIdx);
+            
             var card = BattleManager.Instance.GetCard(cardIdx);
             
-            
-            
+
             BattleManager.Instance.RecordLastActionBattleData();
             
             BattlePlayerData.RoundUseCardCount += 1;
@@ -745,13 +746,6 @@ namespace RoundHero
                 IsUIGO = true,
             };
             
-            // var moveParams = new MoveParams()
-            // {
-            //     FollowGO = cardEntity.gameObject,
-            //     DeltaPos = new Vector2(0, 0),
-            //     IsUIGO = false,
-            // };
-            
             var targetMoveParams = new MoveParams()
             {
                 FollowGO = AreaController.Instance.UICore,
@@ -778,6 +772,8 @@ namespace RoundHero
             BattleManager.Instance.RefreshEnemyAttackData();
             
             HeroManager.Instance.UpdateCacheHPDelta();
+            
+            BattleCardManager.Instance.SetCardsPos();
             
             return true;
 
@@ -973,8 +969,10 @@ namespace RoundHero
             {
                 var time = (cardCount - i) * 0.15f + 0.15f;
                 //CardEntities[passCards[i]].ToPassCard();
-                CardEntities[passCards[i]].MoveCard(ECardPos.Default, ECardPos.Pass, time);
+                var cardEntity = CardEntities[passCards[i]];
                 RemoveHandCard(passCards[i]);
+                cardEntity.MoveCard(ECardPos.Default, ECardPos.Pass, time);
+               
             }
 
             ResetCardsPos(true);
@@ -1538,6 +1536,16 @@ namespace RoundHero
                 return;
             
             CardEntities[SelectCardIdx].RefreshCofirm();
+        }
+
+        public void ShowTacticDownMulti(List<int> gridPosIdxs)
+        {
+            foreach (var gridPosIdx in gridPosIdxs)
+            {
+
+                GameEntry.Entity.ShowCommonEffectEntityAsync("TacticDownMultiEntity",
+                    GameUtility.GridPosIdxToPos(gridPosIdx), EColor.Blue);
+            }
         }
         
     }

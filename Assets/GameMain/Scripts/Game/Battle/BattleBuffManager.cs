@@ -793,9 +793,30 @@ namespace RoundHero
         {
             foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas)
             {
+
+                var gridPosIdxs = new List<int>();
                 foreach (var triggerData in kv.Value)
                 {
-                    BattleFightManager.Instance.TriggerAction(triggerData);
+                    gridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
+
+                    GameUtility.DelayExcute(0.5f, () =>
+                    {
+                        BattleFightManager.Instance.TriggerAction(triggerData);
+                    });
+                    
+                }
+                
+                var drCard = CardManager.Instance.GetCardTable(kv.Key);
+                if (drCard != null)
+                {
+                    switch (drCard.AttackCastType)
+                    {
+                        case EAttackCastType.TacticDownMulti:
+                                
+                            BattleCardManager.Instance.ShowTacticDownMulti(gridPosIdxs);
+                            break;
+                            
+                    }
                 }
             }
 

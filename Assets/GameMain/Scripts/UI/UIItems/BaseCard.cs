@@ -130,6 +130,9 @@ namespace RoundHero
 
         }
 
-        
+        public void SetIconVisible(bool isVisible)
+        {
+            Icon.gameObject.SetActive(isVisible);
+        }
     }
 }

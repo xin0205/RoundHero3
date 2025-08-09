@@ -57,6 +57,12 @@ namespace RoundHero
         private GameObject attackCheckMark;
         
         [SerializeField]
+        private GameObject moveIcon;
+        
+        [SerializeField]
+        private GameObject attackIcon;
+        
+        [SerializeField]
         private InfoTrigger moveInfoTrigger;
         
         [SerializeField]
@@ -217,7 +223,7 @@ namespace RoundHero
             //isShow = true;
             ActionGO.SetActive(true);
             //transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 140f, 0);
-            ScaleCard(1, 1.2f, 0.01f);
+            ScaleCard(1, 1.1f, 0.01f);
             //transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             BattleCardManager.Instance.PointerCardIdx = BattleCardEntityData.CardData.CardIdx;
             BattleCardManager.Instance.SelectCardIdx = BattleCardEntityData.CardData.CardIdx;
@@ -460,11 +466,11 @@ namespace RoundHero
             //transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, 0.2f);
 
             //MoveCard(BattleController.Instance.CenterPos.localPosition, 0.2f);
-            MoveCard(ECardPos.Default, ECardPos.Center, 0.2f);
+            MoveCard(ECardPos.Default, ECardPos.Center, 0.4f);
 
             //GetComponent<Canvas>().sortingOrder =  1000;
 
-            GameUtility.DelayExcute(0.4f, () =>
+            GameUtility.DelayExcute(0.9f, () =>
             {
                 switch (BattleCardEntityData.CardData.CardDestination)
                 {
@@ -487,6 +493,8 @@ namespace RoundHero
                 
 
             });
+            
+            
 
         }
 
@@ -551,20 +559,60 @@ namespace RoundHero
 
             var fromShow = from == ECardPos.Center || from == ECardPos.Hand;
             var toShow = to == ECardPos.Center || to == ECardPos.Hand;
+            var fromScale = transform.localScale.x;
+            var toScale = transform.localScale.x;
+
+            if (from == ECardPos.Default)
+            {
+                fromScale = transform.localScale.x;
+            }
+            else if (from == ECardPos.Center)
+            {
+                fromScale = 1.3f;
+            }
+            else if(fromShow || !toShow)
+            {
+                fromScale = 1f;
+            }
+            else
+            {
+                fromScale = 0f;
+            }
+            
+            if (to == ECardPos.Default)
+            {
+                toScale = transform.localScale.x;
+            }
+            else if (from == ECardPos.Center)
+            {
+                toScale = 1.3f;
+            }
+            else if(toShow)
+            {
+                toScale = 1f;
+            }
+            else
+            {
+                toScale = 0f;
+            }
             
             //transform.localScale = fromShow || !toShow ? Vector3.one : Vector3.zero;
             //transform.DOScale(toShow ? Vector3.one : Vector3.zero, time);
-            ScaleCard(fromShow || !toShow ? 1 : 0, toShow ? 1 : 0, time);
+            ScaleCard(fromScale, toScale, time);
             
             if (from == ECardPos.Hand)
             {
                 isHand = false;
             }
             
-            if (to == ECardPos.Hand)
-            {
-                RefreshInHandCard(time);
-            }
+            // if (to == ECardPos.Hand)
+            // {
+            //     RefreshInHandCard(time);
+            // }
+            
+            
+            RefreshInHandCard(time);
+            
 
             if (!toShow)
             {
@@ -919,19 +967,29 @@ namespace RoundHero
                 case ECardUseType.Raw:
                     moveCheckMark.SetActive(false);
                     attackCheckMark.SetActive(false);
+                    moveIcon.SetActive(false);
+                    attackIcon.SetActive(false);
                     moveGO.SetActive(true);
                     attackGO.SetActive(true);
                     moveGO.GetComponent<Animation>().Play();
                     attackGO.GetComponent<Animation>().Play();
+                    
+                    CardItem.SetIconVisible(true);
+                    
                     break;
                 case ECardUseType.Attack:
                     moveCheckMark.SetActive(false);
                     moveGO.SetActive(true);
+                    
                     moveGO.GetComponent<Animation>().Play();
                     
                     attackCheckMark.SetActive(true);
                     attackGO.SetActive(false);
                     attackGO.GetComponent<Animation>().Stop();
+                    
+                    moveIcon.SetActive(false);
+                    attackIcon.SetActive(true);
+                    CardItem.SetIconVisible(false);
                     break;
                 case ECardUseType.Move:
                     attackCheckMark.SetActive(false);
@@ -941,6 +999,10 @@ namespace RoundHero
                     moveCheckMark.SetActive(true);
                     moveGO.SetActive(false);
                     moveGO.GetComponent<Animation>().Stop();
+                    
+                    moveIcon.SetActive(true);
+                    attackIcon.SetActive(false);
+                    CardItem.SetIconVisible(false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(cardUseType), cardUseType, null);

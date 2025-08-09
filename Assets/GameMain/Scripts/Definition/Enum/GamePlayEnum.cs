@@ -793,6 +793,7 @@ namespace RoundHero
         ExtendMulti,
         ParabolaMulti,
         LineMulti,
+        TacticDownMulti,
         Empty,
     }
 
