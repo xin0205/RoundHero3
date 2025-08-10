@@ -5,11 +5,13 @@ namespace RoundHero
     public enum EBattleIconType
     {
         Collision,
+        Empty,
     }
     
     public class BattleIconEntityData : EntityData
     {
-        public EBattleIconType BattleIconType;
+        public EBattleIconType BattleIconType = EBattleIconType.Empty;
+        //public EUnitState UnitState = EUnitState.Empty;
         public int EntityIdx;
         
         
@@ -20,5 +22,6 @@ namespace RoundHero
             this.EntityIdx = entityIndex;
 
         }
+
     }
 }

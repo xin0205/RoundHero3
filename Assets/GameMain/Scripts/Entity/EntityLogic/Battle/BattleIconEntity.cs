@@ -1,6 +1,7 @@
 ﻿
 
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -9,7 +10,9 @@ namespace RoundHero
     {
         public BattleIconEntityData BattleIconEntityData { get; protected set; }
         protected Quaternion cameraQuaternion = Quaternion.identity;
-        protected override void OnShow(object userData)
+
+        [SerializeField] private Image icon;
+        protected async override void OnShow(object userData)
         {
             transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
 
@@ -21,6 +24,8 @@ namespace RoundHero
                 Log.Error("Error BattleIconEntityData");
                 return;
             }
+            
+            //icon.sprite = await AssetUtility.GetUnitStateIcon(BattleIconEntityData.BattleIconType);
 
         }
         

@@ -112,6 +112,9 @@ namespace RoundHero
                 var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnitIdx, passUnitIdx, bePassUnitIdx,
                     EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
                 triggerData.TriggerDataSubType = ETriggerDataSubType.State;
+                triggerData.ActionUnitGridPosIdx = passUnit.GridPosIdx;
+                triggerData.EffectUnitGridPosIdx = passUnit.GridPosIdx;
+
                 BattleBuffManager.Instance.PostTrigger(triggerData, triggerDatas);
                 
                 
@@ -122,6 +125,8 @@ namespace RoundHero
                 var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,bePassUnitIdx, bePassUnitIdx, passUnitIdx,
                     EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
                 triggerData.TriggerDataSubType = ETriggerDataSubType.State;
+                triggerData.ActionUnitGridPosIdx = bePassUnit.GridPosIdx;
+                triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
                 BattleBuffManager.Instance.PostTrigger(triggerData, triggerDatas);
                 
                 
@@ -188,42 +193,7 @@ namespace RoundHero
             // }
         }
 
-        public async Task AnimationRemoveUnitState(EUnitState unitState, BattleUnitEntity unitEntity, Transform parent = null)
-        {
-            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), unitEntity.Position);
-            // var uiLocalPoint2 = uiLocalPoint;
-            // uiLocalPoint.y += 100f;
-            // uiLocalPoint2.y += 50f;
-            var moveParams = new MoveParams()
-            {
-                
-                FollowGO = unitEntity.gameObject,
-                DeltaPos = new Vector2(0, 25f),
-                IsUIGO = false,
-            };
-            
-            var targetMoveParams = new MoveParams()
-            {
-                FollowGO = unitEntity.gameObject,
-                DeltaPos = new Vector2(0, 125f),
-                IsUIGO = false,
-            };
-            
-            await GameEntry.Entity.ShowBattleMoveIconEntityAsync(unitState, -1, false, moveParams, targetMoveParams);
-            
-            
-            
-           
-            
-            // if (parent != null)
-            // {
-            //     moveIconEntity.transform.SetParent(parent);
-            //     moveIconEntity.transform.position = unitEntity.Position;
-            //     moveIconEntity.transform.localScale = new Vector3(1f, 1f, 1f);
-            // }
-            
-        }
+        
     }
 }
 

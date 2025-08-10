@@ -1,4 +1,6 @@
 ﻿
+using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
 
@@ -173,6 +175,29 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             UnShowTags();
+        }
+        
+        protected async override Task ShowBattleHurts(int hurt)
+        {
+            
+
+            var moveParams = new MoveParams()
+            {
+                FollowGO = this.gameObject,
+                DeltaPos = hurt < 0 ? new Vector2(0, 125f) : new Vector2(0, 25f),
+                IsUIGO = false,
+            };
+            
+            var targetMoveParams = new MoveParams()
+            {
+                FollowGO = hurt < 0 ? AreaController.Instance.UICore : this.gameObject,
+                DeltaPos = hurt < 0 ? new Vector2(0, -25f) : new Vector2(0, 125f),
+                IsUIGO = hurt < 0,
+            };
+            
+            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, -1, false,
+                hurt < 0, moveParams, targetMoveParams);
+
         }
     }
 }

@@ -72,7 +72,7 @@ namespace RoundHero
             //battleEnemyData.UnitRole = EUnitRole.Staff;
             
             //battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 1);
-            //battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 1);
+            battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 1);
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);
 
@@ -311,13 +311,14 @@ namespace RoundHero
             //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleMoveValueEntity)task.Logic;
         }
+
         
         public static async Task<BattleMoveIconEntity> ShowBattleMoveIconEntityAsync(this EntityComponent entityComponent,
-            EUnitState unitState, int entityIdx = -1, bool isLoop = false, MoveParams moveParams = null, MoveParams targetMoveParams = null)
+            EUnitState unitState, int value, int entityIdx = -1, bool isLoop = false, MoveParams moveParams = null, MoveParams targetMoveParams = null)
         {
             var data = ReferencePool.Acquire<BattleMoveIconEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), unitState, entityIdx, isLoop, moveParams,
+            data.Init(entityComponent.GenerateSerialId(), unitState, value, entityIdx, isLoop, moveParams,
                 targetMoveParams);
 
             //Log.Debug("task1");
@@ -462,5 +463,7 @@ namespace RoundHero
             
             return (BattleIconEntity)task.Logic;
         }
+        
+        
     }
 }

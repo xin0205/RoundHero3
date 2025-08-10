@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityGameFramework.Runtime;
-using Random = System.Random;
 
 namespace RoundHero
 {
@@ -12,14 +8,8 @@ namespace RoundHero
     {
         public Dictionary<int, Entity>  BattleValueEntities = new ();
         private int curValueEntityIdx = 0;
+        private int _curValueEntityIdx = 0;
         private int showValueEntityIdx = 0;
-
-        
-        // public void ShowDisplayValue(int unitIdx)
-        // {
-        //     UnShowDisplayValues();
-        //     ShowDisplayValues(unitIdx);
-        // }
         
         public void ShowHurtDisplayValue(int effectUnitIdx, int actionUnitIdx)
         {
@@ -113,14 +103,28 @@ namespace RoundHero
                 BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
             //curValueEntityIdx += triggerDataDict.Count;
 
+            // foreach (var kv in triggerDataDict)
+            // {
+            //     curValueEntityIdx += 1;
+            // }
+            
             foreach (var kv in triggerDataDict)
             {
-                curValueEntityIdx += 1;
+                foreach (var triggerData in kv.Value)
+                {
+                    if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                    {
+                        continue;
+                    }
+                    curUnitStateIconEntityIdx += 1;
+                }
+               
             }
             
             var idx = 0;
             foreach (var kv in triggerDataDict)
             {
+
                 var effectUnit =  BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
 
                 if (kv.Key == PlayerManager.Instance.PlayerData.BattleHero.Idx)
@@ -128,6 +132,11 @@ namespace RoundHero
                     var value = 0;
                     foreach (var triggerData in kv.Value)
                     {
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        {
+                            continue;
+                        }
+                        
                         ShowHeroValue(triggerData.ActionUnitGridPosIdx, (int)triggerData.ActualValue, entityIdx);
                         idx++;
                         entityIdx += kv.Value.Count;
@@ -146,6 +155,11 @@ namespace RoundHero
                     var endValue = 0;
                     foreach (var triggerData in kv.Value)
                     {
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        {
+                            continue;
+                        }
+                        
                         startValue += (int)triggerData.ActualValue;
                         endValue += BlessManager.Instance.AddCurHPByAttackDamage()
                             ? (int)(triggerData.Value + triggerData.DeltaValue)
@@ -161,20 +175,7 @@ namespace RoundHero
 
             }
    
-            //Log.Debug("triggerDataDict.Count:" + triggerDataDict.Count);
             
-            
-            // var idx = 0;
-            // foreach (var kv in triggerDataDict)
-            // {
-            //     var _entityIdx = entityIdx;
-            //     var values = kv.Value;
-            //     
-            //     ShowValues(values, _entityIdx);
-            //     idx++;
-            //     entityIdx += kv.Value.Count;
-            // }
-
         }
 
         public async void ShowActionSort(int sort)
@@ -209,23 +210,7 @@ namespace RoundHero
         
         private async Task ShowHeroValue(int gridPosIdx, int value, int entityIdx)
         {
-            // var gridPos = GameUtility.GridPosIdxToPos(gridPosIdx);
-            // gridPos.y += 1f;
-            //     
-            // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-            // uiCorePos.y -= 25f;
-            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), gridPos);
-            // uiLocalPoint.y += 25f;
-            
-            //var uiLocalPoint2 = uiLocalPoint;
-            //uiLocalPoint2.y += 75f;
-              
-            ////AQA
-            // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-            //     uiCorePos,
-            //     value, value, entityIdx, true, false);
-            
+
             var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
             var moveParams = new MoveParams()
             {
@@ -245,8 +230,7 @@ namespace RoundHero
                 moveParams,
                 targetMoveParams);
 
-
-            //AQA
+            
             //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
             if (GameEntry.Entity.HasEntity(entity.Id))
             {
@@ -274,45 +258,7 @@ namespace RoundHero
             
             if (effectUnit is BattleMonsterEntity)
             {
-                // var effectUnitPos = effectUnit.Root.position;
-                //
-                // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-                //
-                // uiLocalPoint.y += 50f;
-                //
-                // var entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
-                //     uiLocalPoint, value, entityIdx);
-                //
-                // if (GameEntry.Entity.HasEntity(entity.Id))
-                // {
-                //     if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx <
-                //         showValueEntityIdx)
-                //     {
-                //
-                //         GameEntry.Entity.HideEntity(entity);
-                //     }
-                //     else
-                //     {
-                //     
-                //         BattleValueEntities.Add(entity.Id, entity);
-                //     }
-                // }
-                //var effectUnitPos = effectUnit.Root.position;
-
-                
-
-                // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-                // var uiLocalPoint2 = uiLocalPoint;
-                //
-                // uiLocalPoint.y += 25f;
-                // uiLocalPoint2.y += 75f;
-                //AQA
-                // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                //     uiLocalPoint2,
-                //     startValue, endValue, entityIdx, true, effectUnit is BattleSoliderEntity);
-                
+ 
                 var moveParams = new MoveParams()
                 {
                     FollowGO = effectUnit.gameObject,
@@ -332,8 +278,6 @@ namespace RoundHero
                     moveParams,
                     targetMoveParams);
 
-                //AQA
-                //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
                     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
@@ -351,22 +295,6 @@ namespace RoundHero
             }
             else
             {
-                // var effectUnitPos = effectUnit.Root.position;
-                //
-                //
-                // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-                // uiCorePos.y -= 25f;
-                // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-                // var uiLocalPoint2 = uiLocalPoint;
-                // uiLocalPoint.y += 25f;
-                // uiLocalPoint2.y += 75f;
-                
-                //AQA
-                // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                //     startValue < 0 ? uiCorePos : uiLocalPoint2,
-                //     startValue, endValue, entityIdx, true, effectUnit is BattleSoliderEntity && startValue < 0);
-
                 
                 var moveParams = new MoveParams()
                 {
@@ -387,8 +315,6 @@ namespace RoundHero
                     moveParams,
                     targetMoveParams);
 
-                //AQA
-                //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
                     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
@@ -419,6 +345,11 @@ namespace RoundHero
             var idx = 0;
             foreach (var triggerData in triggerDatas)
             {
+                if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                {
+                    continue;
+                }
+                
                 var startvalue = (int)triggerData.ActualValue;
                 var endValue = BlessManager.Instance.AddCurHPByAttackDamage()
                     ? (int)(triggerData.Value + triggerData.DeltaValue)
@@ -426,7 +357,7 @@ namespace RoundHero
                 // if(value == 0)
                 //     continue;
 
-                GameUtility.DelayExcute(idx *0.25f, () =>
+                GameUtility.DelayExcute(idx *0.5f, () =>
                 {
                     InternalShowValue(effectUnit, startvalue, endValue, entityIdx++);
                 });
@@ -438,82 +369,6 @@ namespace RoundHero
 
             }
 
-            
-
-
-            // var value = 0;
-            // foreach (var triggerData in triggerDatas)
-            // {
-            //     value += (int)triggerData.ActualValue;
-            // }
-            //
-            // if(value == 0)
-            //     return;
-            //
-            //
-            //
-            // if (effectUnit is BattleMonsterEntity)
-            // {
-            //     var effectUnitPos = effectUnit.Root.position;
-            //     
-            //     
-            //     effectUnitPos.y += 1f;
-            //     effectUnitPos.z -= 0.3f;
-            //     
-            //     var entity = await GameEntry.Entity.ShowBattleDisplayValueEntityAsync(
-            //         effectUnitPos, value, entityIdx);
-            //     
-            //     if ((entity as BattleDisplayValueEntity).BattleDisplayValueEntityData.EntityIdx < showValueEntityIdx)
-            //     {
-            //
-            //         GameEntry.Entity.HideEntity(entity);
-            //     }
-            //     else
-            //     {
-            //         BattleValueEntities.Add(entity.Entity.Id, entity);
-            //     }
-            //     
-            // }
-            // else
-            // {
-            //     var effectUnitPos = effectUnit.Root.position;
-            //     
-            //     effectUnitPos.y += 1f;
-            //
-            //     var uiCorePos = AreaController.Instance.UICore.transform.position;
-            //     uiCorePos.y -= 0.4f;
-            //
-            //     var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
-            //         uiCorePos);
-            //     
-            //     Vector3 position = new Vector3(pos.x, pos.y,  Camera.main.transform.position.z);
-            //     Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
-            //
-            //     var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(effectUnitPos, uiCoreWorldPos,
-            //         value, entityIdx, true, effectUnit is BattleCoreEntity ? false : true);
-            //     
-            //     
-            //     
-            //     //entity.transform.parent = effectUnit.Root;
-            //     
-            //     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
-            //     {
-            //
-            //         GameEntry.Entity.HideEntity(entity);
-            //     }
-            //     else
-            //     {
-            //         if (GameEntry.Entity.HasEntity(effectUnit.Entity.Id))
-            //         {
-            //             GameEntry.Entity.AttachEntity(entity.Entity.Id, effectUnit.Entity.Id);
-            //         }
-            //         
-            //         BattleValueEntities.Add(entity.Entity.Id, entity);
-            //     }
-            //    
-            // }
-            //
-            // //entityIdx++;
         }
         
         public void UnShowDisplayValues()

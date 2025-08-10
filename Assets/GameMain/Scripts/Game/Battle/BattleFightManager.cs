@@ -758,6 +758,7 @@ namespace RoundHero
                     cardTriggerData.EffectUnitIdx = effectUnitID;
                     cardTriggerData.UnitStateDetail.UnitState = EUnitState.DeBuffUnEffect;
                     cardTriggerData.Value = -1;
+                    cardTriggerData.ActualValue = cardTriggerData.Value;
                     return cardTriggerData;
                 }
                 else if (unit.GetRoundStateCount(EUnitState.DeBuffUnEffect) > 0)
@@ -783,7 +784,7 @@ namespace RoundHero
             cardTriggerData.UnitStateDetail.UnitState = unitState;
             cardTriggerData.UnitStateDetail.Value = (int)value;
             cardTriggerData.Value = value;
-        
+            cardTriggerData.ActualValue = cardTriggerData.Value;
             return cardTriggerData;
         }
         
@@ -1042,8 +1043,8 @@ namespace RoundHero
                     if (triggerData.UnitStateDetail.UnitState == EUnitState.HurtRoundStart)
                     {
                         BattleEffectManager.Instance.ShowHurtRoundStartEffect(effectUnitEntity.Position, effectUnitEntity.transform);
-                        BattleUnitStateManager.Instance.AnimationRemoveUnitState(triggerData.UnitStateDetail.UnitState,
-                            effectUnitEntity, effectUnitEntity.transform);
+                        effectUnitEntity.AnimtionChangeUnitState(triggerData.UnitStateDetail.UnitState, 1,
+                            effectUnitEntity,  -1, false);
                     }
 
                     effectUnitEntity.BattleUnitData.ChangeState(triggerData.UnitStateDetail.UnitState, triggerValue);

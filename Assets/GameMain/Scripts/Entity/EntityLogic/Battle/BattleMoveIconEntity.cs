@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -13,6 +14,10 @@ namespace RoundHero
         protected Quaternion cameraQuaternion = Quaternion.identity;
         
         private Tween moveTween;
+
+        [SerializeField] private GameObject positivesign;
+        [SerializeField] private GameObject negativeSign;
+
 
         [SerializeField] private Image Icon;
 
@@ -29,69 +34,14 @@ namespace RoundHero
                 return;
             }
             this.time = 0;
-           
-            // KillTween();
-            //
+
+            positivesign.SetActive(BattleMoveIconEntityData.Value > 0);
+            negativeSign.SetActive(BattleMoveIconEntityData.Value < 0);
+
+            
             Icon.sprite = await AssetUtility.GetUnitStateIcon(BattleMoveIconEntityData.UnitState);
-            //
-            //
-            // var dis = Vector3.Distance(BattleMoveIconEntityData.TargetPos, CachedTransform.localPosition);
-            // //Constant.Battle.BattleValueVelocity
-            // var time = dis / (Constant.Battle.BattleValueVelocity * 100);
-            //
-            // if (time < 1.5f)
-            // {
-            //     time += 1.5f;
-            // }
-            this.time = 0f;
-            
-            //
-            // var targetPos = BattleMoveIconEntityData.TargetPos;
-            // moveTween = DOTween.To(()=>
-            // {
-            //     if(transform == null)
-            //         return Vector4.zero;
-            //     
-            //     return transform.localPosition;
-            // }, x =>
-            // {
-            //     if(this == null || transform == null)
-            //         return;
-            //     
-            //     transform.localPosition = x;
-            // }, targetPos, time).SetEase(Ease.InOutQuart);
-            //
-            //
-            //
-            // if (BattleMoveIconEntityData.IsLoop)
-            // {
-            //
-            //     moveTween.SetLoops(-1);
-            // }
-            // else
-            // {
-            //     
-            //     
-            //     GameUtility.DelayExcute(time, () =>
-            //     {
-            //         if (GameEntry.Entity.HasEntity(this.Id))
-            //         {
-            //             GameEntry.Entity.HideEntity(this);
-            //         }
-            //         
-            //     });
-            //     
-            // }
-            
-            GameUtility.DelayExcute(2, () =>
-            {
-                if (GameEntry.Entity.HasEntity(this.Id))
-                {
-                    GameEntry.Entity.HideEntity(this);
-                }
-                    
-            });
-            
+
+ 
             if (BattleMoveIconEntityData.FollowParams.IsUIGO)
             {
                 startPos = BattleMoveIconEntityData.FollowParams.FollowGO.transform.localPosition;
@@ -113,6 +63,12 @@ namespace RoundHero
         {
             time += Time.deltaTime;
             
+            if(BattleMoveIconEntityData.FollowParams.FollowGO.IsDestroyed())
+                return;
+            
+            if(BattleMoveIconEntityData.TargetFollowParams.FollowGO.IsDestroyed())
+                return;
+            
             if (!BattleMoveIconEntityData.FollowParams.IsUIGO)
             {
                 startPos = PositionConvert.WorldPointToUILocalPoint(
@@ -129,6 +85,22 @@ namespace RoundHero
             
             
             this.transform.localPosition = Vector2.Lerp(startPos, endPos, time);
+            
+            if((Vector2)this.transform.localPosition == endPos)
+            {
+                if (BattleMoveIconEntityData.IsLoop )
+                {
+                    time = 0;
+                }
+                else
+                {
+                    if (GameEntry.Entity.HasEntity(this.Id))
+                    {
+                        GameEntry.Entity.HideEntity(this);
+                    }
+                }
+                
+            }
         }
 
         protected override void OnHide(bool isShutdown, object userData)

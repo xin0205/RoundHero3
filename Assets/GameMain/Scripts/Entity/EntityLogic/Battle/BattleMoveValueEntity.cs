@@ -39,60 +39,10 @@ namespace RoundHero
                 return;
             }
 
-            //this.transform.position = BattleMoveValueEntityData.Position;
-            //KillTween();
-
             
-            //text.text = Mathf.Abs(BattleValueEntityData.Value).ToString();
-            //text.color = BattleMoveValueEntityData.StartValue < 0 ? hurtColor : recoverColor;
-            //text.color = hurtColor;
-
             this.time = 0;
             this.timeEnd = 0;
 
-            //var dis = Vector3.Distance(BattleMoveValueEntityData.TargetPos, CachedTransform.localPosition);
-            //Constant.Battle.BattleValueVelocity
-            // var time = 0f;//dis / (Constant.Battle.BattleValueVelocity * 100);
-            //
-            // if (time < 1.5f)
-            // {
-            //     time += 1.5f;
-            // }
-            //textStrTween = 
-
-            // if (BattleMoveValueEntityData.IsAdd)
-            // {
-            //     textColTween = DOTween.To(() =>
-            //     {
-            //         if (text == null)
-            //             return Color.white;
-            //
-            //         return text.color;
-            //     }, x =>
-            //     {
-            //         if (text == null)
-            //             return;
-            //
-            //         text.color = x;
-            //     }, recoverColor, time).SetEase(Ease.InOutQuart);
-            // }
-
-            // var targetPos = BattleMoveValueEntityData.TargetPos;
-            // moveTween = DOTween.To(()=>
-            // {
-            //     if(transform == null)
-            //         return Vector4.zero;
-            //     
-            //     return transform.localPosition;
-            // }, x =>
-            // {
-            //     if(this == null || transform == null)
-            //         return;
-            //     
-            //     transform.localPosition = x;
-            // }, targetPos, time).SetEase(Ease.InOutQuart);
-            
-            //transform.DOMove(BattleMoveValueEntityData.TargetPos, time).SetEase(Ease.InOutQuart);
             var absStartValue = Mathf.Abs(BattleMoveValueEntityData.StartValue);
             var absEndValue = Mathf.Abs(BattleMoveValueEntityData.EndValue);
 
@@ -107,55 +57,7 @@ namespace RoundHero
                 : BattleMoveValueEntityData.StartValue > 0 ? positiveStartValue: negativeStartValue;
 
             text.color = BattleMoveValueEntityData.StartValue < 0 ? hurtColor : recoverColor;
-            
-            // if (BattleMoveValueEntityData.IsAdd)
-            // {
-            //     textStrTween = DOTween.To(() =>
-            //     {
-            //         if(text == null)
-            //             return "";
-            //         return text.text;
-            //     }, x =>
-            //     {
-            //         if(text == null)
-            //             return;
-            //         text.text = x;
-            //     }, "+" + absEndValue, time).From("-" + absStartValue).SetEase(Ease.InOutExpo);
-            // }
 
-            // textColTween.Play();
-            // textStrTween.Play();
-            // moveTween.Play();
-
-            
-            // if (BattleMoveValueEntityData.IsLoop)
-            // {
-            //     textColTween.SetLoops(-1);
-            //     textStrTween.SetLoops(-1);
-            //     //moveTween.SetLoops(-1);
-            // }
-            // else
-            // {
-            //     
-            //     
-            //     // GameUtility.DelayExcute(time, () =>
-            //     // {
-            //     //     if (GameEntry.Entity.HasEntity(this.Id))
-            //     //     {
-            //     //         GameEntry.Entity.HideEntity(this);
-            //     //     }
-            //     //     
-            //     // });
-            //     // moveTween.OnComplete(() =>
-            //     // {
-            //     //     GameEntry.Entity.HideEntity(this);
-            //     // });
-            // }
-            
-            // GameUtility.DelayExcute(time / 2f, () =>
-            // {
-            //     text.text = "+" + Mathf.Abs(BattleMoveValueEntityData.Value);
-            // });
             
             if (BattleMoveValueEntityData.FollowParams.IsUIGO)
             {

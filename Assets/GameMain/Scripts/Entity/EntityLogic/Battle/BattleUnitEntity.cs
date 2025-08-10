@@ -1568,6 +1568,7 @@ namespace RoundHero
             ShowFlyDirect(actionUnitIdx);
             ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
             ShowDisplayValue(actionUnitIdx);
+            ShowDisplayIcon(actionUnitIdx);
         }
 
         public void ShowHurtTags(int effectUnitIdx, int actionUnitIdx = -1)
@@ -1579,6 +1580,7 @@ namespace RoundHero
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
             ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
             ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
+            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
         }
         
         public void UnShowTags()
@@ -1587,6 +1589,7 @@ namespace RoundHero
             UnShowFlyDirects();
             UnShowBattleIcons();
             UnShowDisplayValues();
+            UnShowDisplayIcons();
         }
         
         // public void ShowCollider(bool isShow)

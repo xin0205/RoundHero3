@@ -2251,6 +2251,8 @@ namespace RoundHero
         {
             if (BattleManager.Instance.CurUnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
                 return;
+            
+            BattleUnitManager.Instance.UnShowTags();
 
             var ne = e as ClickGridEventArgs;
 

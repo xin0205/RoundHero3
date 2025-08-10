@@ -422,7 +422,8 @@ namespace RoundHero
             if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
                 return;
 
-            
+            BattleUnitManager.Instance.UnShowTags();
+
             UseCardAnimation();
             
 
