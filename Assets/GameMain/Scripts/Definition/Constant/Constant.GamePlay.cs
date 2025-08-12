@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RoundHero
@@ -1484,7 +1485,7 @@ namespace RoundHero
                 {
                     InitBlesses = new List<EBlessID>()
                     {
-                        EBlessID.AddCurHPByAttackDamage,
+                        EBlessID.ShuffleCardAddCurHP,
                         // 0,
                         // 1,
                         // 2,
@@ -2270,7 +2271,7 @@ namespace RoundHero
         };
 
         
-
+        
         public static void Init()
         {
             foreach (var kv in BattleEvent.ItemTypeAppointEventTypeMap)

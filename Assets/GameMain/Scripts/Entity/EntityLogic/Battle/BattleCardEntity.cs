@@ -91,10 +91,7 @@ namespace RoundHero
 
         private void OnDisable()
         {
-            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
-            {
-                kv.Value.UnShowTags();
-            }
+            BattleUnitManager.Instance.UnShowTags();
         }
 
 
@@ -279,10 +276,7 @@ namespace RoundHero
             
             BattleManager.Instance.RefreshEnemyAttackData();
             
-            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
-            {
-                kv.Value.UnShowTags();
-            }
+            BattleUnitManager.Instance.UnShowTags();
             
             
         }
@@ -946,10 +940,7 @@ namespace RoundHero
 
         private void Action()
         {
-            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
-            {
-                kv.Value.UnShowTags();
-            }
+            BattleUnitManager.Instance.UnShowTags();
             BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
             BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = BattleCardEntityData.CardIdx;

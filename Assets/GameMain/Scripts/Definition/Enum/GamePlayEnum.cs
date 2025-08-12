@@ -484,6 +484,9 @@ namespace RoundHero
         Collision,
         State,
         Empty,
+        Fune,
+        Card,
+        
         
     }
 

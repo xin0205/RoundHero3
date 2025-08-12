@@ -520,10 +520,22 @@ namespace RoundHero
 
         public int ConsumeCardAddCurHP(Data_GamePlay gamePlayData)
         {
-            var consumeCardAddCurHPCount = gamePlayData.BlessCount(EBlessID.ConsumeCardAddCurHP, BattleManager.Instance.CurUnitCamp);
+            var consumeCardAddCurHPCount = gamePlayData.BlessCount(EBlessID.ConsumeCardAddCurHP, gamePlayData.PlayerData.UnitCamp);
             var drConsumeCardAddCurHP = GameEntry.DataTable.GetBless(EBlessID.ConsumeCardAddCurHP);
             int.TryParse(drConsumeCardAddCurHP.GetValues(0)[0], out int value);
             return value * consumeCardAddCurHPCount;
+        }
+        
+        public int ShuffleCardAddCurHP(Data_GamePlay gamePlayData)
+        {
+            var shuffleCardAddCurHPCount = gamePlayData.BlessCount(EBlessID.ShuffleCardAddCurHP,
+                gamePlayData.PlayerData.UnitCamp);
+            var drShuffleCardAddCurHP = GameEntry.DataTable.GetBless(EBlessID.ShuffleCardAddCurHP);
+            
+            int.TryParse(drShuffleCardAddCurHP.GetValues(0)[0], out int value);
+            
+            
+            return shuffleCardAddCurHPCount * value;
         }
         
         public bool AddCurHPByAttackDamage(int actionUnitIdx = -1)

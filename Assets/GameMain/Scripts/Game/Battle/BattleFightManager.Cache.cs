@@ -170,6 +170,9 @@ namespace RoundHero
         public ETriggerResult TriggerResult = ETriggerResult.Continue;
         public EBuffTriggerType BuffTriggerType = EBuffTriggerType.Empty;
         public List<EUnitStateEffectType> UnitStateEffectTypes = new List<EUnitStateEffectType>();
+        public int BlessIdx;
+        public int FuneIdx;
+        public int CardIdx;
 
         public bool ChangeHPInstantly = true;
 
@@ -242,6 +245,8 @@ namespace RoundHero
 
         public TempTriggerData TempTriggerData;
 
+        public Dictionary<EUnitCamp, List<HPDeltaData>> HPDeltaDict = new Dictionary<EUnitCamp, List<HPDeltaData>>();
+
         public void Clear()
         {
             RoundStartBuffDatas.Clear();
@@ -259,6 +264,7 @@ namespace RoundHero
             BuffData_Use.Clear();
             BlessTriggerDatas.Clear();
             UseCardTriggerDatas.Clear();
+            HPDeltaDict.Clear();
         }
     }
 
@@ -321,11 +327,7 @@ namespace RoundHero
 
     }
     
-    public class HPDeltaData
-    {
-        public int Value;
-        //public int Key;
-    }
+    
 
     public partial class BattleFightManager : Singleton<BattleFightManager>
     {
@@ -548,7 +550,7 @@ namespace RoundHero
             
             var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitIdx);
             
-            cardEnergy -= BlessManager.Instance.ConsumeCardAddCurHP(GamePlayManager.Instance.GamePlayData);
+            //cardEnergy -= BlessManager.Instance.ConsumeCardAddCurHP(GamePlayManager.Instance.GamePlayData);
 
             
             // var solider = GameUtility.GetUnitByID(RoundFightData.GamePlayData, unitID);
@@ -2179,10 +2181,10 @@ namespace RoundHero
             //     }
             // }
             
-            var hpDeltaDict = new Dictionary<EUnitCamp, HPDeltaData>()
+            RoundFightData.HPDeltaDict = new Dictionary<EUnitCamp, List<HPDeltaData>>()
             {
-                [EUnitCamp.Player1] = new HPDeltaData(),
-                [EUnitCamp.Player2] = new HPDeltaData(),
+                [EUnitCamp.Player1] = new List<HPDeltaData>(),
+                [EUnitCamp.Player2] = new List<HPDeltaData>(),
             };
             
             
@@ -2194,7 +2196,8 @@ namespace RoundHero
        
                     if (triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                     {
-                        hpDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Value +=  (int)triggerData.ActualValue;
+                        var hpDeltaData = HeroManager.Instance.AddHPDelta(triggerData);
+                        RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
                     }
                     else
                     {
@@ -2245,9 +2248,12 @@ namespace RoundHero
                         var units = GameUtility.GetUnitsByCamp(effectUnit.UnitCamp);
                         
                         var isCoreUnit = units.Exists((battleUnit => battleUnit.Idx == effectUnit.Idx && battleUnit is Data_BattleCore));
-                        hpDeltaDict[effectUnit.UnitCamp].Value += (int) (isCoreUnit ? triggerValue : Math.Abs(value));
+                        //hpDeltaDict[effectUnit.UnitCamp].HPDelta += (int) (isCoreUnit ? triggerValue : Math.Abs(value));
                         //hpDeltaDict[effectUnit.UnitCamp].Key = isMoveTriggerData ? kv.Key : playerData.BattleHero.Idx;
 
+                        var hpDeltaData = HeroManager.Instance.AddHPDelta(triggerData);
+                        hpDeltaData.HPDelta = (int) (isCoreUnit ? triggerValue : Math.Abs(value));
+                        RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
                     }
 
                     
@@ -2257,15 +2263,17 @@ namespace RoundHero
                 
             }
             
-            foreach (var kv2 in hpDeltaDict)
+            foreach (var kv2 in RoundFightData.HPDeltaDict)
             {
                 var playerData = RoundFightData.GamePlayData.GetPlayerData(kv2.Key);
-                if (playerData != null && playerData.BattleHero != null && kv2.Value.Value != 0)
+                // && kv2.Value.HPDelta != 0
+                if (playerData != null && playerData.BattleHero != null)
                 {
-                    playerData.BattleHero.ChangeHP(kv2.Value.Value);
-                    
-                    
-            
+                    foreach (var hpDeltaData in kv2.Value)
+                    {
+                        playerData.BattleHero.ChangeHP(hpDeltaData.HPDelta);
+                    }
+
                 }
             }
             

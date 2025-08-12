@@ -108,7 +108,7 @@ namespace RoundHero
                     IsShowCancel = true,
                     Message = GameEntry.Localization.GetString(Constant.Localization.Message_TutorailConfirm),
                     ConfirmStr = GameEntry.Localization.GetString(Constant.Localization.UI_Tutorial),
-                    CancelStr = GameEntry.Localization.GetString(Constant.Localization.UI_BattleTest),
+                    CancelStr = GameEntry.Localization.GetString(Constant.Localization.UI_BattleMode),
                     
                     OnConfirm = () =>
                     {

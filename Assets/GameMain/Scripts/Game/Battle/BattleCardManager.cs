@@ -472,6 +472,38 @@ namespace RoundHero
             }
 
             BattlePlayerData.PassCards.Clear();
+
+            var addHP =
+                BlessManager.Instance.ShuffleCardAddCurHP(GamePlayManager.Instance.GamePlayData);
+
+            
+            if (addHP > 0)
+            {
+                HeroManager.Instance.BattleHeroData.CurHP += addHP;
+                
+                
+                var moveParams = new MoveParams()
+                {
+                    FollowGO = BattleController.Instance.PassCardPos.gameObject,
+                    DeltaPos = new Vector2(0, 25f),
+                    IsUIGO = true,
+                };
+            
+                var targetMoveParams = new MoveParams()
+                {
+                    FollowGO = AreaController.Instance.UICore,
+                    DeltaPos = new Vector2(0, -25f),
+                    IsUIGO = true,
+                };
+
+                GameEntry.Entity.ShowBattleMoveValueEntityAsync(addHP, addHP, -1, false, false,
+                    moveParams,
+                    targetMoveParams);
+                
+            }
+            
+            
+            GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
         
 

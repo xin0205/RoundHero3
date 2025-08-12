@@ -804,22 +804,34 @@ namespace RoundHero
                 {
                     if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                     {
+                        if(triggerActionTriggerData.TriggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                            continue;
+                        
                         var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.EffectUnitIdx);
-                    
+
                         if (triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.Pass ||
-                            triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass)
+                            triggerActionTriggerData.TriggerData.BuffTriggerType == EBuffTriggerType.BePass ||
+                            triggerActionTriggerData.TriggerData.UnitStateDetail.UnitState == EUnitState.AtkPassEnemy || 
+                            triggerActionTriggerData.TriggerData.UnitStateDetail.UnitState == EUnitState.AtkPassUs)
                         {
-                            effectName = "EffectCloseSingleAttackEntity";
-                            effectPos = EffectAttackPos.position;
+                            //effectName = "EffectCloseSingleAttackEntity";
+                            //effectPos = EffectAttackPos.position;
+                            effectUnit.ShowEffectHurtEntity();
+                        }
+                        else
+                        {
+                            var actionUnit =
+                                BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.ActionUnitIdx);
+                            if(actionUnit == null)
+                                continue;
+                            
+                            ShowEffectAttackEntity(effectName, effectPos,
+                                BattleUnitManager.Instance.GetEffectColor(actionUnit), effectUnit.Position);
                         }
 
-                        var actionUnit =
-                            BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.ActionUnitIdx);
-                        if(actionUnit == null)
-                            continue;
-
-                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position,
-                            BattleUnitManager.Instance.GetEffectColor(actionUnit));
+                       
+    
+                        
                     }
                     
                 }
@@ -887,8 +899,8 @@ namespace RoundHero
                         if(actionUnit == null)
                             continue;
 
-                        ShowEffectAttackEntity(effectName, effectPos, effectUnit.Position,
-                            BattleUnitManager.Instance.GetEffectColor(actionUnit));
+                        ShowEffectAttackEntity(effectName, effectPos,
+                            BattleUnitManager.Instance.GetEffectColor(actionUnit), effectPos);
                         break;
                     }
                 }
@@ -902,13 +914,13 @@ namespace RoundHero
         }
 
         
-        private async void ShowEffectAttackEntity(string effectName, Vector3 effectPos, Vector3 lookAtPos, EColor effectColor)
+        private async void ShowEffectAttackEntity(string effectName, Vector3 effectPos, EColor effectColor, Vector3? lookAtPos = null)
         {
             var effectAttackEntity = await GameEntry.Entity.ShowCommonEffectEntityAsync(effectName, effectPos, effectColor);
 
-            if (lookAtPos != Vector3.zero)
+            if (lookAtPos != null)
             {
-                effectAttackEntity.transform.LookAt(new Vector3(lookAtPos.x, effectAttackEntity.transform.position.y, lookAtPos.z));
+                effectAttackEntity.transform.LookAt(new Vector3(lookAtPos.Value.x, effectAttackEntity.transform.position.y, lookAtPos.Value.z));
             }
             
             // if (!effectAttackEntity.AutoHide)
@@ -1371,8 +1383,9 @@ namespace RoundHero
         
         private async void ShowEffectHurtEntity()
         {
-            //var effectHurt = await GameEntry.Entity.ShowBattleEffectEntityAsync("EffectHurtEntity", EffectHurtPos.position);
-            //effectHurt.transform.parent = EffectHurtPos;
+            var effectHurt = await GameEntry.Entity.ShowCommonEffectEntityAsync("EffectHurtEntity",
+                EffectHurtPos.position, BattleUnitManager.Instance.GetEffectColor(this));
+            effectHurt.transform.parent = EffectHurtPos;
         }
 
         public virtual void HurtAnimation()

@@ -6,6 +6,47 @@ using Random = System.Random;
 
 namespace RoundHero
 {
+    public enum EHPDeltaOwnerType
+    {
+        Enemy,
+        Solider,
+        Card,
+        Bless,
+        Fune,
+    }
+        
+        
+    public class HPDeltaData
+    {
+        public EHPDeltaOwnerType HPDeltaOwnerType;
+        public int HPDelta;
+            
+    }
+    public class EnemyHPDeltaData : HPDeltaData
+    {
+        public int EnemyIdx;
+    }
+        
+    public class SoliderHPDeltaData : HPDeltaData
+    {
+        public int SoliderIdx;
+    }
+        
+    public class CardHPDeltaData : HPDeltaData
+    {
+        public int CardIdx;
+    }
+        
+    public class BlessHPDeltaData : HPDeltaData
+    {
+        public int BlessIdx;
+    }
+        
+    public class FuneHPDeltaData : HPDeltaData
+    {
+        public int FuneIdx;
+    }
+    
     public class HeroManager : Singleton<HeroManager>
     {
         public Data_BattleHero BattleHeroData
@@ -246,7 +287,58 @@ namespace RoundHero
             
             BattleManager.Instance.ShowGameOver();
         }
-        
-        
+
+        public HPDeltaData AddHPDelta(TriggerData triggerData)
+        {
+            
+            if (!(triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+                triggerData.BattleUnitAttribute == EUnitAttribute.HP))
+            {
+                return null;
+            }
+
+            HPDeltaData hpDeltaData = null;
+
+            if (triggerData.TriggerDataSubType == ETriggerDataSubType.Unit)
+            {
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                if (actionUnit is BattleMonsterEntity)
+                {
+                    hpDeltaData = new EnemyHPDeltaData();
+                    hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Enemy;
+                    (hpDeltaData as EnemyHPDeltaData).EnemyIdx = actionUnit.UnitIdx;
+                }
+                else if (actionUnit is BattleSoliderEntity)
+                {
+                    hpDeltaData = new EnemyHPDeltaData();
+                    hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Enemy;
+                    (hpDeltaData as SoliderHPDeltaData).SoliderIdx = actionUnit.UnitIdx;
+                }
+            }
+            else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Bless)
+            {
+                hpDeltaData = new BlessHPDeltaData();
+                hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Bless;
+                (hpDeltaData as BlessHPDeltaData).BlessIdx = triggerData.BlessIdx;
+            }
+            else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Fune)
+            {
+                hpDeltaData = new FuneHPDeltaData();
+                hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Fune;
+                (hpDeltaData as FuneHPDeltaData).FuneIdx = triggerData.FuneIdx;
+            }
+            else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Card)
+            {
+                hpDeltaData = new CardHPDeltaData();
+                hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Fune;
+                (hpDeltaData as CardHPDeltaData).CardIdx = triggerData.CardIdx;
+            }
+
+            hpDeltaData.HPDelta = (int)triggerData.ActualValue;
+
+            return hpDeltaData; 
+        }
+
+
     }
 }

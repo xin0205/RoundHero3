@@ -208,9 +208,14 @@ namespace RoundHero
         {
             var ne = e as ShowGridDetailEventArgs;
 
-            
+
             if (ne.ShowState == EShowState.Show)
             {
+                if (ne.GridPosIdx == 19)
+                {
+                    var a = 6;
+                }
+                
                 ShowAllGrid(true);
                 BattleAreaManager.Instance.CurPointGridPosIdx = ne.GridPosIdx;
                 BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;
@@ -551,17 +556,30 @@ namespace RoundHero
                             GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(TmpUnitEntity.UnitIdx),
                                 BattleFightManager.Instance.GetHurtInDirectAttackDatas(TmpUnitEntity.UnitIdx));
 
-                        foreach (var kv in triggerDataDict)
-                        {
-                            foreach (var triggerData in kv.Value)
-                            {
-                                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                                if (actionUnit != null)
-                                {
-                                    actionUnit.ShowTags(actionUnit.UnitIdx, true);
-                                }
-                            }
-                        }
+                        // var idx = 0;
+                        // var actionUnitList = new List<int>();
+                        // foreach (var kv in triggerDataDict)
+                        // {
+                        //     foreach (var triggerData in kv.Value)
+                        //     {
+                        //         var actionUnitIdx = triggerData.ActionUnitIdx;
+                        //         if(actionUnitList.Contains(actionUnitIdx))
+                        //             continue;
+                        //         actionUnitList.Add(actionUnitIdx);
+                        //                 
+                        //         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                        //         if (actionUnit != null)
+                        //         {
+                        //             GameUtility.DelayExcute(0.25f * idx, () =>
+                        //             {
+                        //                 actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                        //             });
+                        //             idx++;
+                        //         }
+                        //             //actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                        //         
+                        //     }
+                        // }
                         
                         
                     
@@ -572,7 +590,7 @@ namespace RoundHero
                     {
                         TmpUnitEntity.SetPosition(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
                         Log.Debug("moveB" + ne.GridPosIdx);
-                        TmpUnitEntity.UnShowTags();
+                        //TmpUnitEntity.UnShowTags();
                         ResetTmpUnitEntity();
                         
                     
@@ -877,10 +895,16 @@ namespace RoundHero
                                         BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit.UnitIdx));
 
                                 var idx = 0;
+                                var actionUnitList = new List<int>();
                                 foreach (var kv in hurtTriggerDataDict)
                                 {
                                     foreach (var triggerData in kv.Value)
                                     {
+                                        var actionUnitIdx = triggerData.ActionUnitIdx;
+                                        if(actionUnitList.Contains(actionUnitIdx))
+                                            continue;
+                                        actionUnitList.Add(actionUnitIdx);
+                                        
                                         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                                         if (actionUnit != null)
                                         {
@@ -896,15 +920,24 @@ namespace RoundHero
                                 var triggerDataDict =
                                     GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unit.UnitIdx),
                                         BattleFightManager.Instance.GetInDirectAttackDatas(unit.UnitIdx));
-                                
+                                actionUnitList.Clear();
                                 foreach (var kv in triggerDataDict)
                                 {
                                     foreach (var triggerData in kv.Value)
                                     {
+                                        var actionUnitIdx = triggerData.ActionUnitIdx;
+                                        if(actionUnitList.Contains(actionUnitIdx))
+                                            continue;
+                                        actionUnitList.Add(actionUnitIdx);
+                                        
                                         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                                         if (actionUnit != null)
                                         {
-                                            actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                                            GameUtility.DelayExcute(0.25f * idx, () =>
+                                            {
+                                                actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                                            });
+                                            idx++;
                                         }
                                     }
                                 }

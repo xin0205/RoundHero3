@@ -98,7 +98,7 @@ namespace RoundHero
             //BattleValueEntities.Clear();
             var actionUnit =  BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
             
-            var entityIdx = curValueEntityIdx;
+            //_curValueEntityIdx = curValueEntityIdx;
             var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
                 BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
             //curValueEntityIdx += triggerDataDict.Count;
@@ -116,7 +116,7 @@ namespace RoundHero
                     {
                         continue;
                     }
-                    curUnitStateIconEntityIdx += 1;
+                    curValueEntityIdx += 1;
                 }
                
             }
@@ -137,17 +137,17 @@ namespace RoundHero
                             continue;
                         }
                         
-                        ShowHeroValue(triggerData.ActionUnitGridPosIdx, (int)triggerData.ActualValue, entityIdx);
+                        ShowHeroValue(triggerData.ActionUnitGridPosIdx, (int)triggerData.ActualValue, _curValueEntityIdx);
                         idx++;
-                        entityIdx += kv.Value.Count;
+                        //entityIdx += kv.Value.Count;
                     }
 
                 }
                 else if (effectUnit is BattleSoliderEntity)
                 {
-                    ShowValues(kv.Value, entityIdx);
+                    ShowValues(kv.Value, curValueEntityIdx);
                     idx++;
-                    entityIdx += kv.Value.Count;
+                    //entityIdx += kv.Value.Count;
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace RoundHero
 
                     if (startValue != 0)
                     {
-                        InternalShowValue(effectUnit, startValue, endValue, entityIdx++);
+                        InternalShowValue(effectUnit, startValue, endValue, curValueEntityIdx);
                     }
                
                 }
@@ -180,7 +180,7 @@ namespace RoundHero
 
         public async void ShowActionSort(int sort)
         {
-            var entityIdx = curValueEntityIdx;
+            _curValueEntityIdx = curValueEntityIdx;
             curValueEntityIdx += 1;
             
             var effectUnitPos = Root.position;
@@ -194,7 +194,7 @@ namespace RoundHero
             uiLocalPoint.y += 50f;
 
             var entity = await GameEntry.Entity.ShowBattleValueEntityAsync(
-                uiLocalPoint, sort, entityIdx);
+                uiLocalPoint, sort, _curValueEntityIdx++);
 
             if ((entity as BattleValueEntity).BattleValueEntityData.EntityIdx <
                 showValueEntityIdx)
@@ -226,7 +226,7 @@ namespace RoundHero
                 IsUIGO = true,
             };
 
-            var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(value, value, entityIdx, true, false,
+            var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(value, value, _curValueEntityIdx++, true, false,
                 moveParams,
                 targetMoveParams);
 
@@ -273,7 +273,7 @@ namespace RoundHero
                     IsUIGO = false,
                 };
 
-                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, entityIdx,
+                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++,
                     true, effectUnit is BattleSoliderEntity,
                     moveParams,
                     targetMoveParams);
@@ -310,7 +310,7 @@ namespace RoundHero
                     IsUIGO = startValue < 0,
                 };
 
-                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, entityIdx, true,
+                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++, true,
                     effectUnit is BattleSoliderEntity && startValue < 0,
                     moveParams,
                     targetMoveParams);
@@ -357,9 +357,9 @@ namespace RoundHero
                 // if(value == 0)
                 //     continue;
 
-                GameUtility.DelayExcute(idx *0.5f, () =>
+                GameUtility.DelayExcute(idx * 0.25f, () =>
                 {
-                    InternalShowValue(effectUnit, startvalue, endValue, entityIdx++);
+                    InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx);
                 });
                 //InternalShowValue(effectUnit, value, entityIdx++);
 
