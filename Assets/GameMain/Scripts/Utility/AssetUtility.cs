@@ -395,7 +395,7 @@ namespace RoundHero
         
         public static string GetBlessIconName(EBlessID blessID)
         {
-            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icon/Bless/{0}.png", blessID.ToString());
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Blesses/{0}.png", blessID.ToString());
             
         }
         

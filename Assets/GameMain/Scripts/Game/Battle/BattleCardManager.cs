@@ -496,7 +496,7 @@ namespace RoundHero
                     IsUIGO = true,
                 };
 
-                GameEntry.Entity.ShowBattleMoveValueEntityAsync(addHP, addHP, -1, false, false,
+                GameEntry.Entity.ShowBattleBlessMoveValueEntityAsync(addHP, addHP, EBlessID.ShuffleCardAddCurHP, -1, false, false,
                     moveParams,
                     targetMoveParams);
                 

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameFramework;
 using GameFramework.Event;
+using SuperScrollView;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -39,13 +38,41 @@ namespace RoundHero
         [SerializeField] private Text randomSeed;
         //[SerializeField] private Text coreInfo;
         
+        
         private ProcedureBattle procedureBattle;
         
         [SerializeField] private InfoTrigger resetActionInfoTrigger;
 
         private bool isEndRound = false;
-        // private List<A> As = new ();
-        //
+        
+        
+        public LoopGridView hpDeltaDatas;
+        
+        protected override void OnInit(object userData)
+        {
+            base.OnInit(userData);
+            
+            hpDeltaDatas.InitGridView(0, OnHPDeltaDatasByRowColumn);
+        }
+        
+        LoopGridViewItem OnHPDeltaDatasByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
+        {
+            var item = gridView.NewListViewItem("HPDeltaDataItem");
+
+            var itemScript = item.GetComponent<HPDeltaDataItem>();
+            if (item.IsInitHandlerCalled == false)
+            {
+                item.IsInitHandlerCalled = true;
+                itemScript.Init();
+                
+            }
+
+            itemScript.SetItemData(
+                BattleFightManager.Instance.RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp][itemIndex],
+                itemIndex, row, column);
+            return item;
+        }
+        
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
@@ -110,15 +137,18 @@ namespace RoundHero
             // });
         }
 
-        // protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
-        // {
-        //     base.OnUpdate(elapseSeconds, realElapseSeconds);
-        //     if (isEndRound && BattleManager.Instance.BattleState == EBattleState.UseCard)
-        //     {
-        //         BattleManager.Instance.EndRound();
-        //         isEndRound = false;
-        //     }
-        // }
+        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+            hpDeltaDatas.gameObject.SetActive(Input.GetKey(KeyCode.Q));
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+
+                hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
+                    .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
+                hpDeltaDatas.RefreshAllShownItem();
+            }
+        }
 
         protected override void OnClose(bool isShutdown, object userData)
         {

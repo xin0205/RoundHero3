@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace RoundHero
 {
@@ -94,6 +95,16 @@ namespace RoundHero
             public const string Button_ConfrimExchangeGrid = "Button.ConfrimExchangeGrid";
             public const string Message_ResetActionTimesNotEnough = "Message.ResetActionTimesNotEnough";
             public const string Message_UnResetAction = "Message.UnResetAction";
+
+            public static Dictionary<EHPDeltaOwnerType, string> HPDeltaOwners =
+                new Dictionary<EHPDeltaOwnerType, string>()
+                {
+                    [EHPDeltaOwnerType.Bless] = "UI.Bless",
+                    [EHPDeltaOwnerType.Enemy] = "UI.Enemy",
+                    [EHPDeltaOwnerType.Solider] = "UI.Solider",
+                    [EHPDeltaOwnerType.Fune] = "UI.Fune",
+                    [EHPDeltaOwnerType.Card] = "UI.Card",
+                };
 
 
         }

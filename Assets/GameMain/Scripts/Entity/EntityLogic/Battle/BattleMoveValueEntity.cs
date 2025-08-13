@@ -26,7 +26,9 @@ namespace RoundHero
         private string negativeStartValue;
         private string negativeEndValue;
         
-        protected override void OnShow(object userData)
+        [SerializeField] private Image Icon;
+        
+        protected override async void OnShow(object userData)
         {
             transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
             
@@ -70,6 +72,17 @@ namespace RoundHero
                 endPos = BattleMoveValueEntityData.TargetFollowParams.FollowGO.transform.localPosition;
                 endPos += BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
             }
+
+            Icon.gameObject.SetActive(true);
+            if (BattleMoveValueEntityData is BlessIconValueEntityData blessIconValueEntityData)
+            {
+                Icon.sprite = await AssetUtility.GetBlessIcon(blessIconValueEntityData.BlessID);
+            }
+            else
+            {
+                Icon.gameObject.SetActive(false);
+            }
+
         }
 
         private float time = 0f;
@@ -155,27 +168,5 @@ namespace RoundHero
 
         }
 
-        // private void KillTween()
-        // {
-        //     // if (moveTween == null)
-        //     // {
-        //     //     Log.Debug("moveTween");
-        //     // }
-        //     
-        //     if (textColTween == null)
-        //     {
-        //         Log.Debug("textColTween");
-        //     }
-        //
-        //     if (textStrTween == null)
-        //     {
-        //         Log.Debug("textStrTween");
-        //     }
-        //        
-        //     
-        //     //moveTween?.Kill();
-        //     textColTween?.Kill();
-        //     textStrTween?.Kill();
-        // }
     }
 }

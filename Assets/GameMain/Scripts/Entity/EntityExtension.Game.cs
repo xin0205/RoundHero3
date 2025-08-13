@@ -306,10 +306,29 @@ namespace RoundHero
                 targetMoveParams);
 
             //Log.Debug("task1");
-            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveValueEntity),
-                AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, data);
+            return await ShowBattleMoveValueEntityAsync(data);
+        }
+        
+        public static async Task<BattleMoveValueEntity> ShowBattleMoveValueEntityAsync(BattleMoveValueEntityData battleMoveValueEntityData)
+        {
+            //Log.Debug("task1");
+            var task = await GameEntry.Entity.ShowEntityAsync(battleMoveValueEntityData.Id, typeof(BattleMoveValueEntity),
+                AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, battleMoveValueEntityData);
             //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleMoveValueEntity)task.Logic;
+        }
+        
+        public static async Task<BattleMoveValueEntity> ShowBattleBlessMoveValueEntityAsync(
+            this EntityComponent entityComponent,
+            int startValue, int endValue, EBlessID blessID, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+            MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        {
+            var data = ReferencePool.Acquire<BlessIconValueEntityData>();
+
+            data.Init(entityComponent.GenerateSerialId(), startValue, endValue, blessID, entityIdx, isLoop, isAdd, moveParams,
+                targetMoveParams);
+
+            return await ShowBattleMoveValueEntityAsync(data);
         }
 
         
