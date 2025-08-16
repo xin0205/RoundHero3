@@ -91,12 +91,12 @@ namespace RoundHero
             await BattleEnemyManager.Instance.GenerateNewEnemies();
             
             PVEManager.Instance.BattleState = EBattleState.UseCard;
-            BattleCardManager.Instance.RoundAcquireCards(true);
+            
                 
             BattleAreaManager.Instance.RefreshObstacles();
             BattleManager.Instance.RoundStartTrigger();
             BattleManager.Instance.RefreshAll();
-            
+            BattleCardManager.Instance.RoundAcquireCards(true);
 
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
             BattleManager.Instance.SwitchActionCamp(false);

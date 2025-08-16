@@ -867,40 +867,41 @@ namespace RoundHero
                         case EHeroAttribute.HP:
                             HeroManager.Instance.BattleHeroData.CacheHPDelta += triggerValue;
 
-                            // var unitPos = GameUtility.GridPosIdxToPos(triggerData.ActionUnitGridPosIdx);
-                            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-                            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), unitPos);
-                            //
-                            //
-                            // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-                            // uiCorePos.y -= 25f;
-                            
-                            var endValue = BlessManager.Instance.AddCurHPByAttackDamage()
-                                ? (int)(triggerData.Value + triggerData.DeltaValue)
-                                : (int)triggerData.ActualValue;
-                            ////AQA
-                            // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(uiLocalPoint,
-                            //     uiCorePos,
-                            //     (int)triggerData.ActualValue, (int)endValue, -1, false, false);
-                            
-                            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                            var moveParams = new MoveParams()
+                            if (triggerData.TriggerDataSubType == ETriggerDataSubType.Bless)
                             {
-                                FollowGO = actionUnit.gameObject,
-                                DeltaPos = new Vector2(0, 25f),
-                                IsUIGO = false,
-                            };
+                                var blessData = BlessManager.Instance.GetBless(triggerData.BlessIdx);
+                                if (blessData.BlessID == EBlessID.ShuffleCardAddCurHP)
+                                {
+                                    BlessManager.Instance.AnimationShuffleCardAddCurHP((int)triggerData.ActualValue);
+       
+                                }
+                            }
+                            else
+                            {
+                                var endValue = BlessManager.Instance.AddCurHPByAttackDamage()
+                                    ? (int)(triggerData.Value + triggerData.DeltaValue)
+                                    : (int)triggerData.ActualValue;
+                            
+                                var moveParams = new MoveParams()
+                                {
+                                    FollowGO = actionUnitEntity.gameObject,
+                                    DeltaPos = new Vector2(0, 25f),
+                                    IsUIGO = false,
+                                };
             
-                            var targetMoveParams = new MoveParams()
-                            {
-                                FollowGO = AreaController.Instance.UICore,
-                                DeltaPos = new Vector2(0, -25f),
-                                IsUIGO = true,
-                            };
+                                var targetMoveParams = new MoveParams()
+                                {
+                                    FollowGO = AreaController.Instance.UICore,
+                                    DeltaPos = new Vector2(0, -25f),
+                                    IsUIGO = true,
+                                };
 
-                            GameEntry.Entity.ShowBattleMoveValueEntityAsync((int)triggerData.ActualValue, (int)endValue, -1, false, false,
-                                moveParams,
-                                targetMoveParams);
+                                GameEntry.Entity.ShowBattleMoveValueEntityAsync((int)triggerData.ActualValue, (int)endValue, -1, false, false,
+                                    moveParams,
+                                    targetMoveParams);
+                            }
+                            
+                            HeroManager.Instance.UpdateCacheHPDelta();
                             
                             break;
                         // case EHeroAttribute.CurHP:
@@ -1213,7 +1214,7 @@ namespace RoundHero
             //     //
             //     // }
             // }
-
+            GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
         
         

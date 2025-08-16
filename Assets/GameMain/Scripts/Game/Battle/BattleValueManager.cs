@@ -108,20 +108,7 @@ namespace RoundHero
             //     curValueEntityIdx += 1;
             // }
             
-            foreach (var kv in triggerDataDict)
-            {
-                foreach (var triggerData in kv.Value)
-                {
-                    if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
-                    {
-                        continue;
-                    }
-                    curValueEntityIdx += 1;
-                }
-               
-            }
             
-            var idx = 0;
             foreach (var kv in triggerDataDict)
             {
 
@@ -129,28 +116,44 @@ namespace RoundHero
 
                 if (kv.Key == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                 {
-                    var value = 0;
                     foreach (var triggerData in kv.Value)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
                         {
                             continue;
                         }
+                        curValueEntityIdx += 1;
                         
+                    }
+                    
+                    foreach (var triggerData in kv.Value)
+                    {
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        {
+                            continue;
+                        }
                         ShowHeroValue(triggerData.ActionUnitGridPosIdx, (int)triggerData.ActualValue, _curValueEntityIdx);
-                        idx++;
-                        //entityIdx += kv.Value.Count;
                     }
 
                 }
                 else if (effectUnit is BattleSoliderEntity)
                 {
+                    foreach (var triggerData in kv.Value)
+                    {
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        {
+                            continue;
+                        }
+                        curValueEntityIdx += 1;
+                        
+                    }
                     ShowValues(kv.Value, curValueEntityIdx);
-                    idx++;
                     //entityIdx += kv.Value.Count;
                 }
                 else
                 {
+                    curValueEntityIdx += 1;
+                    
                     var startValue = 0;
                     var endValue = 0;
                     foreach (var triggerData in kv.Value)
@@ -166,11 +169,11 @@ namespace RoundHero
                             : (int)triggerData.ActualValue;
                     }
 
-                    if (startValue != 0)
-                    {
-                        InternalShowValue(effectUnit, startValue, endValue, curValueEntityIdx);
-                    }
-               
+                    // if (startValue != 0)
+                    // {
+                    //     
+                    // }
+                    InternalShowValue(effectUnit, startValue, endValue, curValueEntityIdx);
                 }
 
             }

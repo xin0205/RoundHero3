@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace RoundHero
 {
@@ -33,22 +34,24 @@ namespace RoundHero
         //     BlessDatas.Add(id, new Data_Bless(id, blessID));
         // }
 
-        public Data_Bless GetBless(int blessID)
+        public Data_Bless GetBless(int blessIdx)
         {
-            if (BlessDatas.ContainsKey(blessID))
-                return BlessDatas[blessID];
+            if (BlessDatas.ContainsKey(blessIdx))
+                return BlessDatas[blessIdx];
             
             return null;
         }
+        
+        
         
         public void TriggerAction(List<EBlessID> blessIDs)
         {
             foreach (var kv in BlessDatas)
             {
                 var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
-                if (blessIDs.Contains(drBless.BlessID) && BattleFightManager.Instance.RoundFightData.BlessTriggerDatas.ContainsKey(kv.Value.Idx))
+                if (blessIDs.Contains(drBless.BlessID) && BattleFightManager.Instance.RoundFightData.BlessTriggerDatas.ContainsKey(kv.Value.BlessIdx))
                 {
-                    foreach (var kv2 in BattleFightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.Idx].TriggerDatas)
+                    foreach (var kv2 in BattleFightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.BlessIdx].TriggerDatas)
                     {
                         foreach (var triggerData in kv2.Value)
                         {
@@ -82,7 +85,7 @@ namespace RoundHero
             {
                 var actionData = new ActionData();
                 actionData.ActionDataType = EActionDataType.Bless;
-                BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas.Add(unUseCardAddHeroHP.Idx, actionData);
+                BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas.Add(unUseCardAddHeroHP.BlessIdx, actionData);
                 
                 var triggerBlessData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1, playerData.BattleHero.Idx,
                     EUnitAttribute.HP, 1, ETriggerDataSubType.Bless);
@@ -90,7 +93,7 @@ namespace RoundHero
                 actionData.AddEmptyTriggerDataList(playerData.BattleHero.Idx);
                 //actionData.AddTriggerData(playerData.BattleHero.Idx, triggerBlessData, playerData.BattleHero);
                 BattleBuffManager.Instance.CacheTriggerData(triggerBlessData,
-                    BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.Idx]
+                    BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.BlessIdx]
                         .TriggerDatas[playerData.BattleHero.Idx]);
 
             }
@@ -536,6 +539,35 @@ namespace RoundHero
             
             
             return shuffleCardAddCurHPCount * value;
+        }
+
+        public void AnimationShuffleCardAddCurHP(int addHP)
+        {
+
+            if (addHP > 0)
+            {
+                //gamePlayData.PlayerData.BattleHero.CurHP += addHP;
+                var moveParams = new MoveParams()
+                {
+                    FollowGO = BattleController.Instance.PassCardPos.gameObject,
+                    DeltaPos = new Vector2(0, 25f),
+                    IsUIGO = true,
+                };
+            
+                var targetMoveParams = new MoveParams()
+                {
+                    FollowGO = AreaController.Instance.UICore,
+                    DeltaPos = new Vector2(0, -25f),
+                    IsUIGO = true,
+                };
+
+                GameEntry.Entity.ShowBattleBlessMoveValueEntityAsync(addHP, addHP, EBlessID.ShuffleCardAddCurHP, -1, false, false,
+                    moveParams,
+                    targetMoveParams);
+                
+                GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+                
+            }
         }
         
         public bool AddCurHPByAttackDamage(int actionUnitIdx = -1)

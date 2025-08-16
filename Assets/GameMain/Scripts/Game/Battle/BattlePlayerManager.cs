@@ -36,7 +36,7 @@ namespace RoundHero
                 var blessIdx = playerData.BlessIdx++;
                 var drBless = GameEntry.DataTable.GetBless(blessID);
                 
-                playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, drBless.Id));
+                playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, drBless.BlessID));
                 
             }
 

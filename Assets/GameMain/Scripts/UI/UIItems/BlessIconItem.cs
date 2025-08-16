@@ -12,7 +12,7 @@ namespace RoundHero
         [SerializeField] 
         private Text Value;
 
-        private int blessID = -1;
+        private int blessIdx = -1;
 
         private bool isShowInfo = false;
 
@@ -25,15 +25,15 @@ namespace RoundHero
         
         public async void SetItemData(Data_Bless blessData, int itemIndex,int row,int column)
         {
-            if (blessID != blessData.BlessID)
+            if (blessIdx != blessData.BlessIdx)
             {
-                blessID = blessData.BlessID;
+                blessIdx = blessData.BlessIdx;
 
-                BlessIcon.sprite = await AssetUtility.GetBlessIcon(blessID);
+                BlessIcon.sprite = await AssetUtility.GetBlessIcon(blessData.BlessID);
                 
             }
 
-            var drBless = GameEntry.DataTable.GetBless(blessID);
+            var drBless = GameEntry.DataTable.GetBless(blessData.BlessID);
             var deltaValue = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]) - blessData.Value;
             Value.gameObject.SetActive(deltaValue != 0);
             if (deltaValue != 0)
@@ -59,7 +59,9 @@ namespace RoundHero
             isShowInfo = true;
             var blessName = "";
             var blessDesc = "";
-            GameUtility.GetBlessText(blessID, ref blessName, ref blessDesc);
+            
+            
+            GameUtility.GetBlessText(blessIdx, ref blessName, ref blessDesc);
             
             var uiForm = await GameEntry.UI.OpenInfoFormAsync(new InfoFormParams()
             {

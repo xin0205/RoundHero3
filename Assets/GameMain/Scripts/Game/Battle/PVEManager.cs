@@ -148,12 +148,13 @@ namespace RoundHero
             
             BattleData.Round += 1;
             BattleState = EBattleState.UseCard;
-            BattleCardManager.Instance.RoundAcquireCards(false);
+            
             
             BattleManager.Instance.RoundStartTrigger();
             
             await BattleEnemyManager.Instance.GenerateNewEnemies();
             BattleManager.Instance.RefreshAll();
+            BattleCardManager.Instance.RoundAcquireCards(false);
             
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
             BattleManager.Instance.SwitchActionCamp(false);

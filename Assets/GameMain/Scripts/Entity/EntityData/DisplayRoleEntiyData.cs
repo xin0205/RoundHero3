@@ -7,11 +7,11 @@ namespace RoundHero
         public int HeroID;
         public Data_Card CardData;
         
-        public void Init(int entityId, Vector3 pos, int heroID)
+        public new void Init(int entityId, Vector3 pos, int heroID)
         {
             base.Init(entityId, pos);
             HeroID = heroID;
-            
+
         }
     }
 }

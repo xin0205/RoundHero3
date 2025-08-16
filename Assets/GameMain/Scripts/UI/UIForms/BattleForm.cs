@@ -164,6 +164,9 @@ namespace RoundHero
         public void OnRefreshBattleUI(object sender, GameEventArgs e)
         {
             RefreshUI();
+            hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
+                                .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
+                            hpDeltaDatas.RefreshAllShownItem();
         }
         
         // public void OnSwitchActionCamp(object sender, GameEventArgs e)

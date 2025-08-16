@@ -146,14 +146,18 @@ namespace RoundHero
             
         }
         
-        public static void GetBlessText(int blessID, ref string name, ref string desc)
+        public static void GetBlessText(int blessIdx, ref string name, ref string desc)
         {
+            //var blessData = BlessManager.Instance.GetBless(blessIdx);
+            
+            var drBless = GameEntry.DataTable.GetBless(blessIdx);
+            
             var blessName =
-                Utility.Text.Format(Constant.Localization.BlessName, blessID); 
+                Utility.Text.Format(Constant.Localization.BlessName, drBless.Id); 
 
             name = GameEntry.Localization.GetString(blessName);
 
-            var drBless = GameEntry.DataTable.GetBless(blessID);
+
 
             var values = new List<float>();
             foreach (var value in drBless.Values0)
@@ -167,12 +171,12 @@ namespace RoundHero
             }
 
             var cardDesc =
-                Utility.Text.Format(Constant.Localization.BlessDesc, blessID);
+                Utility.Text.Format(Constant.Localization.BlessDesc, drBless.Id);
 
             desc = GetStrByValues(GameEntry.Localization.GetString(cardDesc), values);
 
-            
-            
+
+
         }
 
         public static void GetItemText(EItemType itemType, int itemID, ref string name, ref string desc)

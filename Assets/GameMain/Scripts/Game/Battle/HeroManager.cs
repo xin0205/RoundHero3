@@ -14,11 +14,22 @@ namespace RoundHero
         Bless,
         Fune,
     }
+    
+    public enum EHPDeltaType
+    {
+        AttackCore,
+        AttackSolider,
+        Collision,
+        UseCard,
+        Bless,
+        Fune,
+    }
         
         
     public class HPDeltaData
     {
-        public EHPDeltaOwnerType HPDeltaOwnerType;
+        //public EHPDeltaOwnerType HPDeltaOwnerType;
+        public EHPDeltaType HPDeltaType;
         public int HPDelta;
             
     }
@@ -45,6 +56,12 @@ namespace RoundHero
     public class FuneHPDeltaData : HPDeltaData
     {
         public int FuneIdx;
+    }
+    
+    public class CollisionDeltaData : HPDeltaData
+    {
+        public int ActionUnitIdx;
+        public int EffectUnitIdx;
     }
     
     public class HeroManager : Singleton<HeroManager>
@@ -305,33 +322,57 @@ namespace RoundHero
                 if (actionUnit is BattleMonsterEntity)
                 {
                     hpDeltaData = new EnemyHPDeltaData();
-                    hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Enemy;
+                    //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Enemy;
                     (hpDeltaData as EnemyHPDeltaData).EnemyIdx = actionUnit.UnitIdx;
                 }
                 else if (actionUnit is BattleSoliderEntity)
                 {
-                    hpDeltaData = new EnemyHPDeltaData();
-                    hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Enemy;
+                    hpDeltaData = new SoliderHPDeltaData();
+                    //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Solider;
                     (hpDeltaData as SoliderHPDeltaData).SoliderIdx = actionUnit.UnitIdx;
+                }
+                
+                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                if (effectUnit is BattleSoliderEntity)
+                {
+                    
+                    hpDeltaData.HPDeltaType = EHPDeltaType.AttackSolider;
+                    
+                }
+                else if (actionUnit is BattleCoreEntity)
+                {
+                    hpDeltaData.HPDeltaType = EHPDeltaType.AttackCore;
+                   
                 }
             }
             else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Bless)
             {
                 hpDeltaData = new BlessHPDeltaData();
-                hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Bless;
+                //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Bless;
+                hpDeltaData.HPDeltaType = EHPDeltaType.Bless;
                 (hpDeltaData as BlessHPDeltaData).BlessIdx = triggerData.BlessIdx;
             }
             else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Fune)
             {
                 hpDeltaData = new FuneHPDeltaData();
-                hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Fune;
+                //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Fune;
+                hpDeltaData.HPDeltaType = EHPDeltaType.Fune;
                 (hpDeltaData as FuneHPDeltaData).FuneIdx = triggerData.FuneIdx;
             }
             else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Card)
             {
                 hpDeltaData = new CardHPDeltaData();
-                hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Fune;
+                //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Card;
+                hpDeltaData.HPDeltaType = EHPDeltaType.UseCard;
                 (hpDeltaData as CardHPDeltaData).CardIdx = triggerData.CardIdx;
+            }
+            else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
+            {
+                hpDeltaData = new CollisionDeltaData();
+                //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Card;
+                hpDeltaData.HPDeltaType = EHPDeltaType.Collision;
+                (hpDeltaData as CollisionDeltaData).ActionUnitIdx = triggerData.ActionUnitIdx;
+                (hpDeltaData as CollisionDeltaData).EffectUnitIdx = triggerData.EffectUnitIdx;
             }
 
             hpDeltaData.HPDelta = (int)triggerData.ActualValue;

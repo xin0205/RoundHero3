@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityGameFramework.Runtime;
-using Random = System.Random;
+
 
 
 namespace RoundHero
@@ -220,6 +218,16 @@ namespace RoundHero
         }
     }
 
+    public class CardCirculation
+    {
+        public List<int> PassCards = new();
+        public List<int> HandCards = new();
+        public List<int> StandByCards = new();
+        public List<int> ConsumeCards = new();
+        
+        public Dictionary<int, List<TriggerData>> TriggerDatas = new();
+    }
+
     public class RoundFightData
     {
         public Dictionary<int, ActionData> UseCardTriggerDatas = new();
@@ -247,6 +255,10 @@ namespace RoundHero
 
         public Dictionary<EUnitCamp, List<HPDeltaData>> HPDeltaDict = new Dictionary<EUnitCamp, List<HPDeltaData>>();
 
+        public CardCirculation RoundPassCardCirculation = new();
+        
+        public CardCirculation RoundAcquireCardCirculation = new();
+        
         public void Clear()
         {
             RoundStartBuffDatas.Clear();
@@ -496,8 +508,8 @@ namespace RoundHero
             // CacheThirdUnitAttackDatas();
             
             //CacheRoundEndDatas();
-            
-            
+
+            CacheHandCards();
         }
         
         public void CacheRoundFightData2()
@@ -506,11 +518,15 @@ namespace RoundHero
 
             //BattleAreaManager.Instance.RefreshObstacles();
             
+            
             CachePreData();
             
             CacheLinks();
 
             CacheUseCardTriggerDatas();
+            
+            
+            
             CacheSoliderActiveAttackDatas();
             CacheSoliderAutoAttackDatas();
             
@@ -524,8 +540,10 @@ namespace RoundHero
             CacheEnemyAttackDatas();
 
             CacheRoundEndDatas();
-            
-            
+
+            CachePassCards();
+            CacheHandCards();
+            GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
         
 
@@ -576,7 +594,8 @@ namespace RoundHero
                 RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(new CardHPDeltaData()
                 {
                     CardIdx = cardIdx,
-                    HPDeltaOwnerType = EHPDeltaOwnerType.Card,
+                    //HPDeltaOwnerType = EHPDeltaOwnerType.Card,
+                    HPDeltaType = EHPDeltaType.UseCard,
                     HPDelta = -cardEnergy,
                 });
                 BattleFightManager.Instance.ChangeHP(BattleFightManager.Instance.PlayerData.BattleHero, -cardEnergy,
@@ -3588,6 +3607,115 @@ namespace RoundHero
 
 
             return triggerDataDict;
+        }
+
+        public void CachePassCards()
+        {
+            RoundFightData.RoundPassCardCirculation.TriggerDatas.Clear();
+            
+            var battlePlayerData =
+                RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(RoundFightData.GamePlayData.PlayerData
+                    .UnitCamp);
+            
+            ToPassCard(battlePlayerData);
+
+            RoundFightData.RoundPassCardCirculation.PassCards = new List<int>(battlePlayerData.PassCards);
+            RoundFightData.RoundPassCardCirculation.HandCards = new List<int>(battlePlayerData.HandCards);
+            RoundFightData.RoundPassCardCirculation.ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
+            RoundFightData.RoundPassCardCirculation.StandByCards = new List<int>(battlePlayerData.StandByCards);
+        }
+
+        public void CacheHandCards()
+        {
+            RoundFightData.RoundAcquireCardCirculation.TriggerDatas.Clear();
+
+            var cardCount = RoundAcquireCardCount(RoundFightData.GamePlayData);
+
+            // var unuseCount =
+            //     BattleManager.Instance.GetUnUseCardCount();
+
+            if (BattleCardManager.Instance.IsShuffleCard(cardCount, RoundFightData.GamePlayData))
+            {
+                var addHP = BlessManager.Instance.ShuffleCardAddCurHP(RoundFightData.GamePlayData);
+                if (addHP > 0)
+                {
+                    var hpDeltaData = new BlessHPDeltaData()
+                    {
+                        HPDelta = addHP,
+                        HPDeltaType = EHPDeltaType.Bless,
+
+                    };
+                    RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
+                    var blessData = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
+                        EBlessID.ShuffleCardAddCurHP, PlayerManager.Instance.PlayerData.UnitCamp);;
+                    
+                    var triggerDatas = new List<TriggerData>();
+                    var triggerData = new TriggerData();
+                    triggerData.TriggerDataType = ETriggerDataType.HeroAtrb;
+                    triggerData.TriggerDataSubType = ETriggerDataSubType.Bless;
+                    triggerData.HeroAttribute = EHeroAttribute.HP;
+                    triggerData.Value = triggerData.ActualValue = addHP;
+                    triggerData.BlessIdx = blessData.BlessIdx;
+                    triggerDatas.Add(triggerData);
+                        
+                    RoundFightData.RoundAcquireCardCirculation.TriggerDatas.Add(-1, triggerDatas);
+                    
+                    var playerData =
+                        RoundFightData.GamePlayData.GetPlayerData(PlayerManager.Instance.PlayerData.UnitCamp);
+                    playerData.BattleHero.ChangeHP(hpDeltaData.HPDelta);
+                }
+            }
+
+            RoundFightData.RoundAcquireCardCirculation.HandCards =
+                BattleCardManager.Instance.AcquireHardCard(RoundFightData.GamePlayData, cardCount,
+                    RoundFightData.GamePlayData.BattleData.Round == 0);
+
+            var battlePlayerData =
+                RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(RoundFightData.GamePlayData.PlayerData
+                    .UnitCamp);
+            
+            RoundFightData.RoundAcquireCardCirculation.PassCards = new List<int>(battlePlayerData.PassCards);
+            RoundFightData.RoundAcquireCardCirculation.HandCards = new List<int>(battlePlayerData.HandCards);
+            RoundFightData.RoundAcquireCardCirculation.ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
+            RoundFightData.RoundAcquireCardCirculation.StandByCards = new List<int>(battlePlayerData.StandByCards);
+        }
+
+        private List<int> ToPassCard(Data_BattlePlayer battlePlayerData)
+        {
+            
+            
+            var passCards = new List<int>();
+            for (int i = battlePlayerData.HandCards.Count - 1; i >= 0; i--)
+            {
+                var card = BattleManager.Instance.GetCard(battlePlayerData.HandCards[i]);
+                if (card.FuneCount(EBuffID.Spec_UnPass) > 0)
+                    continue;
+
+                passCards.Add(battlePlayerData.HandCards[i]);
+                battlePlayerData.HandCards.RemoveAt(i);
+                //BattlePlayerData.PassCards.Add(BattlePlayerData.HandCards[i]);
+            }
+
+            battlePlayerData.PassCards.AddRange(passCards);
+
+
+            return passCards;
+        }
+        
+        private int RoundAcquireCardCount(Data_GamePlay gamePlayData)
+        {
+            var cardCount = BattleCardManager.Instance.GetEachHardCardCount(gamePlayData);
+            var eachRoundAcquireCardCount =
+                gamePlayData.BlessCount(EBlessID.EachRoundAcquireCard,
+                    BattleManager.Instance.CurUnitCamp);
+            if (eachRoundAcquireCardCount > 0)
+            {
+                var drEachRoundAcquireCard = GameEntry.DataTable.GetBless(EBlessID.EachRoundAcquireCard);
+
+                cardCount += (int)BattleBuffManager.Instance.GetBuffValue(drEachRoundAcquireCard.Values0[0]) * eachRoundAcquireCardCount;
+            }
+
+            return cardCount;
         }
         
     }

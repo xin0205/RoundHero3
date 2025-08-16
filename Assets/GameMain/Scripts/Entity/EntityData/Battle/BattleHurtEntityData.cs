@@ -6,11 +6,11 @@ namespace RoundHero
     {
         public int Hurt;
         
-        public void Init(int entityId, Vector3 pos, int hurt)
+        public new void Init(int entityId, Vector3 pos, int hurt)
         {
             base.Init(entityId, pos);
             this.Hurt = hurt;
-    
+
         }
     }
 }

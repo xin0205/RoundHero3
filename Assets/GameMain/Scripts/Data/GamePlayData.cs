@@ -1258,10 +1258,10 @@ namespace RoundHero
 
     public class Data_Bless
     {
-        public int Idx;
+        //public int Idx;
 
-        public int BlessID;
-        //public EBlessID BlessID;
+        public int BlessIdx;
+        public EBlessID BlessID;
         public float Value;
 
         public Data_Bless()
@@ -1269,21 +1269,23 @@ namespace RoundHero
 
         }
         
-        public Data_Bless(int idx, int blessID)
+        public Data_Bless(int blessIdx, EBlessID blessID)
         {
-            Idx = idx;
+            
+            BlessIdx = blessIdx;
             BlessID = blessID;
             
-            var drBless = GameEntry.DataTable.GetBless(blessID);
+            var drBless = GameEntry.DataTable.GetBless(blessIdx);
             Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
         }
 
         public Data_Bless Copy()
         {
             var dataBless = new Data_Bless();
-            dataBless.Idx = Idx;
-            dataBless.BlessID = BlessID;
+            //dataBless.Idx = Idx;
+            dataBless.BlessIdx = BlessIdx;
             dataBless.Value = Value;
+            dataBless.BlessID = BlessID;
 
             return dataBless;
         }
@@ -1431,7 +1433,7 @@ namespace RoundHero
                 return false;
             foreach (var kv in BlessDatas)
             {
-                if (kv.Value.BlessID == drBless.Id)
+                if (kv.Value.BlessID == drBless.BlessID)
                     return true;
             }
             
@@ -1446,12 +1448,13 @@ namespace RoundHero
                 return idx;
             foreach (var kv in BlessDatas)
             {
-                if (kv.Value.BlessID == drBless.Id)
+                if (kv.Value.BlessID == drBless.BlessID)
                     idx++;
             }
             
             return idx;
         }
+        
         
         public Data_Bless GetUsefulBless(EBlessID blessID)
         {
@@ -1461,13 +1464,12 @@ namespace RoundHero
             
             foreach (var kv in BlessDatas)
             {
-                if (kv.Value.BlessID == drBless.Id && kv.Value.Value >= 0)
+                if (kv.Value.BlessID == drBless.BlessID && kv.Value.Value >= 0)
                     return kv.Value;
             }
             
             return null;
         }
-
         
     }
 
@@ -1766,6 +1768,8 @@ namespace RoundHero
             
             return PlayerDataCampDict[unitCamp].GetUsefulBless(blessID);
         }
+        
+        
         
     }
 

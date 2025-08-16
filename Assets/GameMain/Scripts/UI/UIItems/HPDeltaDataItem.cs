@@ -21,7 +21,9 @@ namespace RoundHero
     
         public async void SetUI()
         {
-            text.text = "【" + GameEntry.Localization.GetString(Constant.Localization.HPDeltaOwners[hpDeltaData.HPDeltaOwnerType]) + "】";
+            text.text = "【" + GameEntry.Localization.GetConnectString(Constant.Localization.EHPDeltaType, hpDeltaData.HPDeltaType.ToString()) + "】";
+            
+            //text.text = "【" + GameEntry.Localization.GetString(Constant.Localization.HPDeltaOwners[hpDeltaData.HPDeltaOwnerType]) + "】";
             value.text = hpDeltaData.HPDelta > 0 ? "+" + hpDeltaData.HPDelta : hpDeltaData.HPDelta.ToString();
 
             switch (hpDeltaData)

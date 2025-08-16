@@ -106,6 +106,8 @@ namespace RoundHero
                     [EHPDeltaOwnerType.Card] = "UI.Card",
                 };
 
+            
+            public static string EHPDeltaType = "EHPDeltaType.{0}";
 
         }
     }

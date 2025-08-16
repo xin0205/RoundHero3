@@ -77,7 +77,9 @@ namespace RoundHero
                     break;
                 case EItemType.Bless:
                     idx = BlessManager.Instance.GetIdx();
-                    BlessManager.Instance.BlessDatas.Add(idx, new Data_Bless(idx, selectAcquireItemData.ItemID));
+                    var drBless = GameEntry.DataTable.GetBless(selectAcquireItemData.ItemID);
+                    
+                    BlessManager.Instance.BlessDatas.Add(idx, new Data_Bless(idx, drBless.BlessID));
                     break;
                 case EItemType.Fune:
                     idx = FuneManager.Instance.GetIdx();

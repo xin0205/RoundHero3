@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UGFExtensions.Await;
+using UnityEngine.Assertions.Must;
 
 
 namespace RoundHero
@@ -336,14 +337,18 @@ namespace RoundHero
             {
                 var blessIdx = BlessManager.Instance.GetIdx();
                 eventValue = battleEventItemData.EventValues[selectIdx];
-                BlessManager.Instance.BlessDatas.Add(blessIdx,new Data_Bless(blessIdx, eventValue));
+                var drBless = GameEntry.DataTable.GetBless(eventValue);
+                
+                BlessManager.Instance.BlessDatas.Add(blessIdx,new Data_Bless(blessIdx, drBless.BlessID));
 
             }
             else if (eventType == EEventType.Appoint_Bless)
             {
                 var blessIdx = BlessManager.Instance.GetIdx();
                 eventValue = battleEventItemData.EventValues[0];
-                BlessManager.Instance.BlessDatas.Add(blessIdx,new Data_Bless(blessIdx, eventValue));
+                var drBless = GameEntry.DataTable.GetBless(eventValue);
+                
+                BlessManager.Instance.BlessDatas.Add(blessIdx,new Data_Bless(blessIdx, drBless.BlessID));
 
             }
             else if (eventType == EEventType.AddCoin || eventType == EEventType.SubCoin)

@@ -61,5 +61,12 @@ namespace RoundHero
             }
 
         }
+        
+        public static string GetConnectString<T1>(this LocalizationComponent localizationComponent, string localizationStr, T1 val1)
+        {
+            var connectStr = Utility.Text.Format(localizationStr, val1);
+            var str = GetString(localizationComponent, connectStr);
+            return str;
+        }
     }
 }

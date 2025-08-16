@@ -47,12 +47,26 @@ namespace RoundHero
                 startPos = BattleMoveIconEntityData.FollowParams.FollowGO.transform.localPosition;
                 startPos += BattleMoveIconEntityData.FollowParams.DeltaPos;
             }
+            else
+            {
+                startPos = PositionConvert.WorldPointToUILocalPoint(
+                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveIconEntityData.FollowParams.FollowGO.transform.localPosition);
+                startPos += BattleMoveIconEntityData.FollowParams.DeltaPos;
+            }
             
             if (BattleMoveIconEntityData.TargetFollowParams.IsUIGO)
             {
                 endPos = BattleMoveIconEntityData.TargetFollowParams.FollowGO.transform.localPosition;
                 endPos += BattleMoveIconEntityData.TargetFollowParams.DeltaPos;
             }
+            else
+            {
+                endPos = PositionConvert.WorldPointToUILocalPoint(
+                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveIconEntityData.TargetFollowParams.FollowGO.transform.localPosition);
+                endPos += BattleMoveIconEntityData.TargetFollowParams.DeltaPos;
+            }
+            
+            this.transform.localPosition = startPos;
         }
         
         private float time = 0;        
