@@ -126,6 +126,11 @@ namespace RoundHero
             {
                 foreach (var triggerData in triggerDatas)
                 {
+                    if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                    {
+                        continue;
+                    }
+                    
                     if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;
                     
@@ -146,6 +151,11 @@ namespace RoundHero
             {
                 foreach (var triggerData in triggerDatas)
                 {
+                    if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                    {
+                        continue;
+                    }
+                    
                     if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;
 

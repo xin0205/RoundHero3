@@ -436,6 +436,7 @@ namespace RoundHero
         public int RoundMoveTimes = 0;
         public int RoundAttackTimes = 0;
         public int CacheHPDelta;
+        public int CollideCount = 0;
 
         //, EGridType.Unit
         public Data_BattleUnit(int idx, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) : base(idx, gridPosIdx,
@@ -585,7 +586,21 @@ namespace RoundHero
         {
             CurHP += changeHP;
             CurHP = CurHP <= 0 && FuneCount(EBuffID.Spec_UnDead) <= 0 ? 0 : CurHP;
-            CurHP = CurHP > MaxHP ? MaxHP : CurHP;
+
+            
+            var addCurHPExceedMaxHPCount =
+                GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.AddCurHPExceedMaxHP,
+                    PlayerManager.Instance.PlayerData.UnitCamp);
+            var maxHP = MaxHP;
+            if (addCurHPExceedMaxHPCount > 0)
+            {
+                var drBless = GameEntry.DataTable.GetBless(EBlessID.AddCurHPExceedMaxHP);
+                var value = int.Parse(drBless.Values0[0]);
+                var allValue = value * addCurHPExceedMaxHPCount;
+                maxHP += allValue;
+            }
+            
+            CurHP = CurHP > maxHP ? maxHP : CurHP;
         }
 
         public void RoundClear()
@@ -786,6 +801,7 @@ namespace RoundHero
             dataBattleHero.UnitCamp = UnitCamp;
             dataBattleHero.AddHeroHP = AddHeroHP;
             dataBattleHero.CacheHPDelta = CacheHPDelta;
+            dataBattleHero.CollideCount = CollideCount;
             //dataBattleHero.RoundHeroHPDelta = RoundHeroHPDelta;
             return dataBattleHero;
 
@@ -938,6 +954,7 @@ namespace RoundHero
             dataBattleUnit.UnitCamp = UnitCamp;
             dataBattleUnit.AddHeroHP = AddHeroHP;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;
+            dataBattleUnit.CollideCount = CollideCount;
             return dataBattleUnit;
 
         }
@@ -1039,7 +1056,7 @@ namespace RoundHero
             dataBattleEnemy.Idx = Idx;
             dataBattleEnemy.BaseDamage = BaseDamage;
             dataBattleEnemy.MonsterID = MonsterID;
-            //dataBattleEnemy.EnemyTypeID = EnemyTypeID;
+
             dataBattleEnemy.GridPosIdx = GridPosIdx;
 
             dataBattleEnemy.CurHP = CurHP;
@@ -1062,6 +1079,7 @@ namespace RoundHero
             dataBattleEnemy.UnitCamp = UnitCamp;
             dataBattleEnemy.AddHeroHP = AddHeroHP;
             dataBattleEnemy.CacheHPDelta = CacheHPDelta;
+            dataBattleEnemy.CollideCount = CollideCount;
             return dataBattleEnemy;
 
         }
@@ -1095,34 +1113,57 @@ namespace RoundHero
     public class Data_BattleCore : Data_BattleUnit
     {
 
-        public int CorID;
+        public int CoreIdx;
         
         public Data_BattleCore()
         {
             
         }
         
-        public Data_BattleCore(int idx, int coreID, int gridPosIdx, EUnitCamp unitCamp) : base(idx, gridPosIdx,unitCamp, null)
+        public Data_BattleCore(int idx, int coreIdx, int gridPosIdx, EUnitCamp unitCamp) : base(idx, gridPosIdx,unitCamp, new List<int>())
         {
             Idx = idx;
-            CorID = coreID;
+            CoreIdx = coreIdx;
             GridPosIdx = gridPosIdx;
             UnitCamp = unitCamp;
-            
-            
-            
+
         }
         
         public new Data_BattleCore Copy()
         {
-            var dataBattleCore = new Data_BattleCore();
-            
-            dataBattleCore.Idx = Idx;
-            dataBattleCore.GridPosIdx = GridPosIdx;
-            dataBattleCore.UnitCamp = UnitCamp;
-            dataBattleCore.UnitStateData = UnitStateData.Copy();
 
-            return dataBattleCore;
+            var dataBattleUnit = new Data_BattleCore();
+            dataBattleUnit.Idx = Idx;
+            dataBattleUnit.CoreIdx = CoreIdx;
+            dataBattleUnit.BaseDamage = BaseDamage;
+            
+            dataBattleUnit.GridPosIdx = GridPosIdx;
+            dataBattleUnit.UnitCamp = UnitCamp;
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.CurHP = CurHP;
+            dataBattleUnit.LastCurHP = LastCurHP;
+            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
+            dataBattleUnit.BaseMaxHP = BaseMaxHP;
+            dataBattleUnit.UnitStateData = UnitStateData.Copy();
+            dataBattleUnit.AttackInRound = AttackInRound;
+            dataBattleUnit.UnitRole = UnitRole;
+            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleUnit.FuneIdxs = new List<int>(FuneIdxs);
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
+            dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
+            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
+            
+            dataBattleUnit.HurtTimes = HurtTimes;
+            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
+            dataBattleUnit.UnitCamp = UnitCamp;
+            dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.CacheHPDelta = CacheHPDelta;
+            dataBattleUnit.CollideCount = CollideCount;
+            
+            return dataBattleUnit;
+
         }
         
         public override int CurHP
@@ -1275,7 +1316,7 @@ namespace RoundHero
             BlessIdx = blessIdx;
             BlessID = blessID;
             
-            var drBless = GameEntry.DataTable.GetBless(blessIdx);
+            var drBless = GameEntry.DataTable.GetBless(BlessID);
             Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
         }
 

@@ -19,14 +19,23 @@ namespace RoundHero
 
         private void InternalShowHurtDisplayValue(int effectUnitIdx, Dictionary<int, List<TriggerData>> triggerDataDict)
         {
-            var entityIdx = curValueEntityIdx;
+            _curValueEntityIdx = curValueEntityIdx;
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
             
             if (effectUnit is BattleSoliderEntity)
             {
                 foreach (var kv in triggerDataDict)
                 {
-                    curValueEntityIdx += kv.Value.Count;
+                    foreach (var triggerData in kv.Value)
+                    {
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        {
+                            continue;
+                        }
+                        curValueEntityIdx += 1;
+                        
+                    }
+
                 }
                 
                 var idx = 0;
@@ -39,9 +48,9 @@ namespace RoundHero
                     // {
                     //     ShowValues(values, _entityIdx);
                     // });
-                    ShowValues(kv.Value, entityIdx);
+                    ShowValues(kv.Value, _curValueEntityIdx);
                     idx++;
-                    entityIdx += kv.Value.Count;
+                    //entityIdx += kv.Value.Count;
                 }
             }
             else
@@ -63,7 +72,7 @@ namespace RoundHero
                 if (startValue != 0)
                 {
                     curValueEntityIdx += 1;
-                    InternalShowValue(effectUnit, startValue, endValue, entityIdx++);
+                    InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
                 }
                
             }
@@ -98,7 +107,7 @@ namespace RoundHero
             //BattleValueEntities.Clear();
             var actionUnit =  BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
             
-            //_curValueEntityIdx = curValueEntityIdx;
+            _curValueEntityIdx = curValueEntityIdx;
             var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
                 BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
             //curValueEntityIdx += triggerDataDict.Count;
@@ -173,7 +182,7 @@ namespace RoundHero
                     // {
                     //     
                     // }
-                    InternalShowValue(effectUnit, startValue, endValue, curValueEntityIdx);
+                    InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
                 }
 
             }
@@ -360,10 +369,11 @@ namespace RoundHero
                 // if(value == 0)
                 //     continue;
 
-                GameUtility.DelayExcute(idx * 0.25f, () =>
-                {
-                    InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx);
-                });
+                // GameUtility.DelayExcute(idx * 0.25f, () =>
+                // {
+                //     
+                // });
+                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx);
                 //InternalShowValue(effectUnit, value, entityIdx++);
 
                 idx++;

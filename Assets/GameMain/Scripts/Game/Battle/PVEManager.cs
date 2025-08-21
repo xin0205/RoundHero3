@@ -23,7 +23,7 @@ namespace RoundHero
 
         public void EndAction();
 
-        public void UseCard(int cardID, int posIdx);
+        //public void UseCard(int cardID, int posIdx);
 
         public Data_Card GetCard(int cardIdx);
 
@@ -343,29 +343,29 @@ namespace RoundHero
             GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
         }
         
-        public void UseCard(int cardID, int posIdx)
-        {
-            var cardData = GetCard(cardID);
-
-            if (cardData == null)
-                return;
-            
-            if (!Input.GetMouseButtonUp(0))
-            {
-                return;
-            }
-            
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-                return;
-
-            
-            if(cardData.UnUse)
-                return;
-
-            
-            if(!BattleCardManager.Instance.PreUseCard(cardID))
-                return;
-        }
+        // public void UseCard(int cardID, int posIdx)
+        // {
+        //     // var cardData = GetCard(cardID);
+        //     //
+        //     // if (cardData == null)
+        //     //     return;
+        //     //
+        //     // if (!Input.GetMouseButtonUp(0))
+        //     // {
+        //     //     return;
+        //     // }
+        //     //
+        //     // if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+        //     //     return;
+        //     //
+        //     //
+        //     // if(cardData.UnUse)
+        //     //     return;
+        //     //
+        //     //
+        //     // if(!BattleCardManager.Instance.PreUseCard(cardID))
+        //     //     return;
+        // }
         
         public Data_Card GetCard(int cardIdx)
         {

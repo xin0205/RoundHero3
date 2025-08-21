@@ -15,11 +15,14 @@ namespace RoundHero
         
         private Tween moveTween;
 
-        [SerializeField] private GameObject positivesign;
-        [SerializeField] private GameObject negativeSign;
+        // [SerializeField] private Text positivesign;
+        // [SerializeField] private Text negativeSign;
 
 
         [SerializeField] private Image Icon;
+        [SerializeField] private Text text;
+        [SerializeField] private Color hurtColor;
+        [SerializeField] private Color recoverColor;
 
         protected override async void OnShow(object userData)
         {
@@ -34,14 +37,15 @@ namespace RoundHero
                 return;
             }
             this.time = 0;
-
-            positivesign.SetActive(BattleMoveIconEntityData.Value > 0);
-            negativeSign.SetActive(BattleMoveIconEntityData.Value < 0);
-
             
             Icon.sprite = await AssetUtility.GetUnitStateIcon(BattleMoveIconEntityData.UnitState);
 
- 
+                text.text = BattleMoveIconEntityData.Value < 0
+                    ? BattleMoveIconEntityData.Value.ToString()
+                    : "+" + BattleMoveIconEntityData.Value;
+
+                text.color = BattleMoveIconEntityData.Value < 0 ? hurtColor : recoverColor;
+
             if (BattleMoveIconEntityData.FollowParams.IsUIGO)
             {
                 startPos = BattleMoveIconEntityData.FollowParams.FollowGO.transform.localPosition;

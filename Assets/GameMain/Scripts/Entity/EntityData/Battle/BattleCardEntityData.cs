@@ -14,7 +14,7 @@ namespace RoundHero
             base.Init(entityId, pos);
             CardIdx = cardIdx;
             CardData = BattleManager.Instance.GetCard(CardIdx);
-            CardData.CardUseType = ECardUseType.Raw;
+            CardData.CardUseType = ECardUseType.RawUnSelect;
             HandSortingIdx = handSortingIdx;
         }
 

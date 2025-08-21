@@ -63,6 +63,7 @@ namespace RoundHero
         public int ActionUnitIdx;
         public int EffectUnitIdx;
     }
+
     
     public class HeroManager : Singleton<HeroManager>
     {
@@ -339,7 +340,7 @@ namespace RoundHero
                     hpDeltaData.HPDeltaType = EHPDeltaType.AttackSolider;
                     
                 }
-                else if (actionUnit is BattleCoreEntity)
+                else if (effectUnit is BattleCoreEntity)
                 {
                     hpDeltaData.HPDeltaType = EHPDeltaType.AttackCore;
                    
@@ -350,21 +351,21 @@ namespace RoundHero
                 hpDeltaData = new BlessHPDeltaData();
                 //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Bless;
                 hpDeltaData.HPDeltaType = EHPDeltaType.Bless;
-                (hpDeltaData as BlessHPDeltaData).BlessIdx = triggerData.BlessIdx;
+                (hpDeltaData as BlessHPDeltaData).BlessIdx = triggerData.TriggerBlessIdx;
             }
             else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Fune)
             {
                 hpDeltaData = new FuneHPDeltaData();
                 //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Fune;
                 hpDeltaData.HPDeltaType = EHPDeltaType.Fune;
-                (hpDeltaData as FuneHPDeltaData).FuneIdx = triggerData.FuneIdx;
+                (hpDeltaData as FuneHPDeltaData).FuneIdx = triggerData.TriggerFuneIdx;
             }
             else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Card)
             {
                 hpDeltaData = new CardHPDeltaData();
                 //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Card;
                 hpDeltaData.HPDeltaType = EHPDeltaType.UseCard;
-                (hpDeltaData as CardHPDeltaData).CardIdx = triggerData.CardIdx;
+                (hpDeltaData as CardHPDeltaData).CardIdx = triggerData.TriggerCardIdx;
             }
             else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
             {
@@ -375,6 +376,7 @@ namespace RoundHero
                 (hpDeltaData as CollisionDeltaData).EffectUnitIdx = triggerData.EffectUnitIdx;
             }
 
+            //
             hpDeltaData.HPDelta = (int)triggerData.ActualValue;
 
             return hpDeltaData; 

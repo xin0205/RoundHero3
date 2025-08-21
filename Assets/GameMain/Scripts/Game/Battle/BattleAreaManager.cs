@@ -336,7 +336,9 @@ namespace RoundHero
                         
                         BattleManager.Instance.TempTriggerData.UnitData.CurHP =
                             BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
-
+                        BattleManager.Instance.TempTriggerData.UnitData.CurHP =
+                            BattleManager.Instance.TempTriggerData.UnitData.MaxHP - 2;
+                        
                         if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
                         {
 
@@ -908,10 +910,11 @@ namespace RoundHero
                                         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                                         if (actionUnit != null)
                                         {
-                                            GameUtility.DelayExcute(0.25f * idx, () =>
-                                            {
-                                                actionUnit.ShowTags(actionUnit.UnitIdx, true);
-                                            });
+                                            // GameUtility.DelayExcute(0.25f * idx, () =>
+                                            // {
+                                            //     
+                                            // });
+                                            actionUnit.ShowTags(actionUnit.UnitIdx, true);
                                             idx++;
                                         }
                                     }
@@ -920,7 +923,7 @@ namespace RoundHero
                                 var triggerDataDict =
                                     GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unit.UnitIdx),
                                         BattleFightManager.Instance.GetInDirectAttackDatas(unit.UnitIdx));
-                                actionUnitList.Clear();
+                                
                                 foreach (var kv in triggerDataDict)
                                 {
                                     foreach (var triggerData in kv.Value)
@@ -933,10 +936,11 @@ namespace RoundHero
                                         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                                         if (actionUnit != null)
                                         {
-                                            GameUtility.DelayExcute(0.25f * idx, () =>
-                                            {
-                                                actionUnit.ShowTags(actionUnit.UnitIdx, true);
-                                            });
+                                            // GameUtility.DelayExcute(0.25f * idx, () =>
+                                            // {
+                                            //     
+                                            // });
+                                            actionUnit.ShowTags(actionUnit.UnitIdx, true);
                                             idx++;
                                         }
                                     }
@@ -2936,7 +2940,7 @@ namespace RoundHero
             
 
             var soliderData = BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider;
-            soliderData.RefreshCardData();
+            //soliderData.RefreshCardData();
             
             
             var battleSoliderData = soliderData.Copy();

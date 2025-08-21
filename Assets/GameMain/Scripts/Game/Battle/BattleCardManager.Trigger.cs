@@ -24,11 +24,8 @@ namespace RoundHero
                 //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
                 //
                 BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
-                    effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx);
-                // if (triggerDatas.Count > 0)
-                // {
-                //     triggerDatas[0].TriggerCardIdx = cardIdx;
-                // }
+                    effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, ETriggerDataSubType.Card);
+                
                 
                 BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Tactic;
 
@@ -44,11 +41,8 @@ namespace RoundHero
                     var values = drBuff.GetValues(idx++);
 
                     BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, actionUnitIdx,
-                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx);
-                    if (triggerDatas.Count > 0)
-                    {
-                        triggerDatas[0].TriggerCardIdx = cardIdx;
-                    }
+                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, ETriggerDataSubType.Fune);
+  
                     BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Fune;
 
                 }

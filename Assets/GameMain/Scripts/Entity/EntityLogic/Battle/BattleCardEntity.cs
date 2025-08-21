@@ -13,7 +13,8 @@ namespace RoundHero
 {
     public enum ECardUseType
     {
-        Raw, 
+        RawUnSelect,
+        RawSelect,
         Attack, 
         Move,
     }
@@ -119,9 +120,12 @@ namespace RoundHero
             transform.localScale = Vector3.one;
             //GetComponent<Canvas>().sortingOrder = 1000;
             //var drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
+
+            RefreshCardUseTypeInfo();
             
-            
-            ActionGO.SetActive(false);
+            moveGO.SetActive(false);
+            attackGO.SetActive(false);
+            //ActionGO.SetActive(false);
             ConfirmGO.SetActive(false);
             //
             //
@@ -129,7 +133,7 @@ namespace RoundHero
             // moveCheckMark.SetActive(false);
             
         
-            RefreshCardUseTypeInfo();
+            
 
             videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.BattleLeft;
             var drCard = GameEntry.DataTable.GetCard(BattleCardEntityData.CardData.CardID);
@@ -147,16 +151,16 @@ namespace RoundHero
 
         private void RefreshCardRect()
         {
-            Vector3 topLeft = cardRect.transform.TransformPoint(cardRect.offsetMin);
-            Vector3 bottomRight = cardRect.transform.TransformPoint(cardRect.offsetMax);
-            //Vector3 bottomLeft = new Vector3(topLeft.x, bottomRight.y, 0);
-            //Vector3 topRight = new Vector3(bottomRight.x, topLeft.y, 0);
-            
-            rect = new Rect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
-            var screenPoint = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera, rect.position);
-            rect.position = screenPoint;
-            rect.width *= 100;
-            rect.height *= 100;
+            // Vector3 topLeft = cardRect.transform.TransformPoint(cardRect.offsetMin);
+            // Vector3 bottomRight = cardRect.transform.TransformPoint(cardRect.offsetMax);
+            // //Vector3 bottomLeft = new Vector3(topLeft.x, bottomRight.y, 0);
+            // //Vector3 topRight = new Vector3(bottomRight.x, topLeft.y, 0);
+            //
+            // rect = new Rect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
+            // var screenPoint = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera, rect.position);
+            // rect.position = screenPoint;
+            // rect.width *= 100;
+            // rect.height *= 100;
 
         }
         
@@ -164,37 +168,37 @@ namespace RoundHero
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
 
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-                return;
-            
-            if(!isHand)
-                return;
-            
-            if (!isInside)
-            {
-                if(BattleCardManager.Instance.PointerCardIdx != -1)
-                    return;
-                
-                isInside = rect.Contains(Input.mousePosition);
-                if (isInside)
-                {
-                    //Log.Debug("inSide:" + BattleCardEntityData.CardIdx);
-                    OnPointerEnter();
-                }
-            }
-            
-            if (isInside)
-            {
-                isInside = rect.Contains(Input.mousePosition);
-                if (!isInside)
-                {
-                    //Log.Debug("no inSide:" + BattleCardEntityData.CardIdx);
-                    OnPointerExit();
-                }
-            }
+            // if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+            //     return;
+            //
+            // if(!isHand)
+            //     return;
+            //
+            // if (!isInside)
+            // {
+            //     if(BattleCardManager.Instance.PointerCardIdx != -1)
+            //         return;
+            //     
+            //     isInside = rect.Contains(Input.mousePosition);
+            //     if (isInside)
+            //     {
+            //         //Log.Debug("inSide:" + BattleCardEntityData.CardIdx);
+            //         OnPointerEnter();
+            //     }
+            // }
+            //
+            // if (isInside)
+            // {
+            //     isInside = rect.Contains(Input.mousePosition);
+            //     if (!isInside)
+            //     {
+            //         //Log.Debug("no inSide:" + BattleCardEntityData.CardIdx);
+            //         OnPointerExit();
+            //     }
+            // }
         }
         
-        private void OnPointerEnter()
+        public void OnPointerEnter()
         { 
             if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
               TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
@@ -217,8 +221,10 @@ namespace RoundHero
                     return;
             }
             
-            //isShow = true;
-            ActionGO.SetActive(true);
+            isShow = true;
+            moveGO.SetActive(true);
+            attackGO.SetActive(true);
+            //ActionGO.SetActive(true);
             //transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 140f, 0);
             ScaleCard(1, 1.1f, 0.01f);
             //transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
@@ -239,8 +245,19 @@ namespace RoundHero
             {
                 
                 kv.Value.ShowTacticHurtDisplayValues(kv.Value.UnitIdx);
-                
+                kv.Value.ShowTacticHurtDisplayIcons(kv.Value.UnitIdx);
             }
+            
+            var eachUseCardUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy, PlayerManager.Instance.PlayerData.UnitCamp);
+            if (eachUseCardUnUseEnergy != null)
+            {
+                    
+                if (eachUseCardUnUseEnergy.Value == 1)
+                {
+                    BattleCardManager.Instance.RefreshCurCardEnergy(0);
+                }
+            }
+            
         }
         
         public void OnPointerExit()
@@ -262,9 +279,9 @@ namespace RoundHero
                     return;
             }
 
-            
-            
-            
+
+
+            isShow = false;
             BattleCardManager.Instance.UnSelectCard();
             BattleCardManager.Instance.RefreshSelectCard();
             BattleCardManager.Instance.SetCardsPos();
@@ -277,7 +294,7 @@ namespace RoundHero
             BattleManager.Instance.RefreshEnemyAttackData();
             
             BattleUnitManager.Instance.UnShowTags();
-            
+
             
         }
 
@@ -285,7 +302,9 @@ namespace RoundHero
         {
             
             //isShow = false;
-            ActionGO.SetActive(false);
+            //ActionGO.SetActive(false);
+            moveGO.SetActive(false);
+            attackGO.SetActive(false);
             MoveCard(new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0),
                 0.1f);
             
@@ -293,7 +312,7 @@ namespace RoundHero
             //transform.localScale = new Vector3(1f, 1f, 1f);
             ScaleCard(-1, 1, 0.01f);
             RefreshCardRect();
-            BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
+            BattleCardEntityData.CardData.CardUseType = ECardUseType.RawUnSelect;
             RefreshCardUseTypeInfo();
             moveInfoTrigger.HideInfo();
             attackInfoTrigger.HideInfo();
@@ -322,7 +341,7 @@ namespace RoundHero
             //     }
             //     
             // });
-            RefreshInHandCard(time);
+            //RefreshInHandCard(time);
         }
         
         private Tween scaleTween;
@@ -379,12 +398,12 @@ namespace RoundHero
 
         private void RefreshInHandCard(float time)
         {
-            GameUtility.DelayExcute(time, () =>
-            {
-                isHand = true;
-                RefreshCardRect();
-                //RawSiblingIdx = gameObject.GetComponent<RectTransform>().GetSiblingIndex();
-            });
+            // GameUtility.DelayExcute(time, () =>
+            // {
+            //     isHand = true;
+            //     RefreshCardRect();
+            //     //RawSiblingIdx = gameObject.GetComponent<RectTransform>().GetSiblingIndex();
+            // });
         }
         
         public async void UseCard()
@@ -412,11 +431,13 @@ namespace RoundHero
             if(BattleCardEntityData.CardData.UnUse)
                 return;
 
-            BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
+            BattleCardEntityData.CardData.CardUseType = ECardUseType.RawUnSelect;
             if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
                 return;
 
             BattleUnitManager.Instance.UnShowTags();
+
+            
 
             UseCardAnimation();
             
@@ -606,7 +627,7 @@ namespace RoundHero
             // }
             
             
-            RefreshInHandCard(time);
+            //RefreshInHandCard(time);
             
 
             if (!toShow)
@@ -619,188 +640,6 @@ namespace RoundHero
             }
 
         }
-        // public void ToPassCard(float time)
-        // {
-        //     isHand = false;
-        //     transform.DOLocalMove(BattleController.Instance.PassCardPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.one;
-        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
-        //     {
-        //         GameEntry.Entity.HideEntity(this);
-        //     });
-        // }
-        
-        // public void ToStandByCard(float time)
-        // {
-        //     isHand = false;
-        //     transform.DOLocalMove(BattleController.Instance.StandByCardPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.one;
-        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
-        //     {
-        //         GameEntry.Entity.HideEntity(this);
-        //     });
-        // }
-        
-        // public void ToConsumeCard(float time)
-        // {
-        //     isHand = false;
-        //     transform.DOLocalMove(BattleController.Instance.ConsumeCardPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.one;
-        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
-        //     {
-        //         GameEntry.Entity.HideEntity(this);
-        //     });
-        // }
-        
-        // public void StandByCardToHand(float time)
-        // {
-        //     transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.zero;
-        //     transform.DOScale(Vector3.one, time);
-        //     
-        //     RefreshInHandCard(time);
-        // }
-        
-        // public void PassCardToHand(float time)
-        // {
-        //     transform.localPosition = BattleController.Instance.PassCardPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.zero;
-        //     transform.DOScale(Vector3.one, time);
-        //     RefreshInHandCard(time);
-        // }
-        
-        // public void PassCardToCenter(float time)
-        // {
-        //     transform.localPosition = BattleController.Instance.PassCardPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.zero;
-        //     transform.DOScale(Vector3.one, time);
-        //     
-        //     
-        // }
-        
-        
-        // public void StandByToCenter(float time)
-        // {
-        //     transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.CenterPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.zero;
-        //     transform.DOScale(Vector3.one, time);
-        // }
-        // public void ConsumeCardToHand(float time)
-        // {
-        //     transform.localPosition = BattleController.Instance.ConsumeCardPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
-        //     
-        //     transform.localScale = Vector3.zero;
-        //     transform.DOScale(Vector3.one, time);
-        //     
-        // }
-        
-
-        // public void NewCardToHand(float time)
-        // {
-        //     transform.localScale = Vector3.one;
-        //     transform.localPosition = BattleController.Instance.CenterPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.HandCardPos.localPosition, time);
-        //     RefreshInHandCard(time);
-        //     
-        // }
-        
-        // public void NewCardToStandBy(float time)
-        // {
-        //     isHand = false;
-        //     transform.localScale = Vector3.one;
-        //     transform.localPosition = BattleController.Instance.CenterPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.StandByCardPos.localPosition, time);
-        //     
-        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
-        //     {
-        //         GameEntry.Entity.HideEntity(this);
-        //     });
-        //     
-        // }
-        
-        // public void NewCardToPass(float time)
-        // {
-        //     isHand = false;
-        //     transform.localScale = Vector3.one;
-        //     transform.localPosition = BattleController.Instance.CenterPos.localPosition;
-        //     transform.DOLocalMove(BattleController.Instance.PassCardPos.localPosition, time);
-        //     
-        //     transform.DOScale(Vector3.zero, time).OnComplete(() =>
-        //     {
-        //         GameEntry.Entity.HideEntity(this);
-        //     });
-        // }
-
-
-        
-        
-        // public void OnPointerEnter(BaseEventData baseEventData)
-        // {
-        //     Log.Debug("Enter");
-        //     if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-        //         return;
-        //     
-        //     BattleCardManager.Instance.PointerCardID = BattleCardEntityData.CardID;
-        //     
-        //     isShow = true;
-        //     //BaseCard.ActionGO.SetActive(true);
-        //     transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 165f, 0);
-        //     transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-        //     //GetComponent<Canvas>().sortingOrder = sortingOrder + 100;
-        //
-        //     //var drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardID);
-        //     // var buffID = drCard.BuffIDs[0];
-        //     // var buffData = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[0]);
-        //     //Wrong
-        //     // if (Constant.Card.EffectMultiUnitsBuffIDs.Contains(buffData.DrBuff.Id))
-        //     // {
-        //     //     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.UseBuff;
-        //     //     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID = BattleCardEntityData.CardID;
-        //     //     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffID = buffData.DrBuff.Id;
-        //     //
-        //     // }
-        //     BattleManager.Instance.Refresh();
-        //     
-        // }
-        
-        // public void OnPointerExit(BaseEventData baseEventData)
-        // {
-        //     Log.Debug("Exit");
-        //     if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-        //         return;
-        //     
-        //     
-        //     BattleCardManager.Instance.PointerCardID = -1;
-        //     isShow = false;
-        //     //BaseCard.ActionGO.SetActive(false);
-        //     transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0);
-        //     transform.localScale = new Vector3(1f, 1f, 1f);
-        //     //GetComponent<Canvas>().sortingOrder -=  100;
-        //     
-        //     //var drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardID);
-        //     //var buffID = drCard.BuffIDs[0];
-        //     //Wrong
-        //     // if (Constant.Card.EffectMultiUnitsBuffIDs.Contains(buffID))
-        //     // {
-        //     //     BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.Null;
-        //     //     BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
-        //     // }
-        //     //FightManager.Instance.CalculateEnemyPaths();
-        //     BattleManager.Instance.Refresh();
-        //     
-        // }
         
         public void SetSortingOrder(int sortingOrder, bool force = false)
         {
@@ -837,7 +676,9 @@ namespace RoundHero
                              BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid);
             
             ConfirmGO.SetActive(isConfirm);
-            ActionGO.SetActive(!isConfirm);
+            //ActionGO.SetActive(!isConfirm);
+            moveGO.SetActive(!isConfirm);
+            attackGO.SetActive(!isConfirm);
 
             if (isConfirm)
             {
@@ -865,7 +706,8 @@ namespace RoundHero
             if (BattleCardEntityData.CardData.CardUseType == ECardUseType.Move)
             {
                 
-                BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
+                BattleCardEntityData.CardData.CardUseType = isShow ? ECardUseType.RawSelect : ECardUseType.RawUnSelect;
+                BattleCardManager.Instance.ResetRawCard(BattleCardEntityData.CardIdx);
             }
             else
             {
@@ -888,12 +730,10 @@ namespace RoundHero
                 return;
             }
             
-            
             if (BattleCardEntityData.CardData.CardUseType == ECardUseType.Attack)
             {
-                
-                BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
-                
+                BattleCardEntityData.CardData.CardUseType = isShow ? ECardUseType.RawSelect : ECardUseType.RawUnSelect;
+                BattleCardManager.Instance.ResetRawCard(BattleCardEntityData.CardIdx);
             }
             else
             {
@@ -911,13 +751,13 @@ namespace RoundHero
 
         public void RefreshCardUseTypeInfo()
         {
-            if (BattleCardEntityData.CardData.CardID == 0)
-            {
-                var a = 5;
-            }
+
             switch (BattleCardEntityData.CardData.CardUseType)
             {
-                case ECardUseType.Raw:
+                case ECardUseType.RawUnSelect:
+                    CardItem.SetCard(BattleCardEntityData.CardData.CardID, BattleCardEntityData.CardData.CardIdx);
+                    break;
+                case ECardUseType.RawSelect:
                     CardItem.SetCard(BattleCardEntityData.CardData.CardID, BattleCardEntityData.CardData.CardIdx);
                     break;
                 case ECardUseType.Attack:
@@ -956,7 +796,20 @@ namespace RoundHero
         {
             switch (cardUseType)
             {
-                case ECardUseType.Raw:
+                case ECardUseType.RawUnSelect:
+                    moveCheckMark.SetActive(false);
+                    attackCheckMark.SetActive(false);
+                    moveIcon.SetActive(false);
+                    attackIcon.SetActive(false);
+                    moveGO.SetActive(false);
+                    attackGO.SetActive(false);
+                    moveGO.GetComponent<Animation>().Stop();
+                    attackGO.GetComponent<Animation>().Stop();
+                    
+                    CardItem.SetIconVisible(true);
+                    
+                    break;
+                case ECardUseType.RawSelect:
                     moveCheckMark.SetActive(false);
                     attackCheckMark.SetActive(false);
                     moveIcon.SetActive(false);

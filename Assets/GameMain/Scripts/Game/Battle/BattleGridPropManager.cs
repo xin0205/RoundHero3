@@ -190,7 +190,7 @@ namespace RoundHero
                     idx++;
                     BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Attack,
                         buffData, GetValues(kv.Value.GridPropID, idx), triggerData.ActionUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
-                        triggerDatas);
+                        triggerDatas, gridPosIdx, gridPosIdx, -1, ETriggerDataSubType.Prop);
                 }
 
             }
@@ -230,7 +230,7 @@ namespace RoundHero
         public void TriggerStayPropState(int gridPosIdx, Data_BattleUnit unit, EUnitState state)
         {
             var prop = BattleGridPropManager.Instance.GetGridProp(gridPosIdx);
-            if (prop != null)
+            if (prop != null && unit != null)
             {
                 var drProp = GameEntry.DataTable.GetGridProp(prop.GridPropID);
                 var buffData = BattleBuffManager.Instance.GetBuffData(drProp.GridPropIDs[0]);

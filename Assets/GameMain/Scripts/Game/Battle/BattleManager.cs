@@ -462,28 +462,28 @@ namespace RoundHero
 
         }
 
-        public void UseCard(int cardID, int posIdx)
-        {
-            BattleTypeManager.UseCard(cardID, posIdx);
-            
-            var cardData = BattleManager.Instance.GetCard(cardID);
-            
-            if (!Input.GetMouseButtonUp(0))
-            {
-                return;
-            }
-            
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-                return;
-
-            
-            if(cardData.UnUse)
-                return;
-
-            
-            if(!BattleCardManager.Instance.PreUseCard(cardID))
-                return;
-        }
+        // public void UseCard(int cardID, int posIdx)
+        // {
+        //     BattleTypeManager.UseCard(cardID, posIdx);
+        //     
+        //     var cardData = BattleManager.Instance.GetCard(cardID);
+        //     
+        //     if (!Input.GetMouseButtonUp(0))
+        //     {
+        //         return;
+        //     }
+        //     
+        //     if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+        //         return;
+        //
+        //     
+        //     if(cardData.UnUse)
+        //         return;
+        //
+        //     
+        //     if(!BattleCardManager.Instance.PreUseCard(cardID))
+        //         return;
+        // }
 
         public int GetUnUseCardCount()
         {

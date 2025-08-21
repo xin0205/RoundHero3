@@ -127,7 +127,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, battleCoreData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleCoreEntity),
-                AssetUtility.GetBattleCorePrefab(battleCoreData.CorID), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleCorePrefab(battleCoreData.CoreIdx), Constant.EntityGroup.Unit, 0, data);
             
             return (BattleCoreEntity)task.Logic;
         }
@@ -194,7 +194,7 @@ namespace RoundHero
             
             
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
-            battleSoliderData.ChangeState(EUnitState.AtkPassEnemy, 1);
+            //battleSoliderData.ChangeState(EUnitState.CounterAtk, 1);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
             data.Init(entityComponent.GenerateSerialId(), pos, battleSoliderData);
 
@@ -330,22 +330,35 @@ namespace RoundHero
 
             return await ShowBattleMoveValueEntityAsync(data);
         }
-
         
-        public static async Task<BattleMoveIconEntity> ShowBattleMoveIconEntityAsync(this EntityComponent entityComponent,
-            EUnitState unitState, int value, int entityIdx = -1, bool isLoop = false, MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        public static async Task<BattleMoveValueEntity> ShowBattleUnitStateMoveValueEntityAsync(
+            this EntityComponent entityComponent,
+            int startValue, int endValue, EUnitState unitState, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+            MoveParams moveParams = null, MoveParams targetMoveParams = null)
         {
-            var data = ReferencePool.Acquire<BattleMoveIconEntityData>();
+            var data = ReferencePool.Acquire<UnitStateIconValueEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), unitState, value, entityIdx, isLoop, moveParams,
+            data.Init(entityComponent.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
                 targetMoveParams);
 
-            //Log.Debug("task1");
-            var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveIconEntity),
-                AssetUtility.GetBattleMoveIconPrefab(), Constant.EntityGroup.Unit, 0, data);
-            
-            return (BattleMoveIconEntity)task.Logic;
+            return await ShowBattleMoveValueEntityAsync(data);
         }
+
+        
+        // public static async Task<BattleMoveIconEntity> ShowBattleMoveIconEntityAsync(this EntityComponent entityComponent,
+        //     EUnitState unitState, int value, int entityIdx = -1, bool isLoop = false, MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        // {
+        //     var data = ReferencePool.Acquire<BattleMoveIconEntityData>();
+        //
+        //     data.Init(entityComponent.GenerateSerialId(), unitState, value, entityIdx, isLoop, moveParams,
+        //         targetMoveParams);
+        //
+        //     //Log.Debug("task1");
+        //     var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleMoveIconEntity),
+        //         AssetUtility.GetBattleMoveIconPrefab(), Constant.EntityGroup.Unit, 0, data);
+        //     
+        //     return (BattleMoveIconEntity)task.Logic;
+        // }
         
         public static async Task<EffectEntity> ShowEffectEntityAsync(this EntityComponent entityComponent, string assetName, Vector3 pos)
         {

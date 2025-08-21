@@ -486,6 +486,7 @@ namespace RoundHero
         Empty,
         Fune,
         Card,
+        Prop,
         
         
     }

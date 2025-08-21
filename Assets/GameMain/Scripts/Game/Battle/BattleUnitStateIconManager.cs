@@ -10,7 +10,7 @@ namespace RoundHero
         private int curUnitStateIconEntityIdx = 0;
         private int _curUnitStateIconEntityIdx = 0;
         private int showUnitStateIconEntityIdx = 0;
-
+        
         
         public void ShowHurtDisplayIcon(int effectUnitIdx, int actionUnitIdx)
         {
@@ -23,7 +23,7 @@ namespace RoundHero
             {
                 foreach (var triggerData in kv.Value)
                 {
-                    if (triggerData.BuffValue.BuffData.BuffValueType != EBuffValueType.State)
+                    if (triggerData.TriggerDataType != ETriggerDataType.RoleState)
                     {
                         continue;
                     }
@@ -95,7 +95,7 @@ namespace RoundHero
 
                 GameUtility.DelayExcute(idx *0.25f, () =>
                 {
-                    InternalShowIcon(actionUnit, effectUnit, unitState, value, _curUnitStateIconEntityIdx);
+                    InternalShowIcon(triggerData, unitState, value, _curUnitStateIconEntityIdx);
                 });
                 //InternalShowValue(effectUnit, value, entityIdx++);
 
@@ -107,15 +107,10 @@ namespace RoundHero
 
             
         }
-        private async void InternalShowIcon(BattleUnitEntity actionUnit, BattleUnitEntity effectUnit, EUnitState unitState, int value, int entityIdx)
+        private async void InternalShowIcon(TriggerData triggerData, EUnitState unitState, int value, int entityIdx)
         {
-            
-            if (effectUnit == null)
-            {
-                return;
-            }
 
-            InternalAnimtionChangeUnitState(unitState, value, actionUnit, effectUnit, entityIdx, true);
+            InternalAnimtionChangeUnitState(unitState, value, triggerData, entityIdx, true);
 
 
         }
@@ -138,24 +133,46 @@ namespace RoundHero
             
         }
 
-        public async Task AnimtionChangeUnitState(EUnitState unitState, int value, BattleUnitEntity actionUnit,
-            BattleUnitEntity effectUnit, int entityIdx, bool isLoop)
+        public async Task AnimtionChangeUnitState(EUnitState unitState, int value, TriggerData triggerData, int entityIdx, bool isLoop)
         {
             _curUnitStateIconEntityIdx = curUnitStateIconEntityIdx;
             curUnitStateIconEntityIdx += 1;
-            await InternalAnimtionChangeUnitState(unitState, value, actionUnit, effectUnit, entityIdx, isLoop);
+            await InternalAnimtionChangeUnitState(unitState, value, triggerData, entityIdx, isLoop);
         }
 
-        private async Task InternalAnimtionChangeUnitState(EUnitState unitState, int value, BattleUnitEntity actionUnit, BattleUnitEntity effectUnit, int entityIdx, bool isLoop)
+        private async Task InternalAnimtionChangeUnitState(EUnitState unitState, int value, TriggerData triggerData, int entityIdx, bool isLoop)
         {
+            
+            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
 
-            var moveParams = new MoveParams()
+
+            var moveParams = new MoveParams();
+            
+            if (actionUnit != null)
             {
+                moveParams.FollowGO = actionUnit.gameObject;
+                moveParams.DeltaPos = new Vector2(0, 25f);
+                moveParams.IsUIGO = false;
+            }
+            else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Card)
+            {
+                var cardEntity = BattleCardManager.Instance.GetCardEntity(triggerData.TriggerCardIdx);
+
+                if (cardEntity != null)
+                {
+                    moveParams.FollowGO = cardEntity.gameObject;
+                    moveParams.DeltaPos = new Vector2(0, 25f);
+                    moveParams.IsUIGO = true;
+                }
+                else
+                {
+                    moveParams.FollowGO = BattleController.Instance.HandCardPos.gameObject;
+                    moveParams.DeltaPos = new Vector2(0, 25f);
+                    moveParams.IsUIGO = true;
+                }
                 
-                FollowGO = actionUnit.gameObject,
-                DeltaPos = new Vector2(0, 25f),
-                IsUIGO = false,
-            };
+            }
             
             var targetMoveParams = new MoveParams()
             {
@@ -163,17 +180,20 @@ namespace RoundHero
                 DeltaPos = (actionUnit != null && actionUnit.UnitIdx == effectUnit.UnitIdx) ? new Vector2(0, 125f) : new Vector2(0, 25f),
                 IsUIGO = false,
             };
-            
-            var entity = await GameEntry.Entity.ShowBattleMoveIconEntityAsync(unitState, value, _curUnitStateIconEntityIdx++, isLoop, moveParams, targetMoveParams);
+
+            var entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(value, value, unitState, _curUnitStateIconEntityIdx++,
+                true, false,
+                moveParams,
+                targetMoveParams);
 
             if (GameEntry.Entity.HasEntity(entity.Id))
             {
-                var _entityIdx = entity.BattleMoveIconEntityData.EntityIdx;
+                var _entityIdx = entity.BattleMoveValueEntityData.EntityIdx;
                 if (_entityIdx == -1)
                 {
                     BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
                 }
-                if (_entityIdx < showUnitStateIconEntityIdx)
+                else if (_entityIdx < showUnitStateIconEntityIdx)
                 {
                 
                     GameEntry.Entity.HideEntity(entity);
@@ -191,10 +211,40 @@ namespace RoundHero
 
             var triggerDataDict = BattleFightManager.Instance.GetTacticHurtAttackDatas(effectUnitIdx);
 
-            //InternalShowIcon(effectUnitIdx, triggerDataDict);
+            InternalShowHurtDisplayIcon(effectUnitIdx, triggerDataDict);
 
             
         }
+        
+        private void InternalShowHurtDisplayIcon(int effectUnitIdx, Dictionary<int, List<TriggerData>> triggerDataDict)
+        {
+            var entityIdx = curValueEntityIdx;
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+            
+            foreach (var kv in triggerDataDict)
+            {
+                foreach (var triggerData in kv.Value)
+                {
+                    if (triggerData.TriggerDataType != ETriggerDataType.RoleState)
+                    {
+                        continue;
+                    }
+                    curUnitStateIconEntityIdx += 1;
+                        
+                }
+
+            }
+                
+            var idx = 0;
+            foreach (var kv in triggerDataDict)
+            {
+
+                ShowIcons(kv.Value, entityIdx);
+                idx++;
+                entityIdx += kv.Value.Count;
+            }
+        }
+        
     }
 
 }

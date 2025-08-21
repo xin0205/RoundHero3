@@ -27,7 +27,10 @@ namespace RoundHero
         private string negativeEndValue;
         
         [SerializeField] private Image Icon;
-        
+        private Vector3 startPos = Vector2.zero;
+        private Vector3 endPos = Vector2.zero;
+        private Vector3 oriStartPos = Vector2.zero;
+        private Vector3 oriEndPos = Vector2.zero;
         protected override async void OnShow(object userData)
         {
             transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
@@ -64,50 +67,56 @@ namespace RoundHero
             if (BattleMoveValueEntityData.FollowParams.IsUIGO)
             {
                 startPos = BattleMoveValueEntityData.FollowParams.FollowGO.transform.localPosition;
-                startPos += BattleMoveValueEntityData.FollowParams.DeltaPos;
+                startPos += (Vector3)BattleMoveValueEntityData.FollowParams.DeltaPos;
+                
             }
             else
             {
                 startPos = PositionConvert.WorldPointToUILocalPoint(
                     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveValueEntityData.FollowParams.FollowGO.transform.localPosition);
-                startPos += BattleMoveValueEntityData.FollowParams.DeltaPos;
+                startPos += (Vector3)BattleMoveValueEntityData.FollowParams.DeltaPos;
             }
+
+            oriStartPos = startPos;
 
             
             if (BattleMoveValueEntityData.TargetFollowParams.IsUIGO)
             {
                 endPos = BattleMoveValueEntityData.TargetFollowParams.FollowGO.transform.localPosition;
-                endPos += BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
+                endPos += (Vector3)BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
             }
             else
             {
                 endPos = PositionConvert.WorldPointToUILocalPoint(
                     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveValueEntityData.TargetFollowParams.FollowGO.transform.localPosition);
-                endPos += BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
+                endPos += (Vector3)BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
             }
+
+            oriEndPos = endPos;
+            
+            this.transform.localPosition = startPos;
 
             Icon.gameObject.SetActive(true);
             if (BattleMoveValueEntityData is BlessIconValueEntityData blessIconValueEntityData)
             {
                 Icon.sprite = await AssetUtility.GetBlessIcon(blessIconValueEntityData.BlessID);
             }
+            else if (BattleMoveValueEntityData is UnitStateIconValueEntityData unitStateIconValueEntityData)
+            {
+                Icon.sprite = await AssetUtility.GetUnitStateIcon(unitStateIconValueEntityData.UnitState);
+            }
             else
             {
                 Icon.gameObject.SetActive(false);
             }
-            
-            
-            
 
             
-            this.transform.localPosition = startPos;
 
         }
 
         private float time = 0f;
         private float timeEnd = 0f;
-        private Vector2 startPos = Vector2.zero;
-        private Vector2 endPos = Vector2.zero;
+        
         private void Update()
         {
             time += Time.deltaTime;
@@ -121,16 +130,23 @@ namespace RoundHero
             
             if (!BattleMoveValueEntityData.FollowParams.IsUIGO)
             {
+                var _startPos = BattleMoveValueEntityData.FollowParams.FollowGO == null
+                    ? oriStartPos
+                    : BattleMoveValueEntityData.FollowParams.FollowGO.transform.localPosition;
                 startPos = PositionConvert.WorldPointToUILocalPoint(
-                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveValueEntityData.FollowParams.FollowGO.transform.localPosition);
-                startPos += BattleMoveValueEntityData.FollowParams.DeltaPos;
+                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), _startPos);
+                startPos += (Vector3)BattleMoveValueEntityData.FollowParams.DeltaPos;
             }
             
             if (!BattleMoveValueEntityData.TargetFollowParams.IsUIGO)
             {
+                var _endPos = BattleMoveValueEntityData.TargetFollowParams.FollowGO == null
+                    ? oriEndPos
+                    : BattleMoveValueEntityData.TargetFollowParams.FollowGO.transform.localPosition;
+                
                 endPos = PositionConvert.WorldPointToUILocalPoint(
-                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), BattleMoveValueEntityData.TargetFollowParams.FollowGO.transform.localPosition);
-                endPos += BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
+                    AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), _endPos);
+                endPos += (Vector3)BattleMoveValueEntityData.TargetFollowParams.DeltaPos;
             }
 
             
@@ -153,7 +169,7 @@ namespace RoundHero
             }
             
 
-            if((Vector2)this.transform.localPosition == endPos)
+            if(this.transform.localPosition == endPos)
             {
                 timeEnd += Time.deltaTime;
                 if (timeEnd > 0.5f)

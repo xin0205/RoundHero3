@@ -523,10 +523,10 @@ namespace RoundHero
         public bool PreUseCard(int cardIdx)
         {
             var card = BattleManager.Instance.GetCard(cardIdx);
-            DRCard drCard = null;
-            drCard = GameEntry.DataTable.GetCard(card.CardID);
+            DRCard drCard = GameEntry.DataTable.GetCard(card.CardID);
 
             var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
+            cardEnergy = GetCardEnergyDynamicDelta(cardEnergy);
             var cardType = drCard.CardType;
 
             // if (card.FuneDatas.Contains(EFuneID.AddCurHP) && cardEnergy > 0)
@@ -657,11 +657,90 @@ namespace RoundHero
             //     ret = UseCard(cardID);
             // }
             
-            var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
-            cardEntity.UseCardAnimation();
+            // var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
+            // cardEntity.UseCardAnimation();
             return UseCard(cardIdx);
         }
 
+        public void ResetRawCard(int cardIdx)
+        {
+            var card = BattleManager.Instance.GetCard(cardIdx);
+            DRCard drCard = GameEntry.DataTable.GetCard(card.CardID);
+            
+             var cardType = drCard.CardType;
+
+            if (cardType == ECardType.Unit)
+            {
+                BattleManager.Instance.SetBattleState(EBattleState.UnitSelectGrid);
+                
+                BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                
+
+            }
+            if (cardType == ECardType.Prop)
+            {
+                BattleManager.Instance.SetBattleState(EBattleState.PropSelectGrid);
+
+                BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                
+
+            }
+            else if (cardType == ECardType.Tactic)
+            {
+                var buffData = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[0]);
+                var value = BattleBuffManager.Instance.GetBuffValue(drCard.Values0[0]);
+                
+
+                if (buffData.BuffTriggerType == EBuffTriggerType.TacticSelectUnit ||
+                    buffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
+                {
+                    BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
+
+                }
+                else if (buffData.BuffTriggerType == EBuffTriggerType.TacticSelectGrid)
+                {
+                    BattleManager.Instance.SetBattleState(EBattleState.TacticSelectGrid);
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
+
+                }
+                else if (buffData.BuffTriggerType == EBuffTriggerType.TacticProp)
+                {
+                    BattleManager.Instance.SetBattleState(EBattleState.TacticSelectGrid);
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
+
+                }
+                else if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveGrid) || CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveAllGrid) )
+                {
+                    BattleManager.Instance.SetBattleState(EBattleState.MoveGrid);
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                    
+                }
+                else if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
+                {
+                    BattleManager.Instance.SetBattleState(EBattleState.ExchangeSelectGrid);
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
+                    BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
+                    
+                }
+                else
+                {
+                    BattleManager.Instance.BattleState = EBattleState.UseCard;
+                }
+
+            }
+        }
         
 
         public bool UseCard(int cardIdx, int unitIdx = -1)
@@ -786,6 +865,18 @@ namespace RoundHero
             
             BattleCardManager.Instance.SetCardsPos();
             
+            var eachUseCardUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy, PlayerManager.Instance.PlayerData.UnitCamp);
+            if (eachUseCardUnUseEnergy != null)
+            {
+                if (eachUseCardUnUseEnergy.Value <= 0)
+                {
+                    var drBless = GameEntry.DataTable.GetBless(EBlessID.EachUseCardUnUseEnergy);
+                    eachUseCardUnUseEnergy.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
+                    
+                }
+                eachUseCardUnUseEnergy.Value -= 1;
+            }
+            
             return true;
 
         }
@@ -812,7 +903,7 @@ namespace RoundHero
         {
             foreach (var kv in CardEntities)
             {
-                kv.Value.BattleCardEntityData.CardData.CardUseType = ECardUseType.Raw;
+                kv.Value.BattleCardEntityData.CardData.CardUseType = ECardUseType.RawUnSelect;
                 kv.Value.RefreshCardUseTypeInfo();
             }
         }
@@ -1028,7 +1119,7 @@ namespace RoundHero
                 var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitID);
                 switch (card.CardUseType)
                 {
-                    case ECardUseType.Raw:
+                    case ECardUseType.RawUnSelect:
                         cardEnergy = drCard.Energy;
                         break;
                     case ECardUseType.Attack:
@@ -1094,17 +1185,7 @@ namespace RoundHero
                     cardEnergy += 1;
                 }
                 
-                var eachUseCardUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy, PlayerManager.Instance.PlayerData.UnitCamp);
-                if (eachUseCardUnUseEnergy != null)
-                {
-                    eachUseCardUnUseEnergy.Value -= 1;
-                    if (eachUseCardUnUseEnergy.Value <= 0)
-                    {
-                        var drBless = GameEntry.DataTable.GetBless(EBlessID.EachUseCardUnUseEnergy);
-                        eachUseCardUnUseEnergy.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
-                        cardEnergy = 0;
-                    }
-                }
+                
             }
 
             
@@ -1153,8 +1234,22 @@ namespace RoundHero
             }
 
             cardEnergy += card.EnergyDelta;
+
             
             return cardEnergy;
+        }
+
+        public int GetCardEnergyDynamicDelta(int cardEnergy)
+        {
+            var _cardEnergy = cardEnergy;
+            var bless = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy,
+                BattleManager.Instance.CurUnitCamp);
+            if (bless != null && bless.Value == 1)
+            {
+                _cardEnergy = 0;
+            }
+            
+            return _cardEnergy;
         }
 
         public async void PassCardToHand(int cardIdx)
