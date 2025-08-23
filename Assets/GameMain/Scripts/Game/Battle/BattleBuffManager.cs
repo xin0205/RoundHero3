@@ -204,6 +204,7 @@ namespace RoundHero
                             var unitState = buffData.UnitState;
                             triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 unitState, (int)buffValues[0], ETriggerDataType.RoleState);
+                            
                             var addEnemyMoreDebuff =
                                 BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
                                     EBlessID.AddEnemyMoreDebuff, BattleManager.Instance.CurUnitCamp);

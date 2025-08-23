@@ -41,21 +41,21 @@ namespace RoundHero
         //     return EBuffID.Empty;
         // }
         
-        public void CacheUnitUseData(int ownUnitID, int actionUnitID, int cardID, EUnitCamp unitCamp, int gridPosIdx)
-        {
-            BattleFightManager.Instance.RoundFightData.UseCardDatas.Clear();
-            var card = BattleManager.Instance.GetCard(cardID);
-            foreach (var funeID in card.FuneIdxs)
-            {
-                FuneManager.Instance.UseTrigger(funeID, ownUnitID, actionUnitID, unitCamp, gridPosIdx,
-                    BattleFightManager.Instance.RoundFightData.UseCardDatas);
-            }
-            
-        }
+        // public void CacheUnitUseData(int ownUnitID, int actionUnitID, int cardID, EUnitCamp unitCamp, int gridPosIdx)
+        // {
+        //     BattleFightManager.Instance.RoundFightData.UseCardDatas.Clear();
+        //     var card = BattleManager.Instance.GetCard(cardID);
+        //     foreach (var funeID in card.FuneIdxs)
+        //     {
+        //         FuneManager.Instance.UseTrigger(funeID, ownUnitID, actionUnitID, unitCamp, gridPosIdx,
+        //             BattleFightManager.Instance.RoundFightData.UseCardDatas);
+        //     }
+        //     
+        // }
         
         public void CacheUnitKillData(int ownUnitID, int actionUnitID, int unitID, List<TriggerData> triggerDatas)
         {
-            BattleFightManager.Instance.RoundFightData.UseCardDatas.Clear();
+            //BattleFightManager.Instance.RoundFightData.UseCardDatas.Clear();
             var unit = BattleFightManager.Instance.GetUnitByIdx(unitID);
 
             if (unit is Data_BattleSolider solider)
@@ -77,17 +77,17 @@ namespace RoundHero
             
         }
 
-        public void TriggerUnitUse()
-        {
-            foreach (var triggerData in BattleFightManager.Instance.RoundFightData.UseCardDatas)
-            {
-                BattleFightManager.Instance.TriggerAction(triggerData);
-            }
-            
-            //BattleManager.Instance.Refresh();
-
-            //return FightManager.Instance.RoundFightData.UseCardDatas.Count > 0 ? 1 : 0;
-        }
+        // public void TriggerUnitUse()
+        // {
+        //     foreach (var triggerData in BattleFightManager.Instance.RoundFightData.UseCardDatas)
+        //     {
+        //         BattleFightManager.Instance.TriggerAction(triggerData);
+        //     }
+        //     
+        //     //BattleManager.Instance.Refresh();
+        //
+        //     //return FightManager.Instance.RoundFightData.UseCardDatas.Count > 0 ? 1 : 0;
+        // }
 
         // public TriggerData RoundTrigger(int funeID, int ownUnitID, int actionUnitID, List<TriggerData> triggerDatas)
         // {

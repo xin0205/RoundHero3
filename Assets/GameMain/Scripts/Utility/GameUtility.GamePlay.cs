@@ -424,7 +424,7 @@ namespace RoundHero
             return unit;
         }
         
-        public static Data_BattleUnit GetUnitByID(Data_GamePlay gamePlayData, int unitID)
+        public static Data_BattleUnit GetUnitByIdx(Data_GamePlay gamePlayData, int unitID)
         {
             foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
             {

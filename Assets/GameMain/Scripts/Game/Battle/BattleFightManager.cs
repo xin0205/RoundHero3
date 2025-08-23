@@ -59,7 +59,19 @@ namespace RoundHero
         public Dictionary<int, MoveUnitData> MoveUnitDatas = new Dictionary<int, MoveUnitData>();
 
     }
-
+    public class CardActionData : ActionData
+    {
+        public int CardEnergy;
+        public ECardDestination CardDestination;
+        public Dictionary<int, List<TriggerData>> ConsumeCardDatas = new();
+        public Dictionary<int, List<TriggerData>> AcquireCardDatas = new();
+        
+        public override void Clear()
+        {
+            base.Clear();
+            ConsumeCardDatas.Clear();
+        }
+    }
 
     public class ActionData
     {
@@ -108,7 +120,7 @@ namespace RoundHero
 
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             TriggerDatas.Clear();
         }
@@ -246,8 +258,8 @@ namespace RoundHero
         public Dictionary<int, MoveActionData> SoliderMoveDatas = new();
         public Dictionary<int, ActionData> EnemyAttackDatas = new();
 
-        public List<TriggerData> UseCardDatas = new();
-        public ActionData BuffData_Use = new();
+        //public List<TriggerData> UseCardDatas = new();
+        public CardActionData BuffData_Use = new();
 
         public Data_GamePlay GamePlayData;
         public Dictionary<int, List<int>> EnemyMovePaths = new();
@@ -260,6 +272,9 @@ namespace RoundHero
         public CardCirculation RoundPassCardCirculation = new();
         
         public CardCirculation RoundAcquireCardCirculation = new();
+        
+        
+
         
         public void Clear()
         {
@@ -1123,21 +1138,7 @@ namespace RoundHero
                 DeadTrigger(triggerData, triggerDatas);
                 KillTrigger(triggerData, triggerDatas);
 
-                var tacticKillUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.TacticKillUnUseEnergy,
-                    effectUnitData.UnitCamp);
                 
-                
-                if (tacticKillUnUseEnergy != null && triggerData.TriggerCardIdx != -1)
-                {
-                    var drCard = CardManager.Instance.GetCardTable(triggerData.TriggerCardIdx);
-                    if (drCard != null)
-                    {
-                        if (drCard.CardType == ECardType.Tactic)
-                        {
-                            
-                        }
-                    }
-                }
                 CacheLinks();
 
             }
@@ -1191,15 +1192,15 @@ namespace RoundHero
 
 
 
-        public TriggerData Unit_HeroAttribute(int triggerSoliderID, int actionSoliderID, int effectUnitID,
+        public TriggerData Unit_HeroAttribute(int triggerUnitIdx, int actionUnitIdx, int effectUnitIdx,
             EHeroAttribute attribute, float attributeValue)
         {
             var cardTriggerData = new TriggerData();
             cardTriggerData.TriggerDataType = ETriggerDataType.HeroAtrb;
 
-            cardTriggerData.OwnUnitIdx = triggerSoliderID;
-            cardTriggerData.ActionUnitIdx = actionSoliderID;
-            cardTriggerData.EffectUnitIdx = effectUnitID;
+            cardTriggerData.OwnUnitIdx = triggerUnitIdx;
+            cardTriggerData.ActionUnitIdx = actionUnitIdx;
+            cardTriggerData.EffectUnitIdx = effectUnitIdx;
             cardTriggerData.HeroAttribute = attribute;
             cardTriggerData.Value = attributeValue;
 
@@ -1340,7 +1341,7 @@ namespace RoundHero
             switch (triggerData.TriggerDataType)
             {
                 case ETriggerDataType.HeroAtrb:
-                    var battleHeroEntity = effectUnitEntity as BattleHeroEntity;
+                    //var battleHeroEntity = effectUnitEntity as BattleHeroEntity;
                     switch (triggerData.HeroAttribute)
                     {
                         case EHeroAttribute.HP:
@@ -1351,8 +1352,16 @@ namespace RoundHero
                                 var blessData = BlessManager.Instance.GetBless(triggerData.TriggerBlessIdx);
                                 if (blessData.BlessID == EBlessID.ShuffleCardAddCurHP)
                                 {
-                                    BlessManager.Instance.AnimationShuffleCardAddCurHP((int)triggerData.ActualValue);
-       
+                                    BlessManager.Instance.AnimationAddCurHP((int)triggerData.ActualValue,
+                                        BattleController.Instance.PassCardPos.gameObject, EBlessID.ShuffleCardAddCurHP);
+
+                                }
+                                else if (blessData.BlessID == EBlessID.ConsumeCardAddCurHP)
+                                {
+                                    BlessManager.Instance.AnimationAddCurHP((int)triggerData.ActualValue,
+                                        BattleController.Instance.ConsumeCardPos.gameObject,
+                                        EBlessID.ConsumeCardAddCurHP);
+
                                 }
                             }
                             else
@@ -1411,15 +1420,15 @@ namespace RoundHero
                             break;
                         
                         case EHeroAttribute.Coin:
-                            battleHeroEntity.BattleHeroEntityData.BattleHeroData.Attribute.SetAttribute(
+                            HeroManager.Instance.BattleHeroData.Attribute.SetAttribute(
                                 EHeroAttribute.Coin,
-                                +battleHeroEntity.BattleHeroEntityData.BattleHeroData.Attribute.GetAttribute(
+                                + HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(
                                     EHeroAttribute.Coin) + triggerData.Value);
                             break;
                         case EHeroAttribute.Damage:
-                            battleHeroEntity.BattleHeroEntityData.BattleHeroData.Attribute.SetAttribute(
+                            HeroManager.Instance.BattleHeroData.Attribute.SetAttribute(
                                 EHeroAttribute.Damage,
-                                +battleHeroEntity.BattleHeroEntityData.BattleHeroData.Attribute.GetAttribute(
+                                + HeroManager.Instance.BattleHeroData.Attribute.GetAttribute(
                                     EHeroAttribute.Damage) + triggerData.Value);
                             break;
                         
@@ -1550,7 +1559,6 @@ namespace RoundHero
                     
                     switch (triggerData.CardTriggerType)
                     {
-     
                         case ECardTriggerType.AcquireCard:
                             BattleCardManager.Instance.AcquireCards((int)(triggerData.Value + triggerData.DeltaValue));
                             break;

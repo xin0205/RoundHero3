@@ -2916,7 +2916,7 @@ namespace RoundHero
             
             BattleManager.Instance.TempTriggerData.Reset();
 
-            FuneManager.Instance.TriggerUnitUse();
+            //FuneManager.Instance.TriggerUnitUse();
 
             BattleAreaManager.Instance.RefreshObstacles();
             BattleManager.Instance.RefreshEnemyAttackData();
@@ -2956,7 +2956,7 @@ namespace RoundHero
             
             BattleManager.Instance.TempTriggerData.Reset();
 
-            FuneManager.Instance.TriggerUnitUse();
+            //FuneManager.Instance.TriggerUnitUse();
 
             BattleAreaManager.Instance.RefreshObstacles();
             BattleManager.Instance.RefreshEnemyAttackData();

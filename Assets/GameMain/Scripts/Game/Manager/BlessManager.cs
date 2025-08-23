@@ -195,6 +195,8 @@ namespace RoundHero
                 EachRoundUseCardAttackAllEnemy(gamePlayData, EBlessID.EachRoundUseTacticCardAttackAllEnemy);
             }
             
+            EachRoundUseCardAttackAllEnemy(gamePlayData, EBlessID.EachRoundUseCardAttackAllEnemy);
+            
             EachRoundUseUnitCardAddDefense(gamePlayData, cardID);
             
             EachUseCardDoubleHPDelta(gamePlayData, cardID);
@@ -301,19 +303,50 @@ namespace RoundHero
             var drBless = GameEntry.DataTable.GetBless(blessID);
             if (eachRoundUseCardAttackAllEnemy != null)
             {
+                if (eachRoundUseCardAttackAllEnemy.Value <= 0)
+                {
+                    eachRoundUseCardAttackAllEnemy.Value = int.Parse(drBless.Values0[0]);
+                }
+                
                 if (eachRoundUseCardAttackAllEnemy.Value > 0)
                 {
                     eachRoundUseCardAttackAllEnemy.Value -= 1;
                 }
-                else
+                // else
+                // {
+                //     foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
+                //     {
+                //         if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp)
+                //         {
+                //             BattleManager.Instance.ChangeHP(kv.Value, (int)BattleBuffManager.Instance.GetBuffValue(drBless.Values0[1]), gamePlayData, EHPChangeType.Unit);
+                //         }
+                //     }
+                // }
+
+            }
+        }
+
+        public void CacheUseCardData(EBlessID blessID, List<TriggerData> triggerDatas)
+        {
+            var eachRoundUseCardAttackAllEnemy = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(blessID, BattleManager.Instance.CurUnitCamp);
+            var drBless = GameEntry.DataTable.GetBless(blessID);
+            if (eachRoundUseCardAttackAllEnemy != null)
+            {
+                if (eachRoundUseCardAttackAllEnemy.Value == 1)
                 {
-                    foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
+
+                    foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
                     {
-                        if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp)
+                        if (kv.Value.UnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
                         {
-                            BattleManager.Instance.ChangeHP(kv.Value, (int)BattleBuffManager.Instance.GetBuffValue(drBless.Values0[1]), gamePlayData, EHPChangeType.Unit);
+                            var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
+                                kv.Value.Idx, EUnitAttribute.HP, int.Parse(drBless.Values0[1]), ETriggerDataSubType.Bless);
+                            
+                            BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
                         }
                     }
+                    
+                    
                 }
 
             }
@@ -434,7 +467,7 @@ namespace RoundHero
         public void EachUseCardUnUseEnergy(Data_GamePlay gamePlayData, int cardID, int unitID = -1)
         {
             
-            var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardID, unitID);
+            var cardEnergy = BattleFightManager.Instance.RoundFightData.BuffData_Use.CardEnergy;;
             
             GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
 
@@ -529,6 +562,14 @@ namespace RoundHero
             return value * consumeCardAddCurHPCount;
         }
         
+        public int ConsumeCardAttackAllEnemy(Data_GamePlay gamePlayData)
+        {
+            var consumeCardAttackAllEnemyCount = gamePlayData.BlessCount(EBlessID.ConsumeCardAttackAllEnemy, gamePlayData.PlayerData.UnitCamp);
+            var drConsumeCardAttackAllEnemy = GameEntry.DataTable.GetBless(EBlessID.ConsumeCardAttackAllEnemy);
+            int.TryParse(drConsumeCardAttackAllEnemy.GetValues(0)[0], out int value);
+            return value * consumeCardAttackAllEnemyCount;
+        }
+        
         public int ShuffleCardAddCurHP(Data_GamePlay gamePlayData)
         {
             var shuffleCardAddCurHPCount = gamePlayData.BlessCount(EBlessID.ShuffleCardAddCurHP,
@@ -541,34 +582,37 @@ namespace RoundHero
             return shuffleCardAddCurHPCount * value;
         }
 
-        public void AnimationShuffleCardAddCurHP(int addHP)
+
+        public void AnimationSPassCardPosAddCurHP(int addHP)
+        {
+            AnimationAddCurHP(addHP, BattleController.Instance.PassCardPos.gameObject, EBlessID.ShuffleCardAddCurHP);
+        }
+        
+        public void AnimationAddCurHP(int value, GameObject moveParamsFollowGO, EBlessID blessID)
         {
 
-            if (addHP > 0)
+            var moveParams = new MoveParams()
             {
-                //gamePlayData.PlayerData.BattleHero.CurHP += addHP;
-                var moveParams = new MoveParams()
-                {
-                    FollowGO = BattleController.Instance.PassCardPos.gameObject,
-                    DeltaPos = new Vector2(0, 25f),
-                    IsUIGO = true,
-                };
+                FollowGO = moveParamsFollowGO,
+                DeltaPos = new Vector2(0, 25f),
+                IsUIGO = true,
+            };
             
-                var targetMoveParams = new MoveParams()
-                {
-                    FollowGO = AreaController.Instance.UICore,
-                    DeltaPos = new Vector2(0, -25f),
-                    IsUIGO = true,
-                };
+            var targetMoveParams = new MoveParams()
+            {
+                FollowGO = AreaController.Instance.UICore,
+                DeltaPos = new Vector2(0, -25f),
+                IsUIGO = true,
+            };
 
-                GameEntry.Entity.ShowBattleBlessMoveValueEntityAsync(addHP, addHP, EBlessID.ShuffleCardAddCurHP, -1, false, false,
-                    moveParams,
-                    targetMoveParams);
+            GameEntry.Entity.ShowBattleBlessMoveValueEntityAsync(value, value, blessID, -1, false, false,
+                moveParams,
+                targetMoveParams);
                 
-                GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
-                
-            }
+            GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
+        
+
         
         public bool AddCurHPByAttackDamage(int actionUnitIdx = -1)
         {

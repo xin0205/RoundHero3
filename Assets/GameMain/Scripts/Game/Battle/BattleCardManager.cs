@@ -182,6 +182,20 @@ namespace RoundHero
                 }
                
             }
+
+            var acquireCardSubEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.AcquireCardSubEnergy,
+                PlayerManager.Instance.PlayerData.UnitCamp);
+
+            if (acquireCardSubEnergy != null && roundAcquireCardCirculation.HandCards.Count > 0)
+            {
+                var cardIdx = roundAcquireCardCirculation.HandCards[0];
+                var cardData = CardManager.Instance.GetCard(cardIdx);
+                var battlePlayerData = GamePlayManager.Instance.GamePlayData.LastRoundBattleData.GetBattlePlayerData(PlayerManager.Instance
+                    .PlayerData.UnitCamp);
+                cardData.EnergyDelta += -battlePlayerData.RoundAcquireCardCount;
+            }
+            
+            
             
             AnimationAcquireCard(roundAcquireCardCirculation.HandCards, unuseCount);
             BattlePlayerData.HandCards = new List<int>(roundAcquireCardCirculation.HandCards);
@@ -197,12 +211,15 @@ namespace RoundHero
                 var addHP = BlessManager.Instance.ShuffleCardAddCurHP(GamePlayManager.Instance.GamePlayData);
                 if (addHP > 0)
                 {
-                    BlessManager.Instance.AnimationShuffleCardAddCurHP(addHP);
+                    BlessManager.Instance.AnimationSPassCardPosAddCurHP(addHP);
                 }
                
             }
 
+            var beforeHandCardCount = BattlePlayerData.HandCards.Count;
             var handCards = AcquireHardCard(GamePlayManager.Instance.GamePlayData, cardCount, firstRound);
+
+            BattlePlayerManager.Instance.BattlePlayerData.RoundAcquireCardCount += handCards.Count - beforeHandCardCount;
 
             AnimationAcquireCard(handCards, unuseCount);
 
@@ -223,7 +240,9 @@ namespace RoundHero
 
                 var value0 = BattleBuffManager.Instance.GetBuffValue(drUseCardNextRoundAcquireCard.Values0[0]);
                 var value1 = BattleBuffManager.Instance.GetBuffValue(drUseCardNextRoundAcquireCard.Values0[1]);
-                if (BattlePlayerData.LastRoundUseCardCount <= value0)
+                var battlePlayerData = GamePlayManager.Instance.GamePlayData.LastRoundBattleData.GetBattlePlayerData(PlayerManager.Instance
+                    .PlayerData.UnitCamp);
+                if (battlePlayerData.RoundUseCardCount <= value0)
                 {
                     eachHandCardCount += (int)value1 * 
                                          useCardNextRoundAcquireCardCount;
@@ -379,6 +398,8 @@ namespace RoundHero
 
 
         }
+
+        
         
         public async Task AnimationToStandByCards(int cardIdx)
         {
@@ -445,8 +466,8 @@ namespace RoundHero
 
                 }
 
-                var cardID = battlePlayerData.StandByCards[0];
-                var card = BattleManager.Instance.GetCard(cardID);
+                var cardIdx = battlePlayerData.StandByCards[0];
+                var card = BattleManager.Instance.GetCard(cardIdx);
 
                 // if (card.FuneCount(EFuneID.InHand_AcquireCard) > 0)
                 // {
@@ -525,8 +546,9 @@ namespace RoundHero
             var card = BattleManager.Instance.GetCard(cardIdx);
             DRCard drCard = GameEntry.DataTable.GetCard(card.CardID);
 
-            var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
-            cardEnergy = GetCardEnergyDynamicDelta(cardEnergy);
+            // var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
+            // cardEnergy = GetCardEnergyDynamicDelta(cardEnergy);
+            var cardEnergy = BattleFightManager.Instance.RoundFightData.BuffData_Use.CardEnergy;
             var cardType = drCard.CardType;
 
             // if (card.FuneDatas.Contains(EFuneID.AddCurHP) && cardEnergy > 0)
@@ -745,12 +767,9 @@ namespace RoundHero
 
         public bool UseCard(int cardIdx, int unitIdx = -1)
         {
-            var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, unitIdx);
-            
-            
-            
+            var cardEnergy = BattleFightManager.Instance.RoundFightData.BuffData_Use.CardEnergy;
+
             var card = BattleManager.Instance.GetCard(cardIdx);
-            
 
             BattleManager.Instance.RecordLastActionBattleData();
             
@@ -760,24 +779,12 @@ namespace RoundHero
 
             var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
             RemoveHandCard(cardIdx);
+            BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitIdx);
+
             if (BattleManager.Instance.CurUnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
             {
-                var carDestination = card.CardDestination;
-                
-                var unComsumeCardCount = GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.UnConsumeCard, PlayerManager.Instance.PlayerData.UnitCamp);
-                var isConsume = true;
-                if (unComsumeCardCount > 0)
-                {
-                    carDestination = Random.Next(0, 2) == 0 ? card.CardDestination : ECardDestination.Consume;
-                }
-                
-                //Wrong
-                // if (card.FuneCount(EFuneID.Use_ToStandBy) > 0)
-                // {
-                //     ToStandByCard(cardID);
-                // }
-                // else
-                //card.FuneCount(EFuneID.EachRound_AddCurHP) > 0 ||
+                var carDestination = BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination;
+
                 switch (carDestination)
                 {
                     case ECardDestination.Pass:
@@ -795,7 +802,6 @@ namespace RoundHero
 
             }
             
-            BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitIdx);
             
             BattleBuffManager.Instance.TriggerBuff();
             
@@ -1107,16 +1113,16 @@ namespace RoundHero
             return maxHP;
         }
         
-        public int GetCardEnergy(int cardIdx, int unitID = -1)
+        public int GetCardEnergy(int cardIdx, int unitIdx = -1)
         {
             var card = BattleManager.Instance.GetCard(cardIdx);
             var drCard = GameEntry.DataTable.GetCard(card.CardID);
 
             var cardEnergy = drCard.Energy;
 
-            if (unitID != -1)
+            if (unitIdx != -1)
             {
-                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitID);
+                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitIdx);
                 switch (card.CardUseType)
                 {
                     case ECardUseType.RawUnSelect:
@@ -1239,12 +1245,31 @@ namespace RoundHero
             return cardEnergy;
         }
 
-        public int GetCardEnergyDynamicDelta(int cardEnergy)
+        public int GetCardEnergyDynamicDelta(int cardIdx, int cardEnergy, List<TriggerData> triggerDatas, Data_GamePlay gamePlayData)
         {
             var _cardEnergy = cardEnergy;
             var bless = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy,
                 BattleManager.Instance.CurUnitCamp);
             if (bless != null && bless.Value == 1)
+            {
+                _cardEnergy = 0;
+            }
+            
+            var tacticKillUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.TacticKillUnUseEnergy,
+                PlayerManager.Instance.PlayerData.UnitCamp);
+
+            var isEffectUnitDead = false;
+            foreach (var triggerData in triggerDatas)
+            {
+                var effectUnit = GameUtility.GetUnitByIdx(gamePlayData, triggerData.EffectUnitIdx);
+                if (effectUnit.CurHP <= 0)
+                {
+                    isEffectUnitDead = true;
+                    break;
+                }
+            }
+
+            if (tacticKillUnUseEnergy != null && isEffectUnitDead)
             {
                 _cardEnergy = 0;
             }
@@ -1385,42 +1410,18 @@ namespace RoundHero
 
             }
 
-            var addHP = BlessManager.Instance.ConsumeCardAddCurHP(GamePlayManager.Instance.GamePlayData);
-            if (addHP > 0)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.ConsumeCardDatas)
             {
-                HeroManager.Instance.BattleHeroData.CurHP += addHP;
-                // var startPos = BattleController.Instance.ConsumeCardPos.localPosition;
-                // startPos.y += 25f;
-                // var endPos = AreaController.Instance.UICore.transform.localPosition;
-                // endPos.y -= 25f;
-                //AQA
-                // GameEntry.Entity.ShowBattleMoveValueEntityAsync(startPos,
-                //     endPos,
-                //     addHP, addHP, -1, false, false);
-                
-                var moveParams = new MoveParams()
+                foreach (var triggerData in kv.Value)
                 {
-                    FollowGO = BattleController.Instance.ConsumeCardPos.gameObject,
-                    DeltaPos = new Vector2(0, 25f),
-                    IsUIGO = true,
-                };
-            
-                var targetMoveParams = new MoveParams()
-                {
-                    FollowGO = AreaController.Instance.UICore,
-                    DeltaPos = new Vector2(0, -25f),
-                    IsUIGO = true,
-                };
-
-                GameEntry.Entity.ShowBattleMoveValueEntityAsync(addHP, addHP, -1, false, false,
-                    moveParams,
-                    targetMoveParams);
-                
+                    BattleFightManager.Instance.TriggerAction(triggerData);
+                }
             }
+
             
             
-            
-            GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+
+            //GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
 
         }
 

@@ -1784,6 +1784,8 @@ namespace RoundHero
             {
                 kv.RoundClear();
             }
+            
+            
         }
         
         public bool Contain(EBlessID blessID, EUnitCamp unitCamp)
@@ -1847,8 +1849,9 @@ namespace RoundHero
         public List<int> HandCards = new ();
         public List<int> ConsumeCards = new();
         public int RoundUseCardCount;
-        public int LastRoundUseCardCount;
+        //public int LastRoundUseCardCount;
         public bool RoundIsAttack;
+        public int RoundAcquireCardCount;
         
         
         public List<EBuffID> BattleBuffs = new ();
@@ -1862,11 +1865,11 @@ namespace RoundHero
             data.HandCards = new List<int>(HandCards);
             data.ConsumeCards = new List<int>(ConsumeCards);
             data.RoundUseCardCount = RoundUseCardCount;
-            data.LastRoundUseCardCount = LastRoundUseCardCount;
+            //data.LastRoundUseCardCount = LastRoundUseCardCount;
             data.RoundIsAttack = RoundIsAttack;
             data.BattleBuffs = new List<EBuffID>(BattleBuffs);
-            
-
+            //data.AcquireCardCountBeforeRoundStart = AcquireCardCountBeforeRoundStart;
+            data.RoundAcquireCardCount = RoundAcquireCardCount;
             return data;
         }
         
@@ -1896,11 +1899,12 @@ namespace RoundHero
         public void RoundClear()
         {
 
-            LastRoundUseCardCount = RoundUseCardCount;
+            //LastRoundUseCardCount = RoundUseCardCount;
             RoundUseCardCount = 0;
+            RoundAcquireCardCount = 0;
             RoundIsAttack = false;
             BattleBuffs.Clear();
-            
+            //AcquireCardCountBeforeRoundStart = 0;
         }
 
         public void Clear()
@@ -1910,7 +1914,8 @@ namespace RoundHero
             HandCards.Clear();
             ConsumeCards.Clear();
             RoundUseCardCount = 0;
-            LastRoundUseCardCount = 0;
+            RoundAcquireCardCount = 0;
+            //LastRoundUseCardCount = 0;
             RoundIsAttack = false;
             BattleBuffs.Clear();
         }
@@ -1928,7 +1933,7 @@ namespace RoundHero
         public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new(10);
         public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
         public Dictionary<int, EGridType> GridTypes = new (100);
-        
+         
 
         public Data_Battle()
         {

@@ -1488,7 +1488,7 @@ namespace RoundHero
                     InitBlesses = new List<EBlessID>()
                     {
                         //EBlessID.ShuffleCardAddCurHP,
-                        EBlessID.EachUseCardUnUseEnergy,
+                        EBlessID.ConsumeCardAddCurHP,
                         // 0,
                         // 1,
                         // 2,

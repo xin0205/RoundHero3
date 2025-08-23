@@ -248,16 +248,17 @@ namespace RoundHero
                 kv.Value.ShowTacticHurtDisplayIcons(kv.Value.UnitIdx);
             }
             
-            var eachUseCardUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy, PlayerManager.Instance.PlayerData.UnitCamp);
-            if (eachUseCardUnUseEnergy != null)
-            {
-                    
-                if (eachUseCardUnUseEnergy.Value == 1)
-                {
-                    BattleCardManager.Instance.RefreshCurCardEnergy(0);
-                }
-            }
-            
+            // var eachUseCardUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy, PlayerManager.Instance.PlayerData.UnitCamp);
+            // if (eachUseCardUnUseEnergy != null)
+            // {
+            //         
+            //     if (eachUseCardUnUseEnergy.Value == 1)
+            //     {
+            //         BattleCardManager.Instance.RefreshCurCardEnergy(0);
+            //     }
+            // }
+            BattleCardManager.Instance.RefreshCurCardEnergy(BattleFightManager.Instance.RoundFightData.BuffData_Use
+                .CardEnergy);
         }
         
         public void OnPointerExit()
@@ -408,6 +409,7 @@ namespace RoundHero
         
         public async void UseCard()
         {
+            
             if(TutorialManager.Instance.Switch_SelectUnitCard(this) == ETutorialState.UnMatch &&
                TutorialManager.Instance.Switch_SelectMoveCard(this) == ETutorialState.UnMatch &&
                TutorialManager.Instance.Switch_SelectAttackCard(this) == ETutorialState.UnMatch)

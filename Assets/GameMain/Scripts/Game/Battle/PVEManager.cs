@@ -155,6 +155,9 @@ namespace RoundHero
             await BattleEnemyManager.Instance.GenerateNewEnemies();
             BattleManager.Instance.RefreshAll();
             BattleCardManager.Instance.RoundAcquireCards(false);
+
+            
+            
             
             GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
             BattleManager.Instance.SwitchActionCamp(false);
