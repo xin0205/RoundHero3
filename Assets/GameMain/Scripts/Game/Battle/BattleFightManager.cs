@@ -1354,7 +1354,7 @@ namespace RoundHero
                                 {
                                     BlessManager.Instance.AnimationAddCurHP((int)triggerData.ActualValue,
                                         BattleController.Instance.PassCardPos.gameObject, EBlessID.ShuffleCardAddCurHP);
-
+                                    
                                 }
                                 else if (blessData.BlessID == EBlessID.ConsumeCardAddCurHP)
                                 {

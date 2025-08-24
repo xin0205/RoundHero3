@@ -1933,7 +1933,7 @@ namespace RoundHero
         public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new(10);
         public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
         public Dictionary<int, EGridType> GridTypes = new (100);
-         
+
 
         public Data_Battle()
         {

@@ -206,15 +206,15 @@ namespace RoundHero
 
         public void AcquireCards(int cardCount, bool firstRound = false, int unuseCount = 0)
         {
-            if (BattleCardManager.Instance.IsShuffleCard(cardCount, GamePlayManager.Instance.GamePlayData))
-            {
-                var addHP = BlessManager.Instance.ShuffleCardAddCurHP(GamePlayManager.Instance.GamePlayData);
-                if (addHP > 0)
-                {
-                    BlessManager.Instance.AnimationSPassCardPosAddCurHP(addHP);
-                }
-               
-            }
+            // if (BattleCardManager.Instance.IsShuffleCard(cardCount, GamePlayManager.Instance.GamePlayData))
+            // {
+            //     var addHP = BlessManager.Instance.ShuffleCardAddCurHP(GamePlayManager.Instance.GamePlayData);
+            //     if (addHP > 0)
+            //     {
+            //         BlessManager.Instance.AnimationPassCardPosAddCurHP(addHP);
+            //     }
+            //    
+            // }
 
             var beforeHandCardCount = BattlePlayerData.HandCards.Count;
             var handCards = AcquireHardCard(GamePlayManager.Instance.GamePlayData, cardCount, firstRound);
@@ -223,7 +223,33 @@ namespace RoundHero
 
             AnimationAcquireCard(handCards, unuseCount);
 
-            GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+            //GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+        }
+        
+        public void CacheAcquireCards(TriggerData triggerData, List<TriggerData> triggerDatas, int cardCount, bool firstRound = false, int unuseCount = 0)
+        {
+            if (BattleCardManager.Instance.IsShuffleCard(cardCount, BattleFightManager.Instance.RoundFightData.GamePlayData))
+            {
+                var addHP = BlessManager.Instance.ShuffleCardAddCurHP(BattleFightManager.Instance.RoundFightData.GamePlayData);
+                if (addHP > 0)
+                {
+                    var addHPTriggerData = BattleFightManager.Instance.Unit_HeroAttribute(
+                        Constant.Battle.UnUnitTriggerIdx, Constant.Battle.UnUnitTriggerIdx,
+                        PlayerManager.Instance.PlayerData.BattleHero.Idx, EHeroAttribute.HP, addHP);
+                    triggerDatas.Add(addHPTriggerData);
+                }
+               
+            }
+
+            var battlePlayerData = BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(PlayerManager
+                .Instance.PlayerData.UnitCamp);
+            
+            var beforeHandCardCount = battlePlayerData.HandCards.Count;
+            var handCards = AcquireHardCard(BattleFightManager.Instance.RoundFightData.GamePlayData, cardCount, firstRound);
+
+            battlePlayerData.RoundAcquireCardCount += handCards.Count - beforeHandCardCount;
+
+            
         }
 
         public int GetEachHardCardCount(Data_GamePlay gamePlayData)

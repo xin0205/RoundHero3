@@ -452,10 +452,11 @@ namespace RoundHero
 
         public void NoHandCardAcquireCard(Data_GamePlay gamePlayData, int cardID)
         {
-            var playerData = gamePlayData.GetPlayerData(BattleManager.Instance.CurUnitCamp);
-            var playerBattleData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
-            
-            var noHandCardAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.NoHandCardAcquireCard, BattleManager.Instance.CurUnitCamp);
+
+            var playerBattleData = gamePlayData.BattleData.GetBattlePlayerData(PlayerManager.Instance.PlayerData.UnitCamp);
+
+            var noHandCardAcquireCard = gamePlayData.GetUsefulBless(EBlessID.NoHandCardAcquireCard,
+                PlayerManager.Instance.PlayerData.UnitCamp);
             if (noHandCardAcquireCard != null && playerBattleData.HandCards.Count <= 0)
             {
                 var drBless = GameEntry.DataTable.GetBless(EBlessID.NoHandCardAcquireCard);
@@ -583,10 +584,10 @@ namespace RoundHero
         }
 
 
-        public void AnimationSPassCardPosAddCurHP(int addHP)
-        {
-            AnimationAddCurHP(addHP, BattleController.Instance.PassCardPos.gameObject, EBlessID.ShuffleCardAddCurHP);
-        }
+        // public void AnimationPassCardPosAddCurHP(int addHP)
+        // {
+        //     AnimationAddCurHP(addHP, BattleController.Instance.PassCardPos.gameObject, EBlessID.ShuffleCardAddCurHP);
+        // }
         
         public void AnimationAddCurHP(int value, GameObject moveParamsFollowGO, EBlessID blessID)
         {

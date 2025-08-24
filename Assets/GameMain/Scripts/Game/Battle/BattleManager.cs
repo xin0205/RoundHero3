@@ -230,6 +230,19 @@ namespace RoundHero
                     {
                         useDefenseCount = defenseCount;
                         value += defenseCount;
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                                                                                                                                                                                                                         
                     }
                     else
                     {
