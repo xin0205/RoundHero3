@@ -1,5 +1,6 @@
 ﻿
 using System.Threading.Tasks;
+using GameFramework;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
@@ -195,8 +196,12 @@ namespace RoundHero
                 IsUIGO = hurt < 0,
             };
             
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, -1, false,
-                hurt < 0, moveParams, targetMoveParams);
+            AddMoveValue(hurt, hurt, -1, false,
+                this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+
+            
+            // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, 0, -1, false,
+            //     hurt < 0, moveParams, targetMoveParams);
 
         }
     }

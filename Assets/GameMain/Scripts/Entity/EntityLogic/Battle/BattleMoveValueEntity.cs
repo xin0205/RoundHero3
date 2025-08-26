@@ -31,6 +31,9 @@ namespace RoundHero
         private Vector3 endPos = Vector2.zero;
         private Vector3 oriStartPos = Vector2.zero;
         private Vector3 oriEndPos = Vector2.zero;
+
+
+        
         protected override async void OnShow(object userData)
         {
             transform.SetParent(AreaController.Instance.BattleFormRoot.transform);
@@ -95,6 +98,16 @@ namespace RoundHero
             oriEndPos = endPos;
             
             this.transform.localPosition = startPos;
+            
+            // this.gameObject.SetActive(false);
+            // GameUtility.DelayExcute(0.25f * BattleMoveValueEntityData.ShowValueIdx, () =>
+            // {
+            //     if (GameEntry.Entity.HasEntity(this.Id))
+            //     {
+            //         this.gameObject.SetActive(true);
+            //     }
+            //     
+            // });
 
             Icon.gameObject.SetActive(true);
             if (BattleMoveValueEntityData is BlessIconValueEntityData blessIconValueEntityData)
@@ -119,6 +132,9 @@ namespace RoundHero
         
         private void Update()
         {
+            if(!this.gameObject.activeSelf)
+                return;
+            
             time += Time.deltaTime;
 
             

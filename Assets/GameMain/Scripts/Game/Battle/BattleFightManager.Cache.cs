@@ -261,8 +261,8 @@ namespace RoundHero
             };
 
             
-            
-            RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(cardHpDeltaData);
+            AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, cardHpDeltaData);
+            //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(cardHpDeltaData);
             BattleFightManager.Instance.ChangeHP(BattleFightManager.Instance.PlayerData.BattleHero, -cardEnergy,
                 EHPChangeType.CardConsume, true, true);
 
@@ -360,8 +360,11 @@ namespace RoundHero
                         var triggerData = BattleFightManager.Instance.BattleRoleAttribute(kv.Key, kv.Key, kv.Key,
                             EUnitAttribute.HP, -1, ETriggerDataSubType.State);
                         triggerData.UnitStateDetail.UnitState = EUnitState.HurtRoundStart;
-
-                        BattleBuffManager.Instance.PostTrigger(triggerData, triggerDatas);
+                        if (BattleCoreManager.Instance.IsCoreIdx(triggerData.EffectUnitIdx))
+                        {
+                            triggerData.ChangeHPInstantly = false;
+                        }
+                        BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
                         
                         // triggerDatas.Add(triggerData);
                         // SimulateTriggerData(triggerData, triggerDatas);
@@ -371,7 +374,7 @@ namespace RoundHero
                     var subHurtRoundStartData = BattleFightManager.Instance.Unit_State(triggerDatas, kv.Value.Idx,
                         kv.Value.Idx, kv.Value.Idx, EUnitState.HurtRoundStart, -1,
                         ETriggerDataType.RoleState);
-                    BattleBuffManager.Instance.PostTrigger(subHurtRoundStartData, triggerDatas);
+                    BattleBuffManager.Instance.CacheTriggerData(subHurtRoundStartData, triggerDatas);
 
                     
 
@@ -1764,7 +1767,7 @@ namespace RoundHero
                     switch (triggerData.BattleUnitAttribute)
                     {
                         case EUnitAttribute.HP:
-                                CurHPTriggerData(triggerData, triggerDatas);
+                            CurHPTriggerData(triggerData, triggerDatas);
                             break;
                         case EUnitAttribute.MaxHP:
                             effectUnit.BaseMaxHP += (int) triggerValue;
@@ -1813,10 +1816,6 @@ namespace RoundHero
                     effectUnit.RemoveAllState(triggerData.UnitStateEffectTypes);
                     break;
                 case ETriggerDataType.TransferBuff:
-                    
-                    
-                    
-                    
                     BattleBuffManager.Instance.TransferBuff(actionUnit, effectUnit, triggerData);
                
                     break;
@@ -1925,10 +1924,11 @@ namespace RoundHero
                     if (triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                     {
                         var hpDeltaData = HeroManager.Instance.AddHPDelta(triggerData);
-                        RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
+                        AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, hpDeltaData);
+                        //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
                         hpDeltaList.Add(hpDeltaData);
                     }
-                    else
+                    else 
                     {
  
                         var effectUnit = GameUtility.GetUnitDataByIdx(triggerData.EffectUnitIdx);
@@ -1980,7 +1980,8 @@ namespace RoundHero
 
                         var hpDeltaData = HeroManager.Instance.AddHPDelta(triggerData);
                         hpDeltaData.HPDelta = (int) (isCoreUnit ? triggerValue : Math.Abs(value));
-                        RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
+                        //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
+                        AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, hpDeltaData);
                         hpDeltaList.Add(hpDeltaData);
                     }
 
@@ -2508,7 +2509,7 @@ namespace RoundHero
                         //     continue;
                         // }
                         
-                        if (triggerData.ActionUnitIdx == unitIdx)
+                        if (triggerData.OwnUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2538,7 +2539,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.ActionUnitIdx == unitIdx)
+                        if (triggerData.OwnUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2562,7 +2563,7 @@ namespace RoundHero
                         //     continue;
                         // }
                         
-                        if (triggerData.ActionUnitIdx == unitIdx)
+                        if (triggerData.OwnUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2585,7 +2586,7 @@ namespace RoundHero
                         //     continue;
                         // }
                         
-                        if (triggerData.ActionUnitIdx == unitIdx)
+                        if (triggerData.OwnUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2608,7 +2609,7 @@ namespace RoundHero
                         //     continue;
                         // }
                         
-                        if (triggerData.ActionUnitIdx == unitIdx)
+                        if (triggerData.OwnUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2631,7 +2632,7 @@ namespace RoundHero
                     //     continue;
                     // }
                         
-                    if (triggerData.ActionUnitIdx == unitIdx)
+                    if (triggerData.OwnUnitIdx == unitIdx)
                     {
                         if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                         {
@@ -2968,7 +2969,9 @@ namespace RoundHero
                          HPDeltaType = EHPDeltaType.Bless,
                     
                      };
-                    RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
+                     AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, hpDeltaData);
+                     
+                    //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
                     var blessData = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
                         EBlessID.ShuffleCardAddCurHP, PlayerManager.Instance.PlayerData.UnitCamp);;
                     
@@ -3041,6 +3044,19 @@ namespace RoundHero
             }
 
             return cardCount;
+        }
+
+        public void AddHPDetlaData(EUnitCamp unitCamp, HPDeltaData hpDeltaData)
+        {
+            // var coreHurtAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CoreHurtAcquireCard,
+            //     PlayerManager.Instance.PlayerData.UnitCamp);
+            
+            RoundFightData.HPDeltaDict[unitCamp].Add(hpDeltaData);
+            // if (hpDeltaData is not CardHPDeltaData && coreHurtAcquireCard != null && hpDeltaData.HPDelta < 0)
+            // {
+            //     
+            //     
+            // }
         }
         
     }

@@ -107,6 +107,16 @@ namespace RoundHero
             if(passUnit == null || bePassUnit == null)
                 return;
             
+            if (bePassUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
+            {
+                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,bePassUnitIdx, bePassUnitIdx, passUnitIdx,
+                    EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
+                triggerData.TriggerDataSubType = ETriggerDataSubType.State;
+                triggerData.ActionUnitGridPosIdx = bePassUnit.GridPosIdx;
+                triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
+                
+            }
             if (passUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
                 var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnitIdx, passUnitIdx, bePassUnitIdx,
@@ -115,23 +125,12 @@ namespace RoundHero
                 triggerData.ActionUnitGridPosIdx = passUnit.GridPosIdx;
                 triggerData.EffectUnitGridPosIdx = passUnit.GridPosIdx;
 
-                BattleBuffManager.Instance.PostTrigger(triggerData, triggerDatas);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
                 
                 
                 
             }
-            if (bePassUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
-            {
-                var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,bePassUnitIdx, bePassUnitIdx, passUnitIdx,
-                    EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
-                triggerData.TriggerDataSubType = ETriggerDataSubType.State;
-                triggerData.ActionUnitGridPosIdx = bePassUnit.GridPosIdx;
-                triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
-                BattleBuffManager.Instance.PostTrigger(triggerData, triggerDatas);
-                
-                
-                
-            }
+            
         }
         
         public void CheckUnitState(int actionUnitID, List<TriggerData> triggerDatas)

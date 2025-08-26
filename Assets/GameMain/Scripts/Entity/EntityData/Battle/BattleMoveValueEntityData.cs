@@ -15,6 +15,7 @@ namespace RoundHero
         public int EndValue;
         //public Vector3 TargetPos;
         public int EntityIdx;
+        
         public bool IsLoop;
         public bool IsAdd;
         
@@ -24,7 +25,7 @@ namespace RoundHero
         
         //Vector3 pos, Vector3 targetPos, 
 
-        public void Init(int entityId, int startValue, int endValue, int entityIdx = -1, bool isLoop = false,
+        public void Init(int entityId, int startValue, int endValue, int entityIdx = -1,  bool isLoop = false,
             bool isAdd = false, MoveParams followParams = null,MoveParams targetFollowParams = null)
 
         {
@@ -33,6 +34,7 @@ namespace RoundHero
             this.StartValue = startValue;
             this.EndValue = endValue;
             this.EntityIdx = entityIdx;
+            
             IsLoop = isLoop;
             IsAdd = isAdd;
             

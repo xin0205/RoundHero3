@@ -92,7 +92,7 @@ namespace RoundHero
 
         private void OnDisable()
         {
-            BattleUnitManager.Instance.UnShowTags();
+            //BattleUnitManager.Instance.UnShowTags();
         }
 
 

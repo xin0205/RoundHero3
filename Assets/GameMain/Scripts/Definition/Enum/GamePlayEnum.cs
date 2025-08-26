@@ -473,6 +473,7 @@ namespace RoundHero
         Curse,
         ClearBuff,
         TransferBuff,
+        
         Empty,
     }
     

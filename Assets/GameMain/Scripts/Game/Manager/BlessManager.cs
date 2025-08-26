@@ -526,7 +526,7 @@ namespace RoundHero
                 return;
             }
             
-            var enemyDeadDebuffToOtherEnemy = gamePlayData.GetUsefulBless(EBlessID.EnemyDeadDebuffToOtherEnemy, BattleManager.Instance.CurUnitCamp);
+            var enemyDeadDebuffToOtherEnemy = gamePlayData.GetUsefulBless(EBlessID.EnemyDeadDeBuffToOther, BattleManager.Instance.CurUnitCamp);
             if (enemyDeadDebuffToOtherEnemy == null)
             {
                 return;

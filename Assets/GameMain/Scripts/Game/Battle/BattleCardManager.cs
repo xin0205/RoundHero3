@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameFramework;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -215,7 +216,7 @@ namespace RoundHero
             //     }
             //    
             // }
-
+            
             var beforeHandCardCount = BattlePlayerData.HandCards.Count;
             var handCards = AcquireHardCard(GamePlayManager.Instance.GamePlayData, cardCount, firstRound);
 
@@ -805,8 +806,7 @@ namespace RoundHero
 
             var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
             RemoveHandCard(cardIdx);
-            BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitIdx);
-
+            
             if (BattleManager.Instance.CurUnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
             {
                 var carDestination = BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination;
@@ -827,8 +827,8 @@ namespace RoundHero
                 }
 
             }
-            
-            
+            BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitIdx);
+
             BattleBuffManager.Instance.TriggerBuff();
             
             if (BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Contains(EBuffID.Spec_NextCardSubEnergy))
@@ -874,10 +874,11 @@ namespace RoundHero
                 DeltaPos = new Vector2(0, -25f),
                 IsUIGO = true,
             };
-
-            GameEntry.Entity.ShowBattleMoveValueEntityAsync(-cardEnergy, -cardEnergy, -1, false, false,
-                moveParams,
-                targetMoveParams);
+            
+            GameEntry.Entity.ShowBattleMoveValueEntityAsync(-cardEnergy, -cardEnergy, -1, false,
+                false, moveParams, targetMoveParams);
+            
+            
 
             // var cardPos = cardEntity.transform.localPosition;
             // cardPos.y += 100;

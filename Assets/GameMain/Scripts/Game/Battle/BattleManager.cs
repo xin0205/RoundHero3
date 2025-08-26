@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using GameFramework;
 using UnityEngine;
 using Random = System.Random;
 
@@ -76,6 +78,7 @@ namespace RoundHero
             BattleCardManager.Instance.Update();
             BattleEnemyManager.Instance.Update();
             TutorialManager.Instance.Update();
+            //ShowMoveValues();
         }
         
 
@@ -207,7 +210,7 @@ namespace RoundHero
             if(unit == null)
                 return 0;
             
-            var useDefenseCount = 0;
+            
             
             var oldHeart = 0f;
             var hero = unit as Data_BattleHero;
@@ -217,43 +220,30 @@ namespace RoundHero
 
             }
             
-            if (value < 0 && useDefense)
-            {
-                BattleGridPropManager.Instance.TriggerStayPropState(unit.GridPosIdx,
-                    unit, EUnitState.HurtSubDmg);
-                
-                
-                var defenseCount = unit.GetAllStateCount(EUnitState.HurtSubDmg);
-                if (defenseCount > 0)
-                {
-                    if (Mathf.Abs(value) >= defenseCount)
-                    {
-                        useDefenseCount = defenseCount;
-                        value += defenseCount;
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                                                                                                                                                                                                                                         
-                    }
-                    else
-                    {
-                        useDefenseCount = -value;
-                        value = 0;
-                    }
-                    unit.RemoveState(EUnitState.HurtSubDmg, useDefenseCount);
-                    
-                }
-
-            }
+            // if (value < 0 && useDefense)
+            // {
+            //     BattleGridPropManager.Instance.TriggerStayPropState(unit.GridPosIdx,
+            //         unit, EUnitState.HurtSubDmg);
+            //     
+            //     
+            //     var defenseCount = unit.GetAllStateCount(EUnitState.HurtSubDmg);
+            //     if (defenseCount > 0)
+            //     {
+            //         if (Mathf.Abs(value) >= defenseCount)
+            //         {
+            //             useDefenseCount = defenseCount;
+            //             value += defenseCount;
+            //         }
+            //         else
+            //         {
+            //             useDefenseCount = -value;
+            //             value = 0;
+            //         }
+            //         unit.RemoveState(EUnitState.HurtSubDmg, useDefenseCount);
+            //         
+            //     }
+            //
+            // }
             
             var oldHP = unit.CurHP;
             
@@ -297,17 +287,18 @@ namespace RoundHero
             var newHP =  unit.CurHP;
             
             var deltaHP = newHP - oldHP;
-            var deltaHPNoDefense = deltaHP - useDefenseCount;
+            // - useDefenseCount
+            var deltaHPNoDefense = deltaHP;
             
             if (unit is Data_BattleSolider && addHeroHP && deltaHPNoDefense < 0)
             {
                 var addHP = -deltaHPNoDefense;
-                if (unit.UnitCamp == BattleManager.Instance.CurUnitCamp &&
-                    gamePlayData.BlessCount(EBlessID.DefenseToHP, BattleManager.Instance.CurUnitCamp) > 0)
-            
-                {
-                    addHP += useDefenseCount;
-                }
+                // if (unit.UnitCamp == BattleManager.Instance.CurUnitCamp &&
+                //     gamePlayData.BlessCount(EBlessID.DefenseToHP, PlayerManager.Instance.PlayerData.UnitCamp) > 0)
+                //
+                // {
+                //     addHP += useDefenseCount;
+                // }
             
                 //var battlePlayerData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
                 // if (unit.UnitCamp == BattleManager.Instance.CurUnitCamp &&
@@ -391,7 +382,7 @@ namespace RoundHero
                 unit.CurHP = oldHP;
             }
 
-            BlessManager.Instance.DeadTrigger(gamePlayData, unit);
+            //BlessManager.Instance.DeadTrigger(gamePlayData, unit);
 
             var hpDelta = 0;
 
@@ -571,5 +562,52 @@ namespace RoundHero
         {
             GamePlayManager.Instance.GamePlayData.RecordLastAction();
         }
+
+        public BattleMoveValueEntityData GetBattleMoveValueEntityData(int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+            MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        {
+            var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
+            data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, entityIdx, isLoop,
+                isAdd, moveParams, targetMoveParams);
+
+            return data;
+        }
+        
+        // protected Queue<BattleMoveValueEntityData> moveValueQueue = new();
+        // private float showHurtTime = 0f;
+        // public void AddMoveValue(int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+        //     MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        // {
+        //     var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
+        //     data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, entityIdx, isLoop,
+        //         isAdd, moveParams, targetMoveParams);
+        //
+        //     moveValueQueue.Enqueue(data);
+        // }
+        //
+        // protected async void ShowMoveValues()
+        // {
+        //     showHurtTime += Time.deltaTime;
+        //     if (showHurtTime > 0.3f && moveValueQueue.Count > 0)
+        //     {
+        //         showHurtTime = 0;
+        //         var data = moveValueQueue.Dequeue();
+        //         var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
+        //         
+        //         if (GameEntry.Entity.HasEntity(entity.Id))
+        //         {
+        //             if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
+        //             {
+        //     
+        //                 GameEntry.Entity.HideEntity(entity);
+        //             }
+        //             else
+        //             {
+        //     
+        //                 BattleValueEntities.Add(entity.Entity.Id, entity);
+        //             }
+        //         }
+        //     }
+        // }
     }
 }

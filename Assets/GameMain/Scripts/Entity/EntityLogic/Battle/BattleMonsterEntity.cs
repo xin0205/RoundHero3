@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GameFramework;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
@@ -232,9 +233,13 @@ namespace RoundHero
                 DeltaPos = new Vector2(0, 125f),
                 IsUIGO = false,
             };
-            
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, -1, false,
+
+            AddMoveValue(hurt, hurt, -1, false,
                 this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+                
+            
+            // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, 0, -1, false,
+            //     this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
 
 
         }

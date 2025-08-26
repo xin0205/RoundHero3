@@ -23,6 +23,7 @@ namespace RoundHero
         UseCard,
         Bless,
         Fune,
+        HurtRoundStart,
     }
         
         
@@ -170,6 +171,8 @@ namespace RoundHero
             BattleManager.Instance.ChangeHP(BattleHeroData, deltaHP, GamePlayManager.Instance.GamePlayData, hpChangeType, useDefense, addHeroHP, changeHPInstantly);
             
             BattleManager.Instance.ShowGameOver();
+            
+            
             
             // var curEnergy = BattleHeroData.Attribute.GetAttribute(EHeroAttribute.CurEnergy);
             // var maxEnergy = BattleHeroData.Attribute.GetAttribute(EHeroAttribute.MaxEnergy);
@@ -374,6 +377,17 @@ namespace RoundHero
                 hpDeltaData.HPDeltaType = EHPDeltaType.Collision;
                 (hpDeltaData as CollisionDeltaData).ActionUnitIdx = triggerData.ActionUnitIdx;
                 (hpDeltaData as CollisionDeltaData).EffectUnitIdx = triggerData.EffectUnitIdx;
+            }
+            else if (triggerData.TriggerDataSubType == ETriggerDataSubType.State)
+            {
+                hpDeltaData = new HPDeltaData();
+                //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Card;
+                if (triggerData.UnitStateDetail.UnitState == EUnitState.HurtRoundStart)
+                {
+                    hpDeltaData.HPDeltaType = EHPDeltaType.HurtRoundStart;
+                }
+                
+                
             }
 
             //

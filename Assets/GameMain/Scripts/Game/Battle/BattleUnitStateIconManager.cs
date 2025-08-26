@@ -177,12 +177,12 @@ namespace RoundHero
             var targetMoveParams = new MoveParams()
             {
                 FollowGO = effectUnit.gameObject,
-                DeltaPos = (actionUnit != null && actionUnit.UnitIdx == effectUnit.UnitIdx) ? new Vector2(0, 125f) : new Vector2(0, 25f),
+                DeltaPos = (actionUnit != null && actionUnit.UnitIdx == effectUnit.UnitIdx) ? new Vector2(0, 100f) : new Vector2(0, 25f),
                 IsUIGO = false,
             };
 
-            var entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(value, value, unitState, _curUnitStateIconEntityIdx++,
-                true, false,
+            var entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(value, value, unitState, 0, _curUnitStateIconEntityIdx++,
+                isLoop, false,
                 moveParams,
                 targetMoveParams);
 
@@ -218,7 +218,7 @@ namespace RoundHero
         
         private void InternalShowHurtDisplayIcon(int effectUnitIdx, Dictionary<int, List<TriggerData>> triggerDataDict)
         {
-            var entityIdx = curValueEntityIdx;
+            var entityIdx = CurValueEntityIdx;
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
             
             foreach (var kv in triggerDataDict)

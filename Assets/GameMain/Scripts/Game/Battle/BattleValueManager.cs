@@ -7,9 +7,9 @@ namespace RoundHero
     public partial class BattleUnitEntity
     {
         public Dictionary<int, Entity>  BattleValueEntities = new ();
-        private int curValueEntityIdx = 0;
+        public int CurValueEntityIdx = 0;
         private int _curValueEntityIdx = 0;
-        private int showValueEntityIdx = 0;
+        public int ShowValueEntityIdx = 0;
         
         public void ShowHurtDisplayValue(int effectUnitIdx, int actionUnitIdx)
         {
@@ -19,7 +19,7 @@ namespace RoundHero
 
         private void InternalShowHurtDisplayValue(int effectUnitIdx, Dictionary<int, List<TriggerData>> triggerDataDict)
         {
-            _curValueEntityIdx = curValueEntityIdx;
+            _curValueEntityIdx = CurValueEntityIdx;
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
             
             if (effectUnit is BattleSoliderEntity)
@@ -32,7 +32,7 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        curValueEntityIdx += 1;
+                        CurValueEntityIdx += 1;
                         
                     }
 
@@ -71,7 +71,7 @@ namespace RoundHero
 
                 if (startValue != 0)
                 {
-                    curValueEntityIdx += 1;
+                    CurValueEntityIdx += 1;
                     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
                 }
                
@@ -107,7 +107,7 @@ namespace RoundHero
             //BattleValueEntities.Clear();
             var actionUnit =  BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
             
-            _curValueEntityIdx = curValueEntityIdx;
+            _curValueEntityIdx = CurValueEntityIdx;
             var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
                 BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
             //curValueEntityIdx += triggerDataDict.Count;
@@ -131,7 +131,7 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        curValueEntityIdx += 1;
+                        CurValueEntityIdx += 1;
                         
                     }
                     
@@ -153,15 +153,15 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        curValueEntityIdx += 1;
+                        CurValueEntityIdx += 1;
                         
                     }
-                    ShowValues(kv.Value, curValueEntityIdx);
+                    ShowValues(kv.Value, CurValueEntityIdx);
                     //entityIdx += kv.Value.Count;
                 }
                 else
                 {
-                    curValueEntityIdx += 1;
+                    CurValueEntityIdx += 1;
                     
                     var startValue = 0;
                     var endValue = 0;
@@ -192,8 +192,8 @@ namespace RoundHero
 
         public async void ShowActionSort(int sort)
         {
-            _curValueEntityIdx = curValueEntityIdx;
-            curValueEntityIdx += 1;
+            _curValueEntityIdx = CurValueEntityIdx;
+            CurValueEntityIdx += 1;
             
             var effectUnitPos = Root.position;
             
@@ -209,7 +209,7 @@ namespace RoundHero
                 uiLocalPoint, sort, _curValueEntityIdx++);
 
             if ((entity as BattleValueEntity).BattleValueEntityData.EntityIdx <
-                showValueEntityIdx)
+                ShowValueEntityIdx)
             {
 
                 GameEntry.Entity.HideEntity(entity);
@@ -237,26 +237,29 @@ namespace RoundHero
                 DeltaPos = new Vector2(0, 25f),
                 IsUIGO = true,
             };
+            
+            AddMoveValue(value, value, _curValueEntityIdx, true,
+                false, moveParams, targetMoveParams);
 
-            var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(value, value, _curValueEntityIdx++, true, false,
-                moveParams,
-                targetMoveParams);
+            // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(value, value, showValueIdx++, _curValueEntityIdx++, true, false,
+            //     moveParams,
+            //     targetMoveParams);
 
             
             //Log.Debug("2ShowDisplayValues:" + (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx + "-" + showValueEntityIdx);
-            if (GameEntry.Entity.HasEntity(entity.Id))
-            {
-                if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
-                {
-            
-                    GameEntry.Entity.HideEntity(entity);
-                }
-                else
-                {
-            
-                    BattleValueEntities.Add(entity.Entity.Id, entity);
-                }
-            }
+            // if (GameEntry.Entity.HasEntity(entity.Id))
+            // {
+            //     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < ShowValueEntityIdx)
+            //     {
+            //
+            //         GameEntry.Entity.HideEntity(entity);
+            //     }
+            //     else
+            //     {
+            //
+            //         BattleValueEntities.Add(entity.Entity.Id, entity);
+            //     }
+            // }
         }
 
         private async void InternalShowValue(BattleUnitEntity effectUnit, int startValue, int endValue, int entityIdx)
@@ -281,7 +284,7 @@ namespace RoundHero
                 var targetMoveParams = new MoveParams()
                 {
                     FollowGO = effectUnit.gameObject,
-                    DeltaPos = new Vector2(0, 75f),
+                    DeltaPos = new Vector2(0, 100f),
                     IsUIGO = false,
                 };
 
@@ -292,7 +295,7 @@ namespace RoundHero
 
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
-                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
+                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < ShowValueEntityIdx)
                     {
                 
                         GameEntry.Entity.HideEntity(entity);
@@ -318,7 +321,7 @@ namespace RoundHero
                 var targetMoveParams = new MoveParams()
                 {
                     FollowGO = startValue < 0 ? AreaController.Instance.UICore :  effectUnit.gameObject,
-                    DeltaPos = new Vector2(0, startValue < 0 ? -25f : 75f),
+                    DeltaPos = new Vector2(0, startValue < 0 ? -25f : 100f),
                     IsUIGO = startValue < 0,
                 };
 
@@ -329,7 +332,7 @@ namespace RoundHero
 
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
-                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < showValueEntityIdx)
+                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < ShowValueEntityIdx)
                     {
                 
                         GameEntry.Entity.HideEntity(entity);
@@ -387,7 +390,7 @@ namespace RoundHero
         public void UnShowDisplayValues()
         {
             
-            showValueEntityIdx = curValueEntityIdx;
+            ShowValueEntityIdx = CurValueEntityIdx;
             //Log.Debug("UnShowDisplayValues:" + showValueEntityIdx);
             foreach (var kv in BattleValueEntities)
             {

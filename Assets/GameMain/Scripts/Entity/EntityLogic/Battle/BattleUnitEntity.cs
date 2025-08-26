@@ -31,7 +31,7 @@ namespace RoundHero
         
         
         public Transform Root;
-
+        
 
         public virtual Data_BattleUnit BattleUnitData { get; set; }
         public bool IsMove = false;
@@ -42,6 +42,7 @@ namespace RoundHero
         public EAttackCastType UnitAttackCastType;
         public Transform ValuePos;
         protected Queue<int> hurtQueue = new Queue<int>();
+        protected Queue<BattleMoveValueEntityData> moveValueQueue = new();
 
         public int TargetPosIdx;
         
@@ -372,8 +373,8 @@ namespace RoundHero
                 return;
             
             RefreshRoatation();
-            ShowHurts();
-            
+            //ShowHurts();
+            ShowMoveValues();
         }
         
         // public void SetAction(EUnitActionState actionState)
@@ -1448,13 +1449,35 @@ namespace RoundHero
 
             if (showValue)
             {
+                var moveParams = new MoveParams()
+                {
+                    FollowGO = this.gameObject,
+                    DeltaPos = new Vector2(0, 50f),
+                    IsUIGO = false,
+                };
+            
+                var targetMoveParams = new MoveParams()
+                {
+                    FollowGO = AreaController.Instance.UICore,
+                    DeltaPos = new Vector2(0, -25f),
+                    IsUIGO = true,
+                };
+
+
                 if (!changeHPInstantly)
                 {
-                    AddHurts(changeHP);
+                    AddMoveValue(changeHP, changeHP, -1, false,
+                        this is BattleSoliderEntity && changeHP < 0, moveParams,
+                        targetMoveParams);
+                    //AddHurts(changeHP);
                 }
-                else if (hpDelta != 0)
+                // if (hpDelta != 0)
+                else
                 {
-                    AddHurts(hpDelta);
+                    AddMoveValue(changeHP, changeHP, -1, false,
+                        this is BattleSoliderEntity && changeHP < 0, moveParams,
+                        targetMoveParams);
+                    //AddHurts(hpDelta);
                 }
                         
             }
@@ -1468,22 +1491,64 @@ namespace RoundHero
             Position = pos;
         }
 
-        public void AddHurts(int hurt)
+        // public void AddHurts(int hurt)
+        // {
+        //     hurtQueue.Enqueue(hurt);
+        // }
+        
+        public void AddMoveValue(int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+             MoveParams moveParams = null, MoveParams targetMoveParams = null)
         {
-            hurtQueue.Enqueue(hurt);
+            var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
+            data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, entityIdx, isLoop,
+                isAdd, moveParams, targetMoveParams);
+
+            moveValueQueue.Enqueue(data);
         }
 
-        private float showHurtTime = 0f;
-        protected async void ShowHurts()
+        private float showMoveValueTime = 0f;
+        protected async void ShowMoveValues()
         {
-            showHurtTime += Time.deltaTime;
-            if (showHurtTime > 0.4f && hurtQueue.Count > 0)
+            showMoveValueTime += Time.deltaTime;
+            if (showMoveValueTime > 0.3f && moveValueQueue.Count > 0)
             {
-                showHurtTime = 0;
-                var hurt = hurtQueue.Dequeue();
-                await ShowBattleHurts(hurt);
+                showMoveValueTime = 0;
+                var data = moveValueQueue.Dequeue();
+                //await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
+                
+                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
+                
+                if (GameEntry.Entity.HasEntity(entity.Id))
+                {
+                    var entityIdx = (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx;
+                    if (entityIdx == -1)
+                    {
+                    }
+                    else if (entityIdx < ShowValueEntityIdx)
+                    {
+                
+                        GameEntry.Entity.HideEntity(entity);
+                    }
+                    else
+                    {
+                
+                        BattleValueEntities.Add(entity.Entity.Id, entity);
+                    }
+                }
             }
         }
+
+        //private float showHurtTime = 0f;
+        // protected async void ShowHurts()
+        // {
+        //     showHurtTime += Time.deltaTime;
+        //     if (showHurtTime > 0.4f && hurtQueue.Count > 0)
+        //     {
+        //         showHurtTime = 0;
+        //         var hurt = hurtQueue.Dequeue();
+        //         await ShowBattleHurts(hurt);
+        //     }
+        // }
         
         protected async virtual Task ShowBattleHurts(int hurt)
         {
@@ -1522,8 +1587,12 @@ namespace RoundHero
                 IsUIGO = true,
             };
             
-            await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, -1, false,
+            AddMoveValue(hurt, hurt, -1, false,
                 this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+
+            
+            // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, 0, -1, false,
+            //     this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
             //
             // var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
             // hurtEntity.transform.parent = Root;
@@ -1576,7 +1645,7 @@ namespace RoundHero
         {
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
-            
+
             ShowAttackTag(actionUnitIdx, isShowAttackPos);
             ShowFlyDirect(actionUnitIdx);
             ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
@@ -1589,6 +1658,7 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
             
+
             ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
             ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
@@ -1598,6 +1668,7 @@ namespace RoundHero
         
         public void UnShowTags()
         {
+            showEntityIdx = 0;
             UnShowAttackTags();
             UnShowFlyDirects();
             UnShowBattleIcons();
