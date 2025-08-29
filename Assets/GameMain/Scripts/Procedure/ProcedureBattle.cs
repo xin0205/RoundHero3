@@ -55,9 +55,15 @@ namespace RoundHero
             
         }
 
+        public class TestData
+        {
+            public int A;
+        }
+
         public async void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
             AreaController.Instance.RefreshCameraPlane();
+
             // var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
             
             // if (initData.Value.GameMode == EGamMode.PVP)

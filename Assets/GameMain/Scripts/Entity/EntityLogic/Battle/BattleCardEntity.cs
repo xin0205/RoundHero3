@@ -70,7 +70,7 @@ namespace RoundHero
         private InfoTrigger attackInfoTrigger;
 
         [SerializeField] private GameObject ConfirmGO;
-
+        [SerializeField] private GameObject PassCardGO;
         
         [SerializeField] private Text ConfirmText;
         
@@ -130,8 +130,8 @@ namespace RoundHero
             //
             //
             // attackCheckMark.SetActive(false);
-            // moveCheckMark.SetActive(false);
-            
+            // moveCheckMark.SetActive(false);                                                                                                                                                                                                                                                                    
+            PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable); 
         
             
 
@@ -228,7 +228,7 @@ namespace RoundHero
             //transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 140f, 0);
             ScaleCard(1, 1.1f, 0.01f);
             //transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-            BattleCardManager.Instance.PointerCardIdx = BattleCardEntityData.CardData.CardIdx;
+            //BattleCardManager.Instance.PointerCardIdx = BattleCardEntityData.CardData.CardIdx;
             BattleCardManager.Instance.SelectCardIdx = BattleCardEntityData.CardData.CardIdx;
             BattleCardManager.Instance.SelectCardHandOrder = BattleCardEntityData.HandSortingIdx;
             BattleCardManager.Instance.RefreshSelectCard();
@@ -287,7 +287,7 @@ namespace RoundHero
             BattleCardManager.Instance.RefreshSelectCard();
             BattleCardManager.Instance.SetCardsPos();
             
-            BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+            BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Empty;
             BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = -1;
             
@@ -439,11 +439,9 @@ namespace RoundHero
 
             BattleUnitManager.Instance.UnShowTags();
 
-            
-
             UseCardAnimation();
             
-
+            GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
         
         public void UseCardAnimation(int gridPosIdx = -1)
@@ -455,9 +453,8 @@ namespace RoundHero
             
             BattleCardManager.Instance.SelectCardIdx = -1;
             BattleCardManager.Instance.SelectCardHandOrder = -1;
-            BattleCardManager.Instance.PointerCardIdx = -1;
+            //BattleCardManager.Instance.PointerCardIdx = -1;
 
-            
             
             // switch (BattleCardEntityData.CardData.CardUseType)
             // {
@@ -904,6 +901,115 @@ namespace RoundHero
                 BattleAreaManager.Instance.ClearExchangeGrid();
             }
 
+        }
+
+
+        public void PassCard()
+        {
+            PassCardGO.SetActive(false);
+
+            var passCardData = BattleFightManager.Instance.RoundFightData.PassCardData;
+            var battlerPlayerData = BattlePlayerManager.Instance.BattlePlayerData;
+            battlerPlayerData.HandCards = new List<int>(passCardData.AcquireCardCirculation.HandCards);
+            battlerPlayerData.StandByCards = new List<int>(passCardData.AcquireCardCirculation.StandByCards);
+            battlerPlayerData.PassCards = new List<int>(passCardData.AcquireCardCirculation.PassCards);
+            battlerPlayerData.ConsumeCards = new List<int>(passCardData.AcquireCardCirculation.ConsumeCards);
+            
+            BattleCardManager.Instance.RemoveHandCard(BattleCardEntityData.CardIdx);
+            
+            PassCardAnimation();
+            
+            battlerPlayerData.RoundPassCardCount += 1;
+
+            
+            foreach (var triggerData in BattleFightManager.Instance.RoundFightData.PassCardData.PassCardDatas)
+            {
+                BattleFightManager.Instance.TriggerAction(triggerData);
+            }
+            //BattleCardManager.Instance.SetCardsPos();
+        }
+        
+        
+        public void PassCardAnimation(int gridPosIdx = -1)
+        {
+            //ActionGO.SetActive(false);
+            isInside = false;
+            isHand = false;
+            isUsing = true;
+            
+            BattleCardManager.Instance.SelectPassCardIdx = -1;
+            
+            
+            MoveCard(ECardPos.Default, ECardPos.Pass);
+
+
+        }
+        
+        public void OnPointerEnterPassCard()
+        {
+            BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
+            BattleCardManager.Instance.SelectPassCardIdx = BattleCardEntityData.CardData.CardIdx;
+            BattleManager.Instance.RefreshEnemyAttackData();
+            // if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
+            //   TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
+            //   TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
+            // {
+            //     return;
+            // }
+            //
+            // if (isUsing)
+            //     return;
+            //
+            //
+            // //Log.Debug("Enter");
+            // if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+            //     return;
+            //
+            // if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            // {
+            //     if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
+            //         return;
+            // }
+            // BattleCardManager.Instance.SelectPassCardIdx = BattleCardEntityData.CardData.CardIdx;
+            //
+            // BattleManager.Instance.RefreshEnemyAttackData();
+            //
+            // foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            // {
+            //     
+            //     kv.Value.ShowTacticHurtDisplayValues(kv.Value.UnitIdx);
+            //     kv.Value.ShowTacticHurtDisplayIcons(kv.Value.UnitIdx);
+            // }
+            //
+            // BattleCardManager.Instance.RefreshCurCardEnergy(BattleFightManager.Instance.RoundFightData.BuffData_Use
+            //     .CardEnergy);
+        }
+        
+        public void OnPointerExitPassCard()
+        {
+            BattleCardManager.Instance.SelectPassCardIdx = -1;
+            BattleManager.Instance.RefreshEnemyAttackData();
+            // if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
+            //     TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
+            //     TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
+            // {
+            //     return;
+            // }
+            //
+            // if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+            //     return;
+            //
+            // if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            // {
+            //     if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
+            //         return;
+            // }
+            //
+            // BattleManager.Instance.RefreshEnemyAttackData();
+            //
+            // BattleUnitManager.Instance.UnShowTags();
+
+            
         }
     }
 }

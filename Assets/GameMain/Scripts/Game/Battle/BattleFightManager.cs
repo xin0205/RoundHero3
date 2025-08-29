@@ -59,13 +59,26 @@ namespace RoundHero
         public Dictionary<int, MoveUnitData> MoveUnitDatas = new Dictionary<int, MoveUnitData>();
 
     }
+    
+    public class PassCardData
+    {
+        public CardCirculation AcquireCardCirculation = new();
+        public List<TriggerData> PassCardDatas = new();
+        
+        public void Clear()
+        {
+            AcquireCardCirculation.Clear();
+            PassCardDatas.Clear();
+        }
+    }
+    
     public class CardActionData : ActionData
     {
         public int CardEnergy;
         public ECardDestination CardDestination;
         public Dictionary<int, List<TriggerData>> ConsumeCardDatas = new();
         public Dictionary<int, List<TriggerData>> AcquireCardDatas = new();
-        
+        public CardCirculation UseCardCirculation = new();
         public override void Clear()
         {
             base.Clear();
@@ -190,7 +203,7 @@ namespace RoundHero
         public int ActionUnitGridPosIdx = -1;
         public int EffectUnitGridPosIdx = -1;
         public bool IsTrigger = false;
-        
+        public CardCirculation AcquireCardCirculation = new();
 
         //public bool AddHeroHP = true;
 
@@ -228,6 +241,7 @@ namespace RoundHero
             triggerData.TriggerBlessIdx = TriggerBlessIdx;
             triggerData.TriggerFuneIdx = TriggerFuneIdx;
             triggerData.TriggerCardIdx = TriggerCardIdx;
+            triggerData.AcquireCardCirculation = AcquireCardCirculation.Copy();
             return triggerData;
         }
     }
@@ -240,6 +254,36 @@ namespace RoundHero
         public List<int> ConsumeCards = new();
         
         public Dictionary<int, List<TriggerData>> TriggerDatas = new();
+
+        public CardCirculation Copy()
+        {
+            var cardCirculation = new CardCirculation();
+            cardCirculation.PassCards = new List<int>(PassCards);
+            cardCirculation.HandCards = new List<int>(HandCards);
+            cardCirculation.StandByCards = new List<int>(StandByCards);
+            cardCirculation.ConsumeCards = new List<int>(ConsumeCards);
+
+            foreach (var kv in TriggerDatas)
+            {
+                var triggerDatas = new List<TriggerData>();
+                foreach (var triggerData in kv.Value)
+                {
+                    triggerDatas.Add(triggerData.Copy());
+                }
+                
+                cardCirculation.TriggerDatas.Add(kv.Key, triggerDatas);
+            }
+            
+            return cardCirculation;
+        }
+        
+        public void Clear()
+        {
+            PassCards.Clear();
+            HandCards.Clear();
+            StandByCards.Clear();
+            ConsumeCards.Clear();
+        }
     }
 
     public class RoundFightData
@@ -272,9 +316,8 @@ namespace RoundHero
         public CardCirculation RoundPassCardCirculation = new();
         
         public CardCirculation RoundAcquireCardCirculation = new();
-        
-        
 
+        public PassCardData PassCardData = new();
         
         public void Clear()
         {
@@ -294,6 +337,7 @@ namespace RoundHero
             BlessTriggerDatas.Clear();
             UseCardTriggerDatas.Clear();
             HPDeltaDict.Clear();
+            PassCardData.Clear();
         }
     }
 
@@ -808,14 +852,26 @@ namespace RoundHero
                                 SimulateTriggerData(subHPAddSelfHPData, triggerDatas);
                                 triggerDatas.Add(subHPAddSelfHPData);
                                 
-                                var subHPAddSelfHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(actionUnitData.Idx,
+                                var addSelfHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(actionUnitData.Idx,
                                     actionUnitData.Idx, actionUnitData.Idx, EUnitAttribute.HP, maxAddHPCount,
                                     ETriggerDataSubType.Unit);
-                                subHPAddSelfHPTriggerData.ActionUnitGridPosIdx = actionUnitData.GridPosIdx;
-                                subHPAddSelfHPTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
+                                addSelfHPTriggerData.ActionUnitGridPosIdx = actionUnitData.GridPosIdx;
+                                addSelfHPTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
                                 
-                                SimulateTriggerData(subHPAddSelfHPTriggerData, triggerDatas);
-                                triggerDatas.Add(subHPAddSelfHPTriggerData);
+                                SimulateTriggerData(addSelfHPTriggerData, triggerDatas);
+                                triggerDatas.Add(addSelfHPTriggerData);
+                                
+                                var subHPAddSelfHPAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.SubHPAddSelfHPAcquireCard,
+                                    actionUnitData.UnitCamp);
+
+                                if (subHPAddSelfHPAcquireCard != null)
+                                {
+                                    var drAtkAddSelfHPAcquireCard = GameEntry.DataTable.GetBless(EBlessID.SubHPAddSelfHPAcquireCard);
+
+                                    BattleCardManager.Instance.CacheAcquireCards(addSelfHPTriggerData, triggerDatas,
+                                        int.Parse(drAtkAddSelfHPAcquireCard.GetValues(0)[0]));
+
+                                }
                             }
                             
                             if (hurtSubDmgCount > 0)
@@ -967,7 +1023,7 @@ namespace RoundHero
                             ETriggerDataType.RoleState);
                         subCounterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
                         subCounterAttackTriggerData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
-
+      
                         //subCounterAttackTriggerData.ActionUnitGridPosIdx
                         SimulateTriggerData(subCounterAttackTriggerData, triggerDatas);
                         triggerDatas.Add(subCounterAttackTriggerData);
@@ -995,6 +1051,15 @@ namespace RoundHero
                             triggerDatas.Add(counterAtkAddCurHPTriggerData);
                         }
 
+                        var counterAtkAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CounterAtkAcquireCard,
+                            effectUnitData.UnitCamp);
+
+                        if (counterAtkAcquireCard != null)
+                        {
+                            
+                            BattleCardManager.Instance.CacheAcquireCards(counterAttackTriggerData, triggerDatas, 1);
+
+                        }
                         
                     }
 
@@ -1406,6 +1471,18 @@ namespace RoundHero
                                         EBlessID.ConsumeCardAddCurHP);
 
                                 }
+
+                                // var coreHurtAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CoreHurtAcquireCard,
+                                //     PlayerManager.Instance.PlayerData.UnitCamp);
+                                //
+                                // if (coreHurtAcquireCard != null && triggerValue < 0)
+                                // {
+                                //     var drCoreHurtAcquireCard = GameEntry.DataTable.GetBless(EBlessID.CoreHurtAcquireCard);
+                                //     triggerData.AcquireCardCirculation.HandCards = BattleCardManager.Instance.CacheAcquireHandCards(
+                                //         RoundFightData.GamePlayData, int.Parse(drCoreHurtAcquireCard.GetValues(0)[0]));
+                                //
+                                // }
+                                
                             }
                             else
                             {
@@ -1495,20 +1572,19 @@ namespace RoundHero
                                 HeroManager.Instance.BattleHeroData.CacheHPDelta += hpDelta;
                                 effectUnitEntity.Hurt();
                                 //HeroManager.Instance.HeroEntity.AddHurts(hpDelta);
-                                var coreHurtAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CoreHurtAcquireCard,
-                                    PlayerManager.Instance.PlayerData.UnitCamp);
+                                // var coreHurtAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CoreHurtAcquireCard,
+                                //     PlayerManager.Instance.PlayerData.UnitCamp);
+                                //
+                                // if (coreHurtAcquireCard != null && hpDelta < 0)
+                                // {
+                                //     var drCoreHurtAcquireCard = GameEntry.DataTable.GetBless(EBlessID.CoreHurtAcquireCard);
+                                //     BattleCardManager.Instance.CacheAcquireCards(triggerData, int.Parse(drCoreHurtAcquireCard.GetValues(0)[0]));
+                                //
+                                // }
                                 
-                                if (coreHurtAcquireCard != null && hpDelta < 0)
-                                {
-                                    var drCoreHurtAcquireCard = GameEntry.DataTable.GetBless(EBlessID.CoreHurtAcquireCard);
-                                    BattleCardManager.Instance.AcquireCards(int.Parse(drCoreHurtAcquireCard.GetValues(0)[0]));
-                
-                                }
-                                
-                                return;
+                    
                             }
-                            
-                            if (triggerData.HeroHPDelta && hpDelta != 0)
+                            else if (triggerData.HeroHPDelta && hpDelta != 0)
                             {
                                 effectUnitEntity.BattleUnitData.AddHeroHP += hpDelta;
                                 HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
@@ -1612,7 +1688,12 @@ namespace RoundHero
                     switch (triggerData.CardTriggerType)
                     {
                         case ECardTriggerType.AcquireCard:
-                            BattleCardManager.Instance.AcquireCards((int)(triggerData.Value + triggerData.DeltaValue));
+                            //BattleCardManager.Instance.AcquireCards((int)(triggerData.Value + triggerData.DeltaValue));
+                            // if (triggerData.AcquireCardCirculation.HandCards.Count > 0)
+                            // {
+                            //     BattleCardManager.Instance.AcquireCards(triggerData);
+                            // }
+                            
                             break;
                         case ECardTriggerType.ToHand:
                             
@@ -1643,7 +1724,8 @@ namespace RoundHero
                             }
                             else if (actionUnitEntity is BattleSoliderEntity ToStandBy_solider)
                             {
-                                BattleCardManager.Instance.ToStandByCards(ToStandBy_solider.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                                BattleCardManager.Instance.ToStandByCards(BattlePlayerManager.Instance.BattlePlayerData,
+                                    ToStandBy_solider.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                             }
                              
                             
@@ -1730,6 +1812,11 @@ namespace RoundHero
                     break;
                 default:
                     break;
+            }
+            
+            if (triggerData.AcquireCardCirculation.HandCards.Count > 0)
+            {
+                BattleCardManager.Instance.AcquireCards(triggerData);
             }
 
             // if (triggerData.HeroHPDelta)
@@ -2926,41 +3013,116 @@ namespace RoundHero
 
 
             TriggerUnitData(effectUnit.Idx, actionUnit == null ? -1 : actionUnit.Idx, effectUnit.GridPosIdx, EBuffTriggerType.Dead, triggerDatas);
+
+
+            BlessDeadTransferUnitState(EBlessID.EnemyDeadDeBuffToEnemy, EUnitCamp.Player1, EUnitCamp.Enemy,
+                EUnitCamp.Enemy, EUnitStateEffectType.DeBuff, effectUnit, triggerDatas);
+            BlessDeadTransferUnitState(EBlessID.EnemyDeadDeBuffToEnemy, EUnitCamp.Enemy, EUnitCamp.Player1,
+                EUnitCamp.Enemy, EUnitStateEffectType.DeBuff, effectUnit, triggerDatas);
             
-            var enemyDeadDebuffToOtherEnemy = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(EBlessID.EnemyDeadDeBuffToOther, BattleManager.Instance.CurUnitCamp);
+            BlessDeadTransferUnitState(EBlessID.UsDeadDeBuffToEnemy, EUnitCamp.Player1, EUnitCamp.Player1,
+                EUnitCamp.Enemy, EUnitStateEffectType.DeBuff, effectUnit, triggerDatas);
+            BlessDeadTransferUnitState(EBlessID.UsDeadDeBuffToEnemy, EUnitCamp.Enemy, EUnitCamp.Enemy,
+                EUnitCamp.Player1, EUnitStateEffectType.DeBuff, effectUnit, triggerDatas);
             
-            if (actionUnit != null && effectUnit.UnitCamp != actionUnit.UnitCamp && enemyDeadDebuffToOtherEnemy != null)
+            BlessDeadTransferUnitState(EBlessID.UsDeadBuffToUs, EUnitCamp.Player1, EUnitCamp.Player1,
+                EUnitCamp.Player1, EUnitStateEffectType.Buff, effectUnit, triggerDatas);
+            BlessDeadTransferUnitState(EBlessID.UsDeadBuffToUs, EUnitCamp.Enemy, EUnitCamp.Enemy,
+                EUnitCamp.Enemy, EUnitStateEffectType.Buff, effectUnit, triggerDatas);
+
+            // var usDeadDeBuffToEnemy = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(EBlessID.UsDeadDeBuffToEnemy, effectUnit.UnitCamp);
+            //
+            // if (actionUnit != null && usDeadDeBuffToEnemy != null)
+            // {
+            //     var otherEnemies = new List<Data_BattleUnit>();
+            //     foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            //     {
+            //         if (kv.Value.UnitCamp != actionUnit.UnitCamp && kv.Value.Exist())
+            //         {
+            //             otherEnemies.Add(kv.Value);
+            //         }
+            //     }
+            //
+            //     if (otherEnemies.Count > 0)
+            //     {
+            //         var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
+            //         foreach (var kv in effectUnit.UnitStateData.UnitStates)
+            //         {
+            //             if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(kv.Value.UnitState))
+            //             {
+            //                 var usDeadDeBuffToEnemyTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas,
+            //                     effectUnit.Idx, effectUnit.Idx, otherEnemies[randomEnemyIdx].Idx, kv.Key,
+            //                     kv.Value.Value,
+            //                     ETriggerDataType.RoleState);
+            //                 BattleBuffManager.Instance.CacheTriggerData(usDeadDeBuffToEnemyTriggerData, triggerDatas);
+            //             }
+            //         }
+            //     }
+            //
+            // }
+            
+            
+        }
+
+        public void BlessDeadTransferUnitState(EBlessID blessID, EUnitCamp blessUnitCamp, EUnitCamp effectUnitCamp,
+            EUnitCamp targetUnitCamp, EUnitStateEffectType unitStateEffectType, Data_BattleUnit effectUnit, List<TriggerData> triggerDatas)
+        {
+            var enemyDeadDebuffToEnemy =
+                BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(blessID,
+                    blessUnitCamp);
+            
+            if(effectUnit.UnitCamp != effectUnitCamp)
+                return;
+
+            if (enemyDeadDebuffToEnemy != null)
             {
                 var otherEnemies = new List<Data_BattleUnit>();
                 foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
                 {
-                    if (kv.Value.UnitCamp != actionUnit.UnitCamp && kv.Value.Exist())
+                    if (kv.Value.UnitCamp == targetUnitCamp && kv.Value.Exist())
                     {
                         otherEnemies.Add(kv.Value);
                     }
                 }
 
+                // BlessDeadTransferUnitState(otherEnemies, effectUnit, triggerDatas);
                 if (otherEnemies.Count > 0)
                 {
                     var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
                     foreach (var kv in effectUnit.UnitStateData.UnitStates)
                     {
-                        var enemyDeadDeBuffToOtherTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas,
-                            effectUnit.Idx, effectUnit.Idx, otherEnemies[randomEnemyIdx].Idx, kv.Key, kv.Value.Value,
-                            ETriggerDataType.RoleState);
-                        BattleBuffManager.Instance.CacheTriggerData(enemyDeadDeBuffToOtherTriggerData, triggerDatas);
-                        // if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(kv.Key))
-                        // {
-                        //     otherEnemies[randomEnemyIdx].ChangeState(kv.Key, kv.Value.Value);
-                        // }
+                        if (Constant.Battle.EffectUnitStates[unitStateEffectType].Contains(kv.Value.UnitState))
+                        {
+                            var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,
+                                effectUnit.Idx, effectUnit.Idx, otherEnemies[randomEnemyIdx].Idx, kv.Key, kv.Value.Value,
+                                ETriggerDataType.RoleState);
+                            BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
+                        }
+
                     }
                 }
-
             }
-
-            
         }
-        
+
+        public void BlessDeadTransferUnitState(EUnitStateEffectType unitStateEffectType, List<Data_BattleUnit> otherEnemies, Data_BattleUnit unit, List<TriggerData> triggerDatas)
+        {
+            if (otherEnemies.Count > 0)
+            {
+                var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
+                foreach (var kv in unit.UnitStateData.UnitStates)
+                {
+                    if (Constant.Battle.EffectUnitStates[unitStateEffectType].Contains(kv.Value.UnitState))
+                    {
+                        var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,
+                            unit.Idx, unit.Idx, otherEnemies[randomEnemyIdx].Idx, kv.Key, kv.Value.Value,
+                            ETriggerDataType.RoleState);
+                        BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
+                    }
+
+                }
+            }
+        }
+
         public void CollideTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
             var unit = BattleFightManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);

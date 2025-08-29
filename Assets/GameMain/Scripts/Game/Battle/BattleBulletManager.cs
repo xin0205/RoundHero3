@@ -119,10 +119,10 @@ namespace RoundHero
 
             foreach (var kv in TriggerActionDatas)
             {
-                var list = kv.Value.ToList();
+                var list = kv.Value.Reverse().ToList();
                 for (int i = list.Count - 1; i >= 0; i--)
                 {
-                    var list2 = list[i].Value.ToList();
+                    var list2 = list[i].Value.Reverse().ToList();
                     for (int j = list2.Count - 1; j >= 0; j--)
                     {
                         var triggerActionData = list2[j];
@@ -233,8 +233,9 @@ namespace RoundHero
             }
 
             var triggerActionDataList = TriggerActionDatas[actionUnitIdx].ToList();
-
-            for (int i = triggerActionDataList.Count - 1; i >= 0; i--)
+            
+            //for (int i = triggerActionDataList.Count - 1; i >= 0; i--)
+            for (int i = 0; i < triggerActionDataList.Count; i++)
             {
 
                 var triggerActionData = triggerActionDataList[i];

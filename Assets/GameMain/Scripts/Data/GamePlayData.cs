@@ -121,6 +121,7 @@ namespace RoundHero
         public int EnergyDelta = 0;
         public int MaxHPDelta = 0;
         public int DmgDelta = 0;
+        public bool IsPassable = false;
         
         public Data_Card()
         {
@@ -143,6 +144,21 @@ namespace RoundHero
         public virtual Data_Card Copy()
         {
             var dataCard = new Data_Card(CardIdx, CardID, FuneIdxs);
+            dataCard.CardIdx = CardIdx;
+            dataCard.CardID = CardID;
+            dataCard.MaxFuneCount = MaxFuneCount;
+            dataCard.FuneIdxs = new List<int>(FuneIdxs);
+            dataCard.RoundEnergyDelta = RoundEnergyDelta;
+            dataCard.RoundLinkIDs = new List<ELinkID>(RoundLinkIDs);
+            dataCard.UseCardDamageRatio = UseCardDamageRatio;
+            dataCard.UnUse = UnUse;
+            dataCard.CardDestination = CardDestination;
+            dataCard.CardUseType = CardUseType;
+            dataCard.EnergyDelta = EnergyDelta;
+            dataCard.MaxHPDelta = MaxHPDelta;
+            dataCard.CardUseType = CardUseType;
+            dataCard.DmgDelta = DmgDelta;
+            dataCard.IsPassable = IsPassable;
 
             return dataCard;
         }
@@ -1852,7 +1868,7 @@ namespace RoundHero
         //public int LastRoundUseCardCount;
         public bool RoundIsAttack;
         public int RoundAcquireCardCount;
-        
+        public int RoundPassCardCount;
         
         public List<EBuffID> BattleBuffs = new ();
 
@@ -1870,6 +1886,7 @@ namespace RoundHero
             data.BattleBuffs = new List<EBuffID>(BattleBuffs);
             //data.AcquireCardCountBeforeRoundStart = AcquireCardCountBeforeRoundStart;
             data.RoundAcquireCardCount = RoundAcquireCardCount;
+            data.RoundPassCardCount = RoundPassCardCount;
             return data;
         }
         
@@ -1902,6 +1919,7 @@ namespace RoundHero
             //LastRoundUseCardCount = RoundUseCardCount;
             RoundUseCardCount = 0;
             RoundAcquireCardCount = 0;
+            RoundPassCardCount = 0;
             RoundIsAttack = false;
             BattleBuffs.Clear();
             //AcquireCardCountBeforeRoundStart = 0;

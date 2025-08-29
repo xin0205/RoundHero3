@@ -1488,7 +1488,7 @@ namespace RoundHero
                     InitBlesses = new List<EBlessID>()
                     {
                         //EBlessID.ShuffleCardAddCurHP,
-                        EBlessID.CoreHurtAcquireCard,
+                        EBlessID.PassCardAcquireCard,
                         // 0,
                         // 1,
                         // 2,
@@ -1497,10 +1497,10 @@ namespace RoundHero
                     
                     InitFunes = new List<int>()
                     {
-                        0,
-                        1,
-                        2,
-                        2,
+                        //0,
+                        //1,
+                        //2,
+                        //2,
                         // EFuneID.EachRound_AddCurHP, //0
                         // EFuneID.AddCurHP, //1
                         // EFuneID.EachRound_AddCurHP, //2

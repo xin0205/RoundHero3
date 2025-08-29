@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace RoundHero
@@ -31,6 +32,15 @@ namespace RoundHero
 
             }
 
+            CacheUseCard(cardIdx, effectUnit, actionUnitGridPosidx, actionUnitIdx, triggerDatas);
+
+        }
+
+        public void CacheUseCard(int cardIdx, Data_BattleUnit effectUnit, int actionUnitGridPosidx, int actionUnitIdx, List<TriggerData> triggerDatas)
+        {
+            var drCard = CardManager.Instance.GetCardTable(cardIdx);
+            var card = BattleManager.Instance.GetCard(cardIdx);
+            
             if (drCard.CardType == ECardType.Tactic)
             {
                 BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Tactic;
@@ -46,15 +56,15 @@ namespace RoundHero
 
             var unComsumeCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.UnConsumeCard, PlayerManager.Instance.PlayerData.UnitCamp);
             
-            if (unComsumeCard != null)
+            if (unComsumeCard != null && card.CardDestination == ECardDestination.Consume)
             {
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = Random.Next(0, 2) == 0 ? card.CardDestination : ECardDestination.Consume;
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = Random.Next(0, 2) == 0 ? ECardDestination.Pass : ECardDestination.Consume;
             }
             else
             {
                 BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = ECardDestination.Pass;
             }
-            BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = ECardDestination.Consume;
+            
 
             if (BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination == ECardDestination.Consume)
             {
@@ -72,7 +82,40 @@ namespace RoundHero
                     
                 }
             }
-                
+
+
+            var battlePlayerData =
+                BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(
+                    BattleFightManager.Instance.RoundFightData.GamePlayData.PlayerData
+                        .UnitCamp);
+
+            switch (BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination)
+            {
+                case ECardDestination.Pass:
+                    ToPassCard(battlePlayerData, cardIdx);
+                    break;
+                case ECardDestination.Consume:
+                    ToConsumeCards(battlePlayerData, cardIdx);
+                    break;
+                case ECardDestination.StandBy:
+                    ToStandByCards(battlePlayerData, cardIdx);
+                    break;
+                default:
+                    break;
+            }
+
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .HandCards = new List<int>(battlePlayerData.HandCards);
+            
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
+            
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .PassCards = new List<int>(battlePlayerData.PassCards);
+            
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .StandByCards = new List<int>(battlePlayerData.StandByCards);
+
             
             foreach (var funeIdx in card.FuneIdxs)
             {
@@ -93,11 +136,47 @@ namespace RoundHero
             }
             
             BlessManager.Instance.CacheUseCardData(EBlessID.EachRoundUseCardAttackAllEnemy, triggerDatas);
-            
-            BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Add(cardIdx, triggerDatas);
-            
-            BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas);
+
+            if (triggerDatas.Count > 0)
+            {
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Add(cardIdx, triggerDatas);
+                BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas);
+            }
+           
         }
 
+
+        public void CachePassCard()
+        {
+            var battlePlayerData =
+                BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(
+                    BattleFightManager.Instance.RoundFightData.GamePlayData.PlayerData
+                        .UnitCamp);
+            
+            BattleCardManager.Instance.ToPassCard(battlePlayerData,
+                BattleCardManager.Instance.SelectPassCardIdx);
+
+            BattleFightManager.Instance.RoundFightData.PassCardData.AcquireCardCirculation.HandCards = new List<int>(battlePlayerData.HandCards);
+            BattleFightManager.Instance.RoundFightData.PassCardData.AcquireCardCirculation.StandByCards = new List<int>(battlePlayerData.StandByCards);
+            BattleFightManager.Instance.RoundFightData.PassCardData.AcquireCardCirculation.PassCards = new List<int>(battlePlayerData.PassCards);
+            BattleFightManager.Instance.RoundFightData.PassCardData.AcquireCardCirculation.ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
+            
+            
+            var triggerData = new TriggerData();
+            triggerData.TriggerDataType = ETriggerDataType.Empty;
+            BattleFightManager.Instance.RoundFightData.PassCardData.PassCardDatas.Add(triggerData);
+            
+            var passCardAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.PassCardAcquireCard,
+                PlayerManager.Instance.PlayerData.UnitCamp);
+
+            if (passCardAcquireCard != null)
+            {
+                var drPassCardAcquireCard = GameEntry.DataTable.GetBless(EBlessID.PassCardAcquireCard);
+
+                BattleCardManager.Instance.CacheAcquireCards(triggerData, BattleFightManager.Instance.RoundFightData.PassCardData.PassCardDatas,
+                    int.Parse(drPassCardAcquireCard.GetValues(0)[0]));
+
+            }
+        }
     }
 }

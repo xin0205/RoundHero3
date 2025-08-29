@@ -842,10 +842,16 @@
         EachRoundUseCardAttackAllEnemy,
         ConsumeCardAttackAllEnemy,
         HurtSubDmgCounterAtk,
-        EnemyDeadDeBuffToOther,
+        EnemyDeadDeBuffToEnemy,
         BattleStartAcquireCard,
         NoHandCardAcquireCard,
         CoreHurtAcquireCard,
+        CounterAtkAcquireCard,
+        SubHPAddSelfHPAcquireCard,
+        UsDeadDeBuffToEnemy,
+        UsDeadBuffToUs,
+        PassCardAcquireCard,
+        FirstRoundPassCardAcquireCard,
         
         UnUseCardAddCurHP,
         EachRoundAddCurHPInBigBattle,
@@ -896,9 +902,9 @@
         AppearAddBuffEnemyUnitCount,
         AppearAddBuffUsUnitCount,
         UseCardNextRoundAcquireCard,
-        PassCardAcquireCard,
+        
        
-        BattleStartPassCardAcquireCard,
+        
         HeroHurtAcquireCard,
         RoundEndSelectCard,
         ConsumeCardAddRandomCard,

@@ -22,7 +22,7 @@ namespace RoundHero
     public class TempTriggerData
     {
         public int TargetGridPosIdx = -1;
-        public ETempTriggerType TriggerType = ETempTriggerType.Null;
+        public ETempTriggerType TriggerType = ETempTriggerType.Empty;
         public Data_BattleUnit UnitData;
         public Data_GridProp PropData;
         //public BattleSoliderEntity BattleSoliderEntity;
@@ -35,7 +35,7 @@ namespace RoundHero
         public void Reset()
         {
             TargetGridPosIdx = -1;
-            TriggerType = ETempTriggerType.Null;
+            TriggerType = ETempTriggerType.Empty;
             UnitData = null;
             //BattleSoliderEntity = null;
             UnitOriGridPosIdx = -1;
@@ -49,7 +49,7 @@ namespace RoundHero
         {
             var tempTriggerData = new TempTriggerData();
             tempTriggerData.TriggerType = TriggerType;
-            if (TriggerType == ETempTriggerType.Null)
+            if (TriggerType == ETempTriggerType.Empty)
             {
                 return tempTriggerData;
             }

@@ -404,7 +404,7 @@ namespace RoundHero
                     {
 
                         BattleManager.Instance.TempTriggerData.UnitData = null;
-                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                         HideTmpUnitEntity();
                         
 
@@ -493,7 +493,7 @@ namespace RoundHero
                     {
 
                         BattleManager.Instance.TempTriggerData.PropData = null;
-                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+                        BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                         HideTmpPropEntity();
                         
 
@@ -723,7 +723,7 @@ namespace RoundHero
                 {
                     ShowBackupGrids(null);
                     BattleManager.Instance.TempTriggerData.UnitData = null;
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                     //BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
                     //BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.CardID = -1;
                     BattleManager.Instance.RefreshEnemyAttackData();
@@ -2548,7 +2548,7 @@ namespace RoundHero
                     //BattleBuffManager.Instance.TriggerBuff();
                     BattleBuffManager.Instance.UseBuff(ne.GridPosIdx);
                     
-                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Null;
+                    BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                     BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
                 }

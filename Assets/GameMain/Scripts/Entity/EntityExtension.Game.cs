@@ -194,7 +194,7 @@ namespace RoundHero
             
             
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
-            battleSoliderData.ChangeState(EUnitState.HurtSubDmg, 1);
+            battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 1);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
             data.Init(entityComponent.GenerateSerialId(), pos, battleSoliderData);
 

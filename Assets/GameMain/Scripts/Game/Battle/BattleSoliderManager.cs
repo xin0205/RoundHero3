@@ -19,7 +19,7 @@ namespace RoundHero
         SelectHurtUnit,
         AutoAtk,
         ActiveAtk,
-        Null,
+        Empty,
     }
     
     public class UnitActionRange

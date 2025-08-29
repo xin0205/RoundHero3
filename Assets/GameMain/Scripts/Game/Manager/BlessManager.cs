@@ -509,51 +509,51 @@ namespace RoundHero
         }
 
         
-        public void DeadTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit)
-        {
-            if (unit.Exist())
-            {
-                return;
-            }
-            
-            if (unit.FuneCount(EBuffID.Spec_UnDead) > 0)
-            {
-                return;
-            }
-            
-            if (unit.UnitCamp != BattleManager.Instance.CurUnitCamp)
-            {
-                return;
-            }
-            
-            var enemyDeadDebuffToOtherEnemy = gamePlayData.GetUsefulBless(EBlessID.EnemyDeadDeBuffToOther, BattleManager.Instance.CurUnitCamp);
-            if (enemyDeadDebuffToOtherEnemy == null)
-            {
-                return;
-            }
-            
-            
-            var otherEnemies = new List<Data_BattleUnit>();
-            foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
-            {
-                if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp && kv.Value.Exist())
-                {
-                    otherEnemies.Add(kv.Value);
-                }
-            }
-
-            if (otherEnemies.Count > 0)
-            {
-                var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
-                foreach (var kv in unit.UnitStateData.UnitStates)
-                {
-                    if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(kv.Key))
-                    {
-                        otherEnemies[randomEnemyIdx].ChangeState(kv.Key, kv.Value.Value);
-                    }
-                }
-            }
-        }
+        // public void DeadTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit)
+        // {
+        //     if (unit.Exist())
+        //     {
+        //         return;
+        //     }
+        //     
+        //     if (unit.FuneCount(EBuffID.Spec_UnDead) > 0)
+        //     {
+        //         return;
+        //     }
+        //     
+        //     if (unit.UnitCamp != BattleManager.Instance.CurUnitCamp)
+        //     {
+        //         return;
+        //     }
+        //     
+        //     var enemyDeadDebuffToOtherEnemy = gamePlayData.GetUsefulBless(EBlessID.EnemyDeadDeBuffToOther, BattleManager.Instance.CurUnitCamp);
+        //     if (enemyDeadDebuffToOtherEnemy == null)
+        //     {
+        //         return;
+        //     }
+        //     
+        //     
+        //     var otherEnemies = new List<Data_BattleUnit>();
+        //     foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
+        //     {
+        //         if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp && kv.Value.Exist())
+        //         {
+        //             otherEnemies.Add(kv.Value);
+        //         }
+        //     }
+        //
+        //     if (otherEnemies.Count > 0)
+        //     {
+        //         var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
+        //         foreach (var kv in unit.UnitStateData.UnitStates)
+        //         {
+        //             if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(kv.Key))
+        //             {
+        //                 otherEnemies[randomEnemyIdx].ChangeState(kv.Key, kv.Value.Value);
+        //             }
+        //         }
+        //     }
+        // }
 
         public int ConsumeCardAddCurHP(Data_GamePlay gamePlayData)
         {
