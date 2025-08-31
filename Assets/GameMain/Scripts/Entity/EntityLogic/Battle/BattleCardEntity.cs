@@ -131,7 +131,7 @@ namespace RoundHero
             //
             // attackCheckMark.SetActive(false);
             // moveCheckMark.SetActive(false);                                                                                                                                                                                                                                                                    
-            PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable); 
+            
         
             
 
@@ -161,6 +161,8 @@ namespace RoundHero
             // rect.position = screenPoint;
             // rect.width *= 100;
             // rect.height *= 100;
+            
+            
 
         }
         
@@ -219,6 +221,17 @@ namespace RoundHero
             {
                 if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
                     return;
+            }
+            
+            PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable);
+            
+            var passCardAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.PassCardAcquireCard,
+                PlayerManager.Instance.PlayerData.UnitCamp);
+
+            if (passCardAcquireCard != null && BattlePlayerManager.Instance.BattlePlayerData.RoundPassCardCount == 0) 
+            {
+                PassCardGO.SetActive(true);
+
             }
             
             isShow = true;
@@ -281,7 +294,7 @@ namespace RoundHero
             }
 
 
-
+            //PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable); 
             isShow = false;
             BattleCardManager.Instance.UnSelectCard();
             BattleCardManager.Instance.RefreshSelectCard();
@@ -920,6 +933,8 @@ namespace RoundHero
             PassCardAnimation();
             
             battlerPlayerData.RoundPassCardCount += 1;
+
+            PassCardGO.SetActive(false); 
 
             
             foreach (var triggerData in BattleFightManager.Instance.RoundFightData.PassCardData.PassCardDatas)

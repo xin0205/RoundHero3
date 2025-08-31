@@ -3097,21 +3097,6 @@ namespace RoundHero
             // }
         }
         
-        public void PassCards()
-        {
-            RoundFightData.RoundPassCardCirculation.TriggerDatas.Clear();
-            
-            var battlePlayerData =
-                RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(RoundFightData.GamePlayData.PlayerData
-                    .UnitCamp);
-            
-            ToPassCard(battlePlayerData);
-
-            RoundFightData.RoundPassCardCirculation.PassCards = new List<int>(battlePlayerData.PassCards);
-            RoundFightData.RoundPassCardCirculation.HandCards = new List<int>(battlePlayerData.HandCards);
-            RoundFightData.RoundPassCardCirculation.ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
-            RoundFightData.RoundPassCardCirculation.StandByCards = new List<int>(battlePlayerData.StandByCards);
-        }
         
     }
 }

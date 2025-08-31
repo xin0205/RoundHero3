@@ -169,7 +169,7 @@ namespace RoundHero
             var passCardAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.PassCardAcquireCard,
                 PlayerManager.Instance.PlayerData.UnitCamp);
 
-            if (passCardAcquireCard != null)
+            if (passCardAcquireCard != null && battlePlayerData.RoundPassCardCount == 0) 
             {
                 var drPassCardAcquireCard = GameEntry.DataTable.GetBless(EBlessID.PassCardAcquireCard);
 
@@ -177,6 +177,9 @@ namespace RoundHero
                     int.Parse(drPassCardAcquireCard.GetValues(0)[0]));
 
             }
+
+            battlePlayerData.RoundPassCardCount += 1;
+
         }
     }
 }
