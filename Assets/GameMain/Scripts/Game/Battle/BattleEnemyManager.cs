@@ -392,7 +392,7 @@ namespace RoundHero
             
             //RefreshEnemyEntities();
             BattleAreaManager.Instance.RefreshObstacles();
-            BattleManager.Instance.RefreshEnemyAttackData();
+            //BattleManager.Instance.RefreshEnemyAttackData();
         }
 
         // public bool InEnemyPaths(int gridPosIdx)

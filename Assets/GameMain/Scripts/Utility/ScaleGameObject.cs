@@ -7,7 +7,7 @@ namespace RoundHero
         private Vector3 startScale;
         private Vector3 endScale;
         private float scaleTime;
-        private float time;
+        private float time = -1;
         private float scaleSpeed;
         private bool isLoop;
         private Vector3 scaleDelta;

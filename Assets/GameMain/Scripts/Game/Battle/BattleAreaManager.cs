@@ -337,7 +337,7 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitData.CurHP =
                             BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
                         BattleManager.Instance.TempTriggerData.UnitData.CurHP =
-                            BattleManager.Instance.TempTriggerData.UnitData.MaxHP - 2;
+                            BattleManager.Instance.TempTriggerData.UnitData.MaxHP;
                         
                         if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
                         {
@@ -2455,7 +2455,7 @@ namespace RoundHero
                 }
 
                 
-                if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString() || buffData.BuffStr == EBuffID.Spec_ActionEnemy.ToString())
+                if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString() || buffData.BuffStr == EBuffID.Spec_MoveEnemy.ToString())
                 {
                     //|| unit.BattleUnit.GetStateCount(EUnitState.UnAction) > 0
                     // if ((unit.BattleUnit.GetStateCount(EUnitState.UnMove) > 0 ) &&

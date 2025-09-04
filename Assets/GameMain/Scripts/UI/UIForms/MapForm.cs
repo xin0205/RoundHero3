@@ -146,7 +146,7 @@ namespace RoundHero
                 // });
                 
                 
-                procedureGamePlay.StartBattle(randomSeed);
+                procedureGamePlay.StartAdventure(randomSeed);
 
 
                 

@@ -544,6 +544,16 @@ namespace RoundHero
         PVE,
         PVP,
     }
+    
+    public enum EPVEType
+    {
+        Empty,
+        Battle,
+        Adventure,
+        Test,
+        Tutorial
+
+    }
 
     public enum EUnitActionState
     {

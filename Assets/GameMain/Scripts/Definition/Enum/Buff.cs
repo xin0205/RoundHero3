@@ -342,7 +342,7 @@
         Spec_AttackUs,
         Spec_MoveAllGrid,
         Spec_ChangeDirect,
-        Spec_ActionEnemy,
+        Spec_MoveEnemy,
         
         Spec_SubCardEnergy,
         Spec_AtkPassEnemyAddDmg_AtkPassUsAddDmg,

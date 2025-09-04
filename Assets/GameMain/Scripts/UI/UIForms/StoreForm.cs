@@ -73,12 +73,13 @@ namespace RoundHero
             var idx = 0;
             foreach (var sequence in randomCardSequence)
             {
+                var drCard = GameEntry.DataTable.GetCard(cardIDs[sequence]);
                 storeCards.Add(new StoreItemData()
                 {
                     CommonItemData = new CommonItemData()
                     {
                         ItemID = cardIDs[sequence],
-                        ItemType = EItemType.Card,
+                        ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
                     },
                     Price = random.Next(Constant.Store.CardPriceRange.x, Constant.Store.CardPriceRange.y),
                     StoreIdx = idx++,

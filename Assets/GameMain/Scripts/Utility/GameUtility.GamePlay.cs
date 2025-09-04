@@ -183,7 +183,8 @@ namespace RoundHero
         {
             switch (itemType)
             {
-                case EItemType.Card:
+                case EItemType.UnitCard:
+                case EItemType.TacticCard:
                     GetCardText(itemID, ref name, ref desc);
                     break;
                 case EItemType.Bless:
@@ -192,18 +193,26 @@ namespace RoundHero
                 case EItemType.Fune:
                     GetFuneText(itemID, ref name, ref desc);
                     break;
-                case EItemType.Coin:
-                    name = Constant.Localization.Attribute_Coin;
-                    desc = Constant.Localization.Attribute_Coin;
+                // case EItemType.Coin:
+                //     name = Constant.Localization.Attribute_Coin;
+                //     desc = Constant.Localization.Attribute_Coin;
+                //     break;
+                case EItemType.AddMaxHP:
+                    name = Constant.Localization.ItemTypeName_AddMaxHP;
+                    desc = Constant.Localization.ItemTypeDesc_AddMaxHP;
                     break;
-                case EItemType.HP:
-                    name = Constant.Localization.Attribute_HP;
-                    desc = Constant.Localization.Attribute_HP;
+                case EItemType.AddCardFuneSlots:
+                    name = Constant.Localization.ItemTypeName_AddCardFuneSlots;
+                    desc = Constant.Localization.ItemTypeDesc_AddCardFuneSlots;
                     break;
-                case EItemType.Heart:
-                    name = Constant.Localization.Attribute_Heart;
-                    desc = Constant.Localization.Attribute_Heart;
+                case EItemType.RemoveCard:
+                    name = Constant.Localization.ItemTypeName_RemoveCard;
+                    desc = Constant.Localization.ItemTypeDesc_RemoveCard;
                     break;
+                // case EItemType.Heart:
+                //     name = Constant.Localization.Attribute_Heart;
+                //     desc = Constant.Localization.Attribute_Heart;
+                //     break;
                 default:
                     name = "";
                     desc = "";

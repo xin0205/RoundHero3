@@ -96,10 +96,12 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             //GameEntry.Entity.HideEntity(heroSceneEntity);
-            //GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
+            GameEntry.Entity.HideEntity(procedureStart.StartSelectEntity);
             
             //GameEntry.Event.Unsubscribe(StartSelect_SelectHeroEventArgs.EventId, OnSelectHero);
         }
+
+
         
         private void OnSelectHero(object sender, GameEventArgs e)
         {
@@ -143,23 +145,34 @@ namespace RoundHero
         
         public void PVEStartGame()
         {
-            if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
-            {
-                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
-                    Constant.Battle.InitCardMaxCount);
-                return;
-            }
-            
-            
-            GameEntry.UI.CloseUIForm(this);
-            
-            
-            startGameRandomSeed = 94204398;//2198030
-            Log.Debug("randomSeed:" + startGameRandomSeed);
-            GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
-            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
-            
-            
+            // if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
+            // {
+            //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
+            //         Constant.Battle.InitCardMaxCount);
+            //     return;
+            // }
+            //
+            //
+            // GameEntry.UI.CloseUIForm(this);
+            //
+            //
+            // startGameRandomSeed = 94204398;//2198030
+            // Log.Debug("randomSeed:" + startGameRandomSeed);
+            // //GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
+            //
+            // GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
+            //     
+            // GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
+            // GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = EGameDifficulty.Difficulty1;
+            //     
+            // GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
+            // GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session = 0;
+            // GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Battle;
+            //
+            // GameEntry.Event.Fire(null,
+            //     GamePlayInitGameEventArgs.Create());
+
+
         }
 
         LoopGridViewItem OnHeroIconGetItemByRowColumn(LoopGridView gridView, int itemIndex,int row,int column)
@@ -304,16 +317,22 @@ namespace RoundHero
             }
             
             
-            //GameEntry.UI.CloseUIForm(this);
+            GameEntry.UI.CloseUIForm(this);
             
             //startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
-            //startGameRandomSeed = 6036588;//94204398;//2198030
+            startGameRandomSeed = 6036588;//94204398;//2198030
             // Log.Debug("randomSeed:" + startGameRandomSeed);
             // GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             // GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
-
             
-            GameEntry.UI.OpenUIForm(UIFormId.SelectDifficultyForm, this);
+            GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
+            GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
+            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Test;
+
+
+            GameEntry.Event.Fire(null,
+                GamePlayInitGameEventArgs.Create());
+
         }
     }
 }

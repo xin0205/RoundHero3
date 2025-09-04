@@ -509,9 +509,24 @@ namespace RoundHero
             return (BattleManager.Instance.BattleData.Round + 1) % 2 != 0;
         }
         
-        public void EndBattleTest()
+        public void EndBattle(EBattleResult battleResult)
         {
-            ProcedureBattle.EndBattleTest();
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            {
+                ProcedureBattle.EndBattleMode(battleResult);
+            }
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
+            {
+                ProcedureBattle.EndBattleTest(battleResult);
+            }
+            
+            
+            
+        }
+        
+        public void EndBattleMode()
+        {
+            
             
             
         }
@@ -520,7 +535,10 @@ namespace RoundHero
         {
             BattleTypeManager.ShowGameOver();
         }
-
+        public EBattleResult CheckGameOver()
+        {
+            return BattleTypeManager.CheckGameOver();
+        }
 
         public void SwitchActionCamp(bool isUs)
         {

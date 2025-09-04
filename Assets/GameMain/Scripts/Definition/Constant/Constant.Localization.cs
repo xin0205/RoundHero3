@@ -55,6 +55,7 @@ namespace RoundHero
             public const string Message_ConfirmChangeCard = "Message.ConfirmChangeCard";
             public const string Attribute_Coin = "Attribute.Coin";
             public const string Attribute_HP = "Attribute.HP";
+            public const string Attribute_MaxHP = "Attribute.MaxHP";
             public const string Attribute_Heart = "Attribute.Heart";
             public const string Message_ConfirmUnChangeCard = "Message.ConfirmUnChangeCard";
             public const string Message_ConfirmUnCopyCard = "Message.ConfirmUnChangeCard";
@@ -95,6 +96,17 @@ namespace RoundHero
             public const string Button_ConfrimExchangeGrid = "Button.ConfrimExchangeGrid";
             public const string Message_ResetActionTimesNotEnough = "Message.ResetActionTimesNotEnough";
             public const string Message_UnResetAction = "Message.UnResetAction";
+            
+            public const string ItemTypeName_AddMaxHP = "ItemTypeName.AddMaxHP";
+            public const string ItemTypeDesc_AddMaxHP = "ItemTypeDesc.AddMaxHP";
+            public const string ItemTypeName_AddCardFuneSlots = "ItemTypeName.AddCardFuneSlots";
+            public const string ItemTypeDesc_AddCardFuneSlots = "ItemTypeDesc.AddCardFuneSlots";
+            public const string ItemTypeName_RemoveCard = "ItemTypeName.RemoveCard";
+            public const string ItemTypeDesc_RemoveCard = "ItemTypeDesc.RemoveCard";
+            public const string Message_RewardMaxCount = "Message.RewardMaxCount";
+            
+            
+            public const string Tips_BattleModeRewardSelectItem = "Tips.BattleModeRewardSelectItem";
 
             public static Dictionary<EHPDeltaOwnerType, string> HPDeltaOwners =
                 new Dictionary<EHPDeltaOwnerType, string>()

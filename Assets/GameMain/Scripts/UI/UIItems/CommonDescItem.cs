@@ -6,12 +6,16 @@ namespace RoundHero
 {
     public enum EItemType
     {
-        Card,
+        UnitCard,
+        TacticCard,
         Bless,
         Fune,
         Coin,
-        HP,
-        Heart,
+        AddMaxHP,
+        //Heart,
+        RemoveCard,
+        AddCardFuneSlots,
+        
     }
     
     public class CommonItemData

@@ -1,4 +1,5 @@
 ﻿using System;
+using Animancer;
 
 namespace RoundHero
 {
@@ -11,7 +12,9 @@ namespace RoundHero
         {
             if (GamePlayData.GameMode == EGamMode.PVE)
             {
+                GamePlayManager.Instance.GamePlayData.ClearPlayerDataList();
                 GamePlayManager.Instance.GamePlayData.AddPlayerData(PlayerManager.Instance.PlayerData);
+                GamePlayManager.Instance.GamePlayData.IsStartGame = true;
                 InitPlayerData();
                 //PlayerManager.Instance.PlayerData.Clear();
                 
@@ -26,7 +29,6 @@ namespace RoundHero
 
         public void InitPlayerData()
         {
-            
             PVEManager.Instance.SetCurPlayer();
         }
 
@@ -34,10 +36,13 @@ namespace RoundHero
         {
             if (GamePlayData.GameMode == EGamMode.PVE)
             {
+                PVEManager.Instance.SetCurPlayer();
+                
                 var random = new Random(GamePlayData.RandomSeed);
 
                 BlessManager.Instance.Init(random.Next());
                 BattleMapManager.Instance.Init(random.Next());
+                BattleModeManager.Instance.Init(random.Next());
                 //BattleEventManager.Instance.Init(random.Next());
                 
                 
@@ -55,7 +60,7 @@ namespace RoundHero
         {
             BlessManager.Instance.Destory();
             BattleMapManager.Instance.Destory();
-            
+            BattleModeManager.Instance.Destory();
             //GamePlayManager.Instance.GamePlayData.Clear();
             // BattleEnergyBuffManager.Instance.Destory();
             // BattleHeroManager.Instance.Destory();

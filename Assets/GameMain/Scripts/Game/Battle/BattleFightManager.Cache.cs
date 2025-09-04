@@ -2758,6 +2758,32 @@ namespace RoundHero
         public Dictionary<int, List<TriggerData>> GetHurtDirectAttackDatas(int effectUnitIdx, int actionUnitIdx = -1)
         {
             var triggerDataDict = new Dictionary<int, List<TriggerData>>();
+            
+            foreach (var kv in RoundFightData.RoundStartBuffDatas)
+            {
+                foreach (var kv2 in kv.Value.TriggerDatas)
+                {
+                    foreach (var triggerData in kv2.Value)
+                    {
+                        if (triggerData.EffectUnitIdx != effectUnitIdx)
+                        {
+                            continue;
+                        }
+                        
+                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                        {
+                            continue;
+                        }
+                        
+                        if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                        {
+                            triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                        }
+                        triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                    }
+
+                }
+            }
 
             foreach (var kv in RoundFightData.BuffData_Use.TriggerDatas)
             {

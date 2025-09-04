@@ -32,7 +32,7 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        CurValueEntityIdx += 1;
+                        //CurValueEntityIdx += 1;
                         
                     }
 
@@ -62,6 +62,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in kv.Value)
                     {
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        {
+                            continue;
+                        }
+                        
                         startValue += (int)triggerData.ActualValue;
                         endValue += BlessManager.Instance.AddCurHPByAttackDamage()
                             ? (int)(triggerData.Value + triggerData.DeltaValue)
@@ -71,7 +76,7 @@ namespace RoundHero
 
                 if (startValue != 0)
                 {
-                    CurValueEntityIdx += 1;
+                    //CurValueEntityIdx += 1;
                     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
                 }
                
@@ -131,7 +136,7 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        CurValueEntityIdx += 1;
+                        //CurValueEntityIdx += 1;
                         
                     }
                     
@@ -153,7 +158,7 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        CurValueEntityIdx += 1;
+                        //CurValueEntityIdx += 1;
                         
                     }
                     ShowValues(kv.Value, CurValueEntityIdx);
@@ -161,7 +166,7 @@ namespace RoundHero
                 }
                 else
                 {
-                    CurValueEntityIdx += 1;
+                    //CurValueEntityIdx += 1;
                     
                     var startValue = 0;
                     var endValue = 0;
@@ -193,7 +198,7 @@ namespace RoundHero
         public async void ShowActionSort(int sort)
         {
             _curValueEntityIdx = CurValueEntityIdx;
-            CurValueEntityIdx += 1;
+            //CurValueEntityIdx += 1;
             
             var effectUnitPos = Root.position;
             
@@ -238,7 +243,7 @@ namespace RoundHero
                 IsUIGO = true,
             };
             
-            AddMoveValue(value, value, _curValueEntityIdx, true,
+            AddMoveValue(value, value, CurValueEntityIdx++, true,
                 false, moveParams, targetMoveParams);
 
             // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(value, value, showValueIdx++, _curValueEntityIdx++, true, false,
@@ -287,25 +292,30 @@ namespace RoundHero
                     DeltaPos = new Vector2(0, 100f),
                     IsUIGO = false,
                 };
-
-                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++,
+                
+                AddMoveValue(startValue, endValue, CurValueEntityIdx++,
                     true, effectUnit is BattleSoliderEntity,
                     moveParams,
                     targetMoveParams);
 
-                if (GameEntry.Entity.HasEntity(entity.Id))
-                {
-                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < ShowValueEntityIdx)
-                    {
-                
-                        GameEntry.Entity.HideEntity(entity);
-                    }
-                    else
-                    {
-                
-                        BattleValueEntities.Add(entity.Entity.Id, entity);
-                    }
-                }
+                // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++,
+                //     true, effectUnit is BattleSoliderEntity,
+                //     moveParams,
+                //     targetMoveParams);
+                //
+                // if (GameEntry.Entity.HasEntity(entity.Id))
+                // {
+                //     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < ShowValueEntityIdx)
+                //     {
+                //
+                //         GameEntry.Entity.HideEntity(entity);
+                //     }
+                //     else
+                //     {
+                //
+                //         BattleValueEntities.Add(entity.Entity.Id, entity);
+                //     }
+                // }
 
             }
             else
@@ -324,25 +334,30 @@ namespace RoundHero
                     DeltaPos = new Vector2(0, startValue < 0 ? -25f : 100f),
                     IsUIGO = startValue < 0,
                 };
-
-                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++, true,
+                
+                AddMoveValue(startValue, endValue, CurValueEntityIdx++, true,
                     effectUnit is BattleSoliderEntity && startValue < 0,
                     moveParams,
                     targetMoveParams);
 
-                if (GameEntry.Entity.HasEntity(entity.Id))
-                {
-                    if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < ShowValueEntityIdx)
-                    {
-                
-                        GameEntry.Entity.HideEntity(entity);
-                    }
-                    else
-                    {
-                
-                        BattleValueEntities.Add(entity.Entity.Id, entity);
-                    }
-                }
+                // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++, true,
+                //     effectUnit is BattleSoliderEntity && startValue < 0,
+                //     moveParams,
+                //     targetMoveParams);
+                //
+                // if (GameEntry.Entity.HasEntity(entity.Id))
+                // {
+                //     if ((entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx < ShowValueEntityIdx)
+                //     {
+                //
+                //         GameEntry.Entity.HideEntity(entity);
+                //     }
+                //     else
+                //     {
+                //
+                //         BattleValueEntities.Add(entity.Entity.Id, entity);
+                //     }
+                // }
 
             }
         }

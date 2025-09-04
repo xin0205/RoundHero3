@@ -6,8 +6,7 @@ namespace RoundHero
     public class DataManager : Singleton<DataManager>
     {
         public Data_Game DataGame;
-        
-        
+
         public DataManager()
         {
 
@@ -20,7 +19,7 @@ namespace RoundHero
             // else
             // {
             //     DataGame = new Data_Game();
-            // }
+            //}
             
             GameEntry.Setting.RemoveAllSettings();
             DataGame = new Data_Game();
@@ -60,7 +59,7 @@ namespace RoundHero
             //     Save();
             // }
 
-            GameEntry.Setting.SetString(Constant.Game.VersionKey, Application.version);
+            //GameEntry.Setting.SetString(Constant.Game.VersionKey, Application.version);
 
             //BlessManager.Instance.AddBless(EBlessID.EachRoundFightCardAddLinkReceive);
             Save();

@@ -460,5 +460,11 @@ namespace RoundHero
         {
             
         }
+
+        public EBattleResult CheckGameOver()
+        {
+            return EBattleResult.Empty;
+
+        }
     }
 }

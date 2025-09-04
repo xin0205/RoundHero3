@@ -306,6 +306,7 @@ namespace RoundHero
 
             BattleHeroData.CacheHPDelta = 0;
             
+            BattleManager.Instance.RefreshView();
             BattleManager.Instance.ShowGameOver();
         }
 

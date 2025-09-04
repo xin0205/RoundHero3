@@ -37,21 +37,22 @@ namespace RoundHero
             }
 
             ShowValueText();
-            cardItem.gameObject.SetActive(acquireFormData.ItemType == EItemType.Card);
-            commonIconItem.gameObject.SetActive(acquireFormData.ItemType != EItemType.Card);
+            cardItem.gameObject.SetActive(acquireFormData.ItemType == EItemType.TacticCard || acquireFormData.ItemType == EItemType.UnitCard);
+            commonIconItem.gameObject.SetActive(acquireFormData.ItemType != EItemType.TacticCard && acquireFormData.ItemType != EItemType.UnitCard);
             confirmGO.SetActive(acquireFormData.ClickCloseAction != null);
             text.text = acquireFormData.Value;
             
             switch (acquireFormData.ItemType)
             {
-                case EItemType.Card:
+                case EItemType.UnitCard:
+                case EItemType.TacticCard:
                     cardItem.SetCard(acquireFormData.ItemID);
                     break;
                 case EItemType.Bless:
                 case EItemType.Fune:
-                case EItemType.HP:
-                case EItemType.Heart:
-                case EItemType.Coin:
+                case EItemType.AddMaxHP:
+                case EItemType.AddCardFuneSlots:
+                case EItemType.RemoveCard:
                     commonIconItem.SetIcon(acquireFormData.ItemType, acquireFormData.ItemID);
                     break;
                 default:
@@ -63,7 +64,7 @@ namespace RoundHero
 
         public void ShowItem()
         {
-            if (acquireFormData.ItemType == EItemType.Card)
+            if (acquireFormData.ItemType == EItemType.TacticCard || acquireFormData.ItemType == EItemType.UnitCard)
             {
                 cardItem.GetComponent<Animation>().Play();
                 

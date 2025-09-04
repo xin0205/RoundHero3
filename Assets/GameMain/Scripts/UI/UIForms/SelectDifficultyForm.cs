@@ -6,16 +6,16 @@ namespace RoundHero
 {
     public class SelectDifficultyForm : UGuiForm
     {
-        private UGuiForm form;
+        private ProcedureStart procedureStart;
         
 
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
-            form = (UGuiForm)userData;
-            if (form == null)
+            procedureStart = (ProcedureStart)userData;
+            if (procedureStart == null)
             {
-                Log.Warning("form is null.");
+                Log.Warning("ProcedureStart is null.");
                 return;
             }
 
@@ -25,6 +25,8 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
         }
+
+ 
 
         public void Difficulty1()
         {
@@ -46,26 +48,31 @@ namespace RoundHero
             DataManager.Instance.DataGame.User.DefaultInitSelectCards =
                 new List<int>(GameManager.Instance.TmpInitCards);
             
-            GameEntry.UI.CloseUIForm(form);
-            Close();
-
-            //30990740//37807174;//39575904;//17623401;//
-            int startGameRandomSeed = 87252934;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            //GameEntry.UI.CloseUIForm(form);
+            GameEntry.UI.CloseUIForm(this);
+            procedureStart.CloseStartForm();
             
-            // GamePlayManager.Instance.GamePlayData.IsTutorial = true;
-            // if (GamePlayManager.Instance.GamePlayData.IsTutorial)
-            // {
-            //     startGameRandomSeed = Constant.Tutorial.RandomSeed;
-            // }
-            // else
-            // {
-            //     startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
-            // }
+            //int startGameRandomSeed = 87252934;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             
-            //Log.Debug("randomSeed:" + startGameRandomSeed);
-            GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
-            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, difficulty));
 
+            
+            
+
+            var radomSeed = 48782803;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            
+            GamePlayManager.Instance.GamePlayData.RandomSeed = radomSeed;
+                
+            GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
+            GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = difficulty;
+            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
+            
+            GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session = 0;
+            GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Battle;
+            
+            GameEntry.Event.Fire(null,
+                GamePlayInitGameEventArgs.Create());
+            
+            
         }
     }
 }

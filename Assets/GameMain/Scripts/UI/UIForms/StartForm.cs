@@ -9,9 +9,13 @@ namespace RoundHero
     {
         private ProcedureStart procedureStart;
 
-        [SerializeField] private GameObject startGame;
-        [SerializeField] private GameObject continueGame;
-        [SerializeField] private GameObject restartGame;
+        // [SerializeField] private GameObject startGame;
+        // [SerializeField] private GameObject continueGame;
+        // [SerializeField] private GameObject restartGame;
+        
+        [SerializeField] private GameObject battleMode_startGame;
+        [SerializeField] private GameObject battleMode_continueGame;
+        [SerializeField] private GameObject battleMode_restartGame;
 
         protected override async void OnOpen(object userData)
         {
@@ -31,7 +35,29 @@ namespace RoundHero
             // startGame.SetActive(!isStartGame);
             // continueGame.SetActive(isStartGame);
             // restartGame.SetActive(isStartGame);
-            
+
+            BattleModeOnPointerExit();
+        }
+
+        public void BattleModeOnPointerEnter()
+        {
+            var gamePlayData = DataManager.Instance.DataGame.User.GamePlayDatas[DataManager.Instance.DataGame.User.CurFileIdx][
+                EPVEType.Battle];
+
+            if (gamePlayData != null)
+            {
+                battleMode_startGame.SetActive(!gamePlayData.IsStartGame);
+                battleMode_continueGame.SetActive(gamePlayData.IsStartGame);
+                battleMode_restartGame.SetActive(gamePlayData.IsStartGame);
+
+            }
+        }
+        
+        public void BattleModeOnPointerExit()
+        {
+            battleMode_startGame.SetActive(true);
+            battleMode_continueGame.SetActive(false);
+            battleMode_restartGame.SetActive(false);
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -39,46 +65,16 @@ namespace RoundHero
             base.OnClose(isShutdown, userData);
         }
 
-        private void CloseForm()
+        public void CloseForm()
         {
             GameEntry.Entity.HideEntity(procedureStart.StartEntity);
             GameEntry.UI.CloseUIForm(this);
         }
 
-        [JsonCareDefaultValue]
-        public class testD
-        {
-            public int a = -1;
-
-            public testD()
-            {
-                
-            }
-        }
         
         public void StartGame()
         {
-            // var testD = new testD();
-            //
-            // GameEntry.Setting.SetObject("a", testD);
-            // GameEntry.Setting.Save();
-            // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
-            //
-            // testD.a = 0;
-            // GameEntry.Setting.SetObject("a", testD);
-            // GameEntry.Setting.Save();
-            // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
-            //
-            // testD.a = 1;
-            // GameEntry.Setting.SetObject("a", testD);
-            // GameEntry.Setting.Save();
-            // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
-            //
-            // // testD.a = -2;
-            // // GameEntry.Setting.SetObject("a", testD);
-            // // GameEntry.Setting.Save();
-            // // Log.Debug(GameEntry.Setting.GetObject<testD>("a").a);
-            
+  
             CloseForm();
             procedureStart.StartSelect();
         }
@@ -96,12 +92,12 @@ namespace RoundHero
         public void RestartGame()
         {
             CloseForm();
-            procedureStart.RestartGame();
+            procedureStart.RestartGameTest();
         }
 
         public void StartTest()
         {
-            if (!GamePlayManager.Instance.GamePlayData.IsTutorial)
+            if (!GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
                 {
@@ -112,14 +108,14 @@ namespace RoundHero
                     
                     OnConfirm = () =>
                     {
-                        GamePlayManager.Instance.GamePlayData.IsTutorial = true;
+                        GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
                         Tutorial();
 
                     },
                     OnClose = () =>
                     {
                         CloseForm();
-                        procedureStart.RestartGame();
+                        procedureStart.RestartGameTest();
                     }
 
                 });
@@ -127,8 +123,24 @@ namespace RoundHero
             else
             {
                 CloseForm();
-                procedureStart.RestartGame();
+                procedureStart.RestartGameTest();
             }
+            
+            
+        }
+        
+        public void StartBattleMode()
+        {
+            
+            procedureStart.RestartBattleMode();
+            
+            
+        }
+        
+        public void ContinueBattleMode()
+        {
+            
+            procedureStart.ContinueBattleMode();
             
             
         }
@@ -136,16 +148,21 @@ namespace RoundHero
         public void Tutorial()
         {
             CloseForm();
-            procedureStart.Reset();
-            GamePlayManager.Instance.GamePlayData.IsTutorial = true;
+            procedureStart.Reset(EPVEType.Tutorial);
+            //GamePlayManager.Instance.GamePlayData.IsTutorial = true;
             GamePlayManager.Instance.GamePlayData.
                 IsTutorialBattle = true;
             
             int startGameRandomSeed = Constant.Tutorial.RandomSeed;
             
+            GamePlayManager.Instance.GamePlayData.RandomSeed = Constant.Tutorial.RandomSeed;
+                
+            GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
+            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Tutorial;
+            
             Log.Debug("randomSeed:" + startGameRandomSeed);
-            GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
-            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
+            //GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
+            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create());
         }
     }
 }

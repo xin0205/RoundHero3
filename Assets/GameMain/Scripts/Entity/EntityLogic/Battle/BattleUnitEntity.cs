@@ -17,6 +17,7 @@ namespace RoundHero
         [SerializeField] protected Transform roleRoot;
         [SerializeField] protected TextMesh hp;
         [SerializeField] protected TextMesh damage;
+        
         [SerializeField] protected GameObject uiNode;
         [SerializeField] protected GameObject hpAndDamageNode;
         [SerializeField] protected GameObject damageNode;
@@ -45,6 +46,7 @@ namespace RoundHero
         protected Queue<BattleMoveValueEntityData> moveValueQueue = new();
 
         public int TargetPosIdx;
+        
         
         public Vector3 Position
         {
@@ -1452,15 +1454,15 @@ namespace RoundHero
                 var moveParams = new MoveParams()
                 {
                     FollowGO = this.gameObject,
-                    DeltaPos = new Vector2(0, 50f),
+                    DeltaPos = new Vector2(0, 25f),
                     IsUIGO = false,
                 };
             
                 var targetMoveParams = new MoveParams()
                 {
-                    FollowGO = AreaController.Instance.UICore,
-                    DeltaPos = new Vector2(0, -25f),
-                    IsUIGO = true,
+                    FollowGO = this is BattleMonsterEntity ? this.gameObject : AreaController.Instance.UICore,
+                    DeltaPos = this is BattleMonsterEntity ? new Vector2(0, 100f) : new Vector2(0, -25f),
+                    IsUIGO = !(this is BattleMonsterEntity),
                 };
 
 
@@ -1505,18 +1507,38 @@ namespace RoundHero
 
             moveValueQueue.Enqueue(data);
         }
+        
+        public void AddMoveValue(EUnitState unitState, int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+            MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        {
+            var data = ReferencePool.Acquire<UnitStateIconValueEntityData>();
+            data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
+                targetMoveParams);
+
+            moveValueQueue.Enqueue(data);
+        }
 
         private float showMoveValueTime = 0f;
         protected async void ShowMoveValues()
         {
+            if(moveValueQueue.Count <= 0)
+                return;
+            
             showMoveValueTime += Time.deltaTime;
-            if (showMoveValueTime > 0.3f && moveValueQueue.Count > 0)
+            if (showMoveValueTime > 0.3f)
             {
                 showMoveValueTime = 0;
                 var data = moveValueQueue.Dequeue();
+                BattleMoveValueEntity entity = null;
                 //await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
-                
-                var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
+                if (data is BattleMoveValueEntityData battleMoveValueEntityData)
+                {
+                    entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(battleMoveValueEntityData);
+                }
+                else if (data is UnitStateIconValueEntityData unitStateIconValueEntityData)
+                {
+                    entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(unitStateIconValueEntityData);
+                }
                 
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
@@ -1550,53 +1572,53 @@ namespace RoundHero
         //     }
         // }
         
-        protected async virtual Task ShowBattleHurts(int hurt)
-        {
-            var effectUnitPos = Root.position;
-
-            // effectUnitPos.y += 1f;
-            //
-            // var uiCorePos = AreaController.Instance.UICore.transform.position;
-            // uiCorePos.y -= 0.4f;
-            //
-            // var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
-            //     uiCorePos);
-            //
-            // Vector3 position = new Vector3(pos.x, pos.y, Camera.main.transform.position.z);
-            // Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
-            
-            // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
-            // uiCorePos.y -= 25f;
-            // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
-            //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
-            // var uiLocalPoint2 = uiLocalPoint;
-            // uiLocalPoint.y += 25f;
-            // uiLocalPoint2.y += 75f;
-
-            var moveParams = new MoveParams()
-            {
-                FollowGO = this.gameObject,
-                DeltaPos = new Vector2(0, 125f),
-                IsUIGO = false,
-            };
-            
-            var targetMoveParams = new MoveParams()
-            {
-                FollowGO = AreaController.Instance.UICore,
-                DeltaPos = new Vector2(0, -25f),
-                IsUIGO = true,
-            };
-            
-            AddMoveValue(hurt, hurt, -1, false,
-                this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
-
-            
-            // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, 0, -1, false,
-            //     this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
-            //
-            // var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
-            // hurtEntity.transform.parent = Root;
-        }
+        // protected async virtual Task ShowBattleHurts(int hurt)
+        // {
+        //     var effectUnitPos = Root.position;
+        //
+        //     // effectUnitPos.y += 1f;
+        //     //
+        //     // var uiCorePos = AreaController.Instance.UICore.transform.position;
+        //     // uiCorePos.y -= 0.4f;
+        //     //
+        //     // var pos = RectTransformUtility.WorldToScreenPoint(AreaController.Instance.UICamera,
+        //     //     uiCorePos);
+        //     //
+        //     // Vector3 position = new Vector3(pos.x, pos.y, Camera.main.transform.position.z);
+        //     // Vector3 uiCoreWorldPos = Camera.main.ScreenToWorldPoint(position);
+        //     
+        //     // var uiCorePos = AreaController.Instance.UICore.transform.localPosition;
+        //     // uiCorePos.y -= 25f;
+        //     // var uiLocalPoint = PositionConvert.WorldPointToUILocalPoint(
+        //     //     AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), effectUnitPos);
+        //     // var uiLocalPoint2 = uiLocalPoint;
+        //     // uiLocalPoint.y += 25f;
+        //     // uiLocalPoint2.y += 75f;
+        //
+        //     var moveParams = new MoveParams()
+        //     {
+        //         FollowGO = this.gameObject,
+        //         DeltaPos = new Vector2(0, 125f),
+        //         IsUIGO = false,
+        //     };
+        //     
+        //     var targetMoveParams = new MoveParams()
+        //     {
+        //         FollowGO = AreaController.Instance.UICore,
+        //         DeltaPos = new Vector2(0, -25f),
+        //         IsUIGO = true,
+        //     };
+        //     
+        //     AddMoveValue(hurt, hurt, -1, false,
+        //         this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+        //
+        //     
+        //     // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, 0, -1, false,
+        //     //     this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+        //     //
+        //     // var hurtEntity = await GameEntry.Entity.ShowBattleHurtEntityAsync(BattleUnitData.GridPosIdx, hurt);
+        //     // hurtEntity.transform.parent = Root;
+        // }
 
         public bool IsPointer = false;
         

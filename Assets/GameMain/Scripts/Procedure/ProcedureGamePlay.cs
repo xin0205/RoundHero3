@@ -89,7 +89,7 @@ namespace RoundHero
         }
 
 
-        public void StartBattle(int randomSeed)
+        public void StartAdventure(int randomSeed)
         {
             
             BattleManager.Instance.Init(randomSeed);
@@ -100,7 +100,15 @@ namespace RoundHero
             ChangeState<ProcedureBattle>(procedureOwner);
         }
         
-        public void StartBattleTest(int randomSeed)
+        public void StartBattle(int randomSeed)
+        {
+            
+            BattleManager.Instance.Init(randomSeed);
+
+            ChangeState<ProcedureBattle>(procedureOwner);
+        }
+        
+        public void StartTest(int randomSeed)
         {
             
             BattleManager.Instance.Init(randomSeed);
@@ -136,7 +144,7 @@ namespace RoundHero
         //
         // }
 
-        public void StartBattle(bool isStartBattle)
+        public void StartAdventure(bool isStartBattle)
         {
             IsStartBattle = isStartBattle;
         }

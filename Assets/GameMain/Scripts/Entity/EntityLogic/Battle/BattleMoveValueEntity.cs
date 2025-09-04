@@ -188,7 +188,7 @@ namespace RoundHero
             if(this.transform.localPosition == endPos)
             {
                 timeEnd += Time.deltaTime;
-                if (timeEnd > 0.5f)
+                if (timeEnd > 0.25f)
                 {
                     timeEnd = 0f;
                     if (BattleMoveValueEntityData.IsLoop )

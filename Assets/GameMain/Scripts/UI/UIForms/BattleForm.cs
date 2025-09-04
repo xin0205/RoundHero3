@@ -38,6 +38,8 @@ namespace RoundHero
         [SerializeField] private Text randomSeed;
         //[SerializeField] private Text coreInfo;
         
+        [SerializeField] private Text battleSession;
+        
         
         private ProcedureBattle procedureBattle;
         
@@ -107,6 +109,14 @@ namespace RoundHero
                 BattleManager.Instance.TutorialStep = ETutorialStep.Start;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
+
+            battleSession.gameObject.SetActive(false);
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            {
+                battleSession.gameObject.SetActive(true);
+                battleSession.text = (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1).ToString();
+            }
+
         }
 
         private void ShowRoundTips(int round)
@@ -420,12 +430,20 @@ namespace RoundHero
             if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
                 return;
             
-            procedureBattle.EndBattle();
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            {
+                procedureBattle.EndBattleMode(EBattleResult.Success);
+            }
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
+            {
+                procedureBattle.EndBattleTest(EBattleResult.Success);
+            }
+
             BattleMapManager.Instance.NextStep();
             
         }
         
-        public void ExitBattleTest()
+        public void ExitBattle()
         {
             // if(BattleManager.Instance.BattleState != EBattleState.UseCard)
             //     return;
@@ -438,7 +456,7 @@ namespace RoundHero
                 Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmExitBattle),
                 OnConfirm = () =>
                 {
-                    BattleManager.Instance.EndBattleTest();
+                    BattleManager.Instance.EndBattle(EBattleResult.Empty);
 
                 },
                 

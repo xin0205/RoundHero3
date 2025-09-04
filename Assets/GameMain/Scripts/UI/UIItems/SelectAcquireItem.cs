@@ -1,5 +1,7 @@
 ﻿using System;
+
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace RoundHero
 {
@@ -7,34 +9,59 @@ namespace RoundHero
     {
         public EItemType ItemType;
         public int ItemID;
+        public bool IsSelected;
     }
     
     public class SelectAcquireItem : MonoBehaviour
     {
         [SerializeField] private CardItem cardItem;
         [SerializeField] private CommonDescItem commonDescItem;
-        
+        //[SerializeField] private GameObject selectIcon;
+        [SerializeField] private ScaleGameObject scaleGameObject;
+        [SerializeField] private GameObject selectGameObject;
         private SelectAcquireItemData selectAcquireItemData;
 
         public Action<int> onClickAction;
 
         private int itemIdx;
         
+        private bool isSelect = false;
+
+        private void Awake()
+        {
+            
+        }
+
+        private void OnEnable()
+        {
+            isSelect = false;
+            selectGameObject.SetActive(false);
+        }
+        
+
         public void Init()
         {
             
+        }
+
+        public void SetSelect()
+        {
+            isSelect = !isSelect;
+            selectGameObject.SetActive(isSelect);
+            scaleGameObject.Scale(Vector3.one, Vector3.one, 0.1f);
+            //selectIcon.SetActive(isSelect);
         }
         
         public void SetItemData(SelectAcquireItemData selectAcquireItemData, Action<int> onClick, int itemIndex)
         {
             this.selectAcquireItemData = selectAcquireItemData;
             this.onClickAction = onClick;
-            this.itemIdx = itemIdx;
+            this.itemIdx = itemIndex;
             
-            cardItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.Card);
-            commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType != EItemType.Card);
+            cardItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.TacticCard || selectAcquireItemData.ItemType == EItemType.UnitCard);
+            commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType != EItemType.TacticCard && selectAcquireItemData.ItemType != EItemType.UnitCard);
             
-            if (selectAcquireItemData.ItemType == EItemType.Card)
+            if (selectAcquireItemData.ItemType == EItemType.TacticCard || selectAcquireItemData.ItemType == EItemType.UnitCard)
             {
                 cardItem.SetCard(selectAcquireItemData.ItemID);
             }
@@ -55,7 +82,7 @@ namespace RoundHero
         {
             
             
-            if (selectAcquireItemData.ItemType == EItemType.Card)
+            if (selectAcquireItemData.ItemType == EItemType.TacticCard || selectAcquireItemData.ItemType == EItemType.UnitCard)
             {
                 cardItem.Refresh();
             }
@@ -68,31 +95,29 @@ namespace RoundHero
 
         public void OnClick()
         {
-            var idx = 0;
-            switch (selectAcquireItemData.ItemType)
-            {
-                case EItemType.Card:
-                    idx = CardManager.Instance.GetIdx();
-                    CardManager.Instance.CardDatas.Add(idx, new Data_Card(idx, selectAcquireItemData.ItemID));
-                    break;
-                case EItemType.Bless:
-                    idx = BlessManager.Instance.GetIdx();
-                    var drBless = GameEntry.DataTable.GetBless(selectAcquireItemData.ItemID);
-                    
-                    BlessManager.Instance.BlessDatas.Add(idx, new Data_Bless(idx, drBless.BlessID));
-                    break;
-                case EItemType.Fune:
-                    idx = FuneManager.Instance.GetIdx();
-                    FuneManager.Instance.FuneDatas.Add(idx, new Data_Fune(idx, selectAcquireItemData.ItemID));
-                    BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(idx);
-                    break;
-                
-                default:
-                    break;
-            }
+            if(isSelect)
+                return;
             
-            onClickAction?.Invoke(itemIdx);
+            
+            this.onClickAction.Invoke(this.itemIdx);
 
+
+        }
+
+        public void PointerOnEnter(BaseEventData baseEventData)
+        {
+            if(isSelect)
+                return;
+            
+            scaleGameObject.Scale(Vector3.one, Vector3.one * 1.2f, 0.1f);
+        }
+        
+        public void PointerOnExit(BaseEventData baseEventData)
+        {
+            if(isSelect)
+                return;
+            
+            scaleGameObject.Scale(Vector3.one * 1.2f, Vector3.one, 0.1f);
         }
     }
 }

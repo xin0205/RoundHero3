@@ -194,7 +194,7 @@ namespace RoundHero
             
             
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
-            battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 1);
+            //battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 1);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
             data.Init(entityComponent.GenerateSerialId(), pos, battleSoliderData);
 
@@ -294,6 +294,23 @@ namespace RoundHero
         //     
         //     return (BattleHurtEntity)task.Logic;
         // }
+        
+        public class MoveValueData : IMoveValueData
+        {
+            public int StartValue;
+            public int EndValue;
+            public int EntityIdx;
+            public bool IsLoop;
+            public bool IsAdd;
+            public MoveParams MoveParams;
+            public MoveParams TargetMoveParams;
+
+        }
+
+        public interface IMoveValueData
+        {
+            
+        }
 
         public static async Task<BattleMoveValueEntity> ShowBattleMoveValueEntityAsync(
             this EntityComponent entityComponent,
@@ -316,6 +333,8 @@ namespace RoundHero
                 AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, battleMoveValueEntityData);
             //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleMoveValueEntity)task.Logic;
+            
+           
         }
         
         public static async Task<BattleMoveValueEntity> ShowBattleBlessMoveValueEntityAsync(
@@ -333,7 +352,7 @@ namespace RoundHero
         
         public static async Task<BattleMoveValueEntity> ShowBattleUnitStateMoveValueEntityAsync(
             this EntityComponent entityComponent,
-            int startValue, int endValue, EUnitState unitState, int showValueIdx = 0, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+            int startValue, int endValue, EUnitState unitState,  int entityIdx = -1, bool isLoop = false, bool isAdd = false,
             MoveParams moveParams = null, MoveParams targetMoveParams = null)
         {
             var data = ReferencePool.Acquire<UnitStateIconValueEntityData>();
@@ -342,6 +361,12 @@ namespace RoundHero
                 targetMoveParams);
 
             return await entityComponent.ShowBattleMoveValueEntityAsync(data);
+        }
+        
+        public static async Task<BattleMoveValueEntity> ShowBattleUnitStateMoveValueEntityAsync(this EntityComponent entityComponent, UnitStateIconValueEntityData unitStateIconValueEntityData)
+        {
+            
+            return await entityComponent.ShowBattleMoveValueEntityAsync(unitStateIconValueEntityData);
         }
 
         

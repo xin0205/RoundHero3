@@ -178,31 +178,31 @@ namespace RoundHero
             UnShowTags();
         }
         
-        protected async override Task ShowBattleHurts(int hurt)
-        {
-            
-
-            var moveParams = new MoveParams()
-            {
-                FollowGO = this.gameObject,
-                DeltaPos = hurt < 0 ? new Vector2(0, 125f) : new Vector2(0, 25f),
-                IsUIGO = false,
-            };
-            
-            var targetMoveParams = new MoveParams()
-            {
-                FollowGO = hurt < 0 ? AreaController.Instance.UICore : this.gameObject,
-                DeltaPos = hurt < 0 ? new Vector2(0, -25f) : new Vector2(0, 125f),
-                IsUIGO = hurt < 0,
-            };
-            
-            AddMoveValue(hurt, hurt, -1, false,
-                this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
-
-            
-            // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, 0, -1, false,
-            //     hurt < 0, moveParams, targetMoveParams);
-
-        }
+        // protected async override Task ShowBattleHurts(int hurt)
+        // {
+        //     
+        //
+        //     var moveParams = new MoveParams()
+        //     {
+        //         FollowGO = this.gameObject,
+        //         DeltaPos = hurt < 0 ? new Vector2(0, 125f) : new Vector2(0, 25f),
+        //         IsUIGO = false,
+        //     };
+        //     
+        //     var targetMoveParams = new MoveParams()
+        //     {
+        //         FollowGO = hurt < 0 ? AreaController.Instance.UICore : this.gameObject,
+        //         DeltaPos = hurt < 0 ? new Vector2(0, -25f) : new Vector2(0, 125f),
+        //         IsUIGO = hurt < 0,
+        //     };
+        //     
+        //     AddMoveValue(hurt, hurt, -1, false,
+        //         this is BattleSoliderEntity && hurt < 0, moveParams, targetMoveParams);
+        //
+        //     
+        //     // await GameEntry.Entity.ShowBattleMoveValueEntityAsync(hurt, hurt, 0, -1, false,
+        //     //     hurt < 0, moveParams, targetMoveParams);
+        //
+        // }
     }
 }

@@ -9,7 +9,7 @@ namespace RoundHero
     {
         public string UserID;
         public int CurFileIdx = -1;
-        public Dictionary<int, Data_GamePlay> GamePlayDatas = new ();
+        public Dictionary<int, Dictionary<EPVEType, Data_GamePlay>> GamePlayDatas = new ();
         public Data_GamePlay CurGamePlayData = new ();
         public List<int> DefaultInitSelectCards = new List<int>();
         
@@ -21,25 +21,50 @@ namespace RoundHero
         public Data_User(string userID)
         {
             UserID = userID;
-            
-            if (CurFileIdx == -1)
-            {
-                CurFileIdx = 0;
-                CurGamePlayData = new Data_GamePlay();
-                GamePlayDatas.Add(CurFileIdx, CurGamePlayData);
-                
-            }
-            else
-            {
-                CurGamePlayData = GamePlayDatas[CurFileIdx];
-            }
-            
+            CurFileIdx = 0;
+            SetGamePlayData(EPVEType.Battle, CurFileIdx);
+            SetGamePlayData(EPVEType.Test, CurFileIdx);
         }
 
-        public void Clear()
+        public void SetGamePlayData(EPVEType pveType, int fileIdx)
         {
-            CurGamePlayData = new Data_GamePlay();
-            GamePlayDatas[CurFileIdx] = CurGamePlayData;
+            if (!GamePlayDatas.ContainsKey(fileIdx))
+            {
+                GamePlayDatas.Add(fileIdx, new Dictionary<EPVEType, Data_GamePlay>()
+                {
+                    [pveType] = new Data_GamePlay(),
+                });
+            }
+            
+            // if (CurFileIdx == -1)
+            // {
+            //     CurFileIdx = 0;
+            //     CurGamePlayData = new Data_GamePlay();
+            //     GamePlayDatas.Add(fileIdx, new Dictionary<EPVEType, Data_GamePlay>()
+            //     {
+            //         [pveType] = CurGamePlayData,
+            //     });
+            //     
+            // }
+            // else
+            // {
+            //     CurGamePlayData = GamePlayDatas[CurFileIdx][pveType];
+            // }
+        }
+
+        public void SetCurGamePlayData(EPVEType pveType)
+        {
+            SetGamePlayData(pveType, CurFileIdx);
+            CurGamePlayData = GamePlayDatas[CurFileIdx][pveType];
+        }
+
+        public void Clear(EPVEType pveType)
+        {
+            GamePlayDatas[CurFileIdx][pveType] = new Data_GamePlay();
+            CurGamePlayData = GamePlayDatas[CurFileIdx][pveType];
+
+            // CurGamePlayData = new Data_GamePlay();
+            // GamePlayDatas[CurFileIdx] = CurGamePlayData;
         }
     }
     
@@ -54,9 +79,14 @@ namespace RoundHero
             
         }
 
-        public void Clear()
+        // public void Clear()
+        // {
+        //     User.Clear();
+        // }
+        
+        public void Clear(EPVEType pveType)
         {
-            User.Clear();
+            User.Clear(pveType);
         }
         
         // public Data_User GetUserData(string userID)

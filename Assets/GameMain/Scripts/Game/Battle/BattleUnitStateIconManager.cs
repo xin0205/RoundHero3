@@ -181,28 +181,33 @@ namespace RoundHero
                 IsUIGO = false,
             };
 
-            var entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(value, value, unitState, 0, _curUnitStateIconEntityIdx++,
+            AddMoveValue(unitState, value, value,  CurValueEntityIdx++,
                 isLoop, false,
                 moveParams,
                 targetMoveParams);
 
-            if (GameEntry.Entity.HasEntity(entity.Id))
-            {
-                var _entityIdx = entity.BattleMoveValueEntityData.EntityIdx;
-                if (_entityIdx == -1)
-                {
-                    BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
-                }
-                else if (_entityIdx < showUnitStateIconEntityIdx)
-                {
-                
-                    GameEntry.Entity.HideEntity(entity);
-                }
-                else
-                {
-                    BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
-                }
-            }
+            // var entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(value, value, unitState, _curUnitStateIconEntityIdx++,
+            //     isLoop, false,
+            //     moveParams,
+            //     targetMoveParams);
+
+            // if (GameEntry.Entity.HasEntity(entity.Id))
+            // {
+            //     var _entityIdx = entity.BattleMoveValueEntityData.EntityIdx;
+            //     if (_entityIdx == -1)
+            //     {
+            //         BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
+            //     }
+            //     else if (_entityIdx < showUnitStateIconEntityIdx)
+            //     {
+            //     
+            //         GameEntry.Entity.HideEntity(entity);
+            //     }
+            //     else
+            //     {
+            //         BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
+            //     }
+            // }
 
         }
         

@@ -5,11 +5,11 @@ using Random = System.Random;
 
 namespace RoundHero
 {
-    public enum EGameOver
+    public enum EBattleResult
     {
         Success,
         Failed,
-        None,        
+        Empty,        
     }
     public interface IBattleTypeManager
     {
@@ -38,6 +38,8 @@ namespace RoundHero
 
         public void ShowGameOver();
 
+        public EBattleResult CheckGameOver();
+
 
     }
     public class PVEManager : Singleton<PVEManager>, IBattleTypeManager
@@ -61,7 +63,7 @@ namespace RoundHero
             
             BattleManager.Instance.SetBattleTypeManager(this);
 
-            GamePlayData.GameMode = EGamMode.PVE;
+            //GamePlayData.GameMode = EGamMode.PVE;
             
             // var randoms = MathUtility.GetRandomNum(1, 0,
             //     Constant.Game.RandomRange, Random);
@@ -107,7 +109,7 @@ namespace RoundHero
             if (BattleState == EBattleState.EndRound)
             {
 
-                if (CheckGameOver() == EGameOver.None)
+                if (CheckGameOver() == EBattleResult.Empty)
                 {
                     StartTurn();
                 }
@@ -282,10 +284,12 @@ namespace RoundHero
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
             {
+                HeroManager.Instance.UpdateCacheHPDelta();
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStartUnit;
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartUnit)
             {
+                HeroManager.Instance.UpdateCacheHPDelta();
                 BattleFightManager.Instance.ActionProgress = EActionProgress.SoliderAttack;
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)
@@ -394,17 +398,21 @@ namespace RoundHero
 
         public void ShowGameOver()
         {
-            var gameOver = CheckGameOver();
+            if(BattleManager.Instance.BattleState == EBattleState.EndBattle)
+                return;
             
-            if(gameOver == EGameOver.Success)
+            var gameResult = CheckGameOver();
+            
+            if(gameResult == EBattleResult.Success)
             {
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
                 {
+                    IsCloseAvailable = false,
                     IsShowCancel = false,
                     Message = GameEntry.Localization.GetString(Constant.Localization.Message_BattleTestSuccess),
                     OnConfirm = () =>
                     {
-                        BattleManager.Instance.EndBattleTest();
+                        BattleManager.Instance.EndBattle(gameResult);
                     
                     }
                 
@@ -412,7 +420,7 @@ namespace RoundHero
                 BattleManager.Instance.SetBattleState(EBattleState.EndBattle);
             }
 
-            else if (gameOver == EGameOver.Failed)
+            else if (gameResult == EBattleResult.Failed)
             {
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
                 {
@@ -421,7 +429,7 @@ namespace RoundHero
                     Message = GameEntry.Localization.GetString(Constant.Localization.Message_BattleTestFailed),
                     OnConfirm = () =>
                     {
-                        BattleManager.Instance.EndBattleTest();
+                        BattleManager.Instance.EndBattle(gameResult);
                     
                     },
  
@@ -433,10 +441,10 @@ namespace RoundHero
 
         }
         
-        public EGameOver CheckGameOver()
+        public EBattleResult CheckGameOver()
         {
             if (BattleManager.Instance.BattleState == EBattleState.EndBattle)
-                return EGameOver.None;
+                return EBattleResult.Empty;
             
             var enemyCount = 0;
             foreach (var kv in BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount)
@@ -448,15 +456,15 @@ namespace RoundHero
             
             if(enemyCount <= 0)
             {
-                return EGameOver.Success;
+                return EBattleResult.Success;
             }
 
             if (HeroManager.Instance.BattleHeroData.CurHP <= 0)
             {
-                return EGameOver.Failed;
+                return EBattleResult.Failed;
             }
 
-            return EGameOver.None;
+            return EBattleResult.Empty;
 
         }
     }

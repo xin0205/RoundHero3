@@ -16,7 +16,7 @@ namespace RoundHero
     {
         private bool InitSuccess = false;
         private BattleForm battleForm;
-        private PlayerInfoForm playerInfoForm;
+        //private PlayerInfoForm playerInfoForm;
         
         protected override async void OnEnter(ProcedureOwner procedureOwner)
         {
@@ -55,10 +55,6 @@ namespace RoundHero
             
         }
 
-        public class TestData
-        {
-            public int A;
-        }
 
         public async void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
@@ -141,7 +137,7 @@ namespace RoundHero
             procedureGamePlay.ShowMap();
         }
         
-        public void EndBattleTest()
+        public void EndBattleTest(EBattleResult battleResult)
         {
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
@@ -162,9 +158,55 @@ namespace RoundHero
             }
             else
             {
-                procedureStart.RestartGame();
+                procedureStart.RestartGameTest();
             }
             
+        }
+        
+        public void EndBattleMode(EBattleResult battleResult)
+        {
+            //var gameOver = BattleManager.Instance.CheckGameOver();
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                PVEManager.Instance.Exit();
+            }
+            
+            //GameEntry.UI.CloseUIForm(playerInfoForm);
+            GameEntry.UI.CloseUIForm(battleForm);
+            BattleManager.Instance.Destory();
+
+            var sceneName = "Scene0";// + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
+            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
+            ChangeState<ProcedureStart>(procedureOwner);
+            
+            var procedureStart = procedureOwner.CurrentState as ProcedureStart;
+            
+            
+            if (TutorialManager.Instance.IsTutorial())
+            {
+                procedureStart.Start();
+            }
+            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            {
+                if (battleResult == EBattleResult.Failed)
+                {
+                    procedureStart.Start();
+                }
+                else if(battleResult == EBattleResult.Success)
+                {
+                    procedureStart.BattleModeReward();
+                }
+
+                else
+                {
+                    procedureStart.Start();
+                }
+            }
+            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
+            {
+                procedureStart.Start();
+            }
+
         }
 
     }

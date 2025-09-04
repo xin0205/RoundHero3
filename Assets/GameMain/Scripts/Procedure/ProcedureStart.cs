@@ -5,7 +5,7 @@ using FishNet.Connection;
 using FishNet.Transporting;
 using GameFramework;
 using GameFramework.Event;
-
+using UGFExtensions.Await;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -24,7 +24,7 @@ namespace RoundHero
 
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             GameEntry.Event.Subscribe(GamePlayInitGameEventArgs.EventId, OnGamePlayInitGame);
-
+            GameEntry.Event.Subscribe(GamePlayStartGameEventArgs.EventId, OnGamePlayStartGame);
             GameEntry.Sound.PlayMusic(0);
 
             //InitSuccess = false;
@@ -35,11 +35,24 @@ namespace RoundHero
             
         }
 
+        protected UIForm StartForm;
+        
         public async void Start()
         {
             StartEntity = await GameEntry.Entity.ShowSceneEntityAsync("Start");
-            GameEntry.UI.OpenUIForm(UIFormId.StartForm, this);
+            StartForm = await GameEntry.UI.OpenUIFormAsync(UIFormId.StartForm, this);
         }
+
+        public void CloseStartForm()
+        {
+            if (StartForm != null && GameEntry.UI.IsValidUIForm(StartForm))
+            {
+                (StartForm.Logic as StartForm).CloseForm();
+            }
+
+            
+        }
+
         
         public void StartSelect()
         {
@@ -63,7 +76,7 @@ namespace RoundHero
             base.OnLeave(procedureOwner, isShutdown);
             GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             GameEntry.Event.Unsubscribe(GamePlayInitGameEventArgs.EventId, OnGamePlayInitGame);
-            
+            GameEntry.Event.Unsubscribe(GamePlayStartGameEventArgs.EventId, OnGamePlayStartGame);
             // DRScene drScene = GameEntry.DataTable.GetScene(2);
             // GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(drScene.AssetName));
         }
@@ -80,19 +93,18 @@ namespace RoundHero
         public void OnGamePlayInitGame(object sender, GameEventArgs e)
         {
             var ne = e as GamePlayInitGameEventArgs;
-            // var data = new ();
-            // data.SetValue(ne.GamVarGamePlayInitDataePlayInitData);
-            //
-            // procedureOwner.SetData("GamePlayInitData", data);
-            
-            
-            
+
             if (ne.GamePlayInitData.GameMode == EGamMode.PVE)
             {
-                GamePlayManager.Instance.GamePlayData.RandomSeed = ne.GamePlayInitData.RandomSeed;
+                // GamePlayManager.Instance.GamePlayData.RandomSeed = ne.GamePlayInitData.RandomSeed;
+                //
+                // GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
+                // GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = ne.GamePlayInitData.GameDifficulty;
+                //
+                // GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
+                // GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session = 0;
+                // GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Battle;
                 
-                GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
-                GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = ne.GamePlayInitData.GameDifficulty;
                 GamePlayManager.Instance.Start();
                 ContinueGame();
                 DataManager.Instance.Save();
@@ -104,6 +116,16 @@ namespace RoundHero
 
         }
 
+        public void OnGamePlayStartGame(object sender, GameEventArgs e)
+        {
+            var ne = e as GamePlayStartGameEventArgs;
+
+            ContinueGame();
+            DataManager.Instance.Save();
+
+        }
+        
+        
         private async void StartGame()
         {
             StartSelectEntity = await GameEntry.Entity.ShowSceneEntityAsync("StartSelect");
@@ -122,22 +144,76 @@ namespace RoundHero
             //gamePlayProcedure.ShowMap();
             
             var random = new Random(GamePlayManager.Instance.GamePlayData.RandomSeed);
-            gamePlayProcedure.StartBattleTest(random.Next());
+
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            {
+                if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Battle)
+                {
+                    gamePlayProcedure.StartBattle(random.Next());
+                }
+                else if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Reward)
+                {
+                    
+                
+            }
+            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
+            {
+                gamePlayProcedure.StartTest(random.Next());
+            }
+            
+            
         }
 
-        public void RestartGame()
+        public void RestartGameTest()
         {
-            Reset();
+            Reset(EPVEType.Test);
             StartSelect();
         }
 
-        public void Reset()
+        public void Reset(EPVEType pveType)
         {
-            DataManager.Instance.DataGame.Clear();
+            DataManager.Instance.DataGame.Clear(pveType);
             DataManager.Instance.Save();
         }
         
+        public async void BattleModeReward()
+        {
+            GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Reward;
+            DataManager.Instance.Save();
 
+            GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
+                BattleModeManager.Instance.Random.Next(0, Constant.Game.RandomRange);
+            GameEntry.UI.OpenUIForm(UIFormId.BattleModeRewardForm, this);
+        }
+        
+        public void RestartBattleMode()
+        {
+            Reset(EPVEType.Battle);
+            GameManager.Instance.TmpInitCards = new List<int>()
+            {
+                0, 0, 0, 1, 1, 1, 2, 2, 2, 3
+            };
+            
+            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
+            DataManager.Instance.DataGame.User.SetCurGamePlayData(GamePlayManager.Instance.GamePlayData.PVEType);
+            GameEntry.UI.OpenUIForm(UIFormId.SelectDifficultyForm, this);
+            
+            
+
+        }
+        
+        public void ContinueBattleMode()
+        {
+            CloseStartForm();
+            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
+            DataManager.Instance.DataGame.User.SetCurGamePlayData(GamePlayManager.Instance.GamePlayData.PVEType);
+            
+            GameEntry.Event.Fire(null,
+                GamePlayStartGameEventArgs.Create());
+            
+            
+
+        }
         
     }
 

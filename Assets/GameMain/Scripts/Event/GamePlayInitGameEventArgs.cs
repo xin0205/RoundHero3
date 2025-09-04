@@ -7,24 +7,26 @@ namespace RoundHero
 {
     public class GamePlayInitData
     {
-        public int RandomSeed;
+        //public int RandomSeed;
         public EGamMode GameMode;
+        //public EPVEType PVEType;
         public List<Data_Player> PlayerDatas;
-        public EEnemyType EnemyType;
-        public EGameDifficulty GameDifficulty;
+        //public EEnemyType EnemyType;
+       //public EGameDifficulty GameDifficulty;
 
         public GamePlayInitData(int randomSeed, List<Data_Player> playerDatas)
         {
-            RandomSeed = randomSeed;
+            //RandomSeed = randomSeed;
             GameMode = EGamMode.PVP;
             PlayerDatas = playerDatas;
         }
         
-        public GamePlayInitData(int randomSeed, EGameDifficulty gameDifficulty)
+        public GamePlayInitData()
         {
-            RandomSeed = randomSeed;
+            //RandomSeed = randomSeed;
             GameMode = EGamMode.PVE;
-            GameDifficulty = gameDifficulty;
+            //PVEType = pveType;
+            //GameDifficulty = gameDifficulty;
         }
     }
     
@@ -63,10 +65,10 @@ namespace RoundHero
             return args;
         }
         
-        public static GamePlayInitGameEventArgs Create(int randomSeed, EGameDifficulty gameDifficulty)
+        public static GamePlayInitGameEventArgs Create()
         {
             var args = ReferencePool.Acquire<GamePlayInitGameEventArgs>();
-            args.GamePlayInitData = new GamePlayInitData(randomSeed, gameDifficulty);
+            args.GamePlayInitData = new GamePlayInitData();
             return args;
         }
         

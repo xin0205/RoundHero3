@@ -1694,9 +1694,12 @@ namespace RoundHero
         public Data_Battle LastActionBattleData = new ();
         public Data_Enemy EnemyData = new ();
         public EGamMode GameMode;
+        public EPVEType PVEType = EPVEType.Empty;
+        public BattleModeProduce BattleModeProduce = new BattleModeProduce();
         public int RandomSeed = -1;
         public bool IsTutorialBattle = false;
-        public bool IsTutorial = false;
+        //public bool IsTutorial = false;
+        public bool IsStartGame = false;
         
         public List<Data_Player> PlayerDatas = new();
         public Dictionary<ulong, Data_Player> PlayerDataIDDict = new ();
@@ -1759,6 +1762,8 @@ namespace RoundHero
             data.MapData = MapData.Copy();
             data.IsTutorialBattle = IsTutorialBattle;
             data.GameMode = GameMode;
+            data.PVEType = PVEType;
+            data.BattleModeProduce = BattleModeProduce.Copy();
             data.RandomSeed = RandomSeed;
 
             data.PlayerDatas.Clear();

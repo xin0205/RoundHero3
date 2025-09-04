@@ -79,6 +79,8 @@ namespace RoundHero
                     // if(actionUnit == null)
                     //     continue;
                     
+                    if(triggerData.ActionUnitGridPosIdx == -1)
+                        continue;
 
                     await InternalShowTag(triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx, !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx), triggerData.TriggerDataSubType == ETriggerDataSubType.Collision);
                     effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);

@@ -15,6 +15,7 @@ namespace RoundHero
         private List<PlayerCommonItemData> funes = new ();
 
         private GameObject parentForm;
+        
 
         //private List<int> cardIdxs = new List<int>();
 
@@ -146,7 +147,8 @@ namespace RoundHero
         {
             if (TempPlayerCommonItem != null)
             {
-                TempPlayerCommonItem.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                
+                TempPlayerCommonItem.transform.position = AreaController.Instance.UICamera.ScreenToWorldPoint(Input.mousePosition);
             }
         }
     }

@@ -70,8 +70,25 @@ namespace RoundHero
 
         }
 
+        public static class BattleMode
+        {
+            public static int MaxRewardCount = 3;
+        }
+
         public static class Battle
         {
+            public static Dictionary<EItemType, int> BattleModeRewardRatios = new ()
+            {
+                [EItemType.UnitCard] = 20,
+                [EItemType.TacticCard] = 20,
+                [EItemType.Fune] = 20,
+                [EItemType.Bless] = 20,
+                [EItemType.RemoveCard] = 8,
+                [EItemType.AddCardFuneSlots] = 8,
+                [EItemType.AddMaxHP] = 4,
+            };
+            
+            
             public static List<ERelativeCamp> AllRelativeCamps = new List<ERelativeCamp>()
             {
                 ERelativeCamp.Enemy,
@@ -1324,11 +1341,11 @@ namespace RoundHero
                         RoundGenerateUnitCount = new Dictionary<int, int>()
                         {
                             [0] = 2,
-                            [2] = 2,
-                            [4] = 2,
+                            // [2] = 2,
+                            // [4] = 2,
                         },
                         EachRoundUnitCount = 2,
-                        NormalUnitCount = 6,    
+                        NormalUnitCount = 2,    
                         EliteUnitCount = 0,
                         NormalUnitTypeCount = 2,
                         EliteUnitTypeCount = 0,
@@ -1471,8 +1488,8 @@ namespace RoundHero
             public static List<EItemType> AttributeItemTypes = new List<EItemType>()
             {
                 EItemType.Coin,
-                EItemType.HP,
-                EItemType.Heart,
+                EItemType.AddMaxHP,
+                //EItemType.Heart,
             };
             
             public static List<EItemType> CommonItemTypes = new List<EItemType>()
@@ -1488,7 +1505,7 @@ namespace RoundHero
                     InitBlesses = new List<EBlessID>()
                     {
                         //EBlessID.ShuffleCardAddCurHP,
-                        EBlessID.PassCardAcquireCard,
+                        //EBlessID.PassCardAcquireCard,
                         // 0,
                         // 1,
                         // 2,
@@ -2124,12 +2141,18 @@ namespace RoundHero
 
             public static Dictionary<EItemType, List<EEventType>> ItemTypeAppointEventTypeMap = new()
             {
-                [EItemType.Card] = new List<EEventType>()
+                [EItemType.TacticCard] = new List<EEventType>()
+                {
+                    //EEventType.Random_UnitCard,
+                    //EEventType.Random_TacticCard,
+                    EEventType.Appoint_TacticCard,
+                    EEventType.NegativeCard,
+                },
+                [EItemType.UnitCard] = new List<EEventType>()
                 {
                     //EEventType.Random_UnitCard,
                     //EEventType.Random_TacticCard,
                     EEventType.Appoint_UnitCard,
-                    EEventType.Appoint_TacticCard,
                     EEventType.NegativeCard,
                 },
                 [EItemType.Fune] = new List<EEventType>()
@@ -2151,12 +2174,21 @@ namespace RoundHero
             
             public static Dictionary<EItemType, List<EEventType>> ItemTypeEventTypeMap = new()
             {
-                [EItemType.Card] = new List<EEventType>()
+                [EItemType.TacticCard] = new List<EEventType>()
+                {
+                    
+                    EEventType.Random_TacticCard,
+                    EEventType.Appoint_TacticCard,
+                    EEventType.NegativeCard,
+                    EEventType.Card_Change,
+                    EEventType.Card_Copy,
+                    
+
+                },
+                [EItemType.UnitCard] = new List<EEventType>()
                 {
                     EEventType.Random_UnitCard,
-                    EEventType.Random_TacticCard,
                     EEventType.Appoint_UnitCard,
-                    EEventType.Appoint_TacticCard,
                     EEventType.NegativeCard,
                     EEventType.Card_Change,
                     EEventType.Card_Copy,
@@ -2180,7 +2212,7 @@ namespace RoundHero
                     EEventType.AddCoin,
                     EEventType.SubCoin,
                 },
-                [EItemType.HP] = new List<EEventType>()
+                [EItemType.AddMaxHP] = new List<EEventType>()
                 {
                     //EEventType.Random_Bless,
                     EEventType.AddHeroCurHP,

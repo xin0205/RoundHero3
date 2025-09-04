@@ -56,9 +56,10 @@ namespace RoundHero
             BattlePlayerData.ConsumeCards.Clear();
 
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
-            var funeIdx = FuneManager.Instance.GetIdx();
-            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
-            BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+            
+            // var funeIdx = FuneManager.Instance.GetIdx();
+            // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
+            // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
             //BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].CardDestination = ECardDestination.Consume;
 
             // funeIdx = FuneManager.Instance.GetIdx();
@@ -499,7 +500,7 @@ namespace RoundHero
                         battlePlayerData.HandCards.Add(cardID);
                         battlePlayerData.StandByCards.RemoveAt(i);
                         cardCount -= 1;
-                        card.IsPassable = true;
+                        //card.IsPassable = true;
                     }
                 }
             }
