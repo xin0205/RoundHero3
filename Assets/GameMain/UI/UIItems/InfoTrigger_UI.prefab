@@ -53,7 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   desc: Tips.HP
-  infoDelta: {x: 1, y: 1}
+  infoDelta: {x: 0.5, y: 0.5}
   infoParams:
     m_PersistentCalls:
       m_Calls: []

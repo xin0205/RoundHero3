@@ -352,8 +352,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1252705215993059387}
-        m_TargetAssemblyTypeName: RoundHero.UGuiForm, Assembly-CSharp
-        m_MethodName: Close
+        m_TargetAssemblyTypeName: RoundHero.ConfirmForm, Assembly-CSharp
+        m_MethodName: BGClose
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
