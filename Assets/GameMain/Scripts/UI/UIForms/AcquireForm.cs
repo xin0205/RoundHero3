@@ -51,7 +51,7 @@ namespace RoundHero
                 case EItemType.Bless:
                 case EItemType.Fune:
                 case EItemType.AddMaxHP:
-                case EItemType.AddCardFuneSlots:
+                case EItemType.AddCardFuneSlot:
                 case EItemType.RemoveCard:
                     commonIconItem.SetIcon(acquireFormData.ItemType, acquireFormData.ItemID);
                     break;

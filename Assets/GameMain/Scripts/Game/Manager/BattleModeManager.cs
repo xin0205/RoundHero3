@@ -14,7 +14,8 @@ namespace RoundHero
         public int Session;
         public BattleModeStage BattleModeStage;
         public int RewardRandomSeed;
-        public List<int> SelectIdxs = new List<int>();
+
+        public List<SelectAcquireItemData> selectAcquireItemDatas = new List<SelectAcquireItemData>();
 
         public BattleModeProduce Copy()
         {

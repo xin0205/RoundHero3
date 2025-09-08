@@ -146,11 +146,11 @@ namespace RoundHero
             
         }
         
-        public static void GetBlessText(int blessIdx, ref string name, ref string desc)
+        public static void GetBlessText(int blessID, ref string name, ref string desc)
         {
             //var blessData = BlessManager.Instance.GetBless(blessIdx);
             
-            var drBless = GameEntry.DataTable.GetBless(blessIdx);
+            var drBless = GameEntry.DataTable.GetBless(blessID);
             
             var blessName =
                 Utility.Text.Format(Constant.Localization.BlessName, drBless.Id); 
@@ -201,7 +201,7 @@ namespace RoundHero
                     name = Constant.Localization.ItemTypeName_AddMaxHP;
                     desc = Constant.Localization.ItemTypeDesc_AddMaxHP;
                     break;
-                case EItemType.AddCardFuneSlots:
+                case EItemType.AddCardFuneSlot:
                     name = Constant.Localization.ItemTypeName_AddCardFuneSlots;
                     desc = Constant.Localization.ItemTypeDesc_AddCardFuneSlots;
                     break;

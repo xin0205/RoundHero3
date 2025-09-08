@@ -121,14 +121,14 @@ namespace RoundHero
                 
             
             
-            var runeIdx = TempPlayerCommonItem.PlayerCommonItemData
+            var funeIdx = TempPlayerCommonItem.PlayerCommonItemData
                 .ItemIdx;
             
             ClearDrop();
             
-            GameManager.Instance.CardsForm_EquipFuneIdxs.Add(runeIdx);
-            cardData.FuneIdxs.Add(runeIdx);
-            BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(runeIdx);
+            GameManager.Instance.CardsForm_EquipFuneIdxs.Add(funeIdx);
+            cardData.FuneIdxs.Add(funeIdx);
+            BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(funeIdx);
 
             cardForm.RefreshView();
         }

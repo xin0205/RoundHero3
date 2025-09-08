@@ -14,7 +14,7 @@ namespace RoundHero
         AddMaxHP,
         //Heart,
         RemoveCard,
-        AddCardFuneSlots,
+        AddCardFuneSlot,
         
     }
     

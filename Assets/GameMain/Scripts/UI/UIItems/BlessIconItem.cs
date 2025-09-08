@@ -60,8 +60,8 @@ namespace RoundHero
             var blessName = "";
             var blessDesc = "";
             
-            
-            GameUtility.GetBlessText(blessIdx, ref blessName, ref blessDesc);
+            var blessData = BlessManager.Instance.GetBlessTable(blessIdx);
+            GameUtility.GetBlessText(blessData.Id, ref blessName, ref blessDesc);
             
             var uiForm = await GameEntry.UI.OpenInfoFormAsync(new InfoFormParams()
             {

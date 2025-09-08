@@ -42,7 +42,14 @@ namespace RoundHero
             return null;
         }
         
-        
+        public DRBless GetBlessTable(int blessIdx)
+        {
+            if (!BlessDatas.ContainsKey(blessIdx))
+                return null;
+            
+            return GameEntry.DataTable.GetBless(BlessDatas[blessIdx].BlessID);   
+
+        }
         
         public void TriggerAction(List<EBlessID> blessIDs)
         {

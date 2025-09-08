@@ -45,6 +45,7 @@ namespace RoundHero
             // switchViewToggle.isOn = true;
             // switchViewToggle.isOn = false;
             GameEntry.Event.Subscribe(RefreshCardsFormEventArgs.EventId, OnRefreshCardsForm);
+            GameEntry.Event.Subscribe(UnEquipFuneEventArgs.EventId, OnUnEquipFune);
         }
 
         
@@ -53,7 +54,14 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             GameEntry.Event.Unsubscribe(RefreshCardsFormEventArgs.EventId, OnRefreshCardsForm);
+            GameEntry.Event.Unsubscribe(UnEquipFuneEventArgs.EventId, OnUnEquipFune);
             GameManager.Instance.CardsForm_EquipFuneIdxs.Clear();
+        }
+        
+        public void OnUnEquipFune(object sender, GameEventArgs e)
+        {
+            var ne = e as UnEquipFuneEventArgs;
+            GameManager.Instance.CardsForm_EquipFuneIdxs.Remove(ne.FuneIdx);
         }
 
         public void ConfirmClose()
@@ -71,6 +79,26 @@ namespace RoundHero
                     Close();
                 },
             });
+        }
+
+        public void Back()
+        {
+            foreach (var kv in CardManager.Instance.CardDatas)
+            {
+                for (int i = GameManager.Instance.CardsForm_EquipFuneIdxs.Count - 1; i >= 0; i--)
+                {
+                    var equipFuneIdx = GameManager.Instance.CardsForm_EquipFuneIdxs[i];
+                    if (kv.Value.FuneIdxs.Contains(equipFuneIdx))
+                    {
+                        kv.Value.FuneIdxs.Remove(equipFuneIdx);
+                    }
+                }
+
+                
+            }
+            
+            Close();
+
         }
         
         public void OnRefreshCardsForm(object sender, GameEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameFramework;
 using UnityEngine;
 
@@ -31,6 +32,8 @@ namespace RoundHero
         [SerializeField] private GameObject unitBattleData;
         
         [SerializeField] private Text actionTimeStr;
+        
+        [SerializeField] private List<PlayerCommonItem> funeList = new List<PlayerCommonItem>();
         
         protected override void OnOpen(object userData)
         {
@@ -71,6 +74,10 @@ namespace RoundHero
             playerCardItem.gameObject.SetActive(false);
             unitBattleData.SetActive(false);
             gridDescItem.gameObject.SetActive(false);
+            foreach (var playerCommonItem in funeList)
+            {
+                playerCommonItem.gameObject.SetActive(false);
+            }
             
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
@@ -94,6 +101,27 @@ namespace RoundHero
                 unitDescItem.SetDesc(name, power, desc);
                 actionTimeStr.text = (unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes +
                                       unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes).ToString();
+                
+                var idx = 0;
+                foreach (var funeIdx in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.FuneIdxs)
+                {
+                    var funeData = FuneManager.Instance.GetFuneData(funeIdx);
+                    if(idx >= funeList.Count)
+                        break;
+                        
+                    funeList[idx].gameObject.SetActive(true);
+                    funeList[idx].SetItemData(new PlayerCommonItemData()
+                    {
+                        ItemIdx = funeIdx,
+                        CommonItemData = new CommonItemData()
+                        {
+                            ItemType = EItemType.Fune,
+                            ItemID = funeData.FuneID,
+
+                        }
+                    }, null, null);
+                    idx++;
+                }
                 
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
@@ -129,6 +157,29 @@ namespace RoundHero
                     actionTimeStr.text = (unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes +
                                           unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes)
                         .ToString();
+
+                    
+                    var idx = 0;
+                    foreach (var funeIdx in cardData.FuneIdxs)
+                    {
+                        var funeData = FuneManager.Instance.GetFuneData(funeIdx);
+                        if(idx >= funeList.Count)
+                            break;
+                        
+                        funeList[idx].gameObject.SetActive(true);
+                        funeList[idx].SetItemData(new PlayerCommonItemData()
+                        {
+                            ItemIdx = funeIdx,
+                            CommonItemData = new CommonItemData()
+                            {
+                                ItemType = EItemType.Fune,
+                                ItemID = funeData.FuneID,
+
+                            }
+                        }, null, null);
+                        idx++;
+                    }
+
                 }
             }
             
@@ -146,7 +197,9 @@ namespace RoundHero
                 gridDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
                     GameEntry.Localization.GetString(gridTypeDesc));
             }
-
+            
+           
+            
             
             //Vector3 mousePosition = Input.mousePosition;
             

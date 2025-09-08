@@ -1468,7 +1468,7 @@ namespace RoundHero
 
                 if (!changeHPInstantly)
                 {
-                    AddMoveValue(changeHP, changeHP, -1, false,
+                    AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
                         this is BattleSoliderEntity && changeHP < 0, moveParams,
                         targetMoveParams);
                     //AddHurts(changeHP);
@@ -1476,7 +1476,7 @@ namespace RoundHero
                 // if (hpDelta != 0)
                 else
                 {
-                    AddMoveValue(changeHP, changeHP, -1, false,
+                    AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
                         this is BattleSoliderEntity && changeHP < 0, moveParams,
                         targetMoveParams);
                     //AddHurts(hpDelta);
@@ -1528,16 +1528,31 @@ namespace RoundHero
             if (showMoveValueTime > 0.3f)
             {
                 showMoveValueTime = 0;
-                var data = moveValueQueue.Dequeue();
+                
                 BattleMoveValueEntity entity = null;
-                //await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
-                if (data is BattleMoveValueEntityData battleMoveValueEntityData)
+
+                BattleMoveValueEntityData data = null;
+                do
                 {
-                    entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(battleMoveValueEntityData);
-                }
-                else if (data is UnitStateIconValueEntityData unitStateIconValueEntityData)
+                    data = null;
+                    if (moveValueQueue.Count > 0)
+                    {
+                        data = moveValueQueue.Dequeue();
+                    }
+                } while(data != null && data.EntityIdx < ShowValueEntityIdx);
+                
+                if(data == null)
+                    return;
+                
+                //var data = moveValueQueue.Dequeue();
+
+                if (data is UnitStateIconValueEntityData unitStateIconValueEntityData)
                 {
                     entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(unitStateIconValueEntityData);
+                }
+                else if (data is BattleMoveValueEntityData battleMoveValueEntityData)
+                {
+                    entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(battleMoveValueEntityData);
                 }
                 
                 if (GameEntry.Entity.HasEntity(entity.Id))

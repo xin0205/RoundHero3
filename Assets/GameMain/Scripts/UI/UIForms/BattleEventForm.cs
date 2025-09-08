@@ -225,8 +225,9 @@ namespace RoundHero
             return battleEventItemData;
         }
         
-        private void CopyCard(int cardIdx)
+        private void CopyCard(int cardIdx, object clickParams)
         {
+            
             var battleEventItemData = GetCurrentBattleEventItemData();
             battleEventItemData.EventValues.Add(cardIdx);
             
@@ -269,7 +270,7 @@ namespace RoundHero
             
         }
         
-        private void RemoveCard(int cardIdx)
+        private void RemoveCard(int cardIdx, object clickParams)
         {
             var battleEventItemData = GetCurrentBattleEventItemData();
             battleEventItemData.EventValues.Add(cardIdx);
@@ -312,7 +313,7 @@ namespace RoundHero
             
         }
         
-        private void ChangeCard(int cardIdx)
+        private void ChangeCard(int cardIdx, object clickParams)
         {
             var battleEventItemData = GetCurrentBattleEventItemData();
             battleEventItemData.EventValues.Add(cardIdx);

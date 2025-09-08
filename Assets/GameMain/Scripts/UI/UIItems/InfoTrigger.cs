@@ -34,13 +34,25 @@ namespace RoundHero
         public void SetDescParams(List<string> paramList)
         {
             descParams = paramList;
+            if (descParams.Count > 0)
+            {
+                name = descParams[0];
+            }
+            if (descParams.Count > 1)
+            {
+                desc = descParams[1];
+            }
 
+            
         }
 
         public async void ShowInfo()
         {
+            
+            if(string.IsNullOrEmpty(name) && string.IsNullOrEmpty(desc))
+                return;
+            
             isShowInfo = true;
-
             // var mousePosition = Vector2.zero;
             // RectTransformUtility.ScreenPointToLocalPointInRectangle(AreaController.Instance.Canvas.transform as RectTransform,
             //         Input.mousePosition, AreaController.Instance.UICamera, out mousePosition);

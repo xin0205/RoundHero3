@@ -105,9 +105,13 @@ namespace RoundHero
             public const string ItemTypeDesc_RemoveCard = "ItemTypeDesc.RemoveCard";
             public const string Message_RewardMaxCount = "Message.RewardMaxCount";
             
-            
-            public const string Tips_BattleModeRewardSelectItem = "Tips.BattleModeRewardSelectItem";
+            public const string Tips_AddCardFuneSlot = "Tips.AddCardFuneSlot";
+            public const string Message_ConfirmUnAddCardFuneSlot = "Message.ConfirmUnAddCardFuneSlot";
+            public const string Message_ConfirmAddCardFuneSlot = "Message.ConfirmAddCardFuneSlot";
 
+            public const string Tips_BattleModeRewardSelectItem = "Tips.BattleModeRewardSelectItem";
+            public const string Tips_BattleSession = "Tips.BattleSession";
+            
             public static Dictionary<EHPDeltaOwnerType, string> HPDeltaOwners =
                 new Dictionary<EHPDeltaOwnerType, string>()
                 {
@@ -120,7 +124,8 @@ namespace RoundHero
 
             
             public static string EHPDeltaType = "EHPDeltaType.{0}";
-
+            public const string Info_SelectCard = "Info.SelectCard";
+            public const string Info_UnSelectCard = "Info.UnSelectCard";
         }
     }
 }

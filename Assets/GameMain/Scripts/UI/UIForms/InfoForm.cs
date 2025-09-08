@@ -27,6 +27,15 @@ namespace RoundHero
             base.OnOpen(userData);
 
             infoFormParams = userData as InfoFormParams;
+
+            SetText(infoFormParams);
+
+
+        }
+
+        public void SetText(InfoFormParams infoFormParams)
+        {
+            this.infoFormParams = infoFormParams;
             
             name.gameObject.SetActive(!string.IsNullOrEmpty(infoFormParams.Name));
             desc.gameObject.SetActive(!string.IsNullOrEmpty(infoFormParams.Desc));
@@ -69,8 +78,6 @@ namespace RoundHero
 
                 root.transform.position = pos;
             }
-
-
         }
     }
 

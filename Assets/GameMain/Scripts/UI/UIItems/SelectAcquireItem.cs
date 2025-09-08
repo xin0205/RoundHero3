@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Animancer;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,6 +10,16 @@ namespace RoundHero
         public EItemType ItemType;
         public int ItemID;
         public bool IsSelected;
+
+        public SelectAcquireItemData Copy()
+        {
+            var selectAcquireItemData = new SelectAcquireItemData();
+            selectAcquireItemData.ItemType = ItemType;
+            selectAcquireItemData.ItemID = ItemID;
+            selectAcquireItemData.IsSelected = IsSelected;
+
+            return selectAcquireItemData;
+        }
     }
     
     public class SelectAcquireItem : MonoBehaviour
@@ -52,12 +62,19 @@ namespace RoundHero
             //selectIcon.SetActive(isSelect);
         }
         
+        public void SetSelect(bool isSelect)
+        {
+            this.isSelect = isSelect;
+            selectGameObject.SetActive(this.isSelect);
+
+        }
+        
         public void SetItemData(SelectAcquireItemData selectAcquireItemData, Action<int> onClick, int itemIndex)
         {
             this.selectAcquireItemData = selectAcquireItemData;
             this.onClickAction = onClick;
             this.itemIdx = itemIndex;
-            
+            SetSelect(selectAcquireItemData.IsSelected);
             cardItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.TacticCard || selectAcquireItemData.ItemType == EItemType.UnitCard);
             commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType != EItemType.TacticCard && selectAcquireItemData.ItemType != EItemType.UnitCard);
             

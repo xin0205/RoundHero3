@@ -72,28 +72,28 @@ namespace RoundHero
         }
 
         
-        public void StartGame()
-        {
-  
-            CloseForm();
-            procedureStart.StartSelect();
-        }
-
-
-        public void ContinueGame()
-        {
-            CloseForm();
-            //GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(GamePlayManager.Instance.GamePlayData.RandomSeed, EEnemyType.Normal));
-
-            GamePlayManager.Instance.InitPlayerData();
-            procedureStart.ContinueGame();
-        }
-
-        public void RestartGame()
-        {
-            CloseForm();
-            procedureStart.RestartGameTest();
-        }
+        // public void StartGame()
+        // {
+        //
+        //     CloseForm();
+        //     procedureStart.StartSelect();
+        // }
+        //
+        //
+        // public void ContinueGame()
+        // {
+        //     CloseForm();
+        //     //GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(GamePlayManager.Instance.GamePlayData.RandomSeed, EEnemyType.Normal));
+        //
+        //     GamePlayManager.Instance.InitPlayerData();
+        //     procedureStart.ContinueGame();
+        // }
+        //
+        // public void RestartGame()
+        // {
+        //     CloseForm();
+        //     procedureStart.RestartGameTest();
+        // }
 
         public void StartTest()
         {

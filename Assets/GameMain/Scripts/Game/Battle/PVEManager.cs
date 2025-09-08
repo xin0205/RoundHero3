@@ -284,12 +284,10 @@ namespace RoundHero
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartBuff)
             {
-                HeroManager.Instance.UpdateCacheHPDelta();
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStartUnit;
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStartUnit)
             {
-                HeroManager.Instance.UpdateCacheHPDelta();
                 BattleFightManager.Instance.ActionProgress = EActionProgress.SoliderAttack;
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.SoliderAttack)

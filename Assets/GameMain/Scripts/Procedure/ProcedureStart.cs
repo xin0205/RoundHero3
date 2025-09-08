@@ -134,32 +134,47 @@ namespace RoundHero
 
         public void ContinueGame()
         {
+
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                
+                
+                if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+                {
+                    if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Battle)
+                    {
+                        ContinueBattle();
+                    }
+                    else if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage ==
+                             BattleModeStage.Reward)
+                    {
+                        BattleModeReward();
+                    }
+
+
+                }
+                else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
+                {
+                    ContinueBattle();
+                }
+            }
+            
+            
+            
+        }
+        
+        public void ContinueBattle()
+        {
+            
+            
             PVEManager.Instance.Enter();
             PVEManager.Instance.Init();
             GamePlayManager.Instance.Contitnue();
             
-            ChangeState<ProcedureGamePlay>(procedureOwner);
-                
-            var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
-            //gamePlayProcedure.ShowMap();
-            
             var random = new Random(GamePlayManager.Instance.GamePlayData.RandomSeed);
-
-            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
-            {
-                if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Battle)
-                {
-                    gamePlayProcedure.StartBattle(random.Next());
-                }
-                else if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Reward)
-                {
-                    
-                
-            }
-            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
-            {
-                gamePlayProcedure.StartTest(random.Next());
-            }
+            ChangeState<ProcedureGamePlay>(procedureOwner);
+            var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
+            gamePlayProcedure.StartBattle(random.Next());
             
             
         }
@@ -181,21 +196,13 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Reward;
             DataManager.Instance.Save();
 
-            GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
-                BattleModeManager.Instance.Random.Next(0, Constant.Game.RandomRange);
+            
             GameEntry.UI.OpenUIForm(UIFormId.BattleModeRewardForm, this);
         }
         
         public void RestartBattleMode()
         {
-            Reset(EPVEType.Battle);
-            GameManager.Instance.TmpInitCards = new List<int>()
-            {
-                0, 0, 0, 1, 1, 1, 2, 2, 2, 3
-            };
             
-            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
-            DataManager.Instance.DataGame.User.SetCurGamePlayData(GamePlayManager.Instance.GamePlayData.PVEType);
             GameEntry.UI.OpenUIForm(UIFormId.SelectDifficultyForm, this);
             
             

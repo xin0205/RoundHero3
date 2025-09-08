@@ -832,8 +832,10 @@ namespace RoundHero
             if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.Card)
             {
                 var cardIdx = BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx;
-                BattleCardManager.Instance.CardEntities[cardIdx].UseCardAnimation(gridPosIdx);
+                var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
                 BattleCardManager.Instance.UseCard(cardIdx, unitID);
+                //符文，打出，回到抽牌顶端 需要在UseCard之后
+                cardEntity.UseCardAnimation(gridPosIdx);
                 
             }
             else if (BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType == TriggerBuffType.EnergyBuff)

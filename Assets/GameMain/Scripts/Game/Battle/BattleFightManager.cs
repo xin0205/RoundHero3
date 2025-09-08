@@ -1706,8 +1706,8 @@ namespace RoundHero
                         case ECardTriggerType.ToConsume:
                             if (triggerData.TriggerCardIdx != -1)
                             {
-                                var cardEntity = BattleCardManager.Instance.GetCardEntity(triggerData.TriggerCardIdx);
-                                cardEntity.BattleCardEntityData.CardData.CardDestination = ECardDestination.Consume;
+                                var cardData = BattleCardManager.Instance.GetCardData(triggerData.TriggerCardIdx);
+                                cardData.CardDestination = ECardDestination.Consume;
                                 
                             }
                             else if (actionUnitEntity is BattleSoliderEntity ToConsume_solider)
@@ -1718,8 +1718,8 @@ namespace RoundHero
                         case ECardTriggerType.ToStandBy:
                             if (triggerData.TriggerCardIdx != -1)
                             {
-                                var cardEntity = BattleCardManager.Instance.GetCardEntity(triggerData.TriggerCardIdx);
-                                cardEntity.BattleCardEntityData.CardData.CardDestination = ECardDestination.StandBy;
+                                var cardData = BattleCardManager.Instance.GetCardData(triggerData.TriggerCardIdx);
+                                cardData.CardDestination = ECardDestination.StandBy;
                                 
                             }
                             else if (actionUnitEntity is BattleSoliderEntity ToStandBy_solider)
@@ -1897,6 +1897,7 @@ namespace RoundHero
 
             GameUtility.DelayExcute(isAttack ? 1f : 0.5f, () =>
             {
+                HeroManager.Instance.UpdateCacheHPDelta();
                 BattleManager.Instance.ContinueAction();
             });
 

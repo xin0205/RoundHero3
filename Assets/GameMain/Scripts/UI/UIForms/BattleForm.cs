@@ -33,6 +33,7 @@ namespace RoundHero
         [SerializeField] private GameObject tipsNode;
 
         [SerializeField] private GameObject endRoundNode;
+        [SerializeField] private GameObject reactionNode;
         
         [SerializeField] private Text tips;
         [SerializeField] private Text randomSeed;
@@ -96,6 +97,8 @@ namespace RoundHero
             
             //energyBuffBarUItem.Init(BattlePlayerManager.Instance.PlayerData.BattleHero);
             tipsNode.SetActive(false);
+            endRoundNode.SetActive(false);
+            reactionNode.SetActive(false);
             
             randomSeed.text = GamePlayManager.Instance.GamePlayData.RandomSeed.ToString();
 
@@ -111,12 +114,15 @@ namespace RoundHero
             }
 
             battleSession.gameObject.SetActive(false);
+            
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
             {
                 battleSession.gameObject.SetActive(true);
-                battleSession.text = (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1).ToString();
-            }
+                battleSession.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_BattleSession,
+                    GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1, Constant.BattleMode.MaxBattleCount);
 
+            }
+            
         }
 
         private void ShowRoundTips(int round)
@@ -244,6 +250,7 @@ namespace RoundHero
             //ShowActionTips(ne.IsUs);
 
             endRoundNode.SetActive(ne.IsUs);
+            reactionNode.SetActive(ne.IsUs);
         }
         
         public void OnRefreshRound(object sender, GameEventArgs e)
@@ -386,8 +393,10 @@ namespace RoundHero
             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
             var cardIdx = BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx;
             
-            BattleCardManager.Instance.CardEntities[cardIdx].UseCardAnimation();
+            var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
             BattleCardManager.Instance.UseCard(cardIdx);
+            //符文，打出，回到抽牌顶端 需要在UseCard之后
+            cardEntity.UseCardAnimation();
 
             if (battleState == EBattleState.MoveGrid)
             {

@@ -104,7 +104,7 @@ namespace RoundHero
             cardsForm = uiForm.Logic as CardsForm;
         }
 
-        public void CardAddFuneClickAction(int cardIdx)
+        public void CardAddFuneClickAction(int cardIdx, object clickParams)
         {
             var cardData = CardManager.Instance.GetCard(cardIdx);
             if (cardData.MaxFuneCount >= Constant.Card.MaxFuneCount)

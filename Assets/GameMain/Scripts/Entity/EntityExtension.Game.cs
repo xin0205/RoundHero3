@@ -72,7 +72,7 @@ namespace RoundHero
             //battleEnemyData.UnitRole = EUnitRole.Staff;
             
             //battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 1);
-            battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 1);
+            //battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 1);
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);
 

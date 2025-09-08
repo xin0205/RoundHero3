@@ -196,6 +196,8 @@ namespace RoundHero
         Difficulty1,
         Difficulty2,
         Difficulty3,
+        Difficulty4,
+        Difficulty5,
     }
 
     public enum EActionType

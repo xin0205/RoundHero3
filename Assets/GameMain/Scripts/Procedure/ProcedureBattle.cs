@@ -194,6 +194,8 @@ namespace RoundHero
                 }
                 else if(battleResult == EBattleResult.Success)
                 {
+                    GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
+                        BattleModeManager.Instance.Random.Next(0, Constant.Game.RandomRange);
                     procedureStart.BattleModeReward();
                 }
 

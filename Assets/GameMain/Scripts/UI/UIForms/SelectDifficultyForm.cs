@@ -42,9 +42,29 @@ namespace RoundHero
         {
             Diffculty(EGameDifficulty.Difficulty3);
         }
+        
+        public void Diffculty4()
+        {
+            Diffculty(EGameDifficulty.Difficulty4);
+        }
+        
+        public void Diffculty5()
+        {
+            Diffculty(EGameDifficulty.Difficulty5);
+        }
 
         public void Diffculty(EGameDifficulty difficulty)
         {
+            procedureStart.Reset(EPVEType.Battle);
+            GameManager.Instance.TmpInitCards = new List<int>()
+            {
+                0, 0, 0, 1, 1, 1, 2, 2, 2, 3
+            };
+            
+            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
+            DataManager.Instance.DataGame.User.SetCurGamePlayData(GamePlayManager.Instance.GamePlayData.PVEType);
+            
+            
             DataManager.Instance.DataGame.User.DefaultInitSelectCards =
                 new List<int>(GameManager.Instance.TmpInitCards);
             

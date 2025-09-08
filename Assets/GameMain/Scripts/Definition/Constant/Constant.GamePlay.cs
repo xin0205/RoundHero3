@@ -73,6 +73,8 @@ namespace RoundHero
         public static class BattleMode
         {
             public static int MaxRewardCount = 3;
+            public static int MaxFuneCount = 2;
+            public static int MaxBattleCount = 12;
         }
 
         public static class Battle
@@ -84,7 +86,7 @@ namespace RoundHero
                 [EItemType.Fune] = 20,
                 [EItemType.Bless] = 20,
                 [EItemType.RemoveCard] = 8,
-                [EItemType.AddCardFuneSlots] = 8,
+                [EItemType.AddCardFuneSlot] = 8,
                 [EItemType.AddMaxHP] = 4,
             };
             
@@ -1496,6 +1498,9 @@ namespace RoundHero
             {
                 EItemType.Bless,
                 EItemType.Fune,
+                EItemType.AddCardFuneSlot,
+                EItemType.AddMaxHP,
+                EItemType.RemoveCard,
             };
             
             public static Dictionary<EUnitCamp, InitData> InitDatas = new()
@@ -1529,7 +1534,7 @@ namespace RoundHero
                             CardID = 0,
                             FuneIDs = new List<int>()
                             {
-                                //0
+                                1
                             }
                         },
                         new()

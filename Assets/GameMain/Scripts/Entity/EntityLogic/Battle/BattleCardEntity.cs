@@ -68,6 +68,9 @@ namespace RoundHero
         
         [SerializeField]
         private InfoTrigger attackInfoTrigger;
+        
+        [SerializeField]
+        private InfoTrigger cardInfoTrigger;
 
         [SerializeField] private GameObject ConfirmGO;
         [SerializeField] private GameObject PassCardGO;
@@ -82,6 +85,8 @@ namespace RoundHero
         
         [SerializeField]
         private ScaleGameObject scaleGameObject;
+        
+        [SerializeField] private PlayerCardFuneList PlayerCardFuneList;
         
         private Rect rect;
         private bool isInside;
@@ -131,7 +136,7 @@ namespace RoundHero
             //
             // attackCheckMark.SetActive(false);
             // moveCheckMark.SetActive(false);                                                                                                                                                                                                                                                                    
-            
+            PlayerCardFuneList.Init(this.BattleCardEntityData.CardIdx, false);
         
             
 
@@ -202,6 +207,14 @@ namespace RoundHero
         
         public void OnPointerEnter()
         { 
+            //isShow && 
+            cardInfoTrigger.SetDescParams(new List<string>()
+            {
+                "",
+                BattleManager.Instance.BattleState != EBattleState.UseCard ? Constant.Localization.Info_UnSelectCard : Constant.Localization.Info_SelectCard,
+            });
+            
+            
             if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
               TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
               TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
@@ -222,6 +235,8 @@ namespace RoundHero
                 if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
                     return;
             }
+            
+            
             
             PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable);
             
@@ -521,7 +536,7 @@ namespace RoundHero
                 
 
             });
-            
+            BattleCardManager.Instance.SetCardsPos();
             
 
         }

@@ -13,9 +13,10 @@ namespace RoundHero
     {
         public string Tips;
         public List<ECardType> ShowCardTypes = new List<ECardType>();
-        public Action<int> OnClickAction;
+        public Action<int, object> OnClickAction;
         public Action OnCloseAction;
         public bool IsShowAllFune;
+        public object ClickParams;
 
     }
     
@@ -65,11 +66,12 @@ namespace RoundHero
             }
 
             GameEntry.Event.Subscribe(RefreshCardsFormEventArgs.EventId, OnRefreshCardsForm);
+            
         }
 
         public void OnClick(int cardIdx)
         {
-            cardsFormParams.OnClickAction?.Invoke(cardIdx);
+            cardsFormParams.OnClickAction?.Invoke(cardIdx, cardsFormParams.ClickParams);
         }
 
         protected override void OnClose(bool isShutdown, object userData)
@@ -78,6 +80,8 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshCardsFormEventArgs.EventId, OnRefreshCardsForm);
             
         }
+        
+        
 
         public void ConfirmClose()
         {

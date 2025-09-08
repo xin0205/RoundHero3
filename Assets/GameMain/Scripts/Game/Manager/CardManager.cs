@@ -189,5 +189,16 @@ namespace RoundHero
             return damage;
         }
 
+        public void RemoveCard(int cardIdx)
+        {
+            var cardData = CardManager.Instance.GetCard(cardIdx);
+            foreach (var funeIdx in cardData.FuneIdxs)
+            {
+                BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(funeIdx);
+            }
+            cardData.FuneIdxs.Clear();
+            CardManager.Instance.CardDatas.Remove(cardIdx);
+        }
+
     }
 }

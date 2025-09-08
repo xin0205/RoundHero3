@@ -14,6 +14,7 @@ namespace RoundHero
         public Dictionary<int, BattleCardEntity> CardEntities = new();
         //public int PointerCardIdx = -1;
         public List<int> HandCardIdxs = new();
+        
 
         public Data_Battle BattleData => DataManager.Instance.DataGame.User.CurGamePlayData.BattleData;
 
@@ -57,9 +58,9 @@ namespace RoundHero
 
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
             
-            // var funeIdx = FuneManager.Instance.GetIdx();
-            // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
-            // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+            var funeIdx = FuneManager.Instance.GetIdx();
+            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 1));
+            BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
             //BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].CardDestination = ECardDestination.Consume;
 
             // funeIdx = FuneManager.Instance.GetIdx();
@@ -492,12 +493,12 @@ namespace RoundHero
 
                 for (int i = battlePlayerData.StandByCards.Count - 1; i >= 0; i--)
                 {
-                    var cardID = battlePlayerData.StandByCards[i];
-                    var card = BattleManager.Instance.GetCard(cardID);
+                    var cardIdx = battlePlayerData.StandByCards[i];
+                    var card = BattleFightManager.Instance.GetCard(cardIdx);
                     
                     if (card.FuneCount(EBuffID.Spec_FirstRound) > 0)
                     {
-                        battlePlayerData.HandCards.Add(cardID);
+                        battlePlayerData.HandCards.Add(cardIdx);
                         battlePlayerData.StandByCards.RemoveAt(i);
                         cardCount -= 1;
                         //card.IsPassable = true;
@@ -525,7 +526,7 @@ namespace RoundHero
                 }
 
                 var cardIdx = battlePlayerData.StandByCards[0];
-                var card = BattleManager.Instance.GetCard(cardIdx);
+                var card = BattleFightManager.Instance.GetCard(cardIdx);
                 var firstRoundPassCardAcquireCard =
                     BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
                         EBlessID.FirstRoundPassCardAcquireCard,
@@ -849,6 +850,7 @@ namespace RoundHero
             //var card = BattleManager.Instance.GetCard(cardIdx);
 
             var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
+            
             RemoveHandCard(cardIdx);
             
             if (BattleManager.Instance.CurUnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
@@ -885,6 +887,8 @@ namespace RoundHero
             BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitIdx);
 
             BattleBuffManager.Instance.TriggerBuff();
+            
+            
             
             if (BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Contains(EBuffID.Spec_NextCardSubEnergy))
             {
@@ -1344,7 +1348,7 @@ namespace RoundHero
             foreach (var triggerData in triggerDatas)
             {
                 var effectUnit = GameUtility.GetUnitByIdx(gamePlayData, triggerData.EffectUnitIdx);
-                if (effectUnit.CurHP <= 0)
+                if (effectUnit != null && effectUnit.CurHP <= 0)
                 {
                     isEffectUnitDead = true;
                     break;
@@ -1666,6 +1670,13 @@ namespace RoundHero
             {
                 return null;
             }
+        }
+        
+        public Data_Card GetCardData(int cardIdx)
+        {
+            return CardManager.Instance.GetCard(cardIdx);
+            
+            
         }
 
         public void RefreshSelectCard()

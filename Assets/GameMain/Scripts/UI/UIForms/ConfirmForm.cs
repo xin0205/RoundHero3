@@ -79,8 +79,8 @@ namespace RoundHero
          
         public void OnCloseButtonClick()
         {
-            if (!confirmFormParams.IsCloseAvailable)
-                return;
+            // if (!confirmFormParams.IsCloseAvailable)
+            //     return;
             
             Close();
 
@@ -88,6 +88,14 @@ namespace RoundHero
             {
                 confirmFormParams.OnClose();
             }
+        }
+
+        public void BGClose()
+        {
+            if (!confirmFormParams.IsCloseAvailable)
+                return;
+            
+            Close();
         }
 
     }
