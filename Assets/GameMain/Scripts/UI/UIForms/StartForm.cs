@@ -65,6 +65,20 @@ namespace RoundHero
             base.OnClose(isShutdown, userData);
         }
 
+        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Exit();
+            }
+        }
+
+        public void Exit()
+        {
+            Application.Quit();
+        }
+
         public void CloseForm()
         {
             GameEntry.Entity.HideEntity(procedureStart.StartEntity);

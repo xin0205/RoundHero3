@@ -29,17 +29,13 @@ namespace RoundHero
             "Sound",
             "UIForm",
             "UISound",
+            
             "Card",
             "Enemy",
             "Buff",
-            //"Fune",
-            //"Link",
             "Bless",
             "GridProp",
-            //"EnergyBuff",
             "Hero",
-
-            
         };
         
         public static readonly string[] LocalizationDataTableNames = new string[]
