@@ -8,7 +8,7 @@ using UnityEngine;
 namespace HeathenEngineering.SteamworksIntegration.API
 {
     /// <summary>
-    /// Steam Input API is a flexible action-based API that supports all major controller types - Xbox, Playstation, Nintendo Switch Pro, and Steam Controllers.
+    /// Steam Input API is a flexible action-based API that supports all major controller types - Xbox, PlayStation, Nintendo Switch Pro, and Steam Controllers.
     /// </summary>
     /// <remarks>
     /// https://partner.steamgames.com/doc/api/isteaminput
@@ -243,7 +243,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// Reconfigure the controller to use the specified action set (ie "Menu", "Walk", or "Drive").
             /// </summary>
             /// <param name="controllerHandle">The handle of the controller you want to activate an action set for.</param>
-            /// <param name="actionSet">The name of the set to use ... we will read this from cashe if available or fetch it if required</param>
+            /// <param name="actionSet">The name of the set to use ... we will read this from cache if available or fetch it if required</param>
             public static void ActivateActionSet(InputHandle_t controllerHandle, string actionSet)
             {
                 if (m_inputActionSetHandles.ContainsKey(actionSet))
@@ -278,7 +278,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// Reconfigure the controller to use the specified action set (ie "Menu", "Walk", or "Drive").
             /// </summary>
             /// <param name="controllerHandle">The handle of the controller you want to activate an action set for.</param>
-            /// <param name="actionSet">The name of the set to use ... we will read this from cashe if available or fetch it if required</param>
+            /// <param name="actionSet">The name of the set to use ... we will read this from cache if available or fetch it if required</param>
             public static void ActivateActionSetLayer(InputHandle_t controllerHandle, string actionSet)
             {
                 if (m_inputActionSetHandles.ContainsKey(actionSet))
@@ -517,7 +517,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// <returns></returns>
             public static int GetGamepadIndexForController(InputHandle_t controllerHandle) => SteamInput.GetGamepadIndexForController(controllerHandle);
             /// <summary>
-            /// Get and cashe glyph images
+            /// Get and cache glyph images
             /// </summary>
             /// <param name="origin"></param>
             /// <returns></returns>
@@ -647,8 +647,8 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// Get an action origin that you can use in your glyph look up table or passed into GetGlyphForActionOrigin or GetStringForActionOrigin
             /// </summary>
             /// <param name="controllerHandle"></param>
-            /// <param name="orgin"></param>
-            public static void GetActionOrginFromXboxOrigin(InputHandle_t controllerHandle, EXboxOrigin orgin) => SteamInput.GetActionOriginFromXboxOrigin(controllerHandle, orgin);
+            /// <param name="origin"></param>
+            public static void GetActionOriginFromXboxOrigin(InputHandle_t controllerHandle, EXboxOrigin origin) => SteamInput.GetActionOriginFromXboxOrigin(controllerHandle, origin);
             /// <summary>
             /// Get the equivalent origin for a given controller type or the closest controller type that existed in the SDK you built into your game if eDestinationInputType is k_ESteamInputType_Unknown. This action origin can be used in your glyph look up table or passed into GetGlyphForActionOrigin or GetStringForActionOrigin
             /// </summary>

@@ -58,14 +58,14 @@ namespace HeathenEngineering.SteamworksIntegration.UI
 
         private void OnEnable()
         {
-            API.Clans.Client.EventChatMessageRecieved.AddListener(HandleNewMessage);
+            API.Clans.Client.EventChatMessageReceived.AddListener(HandleNewMessage);
             API.Clans.Client.EventGameConnectedChatJoin.AddListener(HandleJoined);
             API.Clans.Client.EventGameConnectedChatLeave.AddListener(HandleLeave);
         }
 
         private void OnDisable()
         {
-            API.Clans.Client.EventChatMessageRecieved.RemoveListener(HandleNewMessage);
+            API.Clans.Client.EventChatMessageReceived.RemoveListener(HandleNewMessage);
             API.Clans.Client.EventGameConnectedChatJoin.RemoveListener(HandleJoined);
             API.Clans.Client.EventGameConnectedChatLeave.RemoveListener(HandleLeave);
         }

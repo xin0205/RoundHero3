@@ -51,10 +51,10 @@ namespace HeathenEngineering.SteamworksIntegration
             OnStartCallback = callback;
         }
 
-        internal void Authenticate(ValidateAuthTicketResponse_t responce)
+        internal void Authenticate(ValidateAuthTicketResponse_t response)
         {
-            Response = responce.m_eAuthSessionResponse;
-            GameOwner = responce.m_OwnerSteamID;
+            Response = response.m_eAuthSessionResponse;
+            GameOwner = response.m_OwnerSteamID;
         }
 
         /// <summary>

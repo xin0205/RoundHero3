@@ -15,7 +15,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             {
                 m_GamepadTextInputDismissed_t = null;
 
-                eventGamepadTextIputDismissed = new UnityStringEvent();
+                eventGamepadTextInputDismissed = new UnityStringEvent();
                 eventGamepadTextInputShown = new UnityEvent();
             }
 
@@ -36,17 +36,17 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// <summary>
             /// Invoked when the gamepad text input is dismissed and returns the resulting input string.
             /// </summary>
-            public static UnityStringEvent EventGamepadTextIputDismissed
+            public static UnityStringEvent EventGamepadTextInputDismissed
             {
                 get
                 {
-                    if (eventGamepadTextIputDismissed == null)
-                        eventGamepadTextIputDismissed = new UnityStringEvent();
+                    if (eventGamepadTextInputDismissed == null)
+                        eventGamepadTextInputDismissed = new UnityStringEvent();
 
                     if (m_GamepadTextInputDismissed_t == null)
                         m_GamepadTextInputDismissed_t = Callback<GamepadTextInputDismissed_t>.Create(HandleGameTextInputDismissed);
 
-                    return eventGamepadTextIputDismissed;
+                    return eventGamepadTextInputDismissed;
                 }
             }
 
@@ -56,12 +56,12 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 {
                     if (SteamUtils.GetEnteredGamepadTextInput(out string textValue, result.m_unSubmittedText))
                     {
-                        eventGamepadTextIputDismissed.Invoke(textValue);
+                        eventGamepadTextInputDismissed.Invoke(textValue);
                     }
                 }
             }
 
-            private static UnityStringEvent eventGamepadTextIputDismissed = new UnityStringEvent();
+            private static UnityStringEvent eventGamepadTextInputDismissed = new UnityStringEvent();
             private static UnityEvent eventGamepadTextInputShown = new UnityEvent();
 
 #pragma warning disable IDE0052 // Remove unread private members

@@ -23,15 +23,6 @@ namespace HeathenEngineering.SteamworksIntegration.API
     /// </remarks>
     public static class App
     {
-        #region Obsolete
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        [Obsolete("Use HasInitializationError instead")]
-        public static bool HasInitalizationError => HasInitializationError;
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        [Obsolete("Use InitializationErrorMessage instead")]
-        public static string InitalizationErrorMessage_ => InitializationErrorMessage;
-        #endregion
-
         #region Global
         internal readonly static Dictionary<uint, (string name, bool available)> dlcAppCash = new Dictionary<uint, (string name, bool available)>();
         /// <summary>
@@ -141,7 +132,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
         /// <summary>
         /// The time in milliseconds between checks of Steam Callbacks
         /// </summary>
-        public static int callbackTick_Milliseconds = 15;
+        public static int callbackTick_Milliseconds = 1;
         /// <summary>
         /// If set to true the system will log additional information during execution
         /// </summary>
@@ -212,7 +203,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 m_NewUrlLaunchParameters_t = null;
 
                 eventDlcInstalled = new DlcInstalledEvent();
-                eventNewUrlLaunchParameters = new NewUrlLaunchParametersEvent();
+                eventNewUrlLaunchParameters = new UnityEvent();
                 eventServersConnected = new UnityEvent();
                 eventServersDisconnected = new UnityEventServersDisconnected();
             }
@@ -235,6 +226,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// <param name="actions">A collection of <see cref="InputAction"/>s to initialize</param>
             public static void Initialize(AppData appId, InventorySettings inventory, LeaderboardObject[] leaderboards, InputAction[] actions)
             {
+                Debug.Log("Initializing for App ID = " + appId.ToString());
                 if (Initialized)
                 {
                     HasInitializationError = true;
@@ -264,6 +256,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                     // Steamworks client and also launches this game again if the User owns it. This can act as a rudimentary form of DRM.
                     if (Steamworks.SteamAPI.RestartAppIfNecessary(appId))
                     {
+                        Debug.Log($"RestartAppIfNecessary = true, {appId} is not the AppID expected");
                         Application.Quit();
                     }
 #else
@@ -279,16 +272,14 @@ namespace HeathenEngineering.SteamworksIntegration.API
                     {
                         if (isDebugging)
                             Debug.Log("Initializing Steam Client API");
-                        Initialized = Steamworks.SteamAPI.Init();
+                         var result = Steamworks.SteamAPI.InitEx(out var ErrorMessage);
+
+                        Initialized = result == ESteamAPIInitResult.k_ESteamAPIInitResult_OK;
 
                         if (!Initialized)
                         {
                             HasInitializationError = true;
-                            InitializationErrorMessage = "The Steam client isn't running. A running Steam client is required to provide implementations of the various Steamworks interfaces.\n"
-                                    + "The Steam client couldn't determine the App ID of game, this most commonly occurs when running the game outside of Steam client.\n"
-                                    + "Your application is not running under the same OS user context as the Steam client, such as a different user or administration access level.\n"
-                                    + "Ensure that you own a license for the App ID on the currently active Steam account. Your game must show up in your Steam library.\n"
-                                    + "Your App ID is not completely set up, i.e. in Release State: Unavailable, or it's missing default packages.";
+                            InitializationErrorMessage = $"Steamworks failed to initialize with result({result}) and message: {ErrorMessage}";
 
                             evtSteamInitializationError.Invoke(InitializationErrorMessage);
                             Debug.LogError(InitializationErrorMessage);
@@ -302,18 +293,16 @@ namespace HeathenEngineering.SteamworksIntegration.API
 
                             if (m_SteamAPIWarningMessageHook == null)
                             {
-                                // Set up our callback to recieve warning messages from Steamworks.
-                                // You must launch with "-debug_steamapi" in the launch args to recieve warnings.
+                                // Set up our callback to receive warning messages from Steamworks.
+                                // You must launch with "-debug_steamapi" in the launch args to receive warnings.
                                 m_SteamAPIWarningMessageHook = new SteamAPIWarningMessageHook_t(SteamAPIDebugTextHook);
                                 SteamClient.SetWarningMessageHook(m_SteamAPIWarningMessageHook);
                             }
 
                             if (!SteamUser.BLoggedOn())
                             {
-                                Debug.LogWarning("Steam API was able to initalize however the user does not have an acitve logon; no real-time services provided by the Steamworks API will be enabled. The Steam client will automatically be trying to recreate the connection as often as possible. When the connection is restored a API.App.Client.EvenServersConnected event will be posted.");
+                                Debug.LogWarning("Steam API was able to initialize however the user does not have an active logon; no real-time services provided by the Steamworks API will be enabled. The Steam client will automatically be trying to recreate the connection as often as possible. When the connection is restored a API.App.Client.EvenServersConnected event will be posted.");
                             }
-
-                            API.StatsAndAchievements.Client.RequestCurrentStats();
 
                             if (isDebugging)
                             {
@@ -323,7 +312,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                             if (appId != SteamUtils.GetAppID())
                             {
 #if UNITY_EDITOR
-                                Debug.LogWarning($"The reported applicaiton ID of {SteamUtils.GetAppID()} does not match the anticipated ID of {appId}. This is most frequently caused when you edit your AppID but fail to restart Unity, Visual Studio and or any other processes that may have mounted the Steam API under the previous App ID. To correct this please insure your AppID is entered correctly in the SteamSettings object and that you fully restart the Unity Editor, Visual Studio and any other processes that may have connectd to them.");
+                                Debug.LogWarning($"The reported application ID of {SteamUtils.GetAppID()} does not match the anticipated ID of {appId}. This is most frequently caused when you edit your AppID but fail to restart Unity, Visual Studio and or any other processes that may have mounted the Steam API under the previous App ID. To correct this please insure your AppID is entered correctly in the SteamSettings object and that you fully restart the Unity Editor, Visual Studio and any other processes that may have connected to them.");
 #else
                             Debug.LogError($"The reported AppId is not as expected:\ntAppId Reported = {SteamUtils.GetAppID()}\n\tAppId Expected = {appId}");
                             Application.Quit();
@@ -410,7 +399,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 get
                 {
                     if (m_DlcInstalled_t == null)
-                        m_DlcInstalled_t = Callback<DlcInstalled_t>.Create(eventDlcInstalled.Invoke);
+                        m_DlcInstalled_t = Callback<DlcInstalled_t>.Create((e) => eventDlcInstalled.Invoke(e.m_nAppID));
 
                     return eventDlcInstalled;
                 }
@@ -419,12 +408,12 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// <summary>
             /// Posted after the user executes a steam url with command line or query parameters such as steam://run/<appid>//?param1=value1;param2=value2;param3=value3; while the game is already running. The new params can be queried with GetLaunchCommandLine and GetLaunchQueryParam.
             /// </summary>
-            public static NewUrlLaunchParametersEvent EventNewUrlLaunchParameters
+            public static UnityEvent EventNewUrlLaunchParameters
             {
                 get
                 {
                     if (m_NewUrlLaunchParameters_t == null)
-                        m_NewUrlLaunchParameters_t = Callback<NewUrlLaunchParameters_t>.Create(eventNewUrlLaunchParameters.Invoke);
+                        m_NewUrlLaunchParameters_t = Callback<NewUrlLaunchParameters_t>.Create((e) => eventNewUrlLaunchParameters.Invoke());
 
                     return eventNewUrlLaunchParameters;
                 }
@@ -482,7 +471,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             }
 
             private static DlcInstalledEvent eventDlcInstalled = new DlcInstalledEvent();
-            private static NewUrlLaunchParametersEvent eventNewUrlLaunchParameters = new NewUrlLaunchParametersEvent();
+            private static UnityEvent eventNewUrlLaunchParameters = new UnityEvent();
             private static UnityEvent eventServersConnected = new UnityEvent();
             private static UnityEventServersDisconnected eventServersDisconnected = new UnityEventServersDisconnected();
             private static UnityEventServersConnectFailure eventServersConnectFailure = new UnityEventServersConnectFailure();
@@ -1155,12 +1144,12 @@ namespace HeathenEngineering.SteamworksIntegration.API
                             }
                             catch (Exception ex)
                             {
-                                Debug.LogWarning("Failed to load the Steam App List: Exception = " + ex.Message);
+                                Debug.LogError("Failed to load the Steam App List: Exception = " + ex.Message);
                             }
                         }
                         else
                         {
-                            Debug.LogWarning($"Failed to load the Steam App List: State = {www.result}, Message = {www.error}");
+                            Debug.LogError($"Failed to load the Steam App List: State = {www.result}, Error Message = {www.error}");
                         }
 
                         foreach (var action in waitingForAppListLoad)

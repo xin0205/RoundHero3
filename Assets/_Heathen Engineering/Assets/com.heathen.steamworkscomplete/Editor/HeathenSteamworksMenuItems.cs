@@ -11,6 +11,8 @@ namespace HeathenEngineering.SteamworksIntegration.Editors
 {
     public class HeathenSteamworksMenuItems
     {
+        public const string CurrentSteamworksNetVersion = "https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net#2025.161.0";
+
         [InitializeOnLoadMethod]
         public static void CheckForSteamworksInstall()
         {
@@ -89,7 +91,7 @@ namespace HeathenEngineering.SteamworksIntegration.Editors
                 if (!SessionState.GetBool("SteamInstall", false))
                 {
                     SessionState.SetBool("SteamInstall", true);
-                    steamProc = Client.Add("https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net");
+                    steamProc = Client.Add(CurrentSteamworksNetVersion);
                 }
 
                 if (steamProc.Status == StatusCode.Failure)
@@ -194,7 +196,7 @@ namespace HeathenEngineering.SteamworksIntegration.Editors
             if (!SessionState.GetBool("SteamInstall", false))
             {
                 SessionState.SetBool("SteamInstall", true);
-                steamProc = Client.Add("https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net");
+                steamProc = Client.Add(CurrentSteamworksNetVersion);
             }
 
             if (steamProc.Status == StatusCode.Failure)
@@ -258,7 +260,7 @@ namespace HeathenEngineering.SteamworksIntegration.Editors
             if (!SessionState.GetBool("SteamInstall", false))
             {
                 SessionState.SetBool("SteamInstall", true);
-                steamProc = Client.Add("https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net");
+                steamProc = Client.Add(CurrentSteamworksNetVersion);
             }
 
             if (steamProc.Status == StatusCode.Failure)

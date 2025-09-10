@@ -39,11 +39,11 @@ namespace HeathenEngineering.SteamworksIntegration
             }
         }
         /// <summary>
-        /// Occures when the Voice Result Restricted EVoiceResult is recieved from the Steamworks API.
+        /// Occurs when the Voice Result Restricted EVoiceResult is received from the Steamworks API.
         /// </summary>
         public UnityEvent evtStopedOnChatRestricted;
         /// <summary>
-        /// Occures every frame when the Steamworks API has a voice stream payload from the user.
+        /// Occurs every frame when the Steamworks API has a voice stream payload from the user.
         /// </summary>
         public ByteArrayEvent evtVoiceStream;
         private float packetCounter = 0;
@@ -69,8 +69,8 @@ namespace HeathenEngineering.SteamworksIntegration
                         case EVoiceResult.k_EVoiceResultOK:
                             //All is well check the compressed size to see if we have data and if so package it
                             byte[] buffer = new byte[pcbCompressed];
-                            SteamUser.GetVoice(true, buffer, pcbCompressed, out uint bytesWriten);
-                            if (bytesWriten > 0)
+                            SteamUser.GetVoice(true, buffer, pcbCompressed, out uint bytesWritten);
+                            if (bytesWritten > 0)
                                 evtVoiceStream.Invoke(buffer);
                             break;
                         case EVoiceResult.k_EVoiceResultNoData:
@@ -78,7 +78,7 @@ namespace HeathenEngineering.SteamworksIntegration
                             break;
                         case EVoiceResult.k_EVoiceResultNotInitialized:
                             //Not initialized ... report the error
-                            Debug.LogError("The Steamworks Voice systemis not initialized and will be stoped.");
+                            Debug.LogError("The Steamworks Voice system is not initialized and will be stopped.");
                             SteamUser.StopVoiceRecording();
                             break;
                         case EVoiceResult.k_EVoiceResultNotRecording:

@@ -90,13 +90,13 @@ namespace HeathenEngineering.SteamworksIntegration.UI
             if (API.App.Initialized)
                 RefreshUI();
             else
-                API.App.evtSteamInitialized.AddListener(HandleSteamInitalization);
+                API.App.evtSteamInitialized.AddListener(HandleSteamInitialization);
         }
 
-        private void HandleSteamInitalization()
+        private void HandleSteamInitialization()
         {
             RefreshUI();
-            API.App.evtSteamInitialized.RemoveListener(HandleSteamInitalization);
+            API.App.evtSteamInitialized.RemoveListener(HandleSteamInitialization);
         }
 
         private void OnDestroy()

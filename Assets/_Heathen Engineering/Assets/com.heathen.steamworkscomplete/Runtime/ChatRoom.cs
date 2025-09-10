@@ -12,8 +12,8 @@ namespace HeathenEngineering.SteamworksIntegration
     /// This is returned by the API.Clans.Client.JoinChatRoom and similar methods
     /// </para>
     /// <para>
-    /// You should listen on the API.Clans.Client.EventChatMessageRecieved to recieve clan chat messages.
-    /// That event will be raised for any clan you have joined the chat for API.Clans.Client.JoinChatRoom or by calling the Clan.JoinChat member on a clan returned from the API.Clans.CLient.GetClans()
+    /// You should listen on the API.Clans.Client.EventChatMessageReceived to receive clan chat messages.
+    /// That event will be raised for any clan you have joined the chat for API.Clans.Client.JoinChatRoom or by calling the Clan.JoinChat member on a clan returned from the API.Clans.Client.GetClans()
     /// </para>
     /// </remarks>
     [Serializable]
@@ -23,11 +23,11 @@ namespace HeathenEngineering.SteamworksIntegration
         public CSteamID id;
         public EChatRoomEnterResponse enterResponse;
 
-        public UserData[] Members => API.Clans.Client.GetChatMembers(clan);
+        public readonly UserData[] Members => API.Clans.Client.GetChatMembers(clan);
         /// <summary>
         /// Checks if the Steam Group chat room is open in the Steam UI.
         /// </summary>
-        public bool IsOpenInSteam => API.Clans.Client.IsClanChatWindowOpenInSteam(id);
+        public readonly bool IsOpenInSteam => API.Clans.Client.IsClanChatWindowOpenInSteam(id);
 
         /// <summary>
         /// Sends a message to a Steam group chat room.

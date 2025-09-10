@@ -39,8 +39,8 @@ namespace HeathenEngineering.SteamworksIntegration.UI
                 EAuthSessionResponse.k_EAuthSessionResponseUserNotConnectedToSteam,
                 EAuthSessionResponse.k_EAuthSessionResponseVACBanned,
             };
-        public SearchArguments searchArguments = new SearchArguments();
-        public CreateArguments createArguments = new CreateArguments();
+        public SearchArguments searchArguments = new();
+        public CreateArguments createArguments = new();
 
         /// <summary>
         /// Raised when the lobby is first filled to capacity
@@ -66,7 +66,7 @@ namespace HeathenEngineering.SteamworksIntegration.UI
         /// </summary>
         public EResultEvent evtCreateFailed;
         /// <summary>
-        /// Occurs when any state changes on the lobby, this includes people coming and going, succeding or failing authentication or any other lobby data function.
+        /// Occurs when any state changes on the lobby, this includes people coming and going, succeeding or failing authentication or any other lobby data function.
         /// </summary>
         public UnityEvent evtStateChanged;
 
@@ -303,7 +303,7 @@ namespace HeathenEngineering.SteamworksIntegration.UI
             evtStateChanged.Invoke();
         }
 
-        public void RunQuckMatch()
+        public void RunQuickMatch()
         {
             if (LobbyData.GroupLobby(out LobbyData partyLobby)
                && !partyLobby.IsOwner)
@@ -346,9 +346,9 @@ namespace HeathenEngineering.SteamworksIntegration.UI
                         Searching = false;
                         API.Matchmaking.Client.JoinLobby(r[0], (r2, e2) =>
                         {
-                            var responce = r2.Response;
+                            var response = r2.Response;
 
-                            if (!e2 && responce == EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
+                            if (!e2 && response == EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
                             {
                                 if(cancelRequest)
                                 {
@@ -372,15 +372,15 @@ namespace HeathenEngineering.SteamworksIntegration.UI
                                     return;
                                 }
 
-                                if (responce == EChatRoomEnterResponse.k_EChatRoomEnterResponseLimited)
+                                if (response == EChatRoomEnterResponse.k_EChatRoomEnterResponseLimited)
                                 {
                                     Debug.LogError("This user is limited and cannot create or join lobbies or chats.");
-                                    evtEnterFailed.Invoke(responce);
+                                    evtEnterFailed.Invoke(response);
                                 }
                                 else
                                 {
                                     Debug.LogError("Quick match failed, lobbies found but failed to join ... creating lobby.");
-                                    evtEnterFailed.Invoke(responce);
+                                    evtEnterFailed.Invoke(response);
                                 }
                             }
                         });
@@ -416,7 +416,7 @@ namespace HeathenEngineering.SteamworksIntegration.UI
                                 }
                                 else
                                 {
-                                    Debug.Log($"No lobby created Steam API responce code: {result}");
+                                    Debug.Log($"No lobby created Steam API response code: {result}");
                                     evtCreateFailed?.Invoke(result);
                                     evtStateChanged.Invoke();
                                 }

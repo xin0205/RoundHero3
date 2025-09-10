@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace HeathenEngineering.SteamworksIntegration.UI
 {
+    [Obsolete("Features merged into LobbyManager")]
     [HelpURL("https://kb.heathen.group/assets/steamworks/unity-engine/ui-components/lobby-chat-director")]
     [RequireComponent(typeof(LobbyManager))]
     public class LobbyChatDirector : MonoBehaviour

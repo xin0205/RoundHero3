@@ -39,6 +39,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
         public static List<AuthenticationSession> ActiveSessions = new List<AuthenticationSession>();
 
 #pragma warning disable IDE0052 // Remove unread private members
+#pragma warning disable CS0414
         private static Callback<GetAuthSessionTicketResponse_t> m_GetAuthSessionTicketResponse;
         private static Callback<GetAuthSessionTicketResponse_t> m_GetAuthSessionTicketResponseServer;
         private static Callback<GetTicketForWebApiResponse_t> m_GetTicketForWebApiResponse;
@@ -46,6 +47,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
         private static Callback<ValidateAuthTicketResponse_t> m_ValidateAuthSessionTicketResponseServer;
         internal static CallResult<EncryptedAppTicketResponse_t> m_EncryptedAppTicketResponse;
         private static CallResult<StoreAuthURLResponse_t> m_StoreAuthURLResponse;
+#pragma warning restore CS0414
 #pragma warning restore IDE0052 // Remove unread private members
 
         /// <summary>

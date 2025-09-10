@@ -40,6 +40,11 @@ namespace HeathenEngineering.SteamworksIntegration
             settings.Initialize();
         }
 
+        private void Start()
+        {
+            
+        }
+
         private void OnDestroy()
         {
             API.App.evtSteamInitialized.RemoveListener(HandleInitialization);
@@ -64,7 +69,6 @@ namespace HeathenEngineering.SteamworksIntegration
 
         private void HandleInitialization()
         {
-            Debug.Log("HandleInitialization");
             evtSteamInitialized.Invoke();
 
             LobbyData targetLobby = CommandLine.GetSteamLobbyInvite();

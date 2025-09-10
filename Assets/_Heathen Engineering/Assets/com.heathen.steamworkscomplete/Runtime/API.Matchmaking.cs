@@ -48,37 +48,34 @@ namespace HeathenEngineering.SteamworksIntegration.API
             {
                 get
                 {
-                    if (m_LobbyEnter_t == null)
-                        m_LobbyEnter_t = Callback<LobbyEnter_t>.Create(LobbyEnterHandler);
+                    m_LobbyEnter_t ??= Callback<LobbyEnter_t>.Create(LobbyEnterHandler);
 
                     return eventLobbyEnter;
                 }
             }
             /// <summary>
-            /// Occurs when a lobby enter callback is recieved and the responce code is a success
+            /// Occurs when a lobby enter callback is received and the response code is a success
             /// </summary>
             public static LobbyEnterEvent EventLobbyEnterSuccess
             {
                 get
                 {
-                    if (m_LobbyEnter_t == null)
-                        m_LobbyEnter_t = Callback<LobbyEnter_t>.Create(LobbyEnterHandler);
+                    m_LobbyEnter_t ??= Callback<LobbyEnter_t>.Create(LobbyEnterHandler);
 
                     return eventLobbyEnterSuccess;
                 }
             }
             /// <summary>
-            /// Occurs when a lobby enter callback is received and the responce code is not a success.
+            /// Occurs when a lobby enter callback is received and the response code is not a success.
             /// </summary>
             /// <remarks>
-            /// You can cast the m_EChatRoomEnterResponse value to a EChatRoomEnterResponse enum to determin the reason for failure
+            /// You can cast the m_EChatRoomEnterResponse value to a EChatRoomEnterResponse enum to determine the reason for failure
             /// </remarks>
             public static LobbyEnterEvent EventLobbyEnterFailed
             {
                 get
                 {
-                    if (m_LobbyEnter_t == null)
-                        m_LobbyEnter_t = Callback<LobbyEnter_t>.Create(LobbyEnterHandler);
+                    m_LobbyEnter_t ??= Callback<LobbyEnter_t>.Create(LobbyEnterHandler);
 
                     return eventLobbyEnterFailed;
                 }
@@ -90,18 +87,17 @@ namespace HeathenEngineering.SteamworksIntegration.API
             {
                 get
                 {
-                    if (m_LobbyDataUpdate_t == null)
-                        m_LobbyDataUpdate_t = Callback<LobbyDataUpdate_t>.Create((responce) =>
+                    m_LobbyDataUpdate_t ??= Callback<LobbyDataUpdate_t>.Create((response) =>
                         {
-                            if (responce.m_ulSteamIDLobby == responce.m_ulSteamIDMember)
+                            if (response.m_ulSteamIDLobby == response.m_ulSteamIDMember)
                             {
                                 //This is a metadata change for the lobby ... check for kick update
-                                LobbyData lobby = responce.m_ulSteamIDLobby;
+                                LobbyData lobby = response.m_ulSteamIDLobby;
                                 if (lobby[LobbyData.DataKick].Contains("[" + User.Client.Id.ToString() + "]"))
                                     eventLobbyAskedToLeave.Invoke(lobby);
                             }
 
-                            eventLobbyDataUpdate.Invoke(responce);
+                            eventLobbyDataUpdate.Invoke(response);
                         });
 
                     return eventLobbyDataUpdate;
@@ -250,7 +246,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             {
                 get
                 {
-                    m_LobbyInvite_t ??= Callback<LobbyInvite_t>.Create(eventLobbyInvite.Invoke);
+                    m_LobbyInvite_t ??= Callback<LobbyInvite_t>.Create((e) => eventLobbyInvite.Invoke(e));
 
                     return eventLobbyInvite;
                 }
@@ -283,40 +279,40 @@ namespace HeathenEngineering.SteamworksIntegration.API
             private static Callback<LobbyGameCreated_t> m_LobbyGameCreated_t;
             private static Callback<LobbyInvite_t> m_LobbyInvite_t;
 
-            private static void LobbyEnterHandler(LobbyEnter_t responce)
+            private static void LobbyEnterHandler(LobbyEnter_t response)
             {
-                var responceCode = (EChatRoomEnterResponse)responce.m_EChatRoomEnterResponse;
+                var responseCode = (EChatRoomEnterResponse)response.m_EChatRoomEnterResponse;
 
-                if (responceCode == EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
+                if (responseCode == EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
                 {
-                    if (!memberOfLobbies.Any(p => p == responce.m_ulSteamIDLobby))
-                        memberOfLobbies.Add(new CSteamID(responce.m_ulSteamIDLobby));
+                    if (!memberOfLobbies.Any(p => p == response.m_ulSteamIDLobby))
+                        memberOfLobbies.Add(new CSteamID(response.m_ulSteamIDLobby));
 
-                    eventLobbyEnterSuccess.Invoke(responce);
+                    eventLobbyEnterSuccess.Invoke(response);
                 }
                 else
                 {
                     if (API.App.isDebugging || Application.isEditor)
                     {
-                        if (responceCode != EChatRoomEnterResponse.k_EChatRoomEnterResponseLimited)
+                        if (responseCode != EChatRoomEnterResponse.k_EChatRoomEnterResponseLimited)
                         {
                             Debug.LogWarning("This user is limited and cannot fully join a Steam Lobby! metadata and lobby chat will not work for this user though they may appear in the members list.");
                         }
                         else
                         {
-                            if (responceCode != EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
-                                Debug.LogWarning("Detected a Failed lobby enter attempt (" + responce.m_ulSteamIDLobby + ":" + responceCode + ")");
+                            if (responseCode != EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
+                                Debug.LogWarning("Detected a Failed lobby enter attempt (" + response.m_ulSteamIDLobby + ":" + responseCode + ")");
                             else
-                                Debug.Log("Detected a successful lobby enter attempt (" + responce.m_ulSteamIDLobby + ":" + responceCode + ")");
+                                Debug.Log("Detected a successful lobby enter attempt (" + response.m_ulSteamIDLobby + ":" + responseCode + ")");
                         }
 
-                        LeaveLobby(responce.m_ulSteamIDLobby);
+                        LeaveLobby(response.m_ulSteamIDLobby);
                     }
 
-                    eventLobbyEnterFailed.Invoke(responce);
+                    eventLobbyEnterFailed.Invoke(response);
                 }
 
-                eventLobbyEnter.Invoke(responce);
+                eventLobbyEnter.Invoke(response);
             }
 
             /// <summary>
@@ -401,7 +397,6 @@ namespace HeathenEngineering.SteamworksIntegration.API
                         callback?.Invoke(l, e);
                     });
             }
-
             /// <summary>
             /// Create a new matchmaking lobby.
             /// </summary>
@@ -419,7 +414,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             {
                 if (type == ELobbyType.k_ELobbyTypePrivateUnique)
                 {
-                    throw new ArgumentOutOfRangeException("The `k_ELobbyTypePrivateUnique` should not be used and is a legacy feature of Steam API that is not defined for use in the Client API. It is shown in the ELobbyType and editor as a matter of compatability with the native API. Do Not User It.");
+                    throw new ArgumentOutOfRangeException("The `k_ELobbyTypePrivateUnique` should not be used and is a legacy feature of Steam API that is not defined for use in the Client API. It is shown in the ELobbyType and editor as a matter of compatibility with the native API. Do Not User It.");
                 }
 
                 if (callback == null)
@@ -605,13 +600,13 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 var handle = SteamMatchmaking.JoinLobby(lobby);
                 m_LobbyEnter_t2.Set(handle, (r, e) =>
                 {
-                    var responce = (EChatRoomEnterResponse)r.m_EChatRoomEnterResponse;
+                    var response = (EChatRoomEnterResponse)r.m_EChatRoomEnterResponse;
 
-                    if (!e && responce == EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
+                    if (!e && response == EChatRoomEnterResponse.k_EChatRoomEnterResponseSuccess)
                         memberOfLobbies.Add(new CSteamID(r.m_ulSteamIDLobby));
                     else
                     {
-                        if (responce == EChatRoomEnterResponse.k_EChatRoomEnterResponseLimited)
+                        if (response == EChatRoomEnterResponse.k_EChatRoomEnterResponseLimited)
                             SteamMatchmaking.LeaveLobby(new CSteamID(r.m_ulSteamIDLobby));
                     }
 
@@ -919,9 +914,9 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// </remarks>
             /// <param name="ip"></param>
             /// <param name="port"></param>
-            /// <param name="responce"></param>
+            /// <param name="response"></param>
             /// <returns></returns>
-            public static HServerQuery PingServer(uint ip, ushort port, ISteamMatchmakingPingResponse responce) => SteamMatchmakingServers.PingServer(ip, port, responce);
+            public static HServerQuery PingServer(uint ip, ushort port, ISteamMatchmakingPingResponse response) => SteamMatchmakingServers.PingServer(ip, port, response);
             /// <summary>
             /// Queries an individual game servers directly via IP/Port to request an updated ping time and other details from the server.
             /// </summary>
@@ -930,25 +925,25 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// </remarks>
             /// <param name="ip"></param>
             /// <param name="port"></param>
-            /// <param name="responce"></param>
+            /// <param name="response"></param>
             /// <returns></returns>
-            public static HServerQuery PingServer(string ip, ushort port, ISteamMatchmakingPingResponse responce) => SteamMatchmakingServers.PingServer(Utilities.IPStringToUint(ip), port, responce);
+            public static HServerQuery PingServer(string ip, ushort port, ISteamMatchmakingPingResponse response) => SteamMatchmakingServers.PingServer(Utilities.IPStringToUint(ip), port, response);
             /// <summary>
             /// Queries an individual game servers directly via IP/Port to request the list of players currently playing on the server.
             /// </summary>
             /// <param name="ip"></param>
             /// <param name="port"></param>
-            /// <param name="responce"></param>
+            /// <param name="response"></param>
             /// <returns></returns>
-            public static HServerQuery PlayerDetails(uint ip, ushort port, ISteamMatchmakingPlayersResponse responce) => SteamMatchmakingServers.PlayerDetails(ip, port, responce);
+            public static HServerQuery PlayerDetails(uint ip, ushort port, ISteamMatchmakingPlayersResponse response) => SteamMatchmakingServers.PlayerDetails(ip, port, response);
             /// <summary>
             /// Queries an individual game servers directly via IP/Port to request the list of players currently playing on the server.
             /// </summary>
             /// <param name="ip"></param>
             /// <param name="port"></param>
-            /// <param name="responce"></param>
+            /// <param name="response"></param>
             /// <returns></returns>
-            public static HServerQuery PlayerDetails(string ip, ushort port, ISteamMatchmakingPlayersResponse responce) => SteamMatchmakingServers.PlayerDetails(Utilities.IPStringToUint(ip), port, responce);
+            public static HServerQuery PlayerDetails(string ip, ushort port, ISteamMatchmakingPlayersResponse response) => SteamMatchmakingServers.PlayerDetails(Utilities.IPStringToUint(ip), port, response);
             /// <summary>
             /// Ping every server in your list again but don't update the list of servers.
             /// </summary>

@@ -137,9 +137,11 @@ namespace RoundHero
 
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
-                
-                
-                if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+                if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Tutorial)
+                {
+                    ContinueBattle();
+                }
+                else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
                 {
                     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Battle)
                     {

@@ -56,7 +56,7 @@ namespace HeathenEngineering.SteamworksIntegration.UI
             scrollRect.verticalNormalizedPosition = 0;
         }
         /// <summary>
-        /// Used by the <see cref="LobbyChatDirector.evtMessageRecieved"/> to apply a lobby chat message
+        /// Used by the <see cref="LobbyManager.evtChatMsgReceived"/> to apply a lobby chat message
         /// </summary>
         /// <param name="message"></param>
         public void HandleLobbyMessage(LobbyChatMsg message)

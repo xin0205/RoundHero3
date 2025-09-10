@@ -196,7 +196,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <returns></returns>
         public bool AddRequiredTag(string tagName) => API.UserGeneratedContent.Client.AddRequiredTag(handle, tagName);
         /// <summary>
-        /// Set allow cached responce
+        /// Set allow cached response
         /// </summary>
         /// <param name="maxAgeSeconds"></param>
         /// <returns></returns>

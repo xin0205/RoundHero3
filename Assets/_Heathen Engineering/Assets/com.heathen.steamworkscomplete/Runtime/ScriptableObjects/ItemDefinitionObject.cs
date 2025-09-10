@@ -11,6 +11,7 @@ namespace HeathenEngineering.SteamworksIntegration
     /// <summary>
     /// Represents a Steam Inventory item definition
     /// </summary>
+    [HelpURL("https://kb.heathen.group/steamworks/features/inventory")]
     [Serializable]
     public class ItemDefinitionObject : ScriptableObject
     {
@@ -24,6 +25,11 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         [SerializeField]
         internal InventoryItemType item_type;
+        /// <summary>
+        /// The type of the item
+        /// </summary>
+        [SerializeField]
+        internal bool item_game_only;
         /// <summary>
         /// The name of the item
         /// </summary>
@@ -84,6 +90,16 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         [SerializeField]
         internal string item_icon_url_large;
+
+        [SerializeField]
+        internal string item_accessory_tag;
+        [SerializeField]
+        internal int item_accessory_limit;
+        [SerializeField]
+        internal string item_allowed_tags_from_tools;
+        [SerializeField]
+        internal LanguageVariantNode item_accessory_description = new LanguageVariantNode { node = "accessory_description" };
+
         /// <summary>
         /// Is the item marketable
         /// </summary>
@@ -188,7 +204,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// The items internal <see cref="ItemData"/>
         /// </summary>
         public ItemData Data
-        { 
+        {
             get => id;
             set => id = value;
         }
@@ -1057,7 +1073,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <summary>
         /// The inventory item type
         /// </summary>
-        public InventoryItemType Type => item_type;        
+        public InventoryItemType Type => item_type;
         /// <summary>
         /// The name of the item
         /// </summary>
@@ -1065,11 +1081,11 @@ namespace HeathenEngineering.SteamworksIntegration
         {
             get => item_name.GetSimpleValue();
             set => item_name.value = value;
-        }      
+        }
         /// <summary>
         /// The description of the item
         /// </summary>
-        public string Description => item_description.GetSimpleValue();        
+        public string Description => item_description.GetSimpleValue();
         /// <summary>
         /// The display type of the item
         /// </summary>
@@ -1086,7 +1102,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <summary>
         /// The collection of Bundle entry items
         /// </summary>
-        public Bundle.Entry[] BundleEntries => item_bundle.entries.ToArray();       
+        public Bundle.Entry[] BundleEntries => item_bundle.entries.ToArray();
         /// <summary>
         /// The set of apps the promotion rule checks for ownership
         /// </summary>
@@ -1098,11 +1114,11 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <summary>
         /// The promotion rule played app entries
         /// </summary>
-        public PromoRule.PlayedEntry[] PromoRulePlayed => item_promo.played.ToArray();        
+        public PromoRule.PlayedEntry[] PromoRulePlayed => item_promo.played.ToArray();
         /// <summary>
         /// The drop start time
         /// </summary>
-        public string DropStartTime => item_drop_start_time;        
+        public string DropStartTime => item_drop_start_time;
         /// <summary>
         /// The list of exchange recipes
         /// </summary>
@@ -1110,75 +1126,75 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <summary>
         /// The background color
         /// </summary>
-        public Color BackgroundColor => item_background_color;        
+        public Color BackgroundColor => item_background_color;
         /// <summary>
         /// The name color
         /// </summary>
-        public Color NameColor => item_name_color;        
+        public Color NameColor => item_name_color;
         /// <summary>
         /// The Icon URL
         /// </summary>
-        public string IconUrl => item_icon_url;        
+        public string IconUrl => item_icon_url;
         /// <summary>
         /// The large icon URL
         /// </summary>
-        public string IconUrlLarge => item_icon_url_large;        
+        public string IconUrlLarge => item_icon_url_large;
         /// <summary>
         /// Is the item marketable
         /// </summary>
-        public bool Marketable => item_marketable;        
+        public bool Marketable => item_marketable;
         /// <summary>
         /// Is the item tradable between players
         /// </summary>
-        public bool Tradable => item_tradable;        
+        public bool Tradable => item_tradable;
         /// <summary>
         /// The item tags
         /// </summary>
-        public ItemTag[] Tags => item_tags.tags.ToArray();        
+        public ItemTag[] Tags => item_tags.tags.ToArray();
         /// <summary>
         /// The related tag generators
         /// </summary>
-        public ItemDefinitionObject[] TagGenerators => item_tag_generators.ToArray();        
+        public ItemDefinitionObject[] TagGenerators => item_tag_generators.ToArray();
         /// <summary>
         /// The tag generator name
         /// </summary>
-        public string TagGeneratorName => item_tag_generator_name;        
+        public string TagGeneratorName => item_tag_generator_name;
         /// <summary>
         /// Tag generator values
         /// </summary>
-        public TagGeneratorValue[] TagGeneratorValueArray => item_tag_generator_values.values.ToArray();        
+        public TagGeneratorValue[] TagGeneratorValueArray => item_tag_generator_values.values.ToArray();
         /// <summary>
         /// Store tags for the item
         /// </summary>
-        public string[] StoreTags => item_store_tags.ToArray();        
+        public string[] StoreTags => item_store_tags.ToArray();
         /// <summary>
         /// Additional store images
         /// </summary>
-        public string[] StoreImages => item_store_images.ToArray();        
+        public string[] StoreImages => item_store_images.ToArray();
         /// <summary>
         /// Is this item hidden from the player
         /// </summary>
-        public bool Hidden => item_hidden;    
+        public bool Hidden => item_hidden;
         /// <summary>
         /// Is this item hidden from the store
         /// </summary>
-        public bool StoreHidden => item_store_hidden;      
+        public bool StoreHidden => item_store_hidden;
         /// <summary>
         /// Does this item use drop limit
         /// </summary>
-        public bool UseDropLimit => item_use_drop_limit;        
+        public bool UseDropLimit => item_use_drop_limit;
         /// <summary>
         /// If using a drop limit what is its value
         /// </summary>
-        public uint DropLimit => item_drop_limit;  
+        public uint DropLimit => item_drop_limit;
         /// <summary>
         /// What is the drop interval
         /// </summary>
-        public uint DropInterval => item_drop_interval;        
+        public uint DropInterval => item_drop_interval;
         /// <summary>
         /// Does this item use a drop window
         /// </summary>
-        public bool UseDropWindow => item_use_drop_window;        
+        public bool UseDropWindow => item_use_drop_window;
         /// <summary>
         /// If using a drop window what is the window
         /// </summary>
@@ -1318,7 +1334,7 @@ namespace HeathenEngineering.SteamworksIntegration
                 sb.Append(",\n\t\t\"icon_url\": \"" + item_icon_url + "\"");
 
             if (!string.IsNullOrEmpty(item_icon_url_large))
-                sb.Append(",\n\t\t\"item_icon_url_large\": \"" + item_icon_url_large + "\"");
+                sb.Append(",\n\t\t\"icon_url_large\": \"" + item_icon_url_large + "\"");
 
             sb.Append(",\n\t\t\"marketable\": " + item_marketable.ToString().ToLower());
             sb.Append(",\n\t\t\"tradable\": " + item_tradable.ToString().ToLower());
@@ -1376,6 +1392,7 @@ namespace HeathenEngineering.SteamworksIntegration
             sb.Append(",\n\t\t\"store_hidden\": " + item_store_hidden.ToString().ToLower());
             sb.Append(",\n\t\t\"granted_manually\": " + item_granted_manually.ToString().ToLower());
             sb.Append(",\n\t\t\"auto_stack\": " + item_auto_stack.ToString().ToLower());
+            sb.Append(",\n\t\t\"game_only\": " + item_game_only.ToString().ToLower());
 
             var extn = item_extendedSchema.ToString();
             if (!string.IsNullOrEmpty(extn))
@@ -1437,7 +1454,7 @@ namespace HeathenEngineering.SteamworksIntegration
                 sb.Append(",\n\t\t\"icon_url\": \"" + item_icon_url + "\"");
 
             if (!string.IsNullOrEmpty(item_icon_url_large))
-                sb.Append(",\n\t\t\"item_icon_url_large\": \"" + item_icon_url_large + "\"");
+                sb.Append(",\n\t\t\"icon_url_large\": \"" + item_icon_url_large + "\"");
 
             if (item_store_tags.Count > 0)
             {
@@ -1633,12 +1650,12 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <param name="callback"></param>
         public void GenerateItem(uint quantity, Action<InventoryResult> callback) => Data.GenerateItem(quantity, callback);
         /// <summary>
-        /// Starts the purchase process for the user, given a shopping cart of item definitons that the user would like to buy
+        /// Starts the purchase process for the user, given a shopping cart of item definitions that the user would like to buy
         /// </summary>
         /// <param name="callback"></param>
         public void StartPurchase(Action<SteamInventoryStartPurchaseResult_t, bool> callback) => Data.StartPurchase(callback);
         /// <summary>
-        /// Starts the purchase process for the user, given a shopping cart of item definitons that the user would like to buy
+        /// Starts the purchase process for the user, given a shopping cart of item definitions that the user would like to buy
         /// </summary>
         public void StartPurchase(uint count, Action<SteamInventoryStartPurchaseResult_t, bool> callback) => Data.StartPurchase(count, callback);
         /// <summary>
@@ -1654,29 +1671,29 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <param name="callback"></param>
         public void TriggerDrop(Action<InventoryResult> callback) => Data.TriggerDrop(callback);
         /// <summary>
-        /// Builds up a list of ExchangeEntries that can be used with the Exchange method to create this item form a recipie
+        /// Builds up a list of ExchangeEntries that can be used with the Exchange method to create this item form a recipe
         /// </summary>
         /// <remarks>
-        /// This only works on recipies that only use item referencs. if the recipie requires a specific tag type it will not resolve
+        /// This only works on recipies that only use item references. if the recipe requires a specific tag type it will not resolve
         /// </remarks>
-        /// <param name="recipie">The recipie to try and build ... you can see all recipies for an item in the item_exchange.recipe member</param>
+        /// <param name="recipe">The recipe to try and build ... you can see all recipies for an item in the item_exchange.recipe member</param>
         /// <param name="entries"></param>
         /// <returns></returns>
-        public bool CanExchange(ItemDefinitionObject.ExchangeRecipe recipie, out List<ExchangeEntry> entries)
+        public bool CanExchange(ItemDefinitionObject.ExchangeRecipe recipe, out List<ExchangeEntry> entries)
         {
-            if (!recipie.Valid)
+            if (!recipe.Valid)
             {
                 entries = null;
-                Debug.LogWarning("The indicated recipie appears to be invalid and cannot automatically be resolved to an ExchangeEntry list.");
+                Debug.LogWarning("The indicated recipe appears to be invalid and cannot automatically be resolved to an ExchangeEntry list.");
                 return false;
             }
 
             entries = new List<ExchangeEntry>();
-            foreach (var mat in recipie.materials)
+            foreach (var mat in recipe.materials)
             {
                 if (mat.item.item == null)
                 {
-                    Debug.LogWarning("We can only build recipies that take specific items. This recipie uses tag types");
+                    Debug.LogWarning("We can only build recipies that take specific items. This recipe uses tag types");
                     entries = null;
                     return false;
                 }
@@ -1688,7 +1705,7 @@ namespace HeathenEngineering.SteamworksIntegration
                     }
                     else
                     {
-                        Debug.LogWarning("Insufficent quantity of item " + mat.item.item.name);
+                        Debug.LogWarning("Insufficient quantity of item " + mat.item.item.name);
                         entries = null;
                         return false;
                     }
@@ -1699,13 +1716,13 @@ namespace HeathenEngineering.SteamworksIntegration
         }
 
         /// <summary>
-        /// This will only work well with currency formats broken into 1/100th e.g. dollars, euro, punds, etc.
+        /// This will only work well with currency formats broken into 1/100th e.g. dollars, euro, pounds, etc.
         /// </summary>
         /// <returns></returns>
         public string CurrentPriceString() => Data.CurrentPriceString();
 
         /// <summary>
-        /// This will only work well with currency formats broken into 1/100th e.g. dollars, euro, punds, etc.
+        /// This will only work well with currency formats broken into 1/100th e.g. dollars, euro, pounds, etc.
         /// </summary>
         /// <returns></returns>
         public string BasePriceString() => Data.BasePriceString();
@@ -1748,6 +1765,21 @@ namespace HeathenEngineering.SteamworksIntegration
         private UnityEditor.SerializedProperty item_granted_manually;
         private UnityEditor.SerializedProperty item_use_bundle_price;
         private UnityEditor.SerializedProperty item_auto_stack;
+        private UnityEditor.SerializedProperty item_game_only;
+
+        private UnityEditor.SerializedProperty item_accessory_tag;
+        private UnityEditor.SerializedProperty item_accessory_limit;
+        private UnityEditor.SerializedProperty item_allowed_tags_from_tools;
+        private UnityEditor.SerializedProperty item_accessory_description;
+        //[SerializeField]
+        //internal string item_accessory_tag;
+        //[SerializeField]
+        //internal int item_accessory_limit;
+        //[SerializeField]
+        //internal string item_allowed_tags_from_tools;
+        //[SerializeField]
+        //internal LanguageVariantNode item_accessory_description = new LanguageVariantNode { node = "accessory_description" };
+
         private UnityEditor.SerializedProperty item_extendedSchema;
 
         private void OnEnable()
@@ -1785,6 +1817,13 @@ namespace HeathenEngineering.SteamworksIntegration
             item_granted_manually = serializedObject.FindProperty("item_granted_manually");
             item_use_bundle_price = serializedObject.FindProperty("item_use_bundle_price");
             item_auto_stack = serializedObject.FindProperty("item_auto_stack");
+            item_game_only = serializedObject.FindProperty("item_game_only");
+
+            item_accessory_tag = serializedObject.FindProperty("item_accessory_tag");
+            item_accessory_limit = serializedObject.FindProperty("item_accessory_limit");
+            item_allowed_tags_from_tools = serializedObject.FindProperty("item_allowed_tags_from_tools");
+            item_accessory_description = serializedObject.FindProperty("item_accessory_description");
+
             item_extendedSchema = serializedObject.FindProperty("item_extendedSchema");
         }
 
@@ -1836,7 +1875,7 @@ namespace HeathenEngineering.SteamworksIntegration
                 UnityEditor.AssetDatabase.ImportAsset(UnityEditor.AssetDatabase.GetAssetPath(itemRef));
 
                 UnityEditor.EditorGUIUtility.PingObject(itemRef);
-                
+
             }
 
             UnityEditor.EditorGUILayout.LabelField("Required Settings", UnityEditor.EditorStyles.boldLabel);
@@ -1864,7 +1903,7 @@ namespace HeathenEngineering.SteamworksIntegration
                 UnityEditor.EditorGUILayout.PropertyField(item_icon_url, new GUIContent("Icon URL", "The URL to the item's small icon. The URL should be publicly accessible because the Steam servers will download and cache. Recommended size is 200x200."), true);
                 UnityEditor.EditorGUILayout.PropertyField(item_icon_url_large, new GUIContent("Large Icon URL", "The URL to the item's large image. The URL should be publicly accessible because the Steam servers will download and cache. Recommended size is 2048x2048."), true);
 
-                
+
                 UnityEditor.EditorGUILayout.PropertyField(item_drop_start_time, new GUIContent("Drop Start Time", "UTC timestamp - prevent promo grants before this time, only applicable when promo = manual"), true);
                 UnityEditor.EditorGUILayout.PropertyField(item_exchange, new GUIContent("Exchange", "The recipes of materials that be exchanged for this item"), true);
                 UnityEditor.EditorGUILayout.PropertyField(item_tags, new GUIContent("Tags", "The tags assigned to the item"), true);
@@ -1873,6 +1912,12 @@ namespace HeathenEngineering.SteamworksIntegration
                 UnityEditor.EditorGUILayout.PropertyField(item_marketable, new GUIContent("Marketable", "Whether this item can be sold to other users in the Steam Community Market."), true);
                 UnityEditor.EditorGUILayout.PropertyField(item_tradable, new GUIContent("Tradeable", "Whether this item can be traded to other users using Steam Trading."), true);
                 UnityEditor.EditorGUILayout.PropertyField(item_auto_stack, new GUIContent("Auto Stack?", "If true, item grants will automatically be added to a single stack of the given type. Grants will be visible in inventory callbacks as quantity changes."), true);
+
+                if (itemRef.item_type == InventoryItemType.item)
+                {
+                    UnityEditor.EditorGUILayout.PropertyField(item_game_only, new GUIContent("Game Only?", "If true, then items will not be shown in the user's Steam Backpack, including new item notifications. Common uses for this area items that you grant, that are immediately consumed."), true);
+                }
+
                 UnityEditor.EditorGUILayout.PropertyField(item_hidden, new GUIContent("Hidden?", "If true, the item definition will not be shown to clients. Use this to hide unused, or under-development, itemdefs."), true);
 
                 UnityEditor.EditorGUILayout.Space();
@@ -1886,6 +1931,16 @@ namespace HeathenEngineering.SteamworksIntegration
                 UnityEditor.EditorGUILayout.PropertyField(item_drop_max_per_window, new GUIContent("Drop Max per-Window", "Numbers of grants within the window permitted before Cool-down applies. "), true);
                 UnityEditor.EditorGUILayout.PropertyField(item_granted_manually, new GUIContent("Granted Manually?", "If true, will only be granted when AddPromoItem() or AddPromoItems() are called with the explicit item definition id. Otherwise, it may be granted via the GrantPromoItems() call."), true);
 
+                if (itemRef.item_type == InventoryItemType.item)
+                {
+                    UnityEditor.EditorGUILayout.Space();
+                    UnityEditor.EditorGUILayout.LabelField("Accessory Settings", UnityEditor.EditorStyles.boldLabel);
+                    UnityEditor.EditorGUILayout.PropertyField(item_accessory_tag, new GUIContent("Tag", "To mark an item as being customizable, update the ItemDef with the property \"accessory_tag\" whose value is a per-item tag category token."), true);
+                    UnityEditor.EditorGUILayout.PropertyField(item_accessory_limit, new GUIContent("Limit", "You can limit the number of accessories on a single item with the property \"accessory_limit\""), true);
+                    UnityEditor.EditorGUILayout.PropertyField(item_allowed_tags_from_tools, new GUIContent("Allowed Tags from Tools", ""), true);
+                    UnityEditor.EditorGUILayout.PropertyField(item_accessory_description, new GUIContent("Accessory Description", ""), true);
+                }
+
                 if (itemRef.item_type == InventoryItemType.item || itemRef.item_type == InventoryItemType.bundle)
                 {
                     UnityEditor.EditorGUILayout.Space();
@@ -1897,8 +1952,12 @@ namespace HeathenEngineering.SteamworksIntegration
                     UnityEditor.EditorGUILayout.PropertyField(item_store_images, new GUIContent("Store Images", "These images will be proxied and used on the detail page of the Steam item store for your app."), true);
                     UnityEditor.EditorGUILayout.PropertyField(item_store_hidden, new GUIContent("Store Hidden?", "If true, this item will be hidden in the Steam Item Store for your app. By default, any items with a price will be shown in the store."), true);
                 }
+                else if (itemRef.item_type == InventoryItemType.tag_tool)
+                {
+                    UnityEditor.EditorGUILayout.PropertyField(item_store_tags, new GUIContent("Tags", "These tags will be used to categorize/filter items in the Steam item store for your app."), true);
+                }
             }
-            else
+            else if (itemRef.item_type == InventoryItemType.tag_generator)
             {
                 UnityEditor.EditorGUILayout.PropertyField(item_tag_generator_name, new GUIContent("Tag Generator Name", "The name of the tag category token"), true);
                 UnityEditor.EditorGUILayout.PropertyField(item_tag_generator_values, new GUIContent("Tag Generator Values", "The values and the chance that they will be picked"), true);

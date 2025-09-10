@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -34,17 +34,17 @@ namespace RoundHero
         public void SetDescParams(List<string> paramList)
         {
             descParams = paramList;
-            if (descParams.Count > 0)
-            {
-                name = descParams[0];
-            }
-            if (descParams.Count > 1)
-            {
-                desc = descParams[1];
-            }
+
+        }
+        
+        public void SetNameDesc(string name, string desc)
+        {
+            this.name = name;
+            this.desc = desc;
 
             
         }
+
 
         public async void ShowInfo()
         {

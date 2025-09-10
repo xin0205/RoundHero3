@@ -17,9 +17,9 @@ namespace HeathenEngineering.SteamworksIntegration.API
             [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
             static void Init()
             {
-                eventGameConnectedClanChatMsg = new GameConnectedClanChatMsgEvent();
-                eventGameConnectedChatJoin = new GameConnectedChatJoinEvent();
-                eventGameConnectedChatLeave = new GameConnectedChatLeaveEvent();
+                eventGameConnectedClanChatMsg = new();
+                eventGameConnectedChatJoin = new();
+                eventGameConnectedChatLeave = new();
                 m_DownloadClanActivityCountsResult_t = null;
                 m_ClanOfficerListResponse_t = null;
                 m_JoinClanChatRoomCompletionResult_t = null;
@@ -30,10 +30,10 @@ namespace HeathenEngineering.SteamworksIntegration.API
             }
 
             /// <summary>
-            /// This is provdided for debugging purposes and generally shouldn't be used
+            /// This is provided for debugging purposes and generally shouldn't be used
             /// </summary>
             /// <remarks>
-            /// The JoinChatRoom callback provides the ClanChatRoom you just entered you should cashe and use that as opposed to reading from this list.
+            /// The JoinChatRoom callback provides the ClanChatRoom you just entered you should cashed and use that as opposed to reading from this list.
             /// The chat related events also send the ClanChatRoom meaning there is little reason to read the list of rooms save for debugging.
             /// </remarks>
             public static readonly List<ChatRoom> joinedRooms = new List<ChatRoom>();
@@ -41,7 +41,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// <summary>
             /// Called when a chat message has been received in a Steam group chat that we are in.
             /// </summary>
-            public static GameConnectedClanChatMsgEvent EventChatMessageRecieved
+            public static GameConnectedClanChatMsgEvent EventChatMessageReceived
             {
                 get
                 {
@@ -56,7 +56,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                 room.enterResponse = EChatRoomEnterResponse.k_EChatRoomEnterResponseError;
 
                                 if (App.isDebugging)
-                                    Debug.LogWarning("Recieved a message from chat room: " + room.id + ", no such room is known!");
+                                    Debug.LogWarning("Received a message from chat room: " + room.id + ", no such room is known!");
                             }
 
                             var message = GetChatMessage(result.m_steamIDClanChat, result.m_iMessageID, out EChatEntryType type, out CSteamID chatter);
@@ -92,7 +92,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                 room.enterResponse = EChatRoomEnterResponse.k_EChatRoomEnterResponseError;
 
                                 if (App.isDebugging)
-                                    Debug.LogWarning("Recieved a chat join event from chat room: " + room.id + ", no such room is known!");
+                                    Debug.LogWarning("Received a chat join event from chat room: " + room.id + ", no such room is known!");
                             }
 
                             eventGameConnectedChatJoin.Invoke(room, result.m_steamIDUser);
@@ -119,7 +119,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                 room.enterResponse = EChatRoomEnterResponse.k_EChatRoomEnterResponseError;
 
                                 if (App.isDebugging)
-                                    Debug.LogWarning("Recieved a chat leave event from chat room: " + room.id + ", no such room is known!");
+                                    Debug.LogWarning("Received a chat leave event from chat room: " + room.id + ", no such room is known!");
                             }
 
                             eventGameConnectedChatLeave.Invoke(new UserLeaveData
@@ -135,9 +135,9 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 }
             }
 
-            private static GameConnectedClanChatMsgEvent eventGameConnectedClanChatMsg = new GameConnectedClanChatMsgEvent();
-            private static GameConnectedChatJoinEvent eventGameConnectedChatJoin = new GameConnectedChatJoinEvent();
-            private static GameConnectedChatLeaveEvent eventGameConnectedChatLeave = new GameConnectedChatLeaveEvent();
+            private static GameConnectedClanChatMsgEvent eventGameConnectedClanChatMsg = new();
+            private static GameConnectedChatJoinEvent eventGameConnectedChatJoin = new();
+            private static GameConnectedChatLeaveEvent eventGameConnectedChatLeave = new();
 
             private static CallResult<DownloadClanActivityCountsResult_t> m_DownloadClanActivityCountsResult_t;
             private static CallResult<ClanOfficerListResponse_t> m_ClanOfficerListResponse_t;
@@ -160,8 +160,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 if (callback == null)
                     return;
 
-                if (m_JoinClanChatRoomCompletionResult_t == null)
-                    m_JoinClanChatRoomCompletionResult_t = CallResult<JoinClanChatRoomCompletionResult_t>.Create();
+                m_JoinClanChatRoomCompletionResult_t ??= CallResult<JoinClanChatRoomCompletionResult_t>.Create();
 
                 var handle = SteamFriends.JoinClanChatRoom(clan);
                 m_JoinClanChatRoomCompletionResult_t.Set(handle, (r, e) =>
@@ -485,8 +484,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 if (callback == null)
                     return;
 
-                if (m_ClanOfficerListResponse_t == null)
-                    m_ClanOfficerListResponse_t = CallResult<ClanOfficerListResponse_t>.Create();
+                m_ClanOfficerListResponse_t ??= CallResult<ClanOfficerListResponse_t>.Create();
 
                 var handle = SteamFriends.RequestClanOfficerList(clanId);
                 m_ClanOfficerListResponse_t.Set(handle, callback.Invoke);
@@ -513,8 +511,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 if (callback == null)
                     return;
 
-                if (m_DownloadClanActivityCountsResult_t == null)
-                    m_DownloadClanActivityCountsResult_t = CallResult<DownloadClanActivityCountsResult_t>.Create();
+                m_DownloadClanActivityCountsResult_t ??= CallResult<DownloadClanActivityCountsResult_t>.Create();
 
                 var handle = SteamFriends.DownloadClanActivityCounts(clans, clans.Length);
                 m_DownloadClanActivityCountsResult_t.Set(handle, callback.Invoke);

@@ -22,17 +22,17 @@ namespace HeathenEngineering.SteamworksIntegration
         /// Metadata values that should be used to sort the results e.g. values `closer` to these values will be weighted higher in the resutls
         /// </summary>
         [UnityEngine.Tooltip("Metadata values that should be used to sort the results e.g. values `closer` to these values will be weighted higher in the resutls")]
-        public List<NearFilter> nearValues = new List<NearFilter>();
+        public List<NearFilter> nearValues = new();
         /// <summary>
         /// Metadata values that should be compared as numeric values e.g. should follow typical maths rules for concepts such as less than, greater than, etc.
         /// </summary>
         [UnityEngine.Tooltip("Metadata values that should be compared as numeric values e.g. should follow typical maths rules for concepts such as less than, greater than, etc.")]
-        public List<NumericFilter> numericFilters = new List<NumericFilter>();
+        public List<NumericFilter> numericFilters = new();
         /// <summary>
         /// Metadata values that should be compared as strings
         /// </summary>
         [UnityEngine.Tooltip("Metadata values that should be compared as strings")]
-        public List<StringFilter> stringFilters = new List<StringFilter>();
+        public List<StringFilter> stringFilters = new();
     }
 }
 #endif

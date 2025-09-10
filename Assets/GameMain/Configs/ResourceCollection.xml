@@ -3,7 +3,7 @@
   <ResourceCollection>
     <Resources>
       <Resource Name="Animation" LoadType="0" Packed="False" />
-      <Resource Name="Configs" FileSystem="GameData" LoadType="0" Packed="True" ResourceGroups="Base" />
+      <Resource Name="Configs" FileSystem="GameData" LoadType="0" Packed="False" ResourceGroups="Base" />
       <Resource Name="DataTable" LoadType="0" Packed="False" />
       <Resource Name="Effect" LoadType="0" Packed="False" />
       <Resource Name="Entities" LoadType="0" Packed="False" />
@@ -759,6 +759,7 @@
       <Asset Guid="8b2db97a0fcf049469c63dc8d192797e" ResourceName="UIForms" />
       <Asset Guid="8c099bb7b407eb54180b6032a417fdc8" ResourceName="UIForms" />
       <Asset Guid="8c7ed715e84796b4295bee142f1f8895" ResourceName="UIForms" />
+      <Asset Guid="8cae09fc239d1fa408af739e51709c2f" ResourceName="Configs" />
       <Asset Guid="8cd8612981312804c9fd81b02f247cfe" ResourceName="UIForms" />
       <Asset Guid="8cfce6ec837eca44e949f5e0b130cf1e" ResourceName="UIForms" />
       <Asset Guid="8d0278bba34f6074cabc8e2b52123f6a" ResourceName="UIForms" />

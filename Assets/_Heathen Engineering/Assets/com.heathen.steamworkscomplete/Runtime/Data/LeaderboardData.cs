@@ -40,7 +40,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <summary>
         /// Returns the user entry for the local user
         /// </summary>
-        /// <param name="callback">The deligate to invoke when the process is complete</param>
+        /// <param name="callback">The delegate to invoke when the process is complete</param>
         public readonly void GetUserEntry(int maxDetailEntries, Action<LeaderboardEntry, bool> callback)
         {
             API.Leaderboards.Client.DownloadEntries(id, new CSteamID[] { UserData.Me }, maxDetailEntries, (results, error) =>
@@ -64,16 +64,16 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <param name="request">The type of range to get from the board</param>
         /// <param name="start">The index to start downloading at</param>
         /// <param name="end">The index to end downloading at</param>
-        /// <param name="callback">The deligate to invoke when the process is complete</param>
+        /// <param name="callback">The delegate to invoke when the process is complete</param>
         public readonly void GetEntries(ELeaderboardDataRequest request, int start, int end, int maxDetailEntries, Action<LeaderboardEntry[], bool> callback) => API.Leaderboards.Client.DownloadEntries(id, request, start, end, maxDetailEntries, callback);
         /// <summary>
         /// Invokes the callback with the query results 
         /// </summary>
         /// <param name="users">The users to get results for</param>
-        /// <param name="callback">The deligate to invoke when the process is complete</param>
+        /// <param name="callback">The delegate to invoke when the process is complete</param>
         public readonly void GetEntries(UserData[] users, int maxDetailEntries, Action<LeaderboardEntry[], bool> callback) => API.Leaderboards.Client.DownloadEntries(id, Array.ConvertAll<UserData, CSteamID>(users, p => p.id), maxDetailEntries, callback);
         /// <summary>
-        /// Attempt to return all entries or this board, this is not recomended and may not return all results in that Steam may rate limit the request
+        /// Attempt to return all entries or this board, this is not recommended and may not return all results in that Steam may rate limit the request
         /// </summary>
         /// <param name="maxDetailEntries"></param>
         /// <param name="callback"></param>
@@ -86,7 +86,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// Invokes the callback with the query results 
         /// </summary>
         /// <param name="users">The users to get results for</param>
-        /// <param name="callback">The deligate to invoke when the process is complete</param>
+        /// <param name="callback">The delegate to invoke when the process is complete</param>
         public readonly void GetEntries(CSteamID[] users, int maxDetailEntries, Action<LeaderboardEntry[], bool> callback) => API.Leaderboards.Client.DownloadEntries(id, users, maxDetailEntries, callback);
         /// <summary>
         /// Get the board that matches the name provided
@@ -131,12 +131,12 @@ namespace HeathenEngineering.SteamworksIntegration
 
             if(SteamSettings.current != null && SteamSettings.current.isDebugging)
             {
-                Debug.Log($"Begining GetAll for {boards.Length} boards.");
+                Debug.Log($"Beginning GetAll for {boards.Length} boards.");
             }
             
             if(boards.Any(b => b == null || string.IsNullOrEmpty(b.apiName)))
             {
-                Debug.LogError("Errors have been found with the Leaderboard Objects proivded. Please review your Leaderboard Objects and try again.");
+                Debug.LogError("Errors have been found with the Leaderboard Objects provided. Please review your Leaderboard Objects and try again.");
                 callback?.Invoke(EResult.k_EResultUnexpectedError);
                 return;
             }

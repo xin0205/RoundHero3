@@ -5,7 +5,6 @@ using Steamworks;
 #if ENABLE_INPUT_SYSTEM
 #endif
 
-using FishNet;
 
 namespace HeathenEngineering.DEMO
 {

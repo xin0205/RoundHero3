@@ -9,7 +9,7 @@ using UnityEngine;
 namespace HeathenEngineering.SteamworksIntegration
 {
     /// <summary>
-    /// Represents a Steam Lobby and exposes its core funcitonality
+    /// Represents a Steam Lobby and exposes its core functionality
     /// </summary>
     [Serializable]
     public struct LobbyData : IEquatable<CSteamID>, IEquatable<ulong>, IEquatable<LobbyData>
@@ -18,10 +18,8 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <summary>
         /// The native <see cref="CSteamID"/> of the lobby
         /// </summary>
-        public readonly CSteamID SteamId
-        { 
-             get => new(id);
-        }
+        public readonly CSteamID SteamId => new(id);
+        
         /// <summary>
         /// The native <see cref="AccountID_t"/> of the lobby
         /// </summary>
@@ -556,7 +554,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// This creates an entry in the metadata named z_heathenKick which contains a string array of Ids of users that should leave the lobby.
         /// When users detect their ID in the string they will automatically leave the lobby on leaving the lobby the users ID will be removed from the array.
         /// </remarks>
-        public readonly bool KickMember(CSteamID memberId)
+        public readonly bool KickMember(UserData memberId)
         {
             if (!IsOwner)
                 return false;
@@ -576,7 +574,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         /// <param name="memberId"></param>
         /// <returns></returns>
-        public readonly bool KickListContains(CSteamID memberId)
+        public readonly bool KickListContains(UserData memberId)
         {
             var kickList = API.Matchmaking.Client.GetLobbyData(id, DataKick);
             return kickList.Contains("[" + memberId.ToString() + "]");
@@ -586,7 +584,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         /// <param name="memberId"></param>
         /// <returns></returns>
-        public readonly bool RemoveFromKickList(CSteamID memberId)
+        public readonly bool RemoveFromKickList(UserData memberId)
         {
             if (!IsOwner)
                 return false;
@@ -612,23 +610,24 @@ namespace HeathenEngineering.SteamworksIntegration
         /// Use this sparingly it requires string parsing and is not performant
         /// </summary>
         /// <returns></returns>
-        public readonly CSteamID[] GetKickList()
+        public readonly UserData[] GetKickList()
         {
             var list = API.Matchmaking.Client.GetLobbyData(id, DataKick);
             if (!string.IsNullOrEmpty(list))
             {
                 var sArray = list.Split(new string[] { "][" }, StringSplitOptions.RemoveEmptyEntries);
-                var resultList = new List<CSteamID>();
+                var resultList = new List<UserData>();
                 for (int i = 0; i < sArray.Length; i++)
                 {
-                    if (ulong.TryParse(sArray[i].Replace("[", string.Empty).Replace("]", string.Empty), out ulong id))
-                        resultList.Add(new CSteamID(id));
+                    var user = UserData.Get(sArray[i].Replace("[", string.Empty).Replace("]", string.Empty));
+                    if (user.IsValid)
+                        resultList.Add(user);
                 }
 
                 return resultList.ToArray();
             }
             else
-                return new CSteamID[0];
+                return new UserData[0];
         }
         /// <summary>
         /// Sets metadata for the player on the first lobby
@@ -653,7 +652,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public readonly string GetMemberMetadata(CSteamID memberId, string key)
+        public readonly string GetMemberMetadata(UserData memberId, string key)
         {
             return API.Matchmaking.Client.GetLobbyMemberData(id, memberId, key);
         }
@@ -667,12 +666,20 @@ namespace HeathenEngineering.SteamworksIntegration
             return API.Matchmaking.Client.GetLobbyMemberData(id, member.user, key);
         }
         /// <summary>
+        /// Refreshes all of the metadata for a lobby that you're not in right now.
+        /// </summary>
+        /// <remarks>
+        /// You will never do this for lobbies you're a member of, that data will always be up to date. You can use this to refresh lobbies that you have obtained from RequestLobbyList or that are available via friends.
+        /// </remarks>
+        /// <returns>True if request was accepted, False indicates an failure to issue the request.</returns>
+        public readonly bool RequestData() => API.Matchmaking.Client.RequestLobbyData(id);
+        /// <summary>
         /// Gets a lobby based on a provided account aka friend ID
         /// </summary>
         /// <param name="accountId">The ID of the lobby as a string to return</param>
         /// <returns>The related lobby</returns>
         public static LobbyData Get(string accountId)
-        {
+        {            
             uint id = Convert.ToUInt32(accountId, 16);
             if (id > 0)
                 return Get(id);
@@ -868,7 +875,7 @@ namespace HeathenEngineering.SteamworksIntegration
             });
         }
         /// <summary>
-        /// Attempts to send a newly generated ticket to the lobby for authenticaiton
+        /// Attempts to send a newly generated ticket to the lobby for authentication
         /// </summary>
         /// <param name="callback">(AuthenticationTicket ticketSent, bool ioError) invoked when the process completes and indicates the ticket that was sent and rather or not there was an IO error.</param>
         public readonly void Authenticate(Action<AuthenticationTicket, bool> callback)
@@ -890,7 +897,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <summary>
         /// Sends a prebuilt authentication data request to the lobby chat system
         /// </summary>
-        /// <param name="data">The authenticaiton request data to process</param>
+        /// <param name="data">The authentication request data to process</param>
         /// <returns>true if the message was sent</returns>
         public readonly bool Authenticate(LobbyAuthenticationData data)
         {

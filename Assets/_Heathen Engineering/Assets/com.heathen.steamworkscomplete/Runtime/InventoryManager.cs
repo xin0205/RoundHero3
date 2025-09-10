@@ -30,14 +30,14 @@ namespace HeathenEngineering.SteamworksIntegration
         {
             if (SteamSettings.current != null)
                 SteamSettings.Client.inventory.EventChanged.AddListener(evtChanged.Invoke);
-            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponce.AddListener(evtTransactionResponce.Invoke);
+            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponse.AddListener(evtTransactionResponce.Invoke);
         }
 
         private void OnDisable()
         {
             if (SteamSettings.current != null)
                 SteamSettings.Client.inventory.EventChanged.RemoveListener(evtChanged.Invoke);
-            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponce.RemoveListener(evtTransactionResponce.Invoke);
+            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponse.RemoveListener(evtTransactionResponce.Invoke);
         }
 
         /// <summary>

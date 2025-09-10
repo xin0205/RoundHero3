@@ -53,11 +53,11 @@ namespace HeathenEngineering.SteamworksIntegration
         /// To be valid the following must be true
         /// <list type="bullet">
         /// <item><see cref="appId"/> must be valid</item>
-        /// <item><see cref="title"/> must be populated with a value whoes length is less than <see cref="Constants.k_cchPublishedDocumentTitleMax"/></item>
-        /// <item><see cref="description"/> must be populated with a value whoes length is less than <see cref="Constants.k_cchPublishedDocumentDescriptionMax"/></item>
+        /// <item><see cref="title"/> must be populated with a value whose length is less than <see cref="Constants.k_cchPublishedDocumentTitleMax"/></item>
+        /// <item><see cref="description"/> must be populated with a value whose length is less than <see cref="Constants.k_cchPublishedDocumentDescriptionMax"/></item>
         /// <item><see cref="metadata"/> is option and can be an empty string, if populated its length must be less than <see cref="Constants.k_cchDeveloperMetadataMax"/></item>
         /// <item><see cref="content"/> must be the full path of a valid directory (aka folder path)</item>
-        /// <item><see cref="preview"/> must be the full path of a valid JPG, PNG or GIF file whoes total size is less than 1mb</item>
+        /// <item><see cref="preview"/> must be the full path of a valid JPG, PNG or GIF file whose total size is less than 1mb</item>
         /// <item><see cref="imageFiles"/> is optional and can be null, if populated each path must be a valid JPG, PNG or GIF and each image must have a size less than 1mb</item>
         /// <item><see cref="youTubeVideoIds"/> is optional and can be null, if populated each must be a valid YouTube video ID</item>
         /// <item><see cref="tags"/> is optional and can be null, if populated each tag must have a length less than 255</item>
@@ -84,7 +84,7 @@ namespace HeathenEngineering.SteamworksIntegration
                     && content != null
                     && preview.Exists
                     && content.Exists
-                    && !tags.Any(p => p.Length > 255);
+                    && (tags == null || tags.Length == 0 || !tags.Any(p => p.Length > 255));
             }
         }
         /// <summary>

@@ -12,6 +12,7 @@ namespace HeathenEngineering.SteamworksIntegration
         generator,
         playtimegenerator,
         tag_generator,
+        tag_tool
     }
 }
 #endif

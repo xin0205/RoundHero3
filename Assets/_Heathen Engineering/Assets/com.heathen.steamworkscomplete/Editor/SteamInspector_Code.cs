@@ -64,7 +64,7 @@ namespace HeathenEngineering.SteamworksIntegration.Editors
         [MenuItem("Window/Steamworks/Inspector")]
         public static void ShowExample()
         {
-            var version = SessionState.GetString("com.heathen.steamworks-version", "3.3.3");
+            var version = SessionState.GetString("com.heathen.steamworks-version", "[unknown]");
             instance = GetWindow<SteamInspector_Code>();
             instance.titleContent = new GUIContent($"Inspector v{version}", instance.icon);
         }

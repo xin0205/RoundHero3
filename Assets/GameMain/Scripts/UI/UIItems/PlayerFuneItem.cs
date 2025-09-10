@@ -30,11 +30,7 @@ namespace RoundHero
                 string funeDesc = "";
                 GameUtility.GetFuneText(funeData.FuneID, ref funeName, ref funeDesc);
                 
-                funeInfoTrigger.SetDescParams(new List<string>()
-                {
-                    funeName,
-                    funeDesc,
-                });
+                funeInfoTrigger.SetNameDesc(funeName, funeDesc);
             }
             
             

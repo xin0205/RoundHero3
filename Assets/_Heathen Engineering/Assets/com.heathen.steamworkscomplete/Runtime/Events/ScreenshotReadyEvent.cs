@@ -5,6 +5,6 @@ using UnityEngine.Events;
 namespace HeathenEngineering.SteamworksIntegration
 {
     [System.Serializable]
-    public class ScreenshotReadyEvent : UnityEvent<ScreenshotReady_t> { }
+    public class ScreenshotReadyEvent : UnityEvent<ScreenshotReady> { }
 }
 #endif

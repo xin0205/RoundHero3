@@ -103,7 +103,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                 waiting = false;
                             });
 
-                            //Wait untill we get a result or untill we timeout
+                            //Wait until we get a result or until we timeout
                             while (waiting)
                                 Thread.Sleep(100);
                         }
@@ -147,7 +147,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                     waiting = false;
                                 });
 
-                                //Wait untill we get a result
+                                //Wait until we get a result
                                 while (waiting)
                                     Thread.Sleep(100);
                             }
@@ -165,7 +165,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                     waiting = false;
                                 });
 
-                                //Wait untill we get a result
+                                //Wait until we get a result
                                 while (waiting)
                                     Thread.Sleep(100);
                             }
@@ -216,7 +216,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                             waiting = false;
                         });
 
-                        //Wait untill we get a result
+                        //Wait until we get a result
                         while (waiting)
                             Thread.Sleep(100);
 
@@ -270,7 +270,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                     waiting = false;
                                 });
 
-                                //Wait untill we get a result
+                                //Wait until we get a result
                                 while (waiting)
                                     Thread.Sleep(100);
                             }
@@ -293,7 +293,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                     waiting = false;
                                 });
 
-                                //Wait untill we get a result
+                                //Wait until we get a result
                                 while (waiting)
                                     Thread.Sleep(100);
                             }
@@ -656,7 +656,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// Uploads a user score to a specified leaderboard.
             /// </summary>
             /// <remarks>
-            /// Details are optional game-defined information which outlines how the user got that score. For example if it's a racing style time based leaderboard you could store the timestamps when the player hits each checkpoint. If you have collectibles along the way you could use bit fields as booleans to store the items the player picked up in the playthrough.
+            /// Details are optional game-defined information which outlines how the user got that score. For example if it's a racing style time based leaderboard you could store the timestamps when the player hits each checkpoint. If you have collectibles along the way you could use bit fields as Booleans to store the items the player picked up in the playthrough.
             /// <para>
             /// Uploading scores to Steam is rate limited to 10 uploads per 10 minutes and you may only have one outstanding call to this function at a time.
             /// </para>

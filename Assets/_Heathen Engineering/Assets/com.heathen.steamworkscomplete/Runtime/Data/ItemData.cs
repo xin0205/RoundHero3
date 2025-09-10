@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using UnityEngine;
 
@@ -313,7 +312,7 @@ namespace HeathenEngineering.SteamworksIntegration
         }
         /// <summary>
         /// Starts the purchase process
-        /// <para>Assuming the item has a valid price configured this will open the Steam overlay with this item in the shopping cart. The <see cref="SteamInventoryStartPurchaseResult_t"/> provided in the callback will indicate the transaction ID which can be used with <see cref="API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponce"/> to know the purchase is completed if it is completed.</para>
+        /// <para>Assuming the item has a valid price configured this will open the Steam overlay with this item in the shopping cart. The <see cref="SteamInventoryStartPurchaseResult_t"/> provided in the callback will indicate the transaction ID which can be used with <see cref="API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponse"/> to know the purchase is completed if it is completed.</para>
         /// <para>Generally speaking you do not need to track when the purchase is completed and in most games the game will simply monitor for any changes to inventory. This is advisable as its possible the player out side of your game use Steam store or other mechanism to purchase an item or was gifted an item from another player or in some other way acquired an item from a process out side your game's control. As such it is important that your game handle the possibility of inventory changing at any time which would of course catch any pruchases made from within game as well.</para>
         /// </summary>
         /// <param name="callback">A delegate of the form (<see cref="SteamInventoryStartPurchaseResult_t"/> result, <see cref="bool"/> ioError) that is invoked when the process completes</param>
@@ -323,7 +322,7 @@ namespace HeathenEngineering.SteamworksIntegration
         }
         /// <summary>
         /// Starts the purchase process
-        /// <para>Assuming the item has a valid price configured this will open the Steam overlay with this item in the shopping cart. The <see cref="SteamInventoryStartPurchaseResult_t"/> provided in the callback will indicate the transaction ID which can be used with <see cref="API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponce"/> to know the purchase is completed if it is completed.</para>
+        /// <para>Assuming the item has a valid price configured this will open the Steam overlay with this item in the shopping cart. The <see cref="SteamInventoryStartPurchaseResult_t"/> provided in the callback will indicate the transaction ID which can be used with <see cref="API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponse"/> to know the purchase is completed if it is completed.</para>
         /// <para>Generally speaking you do not need to track when the purchase is completed and in most games the game will simply monitor for any changes to inventory. This is advisable as its possible the player out side of your game use Steam store or other mechanism to purchase an item or was gifted an item from another player or in some other way acquired an item from a process out side your game's control. As such it is important that your game handle the possibility of inventory changing at any time which would of course catch any pruchases made from within game as well.</para>
         /// </summary>
         /// <param name="count">The number of items to add to the shopping cart</param>

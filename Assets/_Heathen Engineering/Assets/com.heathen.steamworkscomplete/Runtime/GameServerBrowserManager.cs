@@ -252,12 +252,12 @@ namespace HeathenEngineering.SteamworksIntegration
         }
 
         /// <summary>
-        /// Simple dictionary wrapper to simplify the filter paramiter of search methods.
+        /// Simple dictionary wrapper to simplify the filter parameter of search methods.
         /// </summary>
         /// <remarks>
-        /// Any paramiter of <see cref="Filter"/> can be passed in simply via:
+        /// Any parameter of <see cref="Filter"/> can be passed in simply via:
         /// <code>new GameServerBrowser.Filter{ {"key1", "value1"}, {"key2", "value2"} }</code>
-        /// This is a simple Dictionary{string, string} so you can construct it in draditional ways as well e.g.
+        /// This is a simple Dictionary{string, string} so you can construct it in traditional ways as well e.g.
         /// <code>var filter = new GameServerBrowser.Filter();</code>
         /// <code>filter.Add("key1", "value1");</code>
         /// <code>filter.Add("key2", "value2");</code>
@@ -304,7 +304,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         /// <param name="type">The type of servers to return</param>
         /// <param name="callback">The action to be called when the process is complete.
-        /// param 1 of type <see cref="bool"/> indicates success or failure whhile param 2 is a list of <see cref="GameServerBrowserEntery"/> representing each server found</param>
+        /// param 1 of type <see cref="bool"/> indicates success or failure while param 2 is a list of <see cref="GameServerBrowserEntery"/> representing each server found</param>
         /// <param name="filter">a set of key value pairs representing the search filter</param>
         public void GetServerList(GameServerSearchType type, Action<List<GameServerBrowserEntery>, bool> callback = null, Filter filter = null)
         {
@@ -316,7 +316,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// <param name="appId">The app ID to search for</param>
         /// <param name="type">The type of servers to return</param>
         /// <param name="callback">The action to be called when the process is complete.
-        /// param 1 of type <see cref="bool"/> indicates success or failure whhile param 2 is a list of <see cref="GameServerBrowserEntery"/> representing each server found</param>
+        /// param 1 of type <see cref="bool"/> indicates success or failure while param 2 is a list of <see cref="GameServerBrowserEntery"/> representing each server found</param>
         /// <param name="filter">a set of key value pairs representing the search filter</param>
         public void GetServerList(AppId_t appId, GameServerSearchType type, Action<List<GameServerBrowserEntery>, bool> callback = null, Filter filter = null)
         {

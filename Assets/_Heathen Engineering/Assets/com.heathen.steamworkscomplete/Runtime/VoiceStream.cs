@@ -10,7 +10,7 @@ namespace HeathenEngineering.SteamworksIntegration
     public class VoiceStream : MonoBehaviour
     {
         /// <summary>
-        /// The audio source to output recieved and decoded voice messages to.
+        /// The audio source to output received and decoded voice messages to.
         /// </summary>
         public AudioSource outputSource;
         public SampleRateMethod sampleRateMethod = SampleRateMethod.Optimal;
@@ -102,7 +102,7 @@ namespace HeathenEngineering.SteamworksIntegration
                 }
                 else
                 {
-                    //If we dont write silence
+                    //If we don't write silence
                     data[i] = 0;
                 }
             }

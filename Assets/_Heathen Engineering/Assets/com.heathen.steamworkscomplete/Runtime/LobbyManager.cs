@@ -1,10 +1,13 @@
 ﻿#if !DISABLESTEAMWORKS && HE_SYSCORE && STEAMWORKSNET
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using HeathenEngineering.SteamworksIntegration.API;
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 namespace HeathenEngineering.SteamworksIntegration
 {
@@ -22,15 +25,43 @@ namespace HeathenEngineering.SteamworksIntegration
     /// You can then use this object as an interface between your UI and a specific lobby to create lobby windows, party windows, lobby chats and more.
     /// </para>
     /// </remarks>
-    [HelpURL("https://kb.heathen.group/assets/steamworks/for-unity-game-engine/components/lobby-manager")]
+    [HelpURL("https://kb.heathen.group/toolkit-for-steamworks-sdk/unity/ui-components/lobby-manager")]
     public class LobbyManager : MonoBehaviour
     {
-        [Tooltip("The values to be used when searching for a lobby")]
-        public SearchArguments searchArguments = new SearchArguments();
-        [Tooltip("The values to be used when creating a new lobby")]
-        public CreateArguments createArguments = new CreateArguments();
+        public enum ManagedLobbyEvents
+        {
+            AuthenticationSessionResults,
+            LobbyChatMessageReceived,
+            LobbyCreationFailed,
+            LobbyCreationSuccess,
+            LobbyInviteReceived,
+            LobbyJoinFailure,
+            LobbyJoinSuccess,
+            LobbyLeave,
+            MetadataUpdated,
+            OtherUserLeft,
+            OtherUserJoined,
+            QuickMatchFailed,
+            SearchResultsReady,
+            SessionConnectionUpdated,
+            YouAreAskedToLeave,
+        }
 
+        [SerializeField]
+        private List<ManagedLobbyEvents> m_Delegates;
+
+        [Tooltip("The values to be used when searching for a lobby")]
+        public SearchArguments searchArguments = new();
+        [Tooltip("The values to be used when creating a new lobby")]
+        public CreateArguments createArguments = new();
+        /// <summary>
+        /// The Rich Presence fields to be set when a lobby is created.
+        /// </summary>
+        [Tooltip("The Rich Presence fields to be set when joining a lobby.\nDoes not apply to creating a lobby, use the Create Arguments for that.")]
+        public List<StringKeyValuePair> richPresenceFields = new();
         [Header("Events")]
+        public LobbyInviteEvent evtLobbyInvite;
+        public LobbyChatMsgEvent evtChatMsgReceived;
         public LobbyDataListEvent evtFound;
         /// <summary>
         /// Occurs when the local user enters a lobby as a response to a join
@@ -77,7 +108,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         public UserLeaveEvent evtUserLeft;
         /// <summary>
-        /// Occurs when the local user who is the owner of the lobby recieves and starts an auth session request for a user
+        /// Occurs when the local user who is the owner of the lobby receives and starts an auth session request for a user
         /// </summary>
         public LobbyAuthenticaitonSessionEvent evtAuthenticationSessionResult;
         /// <summary>
@@ -94,7 +125,7 @@ namespace HeathenEngineering.SteamworksIntegration
             set;
         }
         /// <summary>
-        /// Returns true if the <see cref="Lobby"/> value is populatted and resolves to a non-empty lobby
+        /// Returns true if the <see cref="Lobby"/> value is populated and resolves to a non-empty lobby
         /// </summary>
         public bool HasLobby => Lobby != CSteamID.Nil.m_SteamID && SteamMatchmaking.GetNumLobbyMembers(Lobby) > 0;
         /// <summary>
@@ -183,6 +214,8 @@ namespace HeathenEngineering.SteamworksIntegration
             API.Matchmaking.Client.EventLobbyGameCreated.AddListener(HandleGameServerSet);
             API.Matchmaking.Client.EventLobbyChatUpdate.AddListener(HandleChatUpdate);
             API.Matchmaking.Client.EventLobbyAuthenticationRequest.AddListener(HandleAuthRequest);
+            API.Matchmaking.Client.EventLobbyChatMsg.AddListener(HandleChatMessage);
+            API.Matchmaking.Client.EventLobbyInvite.AddListener(evtLobbyInvite.Invoke);
         }
 
         private void OnDisable()
@@ -193,6 +226,16 @@ namespace HeathenEngineering.SteamworksIntegration
             API.Matchmaking.Client.EventLobbyGameCreated.RemoveListener(HandleGameServerSet);
             API.Matchmaking.Client.EventLobbyChatUpdate.RemoveListener(HandleChatUpdate);
             API.Matchmaking.Client.EventLobbyAuthenticationRequest.RemoveListener(HandleAuthRequest);
+            API.Matchmaking.Client.EventLobbyChatMsg.RemoveListener(HandleChatMessage);
+            API.Matchmaking.Client.EventLobbyInvite.RemoveListener(evtLobbyInvite.Invoke);
+        }
+
+        private void HandleChatMessage(LobbyChatMsg message)
+        {
+            if (message.lobby == Lobby)
+            {
+                evtChatMsgReceived.Invoke(message);
+            }
         }
 
         private void HandleAuthRequest(LobbyData lobby, UserData sender, byte[] ticket, byte[] inventory)
@@ -355,6 +398,7 @@ namespace HeathenEngineering.SteamworksIntegration
             createArguments.slots = slots;
             createArguments.metadata.Clear();
             createArguments.metadata.AddRange(metadata);
+            createArguments.richPresenceFields.Clear();
             Create(null);
         }
         public void Create(ELobbyType type, int slots, params MetadataTempalate[] metadata)
@@ -364,6 +408,7 @@ namespace HeathenEngineering.SteamworksIntegration
             createArguments.slots = slots;
             createArguments.metadata.Clear();
             createArguments.metadata.AddRange(metadata);
+            createArguments.richPresenceFields.Clear();
             Create(null);
         }
         /// <summary>
@@ -395,13 +440,59 @@ namespace HeathenEngineering.SteamworksIntegration
 
                         lobby[LobbyData.DataName] = createArguments.name;
                         foreach (var data in createArguments.metadata)
-                            lobby[data.key] = data.value;
+                        {
+                            if (data.value.Contains("@[") && data.value.Contains("]"))
+                            {
+                                var workingString = data.value;
+                                while (API.Utilities.FindToken("@[", "]", workingString, out var resultString))
+                                {
+                                    switch(resultString) 
+                                    {
+                                        case "@[userName]":
+                                            workingString.Replace(resultString, UserData.Me.Name);
+                                            break;
+                                        case "@[userLevel]":
+                                            workingString.Replace(resultString, UserData.Me.Level.ToString());
+                                            break;
+                                        default:
+                                            workingString.Replace(resultString, "");
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                                lobby[data.key] = data.value;
+                        }
+
+                        if (createArguments != null
+                        && createArguments.richPresenceFields != null)
+                            foreach (var kvp in createArguments.richPresenceFields)
+                            {
+                                if (kvp.value.Contains("@[") && kvp.value.Contains("]"))
+                                {
+                                    var workingString = kvp.value;
+                                    while (API.Utilities.FindToken("@[", "]", workingString, out var resultString))
+                                    {
+                                        switch (resultString)
+                                        {
+                                            case "@[lobbyId]":
+                                                workingString.Replace(resultString, lobby.ToString());
+                                                break;
+                                            default:
+                                                workingString.Replace(resultString, lobby[resultString[2..^1]]);
+                                                break;
+                                        }
+                                    }
+                                }
+                                else
+                                    Friends.Client.SetRichPresence(kvp.key, kvp.value);
+                            }
 
                         evtCreated?.Invoke(lobby);
                     }
                     else
                     {
-                        Debug.Log($"No lobby created Steam API responce code: {result}");
+                        Debug.Log($"No lobby created Steam API response code: {result}");
                         evtCreateFailed?.Invoke(result);
                     }
                 }
@@ -419,7 +510,7 @@ namespace HeathenEngineering.SteamworksIntegration
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Remimber Lobbies are a matchmaking feature, the first lobby returned is generally he best, lobby search is not intended to return all possible results simply the best matching options.
+        /// Remember Lobbies are a matchmaking feature, the first lobby returned is generally he best, lobby search is not intended to return all possible results simply the best matching options.
         /// </para>
         /// </remarks>
         /// <param name="maxResults">The maximum number of lobbies to return. lower values are better.</param>
@@ -506,6 +597,30 @@ namespace HeathenEngineering.SteamworksIntegration
                             Debug.Log("Joined lobby: " + lobby.ToString());
 
                         Lobby = r.Lobby;
+
+                        if (richPresenceFields != null)
+                            foreach (var kvp in richPresenceFields)
+                            {
+                                if (kvp.value.Contains("@[") && kvp.value.Contains("]"))
+                                {
+                                    var workingString = kvp.value;
+                                    while (API.Utilities.FindToken("@[", "]", workingString, out var resultString))
+                                    {
+                                        switch (resultString)
+                                        {
+                                            case "@[lobbyId]":
+                                                workingString.Replace(resultString, r.Lobby.ToString());
+                                                break;
+                                            default:
+                                                workingString.Replace(resultString, r.Lobby[resultString[2..^1]]);
+                                                break;
+                                        }
+                                    }
+                                }
+                                else
+                                    Friends.Client.SetRichPresence(kvp.key, kvp.value);
+                            }
+
                         evtEnterSuccess.Invoke(lobby);
                     }
                     else
@@ -547,6 +662,191 @@ namespace HeathenEngineering.SteamworksIntegration
         public LobbyMemberData[] Members => API.Matchmaking.Client.GetLobbyMembers(Lobby);
         public void Authenticate(Action<AuthenticationTicket, bool> callback) => Lobby.Authenticate(callback);
         public bool Authenticate(LobbyAuthenticationData data) => Lobby.Authenticate(data);
+        public bool SendChatMessage(string message) => Lobby.SendChatMessage(message);
+        public bool SendChatMessage(byte[] data) => Lobby.SendChatMessage(data);
+        public bool SendChatMessage(object jsonObject)
+        {
+            return SendChatMessage(System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(jsonObject)));
+        }
+
+        /// <summary>
+        /// The same as SendChatMessage, this only exists for use in Unity Inspector where overloads dont play nice with some editor features
+        /// </summary>
+        /// <param name="message"></param>
+        public void SendChatMessageString(string message) => SendChatMessage(message);
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(LobbyManager), true)]
+    public class LobbyManagerEditor : Editor
+    {
+        SerializedProperty m_DelegatesProperty;
+        SerializedProperty m_searchProperty;
+        SerializedProperty m_createProperty;
+        SerializedProperty m_richPresenceProperty;
+
+        GUIContent m_IconToolbarMinus;
+        GUIContent m_EventIDName;
+        GUIContent[] m_EventTypes;
+        GUIContent m_AddButtonContent;
+
+        protected virtual void OnEnable()
+        {
+            m_DelegatesProperty = serializedObject.FindProperty("m_Delegates");
+            m_searchProperty = serializedObject.FindProperty(nameof(LobbyManager.searchArguments));
+            m_createProperty = serializedObject.FindProperty (nameof(LobbyManager.createArguments));
+            m_richPresenceProperty = serializedObject.FindProperty(nameof(LobbyManager.richPresenceFields));
+            m_AddButtonContent = new GUIContent("Add New Event Type");
+            m_EventIDName = new GUIContent("");
+            // Have to create a copy since otherwise the tooltip will be overwritten.
+            m_IconToolbarMinus = new GUIContent(EditorGUIUtility.IconContent("Toolbar Minus"));
+            m_IconToolbarMinus.tooltip = "Remove all events in this list.";
+
+            string[] eventNames = Enum.GetNames(typeof(LobbyManager.ManagedLobbyEvents));
+            m_EventTypes = new GUIContent[eventNames.Length];
+            for (int i = 0; i < eventNames.Length; ++i)
+            {
+                m_EventTypes[i] = new GUIContent(eventNames[i]);
+            }
+        }
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+
+            EditorGUILayout.PropertyField(m_searchProperty, true);
+            EditorGUILayout.PropertyField(m_createProperty, true);
+            EditorGUILayout.PropertyField(m_richPresenceProperty, true);
+
+            int toBeRemovedEntry = -1;
+
+            EditorGUILayout.Space();
+
+            Vector2 removeButtonSize = GUIStyle.none.CalcSize(m_IconToolbarMinus);
+
+            for (int i = 0; i < m_DelegatesProperty.arraySize; ++i)
+            {
+                SerializedProperty delegateProperty = m_DelegatesProperty.GetArrayElementAtIndex(i);
+                m_EventIDName.text = delegateProperty.enumDisplayNames[delegateProperty.enumValueIndex];
+
+                switch ((LobbyManager.ManagedLobbyEvents)delegateProperty.enumValueIndex)
+                {
+                    case LobbyManager.ManagedLobbyEvents.AuthenticationSessionResults:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtAuthenticationSessionResult)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.LobbyJoinFailure:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtEnterFailed)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.LobbyJoinSuccess:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtEnterSuccess)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.LobbyChatMessageReceived:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtChatMsgReceived)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.LobbyCreationFailed:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtCreateFailed)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.MetadataUpdated:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtDataUpdated)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.LobbyCreationSuccess:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtCreated)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.OtherUserJoined:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtUserJoined)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.OtherUserLeft:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtUserLeft)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.QuickMatchFailed:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtQuickMatchFailed)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.SearchResultsReady:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtFound)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.SessionConnectionUpdated:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtGameCreated)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.YouAreAskedToLeave:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtAskedToLeave)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.LobbyInviteReceived:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtLobbyInvite)), m_EventIDName);
+                        break;
+                    case LobbyManager.ManagedLobbyEvents.LobbyLeave:
+                        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(LobbyManager.evtLeave)), m_EventIDName);
+                        break;
+                }
+
+                Rect callbackRect = GUILayoutUtility.GetLastRect();
+
+                Rect removeButtonPos = new Rect(callbackRect.xMax - removeButtonSize.x - 8, callbackRect.y + 1, removeButtonSize.x, removeButtonSize.y);
+                if (GUI.Button(removeButtonPos, m_IconToolbarMinus, GUIStyle.none))
+                {
+                    toBeRemovedEntry = i;
+                }
+
+                EditorGUILayout.Space();
+            }
+
+            if (toBeRemovedEntry > -1)
+            {
+                RemoveEntry(toBeRemovedEntry);
+            }
+
+            Rect btPosition = GUILayoutUtility.GetRect(m_AddButtonContent, GUI.skin.button);
+            const float addButtonWidth = 200f;
+            btPosition.x = btPosition.x + (btPosition.width - addButtonWidth) / 2;
+            btPosition.width = addButtonWidth;
+            if (GUI.Button(btPosition, m_AddButtonContent))
+            {
+                ShowAddTriggerMenu();
+            }
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void RemoveEntry(int toBeRemovedEntry)
+        {
+            m_DelegatesProperty.DeleteArrayElementAtIndex(toBeRemovedEntry);
+        }
+
+        void ShowAddTriggerMenu()
+        {
+            // Now create the menu, add items and show it
+            GenericMenu menu = new GenericMenu();
+            for (int i = 0; i < m_EventTypes.Length; ++i)
+            {
+                bool active = true;
+
+                // Check if we already have a Entry for the current eventType, if so, disable it
+                for (int p = 0; p < m_DelegatesProperty.arraySize; ++p)
+                {
+                    SerializedProperty delegateEntry = m_DelegatesProperty.GetArrayElementAtIndex(p);
+                    if (delegateEntry.enumValueIndex == i)
+                    {
+                        active = false;
+                    }
+                }
+                if (active)
+                    menu.AddItem(m_EventTypes[i], false, OnAddNewSelected, i);
+                else
+                    menu.AddDisabledItem(m_EventTypes[i]);
+            }
+            menu.ShowAsContext();
+            Event.current.Use();
+        }
+
+        private void OnAddNewSelected(object index)
+        {
+            int selected = (int)index;
+
+            m_DelegatesProperty.arraySize += 1;
+            SerializedProperty delegateEntry = m_DelegatesProperty.GetArrayElementAtIndex(m_DelegatesProperty.arraySize - 1);
+            delegateEntry.enumValueIndex = selected;
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+#endif
 }
 #endif

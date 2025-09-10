@@ -445,7 +445,7 @@ namespace RoundHero
             }
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
             {
-                procedureBattle.EndBattleTest(EBattleResult.Success);
+                procedureBattle.EndBattle(EBattleResult.Success);
             }
 
             BattleMapManager.Instance.NextStep();
@@ -504,6 +504,12 @@ namespace RoundHero
 
         public async void ResetAction()
         {
+            if (TutorialManager.Instance.IsTutorial())
+            {
+                return;
+
+            }
+
             if (GamePlayManager.Instance.GamePlayData.LastActionBattleData == null)
             {
                 GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_UnResetAction));

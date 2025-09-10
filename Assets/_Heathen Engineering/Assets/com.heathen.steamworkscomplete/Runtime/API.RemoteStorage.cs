@@ -203,6 +203,11 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 var data = encoding.GetBytes(body);
                 return FileWrite(file, data);
             }
+            public static bool FileWrite(string file, string body)
+            {
+                var data = System.Text.Encoding.UTF8.GetBytes(body);
+                return FileWrite(file, data);
+            }
             /// <summary>
             /// Creates a new file, writes the bytes to the file, and then closes the file. If the target file already exists, it is overwritten.
             /// </summary>
@@ -223,6 +228,10 @@ namespace HeathenEngineering.SteamworksIntegration.API
             public static bool FileWrite(string fileName, object JsonObject, System.Text.Encoding encoding)
             {
                 return FileWrite(fileName, JsonUtility.ToJson(JsonObject), encoding);
+            }
+            public static bool FileWrite(string fileName, object JsonObject)
+            {
+                return FileWrite(fileName, JsonUtility.ToJson(JsonObject), System.Text.Encoding.UTF8);
             }
             /// <summary>
             /// Creates a new file and asynchronously writes the raw byte data to the Steam Cloud, and then closes the file. If the target file already exists, it is overwritten.

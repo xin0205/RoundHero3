@@ -5,6 +5,6 @@ using UnityEngine.Events;
 namespace HeathenEngineering.SteamworksIntegration
 {
     [System.Serializable]
-    public class LobbyInviteEvent : UnityEvent<LobbyInvite_t> { }
+    public class LobbyInviteEvent : UnityEvent<LobbyInvite> { }
 }
 #endif

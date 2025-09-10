@@ -16,6 +16,7 @@ namespace RoundHero
     {
         private bool InitSuccess = false;
         private BattleForm battleForm;
+        private TutorialForm tutorialForm;
         //private PlayerInfoForm playerInfoForm;
         
         protected override async void OnEnter(ProcedureOwner procedureOwner)
@@ -79,7 +80,8 @@ namespace RoundHero
             
             if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                await GameEntry.UI.OpenUIFormAsync(UIFormId.TutorialForm, this);
+                var tutorialFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.TutorialForm, this);
+                tutorialForm = tutorialFormTask.Logic as TutorialForm;
             }
             
             var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
@@ -118,26 +120,26 @@ namespace RoundHero
 
         }
         
-        public void EndBattle()
-        {
-            HeroManager.Instance.BattleHeroData.CurHP = HeroManager.Instance.BattleHeroData.MaxHP; 
-            
-            //GameEntry.UI.CloseUIForm(playerInfoForm);
-            GameEntry.UI.CloseUIForm(battleForm);
-            BattleManager.Instance.Destory();
-            
-            //BattleManager.Instance.BattleTypeManager.Destory();
-            
-            //DRScene drScene = GameEntry.DataTable.GetScene(1);
-            var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
-            GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
-            ChangeState<ProcedureGamePlay>(procedureOwner);
-            
-            var procedureGamePlay = procedureOwner.CurrentState as ProcedureGamePlay;
-            procedureGamePlay.ShowMap();
-        }
+        // public void EndBattle()
+        // {
+        //     HeroManager.Instance.BattleHeroData.CurHP = HeroManager.Instance.BattleHeroData.MaxHP; 
+        //     
+        //     //GameEntry.UI.CloseUIForm(playerInfoForm);
+        //     GameEntry.UI.CloseUIForm(battleForm);
+        //     BattleManager.Instance.Destory();
+        //     
+        //     //BattleManager.Instance.BattleTypeManager.Destory();
+        //     
+        //     //DRScene drScene = GameEntry.DataTable.GetScene(1);
+        //     var sceneName = "Scene" + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
+        //     GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
+        //     ChangeState<ProcedureGamePlay>(procedureOwner);
+        //     
+        //     var procedureGamePlay = procedureOwner.CurrentState as ProcedureGamePlay;
+        //     procedureGamePlay.ShowMap();
+        // }
         
-        public void EndBattleTest(EBattleResult battleResult)
+        public void EndBattle(EBattleResult battleResult)
         {
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
@@ -154,6 +156,8 @@ namespace RoundHero
             var procedureStart = procedureOwner.CurrentState as ProcedureStart;
             if (TutorialManager.Instance.IsTutorial())
             {
+                BattleManager.Instance.TutorialStep = ETutorialStep.Start;
+                GameEntry.UI.CloseUIForm(tutorialForm);
                 procedureStart.Start();
             }
             else
@@ -162,6 +166,8 @@ namespace RoundHero
             }
             
         }
+        
+        
         
         public void EndBattleMode(EBattleResult battleResult)
         {

@@ -403,7 +403,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                             }
                         }
 
-                        var siu = SteamUGC.SubmitItemUpdate(updateHandle, "Inital Creation");
+                        var siu = SteamUGC.SubmitItemUpdate(updateHandle, "Initial Creation");
                         m_SubmitItemUpdateResult.Set(siu, (updateResult, updateIOError) =>
                         {
                             if (updateIOError || updateResult.m_eResult != EResult.k_EResultOK)
@@ -493,7 +493,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                                         case EResult.k_EResultLockingFailed:
                                             if (sb.Length > 0)
                                                 sb.Append("\n");
-                                            sb.Append("Failed to aquire UGC Lock.");
+                                            sb.Append("Failed to acquire UGC Lock.");
 
                                             item.publishedFileId = createResult.m_nPublishedFileId;
                                             completedCallback?.Invoke(new WorkshopItemDataCreateStatus

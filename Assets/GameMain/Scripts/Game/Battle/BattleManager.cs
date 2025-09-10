@@ -512,13 +512,17 @@ namespace RoundHero
         
         public void EndBattle(EBattleResult battleResult)
         {
-            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Tutorial)
+            {
+                ProcedureBattle.EndBattle(battleResult);
+            }
+            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
             {
                 ProcedureBattle.EndBattleMode(battleResult);
             }
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
             {
-                ProcedureBattle.EndBattleTest(battleResult);
+                ProcedureBattle.EndBattle(battleResult);
             }
             
             

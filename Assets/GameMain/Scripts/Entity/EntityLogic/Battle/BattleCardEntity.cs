@@ -208,11 +208,10 @@ namespace RoundHero
         public void OnPointerEnter()
         { 
             //isShow && 
-            cardInfoTrigger.SetDescParams(new List<string>()
-            {
-                "",
-                BattleManager.Instance.BattleState != EBattleState.UseCard ? Constant.Localization.Info_UnSelectCard : Constant.Localization.Info_SelectCard,
-            });
+            cardInfoTrigger.SetNameDesc("",
+                BattleManager.Instance.BattleState != EBattleState.UseCard
+                    ? Constant.Localization.Info_UnSelectCard
+                    : Constant.Localization.Info_SelectCard);
             
             
             if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&

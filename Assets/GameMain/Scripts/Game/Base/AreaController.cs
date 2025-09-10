@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using HeathenEngineering.SteamworksIntegration;
+using UnityEngine;
+using HeathenEngineering.SteamworksIntegration.API;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -32,6 +35,13 @@ namespace RoundHero
         public float GetDistanceToPoint(Vector3 point)
         {
             return CameraPlane.GetDistanceToPoint(point);
+        }
+
+        public void SteamInitSuccess()
+        {
+            var user = User.Client.Id;
+            Log.Debug("steam init success name:" + user.Nickname);
+            
         }
 
     }

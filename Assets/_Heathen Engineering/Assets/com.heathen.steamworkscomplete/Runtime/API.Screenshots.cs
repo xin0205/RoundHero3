@@ -1,6 +1,7 @@
 ﻿#if !DISABLESTEAMWORKS && HE_SYSCORE && STEAMWORKSNET
 using Steamworks;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HeathenEngineering.SteamworksIntegration.API
 {
@@ -18,7 +19,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
             static void Init()
             {
                 eventScreenshotReady = new ScreenshotReadyEvent();
-                eventScreenshotRequested = new ScreenshotRequestedEvent();
+                eventScreenshotRequested = new UnityEvent();
                 m_ScreenshotRequested_t = null;
                 m_ScreenshotReady_t = null;
             }
@@ -41,7 +42,7 @@ namespace HeathenEngineering.SteamworksIntegration.API
                 get
                 {
                     if (m_ScreenshotReady_t == null)
-                        m_ScreenshotReady_t = Callback<ScreenshotReady_t>.Create(eventScreenshotReady.Invoke);
+                        m_ScreenshotReady_t = Callback<ScreenshotReady_t>.Create((e) => eventScreenshotReady.Invoke(e));
 
                     return eventScreenshotReady;
                 }
@@ -49,19 +50,19 @@ namespace HeathenEngineering.SteamworksIntegration.API
             /// <summary>
             /// A screenshot has been requested by the user from the Steam screenshot hotkey. This will only be called if HookScreenshots has been enabled, in which case Steam will not take the screenshot itself.
             /// </summary>
-            public static ScreenshotRequestedEvent EventScreenshotRequested
+            public static UnityEvent EventScreenshotRequested
             {
                 get
                 {
                     if (m_ScreenshotRequested_t == null)
-                        m_ScreenshotRequested_t = Callback<ScreenshotRequested_t>.Create(eventScreenshotRequested.Invoke);
+                        m_ScreenshotRequested_t = Callback<ScreenshotRequested_t>.Create((e) => eventScreenshotRequested.Invoke());
 
                     return eventScreenshotRequested;
                 }
             }
 
             private static ScreenshotReadyEvent eventScreenshotReady = new ScreenshotReadyEvent();
-            private static ScreenshotRequestedEvent eventScreenshotRequested = new ScreenshotRequestedEvent();
+            private static UnityEvent eventScreenshotRequested = new UnityEvent();
 
             private static Callback<ScreenshotRequested_t> m_ScreenshotRequested_t;
             private static Callback<ScreenshotReady_t> m_ScreenshotReady_t;

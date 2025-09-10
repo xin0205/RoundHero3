@@ -52,12 +52,12 @@ namespace HeathenEngineering.SteamworksIntegration
 
         private void Start()
         {
-            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponce.AddListener(HandleAuthorizationResponce);
+            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponse.AddListener(HandleAuthorizationResponce);
         }
 
         private void OnDestroy()
         {
-            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponce.RemoveListener(HandleAuthorizationResponce);
+            API.Inventory.Client.EventSteamMicroTransactionAuthorizationResponse.RemoveListener(HandleAuthorizationResponce);
         }
 
         private void HandleAuthorizationResponce(AppId_t appId, ulong orderId, bool authorized)

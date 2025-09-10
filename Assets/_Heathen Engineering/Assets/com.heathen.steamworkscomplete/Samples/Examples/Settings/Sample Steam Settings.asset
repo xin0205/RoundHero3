@@ -105,7 +105,7 @@ MonoBehaviour:
   sortMethod: 2
   displayType: 1
   apiName: Feet Traveled
-  maxDetailEntries: 3
+  maxDetailEntries: 0
   UserEntryUpdated:
     m_PersistentCalls:
       m_Calls: []
@@ -182,6 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   item_type: 0
+  item_game_only: 0
   item_name:
     node: name
     value: Crafted Item 1
@@ -229,6 +230,13 @@ MonoBehaviour:
     color: {r: 0, g: 0, b: 0, a: 1}
   item_icon_url: 
   item_icon_url_large: 
+  item_accessory_tag: 
+  item_accessory_limit: 0
+  item_allowed_tags_from_tools: 
+  item_accessory_description:
+    node: accessory_description
+    value: 
+    variants: []
   item_marketable: 0
   item_tradable: 0
   item_tags:
@@ -310,9 +318,9 @@ MonoBehaviour:
   m_Name: Sample Steam Settings
   m_EditorClassIdentifier: 
   applicationId:
-    m_AppId: 1866000
+    m_AppId: 3959840
   callbackTick_Milliseconds: 15
-  isDebugging: 0
+  isDebugging: 1
   server:
     autoInitialize: 1
     autoLogon: 1
@@ -465,6 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   item_type: 0
+  item_game_only: 0
   item_name:
     node: name
     value: Reagient 1
@@ -504,6 +513,13 @@ MonoBehaviour:
     color: {r: 0, g: 0, b: 0, a: 1}
   item_icon_url: 
   item_icon_url_large: 
+  item_accessory_tag: 
+  item_accessory_limit: 0
+  item_allowed_tags_from_tools: 
+  item_accessory_description:
+    node: accessory_description
+    value: 
+    variants: []
   item_marketable: 0
   item_tradable: 0
   item_tags:

@@ -1,7 +1,10 @@
 ﻿
 using CatJson;
+using HeathenEngineering.SteamworksIntegration.API;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
+using Input = UnityEngine.Input;
 
 namespace RoundHero
 {
@@ -17,6 +20,8 @@ namespace RoundHero
         [SerializeField] private GameObject battleMode_continueGame;
         [SerializeField] private GameObject battleMode_restartGame;
 
+        [SerializeField] private Text userName;
+
         protected override async void OnOpen(object userData)
         {
             base.OnOpen(userData);
@@ -27,7 +32,11 @@ namespace RoundHero
                 Log.Warning("ProcedureStart is null.");
                 return;
             }
-            
+
+            if (App.Initialized)
+            {
+                userName.text = User.Client.Id.Nickname;
+            }
             
             // var isStartGame = DataManager.Instance.DataGame.User.CurGamePlayData.PlayerData.BattleHero.HeroID !=
             //                   EHeroID.Empty;
