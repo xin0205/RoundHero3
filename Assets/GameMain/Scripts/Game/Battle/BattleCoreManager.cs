@@ -67,13 +67,27 @@ namespace RoundHero
                     places2.Add(place);
                 }
             }
-            
-             var randomList = MathUtility.GetRandomNum(Constant.Battle.CoreCount, 0,
-                 places2.Count, Random);
 
-             foreach (var randomIdx in randomList)
+            List<int> coreGridPosIdxs = null; 
+
+             if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
              {
-                 var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), 0, places2[randomIdx],
+                 coreGridPosIdxs = Constant.Tutorial.Cores;
+             }
+             else
+             {
+                 var randomList = MathUtility.GetRandomNum(Constant.Battle.CoreCount, 0,
+                     places2.Count, Random);
+                 coreGridPosIdxs = new List<int>();
+                 foreach (var idx in randomList)
+                 {
+                     coreGridPosIdxs.Add(places2[idx]);
+                 }
+             }
+
+             foreach (var coreGridPosIdx in coreGridPosIdxs)
+             {
+                 var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), 0, coreGridPosIdx,
                      BattleManager.Instance.CurUnitCamp);
                  await GenerateCoreEntity(battleCoreData);
                  //BattleUnitManager.Instance.BattleUnitDatas.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity.BattleCoreEntityData.BattleCoreData);

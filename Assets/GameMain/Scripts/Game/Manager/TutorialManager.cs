@@ -15,7 +15,7 @@ namespace RoundHero
 
         public void Init()
         {
-            stepIntverval = 0;
+            stepIntverval = -5;
         }
 
         private float stepIntverval = 0;
@@ -229,6 +229,8 @@ namespace RoundHero
         {
             if (BattleManager.Instance.TutorialStep == ETutorialStep.End)
             {
+                
+                GameManager.Instance.GameData.User.IsEndTutorial = true;
                 return ETutorialState.None;
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
@@ -393,8 +395,8 @@ namespace RoundHero
             stepIntverval += Time.deltaTime;
             if (stepIntverval < Constant.Tutorial.StepInterval)
                 return;
-            else
-                stepIntverval += Constant.Tutorial.StepInterval + 1;
+            
+            //stepIntverval += Constant.Tutorial.StepInterval + 1;
             
             if (Input.GetMouseButtonDown(0))
             {
@@ -420,9 +422,9 @@ namespace RoundHero
                 if(tutorialStep != BattleManager.Instance.TutorialStep)
                     return;
                 
-                SwitchStep(ETutorialStep.UnitHurt);
-                if(tutorialStep != BattleManager.Instance.TutorialStep)
-                    return;
+                // SwitchStep(ETutorialStep.UnitHurt);
+                // if(tutorialStep != BattleManager.Instance.TutorialStep)
+                //     return;
                 
                 SwitchStep(ETutorialStep.End);
                 if(tutorialStep != BattleManager.Instance.TutorialStep)

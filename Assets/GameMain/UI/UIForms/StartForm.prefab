@@ -2238,7 +2238,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7363615127130320351}
         m_TargetAssemblyTypeName: RoundHero.StartForm, Assembly-CSharp
-        m_MethodName: StartTest
+        m_MethodName: StartAdventure
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

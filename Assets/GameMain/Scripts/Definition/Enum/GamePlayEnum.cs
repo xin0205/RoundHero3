@@ -832,7 +832,7 @@ namespace RoundHero
         CardSwitchAttack,
         SelectAttackUnit,
         EndRound,
-        UnitHurt,
+        //UnitHurt,
         End,
         
     }

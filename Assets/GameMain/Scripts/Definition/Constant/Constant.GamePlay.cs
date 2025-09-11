@@ -17,11 +17,16 @@ namespace RoundHero
             {
                 8, 17, 26, 30, 39,
             };
+            
+            public static List<int> Cores = new List<int>()
+            {
+                11, 24, 38,
+            };
 
-            public static int RandomSeed = 26987145;
-            public static int UseUnitCardGridPosIdx = 9;
-            public static int MoveGridPosIdx = 12;
-            public static float StepInterval = 3f;
+            public static int RandomSeed = 42777813;//26987145;
+            public static int UseUnitCardGridPosIdx = 15;
+            public static int MoveGridPosIdx = 18;
+            public static float StepInterval = 0.1f;
 
             public static List<int> Cards = new List<int>()
             {

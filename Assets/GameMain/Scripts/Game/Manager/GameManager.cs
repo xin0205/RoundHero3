@@ -10,6 +10,6 @@ namespace RoundHero
         public List<int> CardsForm_EquipFuneIdxs = new List<int>();
         
         
-        
+        public Data_Game GameData => DataManager.Instance.DataGame;
     }
 }

@@ -126,6 +126,8 @@ namespace RoundHero
             public static string EHPDeltaType = "EHPDeltaType.{0}";
             public const string Info_SelectCard = "Info.SelectCard";
             public const string Info_UnSelectCard = "Info.UnSelectCard";
+            public const string Message_Developing = "Message.Developing";
+
         }
     }
 }

@@ -12,7 +12,7 @@ namespace RoundHero
         public Dictionary<int, Dictionary<EPVEType, Data_GamePlay>> GamePlayDatas = new ();
         public Data_GamePlay CurGamePlayData = new ();
         public List<int> DefaultInitSelectCards = new List<int>();
-        
+        public bool IsEndTutorial;
         public Data_User()
         {
             

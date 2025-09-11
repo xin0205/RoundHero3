@@ -120,44 +120,51 @@ namespace RoundHero
 
         public void StartTest()
         {
-            if (!GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
-            {
-                GameEntry.UI.OpenConfirm(new ConfirmFormParams()
-                {
-                    IsShowCancel = true,
-                    Message = GameEntry.Localization.GetString(Constant.Localization.Message_TutorailConfirm),
-                    ConfirmStr = GameEntry.Localization.GetString(Constant.Localization.UI_Tutorial),
-                    CancelStr = GameEntry.Localization.GetString(Constant.Localization.UI_BattleMode),
-                    
-                    OnConfirm = () =>
-                    {
-                        GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
-                        Tutorial();
-
-                    },
-                    OnClose = () =>
-                    {
-                        CloseForm();
-                        procedureStart.RestartGameTest();
-                    }
-
-                });
-            }
-            else
-            {
-                CloseForm();
-                procedureStart.RestartGameTest();
-            }
-            
+            // if (!GamePlayManager.Instance.GamePlayData.IsEndTutorial)
+            // {
+            //     GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+            //     {
+            //         IsShowCancel = true,
+            //         Message = GameEntry.Localization.GetString(Constant.Localization.Message_TutorailConfirm),
+            //         ConfirmStr = GameEntry.Localization.GetString(Constant.Localization.UI_Tutorial),
+            //         CancelStr = GameEntry.Localization.GetString(Constant.Localization.UI_BattleMode),
+            //         
+            //         OnConfirm = () =>
+            //         {
+            //             GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
+            //             Tutorial();
+            //
+            //         },
+            //         OnClose = () =>
+            //         {
+            //             CloseForm();
+            //             //procedureStart.RestartGameTest();
+            //         }
+            //
+            //     });
+            // }
+            // else
+            // {
+            //     CloseForm();
+            //     procedureStart.RestartGameTest();
+            // }
+            CloseForm();
+            procedureStart.RestartGameTest();
             
         }
         
         public void StartBattleMode()
         {
-            
-            procedureStart.RestartBattleMode();
-            
-            
+            if (!GameManager.Instance.GameData.User.IsEndTutorial)
+            {
+                GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
+                Tutorial();
+            }
+            else
+            {
+                procedureStart.RestartBattleMode();
+            }
+
         }
         
         public void ContinueBattleMode()
@@ -175,10 +182,10 @@ namespace RoundHero
             //GamePlayManager.Instance.GamePlayData.IsTutorial = true;
             GamePlayManager.Instance.GamePlayData.
                 IsTutorialBattle = true;
+
+            int startGameRandomSeed = Constant.Tutorial.RandomSeed;//Random.Range(0, Constant.Game.RandomRange);
             
-            int startGameRandomSeed = Constant.Tutorial.RandomSeed;
-            
-            GamePlayManager.Instance.GamePlayData.RandomSeed = Constant.Tutorial.RandomSeed;
+            GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
                 
             GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
             GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Tutorial;
@@ -186,6 +193,12 @@ namespace RoundHero
             Log.Debug("randomSeed:" + startGameRandomSeed);
             //GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create());
+        }
+
+        public void StartAdventure()
+        {
+            GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_Developing));
+
         }
     }
 }

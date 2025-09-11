@@ -156,6 +156,7 @@ namespace RoundHero
             var procedureStart = procedureOwner.CurrentState as ProcedureStart;
             if (TutorialManager.Instance.IsTutorial())
             {
+                GamePlayManager.Instance.GamePlayData.IsTutorialBattle = false;
                 BattleManager.Instance.TutorialStep = ETutorialStep.Start;
                 GameEntry.UI.CloseUIForm(tutorialForm);
                 procedureStart.Start();
@@ -190,6 +191,7 @@ namespace RoundHero
             
             if (TutorialManager.Instance.IsTutorial())
             {
+                GameEntry.UI.CloseUIForm(tutorialForm);
                 procedureStart.Start();
             }
             else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)

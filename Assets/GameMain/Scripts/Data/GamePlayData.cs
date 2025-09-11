@@ -1698,6 +1698,7 @@ namespace RoundHero
         public BattleModeProduce BattleModeProduce = new BattleModeProduce();
         public int RandomSeed = -1;
         public bool IsTutorialBattle = false;
+        //public bool IsEndTutorial = false;
         //public bool IsTutorial = false;
         public bool IsStartGame = false;
         
