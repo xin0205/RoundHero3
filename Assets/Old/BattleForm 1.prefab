@@ -13940,7 +13940,7 @@ PrefabInstance:
       objectReference: {fileID: 6514001565045329124}
     - target: {fileID: 2271400685664710927, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ExitBattleTest
+      value: ExitBattle
       objectReference: {fileID: 0}
     - target: {fileID: 2271400685664710927, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
