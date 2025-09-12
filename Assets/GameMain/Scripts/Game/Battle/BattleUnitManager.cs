@@ -405,6 +405,27 @@ namespace RoundHero
             
             return tmpBuffDatas;
         }
+        
+        public EAttackCastType GetAttackCastType(int unitIdx)
+        {
+            var battleUnit = BattleUnitEntities[unitIdx].BattleUnitData;
+            if (battleUnit is Data_BattleSolider soliderData)
+            {
+                var drCard = CardManager.Instance.GetCardTable(soliderData.CardIdx);
+                return drCard.AttackCastType;
+            }
+            else if (battleUnit is Data_BattleMonster monsterData)
+            {
+                var drEnemy = BattleEnemyManager.Instance.GetEnemyTable(monsterData.Idx);
+                
+                return drEnemy.AttackCastType;
+            }
+            // else if (battleUnit is Data_BattleHero heroData)
+            // {
+            //     
+            // }
+            return EAttackCastType.CloseMulti;
+        }
 
         // public void RoundEnd()
         // {

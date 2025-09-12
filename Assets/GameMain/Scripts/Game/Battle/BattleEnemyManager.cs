@@ -370,7 +370,15 @@ namespace RoundHero
         }
 
         
-        
+        public DREnemy GetEnemyTable(int enemyIdx)
+        {
+            var monsterEntity = BattleUnitManager.Instance.GetUnitByIdx(enemyIdx) as BattleMonsterEntity;
+            if (monsterEntity == null)
+                return null;
+
+            return GameEntry.DataTable.GetEnemy(monsterEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
+
+        }
         
 
         // public void RefreshDamageState()

@@ -316,28 +316,35 @@ namespace RoundHero
             var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
             var actionUnitPos = GameUtility.GridPosIdxToPos(actionGridPosIdx);
 
-            //var actionUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(actionUnit.Idx);
+            
 
             EAttackTagType attackTagType;
             EUnitState unitState;
+            EAttackCastType attackCastType = EAttackCastType.ExtendMulti;
             if (isCollision)
             {
                 attackTagType = EAttackTagType.Attack;
                 unitState = EUnitState.Empty;
                 showAttackLine = false;
+                attackCastType = EAttackCastType.CloseSingle;
             }
             else
             {
+                
                 var isSubCurHPTrigger = GameUtility.IsSubCurHPTrigger(triggerData);
                 
                 attackTagType = isSubCurHPTrigger ? EAttackTagType.Attack :
                     isSubCurHPTrigger ? EAttackTagType.Recover : EAttackTagType.UnitState;
                 unitState = attackTagType == EAttackTagType.UnitState ? triggerData.UnitStateDetail.UnitState : EUnitState.Empty;
+                attackCastType = BattleUnitManager.Instance.GetAttackCastType(triggerData.ActionUnitIdx);
+                
             }
 
             //Log.Debug("InternalShowTag:" + entityIdx);
-            var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos, actionUnitPos,
-                effectUnitPos, attackTagType, unitState, null, entityIdx, showAttackLine, showAttackPos);
+            var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos,
+                actionUnitPos,
+                effectUnitPos, attackTagType, unitState, triggerData.BuffValue, attackCastType, entityIdx, showAttackLine,
+                showAttackPos);
 
             //Log.Debug("Tag Show:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
             if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)

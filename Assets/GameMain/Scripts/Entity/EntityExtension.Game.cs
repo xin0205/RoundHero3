@@ -482,11 +482,11 @@ namespace RoundHero
         }
         
         public static async Task<BattleAttackTagEntity> ShowBattleAttackTagEntityAsync(this EntityComponent entityComponent, Vector3 pos, Vector3 startPos, Vector3 targetPos, EAttackTagType attackTagType,
-            EUnitState unitState, BuffValue buffValue, int entityIdx = -1, bool showAttackLine = true, bool showAttackPos = true)
+            EUnitState unitState, BuffValue buffValue, EAttackCastType attackCastType, int entityIdx = -1, bool showAttackLine = true, bool showAttackPos = true)
         {
             var data = ReferencePool.Acquire<BattleAttackTagEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), pos, startPos, targetPos, attackTagType, unitState, buffValue, entityIdx, showAttackLine, showAttackPos);
+            data.Init(entityComponent.GenerateSerialId(), pos, startPos, targetPos, attackTagType, unitState, buffValue, attackCastType, entityIdx, showAttackLine, showAttackPos);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleAttackTagEntity),
                 AssetUtility.GetBattleAttackTagPrefab(), Constant.EntityGroup.Unit, 0, data);
