@@ -88,6 +88,9 @@ namespace RoundHero
         
         [SerializeField] private PlayerCardFuneList PlayerCardFuneList;
         
+        [SerializeField] private Text MoveText;
+        [SerializeField] private Text AttackText;
+        
         private Rect rect;
         private bool isInside;
         private bool isHand;
@@ -137,13 +140,15 @@ namespace RoundHero
             // attackCheckMark.SetActive(false);
             // moveCheckMark.SetActive(false);                                                                                                                                                                                                                                                                    
             PlayerCardFuneList.Init(this.BattleCardEntityData.CardIdx, false);
-        
             
-
             videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.BattleLeft;
             var drCard = GameEntry.DataTable.GetCard(BattleCardEntityData.CardData.CardID);
             videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;
             videoTriggerItem.VideoFormData.AnimationPlayData.ID = BattleCardEntityData.CardData.CardID;
+            
+            AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
+            MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
+  
 
         }
 
@@ -690,7 +695,38 @@ namespace RoundHero
         
         public void OnRefreshBattleState(object sender, GameEventArgs e)
         {
+            var ne = e as RefreshBattleStateEventArgs;
+            if (ne.BattleState == EBattleState.TacticSelectUnit)
+            {
+                AttackText.gameObject.SetActive(true);
+                AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
+                
+            }
+            else if (ne.BattleState == EBattleState.SelectHurtUnit)
+            {
+                AttackText.gameObject.SetActive(true);
+                AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectHurtUnit);
+            }
+            else
+            {
+                AttackText.gameObject.SetActive(false);
+            }
             
+            if (ne.BattleState == EBattleState.TacticSelectUnit)
+            {
+                MoveText.gameObject.SetActive(true);
+                MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
+               
+            }
+            else if (ne.BattleState == EBattleState.MoveUnit)
+            {
+                MoveText.gameObject.SetActive(true);
+                MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMovePos);
+            }
+            else
+            {
+                MoveText.gameObject.SetActive(false);
+            }
             //RefreshCofirm();
         }
 

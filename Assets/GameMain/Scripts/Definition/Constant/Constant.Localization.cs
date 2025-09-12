@@ -127,6 +127,13 @@ namespace RoundHero
             public const string Info_SelectCard = "Info.SelectCard";
             public const string Info_UnSelectCard = "Info.UnSelectCard";
             public const string Message_Developing = "Message.Developing";
+            
+            public const string  Tips_SelectMoveUnit = "Tips.SelectMoveUnit";
+            public const string  Tips_SelectAttackUnit = "Tips.SelectAttackUnit";
+            public const string  Tips_SelectMovePos = "Tips.SelectMovePos";
+            public const string  Tips_SelectHurtUnit = "Tips.SelectHurtUnit";
+
+
 
         }
     }
