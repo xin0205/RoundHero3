@@ -58,9 +58,9 @@ namespace RoundHero
 
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
             
-            var funeIdx = FuneManager.Instance.GetIdx();
-            FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 1));
-            BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+            // var funeIdx = FuneManager.Instance.GetIdx();
+            // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 1));
+            // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
             //BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].CardDestination = ECardDestination.Consume;
 
             // funeIdx = FuneManager.Instance.GetIdx();
