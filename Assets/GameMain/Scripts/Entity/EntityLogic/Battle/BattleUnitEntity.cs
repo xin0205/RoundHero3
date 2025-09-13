@@ -1457,12 +1457,14 @@ namespace RoundHero
                     DeltaPos = new Vector2(0, 25f),
                     IsUIGO = false,
                 };
+
+                var isAddHP = this is BattleSoliderEntity && changeHP < 0;
             
                 var targetMoveParams = new MoveParams()
                 {
-                    FollowGO = this is BattleMonsterEntity ? this.gameObject : AreaController.Instance.UICore,
-                    DeltaPos = this is BattleMonsterEntity ? new Vector2(0, 100f) : new Vector2(0, -25f),
-                    IsUIGO = !(this is BattleMonsterEntity),
+                    FollowGO = isAddHP ? AreaController.Instance.UICore : this.gameObject,
+                    DeltaPos = isAddHP ? new Vector2(0, -25f) : new Vector2(0, 100f),
+                    IsUIGO = isAddHP,
                 };
 
 
