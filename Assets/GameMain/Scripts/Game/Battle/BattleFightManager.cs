@@ -2741,21 +2741,22 @@ namespace RoundHero
                 switch (triggerTarget)
                 {
                     case ETriggerTarget.Staff:
-                        if (buffData.BuffStr.Contains("Tactic"))
+                        // if (buffData.BuffStr.Contains("Tactic"))
+                        // {
+                        //     
+                        // }
+                        foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
                         {
-                            foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
-                            {
-                                if(kv.Value.UnitRole != EUnitRole.Staff)
-                                    continue;
+                            if(kv.Value.UnitRole != EUnitRole.Staff)
+                                continue;
                                 
-                                if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != EUnitCamp.Player1)
-                                {
-                                    realEffectUnitIdxs.Add(kv.Value.Idx);
-                                }
-                                else if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == EUnitCamp.Player1)
-                                {
-                                    realEffectUnitIdxs.Add(kv.Value.Idx);
-                                }
+                            if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != EUnitCamp.Player1)
+                            {
+                                realEffectUnitIdxs.Add(kv.Value.Idx);
+                            }
+                            else if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == EUnitCamp.Player1)
+                            {
+                                realEffectUnitIdxs.Add(kv.Value.Idx);
                             }
                         }
                         break;
@@ -2972,7 +2973,7 @@ namespace RoundHero
             var excepts = new List<int>();
             excepts.AddRange(exceptGridPosIdxs);
             excepts.AddRange(chains);
-            var chainGridPosIdxs = GameUtility.GetRange(gridPosIdx, EActionType.Direct82Short, unitCamp, relativeCamps,
+            var chainGridPosIdxs = GameUtility.GetRange(gridPosIdx, EActionType.Cross2Short, unitCamp, relativeCamps,
                 true, false, excepts);
             
             
