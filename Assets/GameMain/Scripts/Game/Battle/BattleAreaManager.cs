@@ -211,11 +211,7 @@ namespace RoundHero
 
             if (ne.ShowState == EShowState.Show)
             {
-                if (ne.GridPosIdx == 19)
-                {
-                    var a = 6;
-                }
-                
+
                 ShowAllGrid(true);
                 BattleAreaManager.Instance.CurPointGridPosIdx = ne.GridPosIdx;
                 BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;
@@ -686,6 +682,7 @@ namespace RoundHero
                                 else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                                 {
                                     var attackRanges = BattleUnitManager.Instance.GetAttackRanges(relativeUnit.UnitIdx, ne.GridPosIdx);
+                                    
                                     ShowBackupGrids(attackRanges);
                                 }
                                 else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
@@ -771,6 +768,7 @@ namespace RoundHero
                 var attackRanges =
                     BattleUnitManager.Instance.GetAttackRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx);
+                
                 if (attackRanges.Contains(ne.GridPosIdx))
                 {
                     var attackUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
