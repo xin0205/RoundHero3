@@ -695,10 +695,10 @@ namespace RoundHero
             return rangeList;
         }
         
-        public List<int> GetAttackRanges(int unitID, int gridPosIdx)
+        public List<int> GetAttackRanges(int unitIdx, int gridPosIdx)
         {
             var rangeList = new List<int>();
-            var battleUnitData = GetUnitByIdx(unitID)?.BattleUnitData;
+            var battleUnitData = GetUnitByIdx(unitIdx)?.BattleUnitData;
             if(battleUnitData == null)
                 return rangeList;
             
@@ -706,11 +706,15 @@ namespace RoundHero
                 battleUnitData, out List<BuffValue> triggerBuffDatas);
             if (triggerBuffDatas.Count > 0)
             {
-                var drBuff = triggerBuffDatas[0].BuffData;
-                rangeList = GameUtility.GetRange(gridPosIdx,
-                    drBuff.TriggerRange,
-                    battleUnitData.UnitCamp, drBuff.TriggerUnitCamps,
-                    false);
+                foreach (var buffValue in triggerBuffDatas)
+                {
+                    var drBuff = buffValue.BuffData;
+                    rangeList.AddRange(GameUtility.GetRange(gridPosIdx,
+                        drBuff.TriggerRange,
+                        battleUnitData.UnitCamp, drBuff.TriggerUnitCamps,
+                        false));
+                }
+                
             
                
             }
@@ -727,6 +731,7 @@ namespace RoundHero
             //
             //    
             // }
+            
             return rangeList;
 
            

@@ -9,7 +9,8 @@ namespace RoundHero
 
         [SerializeField]
         private MoveDirectGODictionary MoveDirectGODict;
-        
+        [SerializeField]
+        private GameObject MoveDirectGO;
         
         protected override void OnShow(object userData)
         {
@@ -22,12 +23,15 @@ namespace RoundHero
                 return;
             }
 
-            foreach (var kv in MoveDirectGODict)
-            {
-                MoveDirectGODict[kv.Key]
-                    .SetActive(kv.Key == BattleFlyDirectEntityData.Direct);
-
-            }
+            // foreach (var kv in MoveDirectGODict)
+            // {
+            //     MoveDirectGODict[kv.Key]
+            //         .SetActive(kv.Key == BattleFlyDirectEntityData.Direct);
+            //
+            // }
+            var pos = GameUtility.GridPosIdxToPos(BattleFlyDirectEntityData.TargetGridfPosIdx);
+            
+            transform.LookAt(pos);
         }
     }
 }

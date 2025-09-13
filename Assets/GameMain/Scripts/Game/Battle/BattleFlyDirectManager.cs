@@ -55,26 +55,28 @@ namespace RoundHero
                         continue;
                     }
                     
-                    var direct = GameUtility.GetRelativePos(kv.Value[0], kv.Value[1]);
-            
-                    if (direct != null)
-                    {
-                        var battleFlyDirectEntity =
-                            await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], (ERelativePos)direct,
-                                entityIdx);
+                    // var direct = GameUtility.GetRelativePos(kv.Value[0], kv.Value[1]);
+                    //
+                    // if (direct != null)
+                    // {
+                    //     //(ERelativePos)direct
+                    //     
+                    // }
+                    var battleFlyDirectEntity =
+                        await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], kv.Value[1],
+                            entityIdx);
                         
-                        entityIdx++;
+                    entityIdx++;
             
-                        if (battleFlyDirectEntity.BattleFlyDirectEntityData.EntityIdx < showFlyDirectEntityIdx)
-                        {
+                    if (battleFlyDirectEntity.BattleFlyDirectEntityData.EntityIdx < showFlyDirectEntityIdx)
+                    {
                     
-                            GameEntry.Entity.HideEntity(battleFlyDirectEntity);
-                            //break;
-                        }
-                        else
-                        {
-                            BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
-                        }
+                        GameEntry.Entity.HideEntity(battleFlyDirectEntity);
+                        //break;
+                    }
+                    else
+                    {
+                        BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
                     }
                 }
                 
@@ -96,6 +98,9 @@ namespace RoundHero
             foreach (var triggerDatas in triggerDataDict.Values)
             {
                 var triggerData = triggerDatas[0];
+                
+                // if(triggerData.BuffValue.BuffData.FlyType == EFlyType.Exchange)
+                //     continue;
 
                 var effectUnitIdx = triggerData.EffectUnitIdx;
                 var actionUnitIdx = triggerData.ActionUnitIdx;
@@ -110,26 +115,44 @@ namespace RoundHero
                         continue;
                     }
                     
-                    var direct = GameUtility.GetRelativePos(kv.Value[0], kv.Value[1]);
-
-                    if (direct != null)
-                    {
-                        var battleFlyDirectEntity =
-                            await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], (ERelativePos)direct,
-                                entityIdx);
-                        
-                        entityIdx++;
-
-                        if (battleFlyDirectEntity.BattleFlyDirectEntityData.EntityIdx < showFlyDirectEntityIdx)
-                        {
+                    // var direct = GameUtility.GetRelativePos(kv.Value[0], kv.Value[1]);
+                    //
+                    // if (direct != null)
+                    // {
+                    //     //(ERelativePos)direct
+                    //     var battleFlyDirectEntity =
+                    //         await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], kv.Value[1],
+                    //             entityIdx);
+                    //     
+                    //     entityIdx++;
+                    //
+                    //     if (battleFlyDirectEntity.BattleFlyDirectEntityData.EntityIdx < showFlyDirectEntityIdx)
+                    //     {
+                    //
+                    //         GameEntry.Entity.HideEntity(battleFlyDirectEntity);
+                    //         //break;
+                    //     }
+                    //     else
+                    //     {
+                    //         BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
+                    //     }
+                    // }
                     
-                            GameEntry.Entity.HideEntity(battleFlyDirectEntity);
-                            //break;
-                        }
-                        else
-                        {
-                            BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
-                        }
+                    var battleFlyDirectEntity =
+                        await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], kv.Value[1],
+                            entityIdx);
+                        
+                    entityIdx++;
+
+                    if (battleFlyDirectEntity.BattleFlyDirectEntityData.EntityIdx < showFlyDirectEntityIdx)
+                    {
+                    
+                        GameEntry.Entity.HideEntity(battleFlyDirectEntity);
+                        //break;
+                    }
+                    else
+                    {
+                        BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
                     }
                 }
                 

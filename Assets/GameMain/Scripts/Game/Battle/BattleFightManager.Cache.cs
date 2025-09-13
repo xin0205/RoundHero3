@@ -862,6 +862,12 @@ namespace RoundHero
 
             if (buffData.FlyType == EFlyType.Exchange)
             {
+                if(actionUnit.Idx == effectUnit.Idx)
+                    return;
+                
+                if(actionData.MoveData.MoveUnitDatas.ContainsKey(actionUnit.Idx))
+                    return;
+                
                 actionData.MoveData.MoveUnitDatas.Add(actionUnit.Idx, new MoveUnitData()
                 {
                     UnitIdx = actionUnit.Idx,
