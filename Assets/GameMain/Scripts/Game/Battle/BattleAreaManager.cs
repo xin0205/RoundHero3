@@ -218,7 +218,7 @@ namespace RoundHero
             }
             else if (ne.ShowState == EShowState.Unshow)
             {
-                BattleUnitManager.Instance.UnShowTags();
+               
                 ShowAllGrid(false);
                 BattleAreaManager.Instance.CurPointGridPosIdx = -1;
                 BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
@@ -820,10 +820,10 @@ namespace RoundHero
                 }
             }
 
-            if (ne.ShowState == EShowState.Unshow)
-            {
-                BattleUnitManager.Instance.UnShowTags();
-            }
+            // if (ne.ShowState == EShowState.Unshow)
+            // {
+            //     BattleUnitManager.Instance.UnShowTags();
+            // }
             
             if (!pointerDownInRange)
             {

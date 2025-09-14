@@ -1685,6 +1685,7 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
 
+            UnShowTags();
             ShowAttackTag(actionUnitIdx, isShowAttackPos);
             ShowFlyDirect(actionUnitIdx);
             ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
@@ -1697,7 +1698,7 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
             
-
+            UnShowTags();
             ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
             ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
