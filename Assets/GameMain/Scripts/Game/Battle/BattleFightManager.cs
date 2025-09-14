@@ -791,8 +791,8 @@ namespace RoundHero
 
                             if (hurtAddDmgCount > 0)
                             {
-                                var subHurtAddDmgData = BattleFightManager.Instance.Unit_State(triggerDatas, effectUnitData.Idx,
-                                    effectUnitData.Idx, effectUnitData.Idx, EUnitState.HurtAddDmg, -hurtAddDmgCount,
+                                var subHurtAddDmgData = BattleFightManager.Instance.Unit_State(triggerDatas, triggerData.OwnUnitIdx,
+                                    triggerData.ActionUnitIdx, effectUnitData.Idx, EUnitState.HurtAddDmg, -hurtAddDmgCount,
                                     ETriggerDataType.RoleState);
                                 subHurtAddDmgData.ActionUnitGridPosIdx =
                                     subHurtAddDmgData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
