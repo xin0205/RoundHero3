@@ -951,7 +951,12 @@ namespace RoundHero
             
             BattleBuffManager.Instance.RecoverUseBuffState();
             BattleFightManager.Instance.UseCardTrigger();
-            BattleManager.Instance.RefreshEnemyAttackData();
+            
+            GameUtility.DelayExcute(0.51f, () =>
+            {
+                BattleManager.Instance.RefreshEnemyAttackData();
+            });
+            
             
             HeroManager.Instance.UpdateCacheHPDelta();
             
