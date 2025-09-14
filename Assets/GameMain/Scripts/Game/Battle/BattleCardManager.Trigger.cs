@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
+using GameKit.Dependencies.Utilities;
 
 
 namespace RoundHero
@@ -23,11 +24,11 @@ namespace RoundHero
                 
                 //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
                 //
-                BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, actionUnitIdx,
-                    effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, ETriggerDataSubType.Card);
-                
-                
-                
+                if (drCard.CardType == ECardType.Tactic)
+                {
+                    BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
+                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, ETriggerDataSubType.Card);
+                }
 
             }
 
