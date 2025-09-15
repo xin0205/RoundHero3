@@ -411,8 +411,7 @@ namespace RoundHero
             {
                 if (GameEntry.Entity.HasEntity(kv.Value.Entity.Id))
                 {
-                    //Log.Debug("ID:" + kv.Value.Entity.Id + kv.Value.Entity.EntityAssetName);
-                    GameEntry.Entity.HideEntity(kv.Value);
+                    (kv.Value as BattleMoveValueEntity).HideEntity();
                 }
               
             }

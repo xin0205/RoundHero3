@@ -219,5 +219,17 @@ namespace RoundHero
 
         }
 
+        public void HideEntity()
+        {
+            if (BattleMoveValueEntityData.IsLoop)
+            {
+                BattleMoveValueEntityData.IsLoop = false;
+            }
+            else
+            {
+                //GameEntry.Entity.HideEntity(this);
+            }
+        }
+
     }
 }
