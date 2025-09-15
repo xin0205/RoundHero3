@@ -2723,6 +2723,11 @@ namespace RoundHero
             {
                 ownUnitGridPosIdx = ownUnit.GridPosIdx;
             }
+            else
+            {
+                ownUnitGridPosIdx = actionUnitGridPosIdx;
+
+            }
             
             //var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionUnitGridPosIdx);
