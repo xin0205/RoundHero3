@@ -329,6 +329,7 @@ namespace RoundHero
             EnemyMoveDatas.Clear();
             ThirdUnitMoveDatas.Clear();
             SoliderMoveDatas.Clear();
+            EnemyMoveDatas.Clear();
             EnemyAttackDatas.Clear();
             EnemyMovePaths.Clear();
             ThirdUnitMovePaths.Clear();

@@ -16,7 +16,7 @@ namespace RoundHero
         
     }
 
-    public class BattleAreaManager : Singleton<BattleAreaManager>
+    public partial class BattleAreaManager : Singleton<BattleAreaManager>
     {
         public Random Random;
         private int randomSeed;
@@ -218,7 +218,7 @@ namespace RoundHero
             }
             else if (ne.ShowState == EShowState.Unshow)
             {
-               
+                BattleUnitManager.Instance.UnShowTags();
                 ShowAllGrid(false);
                 BattleAreaManager.Instance.CurPointGridPosIdx = -1;
                 BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
@@ -820,10 +820,10 @@ namespace RoundHero
                 }
             }
 
-            // if (ne.ShowState == EShowState.Unshow)
-            // {
-            //     BattleUnitManager.Instance.UnShowTags();
-            // }
+            if (ne.ShowState == EShowState.Unshow)
+            {
+                BattleUnitManager.Instance.UnShowTags();
+            }
             
             if (!pointerDownInRange)
             {
@@ -1500,479 +1500,10 @@ namespace RoundHero
 
         }
         
-        // private void MoveGrid(Vector2Int pointDownCoord, EDirection? direction, Vector3 deltaPos)
-        // {
-        //     var gridRootPos = AreaController.Instance.GridRoot.transform.position;
-        //     var gridRange = Constant.Area.GridRange;
-        //     var gridSize = Constant.Area.GridSize;
-        //
-        //     var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
-        //     var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
-        //     var isAllMove = buffData.BuffStr == EBuffID.Spec_MoveAllGrid.ToString();
-        //
-        //     foreach (var kv in MoveGrids)
-        //     {
-        //         var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //         var pos = kv.Value.Position;
-        //
-        //         if (direction == EDirection.Horizonal && (isAllMove || coord.y == pointDownCoord.y))
-        //         {
-        //
-        //             if (kv.Value.Position.x >= gridRootPos.x +
-        //                 gridSize.x * gridRange.x - gridRange.x / 2)
-        //             {
-        //                 var deltaPosX = kv.Value.Position.x - (gridRootPos.x +
-        //                     gridSize.x * gridRange.x - gridRange.x / 2);
-        //                 kv.Value.Position = new Vector3(gridRootPos.x - gridRange.x / 2 + deltaPosX, pos.y, pos.z);
-        //             }
-        //             else if (kv.Value.Position.x <=
-        //                      gridRootPos.x - gridRange.x / 2)
-        //             {
-        //                 var deltaPosX = gridRootPos.x - gridRange.x / 2 - kv.Value.Position.x;
-        //                 kv.Value.Position =
-        //                     new Vector3(
-        //                         gridRootPos.x +
-        //                         gridSize.x * gridRange.x -
-        //                         gridRange.x / 2 - deltaPosX, pos.y, pos.z);
-        //             }
-        //             else
-        //             {
-        //                 kv.Value.Position = new Vector3(pos.x + deltaPos.x, pos.y, pos.z);
-        //             }
-        //
-        //         }
-        //         else if (direction == EDirection.Vertial && (isAllMove || coord.x == pointDownCoord.x))
-        //         {
-        //             // if (kv.Value.Position.z >= gridRootPos.z +
-        //             //     gridSize.y * gridRange.y - gridRange.y / 2)
-        //             // {
-        //             //     kv.Value.Position = new Vector3(pos.x, pos.y, gridRootPos.z - gridRange.y / 2 + deltaPos.z);
-        //             // }
-        //             // else if (kv.Value.Position.z <=
-        //             //          gridRootPos.z - gridRange.y / 2)
-        //             // {
-        //             //     kv.Value.Position =
-        //             //         new Vector3(pos.x,
-        //             //             pos.y, gridRootPos.z +
-        //             //             gridSize.y * gridRange.y -
-        //             //             gridRange.y / 2 + deltaPos.z);
-        //             // }
-        //             // else
-        //             // {
-        //             //     kv.Value.Position = new Vector3(pos.x, pos.y, pos.z + deltaPos.z);
-        //             // }
-        //             kv.Value.Position = new Vector3(pos.x, pos.y, pos.z + deltaPos.z);
-        //         }
-        //         else if (direction == EDirection.XRight && !isAllMove &&
-        //                  coord.x - pointDownCoord.x == coord.y - pointDownCoord.y)
-        //         {
-        //             var isMinX = pointDownCoord.x < pointDownCoord.y;
-        //             var min = isMinX ? pointDownCoord.x : pointDownCoord.y;
-        //             var isMaxX = !isMinX;
-        //             var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : gridSize.y - pointDownCoord.y - 1;
-        //
-        //             var leftCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y - min);
-        //             var rightCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y + max);
-        //
-        //             if (kv.Value.Position.z >= gridRootPos.z +
-        //                 rightCoord.y * gridRange.y + gridRange.y / 2)
-        //             {
-        //                 kv.Value.Position = new Vector3(
-        //                     gridRootPos.x + leftCoord.x * gridRange.x - gridRange.x / 2 + deltaPos.x,
-        //                     pos.y, gridRootPos.z + leftCoord.y * gridRange.y - gridRange.y / 2 + deltaPos.z);
-        //             }
-        //             else if (kv.Value.Position.z <= gridRootPos.z +
-        //                 leftCoord.y * gridRange.y - gridRange.y / 2)
-        //             {
-        //                 kv.Value.Position = new Vector3(
-        //                     gridRootPos.x + rightCoord.x * gridRange.x + gridRange.x / 2 + deltaPos.x,
-        //                     pos.y, gridRootPos.z + rightCoord.y * gridRange.y + gridRange.y / 2 + deltaPos.z);
-        //             }
-        //             else
-        //             {
-        //                 var deltaY = deltaPos.x * Constant.Area.GridRange.y / Constant.Area.GridRange.x;
-        //                 kv.Value.Position = new Vector3(pos.x + deltaPos.x, pos.y, pos.z + deltaY);
-        //             }
-        //
-        //         }
-        //         else if (direction == EDirection.XLeft && !isAllMove &&
-        //                  coord.x - pointDownCoord.x == pointDownCoord.y - coord.y)
-        //         {
-        //             var isMinX = pointDownCoord.x < gridSize.y - pointDownCoord.y;
-        //             var min = isMinX ? pointDownCoord.x : gridSize.y - pointDownCoord.y - 1;
-        //             var isMaxX = !isMinX;
-        //             var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : pointDownCoord.y;
-        //
-        //             var leftCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y + min);
-        //             var rightCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y - max);
-        //             if (kv.Value.Position.z >= gridRootPos.z +
-        //                 leftCoord.y * gridRange.y + gridRange.y / 2)
-        //             {
-        //                 kv.Value.Position = new Vector3(
-        //                     gridRootPos.x + rightCoord.x * gridRange.x + gridRange.x / 2 + deltaPos.x,
-        //                     pos.y, gridRootPos.z + rightCoord.y * gridRange.y - gridRange.y / 2 + deltaPos.z);
-        //             }
-        //             else if (kv.Value.Position.z <= gridRootPos.z +
-        //                 rightCoord.y * gridRange.y - gridRange.y / 2)
-        //             {
-        //                 kv.Value.Position = new Vector3(
-        //                     gridRootPos.x + leftCoord.x * gridRange.x - gridRange.x / 2 + deltaPos.x,
-        //                     pos.y, gridRootPos.z + leftCoord.y * gridRange.y + gridRange.y / 2 + deltaPos.z);
-        //             }
-        //             else
-        //             {
-        //                 var deltaY = -deltaPos.x * Constant.Area.GridRange.y / Constant.Area.GridRange.x;
-        //                 kv.Value.Position = new Vector3(pos.x + deltaPos.x, pos.y, pos.z + deltaY);
-        //             }
-        //
-        //         }
-        //     }
-        //
-        //
-        // }
-
-        private int lastMoveCount = 0;
-        // private void CheckUpdateGrid(Vector2Int pointDownCoord, EDirection direction, Vector3 allDeltaPos)
-        // {
-        //     var isUpdateGrid = false;
-        //
-        //     var gridRange = Constant.Area.GridRange;
-        //     var gridSize = Constant.Area.GridSize;
-        //     var curSelectCard = CardManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
-        //     var isAllMove = CardManager.Instance.Contain(curSelectCard.ID, EBuffID.Spec_MoveAllGrid);
-        //
-        //     var moveCount = 0;
-        //     
-        //     if (direction == EDirection.Horizonal)
-        //     {
-        //         var delta = allDeltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-        //         moveCount = (int) ((allDeltaPos.x + delta) / gridRange.x) % gridSize.x;
-        //         moveCount = moveCount >= 0 ? moveCount : gridSize.x + moveCount;
-        //
-        //         if (lastMoveCount != moveCount)
-        //         {
-        //             var curMoveCount = moveCount - lastMoveCount;
-        //             Log.Debug("1lastMoveCount:" + lastMoveCount + "-" + moveCount);
-        //             foreach (var kv in MoveGrids)
-        //             {
-        //                 var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //                 // 
-        //                 if (direction == EDirection.Horizonal && (isAllMove || coord.y == pointDownCoord.y))
-        //                 {
-        //                     var newCoordX = coord.x + curMoveCount;
-        //                     newCoordX = newCoordX % gridSize.x;
-        //                     var newCoord = new Vector2Int(newCoordX, coord.y);
-        //                     kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     else if (direction == EDirection.Vertial)
-        //     {
-        //         var delta = allDeltaPos.z <= 0 ? -gridRange.y / 2 : gridRange.y / 2;
-        //         moveCount = (int) ((allDeltaPos.z + delta) / gridRange.y) % gridSize.y;
-        //         moveCount = moveCount >= 0 ? moveCount : gridSize.y + moveCount;
-        //
-        //         if (lastMoveCount != moveCount)
-        //         {
-        //             curMoveDelta = Vector3.zero;
-        //             var curMoveCount = moveCount;
-        //             Log.Debug("2lastMoveCount:" + lastMoveCount + "-" + moveCount);
-        //             foreach (var kv in MoveGrids)
-        //             {
-        //                 var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //                 if (direction == EDirection.Vertial && (isAllMove || coord.x == pointDownCoord.x))
-        //                 {
-        //                     var newCoordY = coord.y + curMoveCount;
-        //                     newCoordY = newCoordY % gridSize.y;
-        //                     var newCoord = new Vector2Int(coord.x, newCoordY);
-        //                     kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //                 }
-        //             }
-        //         }
-        //
-        //     }
-        //     else if (direction == EDirection.XRight && !isAllMove)
-        //     {
-        //         Log.Debug("3lastMoveCount:" + lastMoveCount + "-" + moveCount);
-        //         var isMinX = pointDownCoord.x < pointDownCoord.y;
-        //         var min = isMinX ? pointDownCoord.x : pointDownCoord.y;
-        //         var isMaxX = !isMinX;
-        //         var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : gridSize.y - pointDownCoord.y - 1;
-        //         var minCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y - min);
-        //         var maxCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y + max);
-        //
-        //         var moveMaxCount = maxCoord.x - minCoord.x + 1;
-        //         var delta = allDeltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-        //         moveCount = (int) ((allDeltaPos.x + delta) / gridRange.x) % moveMaxCount;
-        //         moveCount = moveCount >= 0 ? moveCount : moveMaxCount + moveCount;
-        //
-        //         if (lastMoveCount != moveCount)
-        //         {
-        //             //lastMoveDelta = allMoveDelta;
-        //             var curMoveCount = moveCount - lastMoveCount;
-        //             foreach (var kv in MoveGrids)
-        //             {
-        //                 var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //                 if (direction == EDirection.XRight && coord.x - pointDownCoord.x == coord.y - pointDownCoord.y)
-        //                 {
-        //
-        //                     var newCoord = coord + new Vector2Int(curMoveCount, curMoveCount);
-        //
-        //                     if (newCoord.y > maxCoord.y || newCoord.x > maxCoord.x)
-        //                     {
-        //                         newCoord = new Vector2Int(minCoord.x + newCoord.x - maxCoord.x - 1,
-        //                             minCoord.y + newCoord.y - maxCoord.y - 1);
-        //
-        //                     }
-        //
-        //                     kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     else if (direction == EDirection.XLeft && !isAllMove)
-        //     {
-        //         Log.Debug("4lastMoveCount:" + lastMoveCount + "-" + moveCount);
-        //         var isMinX = pointDownCoord.x < gridSize.y - pointDownCoord.y;
-        //         var min = isMinX ? pointDownCoord.x : gridSize.y - pointDownCoord.y - 1;
-        //         var isMaxX = !isMinX;
-        //         var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : pointDownCoord.y;
-        //
-        //         var leftCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y + min);
-        //         var rightCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y - max);
-        //
-        //         var moveMaxCount = rightCoord.x - leftCoord.x + 1;
-        //         var delta = allDeltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-        //         moveCount = (int) ((allDeltaPos.x + delta) / gridRange.x) % moveMaxCount;
-        //         moveCount = moveCount >= 0 ? moveCount : moveMaxCount + moveCount;
-        //
-        //         
-        //         if (lastMoveCount != moveCount)
-        //         {
-        //             //lastMoveDelta = allMoveDelta;
-        //             var curMoveCount = moveCount - lastMoveCount;
-        //             foreach (var kv in MoveGrids)
-        //             {
-        //                 var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //                 if (direction == EDirection.XLeft && coord.x - pointDownCoord.x == pointDownCoord.y - coord.y)
-        //                 {
-        //                     var newCoord = coord + new Vector2Int(curMoveCount, -curMoveCount);
-        //                     if (newCoord.y < rightCoord.y || newCoord.x > rightCoord.x)
-        //                     {
-        //                         newCoord = new Vector2Int(leftCoord.x + newCoord.x - rightCoord.x - 1,
-        //                             leftCoord.y - (rightCoord.y - newCoord.y - 1));
-        //
-        //                     }
-        //
-        //                     kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //                 }
-        //             }
-        //         }
-        //     }
-        //
-        //     if (lastMoveCount != moveCount)
-        //     {
-        //         lastMoveCount = moveCount;
-        //         RefreshGirdEntities();
-        //         RefreshObstacles();
-        //         BattleManager.Instance.Refresh();
-        //         BattleEnemyManager.Instance.ShowEnemyRoutes();
-        //     }
-        //
-        // }
+       
         
-        private void CheckUpdateGrid(Vector2Int pointDownCoord, EDirection? direction, Vector3 deltaPos)
-        {
-            var isUpdateGrid = false;
-
-            var gridRange = Constant.Area.GridRange;
-            var gridSize = Constant.Area.GridSize;
-            var curSelectCard = CardManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
-            var isAllMove = CardManager.Instance.Contain(curSelectCard.CardIdx, EBuffID.Spec_MoveAllGrid);
-
-            var moveCount = 0;
-            
-            if (direction == EDirection.Horizonal)
-            {
-                var delta = 0;//deltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-                var moveDelta = deltaPos.x <= 0 ? deltaPos.x % gridRange.x  : deltaPos.x % gridRange.x;
-                moveCount = (int) ((deltaPos.x + delta) / gridRange.x) % gridSize.x;
-                moveCount = moveCount >= 0 ? moveCount : gridSize.x + moveCount;
-
-                if (lastMoveCount != moveCount)
-                {
-
-                    var curMoveCount = moveCount;
-                    curMoveDelta = new Vector3(moveDelta, 0, 0);
-                    Log.Debug("1:" + lastMoveCount + "-" + moveCount + "-" + moveCountDelta);
-                    foreach (var kv in MoveGrids)
-                    {
-                        var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-                        // 
-                        if (direction == EDirection.Horizonal && (isAllMove || coord.y == pointDownCoord.y))
-                        {
-                            var newCoordX = coord.x + curMoveCount;
-                            newCoordX = newCoordX % gridSize.x;
-                            var newCoord = new Vector2Int(newCoordX, coord.y);
-                            kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-
-                        }
-                    }
-                }
-            }
-            else if (direction == EDirection.Vertial)
-            {
-                var delta = 0;//deltaPos.z <= 0 ? -gridRange.y / 2 : gridRange.y / 2;
-                var moveDelta = deltaPos.z <= 0 ? deltaPos.z % gridRange.y  : deltaPos.z % gridRange.y;
-                moveCount = (int) ((deltaPos.z + delta) / gridRange.y) % gridSize.y;
-                moveCount = moveCount >= 0 ? moveCount : gridSize.y + moveCount;
-
-                if (lastMoveCount != moveCount)
-                {
-
-                    var curMoveCount = moveCount;
-                    curMoveDelta = new Vector3(0, 0, moveDelta);
-                    //Log.Debug("2:" + lastMoveCount + "-" + moveCount + "-" + moveCountDelta + "-" + moveDelta + "-" + deltaPos.z);
-                    foreach (var kv in MoveGrids)
-                    {
-                        var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-                        if (direction == EDirection.Vertial && (isAllMove || coord.x == pointDownCoord.x))
-                        {
-                            var newCoordY = coord.y + curMoveCount;
-                            newCoordY = newCoordY % gridSize.y;
-                            var newCoord = new Vector2Int(coord.x, newCoordY);
-                            kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-                            
-                        }
-                    }
-                }
-
-            }
-            else if (direction == EDirection.XRight && !isAllMove)
-            {
-                var isMinX = pointDownCoord.x < pointDownCoord.y;
-                var min = isMinX ? pointDownCoord.x : pointDownCoord.y;
-                var isMaxX = !isMinX;
-                var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : gridSize.y - pointDownCoord.y - 1;
-                var leftCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y - min);
-                var rightCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y + max);
-                var moveMaxCount = rightCoord.x - leftCoord.x + 1;
-                
-
-                var delta = 0;//deltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-                var moveDelta = deltaPos.x <= 0 ? deltaPos.x % gridRange.x   : deltaPos.x % gridRange.x;
-                moveCount = (int) ((deltaPos.x + delta) / gridRange.x) % moveMaxCount;
-                moveCount = moveCount >= 0 ? moveCount : moveMaxCount + moveCount;
-
-                if (lastMoveCount != moveCount)
-                {
-                    var curMoveCount = moveCount;
-                    curMoveDelta = new Vector3(moveDelta, 0, 0);
-                    Log.Debug("3:" + lastMoveCount + "-" + moveCount + "-" + moveCountDelta + "-" + moveMaxCount);
-                    foreach (var kv in MoveGrids)
-                    {
-                        var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-                        if (direction == EDirection.XRight && coord.x - pointDownCoord.x == coord.y - pointDownCoord.y)
-                        {
-                            var newCoord = coord + new Vector2Int(curMoveCount, curMoveCount);
-
-                            if (newCoord.y > rightCoord.y || newCoord.x > rightCoord.x)
-                            {
-                                newCoord = new Vector2Int(leftCoord.x + newCoord.x - rightCoord.x - 1,
-                                    leftCoord.y + newCoord.y - rightCoord.y - 1);
-
-                            }
-
-                            kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-                        }
-                    }
-                }
-            }
-            else if (direction == EDirection.XLeft && !isAllMove)
-            {
-                var isMinX = pointDownCoord.x < gridSize.y - pointDownCoord.y;
-                var min = isMinX ? pointDownCoord.x : gridSize.y - pointDownCoord.y - 1;
-                var isMaxX = !isMinX;
-                var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : pointDownCoord.y;
-                var leftCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y + min);
-                var rightCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y - max);
-                var moveMaxCount = rightCoord.x - leftCoord.x + 1;
-                
-                
-                var delta = 0;//deltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-                var moveDelta = deltaPos.z <= 0 ? deltaPos.z % gridRange.y  : deltaPos.z % gridRange.y;
-                moveCount = (int) ((-deltaPos.z + delta) / gridRange.y) % moveMaxCount;
-                moveCount = moveCount >= 0 ? moveCount : moveMaxCount + moveCount;
-
-                Log.Debug("11:" + deltaPos.z +"-" + moveDelta);
-                if (lastMoveCount != moveCount)
-                {
-                    curMoveDelta = new Vector3(0, 0, moveDelta);
-                    var curMoveCount = moveCount;
-                    Log.Debug("4:" + lastMoveCount + "-" + moveCount + "-" + moveDelta);
-                    foreach (var kv in MoveGrids)
-                    {
-                        var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-                        if (direction == EDirection.XLeft && coord.x - pointDownCoord.x == pointDownCoord.y - coord.y)
-                        {
-                            var newCoord = coord + new Vector2Int(curMoveCount, -curMoveCount);
-                            if (newCoord.y < rightCoord.y || newCoord.x > rightCoord.x)
-                            {
-                                
-                                newCoord = new Vector2Int(leftCoord.x + newCoord.x - rightCoord.x - 1,
-                                    leftCoord.y - (rightCoord.y - newCoord.y - 1));
-
-                            }
-
-                            kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-                            
-                        }
-                    }
-                }
-            }
-
-            if (lastMoveCount != moveCount)
-            {
-                
-                lastMoveCount = moveCount;
-                RefreshGirdEntities();
-                RefreshObstacles();
-                BattleManager.Instance.RefreshEnemyAttackData();
-                ShowMoveUnitTags(true);
-                //BattleEnemyManager.Instance.ShowEnemyRoutes();
-            }
-
-        }
         
-        private void UpdateGrid()
-        {
-            IsMoveGrid = true;
-            foreach (var kv in MoveGridPosIdxs)
-            {
-                var moveGrid = MoveGrids[kv.Key];
-                if (moveGrid.GridPosIdx == kv.Value)
-                {
-                    IsMoveGrid = false;
-                    break;
-                }
-            }
-
-            if (IsMoveGrid)
-            {
-                BattleCardManager.Instance.RefreshCardConfirm();
-            }
-            
-
-            foreach (var kv in MoveGrids)
-            {
-                kv.Value.Position = GameUtility.GridPosIdxToPos(kv.Value.GridPosIdx);
-            }
-            
-            //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-
-        }
+        
         
         public void ShowMoveUnitTags(bool isShow)
         {
@@ -2013,141 +1544,7 @@ namespace RoundHero
             }
         }
 
-        // private void UpdateGrid(Vector2Int pointDownCoord, EDirection? direction, Vector3 allDeltaPos)
-        // {
-        //     var gridRange = Constant.Area.GridRange;
-        //     var gridSize = Constant.Area.GridSize;
-        //     var curSelectCard = CardManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardID);
-        //     var isAllMove = CardManager.Instance.Contain(curSelectCard.ID, EBuffID.Spec_MoveAllGrid);
-        //
-        //     var delta = 0f;
-        //     if (direction == EDirection.Horizonal)
-        //     {
-        //         //delta = allDeltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-        //         var moveCount = (int) ((allDeltaPos.x + delta) / gridRange.x) % gridSize.x;
-        //         moveCount = moveCount >= 0 ? moveCount : gridSize.x + moveCount;
-        //
-        //         foreach (var kv in MoveGrids)
-        //         {
-        //             var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //             // 
-        //             if (direction == EDirection.Horizonal && (isAllMove || coord.y == pointDownCoord.y))
-        //             {
-        //                 var newCoordX = coord.x + moveCount;
-        //                 newCoordX = newCoordX % gridSize.x;
-        //                 var newCoord = new Vector2Int(newCoordX, coord.y);
-        //                 var targetPos = GameUtility.GridCoordToPos(newCoord);
-        //                 kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //                 kv.Value.Position = targetPos;
-        //
-        //             }
-        //         }
-        //     }
-        //     else if (direction == EDirection.Vertial)
-        //     {
-        //         //delta = allDeltaPos.z <= 0 ? -gridRange.y / 2 : gridRange.y / 2;
-        //         var moveCount = (int) ((allDeltaPos.z + delta) / gridRange.y) % gridSize.y;
-        //         moveCount = moveCount >= 0 ? moveCount : gridSize.y + moveCount;
-        //
-        //         foreach (var kv in MoveGrids)
-        //         {
-        //             var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //             if (direction == EDirection.Vertial && (isAllMove || coord.x == pointDownCoord.x))
-        //             {
-        //
-        //                 var newCoordY = coord.y + moveCount;
-        //                 newCoordY = newCoordY % gridSize.y;
-        //                 var newCoord = new Vector2Int(coord.x, newCoordY);
-        //                 var targetPos = GameUtility.GridCoordToPos(newCoord);
-        //                 kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //                 kv.Value.Position = targetPos;
-        //             }
-        //         }
-        //
-        //     }
-        //     else if (direction == EDirection.XRight && !isAllMove)
-        //     {
-        //         var isMinX = pointDownCoord.x < pointDownCoord.y;
-        //         var min = isMinX ? pointDownCoord.x : pointDownCoord.y;
-        //         var isMaxX = !isMinX;
-        //         var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : gridSize.y - pointDownCoord.y - 1;
-        //         var minCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y - min);
-        //         var maxCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y + max);
-        //
-        //         var moveMaxCount = maxCoord.x - minCoord.x + 1;
-        //         //delta = allDeltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-        //         var moveCount = (int) ((allDeltaPos.x + delta) / gridRange.x) % moveMaxCount;
-        //         moveCount = moveCount >= 0 ? moveCount : moveMaxCount + moveCount;
-        //
-        //         if (moveCount > 0 && !IsMoveGrid)
-        //         {
-        //             IsMoveGrid = true;
-        //         }
-        //
-        //         foreach (var kv in MoveGrids)
-        //         {
-        //             var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //             if (direction == EDirection.XRight && coord.x - pointDownCoord.x == coord.y - pointDownCoord.y)
-        //             {
-        //
-        //                 var newCoord = coord + new Vector2Int(moveCount, moveCount);
-        //
-        //                 if (newCoord.y > maxCoord.y || newCoord.x > maxCoord.x)
-        //                 {
-        //                     newCoord = new Vector2Int(minCoord.x + newCoord.x - maxCoord.x - 1,
-        //                         minCoord.y + newCoord.y - maxCoord.y - 1);
-        //
-        //                 }
-        //
-        //                 var targetPos = GameUtility.GridCoordToPos(newCoord);
-        //                 kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //                 kv.Value.Position = targetPos;
-        //             }
-        //         }
-        //     }
-        //     else if (direction == EDirection.XLeft && !isAllMove)
-        //     {
-        //         var isMinX = pointDownCoord.x < gridSize.y - pointDownCoord.y;
-        //         var min = isMinX ? pointDownCoord.x : gridSize.y - pointDownCoord.y - 1;
-        //         var isMaxX = !isMinX;
-        //         var max = isMaxX ? gridSize.x - pointDownCoord.x - 1 : pointDownCoord.y;
-        //
-        //         var leftCoord = new Vector2Int(pointDownCoord.x - min, pointDownCoord.y + min);
-        //         var rightCoord = new Vector2Int(pointDownCoord.x + max, pointDownCoord.y - max);
-        //
-        //         var moveMaxCount = rightCoord.x - leftCoord.x + 1;
-        //         //delta = allDeltaPos.x <= 0 ? -gridRange.x / 2 : gridRange.x / 2;
-        //         var moveCount = (int) ((allDeltaPos.x + delta) / gridRange.x) % moveMaxCount;
-        //         moveCount = moveCount >= 0 ? moveCount : moveMaxCount + moveCount;
-        //
-        //
-        //         foreach (var kv in MoveGrids)
-        //         {
-        //             var coord = GameUtility.GridPosIdxToCoord(kv.Value.GridPosIdx);
-        //             if (direction == EDirection.XLeft && coord.x - pointDownCoord.x == pointDownCoord.y - coord.y)
-        //             {
-        //                 var newCoord = coord + new Vector2Int(moveCount, -moveCount);
-        //                 if (newCoord.y < rightCoord.y || newCoord.x > rightCoord.x)
-        //                 {
-        //                     newCoord = new Vector2Int(leftCoord.x + newCoord.x - rightCoord.x - 1,
-        //                         leftCoord.y - (rightCoord.y - newCoord.y - 1));
-        //
-        //                 }
-        //
-        //                 var targetPos = GameUtility.GridCoordToPos(newCoord);
-        //                 kv.Value.GridPosIdx = GameUtility.GridCoordToPosIdx(newCoord);
-        //                 kv.Value.Position = targetPos;
-        //             }
-        //         }
-        //     }
-        //
-        //     //IsMoveGrid = false;
-        //     RefreshGirdEntities();
-        //     RefreshObstacles();
-        //     BattleManager.Instance.Refresh();
-        //     BattleEnemyManager.Instance.UnShowEnemyRoutes();
-        // }
-
+       
         public void RefreshObstacles()
         {
             for (int i = 0; i < BattleManager.Instance.BattleData.GridTypes.Count; i++)
@@ -2203,21 +1600,6 @@ namespace RoundHero
         {
 
         }
-
-
-
-        // public int GetGridEntityID(int gridPosIdx)
-        // {
-        //     foreach (var kv in GridEntities)
-        //     {
-        //         if (kv.BattleGridEntityData.GridPosIdx == gridPosIdx)
-        //         {
-        //             return kv.BattleGridEntityData.Id;
-        //         }
-        //     }
-        //
-        //     return -1;
-        // }
 
         public BattleGridEntity GetGridEntityByGridPosIdx(int gridPosIdx)
         {
@@ -2312,63 +1694,7 @@ namespace RoundHero
                 if (unit == null)
                     return;
                     
-                // if (unit.BattleUnit.FuneCount(EFuneID.MoveInRound, true) > 0)
-                // {
-                //     var moveInRoundFune = unit.BattleUnit.GetFune(EFuneID.MoveInRound, true);
-                //     if (moveInRoundFune != null && moveInRoundFune.Value > 0)
-                //     {
-                //         BattleManager.Instance.TempTriggerData.UnitData =
-                //             BattleUnitManager.Instance.GetBattleUnitData(unit);
-                //
-                //         BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.MoveUnit;
-                //         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx =
-                //             BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx;
-                //
-                //         var moveRanges = BattleUnitManager.Instance.GetMoveRanges(unit.ID, ne.GridPosIdx);
-                //         ShowBackupGrids(moveRanges);
-                //         BattleManager.Instance.BattleState = EBattleState.FuneMoveUnit;
-                //     }
-                // }
-                // else 
-            //     if (unit.BattleUnit.GetStateCount(EUnitState.ActiveAtk) > 0)
-            //     {
-            //         var battleUnitData = BattleUnitManager.Instance.GetBattleUnitData(unit);
-            //         BattleUnitManager.Instance.GetBuffValue(GamePlayManager.Instance.GamePlayData, battleUnitData, out List<BuffValue> triggerBuffDatas);
-            //         var triggerBuffData = triggerBuffDatas.Find(data => data.BuffData.BuffTriggerType == EBuffTriggerType.ActiveAttack);
-            //         
-            //         if (triggerBuffData != null)
-            //         {
-            //             BattleManager.Instance.TempTriggerData.UnitData = battleUnitData;
-            //             BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.SelectHurtUnit;
-            //             
-            //             var buffData = triggerBuffData.BuffData;
-            //             var attackRanges = GameUtility.GetRange(ne.GridPosIdx, buffData.TriggerRange,
-            //                 unit.UnitCamp, buffData.TriggerUnitCamps, false);
-            //             ShowBackupGrids(attackRanges);
-            //             BattleManager.Instance.BattleState = EBattleState.SelectHurtUnit;
-            //         }
-            //
-            //     }
-            //     else if (unit.BattleUnit.GetStateCount(EUnitState.AutoAtk) > 0)
-            //     {
-            //         // BattleManager.Instance.TempTriggerData.UnitData =
-            //         //     BattleUnitManager.Instance.GetBattleUnitData(unit);
-            //         
-            //         ShowBackupGrids(null);
-            //             
-            //         FightManager.Instance.SoliderAutoAttack();
-            //             
-            //         //BattleManager.Instance.Refresh();
-            //         BattleEnemyManager.Instance.UnShowEnemyRoutes();
-            //
-            //         BattleManager.Instance.TempTriggerData.Reset();
-            //         // BattleUnitManager.Instance.TempUnitData.TriggerType = ETempUnitType.Null;
-            //         //BattleUnitManager.Instance.TempUnitData.UnitData = null;
-            //         BattleManager.Instance.BattleState = EBattleState.UseCard;
-            //         unit.BattleUnit.RemoveState(EUnitState.AutoAtk);
-            //
-            //     }
-            //
+                
             }
             else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
             {
@@ -2467,8 +1793,10 @@ namespace RoundHero
                         GameEntry.UI.OpenMessage("AA");
                         return;
                     }
-                    
-                    if (unit is not BattleSoliderEntity)
+
+                    var relativeCamp =
+                        GameUtility.GetRelativeCamp(PlayerManager.Instance.PlayerData.UnitCamp, unit.UnitCamp);
+                    if (!buffData.TriggerUnitCamps.Contains(relativeCamp))
                     {
                         return;
                     }
@@ -2550,68 +1878,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
                 }
-                // if (buffID == EBuffID.HurtUsDamage || buffID == EBuffID.MoveCountDamage ||
-                //          buffID == EBuffID.UnitCountDamage)
-                // {
-                //     var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx,
-                //         BattleManager.Instance.CurUnitCamp,
-                //         ERelativeCamp.Enemy);
-                //     if (unit == null)
-                //     {
-                //         return;
-                //     }
-                //
-                //     BattleBuffManager.Instance.TriggerBuff();
-                //     UseBuff(ne.GridPosIdx);
-                //     
-                //     BattleUnitManager.Instance.TempUnitData.TriggerType = ETempUnitType.Null;
-                //     BattleUnitManager.Instance.TempUnitData.CardEffectUnitID = -1;
-                //     BattleUnitManager.Instance.TempUnitData.TriggerBuffData.Clear();
-                //
-                //     
-                //     
-                //     
-                //
-                // }
-                // else if (buffID == EBuffID.UnitAddCurHP || buffID == EBuffID.Link_Send_CrossLong_Us ||
-                //          buffID == EBuffID.Link_Receive_XLong_Us || buffID == EBuffID.RemoveCardAddCurHP)
-                // {
-                //     var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx,
-                //         BattleManager.Instance.CurUnitCamp,
-                //         ERelativeCamp.Us);
-                //     if (unit == null)
-                //     {
-                //         return;
-                //     }
-                //
-                //     BattleBuffManager.Instance.TriggerBuff();
-                //     UseBuff(ne.GridPosIdx);
-                //     
-                //     BattleUnitManager.Instance.TempUnitData.TriggerType = ETempUnitType.Null;
-                //     BattleUnitManager.Instance.TempUnitData.CardEffectUnitID = -1;
-                //     BattleUnitManager.Instance.TempUnitData.TriggerBuffData.Clear();
-                //     
-                // }
-                // else if (buffID == EBuffID.RemoveDebuff)
-                // {
-                //     var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx,
-                //         BattleManager.Instance.CurUnitCamp,
-                //         ERelativeCamp.Us);
-                //     if (unit == null)
-                //     {
-                //         return;
-                //     }
-                //
-                //     BattleBuffManager.Instance.TriggerBuff();
-                //     UseBuff(ne.GridPosIdx);
-                //     
-                //     BattleUnitManager.Instance.TempUnitData.TriggerType = ETempUnitType.Null;
-                //     BattleUnitManager.Instance.TempUnitData.CardEffectUnitID = -1;
-                //     BattleUnitManager.Instance.TempUnitData.TriggerBuffData.Clear();
-                //     
-                //
-                // }
-
+               
             }
             else if (BattleManager.Instance.BattleState == EBattleState.TacticSelectGrid)
             {
@@ -2633,16 +1900,29 @@ namespace RoundHero
                     var unit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
                         .Idx);
 
-                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx];
-
-                    var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
-                    unit.Run(moveActionData);
-                    GameUtility.DelayExcute(time, () =>
+                    MoveActionData moveActionData = null;
+                    if (BattleFightManager.Instance.RoundFightData.SoliderMoveDatas.ContainsKey(unit.UnitIdx))
                     {
-                        BattleManager.Instance.SetBattleState(EBattleState.UseCard);
-                        BattleManager.Instance.RefreshEnemyAttackData();
+                        moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx];
+                    }
+                    else if(BattleFightManager.Instance.RoundFightData.EnemyMoveDatas.ContainsKey(unit.UnitIdx))
+                    {
+                        moveActionData = BattleFightManager.Instance.RoundFightData.EnemyMoveDatas[unit.UnitIdx];
+                    }
 
-                    });
+
+                    if (moveActionData != null)
+                    {
+                        var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
+                        unit.Run(moveActionData);
+                        GameUtility.DelayExcute(time, () =>
+                        {
+                            BattleManager.Instance.SetBattleState(EBattleState.UseCard);
+                            BattleManager.Instance.RefreshEnemyAttackData();
+
+                        });
+                    }
+                    
                     
                     RefreshObstacles();
                     //BattleEnemyManager.Instance.UnShowEnemyRoutes();

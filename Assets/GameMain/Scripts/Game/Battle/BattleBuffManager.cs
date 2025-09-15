@@ -1453,6 +1453,9 @@ namespace RoundHero
                 case EBuffID.Spec_AttackUs:
                     buffData.TriggerUnitCamps.Add(ERelativeCamp.Us);
                     break;
+                case EBuffID.Spec_MoveEnemy:
+                    buffData.TriggerUnitCamps.Add(ERelativeCamp.Enemy);
+                    break;
             }
             
             

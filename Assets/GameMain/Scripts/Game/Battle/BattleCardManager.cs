@@ -684,7 +684,9 @@ namespace RoundHero
 
                 if (buffData.BuffTriggerType == EBuffTriggerType.TacticSelectUnit ||
                     buffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
-                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs)  ||
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_AttackUs)  ||
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveEnemy))
                 {
                     BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
@@ -789,7 +791,9 @@ namespace RoundHero
 
                 if (buffData.BuffTriggerType == EBuffTriggerType.TacticSelectUnit ||
                     buffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
-                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs))
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveUs) ||
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_AttackUs) ||
+                    CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveEnemy))
                 {
                     BattleManager.Instance.SetBattleState(EBattleState.TacticSelectUnit);
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;

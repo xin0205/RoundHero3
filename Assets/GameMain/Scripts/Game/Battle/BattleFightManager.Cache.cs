@@ -114,7 +114,8 @@ namespace RoundHero
                     //if (!string.IsNullOrEmpty(buffStr) && buffStr != EBuffID.Spec_AttackUs.ToString() && buffStr != EBuffID.Spec_MoveUs.ToString())
 
                     if ((!string.IsNullOrEmpty(buffStr) && buffStr != EBuffID.Spec_AttackUs.ToString() &&
-                         buffStr != EBuffID.Spec_MoveUs.ToString()) ||
+                         buffStr != EBuffID.Spec_MoveUs.ToString() &&
+                         buffStr != EBuffID.Spec_MoveEnemy.ToString()) ||
                         string.IsNullOrEmpty(buffStr))
                     {
                         BattleCardManager.Instance.CacheUseCardData(
@@ -217,7 +218,8 @@ namespace RoundHero
             CacheSoliderAutoAttackDatas();
 
             CacheSoliderMoveDatas();
-
+            CacheEnemyMoveDatas();
+            
             CacheRoundPassCards();
 
             CacheRoundStartDatas();
@@ -1120,10 +1122,19 @@ namespace RoundHero
                 !GameUtility.ContainRoundState(RoundFightData.GamePlayData, EBuffID.Spec_CurseUnEffect))
                 return;
 
-            var actionData = new ActionData();
-            actionData.ActionUnitIdx = enemyData.Idx;
+            ActionData actionData;
+            if (RoundFightData.EnemyAttackDatas.ContainsKey(enemyData.Idx))
+            {
+                actionData = RoundFightData.EnemyAttackDatas[enemyData.Idx];
+            }
+            else
+            {
+                actionData = new ActionData();
+                actionData.ActionUnitIdx = enemyData.Idx;
+                RoundFightData.EnemyAttackDatas.Add(enemyData.Idx, actionData);
+            }
 
-            RoundFightData.EnemyAttackDatas.Add(enemyData.Idx, actionData);
+
             var drEnemy = GameEntry.DataTable.GetEnemy(enemyData.MonsterID);
             var buffData = BattleBuffManager.Instance.GetBuffData(drEnemy.OwnBuffs[0]);
 
@@ -1733,12 +1744,21 @@ namespace RoundHero
 
         }
 
-
-
         private void CacheEnemyMoveDatas()
         {
-            CacheUnitMoveDatas(RoundFightData.EnemyMovePaths, RoundFightData.EnemyMoveDatas);
+            if (RoundFightData.TempTriggerData.UnitData != null &&
+                RoundFightData.TempTriggerData.UnitData.UnitCamp == EUnitCamp.Enemy &&
+                RoundFightData.TempTriggerData.TriggerType == ETempTriggerType.MoveUnit)
+            {
+                //var firstUnitActionSoliders = new List<int>();
+                RoundFightData.TempTriggerData.TempUnitMovePaths = CacheUnitMoveDatas(
+                    RoundFightData.TempTriggerData.UnitData.Idx, RoundFightData.TempTriggerData.TempUnitMovePaths,
+                    RoundFightData.EnemyMoveDatas, EUnitActionState.Run);
+            }
+
         }
+
+        
 
         private void CacheThirdUnitMoveDatas()
         {
@@ -2668,6 +2688,30 @@ namespace RoundHero
                     }
                 }
             }
+            
+            foreach (var kv in RoundFightData.EnemyMoveDatas)
+            {
+                foreach (var datas in kv.Value.TriggerDatas.Values.ToList())
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        // if (triggerData.ActualValue == 0)
+                        // {
+                        //     continue;
+                        // }
+
+                        if (triggerData.OwnUnitIdx == unitIdx)
+                        {
+                            if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                            }
+
+                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
+            }
 
             foreach (var kv in RoundFightData.EnemyAttackDatas)
             {
@@ -3000,6 +3044,35 @@ namespace RoundHero
             }
 
             foreach (var kv in RoundFightData.SoliderMoveDatas)
+            {
+
+                foreach (var kv2 in kv.Value.TriggerDatas)
+                {
+                    foreach (var triggerData in kv2.Value)
+                    {
+                        // if (triggerData.ActualValue == 0)
+                        // {
+                        //     continue;
+                        // }
+
+                        if (triggerData.EffectUnitIdx != effectUnitIdx)
+                            continue;
+
+                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 &&
+                            triggerData.ActionUnitIdx != actionUnitIdx)
+                            continue;
+
+                        if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                        {
+                            triggerDataDict.Add(triggerData.ActionUnitIdx, new List<TriggerData>());
+                        }
+
+                        triggerDataDict[triggerData.ActionUnitIdx].Add(triggerData);
+                    }
+                }
+            }
+            
+            foreach (var kv in RoundFightData.EnemyMoveDatas)
             {
 
                 foreach (var kv2 in kv.Value.TriggerDatas)
