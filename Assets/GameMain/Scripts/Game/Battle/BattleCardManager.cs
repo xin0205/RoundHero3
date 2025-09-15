@@ -675,7 +675,11 @@ namespace RoundHero
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[0]);
                 var value = BattleBuffManager.Instance.GetBuffValue(drCard.Values0[0]);
-                
+                BuffData buffData2 = null;
+                if (drCard.BuffIDs.Count >= 2)
+                {
+                    buffData2 = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[1]);
+                }
                 // if (BattleCurseManager.Instance.IsTacticCardUnDamage(card.CardID) &&
                 //     buffData.UnitAttribute == EUnitAttribute.CurHP && value < 0)
                 // {
@@ -701,6 +705,10 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
+                    if (buffData2 != null)
+                    {
+                        BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr2 = buffData2.BuffStr;
+                    }
                     
                     return false;
                 }

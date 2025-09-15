@@ -745,7 +745,14 @@ namespace RoundHero
                 var drBuff = BattleBuffManager.Instance.GetBuffData(buffStr);
                      
                 var range = GameUtility.GetRange(ne.GridPosIdx, drBuff.TriggerRange, BattleManager.Instance.CurUnitCamp, drBuff.TriggerUnitCamps);
+                if (BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr2 != string.Empty)
+                {
+                    var drBuff2 = BattleBuffManager.Instance.GetBuffData(BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr2);
+                    range.AddRange(GameUtility.GetRange(ne.GridPosIdx, drBuff2.TriggerRange, BattleManager.Instance.CurUnitCamp, drBuff2.TriggerUnitCamps));
 
+                }
+                
+                
                 foreach (var gridPosIdx in range)
                 {
                     var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
@@ -753,6 +760,7 @@ namespace RoundHero
                     if (ne.ShowState == EShowState.Show)
                     {
                         unit.ShowTacticHurtDisplayValues(unit.UnitIdx);
+                        unit.ShowTacticHurtDisplayIcons(unit.UnitIdx);
                     }
                     else
                     {
@@ -860,6 +868,7 @@ namespace RoundHero
                                 else
                                 {
                                     unit.ShowTacticHurtDisplayValues(unit.UnitIdx);
+                                    unit.ShowTacticHurtDisplayIcons(unit.UnitIdx);
                                 }
                                 
                             }

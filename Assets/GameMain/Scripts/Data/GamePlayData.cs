@@ -1355,6 +1355,7 @@ namespace RoundHero
         public int EnergyBuffIdx = -1;
         public int EffectCount = 0;
         public string BuffStr = string.Empty;
+        public string BuffStr2 = string.Empty;
         
         public Data_EnergyBuff Copy()
         {
@@ -1364,7 +1365,7 @@ namespace RoundHero
             energyBuffData.EnergyBuffIdx = EnergyBuffIdx;
             energyBuffData.EffectCount = EffectCount;
             energyBuffData.BuffStr = BuffStr;
-
+            energyBuffData.BuffStr2 = BuffStr2;
             return energyBuffData;
         }
         
@@ -1375,6 +1376,7 @@ namespace RoundHero
             EnergyBuffIdx = -1;
             EffectCount = 0;
             BuffStr = String.Empty;
+            BuffStr2 = String.Empty;
         }
     }
     
