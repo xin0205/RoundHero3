@@ -970,7 +970,7 @@ namespace RoundHero
             });
             
             
-            HeroManager.Instance.UpdateCacheHPDelta();
+            
             
             BattleCardManager.Instance.SetCardsPos();
             
