@@ -411,7 +411,15 @@ namespace RoundHero
             {
                 if (GameEntry.Entity.HasEntity(kv.Value.Entity.Id))
                 {
-                    (kv.Value as BattleMoveValueEntity).HideEntity();
+                    if (kv.Value is BattleMoveValueEntity battleMoveValueEntity)
+                    {
+                        battleMoveValueEntity.HideEntity();
+                    }
+                    else
+                    {
+                        GameEntry.Entity.HideEntity(kv.Value);
+                    }
+
                 }
               
             }
