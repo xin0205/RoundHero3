@@ -11,7 +11,58 @@ namespace RoundHero
         public void CacheUseCardData(int cardIdx, Data_BattleUnit effectUnit, int actionUnitGridPosidx, int actionUnitIdx)
         {
             var drCard = CardManager.Instance.GetCardTable(cardIdx);
+            var card = BattleFightManager.Instance.GetCard(cardIdx);
             var triggerDatas = new List<TriggerData>();
+            
+            var unComsumeCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.UnConsumeCard, PlayerManager.Instance.PlayerData.UnitCamp);
+            
+            if (unComsumeCard != null && card.CardDestination == ECardDestination.Consume)
+            {
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = Random.Next(0, 2) == 0 ? ECardDestination.Pass : ECardDestination.Consume;
+            }
+            else
+            {
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = card.CardDestination;
+            }
+            
+
+            var battlePlayerData =
+                BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(
+                    BattleFightManager.Instance.RoundFightData.GamePlayData.PlayerData
+                        .UnitCamp);
+
+            switch (BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination)
+            {
+                case ECardDestination.Pass:
+                    ToPassCard(battlePlayerData, cardIdx);
+                    break;
+                case ECardDestination.Consume:
+                    ToConsumeCards(battlePlayerData, cardIdx);
+                    break;
+                case ECardDestination.StandBy:
+                    ToStandByCards(battlePlayerData, cardIdx);
+                    break;
+                default:
+                    break;
+            }
+            
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .HandCards = new List<int>(battlePlayerData.HandCards);
+            
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
+            
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .PassCards = new List<int>(battlePlayerData.PassCards);
+            
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+                .StandByCards = new List<int>(battlePlayerData.StandByCards);
+            
+            
+            
+            
+            
+            
             foreach (var buffIDStr in drCard.BuffIDs)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
