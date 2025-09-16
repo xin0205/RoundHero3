@@ -1317,7 +1317,8 @@ namespace RoundHero
                         && kv.Value is Data_BattleSolider solider)
                     {
                         var soliderCard = CardManager.Instance.GetCard(solider.CardIdx);
-                        if (soliderCard.CardID == cardData.CardID && solider.CardIdx != cardIdx)
+                        // && solider.CardIdx != cardIdx
+                        if (soliderCard.CardID == cardData.CardID)
                         {
                             if (cardEnergy > 0)
                             {
