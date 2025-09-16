@@ -190,7 +190,7 @@ namespace RoundHero
                     idx++;
                     BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Attack,
                         buffData, GetValues(kv.Value.GridPropID, idx), triggerData.ActionUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
-                        triggerDatas, gridPosIdx, gridPosIdx, -1, ETriggerDataSubType.Prop);
+                        triggerDatas, gridPosIdx, gridPosIdx, -1, -1, ETriggerDataSubType.Prop);
                 }
 
             }

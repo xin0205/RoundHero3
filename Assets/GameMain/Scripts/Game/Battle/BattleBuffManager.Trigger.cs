@@ -7,7 +7,7 @@ namespace RoundHero
     {
         public List<TriggerData> BuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<string> buffValues, int ownUnitIdx,
             int actionUnitIdx, int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
-            int actionUnitLastGridPosIdx = -1, int cardIdx = -1, ETriggerDataSubType triggerDataSubType = ETriggerDataSubType.Empty, TriggerData preTriggerData = null)
+            int actionUnitLastGridPosIdx = -1, int cardIdx = -1, int funeIdx = -1, ETriggerDataSubType triggerDataSubType = ETriggerDataSubType.Empty, TriggerData preTriggerData = null)
         {
             //var drBuff = BattleBuffManager.Instance.GetBuffData(buffID);
             if (buffTriggerType != buffData.BuffTriggerType)
@@ -15,7 +15,7 @@ namespace RoundHero
 
 
             var _triggerDatas = BattleBuffManager.Instance.InternalBuffTrigger(buffTriggerType, buffData, buffValues, ownUnitIdx, actionUnitIdx,
-                effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitLastGridPosIdx, cardIdx, triggerDataSubType, preTriggerData);
+                effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitLastGridPosIdx, cardIdx, funeIdx, triggerDataSubType, preTriggerData);
 
             // foreach (var triggerData in _triggerDatas)
             // {
@@ -39,7 +39,7 @@ namespace RoundHero
             
             
             return BuffTrigger(buffTriggerType, buffData, values, ownUnitIdx,
-                actionUnitIdx, effectUnitIdx, triggerDatas,actionUnitGridPosIdx, actionUnitLastGridPosIdx, -1, ETriggerDataSubType.Unit, preTriggerData);
+                actionUnitIdx, effectUnitIdx, triggerDatas,actionUnitGridPosIdx, actionUnitLastGridPosIdx, -1, -1, ETriggerDataSubType.Unit, preTriggerData);
         }
     
         public void CacheBuffData(BuffData buffData, EUnitCamp unitCamp, Data_BattleUnit effectUnit, List<float> value1s, float ratio)

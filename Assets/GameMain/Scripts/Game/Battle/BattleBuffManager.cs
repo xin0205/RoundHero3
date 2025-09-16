@@ -135,7 +135,7 @@ namespace RoundHero
         
         private List<TriggerData> InternalBuffTrigger(EBuffTriggerType buffTriggerType, BuffData buffData, List<string> values, int ownUnitIdx, int actionUnitIdx,
             int effectUnitIdx, List<TriggerData> triggerDatas, int actionUnitGridPosIdx = -1,
-            int actionUnitPreGridPosIdx = -1, int cardIdx = -1, ETriggerDataSubType triggerDataSubType = ETriggerDataSubType.Empty, TriggerData preTriggerData = null)
+            int actionUnitPreGridPosIdx = -1, int cardIdx = -1, int funeIdx = -1, ETriggerDataSubType triggerDataSubType = ETriggerDataSubType.Empty, TriggerData preTriggerData = null)
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
@@ -260,7 +260,7 @@ namespace RoundHero
                                             subUnitStateTriggerData.EffectUnitGridPosIdx = realEffectUnit.GridPosIdx;
                                         
                                         CacheTriggerData(subUnitStateTriggerData, triggerDatas, realEffectUnitIdx, buffTriggerType, buffData, values,
-                                            ownUnitIdx, actionUnitIdx, cardIdx, triggerDataSubType);
+                                            ownUnitIdx, actionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
                                         _triggerDatas.Add(subUnitStateTriggerData);
                                     }
                                 }
@@ -286,7 +286,7 @@ namespace RoundHero
                     if (triggerData != null)
                     {
                         CacheTriggerData(triggerData, triggerDatas, realEffectUnitIdx, buffTriggerType, buffData, values,
-                            ownUnitIdx, actionUnitIdx, cardIdx, triggerDataSubType);
+                            ownUnitIdx, actionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
                         _triggerDatas.Add(triggerData);
                     }
                     
@@ -377,7 +377,7 @@ namespace RoundHero
         }
 
         public void CacheTriggerData(TriggerData triggerData, List<TriggerData> triggerDatas, int realEffectUnitIdx, EBuffTriggerType buffTriggerType, BuffData buffData, List<string> values, int ownUnitIdx, int actionUnitIdx,
-            int cardIdx = -1, ETriggerDataSubType triggerDataSubType = ETriggerDataSubType.Empty, TriggerData preTriggerData = null )
+            int cardIdx = -1, int funeIdx = -1, ETriggerDataSubType triggerDataSubType = ETriggerDataSubType.Empty, TriggerData preTriggerData = null)
         {
             if (triggerData == null)
                 return;
@@ -399,6 +399,7 @@ namespace RoundHero
             triggerData.BuffTriggerType = buffTriggerType;
             triggerData.TriggerDataSubType = triggerDataSubType;
             triggerData.TriggerCardIdx = cardIdx;
+            triggerData.TriggerFuneIdx = funeIdx; 
             //realEffectUnit.UnitRole == EUnitRole.Hero && 
 
             //buffTriggerType != EBuffTriggerType.Use && 

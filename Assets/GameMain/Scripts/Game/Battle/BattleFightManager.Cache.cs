@@ -139,16 +139,16 @@ namespace RoundHero
             else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.AutoAtk)
             {
                 var effectUnit = GetUnitByGridPosIdx(BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
-                BattleCardManager.Instance.CacheUseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
+                BattleCardManager.Instance.CacheUseCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
                     effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
-                    Constant.Battle.UnUnitTriggerIdx, new List<TriggerData>());
+                    Constant.Battle.UnUnitTriggerIdx);
             }
             else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.MoveUnit)
             {
                 var effectUnit = GetUnitByGridPosIdx(BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
-                BattleCardManager.Instance.CacheUseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
+                BattleCardManager.Instance.CacheUseCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
                     effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
-                    Constant.Battle.UnUnitTriggerIdx, new List<TriggerData>());
+                    Constant.Battle.UnUnitTriggerIdx);
             }
 
             if (BattleCardManager.Instance.SelectPassCardIdx != -1)
@@ -1538,7 +1538,7 @@ namespace RoundHero
                             BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.BePass,
                                 buffData, BattleGridPropManager.Instance.GetValues(gridProp.GridPropID, idx),
                                 Constant.Battle.UnUnitTriggerIdx, Constant.Battle.UnUnitTriggerIdx, unitIdx,
-                                triggerDatas, gridPosIdx, preGridPosIdx, -1, ETriggerDataSubType.Prop);
+                                triggerDatas, gridPosIdx, preGridPosIdx, -1, -1, ETriggerDataSubType.Prop);
                             idx++;
                         }
                     }

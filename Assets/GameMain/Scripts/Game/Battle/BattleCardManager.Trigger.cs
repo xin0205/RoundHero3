@@ -78,19 +78,15 @@ namespace RoundHero
                 if (drCard.CardType == ECardType.Tactic)
                 {
                     BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
-                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, ETriggerDataSubType.Card);
+                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, -1, ETriggerDataSubType.Card);
                 }
 
             }
 
-            CacheUseCard(cardIdx, effectUnit, actionUnitGridPosidx, actionUnitIdx, triggerDatas);
-
-        }
-
-        public void CacheUseCard(int cardIdx, Data_BattleUnit effectUnit, int actionUnitGridPosidx, int actionUnitIdx, List<TriggerData> triggerDatas)
-        {
-            var drCard = CardManager.Instance.GetCardTable(cardIdx);
-            var card = BattleFightManager.Instance.GetCard(cardIdx);
+            //CacheUseCard(cardIdx, effectUnit, actionUnitGridPosidx, actionUnitIdx, triggerDatas);
+            
+            //var drCard = CardManager.Instance.GetCardTable(cardIdx);
+            
             
             if (drCard.CardType == ECardType.Tactic)
             {
@@ -115,27 +111,13 @@ namespace RoundHero
                     var values = drBuff.GetValues(idx++);
 
                     BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, actionUnitIdx,
-                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, ETriggerDataSubType.Fune);
+                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, funeIdx, ETriggerDataSubType.Fune);
   
                     BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Fune;
 
                 }
 
             }
-            
-            
-
-            var unComsumeCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.UnConsumeCard, PlayerManager.Instance.PlayerData.UnitCamp);
-            
-            if (unComsumeCard != null && card.CardDestination == ECardDestination.Consume)
-            {
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = Random.Next(0, 2) == 0 ? ECardDestination.Pass : ECardDestination.Consume;
-            }
-            else
-            {
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = card.CardDestination;
-            }
-            
 
             if (BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination == ECardDestination.Consume)
             {
@@ -153,51 +135,132 @@ namespace RoundHero
                     
                 }
             }
-
-            
             
             BlessManager.Instance.CacheUseCardData(EBlessID.EachRoundUseCardAttackAllEnemy, triggerDatas);
-
+            
             if (triggerDatas.Count > 0)
             {
                 BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Add(cardIdx, triggerDatas);
                 BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas);
             }
-            
-            var battlePlayerData =
-                BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(
-                    BattleFightManager.Instance.RoundFightData.GamePlayData.PlayerData
-                        .UnitCamp);
 
-            switch (BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination)
-            {
-                case ECardDestination.Pass:
-                    ToPassCard(battlePlayerData, cardIdx);
-                    break;
-                case ECardDestination.Consume:
-                    ToConsumeCards(battlePlayerData, cardIdx);
-                    break;
-                case ECardDestination.StandBy:
-                    ToStandByCards(battlePlayerData, cardIdx);
-                    break;
-                default:
-                    break;
-            }
             
-            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
-                .HandCards = new List<int>(battlePlayerData.HandCards);
             
-            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
-                .ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
             
-            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
-                .PassCards = new List<int>(battlePlayerData.PassCards);
-            
-            BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
-                .StandByCards = new List<int>(battlePlayerData.StandByCards);
 
-           
         }
+
+        // public void CacheUseCard(int cardIdx, Data_BattleUnit effectUnit, int actionUnitGridPosidx, int actionUnitIdx, List<TriggerData> triggerDatas)
+        // {
+        //     var drCard = CardManager.Instance.GetCardTable(cardIdx);
+        //     var card = BattleFightManager.Instance.GetCard(cardIdx);
+        //     
+        //     if (drCard.CardType == ECardType.Tactic)
+        //     {
+        //         BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Tactic;
+        //     }
+        //     else if (drCard.CardType == ECardType.Unit)
+        //     {
+        //         BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Unit;
+        //     }
+        //
+        //     
+        //     BattleFightManager.Instance.RoundFightData.BuffData_Use.CardEnergy = BattleFightManager.Instance.CacheConsumeCardEnergy(cardIdx, triggerDatas);
+        //
+        //     
+        //     foreach (var funeIdx in card.FuneIdxs)
+        //     {
+        //         var drBuff = FuneManager.Instance.GetBuffTable(funeIdx);
+        //         var idx = 0;
+        //         foreach (var buffIDStr in drBuff.BuffIDs)
+        //         {
+        //             var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
+        //             var values = drBuff.GetValues(idx++);
+        //
+        //             BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, actionUnitIdx,
+        //                 effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, funeIdx, ETriggerDataSubType.Fune);
+        //
+        //             BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Fune;
+        //
+        //         }
+        //
+        //     }
+        //     
+        //     
+        //
+        //     var unComsumeCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.UnConsumeCard, PlayerManager.Instance.PlayerData.UnitCamp);
+        //     
+        //     if (unComsumeCard != null && card.CardDestination == ECardDestination.Consume)
+        //     {
+        //         BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = Random.Next(0, 2) == 0 ? ECardDestination.Pass : ECardDestination.Consume;
+        //     }
+        //     else
+        //     {
+        //         BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = card.CardDestination;
+        //     }
+        //     
+        //
+        //     if (BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination == ECardDestination.Consume)
+        //     {
+        //         var consumeCardAddCurHP = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.ConsumeCardAddCurHP, PlayerManager.Instance.PlayerData.UnitCamp);
+        //         var consumeCardTriggerDatas = new List<TriggerData>();
+        //         var addHP = BlessManager.Instance.ConsumeCardAddCurHP(GamePlayManager.Instance.GamePlayData);
+        //         if (addHP > 0)
+        //         {
+        //             var triggerData = BattleFightManager.Instance.Unit_HeroAttribute(Constant.Battle.UnUnitTriggerIdx,
+        //                 Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.PlayerData.BattleHero.Idx, EHeroAttribute.HP, addHP);
+        //             triggerData.TriggerBlessIdx = consumeCardAddCurHP.BlessIdx;
+        //             triggerData.TriggerDataSubType = ETriggerDataSubType.Bless;
+        //             BattleBuffManager.Instance.CacheTriggerData(triggerData, consumeCardTriggerDatas);
+        //             BattleFightManager.Instance.RoundFightData.BuffData_Use.ConsumeCardDatas.Add(cardIdx, consumeCardTriggerDatas);
+        //             
+        //         }
+        //     }
+        //
+        //     
+        //     
+        //     BlessManager.Instance.CacheUseCardData(EBlessID.EachRoundUseCardAttackAllEnemy, triggerDatas);
+        //
+        //     if (triggerDatas.Count > 0)
+        //     {
+        //         BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Add(cardIdx, triggerDatas);
+        //         BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas);
+        //     }
+        //     
+        //     var battlePlayerData =
+        //         BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(
+        //             BattleFightManager.Instance.RoundFightData.GamePlayData.PlayerData
+        //                 .UnitCamp);
+        //
+        //     switch (BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination)
+        //     {
+        //         case ECardDestination.Pass:
+        //             ToPassCard(battlePlayerData, cardIdx);
+        //             break;
+        //         case ECardDestination.Consume:
+        //             ToConsumeCards(battlePlayerData, cardIdx);
+        //             break;
+        //         case ECardDestination.StandBy:
+        //             ToStandByCards(battlePlayerData, cardIdx);
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        //     
+        //     BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+        //         .HandCards = new List<int>(battlePlayerData.HandCards);
+        //     
+        //     BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+        //         .ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
+        //     
+        //     BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+        //         .PassCards = new List<int>(battlePlayerData.PassCards);
+        //     
+        //     BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
+        //         .StandByCards = new List<int>(battlePlayerData.StandByCards);
+        //
+        //    
+        // }
 
 
         public void CachePassCard()
