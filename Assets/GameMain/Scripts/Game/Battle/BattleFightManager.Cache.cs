@@ -1863,7 +1863,11 @@ namespace RoundHero
 
                             break;
                         case EUnitAttribute.MaxHP:
-                            effectUnit.BaseMaxHP += (int)triggerValue;
+                            if (effectUnit != null)
+                            {
+                                effectUnit.BaseMaxHP += (int)triggerValue;
+                            }
+                            
                             CurHPTriggerData(triggerData, triggerDatas);
                             break;
                         case EUnitAttribute.BaseDamage:
