@@ -966,6 +966,7 @@ namespace RoundHero
             
             GameUtility.DelayExcute(0.51f, () =>
             {
+                HeroManager.Instance.UpdateCacheHPDelta();
                 BattleManager.Instance.RefreshEnemyAttackData();
             });
             
