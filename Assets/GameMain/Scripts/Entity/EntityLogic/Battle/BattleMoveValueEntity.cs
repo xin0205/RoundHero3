@@ -137,12 +137,19 @@ namespace RoundHero
             
             time += Time.deltaTime;
 
-            
-            if(BattleMoveValueEntityData.FollowParams.FollowGO.IsDestroyed())
+
+            if (BattleMoveValueEntityData.FollowParams.FollowGO.IsDestroyed())
+            {
+                GameEntry.Entity.HideEntity(this);
                 return;
+            }
+               
             
             if(BattleMoveValueEntityData.TargetFollowParams.FollowGO.IsDestroyed())
+            {
+                GameEntry.Entity.HideEntity(this);
                 return;
+            }
             
             if (!BattleMoveValueEntityData.FollowParams.IsUIGO)
             {
