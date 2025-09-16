@@ -507,6 +507,7 @@ namespace RoundHero
                     var triggerData = BattleFightManager.Instance.BattleRoleAttribute(bePassUnit.Idx,
                         bePassUnit.Idx, passUnit.Idx,
                         EUnitAttribute.HP, value, ETriggerDataSubType.Unit);
+                    triggerData.ChangeHPInstantly = false;
                     triggerData.ActionUnitGridPosIdx = triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
                     triggerData.UnitStateDetail.UnitState = EUnitState.AtkPassUs;
                     //bePassUnit.RemoveState(EUnitState.AtkPassUs);
@@ -549,6 +550,7 @@ namespace RoundHero
                     var triggerData = BattleFightManager.Instance.BattleRoleAttribute(passUnit.Idx,
                         passUnit.Idx, bePassUnit.Idx,
                         EUnitAttribute.HP, value, ETriggerDataSubType.Unit);
+                    triggerData.ChangeHPInstantly = false;
                     triggerData.ActionUnitGridPosIdx = triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
                     triggerData.UnitStateDetail.UnitState = EUnitState.AtkPassUs;
                     //passUnit.RemoveState(EUnitState.AtkPassUs);
@@ -588,6 +590,7 @@ namespace RoundHero
 
                     var triggerData = BattleFightManager.Instance.BattleRoleAttribute(bePassUnit.Idx, bePassUnit.Idx,
                         passUnit.Idx, EUnitAttribute.HP, value, ETriggerDataSubType.Unit);
+                    triggerData.ChangeHPInstantly = false;
                     triggerData.ActionUnitGridPosIdx = triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
                     triggerData.UnitStateDetail.UnitState = EUnitState.AtkPassEnemy;
                     //bePassUnit.RemoveState(EUnitState.AtkPassEnemy);
@@ -627,6 +630,7 @@ namespace RoundHero
 
                     var triggerData = BattleFightManager.Instance.BattleRoleAttribute(passUnit.Idx, passUnit.Idx,
                         bePassUnit.Idx, EUnitAttribute.HP, value, ETriggerDataSubType.Unit);
+                    triggerData.ChangeHPInstantly = false;
                     triggerData.ActionUnitGridPosIdx = triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
                     triggerData.UnitStateDetail.UnitState = EUnitState.AtkPassEnemy;
                     //passUnit.RemoveState(EUnitState.AtkPassEnemy);
@@ -697,9 +701,9 @@ namespace RoundHero
         private void CurHPTriggerData(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
             Data_BattleUnit effectUnitData;
-            if (triggerData.EffectUnitIdx == BattlePlayerManager.Instance.PlayerData.BattleHero.Idx)
+            if (triggerData.EffectUnitIdx == BattleFightManager.Instance.PlayerData.BattleHero.Idx)
             {
-                effectUnitData = BattlePlayerManager.Instance.PlayerData.BattleHero;
+                effectUnitData = BattleFightManager.Instance.PlayerData.BattleHero;
             }
             else
             {
