@@ -63,8 +63,8 @@ namespace RoundHero
                 var card = BattleManager.Instance.GetCard(solider.CardIdx);
                 foreach (var funeID in card.FuneIdxs)
                 {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-                    FuneManager.Instance.KillTrigger(funeID, ownUnitID, actionUnitID,
-                        triggerDatas);
+                    // FuneManager.Instance.KillTrigger(funeID, ownUnitID, actionUnitID,
+                    //     triggerDatas);
                 }
             }
             
@@ -119,30 +119,30 @@ namespace RoundHero
             return triggerData;
         }
 
-        public void KillTrigger(int funeID, int ownUnitID, int actionUnitID, List<TriggerData> triggerDatas)
-        {
-            //Wrong
-            // var _funeID = FuneManager.Instance.GetFuneID(funeID);
-            // switch (_funeID)
-            // {
-            //     case EFuneID.Kill_AddCurHP:
-            //         Kill_AddCurHP(funeID, ownUnitID, actionUnitID, triggerDatas);
-            //         break;
-            //     case EFuneID.Kill_AddHeroCurHP:
-            //         Kill_AddHeroCurHP(funeID, ownUnitID, actionUnitID, triggerDatas);
-            //         break;
-            //     case EFuneID.Kill_AddCoin:
-            //         Kill_AddCoin(funeID, ownUnitID, actionUnitID, triggerDatas);
-            //         break;
-            //     case EFuneID.Kill_ToHand:
-            //         Kill_ToHandCards(funeID, ownUnitID, actionUnitID, triggerDatas);
-            //         break;
-            //     case EFuneID.Kill_RemoveCard:
-            //         Kill_RemoveCard(funeID, ownUnitID, actionUnitID, triggerDatas);
-            //         break;    
-            //         
-            // }
-        }
+        // public void KillTrigger(int funeID, int ownUnitID, int actionUnitID, List<TriggerData> triggerDatas)
+        // {
+        //     //Wrong
+        //     // var _funeID = FuneManager.Instance.GetFuneID(funeID);
+        //     // switch (_funeID)
+        //     // {
+        //     //     case EFuneID.Kill_AddCurHP:
+        //     //         Kill_AddCurHP(funeID, ownUnitID, actionUnitID, triggerDatas);
+        //     //         break;
+        //     //     case EFuneID.Kill_AddHeroCurHP:
+        //     //         Kill_AddHeroCurHP(funeID, ownUnitID, actionUnitID, triggerDatas);
+        //     //         break;
+        //     //     case EFuneID.Kill_AddCoin:
+        //     //         Kill_AddCoin(funeID, ownUnitID, actionUnitID, triggerDatas);
+        //     //         break;
+        //     //     case EFuneID.Kill_ToHand:
+        //     //         Kill_ToHandCards(funeID, ownUnitID, actionUnitID, triggerDatas);
+        //     //         break;
+        //     //     case EFuneID.Kill_RemoveCard:
+        //     //         Kill_RemoveCard(funeID, ownUnitID, actionUnitID, triggerDatas);
+        //     //         break;    
+        //     //         
+        //     // }
+        // }
 
         public void UseTrigger(int funeID, int ownUnitID, int actionUnitID, EUnitCamp selfUnitCamp, int gridPosIdx, List<TriggerData> triggerDatas)
         {
