@@ -17,6 +17,7 @@ namespace RoundHero
         
         private Color red = new Color(Color.red.r, Color.red.g, Color.red.b, 0.3f);
         private Color yellow = new Color(Color.yellow.r, Color.yellow.g, Color.yellow.b, 0.3f);
+        private Color gray = new Color(Color.gray.r, Color.gray.g, Color.gray.b, 0.3f);
 
         protected Quaternion cameraQuaternion = Quaternion.identity;
         
@@ -132,8 +133,8 @@ namespace RoundHero
                 line.startWidth = 0.08f;
                 line.endWidth = 0.08f;
                 
-                line.material.SetColor("_Color", yellow); 
-                line.material.SetInt("_Speed", 50);
+                line.material.SetColor("_Color", BattleAttackTagEntityData.IsStatic ? gray : yellow); 
+                line.material.SetInt("_Speed", BattleAttackTagEntityData.IsStatic ? 5 : 50);
             }
             
         }

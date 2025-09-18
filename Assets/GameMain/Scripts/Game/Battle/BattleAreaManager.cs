@@ -957,7 +957,7 @@ namespace RoundHero
                             else
                             {
                                 unit.ShowTags(unit.UnitIdx);
-                                unit.ShowHurtTags(unit.UnitIdx);
+                                //unit.ShowHurtTags(unit.UnitIdx);
                             }
                         }
                         
@@ -1543,7 +1543,7 @@ namespace RoundHero
                         continue;
                     
                     kv.Value.ShowTags(kv.Value.UnitIdx, false);
-                    kv.Value.ShowHurtTags(kv.Value.UnitIdx);
+                    //kv.Value.ShowHurtTags(kv.Value.UnitIdx);
                 }
                 else
                 {

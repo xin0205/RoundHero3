@@ -22,10 +22,12 @@ namespace RoundHero
         //public EAttackCastType AttackCastType;
         public BuffValue BuffValue;
         public EAttackCastType AttackCastType;
+        public bool IsStatic;
 
         //int value, 
         public void Init(int entityId, Vector3 pos, Vector3 startPos, Vector3 targetPos, EAttackTagType attackTagType,
-            EUnitState unitState, BuffValue buffValue, EAttackCastType attackCastType, int entityIdx = -1,  bool showAttackLine = true, bool showAttackPos = true)
+            EUnitState unitState, BuffValue buffValue, EAttackCastType attackCastType, int entityIdx = -1,
+            bool showAttackLine = true, bool showAttackPos = true, bool isStatic = false)
         {
             base.Init(entityId, pos);
             this.StartPos = startPos;
@@ -36,6 +38,7 @@ namespace RoundHero
             ShowAttackPos = showAttackPos;
             BuffValue = buffValue;
             AttackCastType = attackCastType;
+            IsStatic = isStatic;
         }
 
     }

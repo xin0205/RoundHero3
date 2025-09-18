@@ -12,86 +12,103 @@ namespace RoundHero
         private int curAttackTagEntityIdx = 0;
         private int showAttackTagEntityIdx = 0;
         
-        public async void ShowHurtAttackTag(int effectUnitIdx, int actionUnitIdx)
-        {
-            // || BattleManager.Instance.BattleState == EBattleState.End
-            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
-            {
-                return;
-            }
-
-            //BattleAttackTagEntities.Clear();
-            
-            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
-
-            if (effectUnit == null)
-                return;
-
-            var triggerDataDict =
-                GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
-                                      BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
-
-            if (triggerDataDict.Values.Count <= 0)
-            {
-                return;
-            }
-
-            var values = triggerDataDict.Values.ToList();
-            if (values[0].Count <= 0)
-            {
-                return;
-            }
-            
-            var entityIdx = curAttackTagEntityIdx;
-            
-            
-            foreach (var triggerDatas in values)
-            {
-                foreach (var triggerData in triggerDatas)
-                {
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                        continue;
-                    
-                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
-                        continue;
-                    
-                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    // if(actionUnit == null)
-                    //     continue;
-
-                    curAttackTagEntityIdx++;
-                }
-
-            }
-            
-            var effectGridPosIdxs = new List<int>();
-            foreach (var triggerDatas in values)
-            {
-                foreach (var triggerData in triggerDatas)
-                {
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                        continue;
-                    
-                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
-                        continue;
-                    
-                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    // if(actionUnit == null)
-                    //     continue;
-                    
-                    if(triggerData.ActionUnitGridPosIdx == -1)
-                        continue;
-
-                    await InternalShowTag(triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx, !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx), triggerData.TriggerDataSubType == ETriggerDataSubType.Collision);
-                    effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
-                    entityIdx++;
-                    
-                    //InternalShowTag(actionUnit.BattleUnitData, triggerData.BuffValue);
-                }
-
-            }
-
-        }
+        // public async void ShowHurtAttackTag(int effectUnitIdx, int actionUnitIdx)
+        // {
+        //     // || BattleManager.Instance.BattleState == EBattleState.End
+        //     if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+        //     {
+        //         return;
+        //     }
+        //
+        //     //BattleAttackTagEntities.Clear();
+        //     
+        //     var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+        //
+        //     if (effectUnit == null)
+        //         return;
+        //
+        //     var triggerDataDict =
+        //         GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
+        //                               BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
+        //
+        //     if (triggerDataDict.Values.Count <= 0)
+        //     {
+        //         return;
+        //     }
+        //
+        //     var values = triggerDataDict.Values.ToList();
+        //     if (values[0].Count <= 0)
+        //     {
+        //         return;
+        //     }
+        //     
+        //     var entityIdx = curAttackTagEntityIdx;
+        //     
+        //     
+        //     foreach (var triggerDatas in values)
+        //     {
+        //         foreach (var triggerData in triggerDatas)
+        //         {
+        //             if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+        //                 continue;
+        //             
+        //             if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
+        //                 continue;
+        //             
+        //             // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+        //             // if(actionUnit == null)
+        //             //     continue;
+        //
+        //             curAttackTagEntityIdx++;
+        //         }
+        //
+        //     }
+        //     
+        //     var effectGridPosIdxs = new List<int>();
+        //     foreach (var triggerDatas in values)
+        //     {
+        //         foreach (var triggerData in triggerDatas)
+        //         {
+        //             if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+        //                 continue;
+        //             
+        //             if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
+        //                 continue;
+        //             
+        //             // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+        //             // if(actionUnit == null)
+        //             //     continue;
+        //             
+        //             if(triggerData.ActionUnitGridPosIdx == -1)
+        //                 continue;
+        //             
+        //             var _entityIdx = entityIdx;
+        //             var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(
+        //                 triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData, _entityIdx,
+        //                 triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
+        //                 !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx),
+        //                 triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, false);
+        //             effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
+        //             entityIdx++;
+        //             
+        //             if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
+        //             {
+        //                 //Log.Debug("Tag hide");
+        //                 GameEntry.Entity.HideEntity(battleAttackTagEntity);
+        //             }
+        //             else
+        //             {
+        //         
+        //                 BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
+        //                 //Log.Debug("Tag add:" + BattleUnitData.Idx + "-" + BattleAttackTagEntities.Count); 
+        //             }
+        //             
+        //             //InternalShowTag(actionUnit.BattleUnitData, triggerData.BuffValue);
+        //         }
+        //
+        //     }
+        //
+        // }
         
         public async void ShowAttackTag(int actionUnitIdx, bool showAttackPos)
         {
@@ -122,7 +139,7 @@ namespace RoundHero
             }
             
             var entityIdx = curAttackTagEntityIdx;
-            
+            //var effectGridPosIdxs = new List<int>();
             
             foreach (var triggerDatas in values)
             {
@@ -139,16 +156,21 @@ namespace RoundHero
                     if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                         continue;
                     
+                    var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
+                    if(ownUnit == null)
+                        continue;
+                    
                     // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                     // if(actionUnit == null)
                     //     continue;
+                    //effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
 
                     curAttackTagEntityIdx++;
                 }
 
             }
             
-            var effectGridPosIdxs = new List<int>();
+            
             foreach (var triggerDatas in values)
             {
                 foreach (var triggerData in triggerDatas)
@@ -167,13 +189,26 @@ namespace RoundHero
                     var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
                     if(ownUnit == null)
                         continue;
-                    
-                    await InternalShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
+
+                    //var battleAttackTagEntity = await 
+                    //!effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx)
+                    var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
                         triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
-                        !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx),
-                        triggerData.TriggerDataSubType == ETriggerDataSubType.Collision);
-                    effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
+                        false,
+                        triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, false, BattleAttackTagEntities, A);
                     entityIdx++;
+                    
+                    if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
+                    {
+                        //Log.Debug("Tag hide");
+                        GameEntry.Entity.HideEntity(battleAttackTagEntity);
+                    }
+                    else
+                    {
+                    
+                        BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
+                        //Log.Debug("Tag add:" + BattleUnitData.Idx + "-" + BattleAttackTagEntities.Count); 
+                    }
 
                 }
 
@@ -309,58 +344,58 @@ namespace RoundHero
         // }
 
 
-        private async Task<BattleAttackTagEntity> InternalShowTag(int actionGridPosIdx, int effectUnitGridPosIdx, TriggerData triggerData,
-            int entityIdx, bool showAttackLine, bool showAttackPos, bool isCollision)
-        {
-
-            var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
-            var actionUnitPos = GameUtility.GridPosIdxToPos(actionGridPosIdx);
-
-            
-
-            EAttackTagType attackTagType;
-            EUnitState unitState;
-            EAttackCastType attackCastType = EAttackCastType.ExtendMulti;
-            if (isCollision)
-            {
-                attackTagType = EAttackTagType.Attack;
-                unitState = EUnitState.Empty;
-                showAttackLine = false;
-                attackCastType = EAttackCastType.CloseSingle;
-            }
-            else
-            {
-                
-                var isSubCurHPTrigger = GameUtility.IsSubCurHPTrigger(triggerData);
-                
-                attackTagType = isSubCurHPTrigger ? EAttackTagType.Attack :
-                    isSubCurHPTrigger ? EAttackTagType.Recover : EAttackTagType.UnitState;
-                unitState = attackTagType == EAttackTagType.UnitState ? triggerData.UnitStateDetail.UnitState : EUnitState.Empty;
-                attackCastType = BattleUnitManager.Instance.GetAttackCastType(triggerData.ActionUnitIdx);
-                
-            }
-
-            //Log.Debug("InternalShowTag:" + entityIdx);
-            var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos,
-                actionUnitPos,
-                effectUnitPos, attackTagType, unitState, triggerData.BuffValue, attackCastType, entityIdx, showAttackLine,
-                showAttackPos);
-
-            //Log.Debug("Tag Show:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
-            if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
-            {
-                //Log.Debug("Tag hide");
-                GameEntry.Entity.HideEntity(battleAttackTagEntity);
-            }
-            else
-            {
-                
-                BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
-                //Log.Debug("Tag add:" + BattleUnitData.Idx + "-" + BattleAttackTagEntities.Count); 
-            }
-
-            return battleAttackTagEntity;
-        }
+        // private async Task<BattleAttackTagEntity> InternalShowTag(int actionGridPosIdx, int effectUnitGridPosIdx, TriggerData triggerData,
+        //     int entityIdx, bool showAttackLine, bool showAttackPos, bool isCollision)
+        // {
+        //
+        //     var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
+        //     var actionUnitPos = GameUtility.GridPosIdxToPos(actionGridPosIdx);
+        //
+        //     
+        //
+        //     EAttackTagType attackTagType;
+        //     EUnitState unitState;
+        //     EAttackCastType attackCastType = EAttackCastType.ExtendMulti;
+        //     if (isCollision)
+        //     {
+        //         attackTagType = EAttackTagType.Attack;
+        //         unitState = EUnitState.Empty;
+        //         showAttackLine = false;
+        //         attackCastType = EAttackCastType.CloseSingle;
+        //     }
+        //     else
+        //     {
+        //         
+        //         var isSubCurHPTrigger = GameUtility.IsSubCurHPTrigger(triggerData);
+        //         
+        //         attackTagType = isSubCurHPTrigger ? EAttackTagType.Attack :
+        //             isSubCurHPTrigger ? EAttackTagType.Recover : EAttackTagType.UnitState;
+        //         unitState = attackTagType == EAttackTagType.UnitState ? triggerData.UnitStateDetail.UnitState : EUnitState.Empty;
+        //         attackCastType = BattleUnitManager.Instance.GetAttackCastType(triggerData.ActionUnitIdx);
+        //         
+        //     }
+        //
+        //     //Log.Debug("InternalShowTag:" + entityIdx);
+        //     var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos,
+        //         actionUnitPos,
+        //         effectUnitPos, attackTagType, unitState, triggerData.BuffValue, attackCastType, entityIdx, showAttackLine,
+        //         showAttackPos);
+        //
+        //     //Log.Debug("Tag Show:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
+        //     if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
+        //     {
+        //         //Log.Debug("Tag hide");
+        //         GameEntry.Entity.HideEntity(battleAttackTagEntity);
+        //     }
+        //     else
+        //     {
+        //         
+        //         BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
+        //         //Log.Debug("Tag add:" + BattleUnitData.Idx + "-" + BattleAttackTagEntities.Count); 
+        //     }
+        //
+        //     return battleAttackTagEntity;
+        // }
         
         
         public void UnShowAttackTags()

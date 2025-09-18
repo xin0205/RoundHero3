@@ -1685,7 +1685,7 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
 
-
+            BattleStaticAttackTagManager.Instance.UnshowStaticAttackTags();
             ShowAttackTag(actionUnitIdx, isShowAttackPos);
             ShowFlyDirect(actionUnitIdx);
             ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
@@ -1698,11 +1698,11 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
 
-            ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
-            ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
-            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
-            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
-            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
+            // ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
+            // ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
+            // ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
+            // ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
+            // ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
         }
         
         public void UnShowTags()
@@ -1713,6 +1713,8 @@ namespace RoundHero
             UnShowBattleIcons();
             UnShowDisplayValues();
             UnShowDisplayIcons();
+            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+            
         }
         
         // public void ShowCollider(bool isShow)

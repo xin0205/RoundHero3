@@ -156,6 +156,7 @@ namespace RoundHero
             {
                 kv.Value.LookAtHero();
             }
+            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
         }
         
         public void RefreshAll()
