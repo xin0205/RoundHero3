@@ -380,6 +380,11 @@ namespace RoundHero
                 {
                     if (!GameUtility.ContainRoundState(RoundFightData.GamePlayData, EBuffID.Spec_CurseUnEffect))
                     {
+                        var subHurtRoundStartData = BattleFightManager.Instance.Unit_State(triggerDatas, kv.Value.Idx,
+                            kv.Value.Idx, kv.Value.Idx, EUnitState.HurtRoundStart, -1,
+                            ETriggerDataType.RoleState);
+                        BattleBuffManager.Instance.CacheTriggerData(subHurtRoundStartData, triggerDatas);
+                        
                         var triggerData = BattleFightManager.Instance.BattleRoleAttribute(kv.Key, kv.Key, kv.Key,
                             EUnitAttribute.HP, -1, ETriggerDataSubType.State);
                         triggerData.UnitStateDetail.UnitState = EUnitState.HurtRoundStart;
@@ -395,10 +400,7 @@ namespace RoundHero
                     }
 
                     //kv.Value.RemoveState(EUnitState.HurtRoundStart);
-                    var subHurtRoundStartData = BattleFightManager.Instance.Unit_State(triggerDatas, kv.Value.Idx,
-                        kv.Value.Idx, kv.Value.Idx, EUnitState.HurtRoundStart, -1,
-                        ETriggerDataType.RoleState);
-                    BattleBuffManager.Instance.CacheTriggerData(subHurtRoundStartData, triggerDatas);
+                    
 
 
 
