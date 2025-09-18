@@ -170,13 +170,14 @@ namespace RoundHero
                     
                     var startValue = 0;
                     var endValue = 0;
+                    var isShow = false;
                     foreach (var triggerData in kv.Value)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
                         {
                             continue;
                         }
-                        
+                        isShow = true;
                         startValue += (int)triggerData.ActualValue;
                         endValue += BlessManager.Instance.AddCurHPByAttackDamage()
                             ? (int)(triggerData.Value + triggerData.DeltaValue)
@@ -187,7 +188,11 @@ namespace RoundHero
                     // {
                     //     
                     // }
-                    InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
+                    if (isShow)
+                    {
+                        InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
+                    }
+                    
                 }
 
             }
