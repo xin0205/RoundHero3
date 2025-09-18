@@ -254,7 +254,7 @@ namespace RoundHero
                                     if (Constant.Battle.EffectUnitStates[unitStateEffectType].Contains(keyList[i]))
                                     {
                                         var subUnitStateTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx,
-                                            actionUnitIdx, realEffectUnit.Idx, EUnitState.HurtAddDmg, -unitStateData.Value,
+                                            actionUnitIdx, buffData.TriggerRange == EActionType.Other ? realEffectUnit.Idx : actionUnitIdx, unitStateData.UnitState, -unitStateData.Value,
                                             ETriggerDataType.RoleState);
                                         subUnitStateTriggerData.ActionUnitGridPosIdx =
                                             subUnitStateTriggerData.EffectUnitGridPosIdx = realEffectUnit.GridPosIdx;
