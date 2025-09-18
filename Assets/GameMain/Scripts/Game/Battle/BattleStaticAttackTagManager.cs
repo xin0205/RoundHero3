@@ -16,7 +16,7 @@ namespace RoundHero
         
         public async void ShowStaticAttackTags()
         {
-            Log.Debug("ShowStaticAttackTags");
+            //Log.Debug("ShowStaticAttackTags");
             UnshowStaticAttackTags();
             //var effectGridPosIdxs = new List<int>();
             var entityIdx = curAttackTagEntityIdx;
@@ -61,7 +61,7 @@ namespace RoundHero
                         //effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
                         
                         curAttackTagEntityIdx++;
-                        Log.Debug("cur:" + curAttackTagEntityIdx);
+                        //Log.Debug("cur:" + curAttackTagEntityIdx);
                     }
 
                 }
@@ -70,12 +70,14 @@ namespace RoundHero
                 
                 
             }
-            
-            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+
+            var keys = BattleUnitManager.Instance.BattleUnitEntities.Keys.ToList();
+            for (int i = BattleUnitManager.Instance.BattleUnitEntities.Count - 1; i >= 0; i--)
             {
+                var value = BattleUnitManager.Instance.BattleUnitEntities[keys[i]];
                 var triggerDataDict =
-                    GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(kv.Value.UnitIdx),
-                        BattleFightManager.Instance.GetInDirectAttackDatas(kv.Value.UnitIdx));
+                    GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(value.UnitIdx),
+                        BattleFightManager.Instance.GetInDirectAttackDatas(value.UnitIdx));
                 if (triggerDataDict.Values.Count <= 0)
                 {
                     continue;
@@ -99,7 +101,7 @@ namespace RoundHero
                             continue;
                         }
                         
-                        if(kv.Value.UnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != kv.Value.UnitIdx)
+                        if(value.UnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != value.UnitIdx)
                             continue;
 
                         if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
@@ -136,8 +138,75 @@ namespace RoundHero
                     }
 
                 }
-                
             }
+            
+            // foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            // {
+            //     var triggerDataDict =
+            //         GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(kv.Value.UnitIdx),
+            //             BattleFightManager.Instance.GetInDirectAttackDatas(kv.Value.UnitIdx));
+            //     if (triggerDataDict.Values.Count <= 0)
+            //     {
+            //         continue;
+            //     }
+            //     
+            //     var values = triggerDataDict.Values.ToList();
+            //     if (values[0].Count <= 0)
+            //     {
+            //         return;
+            //     }
+            //     
+            //     //var entityIdx = curAttackTagEntityIdx;
+            //     
+            //
+            //     foreach (var triggerDatas in values)
+            //     {
+            //         foreach (var triggerData in triggerDatas)
+            //         {
+            //             if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+            //             {
+            //                 continue;
+            //             }
+            //             
+            //             if(kv.Value.UnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != kv.Value.UnitIdx)
+            //                 continue;
+            //
+            //             if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
+            //                 continue;
+            //
+            //             var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
+            //             if(ownUnit == null)
+            //                 continue;
+            //
+            //             //Log.Debug("show before:" + entityIdx + "-" + triggerData.EffectUnitGridPosIdx);
+            //             //var _entityIdx = entityIdx;
+            //             //var battleAttackTagEntity = await 
+            //             //!effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx)
+            //             var battleAttackTagEntity = await ShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
+            //                 triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
+            //                 false,
+            //                 triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, true);
+            //             
+            //             entityIdx++;
+            //             //Log.Debug("show after:" + entityIdx);
+            //             //
+            //             if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
+            //             {
+            //                 //Log.Debug("Tag hide:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
+            //                 GameEntry.Entity.HideEntity(battleAttackTagEntity);
+            //             }
+            //             else
+            //             {
+            //             
+            //                 BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
+            //                 //Log.Debug("Tag add:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx); 
+            //             }
+            //
+            //         }
+            //
+            //     }
+            //     
+            // }
         }
         
         public async Task<BattleAttackTagEntity> ShowTag(int actionGridPosIdx, int effectUnitGridPosIdx, TriggerData triggerData,
@@ -200,7 +269,7 @@ namespace RoundHero
         public void UnshowStaticAttackTags()
         {
             showAttackTagEntityIdx = curAttackTagEntityIdx;
-            Log.Debug("UnShowAttackTags:" + showAttackTagEntityIdx + "-" + BattleAttackTagEntities.Count);
+            //Log.Debug("UnShowAttackTags:" + showAttackTagEntityIdx + "-" + BattleAttackTagEntities.Count);
 
             foreach (var kv in BattleAttackTagEntities)
             {

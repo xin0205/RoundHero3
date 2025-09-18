@@ -114,7 +114,7 @@ namespace RoundHero
             {
                 Icon.sprite = await AssetUtility.GetBlessIcon(blessIconValueEntityData.BlessID);
             }
-            else if (BattleMoveValueEntityData is UnitStateIconValueEntityData unitStateIconValueEntityData)
+            else if (BattleMoveValueEntityData is BattleUnitStateValueEntityData unitStateIconValueEntityData)
             {
                 Icon.sprite = await AssetUtility.GetUnitStateIcon(unitStateIconValueEntityData.UnitState);
             }
@@ -174,11 +174,11 @@ namespace RoundHero
 
             
             
-            this.transform.localPosition = Vector2.Lerp(startPos, endPos, time * 0.8f);
+            this.transform.localPosition = Vector2.Lerp(startPos, endPos, time);
             
             if (BattleMoveValueEntityData.IsAdd)
             {
-                if (time >= 0.5f * 0.8f)
+                if (time >= 0.2f)
                 {
                     text.text = positiveEndValue;
                     text.color = recoverColor;

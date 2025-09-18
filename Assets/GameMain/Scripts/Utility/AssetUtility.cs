@@ -425,6 +425,12 @@ namespace RoundHero
 
         }
         
+        public static string BattleUnitStateValueEntity()
+        {
+            return $"Assets/GameMain/Entities/Battles/BattleUnitStateValueEntity.prefab";
+
+        }
+        
         public static string GetBattleMoveIconPrefab()
         {
             return $"Assets/GameMain/Entities/Battles/BattleMoveIconEntity.prefab";

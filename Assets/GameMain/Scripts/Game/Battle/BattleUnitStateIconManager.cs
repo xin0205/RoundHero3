@@ -133,55 +133,36 @@ namespace RoundHero
             
         }
 
-        public async Task AnimtionChangeUnitState(EUnitState unitState, int value, TriggerData triggerData, int entityIdx, bool isLoop)
+        public void AnimtionChangeUnitState(EUnitState unitState, int value, TriggerData triggerData, int entityIdx, bool isLoop)
         {
             _curUnitStateIconEntityIdx = curUnitStateIconEntityIdx;
             curUnitStateIconEntityIdx += 1;
-            await InternalAnimtionChangeUnitState(unitState, value, triggerData, entityIdx, isLoop);
+            InternalAnimtionChangeUnitState(unitState, value, triggerData, entityIdx, isLoop);
         }
 
-        private async Task InternalAnimtionChangeUnitState(EUnitState unitState, int value, TriggerData triggerData, int entityIdx, bool isLoop)
+        private void InternalAnimtionChangeUnitState(EUnitState unitState, int value, TriggerData triggerData, int entityIdx, bool isLoop)
         {
             
             var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
-
-
-            var moveParams = new MoveParams();
             
-            if (actionUnit != null)
-            {
-                moveParams.FollowGO = actionUnit.gameObject;
-                moveParams.DeltaPos = new Vector2(0, 25f);
-                moveParams.IsUIGO = false;
-            }
-            else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Card)
-            {
-                var cardEntity = BattleCardManager.Instance.GetCardEntity(triggerData.TriggerCardIdx);
 
-                if (cardEntity != null)
-                {
-                    moveParams.FollowGO = cardEntity.gameObject;
-                    moveParams.DeltaPos = new Vector2(0, 25f);
-                    moveParams.IsUIGO = true;
-                }
-                else
-                {
-                    moveParams.FollowGO = BattleController.Instance.HandCardPos.gameObject;
-                    moveParams.DeltaPos = new Vector2(0, 25f);
-                    moveParams.IsUIGO = true;
-                }
-                
-            }
-            
-            var targetMoveParams = new MoveParams()
+            var moveParams = new MoveParams()
             {
                 FollowGO = effectUnit.gameObject,
-                DeltaPos = (actionUnit != null && actionUnit.UnitIdx == effectUnit.UnitIdx) ? new Vector2(0, 100f) : new Vector2(0, 25f),
+                DeltaPos = new Vector2(0, 0f),
                 IsUIGO = false,
             };
 
-            AddMoveValue(unitState, value, value,  CurValueEntityIdx++,
+            var targetMoveParams = new MoveParams()
+            {
+                FollowGO = effectUnit.gameObject,
+                DeltaPos = new Vector2(0, -50f),
+                IsUIGO = false,
+            };
+            
+
+            AddUnitStateMoveValue(unitState, value, value,  CurValueEntityIdx++,
                 isLoop, false,
                 moveParams,
                 targetMoveParams);

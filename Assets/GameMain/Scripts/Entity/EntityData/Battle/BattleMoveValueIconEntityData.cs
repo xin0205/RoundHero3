@@ -3,7 +3,7 @@
 namespace RoundHero
 {
 
-    public class UnitStateIconValueEntityData : BattleMoveValueEntityData
+    public class BattleUnitStateValueEntityData : BattleMoveValueEntityData
     {
         public EUnitState UnitState;
 

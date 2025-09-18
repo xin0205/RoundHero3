@@ -2239,7 +2239,7 @@ namespace RoundHero
                 //
                 var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                 var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
-                Log.Debug("ActionUnitID:" + triggerData.ActionUnitIdx);
+                //Log.Debug("ActionUnitID:" + triggerData.ActionUnitIdx);
                 //!(!triggerData.ChangeHPInstantly && HeroManager.Instance.IsHero(triggerData.EffectUnitID))
                 if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
                 {
@@ -2260,9 +2260,10 @@ namespace RoundHero
                 {
                     if (triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
                     {
-                        actionUnit?.CloseSingleAttack();
-                        //effectUnit.Hurt();
                         BattleBulletManager.Instance.AddTriggerData(triggerData); 
+                        actionUnit?.MoveAttack();
+                        //effectUnit.Hurt();
+                        
                     }
                     else
                     {

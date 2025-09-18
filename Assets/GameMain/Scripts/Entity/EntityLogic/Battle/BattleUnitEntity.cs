@@ -44,6 +44,7 @@ namespace RoundHero
         public Transform ValuePos;
         protected Queue<int> hurtQueue = new Queue<int>();
         protected Queue<BattleMoveValueEntityData> moveValueQueue = new();
+        protected Queue<BattleUnitStateValueEntityData> unitStateIconValueQueue = new();
 
         public int TargetPosIdx;
         
@@ -164,7 +165,9 @@ namespace RoundHero
         {
             base.OnShow(userData);
             IsMove = false;
-            
+            showMoveValueTime = 0.8f;
+            showMoveValueIconTime = 0.8f;
+
             
         }
 
@@ -377,6 +380,7 @@ namespace RoundHero
             RefreshRoatation();
             //ShowHurts();
             ShowMoveValues();
+            ShowMoveValueIcons();
         }
         
         // public void SetAction(EUnitActionState actionState)
@@ -1275,6 +1279,15 @@ namespace RoundHero
             });
         }
         
+        public void MoveAttack()
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+
+            HandleHit(EAttackCastType.CloseSingle);
+        }
+        
         public void RunAttack()
         {
             CloseSingleAttack();
@@ -1510,24 +1523,24 @@ namespace RoundHero
             moveValueQueue.Enqueue(data);
         }
         
-        public void AddMoveValue(EUnitState unitState, int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+        public void AddUnitStateMoveValue(EUnitState unitState, int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
             MoveParams moveParams = null, MoveParams targetMoveParams = null)
         {
-            var data = ReferencePool.Acquire<UnitStateIconValueEntityData>();
+            var data = ReferencePool.Acquire<BattleUnitStateValueEntityData>();
             data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
                 targetMoveParams);
 
-            moveValueQueue.Enqueue(data);
+            unitStateIconValueQueue.Enqueue(data);
         }
 
-        private float showMoveValueTime = 0f;
+        private float showMoveValueTime = 0.8f;
         protected async void ShowMoveValues()
         {
             if(moveValueQueue.Count <= 0)
                 return;
             
             showMoveValueTime += Time.deltaTime;
-            if (showMoveValueTime > 0.3f)
+            if (showMoveValueTime > 0.8f)
             {
                 showMoveValueTime = 0;
                 
@@ -1541,6 +1554,10 @@ namespace RoundHero
                     {
                         data = moveValueQueue.Dequeue();
                     }
+                    if (moveValueQueue.Count <= 0)
+                    {
+                        showMoveValueTime = 0.8f;
+                    }
                 } while(data != null && data.EntityIdx < ShowValueEntityIdx);
                 
                 if(data == null)
@@ -1548,18 +1565,72 @@ namespace RoundHero
                 
                 //var data = moveValueQueue.Dequeue();
 
-                if (data is UnitStateIconValueEntityData unitStateIconValueEntityData)
-                {
-                    entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(unitStateIconValueEntityData);
-                }
-                else if (data is BattleMoveValueEntityData battleMoveValueEntityData)
-                {
-                    entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(battleMoveValueEntityData);
-                }
+                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
+                
+                // if (data is UnitStateIconValueEntityData unitStateIconValueEntityData)
+                // {
+                //     entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(unitStateIconValueEntityData);
+                // }
+                // else 
                 
                 if (GameEntry.Entity.HasEntity(entity.Id))
                 {
-                    var entityIdx = (entity as BattleMoveValueEntity).BattleMoveValueEntityData.EntityIdx;
+                    var entityIdx = entity.BattleMoveValueEntityData.EntityIdx;
+                    if (entityIdx == -1)
+                    {
+                    }
+                    else if (entityIdx < ShowValueEntityIdx)
+                    {
+                
+                        GameEntry.Entity.HideEntity(entity);
+                    }
+                    else
+                    {
+                
+                        BattleValueEntities.Add(entity.Entity.Id, entity);
+                    }
+                }
+            }
+        }
+        
+        private float showMoveValueIconTime = 0.8f;
+        protected async void ShowMoveValueIcons()
+        {
+            if(unitStateIconValueQueue.Count <= 0)
+                return;
+            
+            showMoveValueIconTime += Time.deltaTime;
+            if (showMoveValueIconTime > 0.8f)
+            {
+                showMoveValueIconTime = 0;
+     
+                BattleUnitStateValueEntityData data = null;
+                do
+                {
+                    data = null;
+                    if (unitStateIconValueQueue.Count > 0)
+                    {
+                        data = unitStateIconValueQueue.Dequeue();
+                    }
+                    
+                    if (unitStateIconValueQueue.Count <= 0)
+                    {
+                        showMoveValueIconTime = 0.8f;
+                    }
+
+                } while(data != null && data.EntityIdx < ShowValueEntityIdx);
+                
+                if(data == null)
+                    return;
+                
+                //var data = moveValueQueue.Dequeue();
+
+                var entity = await GameEntry.Entity.ShowUnitStateIconValueEntityAsync(data);
+                
+                
+                if (GameEntry.Entity.HasEntity(entity.Id))
+                {
+                    var entityIdx = entity.BattleUnitStateValueEntityData.EntityIdx;
                     if (entityIdx == -1)
                     {
                     }

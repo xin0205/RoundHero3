@@ -402,7 +402,7 @@ namespace RoundHero
 
         }
         
-        public void UnShowDisplayValues()
+        public void  UnShowDisplayValues()
         {
             
             ShowValueEntityIdx = CurValueEntityIdx;
