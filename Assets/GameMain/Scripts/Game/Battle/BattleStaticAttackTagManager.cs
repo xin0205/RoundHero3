@@ -116,7 +116,7 @@ namespace RoundHero
                         var battleAttackTagEntity = await ShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
                             triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
                             false,
-                            triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, true, BattleAttackTagEntities, A);
+                            triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, true);
                         
                         entityIdx++;
                         //Log.Debug("show after:" + entityIdx);
@@ -141,7 +141,7 @@ namespace RoundHero
         }
         
         public async Task<BattleAttackTagEntity> ShowTag(int actionGridPosIdx, int effectUnitGridPosIdx, TriggerData triggerData,
-            int entityIdx, bool showAttackLine, bool showAttackPos, bool isCollision, bool isStatic, Dictionary<int, BattleAttackTagEntity> battleAttackTagEntities, Action<Dictionary<int, BattleAttackTagEntity>, BattleAttackTagEntity> action)
+            int entityIdx, bool showAttackLine, bool showAttackPos, bool isCollision, bool isStatic)
         {
 
             var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);

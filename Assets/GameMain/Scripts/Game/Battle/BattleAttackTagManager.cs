@@ -195,7 +195,7 @@ namespace RoundHero
                     var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
                         triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
                         false,
-                        triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, false, BattleAttackTagEntities, A);
+                        triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, false);
                     entityIdx++;
                     
                     if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
