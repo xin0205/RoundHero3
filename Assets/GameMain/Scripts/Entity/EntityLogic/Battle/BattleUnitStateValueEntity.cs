@@ -112,8 +112,8 @@ namespace RoundHero
             Icon.gameObject.SetActive(true);
             Icon.sprite = await AssetUtility.GetUnitStateIcon(BattleUnitStateValueEntityData.UnitState);
 
-            this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1);
-            this.text.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1);
+            this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1f);
+            this.text.color = new Color(this.text.color.r, this.text.color.g, this.text.color.b, 1f);
 
 
         }
@@ -127,9 +127,6 @@ namespace RoundHero
                 return;
 
             time += Time.deltaTime;
-
-            
-
 
             if (BattleUnitStateValueEntityData.FollowParams.FollowGO.IsDestroyed())
             {
@@ -174,12 +171,12 @@ namespace RoundHero
             this.transform.localPosition = Vector2.Lerp(startPos, endPos, (time - timeShow) * 2f);
             
             
-            var colorAlpha = Mathf.Lerp(1, 0, (time - timeShow) * 2f);
+            var colorAlpha = Mathf.Lerp(1f, 0f, (time - timeShow) * 2f);
             
             
             
             this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, colorAlpha);
-            this.text.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, colorAlpha);
+            this.text.color = new Color(this.text.color.r, this.text.color.g, this.text.color.b, colorAlpha);
             
             if (BattleUnitStateValueEntityData.IsAdd)
             {
@@ -202,8 +199,8 @@ namespace RoundHero
                 if (BattleUnitStateValueEntityData.IsLoop)
                 {
                     time = 0;
-                    this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1);
-                    this.text.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1);
+                    this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1f);
+                    this.text.color = new Color(this.text.color.r, this.text.color.g, this.text.color.b, 1f);
                 }
                 else
                 {

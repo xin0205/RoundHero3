@@ -178,7 +178,7 @@ namespace RoundHero
             
             if (BattleMoveValueEntityData.IsAdd)
             {
-                if (time >= 0.2f)
+                if (time >= 0.5f)
                 {
                     text.text = positiveEndValue;
                     text.color = recoverColor;
