@@ -556,9 +556,9 @@ namespace RoundHero
                 if(triggerBuffData.BuffData.RangeTrigger)
                     continue;
 
-                //共用特殊，死亡，清除对方Buff ownIdx triggerData.EffectUnitIdx改为triggerData.OwnUnitIdx
+                
                 BuffTrigger(buffTriggerType,
-                    triggerBuffData.BuffData, triggerBuffData.ValueList, triggerData.OwnUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
+                    triggerBuffData.BuffData, triggerBuffData.ValueList, triggerData.EffectUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
                     triggerDatas, -1, -1, triggerData);
     
             }
