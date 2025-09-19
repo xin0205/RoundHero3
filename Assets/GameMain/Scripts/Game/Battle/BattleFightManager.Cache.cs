@@ -2653,7 +2653,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.OwnUnitIdx == unitIdx)
+                        if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2678,7 +2678,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.OwnUnitIdx == unitIdx)
+                        if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2709,7 +2709,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.OwnUnitIdx == unitIdx)
+                        if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2733,7 +2733,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.OwnUnitIdx == unitIdx)
+                        if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2757,7 +2757,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.OwnUnitIdx == unitIdx)
+                        if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2781,7 +2781,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.OwnUnitIdx == unitIdx)
+                        if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2805,7 +2805,7 @@ namespace RoundHero
                         //     continue;
                         // }
 
-                        if (triggerData.OwnUnitIdx == unitIdx)
+                        if (triggerData.ActionUnitIdx == unitIdx)
                         {
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2829,7 +2829,7 @@ namespace RoundHero
                     //     continue;
                     // }
 
-                    if (triggerData.OwnUnitIdx == unitIdx)
+                    if (triggerData.ActionUnitIdx == unitIdx)
                     {
                         if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                         {
