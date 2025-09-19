@@ -337,6 +337,23 @@ namespace RoundHero
            
         }
         
+        public static async Task<BattleUnitStateValueEntity> ShowUnitStateIconValueEntityAsync(this EntityComponent entityComponent, BattleUnitStateValueEntityData battleUnitStateValueEntityData)
+        {
+            //Log.Debug("task1");
+            var task = await GameEntry.Entity.ShowEntityAsync(battleUnitStateValueEntityData.Id, typeof(BattleUnitStateValueEntity),
+                AssetUtility.BattleUnitStateValueEntity(), Constant.EntityGroup.Unit, 0, battleUnitStateValueEntityData);
+            //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
+            return (BattleUnitStateValueEntity)task.Logic;
+            
+           
+        }
+        
+        // public static async Task<> ShowBattleUnitStateMoveValueEntityAsync(this EntityComponent entityComponent, UnitStateIconValueEntityData unitStateIconValueEntityData)
+        // {
+        //     
+        //     return await entityComponent.ShowUnitStateIconValueEntityAsync(unitStateIconValueEntityData);
+        // }
+        
         public static async Task<BattleMoveValueEntity> ShowBattleBlessMoveValueEntityAsync(
             this EntityComponent entityComponent,
             int startValue, int endValue, EBlessID blessID, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
