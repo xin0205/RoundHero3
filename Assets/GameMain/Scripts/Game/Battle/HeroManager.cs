@@ -18,6 +18,8 @@ namespace RoundHero
     public enum EHPDeltaType
     {
         AttackCore,
+        RecoverCore,
+        Core,
         AttackSolider,
         Collision,
         UseCard,
@@ -312,9 +314,11 @@ namespace RoundHero
 
         public HPDeltaData AddHPDelta(TriggerData triggerData)
         {
-            
+
             if (!(triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
-                triggerData.BattleUnitAttribute == EUnitAttribute.HP))
+                  triggerData.BattleUnitAttribute == EUnitAttribute.HP) &&
+                !(triggerData.TriggerDataType == ETriggerDataType.HeroAtrb &&
+                  triggerData.HeroAttribute == EHeroAttribute.HP))
             {
                 return null;
             }
@@ -346,8 +350,19 @@ namespace RoundHero
                 }
                 else if (effectUnit is BattleCoreEntity)
                 {
-                    hpDeltaData.HPDeltaType = EHPDeltaType.AttackCore;
-                   
+                    if (triggerData.ActualValue > 0)
+                    {
+                        hpDeltaData.HPDeltaType = EHPDeltaType.RecoverCore;
+                    }
+                    else if (triggerData.ActualValue < 0)
+                    {
+                        hpDeltaData.HPDeltaType = EHPDeltaType.AttackCore;
+                    }
+                    else
+                    {
+                        hpDeltaData.HPDeltaType = EHPDeltaType.Core;
+                    }
+
                 }
             }
             else if (triggerData.TriggerDataSubType == ETriggerDataSubType.Bless)

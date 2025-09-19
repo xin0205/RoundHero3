@@ -36,10 +36,16 @@ namespace RoundHero
             {
                 values.Add(buffValue.ToString());
             }
-            
+
+            var triggerDataSubType = ETriggerDataSubType.Unit;
+            if (buffData.BuffEquipType == EBuffEquipType.Fune)
+            {
+                triggerDataSubType = ETriggerDataSubType.Fune;
+            }
+
             
             return BuffTrigger(buffTriggerType, buffData, values, ownUnitIdx,
-                actionUnitIdx, effectUnitIdx, triggerDatas,actionUnitGridPosIdx, actionUnitLastGridPosIdx, -1, -1, ETriggerDataSubType.Unit, preTriggerData);
+                actionUnitIdx, effectUnitIdx, triggerDatas,actionUnitGridPosIdx, actionUnitLastGridPosIdx, buffData.CardIdx, buffData.FuneIdx, triggerDataSubType, preTriggerData);
         }
     
         public void CacheBuffData(BuffData buffData, EUnitCamp unitCamp, Data_BattleUnit effectUnit, List<float> value1s, float ratio)

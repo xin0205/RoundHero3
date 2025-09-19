@@ -71,6 +71,7 @@ namespace RoundHero
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
                 buffData.BuffEquipType = EBuffEquipType.Normal;
+                buffData.CardIdx = cardIdx;
                 buffDatas.Add(buffData);
             }
 
@@ -82,6 +83,8 @@ namespace RoundHero
                 {
                     var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
                     buffData.BuffEquipType = EBuffEquipType.Fune;
+                    buffData.CardIdx = cardIdx;
+                    buffData.FuneIdx = funeIdx;
                     buffDatas.Add(buffData);
                 }
                 

@@ -132,7 +132,8 @@ namespace RoundHero
                 {
                     foreach (var triggerData in kv.Value)
                     {
-                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute &&
+                            triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
                         {
                             continue;
                         }
@@ -142,7 +143,8 @@ namespace RoundHero
                     
                     foreach (var triggerData in kv.Value)
                     {
-                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute &&
+                            triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
                         {
                             continue;
                         }
@@ -154,7 +156,8 @@ namespace RoundHero
                 {
                     foreach (var triggerData in kv.Value)
                     {
-                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute &&
+                            triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
                         {
                             continue;
                         }
@@ -173,7 +176,8 @@ namespace RoundHero
                     var isShow = false;
                     foreach (var triggerData in kv.Value)
                     {
-                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute &&
+                            triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
                         {
                             continue;
                         }
@@ -244,7 +248,7 @@ namespace RoundHero
             var targetMoveParams = new MoveParams()
             {
                 FollowGO = AreaController.Instance.UICore,
-                DeltaPos = new Vector2(0, 25f),
+                DeltaPos = new Vector2(0, -25f),
                 IsUIGO = true,
             };
             
