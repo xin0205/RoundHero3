@@ -383,11 +383,13 @@ namespace RoundHero
                         var subHurtRoundStartData = BattleFightManager.Instance.Unit_State(triggerDatas, kv.Value.Idx,
                             kv.Value.Idx, kv.Value.Idx, EUnitState.HurtRoundStart, -1,
                             ETriggerDataType.RoleState);
+                        subHurtRoundStartData.ActionUnitGridPosIdx = subHurtRoundStartData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
                         BattleBuffManager.Instance.CacheTriggerData(subHurtRoundStartData, triggerDatas);
                         
                         var triggerData = BattleFightManager.Instance.BattleRoleAttribute(kv.Key, kv.Key, kv.Key,
                             EUnitAttribute.HP, -1, ETriggerDataSubType.State);
                         triggerData.UnitStateDetail.UnitState = EUnitState.HurtRoundStart;
+                        triggerData.ActionUnitGridPosIdx = triggerData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
                         if (BattleCoreManager.Instance.IsCoreIdx(triggerData.EffectUnitIdx))
                         {
                             triggerData.ChangeHPInstantly = false;
@@ -2640,6 +2642,31 @@ namespace RoundHero
             // {
             //     var triggerDataList = RoundFightData.EnemyMoveDatas[unitIdx].TriggerDatas.Values.ToList();
             // }
+            foreach (var kv in RoundFightData.RoundStartBuffDatas)
+            {
+                foreach (var datas in kv.Value.TriggerDatas.Values.ToList())
+                {
+                    foreach (var triggerData in datas)
+                    {
+                        // if (triggerData.ActualValue == 0)
+                        // {
+                        //     continue;
+                        // }
+
+                        if (triggerData.OwnUnitIdx == unitIdx)
+                        {
+                            if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                            {
+                                triggerDataDict.Add(triggerData.EffectUnitIdx, new List<TriggerData>());
+                            }
+
+                            triggerDataDict[triggerData.EffectUnitIdx].Add(triggerData);
+                        }
+                    }
+                }
+            }
+            
+            
             foreach (var kv in RoundFightData.EnemyMoveDatas)
             {
                 foreach (var datas in kv.Value.TriggerDatas.Values.ToList())
