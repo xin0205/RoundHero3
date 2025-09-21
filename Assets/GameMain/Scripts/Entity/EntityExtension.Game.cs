@@ -71,8 +71,8 @@ namespace RoundHero
             //var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), monsterID, gridPosIdx, unitCamp, funeIDs);
             //battleEnemyData.UnitRole = EUnitRole.Staff;
             
-            //battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 1);
-            //battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 1);
+            //battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 3);
+            //battleMonsterData.ChangeState(EUnitState.AtkPassUs, 1);
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);
 
@@ -194,7 +194,7 @@ namespace RoundHero
             
             
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
-            //battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 1);
+            //battleSoliderData.ChangeState(EUnitState.HurtRoundStart, 1);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
             data.Init(entityComponent.GenerateSerialId(), pos, battleSoliderData);
 
@@ -367,24 +367,20 @@ namespace RoundHero
             return await entityComponent.ShowBattleMoveValueEntityAsync(data);
         }
         
-        public static async Task<BattleMoveValueEntity> ShowBattleUnitStateMoveValueEntityAsync(
-            this EntityComponent entityComponent,
-            int startValue, int endValue, EUnitState unitState,  int entityIdx = -1, bool isLoop = false, bool isAdd = false,
-            MoveParams moveParams = null, MoveParams targetMoveParams = null)
-        {
-            var data = ReferencePool.Acquire<UnitStateIconValueEntityData>();
-
-            data.Init(entityComponent.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
-                targetMoveParams);
-
-            return await entityComponent.ShowBattleMoveValueEntityAsync(data);
-        }
+        // public static async Task<BattleMoveValueEntity> ShowBattleUnitStateMoveValueEntityAsync(
+        //     this EntityComponent entityComponent,
+        //     int startValue, int endValue, EUnitState unitState,  int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+        //     MoveParams moveParams = null, MoveParams targetMoveParams = null)
+        // {
+        //     var data = ReferencePool.Acquire<UnitStateIconValueEntityData>();
+        //
+        //     data.Init(entityComponent.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
+        //         targetMoveParams);
+        //
+        //     return await entityComponent.ShowBattleMoveValueEntityAsync(data);
+        // }
         
-        public static async Task<BattleMoveValueEntity> ShowBattleUnitStateMoveValueEntityAsync(this EntityComponent entityComponent, UnitStateIconValueEntityData unitStateIconValueEntityData)
-        {
-            
-            return await entityComponent.ShowBattleMoveValueEntityAsync(unitStateIconValueEntityData);
-        }
+        
 
         
         // public static async Task<BattleMoveIconEntity> ShowBattleMoveIconEntityAsync(this EntityComponent entityComponent,
@@ -499,11 +495,11 @@ namespace RoundHero
         }
         
         public static async Task<BattleAttackTagEntity> ShowBattleAttackTagEntityAsync(this EntityComponent entityComponent, Vector3 pos, Vector3 startPos, Vector3 targetPos, EAttackTagType attackTagType,
-            EUnitState unitState, BuffValue buffValue, EAttackCastType attackCastType, int entityIdx = -1, bool showAttackLine = true, bool showAttackPos = true)
+            EUnitState unitState, BuffValue buffValue, EAttackCastType attackCastType, int entityIdx = -1, bool showAttackLine = true, bool showAttackPos = true, bool isStatic = false)
         {
             var data = ReferencePool.Acquire<BattleAttackTagEntityData>();
 
-            data.Init(entityComponent.GenerateSerialId(), pos, startPos, targetPos, attackTagType, unitState, buffValue, attackCastType, entityIdx, showAttackLine, showAttackPos);
+            data.Init(entityComponent.GenerateSerialId(), pos, startPos, targetPos, attackTagType, unitState, buffValue, attackCastType, entityIdx, showAttackLine, showAttackPos, isStatic);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleAttackTagEntity),
                 AssetUtility.GetBattleAttackTagPrefab(), Constant.EntityGroup.Unit, 0, data);
