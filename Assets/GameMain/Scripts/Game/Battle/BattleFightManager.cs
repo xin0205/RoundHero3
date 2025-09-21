@@ -2771,6 +2771,24 @@ namespace RoundHero
                             }
                         }
                         break;
+                    
+                    case ETriggerTarget.DeBuff:
+                        foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+                        {
+                            if(kv.Value.GetStateCountByEffectType(EUnitStateEffectType.DeBuff) <= 0)
+                                continue;
+                                
+                            if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != EUnitCamp.Player1)
+                            {
+                                realEffectUnitIdxs.Add(kv.Value.Idx);
+                            }
+                            else if (buffData.TriggerUnitCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == EUnitCamp.Player1)
+                            {
+                                realEffectUnitIdxs.Add(kv.Value.Idx);
+                            }
+                        }
+                        break;
+
                     case ETriggerTarget.Effect:
                         if (effectUnitIdx != -1)
                         {
