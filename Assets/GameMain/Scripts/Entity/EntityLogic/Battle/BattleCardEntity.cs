@@ -460,7 +460,15 @@ namespace RoundHero
             
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
-            
+
+            DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
+
+            if (drCard.CardType == ECardType.Tactic && BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Count <= 0)
+            {
+                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_MissTargetUnit));
+
+                return;
+            }
             
             if(BattleCardEntityData.CardData.UnUse)
                 return;
