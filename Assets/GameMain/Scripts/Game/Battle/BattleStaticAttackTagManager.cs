@@ -74,6 +74,10 @@ namespace RoundHero
             var keys = BattleUnitManager.Instance.BattleUnitEntities.Keys.ToList();
             for (int i = BattleUnitManager.Instance.BattleUnitEntities.Count - 1; i >= 0; i--)
             {
+                if (!BattleUnitManager.Instance.BattleUnitEntities.ContainsKey(keys[i]) ||
+                    BattleUnitManager.Instance.BattleUnitEntities[keys[i]] == null)
+                    continue;
+                
                 var value = BattleUnitManager.Instance.BattleUnitEntities[keys[i]];
                 var triggerDataDict =
                     GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(value.UnitIdx),
