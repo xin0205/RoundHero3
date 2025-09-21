@@ -899,38 +899,39 @@ namespace RoundHero
                             }
                             else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
                             {
-                                var hurtTriggerDataDict =
-                                    GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(unit.UnitIdx),
-                                        BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit.UnitIdx));
-
-                                var idx = 0;
-                                var actionUnitList = new List<int>();
-                                foreach (var kv in hurtTriggerDataDict)
-                                {
-                                    foreach (var triggerData in kv.Value)
-                                    {
-                                        var actionUnitIdx = triggerData.ActionUnitIdx;
-                                        if(actionUnitList.Contains(actionUnitIdx))
-                                            continue;
-                                        actionUnitList.Add(actionUnitIdx);
-                                        
-                                        var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                                        if (actionUnit != null)
-                                        {
-                                            // GameUtility.DelayExcute(0.25f * idx, () =>
-                                            // {
-                                            //     
-                                            // });
-                                            actionUnit.ShowTags(actionUnit.UnitIdx, true);
-                                            idx++;
-                                        }
-                                    }
-                                }
+                                // var hurtTriggerDataDict =
+                                //     GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(unit.UnitIdx),
+                                //         BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit.UnitIdx));
+                                //
+                                // var idx = 0;
+                                // var actionUnitList = new List<int>();
+                                // foreach (var kv in hurtTriggerDataDict)
+                                // {
+                                //     foreach (var triggerData in kv.Value)
+                                //     {
+                                //         var actionUnitIdx = triggerData.ActionUnitIdx;
+                                //         if(actionUnitList.Contains(actionUnitIdx))
+                                //             continue;
+                                //         actionUnitList.Add(actionUnitIdx);
+                                //         
+                                //         var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                                //         if (actionUnit != null)
+                                //         {
+                                //             // GameUtility.DelayExcute(0.25f * idx, () =>
+                                //             // {
+                                //             //     
+                                //             // });
+                                //             actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                                //             idx++;
+                                //         }
+                                //     }
+                                // }
                                 
                                 var triggerDataDict =
                                     GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unit.UnitIdx),
                                         BattleFightManager.Instance.GetInDirectAttackDatas(unit.UnitIdx));
-                                
+                                var idx = 0;
+                                var actionUnitList = new List<int>();
                                 foreach (var kv in triggerDataDict)
                                 {
                                     foreach (var triggerData in kv.Value)
