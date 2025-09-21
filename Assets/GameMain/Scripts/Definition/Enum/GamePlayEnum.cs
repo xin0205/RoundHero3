@@ -410,6 +410,7 @@ namespace RoundHero
         Direct,
         LessCurHPUnit,
         Hero,
+        DeBuff,
         Empty,
     }
 
