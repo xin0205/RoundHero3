@@ -251,13 +251,13 @@ namespace RoundHero
             //     return;
             // }
 
-            if (GameManager.Instance.TmpInitCards.Count >= Constant.Battle.InitCardMaxCount)
-            {
-
-                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardMaxCount,
-                    Constant.Battle.InitCardMaxCount);
-                return;
-            }
+            // if (GameManager.Instance.TmpInitCards.Count >= Constant.Battle.InitCardMaxCount)
+            // {
+            //
+            //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardMaxCount,
+            //         Constant.Battle.InitCardMaxCount);
+            //     return;
+            // }
             
             for (int i = 0; i < Constant.Battle.SelectInitCardEachCount; i++)
             {
@@ -309,12 +309,12 @@ namespace RoundHero
 
         public void StartTest()
         {
-            if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
-            {
-                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
-                    Constant.Battle.InitCardMaxCount);
-                return;
-            }
+            // if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
+            // {
+            //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
+            //         Constant.Battle.InitCardMaxCount);
+            //     return;
+            // }
             
             
             GameEntry.UI.CloseUIForm(this);
