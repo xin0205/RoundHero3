@@ -1784,7 +1784,7 @@ namespace RoundHero
             UnShowBattleIcons();
             UnShowDisplayValues();
             UnShowDisplayIcons();
-            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+            
             
         }
         

@@ -754,6 +754,7 @@ namespace RoundHero
 
         public void UnShowTags()
         {
+            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
             foreach (var kv in BattleUnitEntities)
             {
                 kv.Value.UnShowTags();
