@@ -150,14 +150,14 @@ namespace RoundHero
             var moveParams = new MoveParams()
             {
                 FollowGO = effectUnit.gameObject,
-                DeltaPos = new Vector2(0, 0f),
+                DeltaPos = new Vector2(0, 25f),
                 IsUIGO = false,
             };
 
             var targetMoveParams = new MoveParams()
             {
                 FollowGO = effectUnit.gameObject,
-                DeltaPos = new Vector2(0, -50f),
+                DeltaPos = new Vector2(0, -25f),
                 IsUIGO = false,
             };
             
