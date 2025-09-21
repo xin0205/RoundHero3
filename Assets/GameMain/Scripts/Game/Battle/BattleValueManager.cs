@@ -57,7 +57,7 @@ namespace RoundHero
             {
                 var startValue = 0;
                 var endValue = 0;
-
+                var isShow = false;
                 foreach (var kv in triggerDataDict)
                 {
                     foreach (var triggerData in kv.Value)
@@ -66,7 +66,7 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        
+                        isShow = true;
                         startValue += (int)triggerData.ActualValue;
                         endValue += BlessManager.Instance.AddCurHPByAttackDamage()
                             ? (int)(triggerData.Value + triggerData.DeltaValue)
@@ -74,9 +74,14 @@ namespace RoundHero
                     }
                 }
 
-                if (startValue != 0)
+                // if (startValue != 0)
+                // {
+                //     //CurValueEntityIdx += 1;
+                //     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
+                // }
+
+                if (isShow)
                 {
-                    //CurValueEntityIdx += 1;
                     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
                 }
                
