@@ -523,7 +523,7 @@ namespace RoundHero
                     moveUnitStateDatas.Add(new MoveUnitStateData(EUnitState.AtkPassUs, true));
                     
                     var subAtkPassUsData = BattleFightManager.Instance.Unit_State(triggerDatas, bePassUnit.Idx,
-                        bePassUnit.Idx, bePassUnit.Idx, EUnitState.AtkPassUs, -1,
+                        bePassUnit.Idx, bePassUnit.Idx, EUnitState.AtkPassUs, -bePassUnitAttackPassUs,
                         ETriggerDataType.RoleState);
                     subAtkPassUsData.ActionUnitGridPosIdx =
                         subAtkPassUsData.EffectUnitGridPosIdx = passUnit.GridPosIdx;
@@ -566,7 +566,7 @@ namespace RoundHero
                     moveUnitStateDatas.Add(new MoveUnitStateData(EUnitState.AtkPassUs, false));
                     
                     var subAtkPassUsData = BattleFightManager.Instance.Unit_State(triggerDatas, bePassUnit.Idx,
-                        bePassUnit.Idx, passUnit.Idx, EUnitState.AtkPassUs, -1,
+                        bePassUnit.Idx, passUnit.Idx, EUnitState.AtkPassUs, -passUnitAttackPassUs,
                         ETriggerDataType.RoleState);
                     subAtkPassUsData.ActionUnitGridPosIdx =
                         subAtkPassUsData.EffectUnitGridPosIdx = passUnit.GridPosIdx;
@@ -606,7 +606,7 @@ namespace RoundHero
                     moveUnitStateDatas.Add(new MoveUnitStateData(EUnitState.AtkPassEnemy, true));
                     
                     var subAtkPassEnemyData = BattleFightManager.Instance.Unit_State(triggerDatas, bePassUnit.Idx,
-                        bePassUnit.Idx, bePassUnit.Idx, EUnitState.AtkPassEnemy, -1,
+                        bePassUnit.Idx, bePassUnit.Idx, EUnitState.AtkPassEnemy, -bePassUnitAttackPassEnemy,
                         ETriggerDataType.RoleState);
                     subAtkPassEnemyData.ActionUnitGridPosIdx =
                         subAtkPassEnemyData.EffectUnitGridPosIdx = passUnit.GridPosIdx;
@@ -645,7 +645,7 @@ namespace RoundHero
                     moveUnitStateDatas.Add(new MoveUnitStateData(EUnitState.AtkPassEnemy, false));
 
                     var subAtkPassEnemyData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnit.Idx,
-                        passUnit.Idx, passUnit.Idx, EUnitState.AtkPassEnemy, -1,
+                        passUnit.Idx, passUnit.Idx, EUnitState.AtkPassEnemy, -passUnitAttackPassEnemy,
                         ETriggerDataType.RoleState);
                     subAtkPassEnemyData.ActionUnitGridPosIdx =
                         subAtkPassEnemyData.EffectUnitGridPosIdx = passUnit.GridPosIdx;
@@ -1147,7 +1147,7 @@ namespace RoundHero
                 if (actionUnitData != null && actionUnitData.GetStateCount(EUnitState.SubDmg) > 0)
                 {
                     var subDamageTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
-                        actionUnitData.Idx, actionUnitData.Idx, EUnitState.SubDmg, -1, ETriggerDataType.RoleState);
+                        actionUnitData.Idx, actionUnitData.Idx, EUnitState.SubDmg, -subDmgCount, ETriggerDataType.RoleState);
 
                     subDamageTriggerData.ActionUnitGridPosIdx =
                         subDamageTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
