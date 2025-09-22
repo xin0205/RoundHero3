@@ -78,7 +78,7 @@ namespace RoundHero
         public static class BattleMode
         {
             public static int MaxRewardCount = 3;
-            public static int MaxFuneCount = 2;
+            //public static int MaxFuneCount = 4;
             public static int MaxBattleCount = 12;
         }
 
@@ -110,7 +110,7 @@ namespace RoundHero
             public static int ResetActionTimes = 3;
 
             public static int SelectInitCardEachCount = 1;
-            public static int InitCardMaxCount = 10;
+            public static int InitCardMaxCount = 15;
             public static int RushHurt = -1;
             public static int FlyHurt = -1;
             public static float ParabolaBulletShootTime = 0.3f;
@@ -1920,7 +1920,7 @@ namespace RoundHero
             //     
             //     
             // };
-            public static int MaxFuneCount = 3;
+            public static int MaxFuneCount = 4;
             public static int InitFuneCount = 2;
         }
 
