@@ -339,7 +339,16 @@ namespace RoundHero
 			return list;
 		}
 		
-		
+		public static List<ECardType> ReadECardTypeList(this BinaryReader binaryReader)
+		{
+			int count = binaryReader.Read7BitEncodedInt32();
+			var list = new List<ECardType>(count);
+			for (int i = 0; i < count; i++)
+			{
+				list.Add(Enum.Parse<ECardType>(binaryReader.ReadString()));
+			}
+			return list;
+		}
 		
 		
 		// public static List<Test.TestEnum> ReadTestTestEnumList(this BinaryReader binaryReader)

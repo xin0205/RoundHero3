@@ -72,6 +72,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取适配卡类型。
+        /// </summary>
+        public List<ECardType> AdapteCardType
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -88,6 +97,7 @@ namespace RoundHero
 			Values0 = DataTableExtension.ParseStringList(columnStrings[index++]);
 			Values1 = DataTableExtension.ParseStringList(columnStrings[index++]);
 			BuffTypes = DataTableExtension.ParseEBuffTypeList(columnStrings[index++]);
+			AdapteCardType = DataTableExtension.ParseECardTypeList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -104,6 +114,7 @@ namespace RoundHero
 					Values0 = binaryReader.ReadStringList();
 					Values1 = binaryReader.ReadStringList();
 					BuffTypes = binaryReader.ReadEBuffTypeList();
+					AdapteCardType = binaryReader.ReadECardTypeList();
                 }
             }
 

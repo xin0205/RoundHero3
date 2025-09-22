@@ -377,6 +377,19 @@ namespace RoundHero
 			return list;
 		}
 		
+		public static List<ECardType> ParseECardTypeList(string value)
+		{
+			if (string.IsNullOrEmpty(value) || value.ToLowerInvariant().Equals("null"))
+				return null;
+			string[] splitValue = value.Split(',');
+			var list = new List<ECardType>(splitValue.Length);
+			for (int i = 0; i < splitValue.Length; i++)
+			{
+				list.Add(Enum.Parse<ECardType>(splitValue[i]));
+			}
+			return list;
+		}
+		
 		
 		
 		// public static List<ECardID> ParseECardIDList(string value)
