@@ -132,8 +132,13 @@ namespace RoundHero
             public const string  Tips_SelectAttackUnit = "Tips.SelectAttackUnit";
             public const string  Tips_SelectMovePos = "Tips.SelectMovePos";
             public const string  Tips_SelectHurtUnit = "Tips.SelectHurtUnit";
+            public const string  Tips_SelectTargetUnit = "Tips.SelectTargetUnit";
+            public const string  Tips_SelectTargetPos = "Tips.SelectTargetPos";
+
+
             
             public const string  Message_MissTargetUnit = "Message.MissTargetUnit"; 
+            public const string Message_UnAdapteFune = "Message.UnAdapteFune";
         }
     }
 }
