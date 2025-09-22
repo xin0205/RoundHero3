@@ -88,8 +88,12 @@ namespace RoundHero
         
         [SerializeField] private PlayerCardFuneList PlayerCardFuneList;
         
-        [SerializeField] private Text MoveText;
-        [SerializeField] private Text AttackText;
+        // [SerializeField] private Text MoveText;
+        // [SerializeField] private Text AttackText;
+        
+        [SerializeField] private GameObject tipsGO;
+        [SerializeField] private Text tipsText;
+
         
         private Rect rect;
         private bool isInside;
@@ -131,6 +135,7 @@ namespace RoundHero
 
             RefreshCardUseTypeInfo();
             
+            tipsGO.SetActive(false);
             moveGO.SetActive(false);
             attackGO.SetActive(false);
             //ActionGO.SetActive(false);
@@ -146,8 +151,8 @@ namespace RoundHero
             videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;
             videoTriggerItem.VideoFormData.AnimationPlayData.ID = BattleCardEntityData.CardData.CardID;
             
-            AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
-            MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
+            // AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
+            // MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
   
 
         }
@@ -256,6 +261,7 @@ namespace RoundHero
             isShow = true;
             moveGO.SetActive(true);
             attackGO.SetActive(true);
+            
             //ActionGO.SetActive(true);
             //transform.localPosition = new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y + 140f, 0);
             ScaleCard(1, 1.1f, 0.01f);
@@ -336,6 +342,7 @@ namespace RoundHero
             
             //isShow = false;
             //ActionGO.SetActive(false);
+            tipsGO.SetActive(false);
             moveGO.SetActive(false);
             attackGO.SetActive(false);
             MoveCard(new Vector3(transform.localPosition.x, BattleController.Instance.HandCardPos.localPosition.y, 0),
@@ -463,24 +470,20 @@ namespace RoundHero
 
             DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
 
-            if (drCard.CardType == ECardType.Tactic && BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Count <= 0)
-            {
-                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_MissTargetUnit));
-
-                return;
-            }
+            
             
             if(BattleCardEntityData.CardData.UnUse)
                 return;
 
-            BattleCardEntityData.CardData.CardUseType = ECardUseType.RawUnSelect;
+            
+            BattleCardEntityData.CardData.CardUseType = ECardUseType.RawSelect;
             if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
                 return;
 
             BattleUnitManager.Instance.UnShowTags();
 
             UseCardAnimation();
-            
+            BattleCardEntityData.CardData.CardUseType = ECardUseType.RawUnSelect;
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
         
@@ -704,38 +707,79 @@ namespace RoundHero
         public void OnRefreshBattleState(object sender, GameEventArgs e)
         {
             var ne = e as RefreshBattleStateEventArgs;
+            // if (ne.BattleState == EBattleState.TacticSelectUnit)
+            // {
+            //     // AttackText.gameObject.SetActive(true);
+            //     // AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
+            //     tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
+            // }
+            // else if (ne.BattleState == EBattleState.SelectHurtUnit)
+            // {
+            //     // AttackText.gameObject.SetActive(true);
+            //     // AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectHurtUnit);
+            //     tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectHurtUnit);
+            // }
+            // else
+            // {
+            //     AttackText.gameObject.SetActive(false);
+            // }
+            //
+            // if (ne.BattleState == EBattleState.TacticSelectUnit)
+            // {
+            //     // MoveText.gameObject.SetActive(true);
+            //     // MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
+            //     tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
+            // }
+            // else if (ne.BattleState == EBattleState.MoveUnit)
+            // {
+            //     // MoveText.gameObject.SetActive(true);
+            //     // MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMovePos);
+            //     tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMovePos);
+            // }
+            // else
+            // {
+            //     //MoveText.gameObject.SetActive(false);
+            // }
+            
             if (ne.BattleState == EBattleState.TacticSelectUnit)
             {
-                AttackText.gameObject.SetActive(true);
-                AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
+                if (BattleCardEntityData.CardData.CardUseType == ECardUseType.Move)
+                {
+                    tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
+                }
+                else if (BattleCardEntityData.CardData.CardUseType == ECardUseType.Attack)
+                {
+                    tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
+                }
+                else if(BattleCardEntityData.CardData.CardUseType == ECardUseType.RawSelect)
+                {
+                    tipsGO.SetActive(true);
+                    tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectTargetUnit);
+                }
                 
             }
             else if (ne.BattleState == EBattleState.SelectHurtUnit)
             {
-                AttackText.gameObject.SetActive(true);
-                AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectHurtUnit);
-            }
-            else
-            {
-                AttackText.gameObject.SetActive(false);
-            }
-            
-            if (ne.BattleState == EBattleState.TacticSelectUnit)
-            {
-                MoveText.gameObject.SetActive(true);
-                MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
-               
+                tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectHurtUnit);
             }
             else if (ne.BattleState == EBattleState.MoveUnit)
             {
-                MoveText.gameObject.SetActive(true);
-                MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMovePos);
+                tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMovePos);
+            }
+            else if (ne.BattleState == EBattleState.TacticSelectGrid)
+            {
+                if(BattleCardEntityData.CardData.CardUseType == ECardUseType.RawSelect)
+                {
+                    tipsGO.SetActive(true);
+                    tipsText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectTargetPos);
+                }
+                
+               
             }
             else
             {
-                MoveText.gameObject.SetActive(false);
+                tipsGO.SetActive(false);
             }
-            //RefreshCofirm();
         }
 
         public void RefreshCofirm()
@@ -749,6 +793,12 @@ namespace RoundHero
             //ActionGO.SetActive(!isConfirm);
             moveGO.SetActive(!isConfirm);
             attackGO.SetActive(!isConfirm);
+
+            if (isConfirm)
+            {
+                tipsGO.SetActive(false);
+            }
+            
 
             if (isConfirm)
             {
@@ -869,10 +919,12 @@ namespace RoundHero
                 case ECardUseType.RawUnSelect:
                     moveCheckMark.SetActive(false);
                     attackCheckMark.SetActive(false);
+                    tipsGO.SetActive(false);
                     moveIcon.SetActive(false);
                     attackIcon.SetActive(false);
                     moveGO.SetActive(false);
                     attackGO.SetActive(false);
+                    
                     moveGO.GetComponent<Animation>().Stop();
                     attackGO.GetComponent<Animation>().Stop();
                     
@@ -882,6 +934,7 @@ namespace RoundHero
                 case ECardUseType.RawSelect:
                     moveCheckMark.SetActive(false);
                     attackCheckMark.SetActive(false);
+                    tipsGO.SetActive(false);
                     moveIcon.SetActive(false);
                     attackIcon.SetActive(false);
                     moveGO.SetActive(true);
@@ -901,7 +954,7 @@ namespace RoundHero
                     attackCheckMark.SetActive(true);
                     attackGO.SetActive(false);
                     attackGO.GetComponent<Animation>().Stop();
-                    
+                    tipsGO.SetActive(true);
                     moveIcon.SetActive(false);
                     attackIcon.SetActive(true);
                     CardItem.SetIconVisible(false);
@@ -914,7 +967,7 @@ namespace RoundHero
                     moveCheckMark.SetActive(true);
                     moveGO.SetActive(false);
                     moveGO.GetComponent<Animation>().Stop();
-                    
+                    tipsGO.SetActive(true);
                     moveIcon.SetActive(true);
                     attackIcon.SetActive(false);
                     CardItem.SetIconVisible(false);
