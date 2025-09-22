@@ -86,7 +86,7 @@ namespace RoundHero
         {
             
             BattleData.Clear();
-            BattleState = EBattleState.Empty;
+            BattleState = EBattleState.EndBattle;
             HeroManager.Instance.BattleHeroData.CurHP = HeroManager.Instance.BattleHeroData.MaxHP;
             BattleManager.Instance.TempTriggerData.Reset();
             BattleSoliderManager.Instance.Destory();

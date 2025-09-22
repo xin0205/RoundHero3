@@ -148,7 +148,7 @@ namespace RoundHero
             //GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(battleForm);
             BattleManager.Instance.Destory();
-            BattleManager.Instance.SetBattleState(EBattleState.EndBattle);
+            //BattleManager.Instance.SetBattleState(EBattleState.EndBattle);
             var sceneName = "Scene0";// + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
             GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
             ChangeState<ProcedureStart>(procedureOwner);
