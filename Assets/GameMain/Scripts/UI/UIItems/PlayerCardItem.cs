@@ -55,8 +55,8 @@ namespace RoundHero
         public void OnPointEnter()
         {
             var drCard = CardManager.Instance.GetCardTable(this.playerCardData.CardIdx);
-            if(drCard.CardType != ECardType.Unit)
-                return;
+            // if(drCard.CardType != ECardType.Unit)
+            //     return;
             
             OnPointEnterAction?.Invoke(playerCardData.CardIdx);
             
