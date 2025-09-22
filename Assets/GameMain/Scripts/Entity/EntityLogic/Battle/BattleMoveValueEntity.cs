@@ -230,7 +230,8 @@ namespace RoundHero
         {
             if (BattleMoveValueEntityData.IsLoop)
             {
-                BattleMoveValueEntityData.IsLoop = false;
+                GameEntry.Entity.HideEntity(this);
+                //BattleMoveValueEntityData.IsLoop = false;
             }
             else
             {
