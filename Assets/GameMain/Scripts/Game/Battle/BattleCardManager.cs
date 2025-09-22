@@ -743,6 +743,15 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
                     return false;
                 }
+                else
+                {
+                    if (drCard.CardType == ECardType.Tactic && BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Count <= 0)
+                    {
+                        GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_MissTargetUnit));
+            
+                        return false;
+                    }
+                }
 
             }
 
