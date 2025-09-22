@@ -18,6 +18,13 @@ namespace RoundHero
 
             return null;
         }
+        
+        public DRBuff GetFuneDataTable(int funeIdx)
+        {
+            var funeData = GetFuneData(funeIdx);
+            return GameEntry.DataTable.GetBuff(funeData.FuneID);
+
+        }
 
         public int GetIdx()
         {

@@ -120,12 +120,23 @@ namespace RoundHero
             }
                 
             
-            
+            var drCard = CardManager.Instance.GetCardTable(cardsViews.CurSelectCardIdx);
             var funeIdx = TempPlayerCommonItem.PlayerCommonItemData
                 .ItemIdx;
+
+            var drBuff = FuneManager.Instance.GetFuneDataTable(funeIdx);
+            if (!drBuff.AdapteCardType.Contains(drCard.CardType))
+            {
+                ClearDrop();
+                cardForm.RefreshView();
+                GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_UnAdapteFune));
+                return;
+            }
+            //if(drBuff.A)
+            
+            
             
             ClearDrop();
-            
             GameManager.Instance.CardsForm_EquipFuneIdxs.Add(funeIdx);
             cardData.FuneIdxs.Add(funeIdx);
             BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(funeIdx);
