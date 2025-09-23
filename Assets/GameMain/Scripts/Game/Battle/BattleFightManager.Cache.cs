@@ -589,12 +589,12 @@ namespace RoundHero
         {
             var attackUnit = GetUnitByIdx(attackUnitIdx);
             //var attackWithoutHero = attackUnit.BuffCount(EBuffID.AttackWithoutHero) > 0;
-
+            var isTrigger = false;
             foreach (var triggerBuffData in triggerBuffDatas)
             {
                 if (triggerBuffData.BuffData.BuffTriggerType != buffTriggerType)
                     continue;
-
+                
                 List<int> range;
 
                 if (buffTriggerType == EBuffTriggerType.SelectUnit && unitCamp != EUnitCamp.Enemy)
@@ -751,7 +751,7 @@ namespace RoundHero
                             triggerData);
                     }
 
-
+                    isTrigger = true;
                     if (unitCamp == EUnitCamp.Enemy &&
                         triggerBuffData.BuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                     {
@@ -767,6 +767,7 @@ namespace RoundHero
                     // && triggerBuffData.BuffData.FlyRange
                     // if(unitCamp == EUnitCamp.Enemy)
                     //     break;
+                    
                 }
                 //}
 
@@ -778,6 +779,13 @@ namespace RoundHero
                 //     BattleUnitStateManager.Instance.CheckUnitState(attackUnitID, triggerDatas);
                 // }
             }
+
+            if (isTrigger)
+            {
+                SubUnitState(attackUnit, EUnitState.SubDmg, actionData.TriggerDatas);
+                SubUnitState(attackUnit, EUnitState.AddDmg, actionData.TriggerDatas);
+            }
+            
         }
 
         // private void CacheUnitActiveAttackData(EUnitCamp unitCamp, List<BuffValue> triggerBuffDatas, int gridPosIdx,
@@ -1158,6 +1166,9 @@ namespace RoundHero
                     EBuffTriggerType.ActionEnd);
                 CacheAttackData(EUnitCamp.Enemy, triggerBuffDatas, enemyData.GridPosIdx, actionData, enemyData.Idx,
                     EBuffTriggerType.SelectUnit);
+
+                
+
             }
             // else
             // {
@@ -1170,6 +1181,35 @@ namespace RoundHero
 
             CalculateHeroHPDelta(actionData);
 
+        }
+
+        public void SubUnitState(Data_BattleUnit unitData, EUnitState unitState, Dictionary<int, List<TriggerData>> triggerDatas)
+        {
+            var subCount = unitData.GetAllStateCount(unitState);
+            
+            
+            if (unitData != null && subCount > 0)
+            {
+                var actualSubCount = subCount;
+                if (unitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualSubCount > 1)
+                {
+                    actualSubCount = 1;
+                }
+
+                if (!triggerDatas.ContainsKey(unitData.Idx))
+                {
+                    triggerDatas.Add(unitData.Idx, new List<TriggerData>());
+                }
+                
+                var subDamageTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas[unitData.Idx], unitData.Idx,
+                    unitData.Idx, unitData.Idx, unitState, -actualSubCount, ETriggerDataType.RoleState);
+
+                subDamageTriggerData.ActionUnitGridPosIdx =
+                    subDamageTriggerData.EffectUnitGridPosIdx = unitData.GridPosIdx;
+                SimulateTriggerData(subDamageTriggerData, triggerDatas[unitData.Idx]);
+                triggerDatas[unitData.Idx].Add(subDamageTriggerData);
+            }
+            
         }
 
         public void CacheEnemyAttackDatas()

@@ -836,23 +836,23 @@ namespace RoundHero
                                 triggerDatas.Add(subHurtAddDmgData);
                             }
                             
-                            if (addDmgCount > 0)
-                            {
-                                var actualAddDmgCount = addDmgCount;
-                                if (actionUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualAddDmgCount > 1)
-                                {
-                                    actualAddDmgCount = 1;
-                                }
-                                
-                                
-                                var subAddDmgCountData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
-                                    actionUnitData.Idx, actionUnitData.Idx, EUnitState.AddDmg, -actualAddDmgCount,
-                                    ETriggerDataType.RoleState);
-                                subAddDmgCountData.ActionUnitGridPosIdx =
-                                    subAddDmgCountData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
-                                SimulateTriggerData(subAddDmgCountData, triggerDatas);
-                                triggerDatas.Add(subAddDmgCountData);
-                            }
+                            // if (addDmgCount > 0)
+                            // {
+                            //     var actualAddDmgCount = addDmgCount;
+                            //     if (actionUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualAddDmgCount > 1)
+                            //     {
+                            //         actualAddDmgCount = 1;
+                            //     }
+                            //     
+                            //     
+                            //     var subAddDmgCountData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
+                            //         actionUnitData.Idx, actionUnitData.Idx, EUnitState.AddDmg, -actualAddDmgCount,
+                            //         ETriggerDataType.RoleState);
+                            //     subAddDmgCountData.ActionUnitGridPosIdx =
+                            //         subAddDmgCountData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
+                            //     SimulateTriggerData(subAddDmgCountData, triggerDatas);
+                            //     triggerDatas.Add(subAddDmgCountData);
+                            // }
 
                             if (subHPAddSelfHPCount > 0)
                             {
@@ -944,8 +944,8 @@ namespace RoundHero
                                     actualUseDefenseCount = 1;
                                 }
 
-                                var subHurtSubDmgData = BattleFightManager.Instance.Unit_State(triggerDatas, triggerData.ActionUnitIdx,
-                                    effectUnitData.Idx, effectUnitData.Idx, EUnitState.HurtSubDmg, -actualUseDefenseCount,
+                                var subHurtSubDmgData = BattleFightManager.Instance.Unit_State(triggerDatas, triggerData.OwnUnitIdx,
+                                    triggerData.ActionUnitIdx, effectUnitData.Idx, EUnitState.HurtSubDmg, -actualUseDefenseCount,
                                     ETriggerDataType.RoleState);
                                 subHurtSubDmgData.ActionUnitGridPosIdx =
                                     subHurtSubDmgData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
@@ -1022,56 +1022,12 @@ namespace RoundHero
 
                     var hpDelta = (int) triggerValue;
                     
-                    // BattleUnitManager.Instance.GetBuffValue(RoundFightData.GamePlayData, effectUnitData,
-                    //     out List<BuffValue> effectTriggerBuffDatas);
-                    // if (effectTriggerBuffDatas != null)
-                    // {
-                    //     foreach (var triggerBuffData in effectTriggerBuffDatas)
-                    //     {
-                    //         // if (triggerBuffData.DrBuff.BuffID == EBuffID.Round_UnHurt &&
-                    //         //     (RoundFightData.GamePlayData.BattleData.Round + 1) % triggerBuffData.ValueList[0] ==
-                    //         //     0 &&
-                    //         //     RoundFightData.GamePlayData.BattleData.Round > 0)
-                    //         // {
-                    //         //     triggerData.DeltaValue = -triggerData.Value;
-                    //         // }
-                    //         // else if (triggerBuffData.DrBuff.BuffID == EBuffID.UnHurtDamage &&
-                    //         //          hpDelta == triggerBuffData.ValueList[0])
-                    //         // {
-                    //         //     triggerData.DeltaValue = -triggerData.Value;
-                    //         // }
-                    //
-                    //     }
-                    // }
-                    //
-                    // BattleUnitManager.Instance.GetBuffValue(RoundFightData.GamePlayData, actionUnitData,
-                    //     out List<BuffValue> actionTriggerBuffDatas);
-                    //
-                    // if (actionTriggerBuffDatas != null)
-                    // {
-                    //     foreach (var triggerBuffData in actionTriggerBuffDatas)
-                    //     {
-                    //         // if (triggerBuffData.DrBuff.BuffID == EBuffID.Round_DoubleDamage &&
-                    //         //     (RoundFightData.GamePlayData.BattleData.Round + 1) % triggerBuffData.ValueList[0] ==
-                    //         //     triggerBuffData.ValueList[1] && hpDelta < 0)
-                    //         // {
-                    //         //     triggerData.DeltaValue = hpDelta + triggerData.DeltaValue;
-                    //         // }
-                    //     }
-                    // }
                     
                     //hpDelta = (int) (triggerData.Value + triggerData.DeltaValue);
                     var counterAtkCount = effectUnitData.GetAllStateCount(EUnitState.CounterAtk);
                     if (counterAtkCount > 0 && actionUnitData != null)
                     {
                         var counterValue = -counterAtkCount;
-                        // var battlePlayerData =
-                        //     BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(
-                        //         effectUnitData.UnitCamp);
-                        // if (battlePlayerData.RoundBuffs.Contains(EBuffID.RoundCounterAttackAddDamage))
-                        // {
-                        //     counterValue += -1;
-                        // }
                         
                         var actualCounterAtkCount = counterAtkCount;
                         if (effectUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualCounterAtkCount > 1)
@@ -1137,22 +1093,6 @@ namespace RoundHero
                         triggerDatas.Add(recoverHPTriggerData);
                     }
 
-                    // if (effectUnitData is Data_BattleSolider)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-                    // {
-                    //     var oldSoliderHP = effectUnitData.CurHP;
-                    //     FightManager.Instance.ChangeHP(effectUnitData, hpDelta);
-                    //     var newSoliderHP = effectUnitData.CurHP;
-                    //     var deltaSoliderHP = newSoliderHP - oldSoliderHP;
-                    //     if (deltaSoliderHP < 0)
-                    //     {
-                    //         FightManager.Instance.ChangeHP(RoundFightData.GamePlayData.BattleHero, -deltaSoliderHP);
-                    //     }
-                    // }
-                    // else
-                    // {
-                    //     FightManager.Instance.ChangeHP(effectUnitData, hpDelta);
-                    // }
-
                     if ( actionUnitData!= null  && actionUnitData.GetStateCount(EUnitState.DoubleDmg) > 0 && !GameUtility.ContainRoundState(
                         GamePlayManager.Instance.GamePlayData, EBuffID.Spec_CurseUnEffect))
                     {
@@ -1171,58 +1111,30 @@ namespace RoundHero
                     
                 }
 
-                // if (actionUnitData.GetStateCount(EUnitState.HurtSubDamage) > 0)
-                // {
-                //     var hurtSubDamageTriggerData = FightManager.Instance.Unit_State(actionUnitData.ID,
-                //         actionUnitData.ID, actionUnitData.ID, EUnitState.HurtSubDamage, 1, ETriggerDataType.RoleState);
-                //     SimulateTriggerData(hurtSubDamageTriggerData, triggerDatas);
-                //     triggerDatas.Add(hurtSubDamageTriggerData);
-                //
-                // }
-
                 //受击增加强化
                 if (effectUnitData.GetStateCount(EUnitState.AddDmg) > 0)
                 {
-                    
-                    // var addDamageTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, effectUnitData.Idx,
-                    //     effectUnitData.Idx, effectUnitData.Idx, EUnitState.AddDmg, 1, ETriggerDataType.RoleState);
-                    // SimulateTriggerData(addDamageTriggerData, triggerDatas);
-                    // triggerDatas.Add(addDamageTriggerData);
+
                 }
 
-                // if (actionUnitData.GetStateCount(EUnitState.HurtAddDamage) > 0)
+
+                // if (actionUnitData != null && subDmgCount > 0)
                 // {
-                //     var hurtAddDamageTriggerData = FightManager.Instance.Unit_State(actionUnitData.ID,
-                //         actionUnitData.ID, actionUnitData.ID, EUnitState.HurtAddDamage, -1, ETriggerDataType.RoleState);
-                //     SimulateTriggerData(hurtAddDamageTriggerData, triggerDatas);
-                //     triggerDatas.Add(hurtAddDamageTriggerData);
-                // }
-
-
-                if (actionUnitData != null && subDmgCount > 0)
-                {
-                    var actualSubDmgCount = subDmgCount;
-                    if (actionUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualSubDmgCount > 1)
-                    {
-                        actualSubDmgCount = 1;
-                    }
-                    
-                    var subDamageTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
-                        actionUnitData.Idx, actionUnitData.Idx, EUnitState.SubDmg, -actualSubDmgCount, ETriggerDataType.RoleState);
-
-                    subDamageTriggerData.ActionUnitGridPosIdx =
-                        subDamageTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
-                    SimulateTriggerData(subDamageTriggerData, triggerDatas);
-                    triggerDatas.Add(subDamageTriggerData);
-                }
-
-                // if (actionUnitData.GetStateCount(EUnitState.SubDamage) > 0)
-                // {
-                //     var subDamageTriggerData = FightManager.Instance.Unit_State(actionUnitData.ID,
-                //         actionUnitData.ID, actionUnitData.ID, EUnitState.SubDamage, -1, ETriggerDataType.RoleState);
+                //     var actualSubDmgCount = subDmgCount;
+                //     if (actionUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualSubDmgCount > 1)
+                //     {
+                //         actualSubDmgCount = 1;
+                //     }
+                //     
+                //     var subDamageTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
+                //         actionUnitData.Idx, actionUnitData.Idx, EUnitState.SubDmg, -actualSubDmgCount, ETriggerDataType.RoleState);
+                //
+                //     subDamageTriggerData.ActionUnitGridPosIdx =
+                //         subDamageTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
                 //     SimulateTriggerData(subDamageTriggerData, triggerDatas);
                 //     triggerDatas.Add(subDamageTriggerData);
                 // }
+                
             }
             else if (triggerValue > 0)
             {
