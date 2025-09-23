@@ -885,6 +885,10 @@ namespace RoundHero
                                     
                                     
                                 }
+
+                                maxAddHPCount = maxAddHPCount > Mathf.Abs(_triggerValue)
+                                    ? Mathf.Abs(_triggerValue)
+                                    : maxAddHPCount;
                                 
                                 var actualSubHPAddSelfHPCount = maxAddHPCount > subHPAddSelfHPCount ? -subHPAddSelfHPCount : -maxAddHPCount;
                                 if (actionUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualSubHPAddSelfHPCount < -1)
@@ -915,10 +919,10 @@ namespace RoundHero
 
                                 if (subHPAddSelfHPAcquireCard != null)
                                 {
-                                    var drAtkAddSelfHPAcquireCard = GameEntry.DataTable.GetBless(EBlessID.SubHPAddSelfHPAcquireCard);
+                                    var drSubHPAddSelfHPAcquireCard = GameEntry.DataTable.GetBless(EBlessID.SubHPAddSelfHPAcquireCard);
 
                                     BattleCardManager.Instance.CacheAcquireCards(addSelfHPTriggerData, triggerDatas,
-                                        int.Parse(drAtkAddSelfHPAcquireCard.GetValues(0)[0]));
+                                        int.Parse(drSubHPAddSelfHPAcquireCard.GetValues(0)[0]));
 
                                 }
                             }
