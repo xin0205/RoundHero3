@@ -70,6 +70,19 @@ namespace RoundHero
                 var test = new SelectAcquireItemData()
                 {
                     ItemType = EItemType.AddCardFuneSlot,
+                    ItemID = 0,
+                };
+                selectAcquireItemDatas.Add(test);
+                test = new SelectAcquireItemData()
+                {
+                    ItemType = EItemType.AddCardFuneSlot,
+                    ItemID = 0,
+                };
+                selectAcquireItemDatas.Add(test);
+                test = new SelectAcquireItemData()
+                {
+                    ItemType = EItemType.AddCardFuneSlot,
+                    ItemID = 0,
                 };
                 selectAcquireItemDatas.Add(test);
                 //
@@ -387,7 +400,7 @@ namespace RoundHero
             var selectIdx = (int)clickParams;
             
             var cardData = CardManager.Instance.GetCard(cardIdx);
-            if (cardData.MaxFuneCount >= Constant.BattleMode.MaxFuneCount)
+            if (cardData.MaxFuneCount >= Constant.Card.MaxFuneCount)
             {
                 GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MaxFuneCount);
                 return;
