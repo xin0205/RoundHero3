@@ -90,6 +90,12 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx] = EGridType.Empty;
                 RoundFightData.GamePlayData.BattleData.GridTypes[
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx] = EGridType.TemporaryUnit;
+                
+                var effectUnit = GetUnitByGridPosIdx(BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
+                BattleCardManager.Instance.CacheUseCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
+                    effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
+                    Constant.Battle.UnUnitTriggerIdx);
+                
             }
             else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.SelectHurtUnit)
             {
@@ -143,13 +149,10 @@ namespace RoundHero
                     effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
                     Constant.Battle.UnUnitTriggerIdx);
             }
-            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.MoveUnit)
-            {
-                var effectUnit = GetUnitByGridPosIdx(BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
-                BattleCardManager.Instance.CacheUseCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
-                    effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
-                    Constant.Battle.UnUnitTriggerIdx);
-            }
+            // else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.MoveUnit)
+            // {
+            //     
+            // }
 
             if (BattleCardManager.Instance.SelectPassCardIdx != -1)
             {

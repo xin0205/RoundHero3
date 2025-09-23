@@ -1248,11 +1248,11 @@ namespace RoundHero
                         break;
                     case ECardUseType.Attack:
                         //unitEntity.BattleUnit.RoundAttackTimes += 1;
-                        cardEnergy = unitEntity.BattleUnitData.RoundAttackTimes;
-                        break;
+                        // cardEnergy = unitEntity.BattleUnitData.RoundAttackTimes;
+                        // break;
                     case ECardUseType.Move:
                         //unitEntity.BattleUnit.RoundMoveTimes += 1;
-                        cardEnergy = unitEntity.BattleUnitData.RoundMoveTimes;
+                        cardEnergy = unitEntity.BattleUnitData.RoundMoveTimes + unitEntity.BattleUnitData.RoundAttackTimes;
                         break;
             
                 }
