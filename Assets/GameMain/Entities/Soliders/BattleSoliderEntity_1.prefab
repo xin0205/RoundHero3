@@ -1512,6 +1512,8 @@ MonoBehaviour:
   TargetPosIdx: 0
   UnitDescTriggerItem: {fileID: 4347577885375820027}
   IsPointer: 0
+  CurValueEntityIdx: 0
+  ShowValueEntityIdx: 0
 --- !u!95 &4525250011595830683
 Animator:
   serializedVersion: 5
