@@ -418,11 +418,18 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.RoundClear();
             
             BattleGridPropManager.Instance.RefreshPropMoveDirectUseInRound();
+            StartTrigger();
+            
             BattleUnitManager.Instance.RoundStartTrigger();
             BattleUnitStateManager.Instance.RoundStartTrigger();
             BattleCurseManager.Instance.RoundStartTrigger();
             BlessManager.Instance.RoundStartTrigger(GamePlayManager.Instance.GamePlayData);
             HeroManager.Instance.RoundStartTrigger();
+        }
+
+        public void StartTrigger()
+        {
+            BattleUnitManager.Instance.StartTrigger();
         }
 
         

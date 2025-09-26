@@ -453,15 +453,17 @@ namespace RoundHero
         public int RoundAttackTimes = 0;
         public int CacheHPDelta;
         public int CollideCount = 0;
+        public int StartRound = 0;
 
         //, EGridType.Unit
-        public Data_BattleUnit(int idx, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) : base(idx, gridPosIdx,
+        public Data_BattleUnit(int idx, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs, int startRound) : base(idx, gridPosIdx,
             unitCamp)
         {
             Idx = idx;
             GridPosIdx = gridPosIdx;
             UnitCamp = unitCamp;
             FuneIdxs = funeIdxs;
+            StartRound = startRound;
         }
 
         public Data_BattleUnit()
@@ -767,8 +769,8 @@ namespace RoundHero
         {
         }
 
-        public Data_BattleHero(int idx, EHeroID heroID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs) :
-            base(idx, gridPosIdx, unitCamp, funeIdxs)
+        public Data_BattleHero(int idx, EHeroID heroID, int gridPosIdx, EUnitCamp unitCamp, List<int> funeIdxs, int startRound) :
+            base(idx, gridPosIdx, unitCamp, funeIdxs, startRound)
         {
             var drHero = GameEntry.DataTable.GetHero(heroID);
             
@@ -818,6 +820,7 @@ namespace RoundHero
             dataBattleHero.AddHeroHP = AddHeroHP;
             dataBattleHero.CacheHPDelta = CacheHPDelta;
             dataBattleHero.CollideCount = CollideCount;
+            dataBattleHero.StartRound = StartRound;
             //dataBattleHero.RoundHeroHPDelta = RoundHeroHPDelta;
             return dataBattleHero;
 
@@ -921,8 +924,8 @@ namespace RoundHero
 
         }
 
-        public Data_BattleSolider(int idx, int cardIdx, int gridPosIdx, EUnitCamp unitCamp) : base(idx, gridPosIdx,
-            unitCamp, new List<int>())
+        public Data_BattleSolider(int idx, int cardIdx, int gridPosIdx, EUnitCamp unitCamp, int startRound) : base(idx, gridPosIdx,
+            unitCamp, new List<int>(), startRound)
         {
             CardIdx = cardIdx;
             RefreshCardData();
@@ -971,6 +974,7 @@ namespace RoundHero
             dataBattleUnit.AddHeroHP = AddHeroHP;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;
             dataBattleUnit.CollideCount = CollideCount;
+            dataBattleUnit.StartRound = StartRound;
             return dataBattleUnit;
 
         }
@@ -1049,7 +1053,7 @@ namespace RoundHero
         }
 
         public Data_BattleMonster(int idx, int monsterID, int gridPosIdx, EUnitCamp unitCamp,
-            List<int> funeIdxs) : base(idx, gridPosIdx, unitCamp, funeIdxs)
+            List<int> funeIdxs, int startRound) : base(idx, gridPosIdx, unitCamp, funeIdxs, startRound)
         {
             MonsterID = monsterID;
             //EnemyTypeID = enemyTypeID;
@@ -1096,6 +1100,7 @@ namespace RoundHero
             dataBattleEnemy.AddHeroHP = AddHeroHP;
             dataBattleEnemy.CacheHPDelta = CacheHPDelta;
             dataBattleEnemy.CollideCount = CollideCount;
+            dataBattleEnemy.StartRound = StartRound;
             return dataBattleEnemy;
 
         }
@@ -1135,8 +1140,10 @@ namespace RoundHero
         {
             
         }
-        
-        public Data_BattleCore(int idx, int coreIdx, int gridPosIdx, EUnitCamp unitCamp) : base(idx, gridPosIdx,unitCamp, new List<int>())
+
+        public Data_BattleCore(int idx, int coreIdx, int gridPosIdx, EUnitCamp unitCamp, int startRound) : base(idx,
+            gridPosIdx, unitCamp, new List<int>(), startRound)
+
         {
             Idx = idx;
             CoreIdx = coreIdx;

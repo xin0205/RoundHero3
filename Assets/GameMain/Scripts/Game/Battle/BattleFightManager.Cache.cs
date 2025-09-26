@@ -385,7 +385,7 @@ namespace RoundHero
                     {
                         var subHurtRoundStartData = BattleFightManager.Instance.Unit_State(triggerDatas, kv.Value.Idx,
                             kv.Value.Idx, kv.Value.Idx, EUnitState.HurtRoundStart, -1,
-                            ETriggerDataType.RoleState);
+                            ETriggerDataType.State);
                         subHurtRoundStartData.ActionUnitGridPosIdx = subHurtRoundStartData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
                         BattleBuffManager.Instance.CacheTriggerData(subHurtRoundStartData, triggerDatas);
                         
@@ -1205,7 +1205,7 @@ namespace RoundHero
                 }
                 
                 var subDamageTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas[unitData.Idx], unitData.Idx,
-                    unitData.Idx, unitData.Idx, unitState, -actualSubCount, ETriggerDataType.RoleState);
+                    unitData.Idx, unitData.Idx, unitState, -actualSubCount, ETriggerDataType.State);
 
                 subDamageTriggerData.ActionUnitGridPosIdx =
                     subDamageTriggerData.EffectUnitGridPosIdx = unitData.GridPosIdx;
@@ -1881,7 +1881,7 @@ namespace RoundHero
                     }
 
                     break;
-                case ETriggerDataType.RoleAttribute:
+                case ETriggerDataType.Atrb:
                     switch (triggerData.BattleUnitAttribute)
                     {
                         case EUnitAttribute.HP:
@@ -1925,7 +1925,7 @@ namespace RoundHero
                     }
 
                     break;
-                case ETriggerDataType.RoleState:
+                case ETriggerDataType.State:
                     effectUnit.ChangeState(triggerData.UnitStateDetail.UnitState, triggerData.UnitStateDetail.Value);
                     if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff]
                             .Contains(triggerData.UnitStateDetail.UnitState) && triggerData.UnitStateDetail.Value > 0)
@@ -1934,7 +1934,7 @@ namespace RoundHero
                     }
 
                     break;
-                case ETriggerDataType.RoundRoleState:
+                case ETriggerDataType.RoundState:
                     effectUnit.ChangeRoundState(triggerData.UnitStateDetail.UnitState,
                         triggerData.UnitStateDetail.Value);
                     break;

@@ -110,7 +110,7 @@ namespace RoundHero
             if (bePassUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
                 var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas,bePassUnitIdx, bePassUnitIdx, passUnitIdx,
-                    EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
+                    EUnitState.HurtRoundStart, 1, ETriggerDataType.State);
                 triggerData.TriggerDataSubType = ETriggerDataSubType.State;
                 triggerData.ActionUnitGridPosIdx = bePassUnit.GridPosIdx;
                 triggerData.EffectUnitGridPosIdx = bePassUnit.GridPosIdx;
@@ -120,7 +120,7 @@ namespace RoundHero
             if (passUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
                 var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnitIdx, passUnitIdx, bePassUnitIdx,
-                    EUnitState.HurtRoundStart, 1, ETriggerDataType.RoleState);
+                    EUnitState.HurtRoundStart, 1, ETriggerDataType.State);
                 triggerData.TriggerDataSubType = ETriggerDataSubType.State;
                 triggerData.ActionUnitGridPosIdx = passUnit.GridPosIdx;
                 triggerData.EffectUnitGridPosIdx = passUnit.GridPosIdx;

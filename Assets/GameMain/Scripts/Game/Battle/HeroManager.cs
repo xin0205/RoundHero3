@@ -132,7 +132,7 @@ namespace RoundHero
         public void InitHeroData(EHeroID heroID)
         {
             BattleHeroData = new Data_BattleHero(BattleUnitManager.Instance.GetIdx(),
-                heroID, 0, BattleManager.Instance.CurUnitCamp, new List<int>());
+                heroID, 0, BattleManager.Instance.CurUnitCamp, new List<int>(), BattleManager.Instance.BattleData.Round);
             BattleHeroData.UnitRole = EUnitRole.Hero;
             
         }
@@ -315,7 +315,7 @@ namespace RoundHero
         public HPDeltaData AddHPDelta(TriggerData triggerData)
         {
 
-            if (!(triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+            if (!(triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                   triggerData.BattleUnitAttribute == EUnitAttribute.HP) &&
                 !(triggerData.TriggerDataType == ETriggerDataType.HeroAtrb &&
                   triggerData.HeroAttribute == EHeroAttribute.HP))

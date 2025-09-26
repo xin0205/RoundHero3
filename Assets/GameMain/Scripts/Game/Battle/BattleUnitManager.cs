@@ -351,6 +351,53 @@ namespace RoundHero
                 kv.Value.BattleUnitData.AddHeroHP = 0;
             }
         }
+        
+        public void StartTrigger()
+        {
+
+            foreach (var kv in BattleUnitDatas)
+            {
+                BattleUnitManager.Instance.GetBuffValue(GamePlayManager.Instance.GamePlayData, kv.Value,
+                    out List<BuffValue> triggerBuffDatas, -1, null);
+
+                if (triggerBuffDatas == null)
+                    return;
+
+                var idx = -1;
+                foreach (var triggerBuffData in triggerBuffDatas)
+                {
+                    idx++;  
+                    if (triggerBuffData.BuffData.BuffTriggerType != EBuffTriggerType.Start)
+                        continue;
+                    
+                    if(kv.Value.StartRound != BattleManager.Instance.BattleData.Round)
+                        continue;
+                        
+                    if (triggerBuffData.BuffData.RangeTrigger)
+                        continue;
+
+
+                    BattleFightManager.Instance.TriggerAction(new TriggerData()
+                    {
+                        OwnUnitIdx = kv.Value.Idx,
+                        ActionUnitIdx = kv.Value.Idx,
+                        EffectUnitIdx = kv.Value.Idx,
+                        TriggerResult = ETriggerResult.Continue,
+                        Value = triggerBuffData.ValueList[0],
+                        ActualValue = triggerBuffData.ValueList[0],
+                        TriggerDataType = triggerBuffData.BuffData.TriggerDataType,
+                        UnitStateDetail = new UnitStateDetail()
+                        {
+                            EffectType = EEffectType.Default,
+                            Value = (int)triggerBuffData.ValueList[0],
+                            UnitState = triggerBuffData.BuffData.UnitState,
+                        }
+                    });
+
+
+                }
+            }
+        }
 
         public void RefreshRoundStates()
         {

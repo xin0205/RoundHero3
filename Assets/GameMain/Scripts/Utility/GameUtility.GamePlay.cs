@@ -1674,7 +1674,7 @@ namespace RoundHero
             if (triggerData == null)
                 return false;
             
-            return  triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+            return  triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                     triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                     triggerData.Value < 0;
 
@@ -1685,7 +1685,7 @@ namespace RoundHero
             if (buffValue == null)
                 return false;
             
-            return  buffValue.BuffData.BuffValueType == EBuffValueType.Atrb &&
+            return  buffValue.BuffData.TriggerDataType == ETriggerDataType.Atrb &&
                     buffValue.BuffData.UnitAttribute == EUnitAttribute.HP &&
                     buffValue.ValueList[0] < 0;
 
@@ -1696,7 +1696,7 @@ namespace RoundHero
             if (triggerData == null)
                 return false;
             
-            return  triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+            return  triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                     triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                     triggerData.Value > 0;
 
@@ -1707,7 +1707,7 @@ namespace RoundHero
             if (buffValue == null)
                 return false;
             
-            return  buffValue.BuffData.BuffValueType == EBuffValueType.Atrb &&
+            return  buffValue.BuffData.TriggerDataType == ETriggerDataType.Atrb &&
                     buffValue.BuffData.UnitAttribute == EUnitAttribute.HP &&
                     buffValue.ValueList[0] < 0;
 

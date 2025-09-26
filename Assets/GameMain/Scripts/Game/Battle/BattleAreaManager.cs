@@ -325,7 +325,7 @@ namespace RoundHero
                         //cardEnergy, ,  cardData.FuneIdxs
                         BattleManager.Instance.TempTriggerData.UnitData = new Data_BattleSolider(
                             BattleUnitManager.Instance.GetIdx(), cardIdx,
-                            ne.GridPosIdx, BattleManager.Instance.CurUnitCamp);
+                            ne.GridPosIdx, BattleManager.Instance.CurUnitCamp, BattleManager.Instance.BattleData.Round);
                         
                         //AddUnitState
                         //BattleUnitManager.Instance.TempUnitData.UnitData.AddState(EUnitState.AttackPassUs, 1);

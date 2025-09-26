@@ -447,7 +447,7 @@ namespace RoundHero
                     if (triggerData.BuffValue.BuffData.BuffEquipType != EBuffEquipType.Normal)
                     {
                         //死亡，溢出的伤害，攻击对方 需要下行代码
-                        if (triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+                        if (triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                             triggerData.BattleUnitAttribute == EUnitAttribute.HP)
                         {
                             HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
@@ -811,7 +811,7 @@ namespace RoundHero
                 {
                     if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                     {
-                        if(triggerActionTriggerData.TriggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        if(triggerActionTriggerData.TriggerData.TriggerDataType != ETriggerDataType.Atrb)
                             continue;
                         
                         var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerActionTriggerData.TriggerData.EffectUnitIdx);

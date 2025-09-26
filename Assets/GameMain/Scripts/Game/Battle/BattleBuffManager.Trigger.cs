@@ -195,7 +195,7 @@ namespace RoundHero
 
             var triggerData = new TriggerData()
             {
-                TriggerDataType = ETriggerDataType.RoleAttribute,
+                TriggerDataType = ETriggerDataType.Atrb,
                 EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
@@ -211,7 +211,7 @@ namespace RoundHero
                     var value2 =  value1s[0] * ratio;
                     triggerData = new TriggerData()
                     {
-                        TriggerDataType = ETriggerDataType.RoleAttribute,
+                        TriggerDataType = ETriggerDataType.Atrb,
                         EffectUnitIdx = kv.Value.Idx,
                         BattleUnitAttribute = EUnitAttribute.HP,
                         Value = value2,
@@ -237,7 +237,7 @@ namespace RoundHero
 
             var triggerData = new TriggerData()
             {
-                TriggerDataType = ETriggerDataType.RoleAttribute,
+                TriggerDataType = ETriggerDataType.Atrb,
                 EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
@@ -256,7 +256,7 @@ namespace RoundHero
 
             var triggerData = new TriggerData()
             {
-                TriggerDataType = ETriggerDataType.RoleAttribute,
+                TriggerDataType = ETriggerDataType.Atrb,
                 EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
@@ -282,7 +282,7 @@ namespace RoundHero
 
                 var triggerData = new TriggerData()
                 {
-                    TriggerDataType = ETriggerDataType.RoleAttribute,
+                    TriggerDataType = ETriggerDataType.Atrb,
                     EffectUnitIdx = kv.Value.Idx,
                     BattleUnitAttribute = EUnitAttribute.HP,
                     Value = value,
@@ -310,7 +310,7 @@ namespace RoundHero
      
                 var triggerData = new TriggerData()
                 {
-                    TriggerDataType = ETriggerDataType.RoleAttribute,
+                    TriggerDataType = ETriggerDataType.Atrb,
                     EffectUnitIdx = kv.Value.Idx,
                     BattleUnitAttribute = EUnitAttribute.HP,
                     Value = value,
@@ -336,7 +336,7 @@ namespace RoundHero
 
                 var triggerData = new TriggerData()
                 {
-                    TriggerDataType = ETriggerDataType.RoleState,
+                    TriggerDataType = ETriggerDataType.State,
                     EffectUnitIdx = kv.Value.Idx,
                     UnitStateDetail = new UnitStateDetail()
                     {
@@ -403,7 +403,7 @@ namespace RoundHero
                 
                 var triggerData = new TriggerData()
                 {
-                    TriggerDataType = ETriggerDataType.RoleState,
+                    TriggerDataType = ETriggerDataType.State,
                     EffectUnitIdx = kv.Value.Idx,
                     UnitStateDetail = new UnitStateDetail()
                     {
@@ -433,7 +433,7 @@ namespace RoundHero
 
                 var triggerData = new TriggerData()
                 {
-                    TriggerDataType = ETriggerDataType.RoleState,
+                    TriggerDataType = ETriggerDataType.State,
                     EffectUnitIdx = kv.Value.Idx,
                     UnitStateDetail = new UnitStateDetail()
                     {
@@ -456,7 +456,7 @@ namespace RoundHero
 
             var triggerData = new TriggerData()
             {
-                TriggerDataType = ETriggerDataType.RoleAttribute,
+                TriggerDataType = ETriggerDataType.Atrb,
                 EffectUnitIdx = effectUnit.Idx,
                 BattleUnitAttribute = EUnitAttribute.HP,
                 Value = value,
@@ -480,7 +480,7 @@ namespace RoundHero
                 {
                     var triggerData = new TriggerData()
                     {
-                        TriggerDataType = ETriggerDataType.RoleState,
+                        TriggerDataType = ETriggerDataType.State,
                         EffectUnitIdx = effectUnit.Idx,
                         UnitStateDetail = new UnitStateDetail(effectUnit.UnitStateData.UnitStates[state]),
  
@@ -533,7 +533,7 @@ namespace RoundHero
 
                 var triggerData = new TriggerData()
                 {
-                    TriggerDataType = ETriggerDataType.RoleState,
+                    TriggerDataType = ETriggerDataType.State,
                     EffectUnitIdx = kv.Value.Idx,
                     UnitStateDetail = new UnitStateDetail()
                     {
@@ -570,7 +570,7 @@ namespace RoundHero
 
                 var triggerData = new TriggerData()
                 {
-                    TriggerDataType = ETriggerDataType.RoleState,
+                    TriggerDataType = ETriggerDataType.State,
                     EffectUnitIdx = kv.Value.Idx,
                     UnitStateDetail = new UnitStateDetail()
                     {

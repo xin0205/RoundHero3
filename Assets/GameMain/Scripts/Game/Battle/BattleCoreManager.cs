@@ -88,7 +88,7 @@ namespace RoundHero
              foreach (var coreGridPosIdx in coreGridPosIdxs)
              {
                  var battleCoreData = new Data_BattleCore(BattleUnitManager.Instance.GetIdx(), 0, coreGridPosIdx,
-                     BattleManager.Instance.CurUnitCamp);
+                     BattleManager.Instance.CurUnitCamp, BattleManager.Instance.BattleData.Round);
                  await GenerateCoreEntity(battleCoreData);
                  //BattleUnitManager.Instance.BattleUnitDatas.Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity.BattleCoreEntityData.BattleCoreData);
 

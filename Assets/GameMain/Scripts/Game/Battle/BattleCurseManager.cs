@@ -86,7 +86,7 @@ namespace RoundHero
                 
             actionData.AddEmptyTriggerDataList(effectUnit.Idx);
             var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[effectUnit.Idx], -1, -1,
-                effectUnit.Idx, unitState, 1, ETriggerDataType.RoleState);
+                effectUnit.Idx, unitState, 1, ETriggerDataType.State);
                 
                 
             BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[effectUnit.Idx]);
@@ -183,7 +183,7 @@ namespace RoundHero
                     {
                         actionData.AddEmptyTriggerDataList(randomUnit.Idx);
                         var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[randomUnit.Idx], -1, -1, randomUnit.Idx,
-                            unitState, -1, ETriggerDataType.RoleState);
+                            unitState, -1, ETriggerDataType.State);
                         
                         BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[randomUnit.Idx]);
                     }

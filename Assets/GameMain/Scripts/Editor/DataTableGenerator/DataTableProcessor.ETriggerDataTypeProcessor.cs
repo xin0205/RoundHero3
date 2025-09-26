@@ -5,7 +5,7 @@ namespace RoundHero.Editor.DataTableTools
 {
     public sealed partial class DataTableProcessor
     {
-        private sealed class EBuffValueTypeProcessor : GenericDataProcessor<EBuffValueType>
+        private sealed class ETriggerDataTypeProcessor : GenericDataProcessor<ETriggerDataType>
         {
             public override bool IsSystem
             {
@@ -27,7 +27,7 @@ namespace RoundHero.Editor.DataTableTools
             {
                 get
                 {
-                    return "EBuffValueType";
+                    return "ETriggerDataType";
                 }
             }
 
@@ -35,13 +35,13 @@ namespace RoundHero.Editor.DataTableTools
             {
                 return new string[]
                 {
-                    "EBuffValueType",
+                    "ETriggerDataType",
                 };
             }
 
-            public override EBuffValueType Parse(string value)
+            public override ETriggerDataType Parse(string value)
             {
-                return Enum.Parse<EBuffValueType>(value);
+                return Enum.Parse<ETriggerDataType>(value);
             }
 
             public override void WriteToStream(DataTableProcessor dataTableProcessor, BinaryWriter binaryWriter, string value)

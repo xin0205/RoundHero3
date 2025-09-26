@@ -23,7 +23,7 @@ namespace RoundHero
             {
                 foreach (var triggerData in kv.Value)
                 {
-                    if (triggerData.TriggerDataType != ETriggerDataType.RoleState)
+                    if (triggerData.TriggerDataType != ETriggerDataType.State)
                     {
                         continue;
                     }
@@ -54,7 +54,7 @@ namespace RoundHero
             {
                 foreach (var triggerData in kv.Value)
                 {
-                    if (triggerData.TriggerDataType != ETriggerDataType.RoleState)
+                    if (triggerData.TriggerDataType != ETriggerDataType.State)
                     {
                         continue;
                     }
@@ -77,7 +77,7 @@ namespace RoundHero
             var idx = 0;
             foreach (var triggerData in triggerDatas)
             {
-                if (triggerData.TriggerDataType != ETriggerDataType.RoleState)
+                if (triggerData.TriggerDataType != ETriggerDataType.State)
                 {
                     continue;
                 }
@@ -93,6 +93,7 @@ namespace RoundHero
                 var value = (int)triggerData.ActualValue;
                 var unitState = triggerData.UnitStateDetail.UnitState;
 
+                //InternalShowIcon(triggerData, unitState, value, _curUnitStateIconEntityIdx);
                 GameUtility.DelayExcute(idx *0.25f, () =>
                 {
                     InternalShowIcon(triggerData, unitState, value, _curUnitStateIconEntityIdx);
@@ -211,7 +212,7 @@ namespace RoundHero
             {
                 foreach (var triggerData in kv.Value)
                 {
-                    if (triggerData.TriggerDataType != ETriggerDataType.RoleState)
+                    if (triggerData.TriggerDataType != ETriggerDataType.State)
                     {
                         continue;
                     }

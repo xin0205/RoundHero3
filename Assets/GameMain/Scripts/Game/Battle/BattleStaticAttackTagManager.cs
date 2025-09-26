@@ -40,7 +40,7 @@ namespace RoundHero
                 {
                     foreach (var triggerData in triggerDatas)
                     {
-                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
                         {
                             continue;
                         }
@@ -100,7 +100,7 @@ namespace RoundHero
                 {
                     foreach (var triggerData in triggerDatas)
                     {
-                        if (triggerData.TriggerDataType != ETriggerDataType.RoleAttribute)
+                        if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
                         {
                             continue;
                         }

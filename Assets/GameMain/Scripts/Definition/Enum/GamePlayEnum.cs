@@ -285,6 +285,7 @@ namespace RoundHero
 
     public enum EBuffTriggerType
     {
+        Start,
         BePass,
         Pass,
         Move,
@@ -466,9 +467,9 @@ namespace RoundHero
     public enum ETriggerDataType
     {
         HeroAtrb,
-        RoleAttribute,
-        RoleState,
-        RoundRoleState,
+        Atrb,
+        State,
+        RoundState,
         Card,
         Link,
         RemoveUnit,
@@ -507,27 +508,27 @@ namespace RoundHero
        Trigger,
     }
 
-    public enum EBuffValueType
-    {
-        Atrb,
-        HeroAtrb,
-        State,
-        Card,
-        RoundState,
-        ClearBuff,
-        TransferBuff,
-        // UnitAttribute,
-        // HeroAttribute,
-        // UnitState,
-        // RoundUnitState,
-        // PosUnitState,
-        // BattleUnitState,
-        // RandomPositiveUnitState,
-        // RandomNegativeUnitState,
-        // GridProp,
-        // Card,
-        Empty,
-    }
+    // public enum EBuffValueType
+    // {
+    //     Atrb,
+    //     HeroAtrb,
+    //     State,
+    //     Card,
+    //     RoundState,
+    //     ClearBuff,
+    //     TransferBuff,
+    //     // UnitAttribute,
+    //     // HeroAttribute,
+    //     // UnitState,
+    //     // RoundUnitState,
+    //     // PosUnitState,
+    //     // BattleUnitState,
+    //     // RandomPositiveUnitState,
+    //     // RandomNegativeUnitState,
+    //     // GridProp,
+    //     // Card,
+    //     Empty,
+    // }
 
     public enum ELinkType
     {

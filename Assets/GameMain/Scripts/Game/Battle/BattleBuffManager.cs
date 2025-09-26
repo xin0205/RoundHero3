@@ -16,7 +16,7 @@ namespace RoundHero
         public EFlyType FlyType = EFlyType.Empty;
         public EActionType FlyRange = EActionType.Empty;
         public List<ETriggerTarget> TriggerTargets = new List<ETriggerTarget>();
-        public EBuffValueType BuffValueType = EBuffValueType.Empty;
+        public ETriggerDataType TriggerDataType = ETriggerDataType.Empty;
         public List<EUnitStateEffectType> UnitStateEffectTypes = new List<EUnitStateEffectType>();
         public bool RangeTrigger;
         public EHeroAttribute HeroAttribute = EHeroAttribute.Empty;
@@ -37,7 +37,7 @@ namespace RoundHero
             buffData.FlyType = FlyType;
             buffData.FlyRange = FlyRange;
             buffData.TriggerTargets = new List<ETriggerTarget>(TriggerTargets);
-            buffData.BuffValueType = BuffValueType;
+            buffData.TriggerDataType = TriggerDataType;
             buffData.HeroAttribute = HeroAttribute;
             buffData.UnitAttribute = UnitAttribute;
             buffData.UnitState = UnitState;
@@ -155,7 +155,7 @@ namespace RoundHero
                (BattlePlayerManager.Instance.BattlePlayerData.RoundUseCardCount <= 0 || BattlePlayerManager.Instance.BattlePlayerData.RoundUseCardCount % int.Parse(values[1]) != 0))
                 return null;
         
-            var buffvalueType = buffData.BuffValueType;
+            var buffvalueType = buffData.TriggerDataType;
             var _triggerDatas = new List<TriggerData>();
         
             var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData, ownUnitIdx, actionUnitIdx, effectUnitIdx ,actionUnitGridPosIdx, actionUnitPreGridPosIdx);
@@ -183,16 +183,16 @@ namespace RoundHero
         
                     switch (buffvalueType)
                     {
-                        case EBuffValueType.HeroAtrb:
+                        case ETriggerDataType.HeroAtrb:
                             triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitIdx, actionUnitIdx,
                                 realEffectUnitIdx, buffData.HeroAttribute, buffValues[0]);
                             
                             break;
-                        case EBuffValueType.Atrb:
+                        case ETriggerDataType.Atrb:
                             triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitIdx, actionUnitIdx,
                                 realEffectUnitIdx, buffData.UnitAttribute, buffValues[0], ETriggerDataSubType.Unit);
                             break;
-                        case EBuffValueType.State:
+                        case ETriggerDataType.State:
                             
                             // switch (buffData.BuffTriggerType)
                             // {
@@ -206,7 +206,7 @@ namespace RoundHero
                             // }
                             var unitState = buffData.UnitState;
                             triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
-                                unitState, (int)buffValues[0], ETriggerDataType.RoleState);
+                                unitState, (int)buffValues[0], ETriggerDataType.State);
                             
                             var addEnemyMoreDebuff =
                                 BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
@@ -222,7 +222,7 @@ namespace RoundHero
                             }
         
                             break;
-                        case EBuffValueType.RoundState:
+                        case ETriggerDataType.RoundState:
                             // var value = values[0];
                             // switch (buffID)
                             // {
@@ -231,14 +231,14 @@ namespace RoundHero
                             //         break;
                             // }
                             triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
-                                buffData.UnitState, (int)buffValues[0], ETriggerDataType.RoundRoleState);
+                                buffData.UnitState, (int)buffValues[0], ETriggerDataType.RoundState);
                             break;
-                        case EBuffValueType.Card:
+                        case ETriggerDataType.Card:
                             triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
                                 buffValues[0], buffData.CardTriggerType);
                             triggerData.EffectUnitIdx = realEffectUnitIdx;
                             break;
-                        case EBuffValueType.ClearBuff:
+                        case ETriggerDataType.ClearBuff:
                             // triggerData = new TriggerData();
                             // triggerData.TriggerDataType = ETriggerDataType.ClearBuff;
                             // triggerData.UnitStateEffectTypes = buffData.UnitStateEffectTypes;
@@ -258,7 +258,7 @@ namespace RoundHero
                                     {
                                         var subUnitStateTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx,
                                             actionUnitIdx, buffData.TriggerRange == EActionType.Self ? actionUnitIdx : realEffectUnit.Idx, unitStateData.UnitState, -unitStateData.Value,
-                                            ETriggerDataType.RoleState);
+                                            ETriggerDataType.State);
                                         subUnitStateTriggerData.ActionUnitGridPosIdx =
                                             subUnitStateTriggerData.EffectUnitGridPosIdx = realEffectUnit.GridPosIdx;
                                         
@@ -270,7 +270,7 @@ namespace RoundHero
                             }
 
                             break;
-                        case EBuffValueType.TransferBuff:
+                        case ETriggerDataType.TransferBuff:
                             triggerData = new TriggerData();
                             triggerData.TriggerDataType = ETriggerDataType.TransferBuff;
                             triggerData.UnitStateEffectTypes = buffData.UnitStateEffectTypes;
@@ -396,7 +396,7 @@ namespace RoundHero
                 buffValues.Add(BattleBuffManager.Instance.GetBuffValue(value, realEffectUnitIdx, cardIdx, preTriggerData));
             }
             
-            var buffvalueType = buffData.BuffValueType;
+            var buffvalueType = buffData.TriggerDataType;
             
             
             triggerData.BuffTriggerType = buffTriggerType;
@@ -408,7 +408,7 @@ namespace RoundHero
             //buffTriggerType != EBuffTriggerType.Use && 
             if (realEffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx ||
                 (realEffectUnit != null && realEffectUnit.UnitRole == EUnitRole.Hero) &&
-                buffvalueType == EBuffValueType.Atrb &&
+                buffvalueType == ETriggerDataType.Atrb &&
                 buffData.UnitAttribute == EUnitAttribute.HP &&
                 (buffTriggerType != EBuffTriggerType.UseCard))
 
@@ -490,7 +490,7 @@ namespace RoundHero
         
         public void AttackTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
-            if (!(triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+            if (!(triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                 triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                 triggerData.Value + triggerData.DeltaValue < 0))
                 return;
@@ -507,7 +507,7 @@ namespace RoundHero
         
         private void HurtTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
-            if (!(triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
+            if (!(triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                   triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                   triggerData.Value + triggerData.DeltaValue < 0))
                 return;
@@ -1099,28 +1099,28 @@ namespace RoundHero
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
             
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
+            buffData.TriggerDataType = Enum.Parse<ETriggerDataType>(strList[4]);
 
-            switch (buffData.BuffValueType)
+            switch (buffData.TriggerDataType)
             {
-                case EBuffValueType.Atrb:
+                case ETriggerDataType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.HeroAtrb:
+                case ETriggerDataType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
-                case EBuffValueType.State:
+                case ETriggerDataType.State:
                     buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
                     break;
-                case EBuffValueType.Card:
+                case ETriggerDataType.Card:
                     buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
                     break;
-                case EBuffValueType.ClearBuff:
+                case ETriggerDataType.ClearBuff:
                     var unitStateEffectTypesStr = strList[5].Split("|");
                     
                     buffData.UnitStateEffectTypes = GameUtility.GetEnums<EUnitStateEffectType>(unitStateEffectTypesStr.ToList());
                     break;
-                case EBuffValueType.Empty:
+                case ETriggerDataType.Empty:
                     break;
                 default:
                     break;
@@ -1152,7 +1152,7 @@ namespace RoundHero
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
             
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
+            buffData.TriggerDataType = Enum.Parse<ETriggerDataType>(strList[4]);
             
             var unitStateEffectTypes = strList[5].Split("|");;
             foreach (var unitStateEffectType in unitStateEffectTypes)
@@ -1165,7 +1165,7 @@ namespace RoundHero
         
         public void BuffParse_ClearBuff(string[] strList, BuffData buffData)
         {
-            buffData.BuffValueType = EBuffValueType.ClearBuff;
+            buffData.TriggerDataType = ETriggerDataType.ClearBuff;
             buffData.TriggerRange = Enum.Parse<EActionType>(strList[1]);
             
             var unitCamps = strList[2].Split("|");
@@ -1253,22 +1253,22 @@ namespace RoundHero
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
 
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
-            switch (buffData.BuffValueType)
+            buffData.TriggerDataType = Enum.Parse<ETriggerDataType>(strList[4]);
+            switch (buffData.TriggerDataType)
             {
-                case EBuffValueType.Atrb:
+                case ETriggerDataType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.HeroAtrb:
+                case ETriggerDataType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
-                case EBuffValueType.State:
+                case ETriggerDataType.State:
                     buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
                     break;
-                case EBuffValueType.Card:
+                case ETriggerDataType.Card:
                     buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
                     break;
-                case EBuffValueType.Empty:
+                case ETriggerDataType.Empty:
                     break;
                 default:
                     break;
@@ -1299,22 +1299,22 @@ namespace RoundHero
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
 
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
-            switch (buffData.BuffValueType)
+            buffData.TriggerDataType = Enum.Parse<ETriggerDataType>(strList[4]);
+            switch (buffData.TriggerDataType)
             {
-                case EBuffValueType.Atrb:
+                case ETriggerDataType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.HeroAtrb:
+                case ETriggerDataType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
-                case EBuffValueType.State:
+                case ETriggerDataType.State:
                     buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
                     break;
-                case EBuffValueType.Card:
+                case ETriggerDataType.Card:
                     buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
                     break;
-                case EBuffValueType.Empty:
+                case ETriggerDataType.Empty:
                     break;
                 default:
                     break;
@@ -1381,23 +1381,23 @@ namespace RoundHero
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
 
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
+            buffData.TriggerDataType = Enum.Parse<ETriggerDataType>(strList[4]);
 
-            switch (buffData.BuffValueType)
+            switch (buffData.TriggerDataType)
             {
-                case EBuffValueType.Atrb:
+                case ETriggerDataType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.HeroAtrb:
+                case ETriggerDataType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
-                case EBuffValueType.State:
+                case ETriggerDataType.State:
                     buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
                     break;
-                case EBuffValueType.Card:
+                case ETriggerDataType.Card:
                     buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
                     break;
-                case EBuffValueType.Empty:
+                case ETriggerDataType.Empty:
                     break;
                 default:
                     break;
@@ -1421,23 +1421,23 @@ namespace RoundHero
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
             
-            buffData.BuffValueType = Enum.Parse<EBuffValueType>(strList[4]);
+            buffData.TriggerDataType = Enum.Parse<ETriggerDataType>(strList[4]);
 
-            switch (buffData.BuffValueType)
+            switch (buffData.TriggerDataType)
             {
-                case EBuffValueType.Atrb:
+                case ETriggerDataType.Atrb:
                     buffData.UnitAttribute = Enum.Parse<EUnitAttribute>(strList[5]);
                     break;
-                case EBuffValueType.HeroAtrb:
+                case ETriggerDataType.HeroAtrb:
                     buffData.HeroAttribute = Enum.Parse<EHeroAttribute>(strList[5]);
                     break;
-                case EBuffValueType.State:
+                case ETriggerDataType.State:
                     buffData.UnitState = Enum.Parse<EUnitState>(strList[5]);
                     break;
-                case EBuffValueType.Card:
+                case ETriggerDataType.Card:
                     buffData.CardTriggerType = Enum.Parse<ECardTriggerType>(strList[5]);
                     break;
-                case EBuffValueType.Empty:
+                case ETriggerDataType.Empty:
                     break;
                 default:
                     break;

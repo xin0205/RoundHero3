@@ -287,7 +287,7 @@ namespace RoundHero
                 var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];//Random.Next(0, 3);
 
                 var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
-                    places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>());
+                    places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round);
                 battleEnemyData.UnitRole = EUnitRole.Staff;
                 
                 await GenerateEnemy(battleEnemyData);
