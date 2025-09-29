@@ -1243,6 +1243,7 @@ namespace RoundHero
                 var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(unitIdx);
                 switch (card.CardUseType)
                 {
+                    case ECardUseType.RawSelect:
                     case ECardUseType.RawUnSelect:
                         cardEnergy = drCard.Energy;
                         break;
@@ -1257,7 +1258,7 @@ namespace RoundHero
             
                 }
 
-                cardEnergy = cardEnergy < 0 ? 0 : cardEnergy;
+               
 
             }
             else
@@ -1273,7 +1274,7 @@ namespace RoundHero
                 //     
                 // }
                 
-                cardEnergy += card.RoundEnergyDelta;
+                
                 // if (CardManager.Instance.Contain(card.ID, EBuffID.SelectUnit_Us_All_Atrb_HP) && CardManager.Instance.Contain(card.ID, EBuffID.SelectUnit_UsEnemy_Select_Atrb_HP))
                 // {
                 //     cardEnergy =
@@ -1281,14 +1282,7 @@ namespace RoundHero
                 //             new List<EUnitRole>() {EUnitRole.Staff, EUnitRole.Hero});
                 // }
 
-                var subEnergyCount = card.FuneCount(EBuffID.Spec_SubEnergy);
-                if (subEnergyCount > 0 && cardEnergy > 0)
-                {
-                    cardEnergy -= subEnergyCount;
-                    //cardEnergy = Math.Abs(cardEnergy);
-                    cardEnergy = cardEnergy < 0 ? 0 : cardEnergy;
-
-                }
+                
                 
                 // var drCardEnergyMax = GameEntry.DataTable.GetCard(ECardID.CardEnergyMax);
                 // var value = GameUtility.GetBuffValue(drCardEnergyMax.Values1[0]);
@@ -1297,17 +1291,8 @@ namespace RoundHero
                 // {
                 //     cardEnergy = (int)value;
                 // }
-
-                if (BattleCurseManager.Instance.BattleCurseData.CurseIDs.Contains(ECurseID.OnGirdUnitAddEnergy) &&
-                    BattleUnitManager.Instance.OnGridUnitContainCard(cardIdx))
-                {
-                    cardEnergy += 1;
-                }
                 
-                if (BattleCurseManager.Instance.IsAddEnergyCard(drCard.CardType))
-                {
-                    cardEnergy += 1;
-                }
+                
                 
                 
             }
@@ -1351,16 +1336,29 @@ namespace RoundHero
                 }
             }
             
-            
-            
-            if (cardEnergy + card.EnergyDelta < 0)
+            var subEnergyCount = card.FuneCount(EBuffID.Spec_SubEnergy);
+            if (subEnergyCount > 0 && cardEnergy > 0)
             {
-                card.EnergyDelta = -cardEnergy;
+                cardEnergy -= subEnergyCount;
+
             }
 
+            if (BattleCurseManager.Instance.BattleCurseData.CurseIDs.Contains(ECurseID.OnGirdUnitAddEnergy) &&
+                BattleUnitManager.Instance.OnGridUnitContainCard(cardIdx))
+            {
+                cardEnergy += 1;
+            }
+                
+            if (BattleCurseManager.Instance.IsAddEnergyCard(drCard.CardType))
+            {
+                cardEnergy += 1;
+            }
+            
+            
+            cardEnergy += card.RoundEnergyDelta;
             cardEnergy += card.EnergyDelta;
 
-            
+            cardEnergy = cardEnergy < 0 ? 0 : cardEnergy;
             return cardEnergy;
         }
 
