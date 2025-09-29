@@ -815,6 +815,13 @@ namespace RoundHero
         TacticDownMulti,
         Empty,
     }
+    
+    public enum EAttackType
+    {
+        Single,
+        Multi,
+        
+    }
 
     public enum ETutorialStep
     {

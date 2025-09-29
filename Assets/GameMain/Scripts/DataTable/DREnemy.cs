@@ -136,9 +136,9 @@ namespace RoundHero
         }
 
         /// <summary>
-        /// 获取AttackType。
+        /// 获取EnemyAttackType。
         /// </summary>
-        public EEnemyAttackType AttackType
+        public EEnemyAttackType EnemyAttackType
         {
             get;
             private set;
@@ -148,6 +148,24 @@ namespace RoundHero
         /// 获取EffectColor。
         /// </summary>
         public EColor EffectColor
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取等级。
+        /// </summary>
+        public int Level
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 获取攻击类型。
+        /// </summary>
+        public EAttackType AttackType
         {
             get;
             private set;
@@ -176,8 +194,10 @@ namespace RoundHero
             WeaponID = int.Parse(columnStrings[index++]);
 			AttackCastType = Enum.Parse<EAttackCastType>(columnStrings[index++]);
 			AttackTargets = DataTableExtension.ParseEAttackTargetList(columnStrings[index++]);
-			AttackType = Enum.Parse<EEnemyAttackType>(columnStrings[index++]);
+			EnemyAttackType = Enum.Parse<EEnemyAttackType>(columnStrings[index++]);
 			EffectColor = Enum.Parse<EColor>(columnStrings[index++]);
+            Level = int.Parse(columnStrings[index++]);
+			AttackType = Enum.Parse<EAttackType>(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -201,8 +221,10 @@ namespace RoundHero
                     WeaponID = binaryReader.Read7BitEncodedInt32();
                     AttackCastType = Enum.Parse<EAttackCastType>(binaryReader.ReadString());
 					AttackTargets = binaryReader.ReadEAttackTargetList();
-                    AttackType = Enum.Parse<EEnemyAttackType>(binaryReader.ReadString());
+                    EnemyAttackType = Enum.Parse<EEnemyAttackType>(binaryReader.ReadString());
                     EffectColor = Enum.Parse<EColor>(binaryReader.ReadString());
+                    Level = binaryReader.Read7BitEncodedInt32();
+                    AttackType = Enum.Parse<EAttackType>(binaryReader.ReadString());
                 }
             }
 

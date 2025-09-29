@@ -40,10 +40,10 @@ namespace RoundHero
                     [0] = 2,
                 },
                 EachRoundUnitCount = 2,
-                NormalUnitCount = 2,
-                EliteUnitCount = 0,
-                NormalUnitTypeCount = 1,
-                EliteUnitTypeCount = 0,
+                // NormalUnitCount = 2,
+                // EliteUnitCount = 0,
+                // NormalUnitTypeCount = 1,
+                // EliteUnitTypeCount = 0,
                 GlobalDebuffCount = 0,
             };
 
@@ -110,7 +110,7 @@ namespace RoundHero
             public static int ResetActionTimes = 3;
 
             public static int SelectInitCardEachCount = 1;
-            public static int InitCardMaxCount = 15;
+            public static int InitCardMaxCount = 1;
             public static int RushHurt = -1;
             public static int FlyHurt = -1;
             public static float ParabolaBulletShootTime = 0.3f;
@@ -1315,11 +1315,13 @@ namespace RoundHero
         public class EnemyGenrateRule
         {
             public Dictionary<int, int> RoundGenerateUnitCount = new Dictionary<int, int>();
+            public List<int> LevelCounts = new List<int>();
+            public List<int> LevelTypeCounts = new List<int>();
             public int EachRoundUnitCount = 0;
-            public int NormalUnitCount;
-            public int EliteUnitCount;
-            public int NormalUnitTypeCount;
-            public int EliteUnitTypeCount;
+            // public int NormalUnitCount;
+            // public int EliteUnitCount;
+            // public int NormalUnitTypeCount;
+            // public int EliteUnitTypeCount;
             public int GlobalDebuffCount;
         }
 
@@ -1348,14 +1350,16 @@ namespace RoundHero
                         RoundGenerateUnitCount = new Dictionary<int, int>()
                         {
                             [0] = 2,
-                            // [2] = 2,
-                            // [4] = 2,
+                            [2] = 2,
+                            [4] = 2,
                         },
+                        LevelCounts = {6, 0, 0},
+                        LevelTypeCounts = {3, 0, 0},
                         EachRoundUnitCount = 2,
-                        NormalUnitCount = 2,    
-                        EliteUnitCount = 0,
-                        NormalUnitTypeCount = 2,
-                        EliteUnitTypeCount = 0,
+                        // NormalUnitCount = 2,    
+                        // EliteUnitCount = 0,
+                        // NormalUnitTypeCount = 2,
+                        // EliteUnitTypeCount = 0,
                         GlobalDebuffCount = 0,
                     },
                 // [EGameDifficulty.Difficulty1] = new EnemyGenrateRule()
@@ -1381,12 +1385,12 @@ namespace RoundHero
                         [2] = 2,
                         [4] = 3,
                     },
-                    EachRoundUnitCount = 3,
-                    NormalUnitCount = 3,
-                    EliteUnitCount = 5,
-                    NormalUnitTypeCount = 2,
-                    EliteUnitTypeCount = 2,
-                    GlobalDebuffCount = 2,
+                    // EachRoundUnitCount = 3,
+                    // NormalUnitCount = 3,
+                    // EliteUnitCount = 5,
+                    // NormalUnitTypeCount = 2,
+                    // EliteUnitTypeCount = 2,
+                    // GlobalDebuffCount = 2,
                 },
                 [EGameDifficulty.Difficulty3] = new EnemyGenrateRule()
                 {
@@ -1396,12 +1400,12 @@ namespace RoundHero
                         [2] = 3,
                         [4] = 3,
                     },
-                    EachRoundUnitCount = 3,
-                    NormalUnitCount = 2,
-                    EliteUnitCount = 7,
-                    NormalUnitTypeCount = 1,
-                    EliteUnitTypeCount = 3,
-                    GlobalDebuffCount = 3,
+                    // EachRoundUnitCount = 3,
+                    // NormalUnitCount = 2,
+                    // EliteUnitCount = 7,
+                    // NormalUnitTypeCount = 1,
+                    // EliteUnitTypeCount = 3,
+                    // GlobalDebuffCount = 3,
                 },
 
             };

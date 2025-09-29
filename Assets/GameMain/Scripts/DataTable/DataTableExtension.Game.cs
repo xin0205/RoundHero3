@@ -221,12 +221,21 @@ namespace RoundHero
             });
         }
         
-        public static List<DREnemy> GetEnemys(this DataTableComponent dataTableComponent, EEnemyType enemyType)
+        // public static List<DREnemy> GetEnemys(this DataTableComponent dataTableComponent, EEnemyType enemyType)
+        // {
+        //     var drEnemies = GameEntry.DataTable.GetDataTable<DREnemy>();
+        //     return drEnemies.GetDataRows((t) =>
+        //     {
+        //         return  t.SpecBuffs[0]!= "None" && (enemyType == EEnemyType.Normal ? t.SpecBuffs[0] == "Empty" : t.SpecBuffs[0] != "Empty");
+        //     }).ToList();
+        // }
+        
+        public static List<DREnemy> GetEnemys(this DataTableComponent dataTableComponent, int level)
         {
             var drEnemies = GameEntry.DataTable.GetDataTable<DREnemy>();
             return drEnemies.GetDataRows((t) =>
             {
-                return  t.SpecBuffs[0]!= "None" && (enemyType == EEnemyType.Normal ? t.SpecBuffs[0] == "Empty" : t.SpecBuffs[0] != "Empty");
+                return  t.Level == level;
             }).ToList();
         }
         

@@ -80,27 +80,38 @@ namespace RoundHero
             var rule = Constant.Enemy.EnemyGenerateRules[BattleManager.Instance.BattleData.GameDifficulty];
             
             EnemyGenerateData.RoundGenerateUnitCount = new Dictionary<int, int>(rule.RoundGenerateUnitCount);
-            var normalUnitList = GameEntry.DataTable.GetEnemys(EEnemyType.Normal);
-            var normalUnitTypeRandoms = MathUtility.GetRandomNum(rule.NormalUnitTypeCount, 0, normalUnitList.Count,
+            var level0UnitList = GameEntry.DataTable.GetEnemys(0);
+            var level0UnitTypeRandoms = MathUtility.GetRandomNum(rule.LevelTypeCounts[0], 0, level0UnitList.Count,
                 new Random(random.Next()));
-            var normalUnitRandoms = MathUtility.GetRandomNum(rule.NormalUnitCount, 0, normalUnitTypeRandoms.Count,
+            var level0UnitRandoms = MathUtility.GetRandomNum(rule.LevelCounts[0], 0, level0UnitTypeRandoms.Count,
                 new Random(random.Next()), true);
             
-            var eliteUnitList = GameEntry.DataTable.GetEnemys(EEnemyType.Elite);
-            var eliteUnitTypeRandoms = MathUtility.GetRandomNum(rule.EliteUnitTypeCount, 0, eliteUnitList.Count,
+            var level1UnitList = GameEntry.DataTable.GetEnemys(1);
+            var level1UnitTypeRandoms = MathUtility.GetRandomNum(rule.LevelTypeCounts[1], 0, level1UnitList.Count,
                 new Random(random.Next()));
-            var eliteUnitRandoms = MathUtility.GetRandomNum(rule.EliteUnitCount, 0, eliteUnitTypeRandoms.Count,
+            var level1UnitRandoms = MathUtility.GetRandomNum(rule.LevelCounts[1], 0, level1UnitTypeRandoms.Count,
+                new Random(random.Next()), true);
+            
+            var level2UnitList = GameEntry.DataTable.GetEnemys(2);
+            var level2UnitTypeRandoms = MathUtility.GetRandomNum(rule.LevelTypeCounts[2], 0, level2UnitList.Count,
+                new Random(random.Next()));
+            var level2UnitRandoms = MathUtility.GetRandomNum(rule.LevelCounts[2], 0, level2UnitTypeRandoms.Count,
                 new Random(random.Next()), true);
 
-            var unitList = new List<int>(normalUnitRandoms.Count + eliteUnitRandoms.Count);
-            foreach (var idx in normalUnitRandoms)
+            var unitList = new List<int>(level0UnitRandoms.Count + level1UnitRandoms.Count +  + level2UnitRandoms.Count);
+            foreach (var idx in level0UnitRandoms)
             {
-                unitList.Add(normalUnitList[normalUnitTypeRandoms[idx]].Id);
+                unitList.Add(level0UnitList[level0UnitTypeRandoms[idx]].Id);
             }
             
-            foreach (var idx in eliteUnitRandoms)
+            foreach (var idx in level1UnitRandoms)
             {
-                unitList.Add(eliteUnitList[eliteUnitTypeRandoms[idx]].Id);
+                unitList.Add(level1UnitList[level1UnitTypeRandoms[idx]].Id);
+            }
+            
+            foreach (var idx in level2UnitRandoms)
+            {
+                unitList.Add(level2UnitList[level2UnitTypeRandoms[idx]].Id);
             }
             
             var unitListRandoms = MathUtility.GetRandomNum(unitList.Count, 0, unitList.Count,
