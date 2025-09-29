@@ -1210,22 +1210,25 @@ namespace RoundHero
 
             return cardCount * 0.15f + 0.15f;
         }
+        
+        public int GetCardBaseMaxHP(int cardID, int cardIdx = -1)
+        {
+            var drCard = GameEntry.DataTable.GetCard(cardID);
+
+            return drCard.HP;  
+            
+        }
 
         public int GetCardMaxHP(int cardID, int cardIdx = -1)
         {
-
-            var drCard = GameEntry.DataTable.GetCard(cardID);
-            
-            var maxHP = drCard.HP;
-            var maxHPDelta = 0;
+            var maxHP = GetCardBaseMaxHP(cardID, cardIdx);  
             if (cardIdx != -1)
             {
                 var card = CardManager.Instance.GetCard(cardIdx);
-                if (maxHP + card.MaxHPDelta < 0)
-                {
-                    card.MaxHPDelta = -maxHP;
-                }
+                maxHP += card.FuneCount(EBuffID.Spec_AddMaxHP);
                 maxHP += card.MaxHPDelta;
+                
+                maxHP = maxHP < 0 ? 0 : maxHP;
             }
 
             return maxHP;

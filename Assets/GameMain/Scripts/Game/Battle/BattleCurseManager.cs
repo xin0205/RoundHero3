@@ -350,7 +350,8 @@ namespace RoundHero
         {
             var card = BattleManager.Instance.GetCard(cardIdx);
             var drCard = CardManager.Instance.GetCardTable(cardIdx);
-            var hp = BattleCardManager.Instance.GetCardMaxHP(cardIdx) + card.FuneCount(EBuffID.Spec_AddMaxHP);
+            // + card.FuneCount(EBuffID.Spec_AddMaxHP);
+            var hp = BattleCardManager.Instance.GetCardMaxHP(drCard.Id, cardIdx);
             
             if (BattleManager.Instance.TempTriggerData.UnitData is Data_BattleSolider solider &&
                 solider.CardIdx == cardIdx)
