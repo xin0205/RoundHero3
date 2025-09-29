@@ -2636,6 +2636,10 @@ namespace RoundHero
                             // {
                             //     continue;
                             // }
+                            if (triggerData.ActionUnitIdx != unitIdx)
+                            {
+                                continue;
+                            }
 
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
@@ -2661,6 +2665,10 @@ namespace RoundHero
                             // {
                             //     continue;
                             // }
+                            if (triggerData.ActionUnitIdx != unitIdx)
+                            {
+                                continue;
+                            }
 
                             if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                             {
