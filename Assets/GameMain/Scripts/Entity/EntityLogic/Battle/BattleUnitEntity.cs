@@ -161,6 +161,10 @@ namespace RoundHero
         //
         // }
 
+        public int multiStartAttackTrigger;
+        public int multiEndAttackTrigger;
+
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -181,6 +185,9 @@ namespace RoundHero
 
         protected void InitWeaponType(EWeaponHoldingType weaponHoldingType, EWeaponType weaponType, int weaponID)
         {
+            multiStartAttackTrigger = (int)AnimatorTrigger.SpecialAttackTrigger;
+            multiEndAttackTrigger = (int)AnimatorTrigger.SpecialEndTrigger;
+
             switch (weaponHoldingType)
             {
                 case EWeaponHoldingType.TwoHand:
@@ -313,6 +320,9 @@ namespace RoundHero
                     animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
                     break;
                 case EWeaponHoldingType.Empty:
+                    multiStartAttackTrigger = (int)AnimatorTrigger.AttackCastTrigger;
+                    multiEndAttackTrigger = (int)AnimatorTrigger.CastEndTrigger;
+                    animator.SetInteger(AnimationParameters.Side, (int)Side.Dual);
                     break;
                 default:
                     break;
@@ -1182,12 +1192,12 @@ namespace RoundHero
         
         public void ExtendMultiAttack(ActionData actionData)
         {
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialAttackTrigger);
+            animator.SetInteger(AnimationParameters.TriggerNumber, multiStartAttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
             GameUtility.DelayExcute(1f, () =>
             {
-                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
+                animator.SetInteger(AnimationParameters.TriggerNumber, multiEndAttackTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
             });
             GameUtility.DelayExcute(0.15f, () =>
@@ -1229,13 +1239,13 @@ namespace RoundHero
         
         public void ParabolaMultiAttack(ActionData actionData)
         {
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialAttackTrigger);
+            animator.SetInteger(AnimationParameters.TriggerNumber, multiStartAttackTrigger);
             
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
             animator.SetTrigger(AnimationParameters.Trigger);
             GameUtility.DelayExcute(1f, () =>
             {
-                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
+                animator.SetInteger(AnimationParameters.TriggerNumber, multiEndAttackTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
             });
             GameUtility.DelayExcute(0.15f, () =>
@@ -1246,12 +1256,12 @@ namespace RoundHero
 
         public void CloseMultiAttack()
         {
-            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialAttackTrigger);
+            animator.SetInteger(AnimationParameters.TriggerNumber, multiStartAttackTrigger);
             animator.SetTrigger(AnimationParameters.Trigger);
             animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
             GameUtility.DelayExcute(1f, () =>
             {
-                animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.SpecialEndTrigger);
+                animator.SetInteger(AnimationParameters.TriggerNumber, multiEndAttackTrigger);
                 animator.SetTrigger(AnimationParameters.Trigger);
             });
             GameUtility.DelayExcute(0.15f, () =>
