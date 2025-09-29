@@ -332,8 +332,8 @@ namespace RoundHero
                         
                         BattleManager.Instance.TempTriggerData.UnitData.CurHP =
                             BattleUnitManager.Instance.GetUnitHP(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
-                        BattleManager.Instance.TempTriggerData.UnitData.CurHP =
-                            BattleManager.Instance.TempTriggerData.UnitData.MaxHP;
+                        // BattleManager.Instance.TempTriggerData.UnitData.CurHP =
+                        //     BattleManager.Instance.TempTriggerData.UnitData.MaxHP;
                         
                         if (HeroManager.Instance.BattleHeroData.HeroID == EHeroID.AddUnitMaxHP)
                         {

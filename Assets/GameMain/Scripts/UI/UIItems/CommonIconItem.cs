@@ -23,6 +23,9 @@ namespace RoundHero
                 case EItemType.Fune:
                     icon.sprite = await AssetUtility.GetFuneIcon(itemID);
                     break;
+                case EItemType.UnitState:
+                    icon.sprite = await AssetUtility.GetUnitStateIcon((EUnitState)itemID);
+                    break;
                 case EItemType.AddMaxHP:
                 case EItemType.AddCardFuneSlot:
                 case EItemType.RemoveCard:

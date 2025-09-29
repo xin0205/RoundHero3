@@ -1924,7 +1924,7 @@ namespace RoundHero
             //     
             //     
             // };
-            public static int MaxFuneCount = 4;
+            public static int MaxFuneCount = 3;
             public static int InitFuneCount = 2;
         }
 

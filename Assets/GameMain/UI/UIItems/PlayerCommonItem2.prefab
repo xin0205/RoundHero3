@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1332816325217588710}
   - component: {fileID: 8253827139893950576}
   m_Layer: 0
-  m_Name: PlayerCommonItem
+  m_Name: PlayerCommonItem2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,10 +147,6 @@ PrefabInstance:
     - target: {fileID: 870066731617539590, guid: c40ae074c97f5614d9336406079040de, type: 3}
       propertyPath: m_Name
       value: CommonItem
-      objectReference: {fileID: 0}
-    - target: {fileID: 4420734370261737987, guid: c40ae074c97f5614d9336406079040de, type: 3}
-      propertyPath: m_PixelsPerUnitMultiplier
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5824123646086804719, guid: c40ae074c97f5614d9336406079040de, type: 3}
       propertyPath: m_Pivot.x

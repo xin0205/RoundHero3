@@ -15,6 +15,7 @@ namespace RoundHero
         //Heart,
         RemoveCard,
         AddCardFuneSlot,
+        UnitState,
         
     }
     

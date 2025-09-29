@@ -34,6 +34,17 @@ namespace RoundHero
         [SerializeField] private Text actionTimeStr;
         
         [SerializeField] private List<PlayerCommonItem> funeList = new List<PlayerCommonItem>();
+        [SerializeField] private List<PlayerCommonItem> unitStateList = new List<PlayerCommonItem>();
+        [SerializeField] private List<UnitStateIconItem> unitStateIconList = new List<UnitStateIconItem>();
+        
+        
+        [SerializeField]
+        private GameObject funeListGO;
+        [SerializeField]
+        private GameObject unitStateListGO;
+        [SerializeField]
+        private GameObject unitStateIconListGO;
+
         
         protected override void OnOpen(object userData)
         {
@@ -199,7 +210,9 @@ namespace RoundHero
             }
             
            
-            
+            funeListGO.SetActive(false);
+            unitStateListGO.SetActive(false);
+            unitStateIconListGO.SetActive(true);
             
             //Vector3 mousePosition = Input.mousePosition;
             
@@ -232,6 +245,138 @@ namespace RoundHero
             // }
             //
             // root.transform.position = gifPos;
+
+            RefreshUnitStates();
+        }
+
+        private void RefreshUnitStates()
+        {
+            foreach (var item in unitStateIconList)
+            {
+                item.gameObject.SetActive(false);
+            }
+            
+            foreach (var item in unitStateList)
+            {
+                item.gameObject.SetActive(false);
+            }
+            
+            if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
+            {
+                var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
+
+                var idx = 0;
+                foreach (var kv in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.UnitStateData.UnitStates)
+                {
+                    unitStateIconList[idx].gameObject.SetActive(false);
+                    if(idx >= unitStateIconList.Count)
+                        break;
+                        
+                    unitStateIconList[idx].gameObject.SetActive(true);
+                    unitStateIconList[idx].SetIcon(kv.Value.UnitState, kv.Value.Value);
+                    idx++;
+                }
+                
+                idx = 0;
+                foreach (var kv in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.UnitStateData.UnitStates)
+                {
+                    unitStateList[idx].gameObject.SetActive(false);
+                    if(idx >= unitStateList.Count)
+                        break;
+                        
+                    unitStateList[idx].gameObject.SetActive(true);
+                    unitStateList[idx].SetItemData(new PlayerCommonItemData()
+                    {
+                        ItemIdx = (int)kv.Value.UnitState,
+                        CommonItemData = new CommonItemData()
+                        {
+                            ItemType = EItemType.UnitState,
+                            ItemID = (int)kv.Value.UnitState,
+
+                        }
+                    }, null, null);
+                    idx++;
+                }
+                
+            }
+            else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
+            {
+                if (UnitDescFormData.UnitRole == EUnitRole.Hero)
+                {
+                    var coreEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleCoreEntity;
+                    
+                    var idx = 0;
+                    foreach (var kv in  coreEntity.BattleCoreEntityData.BattleCoreData.UnitStateData.UnitStates)
+                    {
+                        unitStateIconList[idx].gameObject.SetActive(false);
+                        if(idx >= unitStateIconList.Count)
+                            break;
+                        
+                        unitStateIconList[idx].gameObject.SetActive(true);
+                        unitStateIconList[idx].SetIcon(kv.Value.UnitState, kv.Value.Value);
+                        idx++;
+                    }
+                    
+                    idx = 0;
+                    foreach (var kv in  coreEntity.BattleCoreEntityData.BattleCoreData.UnitStateData.UnitStates)
+                    {
+                        unitStateList[idx].gameObject.SetActive(false);
+                        if(idx >= unitStateList.Count)
+                            break;
+                        
+                        unitStateList[idx].gameObject.SetActive(true);
+                        unitStateList[idx].SetItemData(new PlayerCommonItemData()
+                        {
+                            ItemIdx = (int)kv.Value.UnitState,
+                            CommonItemData = new CommonItemData()
+                            {
+                                ItemType = EItemType.UnitState,
+                                ItemID = (int)kv.Value.UnitState,
+
+                            }
+                        }, null, null);
+                        idx++;
+                    }
+                }
+                else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
+                {
+                    var soliderEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
+                    
+                    var idx = 0;
+                    foreach (var kv in  soliderEntity.BattleSoliderEntityData.BattleSoliderData.UnitStateData.UnitStates)
+                    {
+                        unitStateIconList[idx].gameObject.SetActive(false);
+                        if(idx >= unitStateIconList.Count)
+                            break;
+                        
+                        unitStateIconList[idx].gameObject.SetActive(true);
+                        unitStateIconList[idx].SetIcon(kv.Value.UnitState, kv.Value.Value);
+                        idx++;
+                    }
+
+                    idx = 0;
+                    foreach (var kv in  soliderEntity.BattleSoliderEntityData.BattleSoliderData.UnitStateData.UnitStates)
+                    {
+                        unitStateList[idx].gameObject.SetActive(false);
+                        if(idx >= unitStateList.Count)
+                            break;
+                        
+                        unitStateList[idx].gameObject.SetActive(true);
+                        unitStateList[idx].SetItemData(new PlayerCommonItemData()
+                        {
+                            ItemIdx = (int)kv.Value.UnitState,
+                            CommonItemData = new CommonItemData()
+                            {
+                                ItemType = EItemType.UnitState,
+                                ItemID = (int)kv.Value.UnitState,
+
+                            }
+                        }, null, null);
+                        idx++;
+                    }
+
+                }
+            }
         }
         
         public void Update()
@@ -240,6 +385,20 @@ namespace RoundHero
             {
                 Close();
 
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                funeListGO.SetActive(true);
+                unitStateListGO.SetActive(true);
+                unitStateIconListGO.SetActive(false);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.A))
+            {
+                funeListGO.SetActive(false);
+                unitStateListGO.SetActive(false);
+                unitStateIconListGO.SetActive(true);
             }
         }
     }
