@@ -4101,6 +4101,8 @@ MonoBehaviour:
   ValuePos: {fileID: 6417818661541367029}
   TargetPosIdx: 0
   UnitDescTriggerItem: {fileID: 5062457304722505058}
+  multiStartAttackTrigger: 0
+  multiEndAttackTrigger: 0
   IsPointer: 0
   CurValueEntityIdx: 0
   ShowValueEntityIdx: 0
@@ -4113,7 +4115,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8832398289679975876}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: f510ac33d25a7234dbd84ea8a7ffde53, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 2ba66718d3169ae42a05d8facf302228, type: 3}
   m_Controller: {fileID: 9100000, guid: 6b3ec83bb2a8da145a41825f272a97dd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
