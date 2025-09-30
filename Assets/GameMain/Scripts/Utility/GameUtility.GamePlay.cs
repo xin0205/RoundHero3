@@ -179,10 +179,31 @@ namespace RoundHero
 
         }
 
+        public static void GetUnitStateText(EUnitState unitState, ref string name, ref string desc)
+        {
+
+            var unitStateName =
+                Utility.Text.Format(Constant.Localization.UnitStateName, unitState); 
+
+            name = GameEntry.Localization.GetString(unitStateName);
+
+            var unitStateDesc =
+                Utility.Text.Format(Constant.Localization.UnitStateDesc, unitState);
+
+            desc = GameEntry.Localization.GetString(unitStateDesc);
+
+
+
+        }
+
+        
         public static void GetItemText(EItemType itemType, int itemID, ref string name, ref string desc)
         {
             switch (itemType)
             {
+                case EItemType.UnitState:
+                    GetUnitStateText((EUnitState)itemID, ref name, ref desc);
+                    break;
                 case EItemType.UnitCard:
                 case EItemType.TacticCard:
                     GetCardText(itemID, ref name, ref desc);

@@ -24,6 +24,8 @@ namespace RoundHero
             
             public const string BlessName = "BlessName.{0}";
             public const string BlessDesc = "BlessDesc.{0}";
+            public const string UnitStateName = "UnitStateName.{0}";
+            public const string UnitStateDesc = "UnitStateDesc.{0}";
             public const string HeroName = "HeroName.{0}";
             public const string HeroDesc = "HeroDesc.{0}";
             public const string EnemyName = "EnemyName.{0}";
