@@ -310,6 +310,12 @@ namespace RoundHero
 
         public async Task<BattleMonsterEntity> GenerateEnemy(Data_BattleMonster battleMonsterData)
         {
+            if (BattleManager.Instance.BattleData.GameDifficulty >= EGameDifficulty.Difficulty2)
+            {
+                battleMonsterData.BaseMaxHP += 1;
+                battleMonsterData.CurHP = battleMonsterData.MaxHP;
+            }
+            
             var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(battleMonsterData);
             
             battleEnemyEntity.LookAtHero();

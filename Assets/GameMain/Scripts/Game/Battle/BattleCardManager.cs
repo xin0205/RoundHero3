@@ -1214,8 +1214,13 @@ namespace RoundHero
         public int GetCardBaseMaxHP(int cardID, int cardIdx = -1)
         {
             var drCard = GameEntry.DataTable.GetCard(cardID);
+            var hp = drCard.HP;
+            if (BattleManager.Instance.BattleData.GameDifficulty >= EGameDifficulty.Difficulty3)
+            {
+                hp -= 1;
+            }
 
-            return drCard.HP;  
+            return hp;  
             
         }
 

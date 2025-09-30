@@ -134,7 +134,11 @@ namespace RoundHero
             BattleHeroData = new Data_BattleHero(BattleUnitManager.Instance.GetIdx(),
                 heroID, 0, BattleManager.Instance.CurUnitCamp, new List<int>(), BattleManager.Instance.BattleData.Round);
             BattleHeroData.UnitRole = EUnitRole.Hero;
-            
+            if (BattleManager.Instance.BattleData.GameDifficulty >= EGameDifficulty.Difficulty4)
+            {
+                BattleHeroData.BaseMaxHP -= 2;
+                BattleHeroData.CurHP = BattleHeroData.BaseMaxHP;
+            }
         }
 
         public async Task GenerateHero()
