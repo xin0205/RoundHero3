@@ -425,6 +425,9 @@ namespace RoundHero
                 // SwitchStep(ETutorialStep.UnitHurt);
                 // if(tutorialStep != BattleManager.Instance.TutorialStep)
                 //     return;
+                SwitchStep(ETutorialStep.SwitchTarget);
+                if(tutorialStep != BattleManager.Instance.TutorialStep)
+                    return;
                 
                 SwitchStep(ETutorialStep.End);
                 if(tutorialStep != BattleManager.Instance.TutorialStep)

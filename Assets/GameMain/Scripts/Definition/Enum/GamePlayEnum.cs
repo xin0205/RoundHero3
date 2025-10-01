@@ -840,6 +840,7 @@ namespace RoundHero
         SelectAttackCard,
         CardSwitchAttack,
         SelectAttackUnit,
+        SwitchTarget,
         EndRound,
         //UnitHurt,
         End,

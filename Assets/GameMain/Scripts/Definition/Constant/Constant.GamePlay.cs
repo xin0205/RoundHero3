@@ -23,10 +23,10 @@ namespace RoundHero
                 11, 24, 38,
             };
 
-            public static int RandomSeed = 42777813;//26987145;
-            public static int UseUnitCardGridPosIdx = 15;
-            public static int MoveGridPosIdx = 18;
-            public static float StepInterval = 0.1f;
+            public static int RandomSeed = 42536450;//26987145;
+            public static int UseUnitCardGridPosIdx = 1;
+            public static int MoveGridPosIdx = 4;
+            public static float StepInterval = 0.5f;
 
             public static List<int> Cards = new List<int>()
             {

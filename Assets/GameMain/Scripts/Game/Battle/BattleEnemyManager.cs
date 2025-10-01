@@ -316,6 +316,12 @@ namespace RoundHero
                 battleMonsterData.CurHP = battleMonsterData.MaxHP;
             }
             
+            if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
+            {
+                battleMonsterData.BaseMaxHP = 3;
+                battleMonsterData.CurHP = battleMonsterData.MaxHP;
+            }
+            
             var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(battleMonsterData);
             
             battleEnemyEntity.LookAtHero();
