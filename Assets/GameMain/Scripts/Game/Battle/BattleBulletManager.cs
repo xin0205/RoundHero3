@@ -128,6 +128,8 @@ namespace RoundHero
                         var triggerActionData = list2[j];
                         if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                         {
+                            //反击会失效
+                            // //教程cores位置 randomseed 91408126 抛射尚未到达，被攻击单位就开始攻击，重复触发抛射TriggerData
                             // if(effectUnitIdx != -1 && effectUnitIdx != triggerActionTriggerData.TriggerData.EffectUnitIdx)
                             //     continue;
                             //     
@@ -159,6 +161,11 @@ namespace RoundHero
 
         public void UseTriggerData(TriggerData triggerData)
         {
+            if (triggerData.IsTrigger)
+            {
+                return;
+            }
+            
             triggerData.IsTrigger = true;
             BattleFightManager.Instance.TriggerAction(triggerData.Copy());
             ClearTriggerData();

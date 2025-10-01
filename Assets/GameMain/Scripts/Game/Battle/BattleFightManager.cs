@@ -1999,7 +1999,7 @@ namespace RoundHero
             //
             if (isAttack || actionData.MoveData.MoveUnitDatas.Count > 0 || actionProgress == EActionProgress.SoliderActiveAttack)
             {
-                time += 1f;
+                time += 2f;
                 
                 var unit = GetUnitByIdx(unitKeys[AcitonUnitIdx]);
                 unit.AttackInRound = true;
@@ -2022,9 +2022,6 @@ namespace RoundHero
             });
         }
 
-        
-
-        
 
         public void SoliderAttack()
         {
