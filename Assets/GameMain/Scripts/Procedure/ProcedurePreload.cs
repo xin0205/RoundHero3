@@ -36,6 +36,7 @@ namespace RoundHero
             "Bless",
             "GridProp",
             "Hero",
+            "EnemyGenerateRule"
         };
         
         public static readonly string[] LocalizationDataTableNames = new string[]
