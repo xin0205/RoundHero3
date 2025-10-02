@@ -104,6 +104,7 @@ namespace RoundHero
             HeroManager.Instance.Destory();
             BattleCoreManager.Instance.Destory();
             BattleBulletManager.Instance.Destory();
+            BattleStaticAttackTagManager.Instance.Destory();
             //BlessManager.Instance.Destory();
             //BattleBuffManager.Instance.Destory();
             //FightManager.Instance.Destory();

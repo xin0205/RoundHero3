@@ -179,6 +179,7 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             UnitDescTriggerItem.CloseForm();
+            UnShowTags();
         }
 
         
@@ -1779,11 +1780,11 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
 
-            // ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
-            // ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
-            // ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
-            // ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
-            // ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
+            ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
+            ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
+            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
+            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
+            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
         }
         
         public void UnShowTags()

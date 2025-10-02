@@ -283,5 +283,10 @@ namespace RoundHero
 
             BattleAttackTagEntities.Clear();
         }
+
+        public void Destory()
+        {
+            UnshowStaticAttackTags();
+        }
     }
 }

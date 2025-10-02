@@ -201,7 +201,7 @@ namespace RoundHero
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
-            UnShowTags();
+            //UnShowTags();
         }
         
         // protected async override Task ShowBattleHurts(int hurt)
