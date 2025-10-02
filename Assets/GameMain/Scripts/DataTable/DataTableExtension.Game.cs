@@ -239,5 +239,15 @@ namespace RoundHero
             }).ToList();
         }
         
+        public static DREnemyGenerateRule GetEnemyGenerateRule(this DataTableComponent dataTableComponent, EGameDifficulty gameDifficulty, int battleSession)
+        {
+            var drEnemies = GameEntry.DataTable.GetDataTable<DREnemyGenerateRule>();
+            return drEnemies.GetDataRow((t) =>
+            {
+                return  t.GameDifficulty == gameDifficulty && t.BattleSession == battleSession;
+            });
+        }
+        
+        
     }
 }
