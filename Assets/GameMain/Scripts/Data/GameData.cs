@@ -71,7 +71,7 @@ namespace RoundHero
     
     public class Data_Game
     {
-        //public Dictionary<string, Data_User> DataUsers = new Dictionary<string, Data_User>();
+        public Dictionary<string, Data_User> DataUsers = new Dictionary<string, Data_User>();
         public Data_User User;
         
         public Data_Game()
