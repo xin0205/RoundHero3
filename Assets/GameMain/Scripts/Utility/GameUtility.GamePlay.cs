@@ -911,6 +911,44 @@ namespace RoundHero
 
             }
 
+            var newRetGetRange = new List<int>();
+            if (unitCamps == null)
+            {
+                newRetGetRange = retGetRange;
+            }
+            else
+            {
+                foreach (var relativeCamp in unitCamps)
+                {
+                    for (int i = retGetRange.Count - 1; i >= 0; i--)
+                    {
+                        var _gridPosIdx = retGetRange[i];
+                        var unit = GetUnitByGridPosIdx(_gridPosIdx, isBattleData);
+                        if (unit == null)
+                        {
+                            newRetGetRange.Add(_gridPosIdx);
+                        }
+                        else
+                        {
+                            if(relativeCamp == ERelativeCamp.Us && selfUnitCamp == unit.UnitCamp)
+                            {
+                                newRetGetRange.Add(_gridPosIdx);
+                            }
+                            if(relativeCamp == ERelativeCamp.Enemy && selfUnitCamp != unit.UnitCamp)
+                            {
+                                newRetGetRange.Add(_gridPosIdx);
+                            }
+                        }
+
+                        retGetRange.Remove(i);
+
+                    }
+                
+                
+                }
+            }
+            
+
 
             // if (isExtendActionType)
             // {
@@ -987,7 +1025,7 @@ namespace RoundHero
 
             //SortHeroIDToLast(retGetRange);
 
-            return retGetRange;
+            return newRetGetRange;
 
         }
         
