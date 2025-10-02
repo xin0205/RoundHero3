@@ -1,6 +1,7 @@
 ﻿
 using CatJson;
 using HeathenEngineering.SteamworksIntegration.API;
+using Steamworks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -33,7 +34,7 @@ namespace RoundHero
                 return;
             }
 
-            if (App.Initialized)
+            if (GlobalManager.Instance.SteamInitialized)
             {
                 userName.text = User.Client.Id.Nickname;
             }
@@ -46,6 +47,7 @@ namespace RoundHero
             // restartGame.SetActive(isStartGame);
 
             BattleModeOnPointerExit();
+
         }
 
         public void BattleModeOnPointerEnter()
@@ -155,16 +157,16 @@ namespace RoundHero
         
         public void StartBattleMode()
         {
-            if (!GameManager.Instance.GameData.User.IsEndTutorial)
-            {
-                GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
-                Tutorial();
-            }
-            else
-            {
-                procedureStart.RestartBattleMode();
-            }
-
+            // if (!GameManager.Instance.GameData.User.IsEndTutorial)
+            // {
+            //     GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
+            //     Tutorial();
+            // }
+            // else
+            // {
+            //     procedureStart.RestartBattleMode();
+            // }
+            procedureStart.RestartBattleMode();
         }
         
         public void ContinueBattleMode()
@@ -183,7 +185,8 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.
                 IsTutorialBattle = true;
 
-            int startGameRandomSeed = Constant.Tutorial.RandomSeed;//Random.Range(0, Constant.Game.RandomRange);
+            //Constant.Tutorial.RandomSeed;//
+            int startGameRandomSeed = Random.Range(0, Constant.Game.RandomRange);
             
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
                 
