@@ -309,18 +309,19 @@ namespace RoundHero
 
         public void StartTest()
         {
-            // if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
-            // {
-            //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
-            //         Constant.Battle.InitCardMaxCount);
-            //     return;
-            // }
+            if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
+            {
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
+                    Constant.Battle.InitCardMaxCount);
+                return;
+            }
             
             
             GameEntry.UI.CloseUIForm(this);
-            
-            //startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
-            startGameRandomSeed = 6036588;//94204398;//2198030
+
+            //83353599;//91408126;//
+            startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            //startGameRandomSeed = 40611504;//6036588;//94204398;//2198030
             // Log.Debug("randomSeed:" + startGameRandomSeed);
             // GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             // GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
