@@ -784,6 +784,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 962694414983365338}
     m_Modifications:
+    - target: {fileID: 640051289000734464, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 640051289000734464, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.32
+      objectReference: {fileID: 0}
     - target: {fileID: 1069735466856660906, guid: ff36ffc7090d3b44e83b89f678f466da, type: 3}
       propertyPath: m_Name
       value: CardItem
