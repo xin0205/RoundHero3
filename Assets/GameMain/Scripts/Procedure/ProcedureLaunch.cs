@@ -7,6 +7,7 @@
 
 using GameFramework.Localization;
 using CatJson;
+using Steamworks;
 using UGFExtensions.Await;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
@@ -41,6 +42,42 @@ namespace RoundHero
         {
             base.OnEnter(procedureOwner);
 
+            
+            
+            JsonParser.Default.IsPolymorphic = true;
+            JsonParser.Default.IsFormat = false;
+            
+            Constant.Init();
+            
+        }
+
+        protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
+
+            
+            
+#if !UNITY_EDITOR
+            if (!initUserData && GlobalManager.Instance.SteamInitialized)
+            {
+                var steamID = SteamUser.GetSteamID().m_SteamID.ToString();
+                DataManager.Instance.Init(steamID);
+                initUserData = true;
+
+                Init();
+                
+                ChangeState<ProcedureSplash>(procedureOwner);
+            }
+#else
+            DataManager.Instance.Init("test");
+            Init();
+            ChangeState<ProcedureSplash>(procedureOwner);
+#endif
+            
+        }
+
+        public void Init()
+        {
             // 构建信息：发布版本时，把一些数据以 Json 的格式写入 Assets/GameMain/Configs/BuildInfo.txt，供游戏逻辑读取
             GameEntry.BuiltinData.InitBuildInfo();
 
@@ -56,34 +93,6 @@ namespace RoundHero
             // 默认字典：加载默认字典文件 Assets/GameMain/Configs/DefaultDictionary.xml
             // 此字典文件记录了资源更新前使用的各种语言的字符串，会随 App 一起发布，故不可更新
             GameEntry.BuiltinData.InitDefaultDictionary();
-            
-            JsonParser.Default.IsPolymorphic = true;
-            JsonParser.Default.IsFormat = false;
-            
-            Constant.Init();
-            
-        }
-
-        protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
-        {
-            base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-
-#if !UNITY_EDITOR
-            // if (!initUserData && SteamManager.Initialized)
-            // {
-            //     var steamID = SteamUser.GetSteamID().m_SteamID.ToString();
-            //     DataManager.Instance.InitData(steamID);
-            //     initUserData = true;
-            //     Log.Debug("steamID:" + steamID);
-            // }
-
-             DataManager.Instance.Init("test");
-             ChangeState<ProcedureSplash>(procedureOwner);
-#else
-            
-            ChangeState<ProcedureSplash>(procedureOwner);
-#endif
-            
         }
 
         private void InitLanguageSettings()

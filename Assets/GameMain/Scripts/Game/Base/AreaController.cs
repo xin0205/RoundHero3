@@ -37,12 +37,7 @@ namespace RoundHero
             return CameraPlane.GetDistanceToPoint(point);
         }
 
-        public void SteamInitSuccess()
-        {
-            var user = User.Client.Id;
-            Log.Debug("steam init success name:" + user.Nickname);
-            
-        }
+        
 
     }
 }

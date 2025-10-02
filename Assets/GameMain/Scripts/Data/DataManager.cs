@@ -1,5 +1,6 @@
 ﻿using Steamworks;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -9,30 +10,43 @@ namespace RoundHero
 
         public DataManager()
         {
+            var appVersions = Application.version.Split("_");
+            var isForceDataReset = appVersions[appVersions.Length - 1] == "1";
 
-            // var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
-            //  
-            // if (hasSetting)
-            // {
-            //     DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
-            // }
-            // else
-            // {
-            //     DataGame = new Data_Game();
-            //}
+            if (isForceDataReset)
+            {
+                DataGame = new Data_Game();
+            }
+            else
+            {
+                Log.Info("DataManager");
+                var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
+              
+                if (hasSetting)
+                {
+                    Log.Info("hasSetting");
+                    DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
+                }
+                else
+                {
+                    Log.Info("!!hasSetting");
+                    DataGame = new Data_Game();
+                }
+            }
             
-            GameEntry.Setting.RemoveAllSettings();
-            DataGame = new Data_Game();
-            
+
         }
         
         public void  Init(string userID)
         {
             if (DataGame.User == null || DataGame.User.UserID != userID)
             {
-                DataGame = new Data_Game();
-                DataGame.User = new Data_User(userID);
+                DataGame.DataUsers.Add(userID, new Data_User(userID));
+
             }
+            
+            DataGame.User = DataGame.DataUsers[userID];
+            
 
             // var hasVersion = GameEntry.Setting.HasSetting(Constant.Game.VersionKey);
             // if (hasVersion)

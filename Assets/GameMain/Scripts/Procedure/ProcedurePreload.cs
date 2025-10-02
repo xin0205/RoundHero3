@@ -105,16 +105,6 @@ namespace RoundHero
                 }
             }
 
-            // var steamID = SteamUser.GetSteamID().ToString();
-            // Log.Debug("steamID:" + steamID);
-            // DataManager.Instance.Init(steamID);
-            // PlayerManager.Instance.Init();
-            
-            
-            
-            DataManager.Instance.Init("123");
-            PlayerManager.Instance.Init();
-            
             ChangeState<ProcedureStart>(procedureOwner);
             var startProcedure = procedureOwner.CurrentState as ProcedureStart;
             startProcedure.Start();
