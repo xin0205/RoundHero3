@@ -2,12 +2,12 @@
 <UnityGameFramework>
   <ResourceBuilder>
     <Settings>
-      <InternalResourceVersion>9</InternalResourceVersion>
+      <InternalResourceVersion>11</InternalResourceVersion>
       <Platforms>1</Platforms>
       <AssetBundleCompression>1</AssetBundleCompression>
       <CompressionHelperTypeName>UnityGameFramework.Runtime.DefaultCompressionHelper</CompressionHelperTypeName>
       <AdditionalCompressionSelected>True</AdditionalCompressionSelected>
-      <ForceRebuildAssetBundleSelected>True</ForceRebuildAssetBundleSelected>
+      <ForceRebuildAssetBundleSelected>False</ForceRebuildAssetBundleSelected>
       <BuildEventHandlerTypeName>RoundHero.Editor.StarForceBuildEventHandler</BuildEventHandlerTypeName>
       <OutputDirectory>G:/Work/RoundHero/UnityProject/RoundHero3/Output</OutputDirectory>
       <OutputPackageSelected>True</OutputPackageSelected>
