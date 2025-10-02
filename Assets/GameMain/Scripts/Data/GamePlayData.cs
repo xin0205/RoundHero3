@@ -1191,11 +1191,30 @@ namespace RoundHero
         
         public override int CurHP
         {
-            get => HeroManager.Instance.BattleHeroData.CurHP;
-            set => HeroManager.Instance.BattleHeroData.CurHP = value;
+            get
+            {
+                if (HeroManager.Instance.BattleHeroData == null)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return HeroManager.Instance.BattleHeroData.CurHP;
+                }
+                
+                
+            }
+            set
+            {
+                if (HeroManager.Instance.BattleHeroData != null)
+                {
+                    HeroManager.Instance.BattleHeroData.CurHP = value;
+                }
+                
+            }
         }
-        
-        
+
+
         public override int MaxHP
         {
             // + GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.AddHeroMaxHP, BattleManager.Instance.CurUnitCamp);

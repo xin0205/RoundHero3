@@ -74,7 +74,7 @@ namespace RoundHero
         {
             get
             {
-                return BattlePlayerManager.Instance.PlayerData.BattleHero;
+                return BattlePlayerManager.Instance.PlayerData?.BattleHero;
             }
             
             set
