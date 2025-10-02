@@ -120,7 +120,7 @@ namespace RoundHero
 
         private float time = 0f;
         private float timeEnd = 0f;
-        private float timeShow = 0.5f;
+        private float timeShow = 0f;
         private void Update()
         {
             if (!this.gameObject.activeSelf)
@@ -162,16 +162,16 @@ namespace RoundHero
                 endPos += (Vector3)BattleUnitStateValueEntityData.TargetFollowParams.DeltaPos;
             }
             
-            if (time <= timeShow)
-            {
-                this.transform.localPosition = startPos;
-                return;
-            }
+            // if (time <= timeShow)
+            // {
+            //     this.transform.localPosition = startPos;
+            //     return;
+            // }
 
-            this.transform.localPosition = Vector2.Lerp(startPos, endPos, (time - timeShow) * 2f);
+            this.transform.localPosition = Vector2.Lerp(startPos, endPos, (time - timeShow) * 1f);
             
             
-            var colorAlpha = Mathf.Lerp(1f, 0f, (time - timeShow) * 2f);
+            var colorAlpha = Mathf.Lerp(1f, 0f, (time - timeShow) * 1f);
             
             
             
