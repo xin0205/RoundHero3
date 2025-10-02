@@ -18,7 +18,7 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public class DefaultSettingHelper : SettingHelperBase
     {
-        private const string SettingFileName = "GameFrameworkSetting.dat";
+        private const string SettingFileName = "Save.dat";
 
         private string m_FilePath = null;
         private DefaultSetting m_Settings = null;
