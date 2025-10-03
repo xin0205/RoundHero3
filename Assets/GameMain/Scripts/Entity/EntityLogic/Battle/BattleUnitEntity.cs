@@ -1543,7 +1543,7 @@ namespace RoundHero
             if (CurHP == 0 && BattleUnitData.FuneCount(EBuffID.Spec_UnDead) <= 0)
             {
                 CurHP = -1;
-                GameUtility.DelayExcute(1f, () =>
+                GameUtility.DelayExcute(0.5f, () =>
                 {
                     Dead();
                 });
