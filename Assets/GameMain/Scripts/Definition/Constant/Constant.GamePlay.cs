@@ -92,13 +92,21 @@ namespace RoundHero
         {
             public static Dictionary<EItemType, int> BattleModeRewardRatios = new ()
             {
-                [EItemType.UnitCard] = 20,
-                [EItemType.TacticCard] = 20,
-                [EItemType.Fune] = 20,
-                [EItemType.Bless] = 20,
-                [EItemType.RemoveCard] = 8,
-                [EItemType.AddCardFuneSlot] = 8,
-                [EItemType.AddMaxHP] = 4,
+                [EItemType.UnitCard] = 25,
+                [EItemType.TacticCard] = 25,
+                [EItemType.Fune] = 25,
+                [EItemType.Bless] = 0,
+                [EItemType.RemoveCard] = 10,
+                [EItemType.AddCardFuneSlot] = 10,
+                [EItemType.AddMaxHP] = 5,
+                
+                // [EItemType.UnitCard] = 20,
+                // [EItemType.TacticCard] = 20,
+                // [EItemType.Fune] = 20,
+                // [EItemType.Bless] = 20,
+                // [EItemType.RemoveCard] = 8,
+                // [EItemType.AddCardFuneSlot] = 8,
+                // [EItemType.AddMaxHP] = 4,
             };
             
             
