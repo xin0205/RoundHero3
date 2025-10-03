@@ -176,9 +176,6 @@ namespace RoundHero
                 {
                     //CurValueEntityIdx += 1;
                     
-                    var startValue = 0;
-                    var endValue = 0;
-                    var isShow = false;
                     foreach (var triggerData in kv.Value)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
@@ -186,21 +183,33 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        isShow = true;
-                        startValue += (int)triggerData.ActualValue;
-                        endValue += BlessManager.Instance.AddCurHPByAttackDamage()
-                            ? (int)(triggerData.Value + triggerData.DeltaValue)
-                            : (int)triggerData.ActualValue;
+                        //CurValueEntityIdx += 1;
+                        
                     }
-
-                    // if (startValue != 0)
+                    ShowValues(kv.Value, CurValueEntityIdx);
+                    
+                    // var startValue = 0;
+                    // var endValue = 0;
+                    // var isShow = false;
+                    // foreach (var triggerData in kv.Value)
                     // {
-                    //     
+                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                    //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
+                    //     {
+                    //         continue;
+                    //     }
+                    //     isShow = true;
+                    //     startValue += (int)triggerData.ActualValue;
+                    //     endValue += BlessManager.Instance.AddCurHPByAttackDamage()
+                    //         ? (int)(triggerData.Value + triggerData.DeltaValue)
+                    //         : (int)triggerData.ActualValue;
                     // }
-                    if (isShow)
-                    {
-                        InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
-                    }
+                    //
+                    //
+                    // if (isShow)
+                    // {
+                    //     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
+                    // }
                     
                 }
 
