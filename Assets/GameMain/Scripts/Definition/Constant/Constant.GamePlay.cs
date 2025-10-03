@@ -80,6 +80,12 @@ namespace RoundHero
             public static int MaxRewardCount = 3;
             //public static int MaxFuneCount = 4;
             public static int MaxBattleCount = 12;
+            
+            
+            public static List<int> InitCards = new List<int>()
+            {
+                0, 0, 0, 1, 1, 1, 10000, 10000, 10009, 10009
+            };
         }
 
         public static class Battle
