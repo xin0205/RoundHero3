@@ -119,7 +119,8 @@ namespace RoundHero
         public void OnGamePlayStartGame(object sender, GameEventArgs e)
         {
             var ne = e as GamePlayStartGameEventArgs;
-
+            GamePlayManager.Instance.GamePlayData.ClearPlayerDataList();
+            GamePlayManager.Instance.GamePlayData.AddPlayerData(PlayerManager.Instance.PlayerData);
             ContinueGame();
             DataManager.Instance.Save();
 
@@ -137,6 +138,10 @@ namespace RoundHero
 
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
+
+                
+                PVEManager.Instance.Init();
+                GamePlayManager.Instance.Contitnue();
                 if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Tutorial)
                 {
                     ContinueBattle();
@@ -170,8 +175,8 @@ namespace RoundHero
             
             
             PVEManager.Instance.Enter();
-            PVEManager.Instance.Init();
-            GamePlayManager.Instance.Contitnue();
+            // PVEManager.Instance.Init();
+            // GamePlayManager.Instance.Contitnue();
             
             var random = new Random(GamePlayManager.Instance.GamePlayData.RandomSeed);
             ChangeState<ProcedureGamePlay>(procedureOwner);

@@ -521,6 +521,8 @@ namespace RoundHero
         
         public void EndBattle(EBattleResult battleResult)
         {
+            BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
+                BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Tutorial)
             {
                 ProcedureBattle.EndBattle(battleResult);
