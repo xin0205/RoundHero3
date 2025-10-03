@@ -210,7 +210,8 @@ namespace RoundHero
                     var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
                     if (effectUnit != null)
                     {
-                        effectUnit.ShowTags(effectUnit.UnitIdx);
+                        effectUnit.ShowAttackTag(effectUnitIdx, false);
+                        effectUnit.ShowHurtAttackTag(effectUnitIdx, -1);
                     }
                     
                 }
