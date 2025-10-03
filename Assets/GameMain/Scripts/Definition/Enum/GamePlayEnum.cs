@@ -807,8 +807,9 @@ namespace RoundHero
     public enum EAttackCastType
     {
         CloseSingle,
+        ExtendSingle,
+        ParabolaSingle,
         CloseMulti,
-        RemoteSingle,
         ExtendMulti,
         ParabolaMulti,
         LineMulti,
