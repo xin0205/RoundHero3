@@ -2331,6 +2331,9 @@ namespace RoundHero
                     // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx && actionUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
                     //     continue;
                     
+                    if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
+                        continue;
+                    
                     var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
                     unitFlyDict.Add(kv.Key, moveGridPosIdxs);
 
