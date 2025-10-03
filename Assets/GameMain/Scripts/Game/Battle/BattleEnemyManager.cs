@@ -84,30 +84,44 @@ namespace RoundHero
             // var rule = rules[GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session];
             //EnemyGenerateData.RoundGenerateUnitCount = new Dictionary<int, int>(rule.RoundGenerateUnitCount);
             var roundGenerateUnitCounts = rule.RoundGenerateUnitCount.Split(";");
-
+            string[] strArray;
             foreach (var str in roundGenerateUnitCounts)
             {
-                var strs = str.Split(",");
-                EnemyGenerateData.RoundGenerateUnitCount.Add(int.Parse(strs[0]), int.Parse(strs[1]));
+                strArray = str.Split(",");
+                EnemyGenerateData.RoundGenerateUnitCount.Add(int.Parse(strArray[0]), int.Parse(strArray[1]));
+            }
+            
+            var enemyTypeCounts = new List<int>(10);
+            strArray = rule.EnemyTypeCounts.Split(";");
+            foreach (var str in strArray)
+            {
+                enemyTypeCounts.Add(int.Parse(str));
+            }
+            
+            var enemyLevelCounts = new List<int>(10);
+            strArray = rule.EnemyLevelCounts.Split(";");
+            foreach (var str in strArray)
+            {
+                enemyLevelCounts.Add(int.Parse(str));
             }
             
             
             var level0UnitList = GameEntry.DataTable.GetEnemys(0);
-            var level0UnitTypeRandoms = MathUtility.GetRandomNum(rule.EnemyTypeCounts[0], 0, level0UnitList.Count,
+            var level0UnitTypeRandoms = MathUtility.GetRandomNum(enemyTypeCounts[0], 0, level0UnitList.Count,
                 new Random(random.Next()));
-            var level0UnitRandoms = MathUtility.GetRandomNum(rule.EnemyLevelCounts[0], 0, level0UnitTypeRandoms.Count,
+            var level0UnitRandoms = MathUtility.GetRandomNum(enemyLevelCounts[0], 0, level0UnitTypeRandoms.Count,
                 new Random(random.Next()), true);
             
             var level1UnitList = GameEntry.DataTable.GetEnemys(1);
-            var level1UnitTypeRandoms = MathUtility.GetRandomNum(rule.EnemyTypeCounts[1], 0, level1UnitList.Count,
+            var level1UnitTypeRandoms = MathUtility.GetRandomNum(enemyTypeCounts[1], 0, level1UnitList.Count,
                 new Random(random.Next()));
-            var level1UnitRandoms = MathUtility.GetRandomNum(rule.EnemyLevelCounts[1], 0, level1UnitTypeRandoms.Count,
+            var level1UnitRandoms = MathUtility.GetRandomNum(enemyLevelCounts[1], 0, level1UnitTypeRandoms.Count,
                 new Random(random.Next()), true);
             
             var level2UnitList = GameEntry.DataTable.GetEnemys(2);
-            var level2UnitTypeRandoms = MathUtility.GetRandomNum(rule.EnemyTypeCounts[2], 0, level2UnitList.Count,
+            var level2UnitTypeRandoms = MathUtility.GetRandomNum(enemyTypeCounts[2], 0, level2UnitList.Count,
                 new Random(random.Next()));
-            var level2UnitRandoms = MathUtility.GetRandomNum(rule.EnemyLevelCounts[2], 0, level2UnitTypeRandoms.Count,
+            var level2UnitRandoms = MathUtility.GetRandomNum(enemyLevelCounts[2], 0, level2UnitTypeRandoms.Count,
                 new Random(random.Next()), true);
 
             var unitList = new List<int>(level0UnitRandoms.Count + level1UnitRandoms.Count +  + level2UnitRandoms.Count);
@@ -252,6 +266,15 @@ namespace RoundHero
             
             var rule = GameEntry.DataTable.GetEnemyGenerateRule(BattleManager.Instance.BattleData.GameDifficulty,
                 GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session);
+            
+            var roundGenerateUnitCount = new Dictionary<int, int>();
+            var roundGenerateUnitCounts = rule.RoundGenerateUnitCount.Split(";");
+            string[] strArray;
+            foreach (var str in roundGenerateUnitCounts)
+            {
+                strArray = str.Split(",");
+                roundGenerateUnitCount.Add(int.Parse(strArray[0]), int.Parse(strArray[1]));
+            }
 
 
             var enemyCurCount = BattleUnitManager.Instance.GetUnitCount(EUnitCamp.Enemy);
@@ -259,7 +282,7 @@ namespace RoundHero
             
 
             if (EnemyGenerateData.RoundGenerateUnitCount.ContainsKey(BattleManager.Instance.BattleData.Round) &&
-                EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] >= rule.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round])
+                EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] >= roundGenerateUnitCount[BattleManager.Instance.BattleData.Round])
             {
                 enemyGenerateCount =
                     EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round];
