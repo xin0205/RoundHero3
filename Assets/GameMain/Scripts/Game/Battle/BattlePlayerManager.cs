@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace RoundHero
 {
     public class BattlePlayerManager : Singleton<BattlePlayerManager>

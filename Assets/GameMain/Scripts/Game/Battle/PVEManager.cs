@@ -72,7 +72,7 @@ namespace RoundHero
 
         public void Enter()
         {
-            GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            //GameEntry.Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Subscribe(RefreshBattleStateEventArgs.EventId, OnRefreshBattleState);
 
         }
@@ -91,7 +91,7 @@ namespace RoundHero
 
         public void Exit()
         {
-            GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
+            //GameEntry.Event.Unsubscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
             GameEntry.Event.Unsubscribe(RefreshBattleStateEventArgs.EventId, OnRefreshBattleState);
 
         }
@@ -119,30 +119,30 @@ namespace RoundHero
             }
         }
         
-        private async void OnOpenUIFormSuccess(object sender, GameEventArgs e)
-        {
-            // OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
-            // if (ne.UIForm.Logic is BattleForm)
-            // {
-            //     
-            //     await BattleAreaManager.Instance.InitArea();
-            //     await BattleHeroManager.Instance.GenerateHero();
-            //     
-            //     await BattleEnemyManager.Instance.GenerateNewEnemies();
-            //     
-            //     //await BattleThirdUnitManager.Instance.GenerateNewThirdUnits();
-            //     
-            //     //await BattleGridPropManager.Instance.GenerateGridItems(EGridPropID.Action_AcquireCard_Prop);
-            //     BattleState = EBattleState.UseCard;
-            //     BattleCardManager.Instance.RoundAcquireCards(true);
-            //     
-            //     
-            //     BattleManager.Instance.RoundStartTrigger();
-            //     BattleManager.Instance.Refresh();
-            //     
-            // }
-
-        }
+        // private async void OnOpenUIFormSuccess(object sender, GameEventArgs e)
+        // {
+        //     // OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
+        //     // if (ne.UIForm.Logic is BattleForm)
+        //     // {
+        //     //     
+        //     //     await BattleAreaManager.Instance.InitArea();
+        //     //     await BattleHeroManager.Instance.GenerateHero();
+        //     //     
+        //     //     await BattleEnemyManager.Instance.GenerateNewEnemies();
+        //     //     
+        //     //     //await BattleThirdUnitManager.Instance.GenerateNewThirdUnits();
+        //     //     
+        //     //     //await BattleGridPropManager.Instance.GenerateGridItems(EGridPropID.Action_AcquireCard_Prop);
+        //     //     BattleState = EBattleState.UseCard;
+        //     //     BattleCardManager.Instance.RoundAcquireCards(true);
+        //     //     
+        //     //     
+        //     //     BattleManager.Instance.RoundStartTrigger();
+        //     //     BattleManager.Instance.Refresh();
+        //     //     
+        //     // }
+        //
+        // }
         
         public async void StartTurn()
         {

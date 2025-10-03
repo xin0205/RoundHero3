@@ -67,38 +67,9 @@ namespace RoundHero
                     blessIDs.Add(drBless.Id);
                 }
                 
-                var test = new SelectAcquireItemData()
-                {
-                    ItemType = EItemType.AddCardFuneSlot,
-                    ItemID = 0,
-                };
-                selectAcquireItemDatas.Add(test);
-                test = new SelectAcquireItemData()
-                {
-                    ItemType = EItemType.AddCardFuneSlot,
-                    ItemID = 0,
-                };
-                selectAcquireItemDatas.Add(test);
-                test = new SelectAcquireItemData()
-                {
-                    ItemType = EItemType.AddCardFuneSlot,
-                    ItemID = 0,
-                };
-                selectAcquireItemDatas.Add(test);
-                //
-                // var test2 = new SelectAcquireItemData()
-                // {
-                //     ItemType = EItemType.RemoveCard,
-                // };
-                // selectAcquireItemDatas.Add(test2);
-                //
-                // var test3 = new SelectAcquireItemData()
-                // {
-                //     ItemType = EItemType.AddMaxHP,
-                // };
-                // selectAcquireItemDatas.Add(test3);
+    
                 
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 9; i++)
                 {
                     var randomType = random.Next(0, 100);
                     foreach (var kv in RewardRatios)
