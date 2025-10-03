@@ -863,7 +863,7 @@ namespace RoundHero
                                 var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
                                 if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
                                 {
-                                    unit.ShowTags(unit.UnitIdx, true);
+                                    unit.ShowTagsWithFlyUnitIdx(unit.UnitIdx, true);
                                 }
                                 else
                                 {
@@ -877,7 +877,7 @@ namespace RoundHero
                                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
                                 if (attackUnit != null)
                                 {
-                                    attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                                    attackUnit.ShowTagsWithFlyUnitIdx(attackUnit.UnitIdx, true);
                                 }
                                 
                                 //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
@@ -892,7 +892,7 @@ namespace RoundHero
                                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
                                 if (attackUnit != null)
                                 {
-                                    attackUnit.ShowTags(attackUnit.UnitIdx, true);
+                                    attackUnit.ShowTagsWithFlyUnitIdx(attackUnit.UnitIdx, true);
                                 }
                                 
                                 //unit.ShowHurtTags(unit.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
@@ -948,7 +948,7 @@ namespace RoundHero
                                             // {
                                             //     
                                             // });
-                                            actionUnit.ShowTags(actionUnit.UnitIdx, true);
+                                            actionUnit.ShowTagsWithFlyUnitIdx(actionUnit.UnitIdx, true);
                                             idx++;
                                         }
                                     }
@@ -957,7 +957,7 @@ namespace RoundHero
                             }
                             else
                             {
-                                unit.ShowTags(unit.UnitIdx);
+                                unit.ShowTagsWithFlyUnitIdx(unit.UnitIdx);
                                 //unit.ShowHurtTags(unit.UnitIdx);
                             }
                         }
@@ -1543,7 +1543,7 @@ namespace RoundHero
                     if(!MoveGridPosIdxs.ContainsValue(kv.Value.GridPosIdx))
                         continue;
                     
-                    kv.Value.ShowTags(kv.Value.UnitIdx, false);
+                    kv.Value.ShowTagsWithFlyUnitIdx(kv.Value.UnitIdx, false);
                     //kv.Value.ShowHurtTags(kv.Value.UnitIdx);
                 }
                 else

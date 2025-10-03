@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace RoundHero
@@ -10,10 +11,10 @@ namespace RoundHero
         private int curFlyDirectEntityIdx = 0;
         private int showFlyDirectEntityIdx = 0;
 
-        public void ShowFlyDirect(int unitIdx)
+        public async Task ShowFlyDirect(int unitIdx)
         {
             UnShowFlyDirects();
-            ShowFlyDirects(unitIdx);
+            await ShowFlyDirects(unitIdx);
         }
         
         public void ShowHurtFlyDirect(int effectUnitIdx, int actionUnitIdx)
@@ -86,7 +87,7 @@ namespace RoundHero
 
         }
         
-        public async void ShowFlyDirects(int unitIdx)
+        public async Task ShowFlyDirects(int unitIdx)
         {
             BattleFlyDirectEntities.Clear();
             
@@ -113,6 +114,14 @@ namespace RoundHero
                     if (kv.Value == null || kv.Value.Count <= 1)
                     {
                         continue;
+                    }
+
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+                    if (effectUnit != null)
+                    {
+                        var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
+                        effectUnit.Position = pos;
+                        
                     }
                     
                     // var direct = GameUtility.GetRelativePos(kv.Value[0], kv.Value[1]);
@@ -173,6 +182,42 @@ namespace RoundHero
             }
 
             BattleFlyDirectEntities.Clear();
+
+        }
+        
+        public void ShowFlyUnitIdx(int unitIdx)
+        {
+
+            var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
+
+            foreach (var triggerDatas in triggerDataDict.Values)
+            {
+                var triggerData = triggerDatas[0];
+
+                var effectUnitIdx = triggerData.EffectUnitIdx;
+                var actionUnitIdx = triggerData.ActionUnitIdx;
+                
+                var flyPathDict =
+                    BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
+                
+                foreach (var kv in flyPathDict)
+                {
+                    if (kv.Value == null || kv.Value.Count <= 1)
+                    {
+                        continue;
+                    }
+
+                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+                    if (effectUnit != null)
+                    {
+                        effectUnit.ShowTags(effectUnit.UnitIdx);
+                    }
+                    
+                }
+                
+                
+
+            }
 
         }
 

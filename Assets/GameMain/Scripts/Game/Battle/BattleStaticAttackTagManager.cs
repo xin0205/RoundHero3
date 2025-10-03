@@ -220,6 +220,17 @@ namespace RoundHero
             var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
             var actionUnitPos = GameUtility.GridPosIdxToPos(actionGridPosIdx);
 
+            var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(effectUnitGridPosIdx);
+            if (effectUnit != null)
+            {
+                effectUnitPos = effectUnit.Position;
+            }
+            
+            var actionsUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(actionGridPosIdx);
+            if (actionsUnit != null)
+            {
+                actionUnitPos = actionsUnit.Position;
+            }
             
 
             EAttackTagType attackTagType;
