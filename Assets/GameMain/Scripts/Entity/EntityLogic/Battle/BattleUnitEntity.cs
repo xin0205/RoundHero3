@@ -825,7 +825,7 @@ namespace RoundHero
             switch (unitAttackCastType)
             {
                 case EAttackCastType.CloseSingle:
-                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
+                    ShowEffectAttackEntity_CloseSingle(triggerActionDataDict);
                     break;
                 case EAttackCastType.ExtendSingle:
                     ShowEffectAttackEntity_Empty(triggerActionDataDict);
@@ -1524,10 +1524,10 @@ namespace RoundHero
 
             HurtAnimation();
 
-            // GameUtility.DelayExcute(0.15f, () =>
-            // {
-            //     HandleGetHit();
-            // });
+            GameUtility.DelayExcute(0.15f, () =>
+            {
+                HandleGetHit();
+            });
             
             // if (UnitActionState == EUnitActionState.Run)
             // {
@@ -1912,6 +1912,11 @@ namespace RoundHero
         {
             this.Position = GameUtility.GridPosIdxToPos(gridPosIdx);
             
+        }
+
+        public void LookAt(Vector3 pos)
+        {
+            roleRoot.LookAt(pos);
         }
 
     }
