@@ -113,6 +113,7 @@ namespace RoundHero
 
             public const string Tips_BattleModeRewardSelectItem = "Tips.BattleModeRewardSelectItem";
             public const string Tips_BattleSession = "Tips.BattleSession";
+            public const string Tips_EnemyCount = "Tips.EnemyCount";
             
             public static Dictionary<EHPDeltaOwnerType, string> HPDeltaOwners =
                 new Dictionary<EHPDeltaOwnerType, string>()

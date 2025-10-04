@@ -40,7 +40,7 @@ namespace RoundHero
         //[SerializeField] private Text coreInfo;
         
         [SerializeField] private Text battleSession;
-        
+        [SerializeField] private Text enemyCount;
         
         private ProcedureBattle procedureBattle;
         
@@ -114,15 +114,17 @@ namespace RoundHero
             }
 
             battleSession.gameObject.SetActive(false);
+            enemyCount.gameObject.SetActive(false);
             
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
             {
                 battleSession.gameObject.SetActive(true);
+
                 battleSession.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_BattleSession,
                     GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1, Constant.BattleMode.MaxBattleCount);
-
+                
             }
-            
+
         }
 
         private void ShowRoundTips(int round)
@@ -272,6 +274,20 @@ namespace RoundHero
                 BattleManager.Instance.BattleData.ResetActionTimes.ToString(),
                 Constant.Battle.ResetActionTimes.ToString()
             });
+            
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            {
+                var _enemyCount = 0;
+                foreach (var kv in BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount)
+                {
+                    _enemyCount += kv.Value;
+                }
+                
+                enemyCount.gameObject.SetActive(true);
+                enemyCount.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_EnemyCount,
+                    _enemyCount);
+
+            }
         }
 
         // private void RefreshLinks()
