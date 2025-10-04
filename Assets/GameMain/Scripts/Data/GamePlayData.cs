@@ -793,36 +793,42 @@ namespace RoundHero
 
         public new Data_BattleHero Copy()
         {
-            var dataBattleHero = new Data_BattleHero();
-            dataBattleHero.Idx = Idx;
-            dataBattleHero.BaseDamage = BaseDamage;
-            dataBattleHero.HeroID = HeroID;
-            dataBattleHero.GridPosIdx = GridPosIdx;
-            dataBattleHero.CurHP = CurHP;
-            dataBattleHero.LastCurHP = LastCurHP;
-            dataBattleHero.LastCurHPDelta = LastCurHPDelta;
-            dataBattleHero.BaseMaxHP = BaseMaxHP;
-            dataBattleHero.Attribute = Attribute.Copy();
-            dataBattleHero.UnitCamp = UnitCamp;
-            dataBattleHero.UnitStateData = UnitStateData.Copy();
-            dataBattleHero.AttackInRound = AttackInRound;
-            dataBattleHero.UnitRole = UnitRole;
-            dataBattleHero.LinkIDs = new List<ELinkID>(LinkIDs);
-            dataBattleHero.FuneIdxs = new List<int>(FuneIdxs);
-            dataBattleHero.Links = new List<int>(Links);
-            dataBattleHero.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
-            dataBattleHero.RoundGridMoveCount = RoundGridMoveCount;
-            dataBattleHero.RoundMoveTimes = RoundMoveTimes;
-            dataBattleHero.RoundAttackTimes = RoundAttackTimes;
-            dataBattleHero.RoundUnitState = RoundUnitState.Copy();
-            dataBattleHero.HurtTimes = HurtTimes;
-            dataBattleHero.UnitCamp = UnitCamp;
-            dataBattleHero.AddHeroHP = AddHeroHP;
-            dataBattleHero.CacheHPDelta = CacheHPDelta;
-            dataBattleHero.CollideCount = CollideCount;
-            dataBattleHero.StartRound = StartRound;
-            //dataBattleHero.RoundHeroHPDelta = RoundHeroHPDelta;
-            return dataBattleHero;
+            var dataBattleUnit = new Data_BattleHero();
+            
+            dataBattleUnit.Idx = Idx;
+            dataBattleUnit.GridPosIdx = GridPosIdx;
+            dataBattleUnit.UnitCamp = UnitCamp;
+            
+            dataBattleUnit.CurHP = CurHP;
+            dataBattleUnit.BaseMaxHP = BaseMaxHP;
+            dataBattleUnit.UnitStateData = UnitStateData.Copy();
+            dataBattleUnit.AttackInRound = AttackInRound;
+            dataBattleUnit.UnitRole = UnitRole;
+            dataBattleUnit.BaseDamage = BaseDamage;
+            dataBattleUnit.HurtTimes = HurtTimes;
+            dataBattleUnit.LastCurHP = LastCurHP;
+            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
+            dataBattleUnit.FuneIdxs = new List<int>(FuneIdxs);
+            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
+            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
+            dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
+            dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
+            dataBattleUnit.CacheHPDelta = CacheHPDelta;
+            dataBattleUnit.CollideCount = CollideCount;
+            dataBattleUnit.StartRound = StartRound;
+            
+            dataBattleUnit.HeroID = HeroID;
+            dataBattleUnit.Attribute = Attribute.Copy();
+            dataBattleUnit.BaseMaxHeart = BaseMaxHeart;
+            dataBattleUnit.CurHeart = CurHeart;
+
+            
+            return dataBattleUnit;
+
 
         }
 
@@ -947,34 +953,36 @@ namespace RoundHero
         public new Data_BattleSolider Copy()
         {
             var dataBattleUnit = new Data_BattleSolider();
+            
             dataBattleUnit.Idx = Idx;
-            dataBattleUnit.BaseDamage = BaseDamage;
-            dataBattleUnit.CardIdx = CardIdx;
             dataBattleUnit.GridPosIdx = GridPosIdx;
             dataBattleUnit.UnitCamp = UnitCamp;
-            dataBattleUnit.Links = new List<int>(Links);
+            
             dataBattleUnit.CurHP = CurHP;
-            dataBattleUnit.LastCurHP = LastCurHP;
-            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
             dataBattleUnit.BaseMaxHP = BaseMaxHP;
             dataBattleUnit.UnitStateData = UnitStateData.Copy();
             dataBattleUnit.AttackInRound = AttackInRound;
             dataBattleUnit.UnitRole = UnitRole;
-            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleUnit.BaseDamage = BaseDamage;
+            dataBattleUnit.HurtTimes = HurtTimes;
+            dataBattleUnit.LastCurHP = LastCurHP;
+            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
             dataBattleUnit.FuneIdxs = new List<int>(FuneIdxs);
-            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
             dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
+            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
+            dataBattleUnit.AddHeroHP = AddHeroHP;
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
             dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
-            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
-            dataBattleUnit.Energy = Energy;
-            dataBattleUnit.HurtTimes = HurtTimes;
-            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
-            dataBattleUnit.UnitCamp = UnitCamp;
-            dataBattleUnit.AddHeroHP = AddHeroHP;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;
             dataBattleUnit.CollideCount = CollideCount;
             dataBattleUnit.StartRound = StartRound;
+            
+            dataBattleUnit.CardIdx = CardIdx;
+            dataBattleUnit.Energy = Energy;
+            
             return dataBattleUnit;
 
         }
@@ -1072,36 +1080,38 @@ namespace RoundHero
 
         public new Data_BattleMonster Copy()
         {
-            var dataBattleEnemy = new Data_BattleMonster();
-            dataBattleEnemy.Idx = Idx;
-            dataBattleEnemy.BaseDamage = BaseDamage;
-            dataBattleEnemy.MonsterID = MonsterID;
-
-            dataBattleEnemy.GridPosIdx = GridPosIdx;
-
-            dataBattleEnemy.CurHP = CurHP;
-            dataBattleEnemy.LastCurHP = LastCurHP;
-            dataBattleEnemy.LastCurHPDelta = LastCurHPDelta;
-            dataBattleEnemy.BaseMaxHP = BaseMaxHP;
-            dataBattleEnemy.UnitCamp = UnitCamp;
-            dataBattleEnemy.UnitStateData = UnitStateData.Copy();
-            dataBattleEnemy.AttackInRound = AttackInRound;
-            dataBattleEnemy.UnitRole = UnitRole;
-            dataBattleEnemy.LinkIDs = new List<ELinkID>(LinkIDs);
-            dataBattleEnemy.FuneIdxs = new List<int>(FuneIdxs);
-            dataBattleEnemy.Links = new List<int>(Links);
-            dataBattleEnemy.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
-            dataBattleEnemy.RoundMoveTimes = RoundMoveTimes;
-            dataBattleEnemy.RoundAttackTimes = RoundAttackTimes;
-            dataBattleEnemy.RoundGridMoveCount = RoundGridMoveCount;
-            dataBattleEnemy.RoundUnitState = RoundUnitState.Copy();
-            dataBattleEnemy.HurtTimes = HurtTimes;
-            dataBattleEnemy.UnitCamp = UnitCamp;
-            dataBattleEnemy.AddHeroHP = AddHeroHP;
-            dataBattleEnemy.CacheHPDelta = CacheHPDelta;
-            dataBattleEnemy.CollideCount = CollideCount;
-            dataBattleEnemy.StartRound = StartRound;
-            return dataBattleEnemy;
+            var dataBattleUnit = new Data_BattleMonster();
+            
+            dataBattleUnit.Idx = Idx;
+            dataBattleUnit.GridPosIdx = GridPosIdx;
+            dataBattleUnit.UnitCamp = UnitCamp;
+            
+            dataBattleUnit.CurHP = CurHP;
+            dataBattleUnit.BaseMaxHP = BaseMaxHP;
+            dataBattleUnit.UnitStateData = UnitStateData.Copy();
+            dataBattleUnit.AttackInRound = AttackInRound;
+            dataBattleUnit.UnitRole = UnitRole;
+            dataBattleUnit.BaseDamage = BaseDamage;
+            dataBattleUnit.HurtTimes = HurtTimes;
+            dataBattleUnit.LastCurHP = LastCurHP;
+            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
+            dataBattleUnit.FuneIdxs = new List<int>(FuneIdxs);
+            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
+            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
+            dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
+            dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
+            dataBattleUnit.CacheHPDelta = CacheHPDelta;
+            dataBattleUnit.CollideCount = CollideCount;
+            dataBattleUnit.StartRound = StartRound;
+            
+            dataBattleUnit.MonsterID = MonsterID;
+            dataBattleUnit.IsCalculateAction = IsCalculateAction;
+            
+            return dataBattleUnit;
 
         }
         
@@ -1156,35 +1166,35 @@ namespace RoundHero
         {
 
             var dataBattleUnit = new Data_BattleCore();
-            dataBattleUnit.Idx = Idx;
-            dataBattleUnit.CoreIdx = CoreIdx;
-            dataBattleUnit.BaseDamage = BaseDamage;
             
+            dataBattleUnit.Idx = Idx;
             dataBattleUnit.GridPosIdx = GridPosIdx;
             dataBattleUnit.UnitCamp = UnitCamp;
-            dataBattleUnit.Links = new List<int>(Links);
+            
             dataBattleUnit.CurHP = CurHP;
-            dataBattleUnit.LastCurHP = LastCurHP;
-            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
             dataBattleUnit.BaseMaxHP = BaseMaxHP;
             dataBattleUnit.UnitStateData = UnitStateData.Copy();
             dataBattleUnit.AttackInRound = AttackInRound;
             dataBattleUnit.UnitRole = UnitRole;
-            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
+            dataBattleUnit.BaseDamage = BaseDamage;
+            dataBattleUnit.HurtTimes = HurtTimes;
+            dataBattleUnit.LastCurHP = LastCurHP;
+            dataBattleUnit.LastCurHPDelta = LastCurHPDelta;
             dataBattleUnit.FuneIdxs = new List<int>(FuneIdxs);
-            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.LinkIDs = new List<ELinkID>(LinkIDs);
             dataBattleUnit.BattleLinkIDs = new List<ELinkID>(BattleLinkIDs);
+            dataBattleUnit.Links = new List<int>(Links);
+            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
+            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
+            dataBattleUnit.AddHeroHP = AddHeroHP;
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
             dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
-            dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
-            
-            dataBattleUnit.HurtTimes = HurtTimes;
-            dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
-            dataBattleUnit.UnitCamp = UnitCamp;
-            dataBattleUnit.AddHeroHP = AddHeroHP;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;
             dataBattleUnit.CollideCount = CollideCount;
-            
+            dataBattleUnit.StartRound = StartRound;
+
+            dataBattleUnit.CoreIdx = CoreIdx;
+
             return dataBattleUnit;
 
         }
@@ -1985,7 +1995,7 @@ namespace RoundHero
         public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new(10);
         public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
         public Dictionary<int, EGridType> GridTypes = new (100);
-
+        public EnemyGenerateData EnemyGenerateData = new EnemyGenerateData();
 
         public Data_Battle()
         {
@@ -2088,6 +2098,7 @@ namespace RoundHero
                 dataBattle.BattlePlayerDatas.Add(kv.Key, kv.Value.Copy());
             }
             
+            dataBattle.EnemyGenerateData = EnemyGenerateData.Copy();
             //dataBattle.BattlePlayerDatas = new Dictionary<EUnitCamp, Data_BattlePlayer>(BattlePlayerDatas);
 
             return dataBattle;
