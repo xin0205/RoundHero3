@@ -211,7 +211,7 @@ namespace RoundHero
                     if (effectUnit != null)
                     {
                         effectUnit.ShowAttackTag(effectUnitIdx, false);
-                        effectUnit.ShowHurtAttackTag(effectUnitIdx, -1);
+                        effectUnit.ShowHurtAttackTag(effectUnitIdx, -1, new List<int>(){actionUnitIdx});
                     }
                     
                 }
