@@ -142,12 +142,13 @@ namespace RoundHero
 
             }
 
-            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.AutoAtk)
+            else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.AutoAtk ||
+                     BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.ActiveAtk)
             {
                 var effectUnit = GetUnitByGridPosIdx(BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
                 BattleCardManager.Instance.CacheUseCardData(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
                     effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
-                    Constant.Battle.UnUnitTriggerIdx);
+                    Constant.Battle.UnUnitTriggerIdx, true);
             }
             // else if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.MoveUnit)
             // {

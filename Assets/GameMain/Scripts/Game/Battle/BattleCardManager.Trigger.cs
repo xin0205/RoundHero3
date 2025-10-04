@@ -8,7 +8,7 @@ namespace RoundHero
 {
     public partial class BattleCardManager : Singleton<BattleCardManager>
     {
-        public void CacheUseCardData(int cardIdx, Data_BattleUnit effectUnit, int actionUnitGridPosidx, int actionUnitIdx)
+        public void CacheUseCardData(int cardIdx, Data_BattleUnit effectUnit, int actionUnitGridPosidx, int actionUnitIdx, bool isSwitchCard = false)
         {
             var drCard = CardManager.Instance.GetCardTable(cardIdx);
             var card = BattleFightManager.Instance.GetCard(cardIdx);
@@ -57,31 +57,30 @@ namespace RoundHero
             
             BattleFightManager.Instance.RoundFightData.BuffData_Use.UseCardCirculation
                 .StandByCards = new List<int>(battlePlayerData.StandByCards);
-            
-            
-            
-            
-            
-            
-            foreach (var buffIDStr in drCard.BuffIDs)
-            {
-                var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
-                var values = drCard.Values0;
-                // foreach (var value in drCard.Values1)
-                // {
-                //     values.Add(BattleBuffManager.Instance.GetBuffValue(value, effectUnit != null ? effectUnit.Idx : -1));
-                // }
-                
-                
-                //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
-                //
-                if (drCard.CardType == ECardType.Tactic)
-                {
-                    BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
-                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, -1, ETriggerDataSubType.Card);
-                }
 
+            if (!isSwitchCard)
+            {
+                foreach (var buffIDStr in drCard.BuffIDs)
+                {
+                    var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
+                    var values = drCard.Values0;
+                    // foreach (var value in drCard.Values1)
+                    // {
+                    //     values.Add(BattleBuffManager.Instance.GetBuffValue(value, effectUnit != null ? effectUnit.Idx : -1));
+                    // }
+                
+                
+                    //BattleBuffManager.Instance.CacheBuffData(buffData, camp, effectUnit, values, 1 + card.UseCardDamageRatio);
+                    //
+                    if (drCard.CardType == ECardType.Tactic)
+                    {
+                        BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
+                            effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, -1, ETriggerDataSubType.Card);
+                    }
+
+                }
             }
+            
 
             //CacheUseCard(cardIdx, effectUnit, actionUnitGridPosidx, actionUnitIdx, triggerDatas);
             
