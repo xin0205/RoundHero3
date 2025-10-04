@@ -985,7 +985,10 @@ namespace RoundHero
                 return;
             }
             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
-            BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx].UseCardAnimation();
+            //移动格子卡，卡使用后要移动到屏幕中间
+            BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
+            //BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx].
+            UseCardAnimation();
 
             var moveGridPosIdx = new Dictionary<int, int>();
             if (battleState == EBattleState.MoveGrid)
@@ -1005,7 +1008,7 @@ namespace RoundHero
 
             
             
-            BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
+            
             
             if (battleState == EBattleState.MoveGrid)
             {
