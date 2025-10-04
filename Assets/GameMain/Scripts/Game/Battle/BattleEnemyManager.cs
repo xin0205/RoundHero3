@@ -20,6 +20,22 @@ namespace RoundHero
         public List<int> UnitList = new List<int>();
         public int UnitIdx = 0;
 
+        public EnemyGenerateData()
+        {
+            
+        }
+
+        public EnemyGenerateData Copy()
+        {
+            var enemyGenerateData = new EnemyGenerateData();
+            enemyGenerateData.GlobalDebuffList = new List<int>(GlobalDebuffList);
+            enemyGenerateData.UnitList = new List<int>(UnitList);
+            enemyGenerateData.RoundGenerateUnitCount = new Dictionary<int, int>(RoundGenerateUnitCount);
+            enemyGenerateData.UnitIdx = UnitIdx;
+
+            return enemyGenerateData;
+        }
+
         public void Clear()
         {
             GlobalDebuffList.Clear();
@@ -37,7 +53,7 @@ namespace RoundHero
         //private int id;
         public Random Random;
         private int randomSeed;
-        public EnemyGenerateData EnemyGenerateData = new EnemyGenerateData();
+        public EnemyGenerateData EnemyGenerateData = BattleManager.Instance.BattleData.EnemyGenerateData;
         
 
         public void Init(int randomSeed)
