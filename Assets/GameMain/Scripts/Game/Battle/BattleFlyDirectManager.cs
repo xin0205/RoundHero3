@@ -213,6 +213,12 @@ namespace RoundHero
                         effectUnit.ShowAttackTag(effectUnitIdx, false);
                         effectUnit.ShowHurtAttackTag(effectUnitIdx, -1, new List<int>(){actionUnitIdx});
                     }
+
+                    var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
+                    if (actionUnitIdx != null)
+                    {
+                        actionUnit.ShowHurtDisplayValue(actionUnitIdx, effectUnitIdx);
+                    }
                     
                 }
                 
