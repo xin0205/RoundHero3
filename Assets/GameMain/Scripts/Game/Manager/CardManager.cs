@@ -203,5 +203,13 @@ namespace RoundHero
             CardManager.Instance.CardDatas.Remove(cardIdx);
         }
 
+        public void BattleDestroy()
+        {
+            foreach (var kv in CardDatas)
+            {
+                kv.Value.Reset();
+            }
+        }
+        
     }
 }

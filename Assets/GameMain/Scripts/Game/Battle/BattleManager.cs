@@ -97,6 +97,7 @@ namespace RoundHero
             BattleFightManager.Instance.Destory();
             BattleCurseManager.Instance.Destory();
             BattleCardManager.Instance.Destory();
+            CardManager.Instance.BattleDestroy();
             BattleAreaManager.Instance.Destory();
             
             BattleEnemyManager.Instance.Destory();

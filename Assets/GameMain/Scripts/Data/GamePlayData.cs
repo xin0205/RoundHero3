@@ -111,17 +111,29 @@ namespace RoundHero
         public int CardID;
         public int MaxFuneCount;
         public List<int> FuneIdxs = new();
+        public ECardUseType CardUseType;
+        
         public int RoundEnergyDelta = 0;
         public List<ELinkID> RoundLinkIDs = new();
-        public int UseCardDamageRatio = 0;
         public bool UnUse = false;
-        //public bool IsUseConsume = false;
+        
+        public int UseCardDamageRatio = 0;
         public ECardDestination CardDestination = ECardDestination.Pass;
-        public ECardUseType CardUseType;
         public int EnergyDelta = 0;
         public int MaxHPDelta = 0;
         public int DmgDelta = 0;
         public bool IsPassable = false;
+
+        public void Reset()
+        {
+            UseCardDamageRatio = 0;
+            CardDestination = ECardDestination.Pass;
+            EnergyDelta = 0;
+            MaxHPDelta = 0;
+            DmgDelta = 0;
+            CardDestination = ECardDestination.Pass;
+            IsPassable = false;
+        }
         
         public Data_Card()
         {
