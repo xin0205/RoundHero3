@@ -790,6 +790,7 @@ namespace RoundHero
                         
                         if (attackUnitEntity != null)
                         {
+                            attackUnitEntity.transform.LookAt(effectUnitEntity.transform.position);
                             //attackUnitEntity.ShowHurtTags(attackUnitEntity.UnitIdx, effectUnitEntity.UnitIdx);
                         }
                         
@@ -797,6 +798,13 @@ namespace RoundHero
                         {
                             //effectUnitEntity.ShowHurtTags(effectUnitEntity.UnitIdx, BattleManager.Instance.TempTriggerData.UnitData.Idx);
                         }
+                        
+                        if (attackUnitEntity != null && effectUnitEntity != null)
+                        {
+                            attackUnitEntity.LookAt(effectUnitEntity.transform.position);
+                            
+                        }
+                        
                         //BattleManager.Instance.TempTriggerData.TriggerType = ETempUnitType.SelectHurtUnit;
                     }
                     else if (ne.ShowState == EShowState.Unshow)
