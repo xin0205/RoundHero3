@@ -452,6 +452,7 @@ namespace RoundHero
 
         public void PlaceUnitCard(int cardIdx, int gridPosIdx, EUnitCamp playerUnitCamp)
         {
+            BattleManager.Instance.RecordLastActionBattleData();
             BattleTypeManager.PlaceUnitCard(cardIdx, gridPosIdx, playerUnitCamp);
         }
         
