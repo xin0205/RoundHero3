@@ -2896,26 +2896,26 @@ namespace RoundHero
                         }
                         break;
                     case ETriggerTarget.Vertical:
-                        var actionUnitDirect = actionUnitCoord - actionUnitLastCoord;
-                        var vertical1 = new Vector2Int(-actionUnitDirect.y, actionUnitDirect.x);
-                        var vertical2 = new Vector2Int(actionUnitDirect.y, -actionUnitDirect.x);
-                        var vertical1GridPosIdx = GameUtility.GridCoordToPosIdx(actionUnitCoord + vertical1);
-                        var vertical2GridPosIdx = GameUtility.GridCoordToPosIdx(actionUnitCoord + vertical2);
-                        var vertical1Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(vertical1GridPosIdx);
-                        if (vertical1Unit != null)
-                        {
-                            realEffectUnitIdxs.Add(vertical1Unit.Idx);
-                        }
-                        var vertical2Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(vertical2GridPosIdx);
-                        if (vertical2Unit != null)
-                        {
-                            realEffectUnitIdxs.Add(vertical2Unit.Idx);
-                        }
+                        // var actionUnitDirect = actionUnitCoord - actionUnitLastCoord;
+                        // var vertical1 = new Vector2Int(-actionUnitDirect.y, actionUnitDirect.x);
+                        // var vertical2 = new Vector2Int(actionUnitDirect.y, -actionUnitDirect.x);
+                        // var vertical1GridPosIdx = GameUtility.GridCoordToPosIdx(actionUnitCoord + vertical1);
+                        // var vertical2GridPosIdx = GameUtility.GridCoordToPosIdx(actionUnitCoord + vertical2);
+                        // var vertical1Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(vertical1GridPosIdx);
+                        // if (vertical1Unit != null)
+                        // {
+                        //     realEffectUnitIdxs.Add(vertical1Unit.Idx);
+                        // }
+                        // var vertical2Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(vertical2GridPosIdx);
+                        // if (vertical2Unit != null)
+                        // {
+                        //     realEffectUnitIdxs.Add(vertical2Unit.Idx);
+                        // }
                         
+
                         break;
                     case ETriggerTarget.Horizontal:
-                        
-              
+
                         var relatedDirect = effectUnitCoord - actionUnitCoord;
                         relatedDirect = GameUtility.GetDirect(relatedDirect);
 
