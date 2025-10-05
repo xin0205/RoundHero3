@@ -543,6 +543,13 @@ namespace RoundHero
             {
                 foreach (var triggerData in kv.Value)
                 {
+                    if (triggerData.BuffValue == null)
+                    {
+                        BattleBulletManager.Instance.UseTriggerData(triggerData);
+                        continue;
+                    }
+                        
+                    
                     if (triggerData.BuffValue.BuffData.BuffEquipType != EBuffEquipType.Normal)
                     {
                         //死亡，溢出的伤害，攻击对方 需要下行代码
@@ -1891,6 +1898,7 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
 
+            UnShowTags();
             ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
             ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
