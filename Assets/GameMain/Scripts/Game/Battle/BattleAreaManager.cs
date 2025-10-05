@@ -381,6 +381,7 @@ namespace RoundHero
                             
                             BattleManager.Instance.RefreshEnemyAttackData();
                             
+                            
                             TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
                             //tmpSoliderEntity.RefreshDamageState();
                         }
@@ -1692,7 +1693,7 @@ namespace RoundHero
             var ne = e as ClickGridEventArgs;
 
             var heroID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,
-                ERelativeCamp.Us, EUnitRole.Hero);
+                ERelativeCamp.Us, EUnitRole.Core);
             var enemyEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx, BattleManager.Instance.CurUnitCamp,
                 ERelativeCamp.Enemy);
             //var cardIndexs = BattleCardManager.Instance.GetCardIndexs(ne.GridPosIdx);

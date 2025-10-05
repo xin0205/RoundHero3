@@ -190,7 +190,7 @@ namespace RoundHero
           
             var unitCount =
                 BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetUnitCount(BattleManager.Instance.CurUnitCamp,
-                    new List<ERelativeCamp>() {ERelativeCamp.Us}, new List<EUnitRole>() {EUnitRole.Staff, EUnitRole.Hero});
+                    new List<ERelativeCamp>() {ERelativeCamp.Us}, new List<EUnitRole>() {EUnitRole.Staff, EUnitRole.Core});
             var value = unitCount * value1s[1] * ratio;
 
             var triggerData = new TriggerData()
@@ -231,7 +231,7 @@ namespace RoundHero
 
             var unitCount =
                 BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetUnitCount(BattleManager.Instance.CurUnitCamp,
-                    new List<ERelativeCamp>() {ERelativeCamp.Us, ERelativeCamp.Enemy}, new List<EUnitRole>() {EUnitRole.Staff, EUnitRole.Hero});
+                    new List<ERelativeCamp>() {ERelativeCamp.Us, ERelativeCamp.Enemy}, new List<EUnitRole>() {EUnitRole.Staff, EUnitRole.Core});
 
             var value = unitCount * value1s[0] * ratio;
 

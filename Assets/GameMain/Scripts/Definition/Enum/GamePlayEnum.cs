@@ -380,7 +380,7 @@ namespace RoundHero
     
     public enum EUnitRole
     {
-        Hero,
+        Core,
         Staff,
     }
     
@@ -434,7 +434,7 @@ namespace RoundHero
                 
         DeBuffUnEffect,
         BuffUnEffect,
-        SubHPAddSelfHP,
+        AtkAddSelfHP,
                 
         Fly,
         UnEffectLink,

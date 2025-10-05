@@ -14,7 +14,7 @@ namespace RoundHero
         private int curAttackTagEntityIdx = 0;
         private int showAttackTagEntityIdx = 0;
         
-        public async void ShowStaticAttackTags()
+        public async Task ShowStaticAttackTags()
         {
             //Log.Debug("ShowStaticAttackTags");
             UnshowStaticAttackTags();

@@ -407,7 +407,7 @@ namespace RoundHero
 
             //buffTriggerType != EBuffTriggerType.Use && 
             if (realEffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx ||
-                (realEffectUnit != null && realEffectUnit.UnitRole == EUnitRole.Hero) &&
+                (realEffectUnit != null && realEffectUnit.UnitRole == EUnitRole.Core) &&
                 buffvalueType == ETriggerDataType.Atrb &&
                 buffData.UnitAttribute == EUnitAttribute.HP &&
                 (buffTriggerType != EBuffTriggerType.UseCard))

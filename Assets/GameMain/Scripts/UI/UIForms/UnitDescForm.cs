@@ -64,7 +64,7 @@ namespace RoundHero
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
-                if (UnitDescFormData.UnitRole == EUnitRole.Hero)
+                if (UnitDescFormData.UnitRole == EUnitRole.Core)
                 {
                     animationPlayData.GifType = EGIFType.Hero;
                 }
@@ -141,7 +141,7 @@ namespace RoundHero
                 videoPlayItem.gameObject.SetActive(true);
                 videoPlayItem.SetVideo(animationPlayData);
                 
-                if (UnitDescFormData.UnitRole == EUnitRole.Hero)
+                if (UnitDescFormData.UnitRole == EUnitRole.Core)
                 {
                     unitDescItem.gameObject.SetActive(true);
                     animationPlayData.GifType = EGIFType.Hero;
@@ -301,7 +301,7 @@ namespace RoundHero
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
-                if (UnitDescFormData.UnitRole == EUnitRole.Hero)
+                if (UnitDescFormData.UnitRole == EUnitRole.Core)
                 {
                     var coreEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleCoreEntity;
                     

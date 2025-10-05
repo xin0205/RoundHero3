@@ -792,7 +792,7 @@ namespace RoundHero
             CurHeart = MaxHeart;
             CurHP = MaxHP;
             LastCurHP = CurHP;
-            UnitRole = EUnitRole.Hero;
+            UnitRole = EUnitRole.Core;
             
 
             // Attribute.SetAttribute(EHeroAttribute.MaxHeart, drHero.Heart);

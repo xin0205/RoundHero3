@@ -145,7 +145,7 @@ namespace RoundHero
                         EUnitState.CounterAtk,
                         EUnitState.AddDmg,
                         EUnitState.HurtSubDmg,
-                        EUnitState.SubHPAddSelfHP,
+                        EUnitState.AtkAddSelfHP,
                     },
                     [EUnitStateEffectType.DeBuff] = new()
                     {
@@ -2465,7 +2465,7 @@ namespace RoundHero
                     EUnitState.UnAtk,//沉默：无法攻击
                     EUnitState.UnHurt,//无敌：不受伤
                     EUnitState.DoubleDmg,//暴击：双倍伤害
-                    EUnitState.SubHPAddSelfHP,//吸血：攻击时，恢复生命
+                    EUnitState.AtkAddSelfHP,//吸血：攻击时，恢复生命
                     EUnitState.BuffUnEffect,//压制：正面Buff不生效
                     EUnitState.DeBuffUnEffect,//隔离：负面Buff不生效
                 }

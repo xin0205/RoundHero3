@@ -628,7 +628,7 @@ namespace RoundHero
                     {
                         var _gridPosIdx = range[i];
                         var unit = GetUnitByGridPosIdx(_gridPosIdx);
-                        if (unit != null && unit.UnitRole == EUnitRole.Hero)
+                        if (unit != null && unit.UnitRole == EUnitRole.Core)
                         {
                             range2.Add(_gridPosIdx);
                             range.Remove(_gridPosIdx);
@@ -2138,7 +2138,7 @@ namespace RoundHero
                                 EBuffID.Spec_CurseUnEffect))
                             continue;
 
-                        if (effectUnit.UnitRole != EUnitRole.Hero)
+                        if (effectUnit.UnitRole != EUnitRole.Core)
                         {
                             triggerData.HeroHPDelta = true;
                         }
@@ -2982,6 +2982,11 @@ namespace RoundHero
                 {
                     foreach (var triggerData in kv2.Value)
                     {
+                        if (triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx == triggerData.ActionUnitIdx)
+                        {
+                            continue;
+                        }
+                        
                         if (triggerData.EffectUnitIdx != effectUnitIdx)
                         {
                             continue;

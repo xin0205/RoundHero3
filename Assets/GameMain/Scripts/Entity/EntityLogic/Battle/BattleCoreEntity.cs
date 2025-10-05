@@ -37,7 +37,7 @@ namespace RoundHero
             
             var unitDescFormData = UnitDescTriggerItem.UnitDescFormData;
             unitDescFormData.UnitCamp = BattleCoreEntityData.BattleCoreData.UnitCamp;
-            unitDescFormData.UnitRole = EUnitRole.Hero;
+            unitDescFormData.UnitRole = EUnitRole.Core;
 
             unitDescFormData.Idx = BattleCoreEntityData.BattleCoreData.Idx;
             unitDescFormData.GridType = EGridType.Unit;

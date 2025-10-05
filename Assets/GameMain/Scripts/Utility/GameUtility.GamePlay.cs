@@ -1090,11 +1090,11 @@ namespace RoundHero
 
                 var unit1 = BattleFightManager.Instance.GetUnitByGridPosIdx(gridPosIdx1);
                 var unit2 = BattleFightManager.Instance.GetUnitByGridPosIdx(gridPosIdx2);
-                if (unit1 != null && unit1.UnitRole == EUnitRole.Hero)
+                if (unit1 != null && unit1.UnitRole == EUnitRole.Core)
                 {
                     return 1;
                 }
-                else if (unit2 != null && unit2.UnitRole == EUnitRole.Hero)
+                else if (unit2 != null && unit2.UnitRole == EUnitRole.Core)
                 {
                     return -1;
                 }
@@ -1275,10 +1275,10 @@ namespace RoundHero
             var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
             relatedEnemyUnits.Sort((unit1, unit2) =>
             {
-                if (unit2.UnitRole == EUnitRole.Hero && unit1.UnitRole != EUnitRole.Hero)
+                if (unit2.UnitRole == EUnitRole.Core && unit1.UnitRole != EUnitRole.Core)
                     return 1;
                 
-                if (unit1.UnitRole == EUnitRole.Hero && unit2.UnitRole != EUnitRole.Hero)
+                if (unit1.UnitRole == EUnitRole.Core && unit2.UnitRole != EUnitRole.Core)
                     return -1;
                 
                 var unit1Coord = GameUtility.GridPosIdxToCoord(unit1.GridPosIdx);

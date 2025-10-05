@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using GameFramework;
 using UnityEngine;
 using Random = System.Random;
@@ -148,7 +149,7 @@ namespace RoundHero
             // BattleCoreManager.Instance.Unsubscribe();
         }
 
-        public void RefreshEnemyAttackData()
+        public async Task RefreshEnemyAttackData()
         {
             //BattleFightManager.Instance.CacheEnemyAttackDatas();
             BattleFightManager.Instance.CacheRoundFightData2();
@@ -158,7 +159,7 @@ namespace RoundHero
             {
                 kv.Value.LookAtHero();
             }
-            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+            await BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
         }
         
         public void RefreshAll()
