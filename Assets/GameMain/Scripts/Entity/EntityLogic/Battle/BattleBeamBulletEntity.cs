@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -59,19 +60,39 @@ namespace RoundHero
             var endPos = GameUtility.GridPosIdxToPos(BattleBulletEntityData.BulletData.MoveGridPosIdxs[BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count - 1]);
             startPos.y += 1;
             endPos.y += 1;
+            
+            
             ShootBeam(startPos, endPos);
         }
-        
-        void ShootBeam(Vector3 start, Vector3 end)
+
+        private void Update()
+        {
+            BulletUpdate();
+        }
+
+        private void BulletUpdate()
         {
             line.positionCount = 2;
-            line.SetPosition(0, start);
-            beamStart.transform.position = start;
-
+            if (BattleBulletEntityData.BulletData.ActionUnitGO != null)
+            {
+                var startPos = BattleBulletEntityData.BulletData.ActionUnitGO.transform.position;
+                //startPos.y += 1;
+                beamStart.transform.position = startPos;
+                line.SetPosition(0,  startPos);
+            }
             
+            if (BattleBulletEntityData.BulletData.EffectUnitGO != null)
+            {
+                var endPos = BattleBulletEntityData.BulletData.EffectUnitGO.transform.position;
+                endPos.y += 1;
+                beamEnd.transform.position = endPos;
+                line.SetPosition(1, endPos);
+            }
+        }
 
-            beamEnd.transform.position = end;
-            line.SetPosition(1, end);
+        void ShootBeam(Vector3 start, Vector3 end)
+        {
+            BulletUpdate();
 
             beamStart.transform.LookAt(beamEnd.transform.position);
             beamEnd.transform.LookAt(beamStart.transform.position);

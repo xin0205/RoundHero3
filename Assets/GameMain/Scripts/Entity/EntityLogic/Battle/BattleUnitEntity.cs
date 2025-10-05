@@ -470,7 +470,15 @@ namespace RoundHero
                 paths.Add(triggerData.ActionUnitGridPosIdx);
                 paths.Add(triggerData.EffectUnitGridPosIdx);
             }
+
+            bulletData.ActionUnitGO = this.ShootPos.gameObject;
             
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+            if (effectUnit != null)
+            {
+                bulletData.EffectUnitGO = effectUnit.gameObject;
+            }
+             
             bulletData.MoveGridPosIdxs.AddRange(paths);
             
             var triggerActionDatas =
