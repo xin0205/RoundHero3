@@ -790,10 +790,10 @@ namespace RoundHero
                             
                             
 
-                            var subHPAddSelfHPCount = 0;
+                            var atkAddSelfHP = 0;
                             if (actionUnitData != null)
                             {
-                                subHPAddSelfHPCount = actionUnitData.GetAllStateCount(EUnitState.SubHPAddSelfHP);
+                                atkAddSelfHP = actionUnitData.GetAllStateCount(EUnitState.AtkAddSelfHP);
                             }
                             
                             var addDmgCount = 0;
@@ -854,77 +854,112 @@ namespace RoundHero
                             //     triggerDatas.Add(subAddDmgCountData);
                             // }
 
-                            if (subHPAddSelfHPCount > 0)
+                            if (atkAddSelfHP > 0)
                             {
                         
                                 var _triggerValue = (int)(triggerData.Value + triggerData.DeltaValue);
                                 _triggerValue = _triggerValue > 0 ? 0 : _triggerValue;
+                                var atkAddSelfHP_hpDelta = actionUnitData.MaxHP - actionUnitData.CurHP;
 
-                                var maxAddHPCount = 0;
-                                if(Mathf.Abs(_triggerValue) > effectUnitData.CurHP)
-                                {
-                                    maxAddHPCount = effectUnitData.CurHP > subHPAddSelfHPCount
-                                        ? subHPAddSelfHPCount
-                                        : effectUnitData.CurHP;
-                                }
-                                else
-                                {
-                                    var blessData = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.SubHPAddSelfHPAddMore,
-                                        PlayerManager.Instance.PlayerData.UnitCamp);
-                                    
-                                    maxAddHPCount = effectUnitData.CurHP > subHPAddSelfHPCount
-                                        ? subHPAddSelfHPCount
-                                        : Mathf.Abs(_triggerValue);
-
-                                    if (blessData != null && _triggerValue + effectUnitData.CurHP == 1 &&
-                                        actionUnitData.UnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
-                                    {
-                                        triggerData.DeltaValue += -1;
-                                        maxAddHPCount += 1;
-                                    }
-                                    
-                                    
-                                }
+                                // var maxAddHPCount = 0;
+                                // if(Mathf.Abs(_triggerValue) > effectUnitData.CurHP)
+                                // {
+                                //     maxAddHPCount = effectUnitData.CurHP > atkAddSelfHP
+                                //         ? atkAddSelfHP
+                                //         : effectUnitData.CurHP;
+                                // }
+                                // else
+                                // {
+                                //     
+                                //     
+                                //     maxAddHPCount = effectUnitData.CurHP > atkAddSelfHP
+                                //         ? atkAddSelfHP
+                                //         : Mathf.Abs(_triggerValue);
+                                //     
+                                //     var blessData = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.SubHPAddSelfHPAddMore,
+                                //         PlayerManager.Instance.PlayerData.UnitCamp);
+                                //
+                                //     if (blessData != null && _triggerValue + effectUnitData.CurHP == 1 &&
+                                //         actionUnitData.UnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
+                                //     {
+                                //         triggerData.DeltaValue += -1;
+                                //         maxAddHPCount += 1;
+                                //     }
+                                //     
+                                //     
+                                // }
+                                
+                                var maxAddHPCount = effectUnitData.CurHP > atkAddSelfHP
+                                    ? atkAddSelfHP
+                                    : effectUnitData.CurHP;
 
                                 maxAddHPCount = maxAddHPCount > Mathf.Abs(_triggerValue)
                                     ? Mathf.Abs(_triggerValue)
                                     : maxAddHPCount;
                                 
-                                var actualSubHPAddSelfHPCount = maxAddHPCount > subHPAddSelfHPCount ? -subHPAddSelfHPCount : -maxAddHPCount;
+                                maxAddHPCount = maxAddHPCount > atkAddSelfHP_hpDelta
+                                    ? atkAddSelfHP_hpDelta
+                                    : maxAddHPCount;
+
+                                maxAddHPCount = maxAddHPCount > atkAddSelfHP ? atkAddSelfHP : maxAddHPCount;
+                                
+                                var actualSubHPAddSelfHPCount = -maxAddHPCount;
+                                
+                                var blessData = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.SubHPAddSelfHPAddMore,
+                                    PlayerManager.Instance.PlayerData.UnitCamp);
+                                
+                                if (blessData != null && _triggerValue + effectUnitData.CurHP == 1 &&
+                                    actionUnitData.UnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
+                                {
+                                    triggerData.DeltaValue += -1;
+                                    maxAddHPCount += 1;
+                                }
+                                
+                                // var actualSubHPAddSelfHPCount = maxAddHPCount > atkAddSelfHP ? -atkAddSelfHP : -maxAddHPCount;
+                                
+                                
                                 if (actionUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualSubHPAddSelfHPCount < -1)
                                 {
                                     actualSubHPAddSelfHPCount = -1;
                                 }
-                                
-                                    
-                                var subHPAddSelfHPData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
-                                    actionUnitData.Idx, actionUnitData.Idx, EUnitState.SubHPAddSelfHP, actualSubHPAddSelfHPCount,
-                                    ETriggerDataType.State);
-                                subHPAddSelfHPData.ActionUnitGridPosIdx = subHPAddSelfHPData.EffectUnitGridPosIdx =
-                                    actionUnitData.GridPosIdx;
-                                SimulateTriggerData(subHPAddSelfHPData, triggerDatas);
-                                triggerDatas.Add(subHPAddSelfHPData);
-                                
-                                var addSelfHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(actionUnitData.Idx,
-                                    actionUnitData.Idx, actionUnitData.Idx, EUnitAttribute.HP, maxAddHPCount,
-                                    ETriggerDataSubType.Unit);
-                                addSelfHPTriggerData.ActionUnitGridPosIdx = actionUnitData.GridPosIdx;
-                                addSelfHPTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
-                                
-                                SimulateTriggerData(addSelfHPTriggerData, triggerDatas);
-                                triggerDatas.Add(addSelfHPTriggerData);
-                                
-                                var subHPAddSelfHPAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.SubHPAddSelfHPAcquireCard,
-                                    actionUnitData.UnitCamp);
 
-                                if (subHPAddSelfHPAcquireCard != null)
+                                if (maxAddHPCount > 0)
                                 {
-                                    var drSubHPAddSelfHPAcquireCard = GameEntry.DataTable.GetBless(EBlessID.SubHPAddSelfHPAcquireCard);
+                                    var subHPAddSelfHPData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
+                                        actionUnitData.Idx, actionUnitData.Idx, EUnitState.AtkAddSelfHP, actualSubHPAddSelfHPCount,
+                                        ETriggerDataType.State);
+                                    subHPAddSelfHPData.ActionUnitGridPosIdx = subHPAddSelfHPData.EffectUnitGridPosIdx =
+                                        actionUnitData.GridPosIdx;
+                                    SimulateTriggerData(subHPAddSelfHPData, triggerDatas);
+                                    triggerDatas.Add(subHPAddSelfHPData);
+                                    
+                                    var addSelfHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(actionUnitData.Idx,
+                                        actionUnitData.Idx, actionUnitData.Idx, EUnitAttribute.HP, maxAddHPCount,
+                                        ETriggerDataSubType.Unit);
+                                    addSelfHPTriggerData.ActionUnitGridPosIdx = actionUnitData.GridPosIdx;
+                                    addSelfHPTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
+                                
+                                    SimulateTriggerData(addSelfHPTriggerData, triggerDatas);
+                                    triggerDatas.Add(addSelfHPTriggerData);
+                                    
+                                    
+                                    var subHPAddSelfHPAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.SubHPAddSelfHPAcquireCard,
+                                        actionUnitData.UnitCamp);
 
-                                    BattleCardManager.Instance.CacheAcquireCards(addSelfHPTriggerData, triggerDatas,
-                                        int.Parse(drSubHPAddSelfHPAcquireCard.GetValues(0)[0]));
+                                    if (subHPAddSelfHPAcquireCard != null)
+                                    {
+                                        var drSubHPAddSelfHPAcquireCard = GameEntry.DataTable.GetBless(EBlessID.SubHPAddSelfHPAcquireCard);
 
+                                        BattleCardManager.Instance.CacheAcquireCards(addSelfHPTriggerData, triggerDatas,
+                                            int.Parse(drSubHPAddSelfHPAcquireCard.GetValues(0)[0]));
+
+                                    }
                                 }
+                                
+                                
+                                
+                                
+                                
                             }
                             
                             if (hurtSubDmgCount > 0)
