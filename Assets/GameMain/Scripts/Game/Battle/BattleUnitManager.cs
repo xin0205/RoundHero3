@@ -3,6 +3,7 @@ using System.Linq;
 using Animancer;
 using GameFramework.Event;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 using Random = System.Random;
 
 namespace RoundHero
@@ -455,6 +456,10 @@ namespace RoundHero
         
         public EAttackCastType GetAttackCastType(int unitIdx)
         {
+
+            if(!BattleUnitEntities.ContainsKey(unitIdx))
+                return EAttackCastType.Empty;
+            
             var battleUnit = BattleUnitEntities[unitIdx].BattleUnitData;
             if (battleUnit is Data_BattleSolider soliderData)
             {
