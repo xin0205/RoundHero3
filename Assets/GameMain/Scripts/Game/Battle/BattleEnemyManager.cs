@@ -243,10 +243,36 @@ namespace RoundHero
                 if (unit is BattleMonsterEntity battleMonsterEntity )
                 {
                     battleMonsterEntity.ShowMoveRange(true);
+                    
+                }
+                else if (unit is BattleSoliderEntity battleSoliderEntity )
+                {
+                    battleSoliderEntity.ShowMoveRange(true);
+                    
                 }
                 
             }
             else if (Input.GetKeyUp(KeyCode.A)) {
+                BattleAreaManager.Instance.ShowBackupGrids(null);
+            } 
+            
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
+                    .CurPointGridPosIdx);
+
+                if (unit is BattleMonsterEntity battleMonsterEntity )
+                {
+                    battleMonsterEntity.ShowAttackRange(true);
+                }
+                else if (unit is BattleSoliderEntity battleSoliderEntity )
+                {
+                    battleSoliderEntity.ShowAttackRange(true);
+                    
+                }
+                
+            }
+            else if (Input.GetKeyUp(KeyCode.S)) {
                 BattleAreaManager.Instance.ShowBackupGrids(null);
             } 
         }

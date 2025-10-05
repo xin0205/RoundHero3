@@ -436,7 +436,7 @@ namespace RoundHero
         }
         
         
-        public static Data_BattleUnit GetUnitByGridPosIdxMoreCamps(int gridPosIdx,  bool isBattleData = true, EUnitCamp? selfUnitCamp = null, List<ERelativeCamp> unitCamps = null)
+        public static Data_BattleUnit GetUnitByGridPosIdxMoreCamps(int gridPosIdx,  bool isBattleData = true, EUnitCamp selfUnitCamp = EUnitCamp.Empty, List<ERelativeCamp> unitCamps = null)
         {
             var unit = isBattleData
                 ? BattleFightManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx, selfUnitCamp, unitCamps)
@@ -657,17 +657,28 @@ namespace RoundHero
                          // if(unitCamps.Contains(ERelativeCamp.Enemy)  && selfUnitCamp == unit.UnitCamp)
                          //     continue;
                          
-                         if (unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
+                         if (unitCamps == null || selfUnitCamp == EUnitCamp.Empty)
                          {
-                             unitCount += unit is Data_BattleCore ? 50 : 10;
+                             unitCount += unit is Data_BattleCore ? 50 : 0;
 
+                         }
+                         else if (unitCamps != null && selfUnitCamp != EUnitCamp.Empty)
+                         {
+                             if (unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
+                             {
+                                 unitCount += unit is Data_BattleCore ? 50 : 10;
+
+                             }
+                         
+                             if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp)
+                             {
+                                 unitCount += -1;
+
+                             }
+                             
                          }
                          
-                         if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp)
-                         {
-                             unitCount += -1;
-
-                         }
+                         
                          
 
                          // if (unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp == unit.UnitCamp ||

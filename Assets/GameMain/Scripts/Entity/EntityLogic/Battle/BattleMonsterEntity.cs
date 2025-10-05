@@ -265,5 +265,33 @@ namespace RoundHero
             
             
         }
+        
+        public void ShowAttackRange(bool isShow)
+        {
+            var drEnemy =
+                GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
+            
+            foreach (var buffID in drEnemy.OwnBuffs)
+            {
+                var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+                var range = GameUtility.GetRange(GridPosIdx,
+                    buffData.TriggerRange == EActionType.HeroDirect ? EActionType.Direct82Long : buffData.TriggerRange,
+                    EUnitCamp.Empty, null);
+
+                foreach (var gridPosIdx in range)
+                {
+                    var gridType = GameUtility.GetGridType(gridPosIdx, false);
+       
+                    var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
+                    gridEntity.ShowBackupGrid(isShow);
+                    
+                }
+            }
+            
+            
+            
+            
+            
+        }
     }
 }

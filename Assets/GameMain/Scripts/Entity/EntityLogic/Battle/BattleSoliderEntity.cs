@@ -148,6 +148,57 @@ namespace RoundHero
             });
         }
 
+        public void ShowMoveRange(bool isShow)
+        {
+            var drCard =
+                CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
+
+            var range = GameUtility.GetRange(GridPosIdx, drCard.MoveType, EUnitCamp.Empty, null);
+
+            foreach (var gridPosIdx in range)
+            {
+                var gridType = GameUtility.GetGridType(gridPosIdx, false);
+                if(gridType != EGridType.Empty)
+                    continue;
+                
+                var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
+                gridEntity.ShowBackupGrid(isShow);
+                    
+            }
+            
+            
+            
+        }
+        
+        public void ShowAttackRange(bool isShow)
+        {
+            var drCard =
+                CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
+
+
+            foreach (var buffID in drCard.BuffIDs)
+            {
+                var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+                var range = GameUtility.GetRange(GridPosIdx,
+                    buffData.TriggerRange == EActionType.HeroDirect ? EActionType.Direct82Long : buffData.TriggerRange,
+                    EUnitCamp.Empty, null);
+
+                foreach (var gridPosIdx in range)
+                {
+                    var gridType = GameUtility.GetGridType(gridPosIdx, false);
+       
+                    var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
+                    gridEntity.ShowBackupGrid(isShow);
+                    
+                }
+            }
+            
+            
+            
+            
+            
+        }
+        
         // protected async override Task ShowBattleHurts(int hurt)
         // {
         //     //var pos = GameUtility.GridPosIdxToPos(BattleUnitData.GridPosIdx);

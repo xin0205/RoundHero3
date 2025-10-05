@@ -3394,22 +3394,32 @@ namespace RoundHero
             // return null;
         }
 
-        public Data_BattleUnit GetUnitByGridPosIdxMoreCamps(int gridPosIdx, EUnitCamp? selfUnitCamp = null,
+        public Data_BattleUnit GetUnitByGridPosIdxMoreCamps(int gridPosIdx, EUnitCamp selfUnitCamp = EUnitCamp.Empty,
             List<ERelativeCamp> unitCamps = null)
         {
-            if (unitCamps == null)
-                return null;
-            
-            foreach (var unitCamp in unitCamps)
+            if (unitCamps == null || selfUnitCamp == EUnitCamp.Empty)
             {
-                var unit = GetUnitByGridPosIdx(gridPosIdx, selfUnitCamp, unitCamp);
+                var unit = GetUnitByGridPosIdx(gridPosIdx);
                 if (unit != null)
                 {
                     return unit;
                 }
             }
+            else
+            {
+                foreach (var unitCamp in unitCamps)
+                {
+                    var unit = GetUnitByGridPosIdx(gridPosIdx, selfUnitCamp, unitCamp);
+                    if (unit != null)
+                    {
+                        return unit;
+                    }
+                }
+            }
 
+            
             return null;
+            
         }
 
     }
