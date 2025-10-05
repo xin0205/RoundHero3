@@ -71,8 +71,12 @@ namespace RoundHero
             //var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), monsterID, gridPosIdx, unitCamp, funeIDs);
             //battleEnemyData.UnitRole = EUnitRole.Staff;
             
-            //battleMonsterData.ChangeState(EUnitState.AtkPassEnemy, 3);
-            //battleMonsterData.ChangeState(EUnitState.AtkPassUs, 1);
+            //battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 2);
+            // battleMonsterData.ChangeState(EUnitState.HurtSubDmg, 2);
+            // battleMonsterData.ChangeState(EUnitState.HurtAddDmg, 1);
+            // battleMonsterData.ChangeState(EUnitState.SubDmg, 2);
+            // battleMonsterData.ChangeState(EUnitState.AddDmg, 1);
+
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);
 
@@ -183,7 +187,6 @@ namespace RoundHero
         public static async Task<BattleSoliderEntity> ShowBattleSoliderEntityAsync(this EntityComponent entityComponent, Data_BattleSolider battleSoliderData)
         {
             var data = ReferencePool.Acquire<BattleSoliderEntityData>();
-            
 
             // var newBattleSoliderData = battleSoliderData.Copy();
             // var card = BattleManager.Instance.GetCard(newBattleSoliderData.CardIdx);
@@ -192,7 +195,13 @@ namespace RoundHero
             
             var card = BattleManager.Instance.GetCard(battleSoliderData.CardIdx);
             
-            
+            //battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 2);
+            // battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 2);
+            //
+            //
+            //  battleSoliderData.ChangeState(EUnitState.HurtAddDmg, 1);
+            //  battleSoliderData.ChangeState(EUnitState.SubDmg, 2);
+            //battleSoliderData.ChangeState(EUnitState.SubDmg, 1);
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
             //battleSoliderData.ChangeState(EUnitState.HurtRoundStart, 1);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
