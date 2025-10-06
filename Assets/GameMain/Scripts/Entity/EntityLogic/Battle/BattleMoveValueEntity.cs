@@ -136,6 +136,8 @@ namespace RoundHero
                 return;
             
             time += Time.deltaTime;
+            if(time < 0)
+                return;
 
 
             if (BattleMoveValueEntityData.FollowParams.FollowGO.IsDestroyed())
@@ -200,7 +202,8 @@ namespace RoundHero
                     timeEnd = 0f;
                     if (BattleMoveValueEntityData.IsLoop )
                     {
-                        time = 0;
+                        time = -1.5f;
+                        this.transform.localPosition = new Vector3(9999, 9999, 9999);
                     }
                     else
                     {
