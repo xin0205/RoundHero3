@@ -44,6 +44,7 @@ namespace RoundHero
 
         public void Init(int randomSeed)
         {
+            pointerDownInRange = false;
             Subscribe();
 
             BattleManager.Instance.BattleData.GridTypes.Clear();
