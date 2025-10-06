@@ -125,6 +125,8 @@ namespace RoundHero
                 
             }
 
+
+            ShowHPDeltaData(false);
         }
 
         private void ShowRoundTips(int round)
@@ -158,8 +160,20 @@ namespace RoundHero
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
-            hpDeltaDatas.gameObject.SetActive(Input.GetKey(KeyCode.Q));
-            if (Input.GetKeyDown(KeyCode.Q))
+            hpDeltaDatas.gameObject.SetActive(Input.GetKey(KeyCode.W));
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+            
+                hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
+                    .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
+                hpDeltaDatas.RefreshAllShownItem();
+            }
+        }
+
+        public void ShowHPDeltaData(bool isShow)
+        {
+            hpDeltaDatas.gameObject.SetActive(isShow);
+            if (isShow)
             {
 
                 hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData

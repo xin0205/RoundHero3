@@ -44,6 +44,10 @@ namespace RoundHero
         private GameObject unitStateListGO;
         [SerializeField]
         private GameObject unitStateIconListGO;
+        [SerializeField]
+        private GameObject keyshortcutGO;
+
+        private bool hasDetail;
 
         
         protected override void OnOpen(object userData)
@@ -53,6 +57,7 @@ namespace RoundHero
             
             // if(BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) == null)
             //     return;
+            hasDetail = false;
 
             var animationPlayData = new AnimationPlayData();
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
@@ -110,8 +115,14 @@ namespace RoundHero
                             enemyEntity.BattleMonsterEntityData.BattleMonsterData.MaxHP;
                 
                 unitDescItem.SetDesc(name, power, desc);
-                actionTimeStr.text = (unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes +
-                                      unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes).ToString();
+                
+                var actionTime = (unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes +
+                                  unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes);
+                
+                actionTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_ActionTime,
+                    actionTime);
+                
+                
                 
                 var idx = 0;
                 foreach (var funeIdx in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.FuneIdxs)
@@ -119,7 +130,8 @@ namespace RoundHero
                     var funeData = FuneManager.Instance.GetFuneData(funeIdx);
                     if(idx >= funeList.Count)
                         break;
-                        
+
+                    hasDetail = true;
                     funeList[idx].gameObject.SetActive(true);
                     funeList[idx].SetItemData(new PlayerCommonItemData()
                     {
@@ -165,9 +177,11 @@ namespace RoundHero
                     };
 
                     playerCardItem.SetItemData(playerCardData, false);
-                    actionTimeStr.text = (unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes +
-                                          unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes)
-                        .ToString();
+                    var actionTime = (unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes +
+                                      unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes);
+                
+                    actionTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_ActionTime,
+                        actionTime);
 
                     
                     var idx = 0;
@@ -177,6 +191,7 @@ namespace RoundHero
                         if(idx >= funeList.Count)
                             break;
                         
+                        hasDetail = true;
                         funeList[idx].gameObject.SetActive(true);
                         funeList[idx].SetItemData(new PlayerCommonItemData()
                         {
@@ -196,7 +211,7 @@ namespace RoundHero
             
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Empty)
             {
-                gridDescItem.gameObject.SetActive(true);
+                //gridDescItem.gameObject.SetActive(true);
                 
                 var gridTypeName =
                     Utility.Text.Format(Constant.Localization.GridTypeName, UnitDescFormData.GridType);
@@ -205,15 +220,12 @@ namespace RoundHero
                     Utility.Text.Format(Constant.Localization.GridTypeDesc, UnitDescFormData.GridType); 
 
  
-                gridDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
-                    GameEntry.Localization.GetString(gridTypeDesc));
+                // gridDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
+                //     GameEntry.Localization.GetString(gridTypeDesc));
             }
             
            
-            funeListGO.SetActive(false);
-            unitStateListGO.SetActive(false);
-            unitStateIconListGO.SetActive(true);
-            
+           
             //Vector3 mousePosition = Input.mousePosition;
             
             // var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
@@ -247,6 +259,11 @@ namespace RoundHero
             // root.transform.position = gifPos;
 
             RefreshUnitStates();
+            
+            funeListGO.SetActive(false);
+            unitStateListGO.SetActive(false);
+            unitStateIconListGO.SetActive(true);
+            keyshortcutGO.SetActive(hasDetail);
         }
 
         private void RefreshUnitStates()
@@ -271,7 +288,8 @@ namespace RoundHero
                     unitStateIconList[idx].gameObject.SetActive(false);
                     if(idx >= unitStateIconList.Count)
                         break;
-                        
+
+                    hasDetail = true;
                     unitStateIconList[idx].gameObject.SetActive(true);
                     unitStateIconList[idx].SetIcon(kv.Value.UnitState, kv.Value.Value);
                     idx++;
@@ -284,6 +302,7 @@ namespace RoundHero
                     if(idx >= unitStateList.Count)
                         break;
                         
+                    hasDetail = true;
                     unitStateList[idx].gameObject.SetActive(true);
                     unitStateList[idx].SetItemData(new PlayerCommonItemData()
                     {
@@ -312,6 +331,7 @@ namespace RoundHero
                         if(idx >= unitStateIconList.Count)
                             break;
                         
+                        hasDetail = true;
                         unitStateIconList[idx].gameObject.SetActive(true);
                         unitStateIconList[idx].SetIcon(kv.Value.UnitState, kv.Value.Value);
                         idx++;
@@ -324,6 +344,7 @@ namespace RoundHero
                         if(idx >= unitStateList.Count)
                             break;
                         
+                        hasDetail = true;
                         unitStateList[idx].gameObject.SetActive(true);
                         unitStateList[idx].SetItemData(new PlayerCommonItemData()
                         {
@@ -349,6 +370,7 @@ namespace RoundHero
                         if(idx >= unitStateIconList.Count)
                             break;
                         
+                        hasDetail = true;
                         unitStateIconList[idx].gameObject.SetActive(true);
                         unitStateIconList[idx].SetIcon(kv.Value.UnitState, kv.Value.Value);
                         idx++;
@@ -361,6 +383,7 @@ namespace RoundHero
                         if(idx >= unitStateList.Count)
                             break;
                         
+                        hasDetail = true;
                         unitStateList[idx].gameObject.SetActive(true);
                         unitStateList[idx].SetItemData(new PlayerCommonItemData()
                         {
@@ -387,18 +410,20 @@ namespace RoundHero
 
             }
 
-            if (Input.GetKeyDown(KeyCode.A))
+            if (hasDetail && Input.GetKeyDown(KeyCode.Q))
             {
                 funeListGO.SetActive(true);
                 unitStateListGO.SetActive(true);
                 unitStateIconListGO.SetActive(false);
+                keyshortcutGO.SetActive(false);
             }
             
-            if (Input.GetKeyUp(KeyCode.A))
+            if (hasDetail && Input.GetKeyUp(KeyCode.Q))
             {
                 funeListGO.SetActive(false);
                 unitStateListGO.SetActive(false);
                 unitStateIconListGO.SetActive(true);
+                keyshortcutGO.SetActive(true);
             }
         }
     }

@@ -22,6 +22,7 @@ namespace RoundHero
         [SerializeField] private GameObject battleMode_restartGame;
 
         [SerializeField] private Text userName;
+        [SerializeField] private Text version;
 
         protected override async void OnOpen(object userData)
         {
@@ -47,7 +48,7 @@ namespace RoundHero
             // restartGame.SetActive(isStartGame);
 
             BattleModeOnPointerExit();
-
+            version.text= Application.version.ToString();
         }
 
         public void BattleModeOnPointerEnter()
