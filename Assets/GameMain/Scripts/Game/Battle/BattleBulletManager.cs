@@ -276,7 +276,7 @@ namespace RoundHero
             return TriggerActionDatas[actionUnitIdx];
         }
 
-        public List<ITriggerActionData> GetTriggerActionDatas(int actionUnitIdx, int effectUnitIdx)
+        public List<ITriggerActionData> GetTriggerActionDatas(int actionUnitIdx, int effectUnitIdx = -1)
         {
             var triggerDatas = GetTriggerActionDatas(actionUnitIdx);
             if (triggerDatas == null)
@@ -284,12 +284,25 @@ namespace RoundHero
                 return null;
             }
 
-            if (triggerDatas.TryGetValue(effectUnitIdx, out var triggerActionDatas))
+            var list = new List<ITriggerActionData>();
+            if (effectUnitIdx == -1)
             {
-                return triggerActionDatas.ToList();
+                foreach (var kv in triggerDatas)
+                {
+                    list.AddRange(kv.Value.ToList());
+                }
+            }
+            else
+            {
+                if (triggerDatas.TryGetValue(effectUnitIdx, out var triggerActionDatas))
+                {
+                    list = triggerActionDatas.ToList();
+                }
             }
 
-            return null;
+            
+
+            return list;
         }
 
         // public List<TriggerActionData> GetTriggerActionDatasA(int actionUnitID)

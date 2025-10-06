@@ -645,6 +645,23 @@ namespace RoundHero
                 }
             }
             
+            var triggerActionDatas =
+                BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.Idx, -1);
+            
+            
+            foreach (var triggerActionData in triggerActionDatas)
+            {
+                if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                {
+                    if (triggerActionMoveData.MoveUnitData != null)
+                    {
+                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                    }
+                }
+            }
+            
+            
+                    
             // var buffDatas = ;.Instance.GetBuffDatas(BattleUnit)
             // var triggerRange = buffDatas[0].TriggerRange;
             // var coord = GameUtility.GridPosIdxToCoord(BattleUnit.GridPosIdx);
@@ -845,7 +862,7 @@ namespace RoundHero
                 case EAttackCastType.ExtendSingle:
                     ShowEffectAttackEntity_Empty(triggerActionDataDict);
                     break;
-                case EAttackCastType.ParabolaSingle:
+                case EAttackCastType.RemoteSingle:
                     ShowEffectAttackEntity_Empty(triggerActionDataDict);
                     break;
                 case EAttackCastType.CloseMulti:
@@ -1156,6 +1173,7 @@ namespace RoundHero
                         else
                         {
                             Run();
+                            animator.speed = 1.2f;
                         }
                         //Controller.StartAction(HandlerTypes.Navigation, movePos);
                         
@@ -1176,6 +1194,7 @@ namespace RoundHero
 
             GameUtility.DelayExcute(moveCount * Constant.Unit.MoveTimes[unitActionState]  + 0.1f, () =>
             {
+                animator.speed = 1;
                 BattleUnitData.RoundGridMoveCount += moveCount;
                 if (BattleUnitData.Exist())
                 {
@@ -1244,7 +1263,8 @@ namespace RoundHero
         private void Run()
         {
             animator.SetBool(AnimationParameters.Moving, true);
-            animator.SetFloat(AnimationParameters.VelocityZ, 1);
+            animator.SetFloat(AnimationParameters.VelocityZ, 1f);
+            
         }
         
         public virtual void Attack(ActionData actionData)
@@ -1259,7 +1279,7 @@ namespace RoundHero
                 case EAttackCastType.ExtendSingle:
                     RemoteSingleAttack(actionData);
                     break;
-                case EAttackCastType.ParabolaSingle:
+                case EAttackCastType.RemoteSingle:
                     RemoteSingleAttack(actionData);
                     break;
                 case EAttackCastType.CloseMulti:
