@@ -50,29 +50,32 @@ MonoBehaviour:
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0, w: 1}
   beamStartPrefabs:
-    m_keys: 0000000001000000020000000300000004000000
+    m_keys: 000000000100000005000000030000000400000006000000
     m_values:
     - {fileID: 1450890654167080, guid: 745692887b3282c428b31ee73bce18ae, type: 3}
     - {fileID: 1231528337677476, guid: 00a360ca4325cdf49a219ac3d9cf9aef, type: 3}
     - {fileID: 1827957603726484, guid: 8405c6a43f0b2184bac715fe8f6c3998, type: 3}
     - {fileID: 1827957603726484, guid: 8405c6a43f0b2184bac715fe8f6c3998, type: 3}
     - {fileID: 1569048298829072, guid: ef436c2923118254ca8ecbfd210097cd, type: 3}
+    - {fileID: 1450890654167080, guid: 73cefe93b510663458dd6cb3ffe0a40b, type: 3}
   beamEndPrefabs:
-    m_keys: 0000000001000000020000000300000004000000
+    m_keys: 000000000100000005000000030000000400000006000000
     m_values:
     - {fileID: 1124451057500510, guid: f74d0c6a91b91ed4ea8da5596f0bbc7e, type: 3}
     - {fileID: 1459433954511470, guid: df26e90a336242e4c9d201b6f03b8e09, type: 3}
     - {fileID: 1931027698472250, guid: f87ff375634661347994652745721f36, type: 3}
     - {fileID: 1957732377295988, guid: b7c99d2809eef7741a379bbc99f9065a, type: 3}
     - {fileID: 1107562920683562, guid: ffadafc1c4251a548bf028eb2f5f8097, type: 3}
+    - {fileID: 1124451057500510, guid: bf1eb2befaa98f3458eaf0f9e4f832a9, type: 3}
   beamPrefabs:
-    m_keys: 0000000001000000020000000300000004000000
+    m_keys: 000000000100000005000000030000000400000006000000
     m_values:
     - {fileID: 1773250190492750, guid: 0fa8dfc47a76fb343954d8a635c0ea7e, type: 3}
     - {fileID: 1512719256159936, guid: 01ccbc57106d42345ba5f43ea21c99c1, type: 3}
     - {fileID: 1957473457009372, guid: 62a39006aac6c8149b63d9ee394eb0ac, type: 3}
     - {fileID: 1183769534669174, guid: 3dc1098af6a4ab444bc1ea68a013fc9f, type: 3}
     - {fileID: 1801798944994376, guid: 08e3a17ccc7576c4bbdae609f1822642, type: 3}
+    - {fileID: 1512719256159936, guid: 655f376d5bc18484aa3a3aa764f6435e, type: 3}
   AutoHide: 1
   HideTime: 1
   textureScrollSpeed: 8
