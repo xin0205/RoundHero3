@@ -280,23 +280,31 @@ namespace RoundHero
                 case EWeaponHoldingType.Right:
                     switch (weaponType)
                     {
+ 
                         case EWeaponType.Sword:
                             animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightSword);
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightSword);
                             break;
                         case EWeaponType.Spear:
                             animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightSpear);
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightSpear);
                             break;
                         case EWeaponType.Mace:
                             animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightMace);
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightMace);
                             break;
                         case EWeaponType.Dagger:
+                            
                             animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightDagger);
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightDagger);
                             break;
                         case EWeaponType.Item:
                             animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightItem);
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightItem);
                             break;
                         case EWeaponType.Pistol:
                             animator.SetInteger(AnimationParameters.RightWeapon, (int)Weapon.RightPistol);
+                            animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.RightPistol);
                             break;
                         
                         // case EWeaponType.Axe:
@@ -316,7 +324,8 @@ namespace RoundHero
                         default:
                             break;
                     }
-                    animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.Shield);
+                    
+                    //animator.SetInteger(AnimationParameters.Weapon, (int)Weapon.Shield);
                     animator.SetInteger(AnimationParameters.Side, (int)Side.Right);
                     animator.SetInteger(AnimationParameters.WeaponSwitch, (int)AnimatorWeapon.ARMED);
                     break;
@@ -498,7 +507,7 @@ namespace RoundHero
             }
 
             
-            if (triggerRange.Contains("Extend"))
+            if (UnitAttackCastType == EAttackCastType.ExtendSingle)
             {
                 foreach (var triggerActionData in bulletData.TriggerActionDataDict[triggerData.EffectUnitGridPosIdx])
                 {
@@ -523,7 +532,7 @@ namespace RoundHero
                 }
                 GameEntry.Entity.ShowBattleBeamBulletEntityAsync(bulletData, ShootPos.position);
             }
-            else if (triggerRange.Contains("Parabola"))
+            else if (UnitAttackCastType == EAttackCastType.ParabolaSingle)
             {
                 GameEntry.Entity.ShowBattleParabolaBulletEntityAsync(bulletData, ShootPos.position);
             }
@@ -862,7 +871,7 @@ namespace RoundHero
                 case EAttackCastType.ExtendSingle:
                     ShowEffectAttackEntity_Empty(triggerActionDataDict);
                     break;
-                case EAttackCastType.RemoteSingle:
+                case EAttackCastType.ParabolaSingle:
                     ShowEffectAttackEntity_Empty(triggerActionDataDict);
                     break;
                 case EAttackCastType.CloseMulti:
@@ -1279,7 +1288,7 @@ namespace RoundHero
                 case EAttackCastType.ExtendSingle:
                     RemoteSingleAttack(actionData);
                     break;
-                case EAttackCastType.RemoteSingle:
+                case EAttackCastType.ParabolaSingle:
                     RemoteSingleAttack(actionData);
                     break;
                 case EAttackCastType.CloseMulti:

@@ -808,13 +808,14 @@ namespace RoundHero
     {
         CloseSingle,
         ExtendSingle,
-        ParabolaSingle,
+        RemoteSingle,
         CloseMulti,
         ExtendMulti,
         ParabolaMulti,
         LineMulti,
         TacticDownMulti,
         Empty,
+        ParabolaSingle,
     }
     
     public enum EAttackType
@@ -867,5 +868,6 @@ namespace RoundHero
         Purple,
         Yellow,
         Red,
+        Black,
     }
 }
