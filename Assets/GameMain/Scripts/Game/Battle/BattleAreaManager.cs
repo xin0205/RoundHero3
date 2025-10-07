@@ -792,7 +792,7 @@ namespace RoundHero
                         
                         if (attackUnitEntity != null)
                         {
-                            attackUnitEntity.transform.LookAt(effectUnitEntity.transform.position);
+                            //attackUnitEntity.transform.LookAt(effectUnitEntity.transform.position);
                             //attackUnitEntity.ShowHurtTags(attackUnitEntity.UnitIdx, effectUnitEntity.UnitIdx);
                         }
                         
