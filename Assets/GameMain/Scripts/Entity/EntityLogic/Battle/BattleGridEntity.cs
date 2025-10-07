@@ -114,14 +114,14 @@ namespace RoundHero
         public void OnPointerEnter()
         {
 
-            UnitDescTriggerItem.OnPointerEnter();
+            //UnitDescTriggerItem.OnPointerEnter();
             
         }
         
         public void OnPointerExit()
         {
 
-            UnitDescTriggerItem.OnPointerExit();
+            //UnitDescTriggerItem.OnPointerExit();
             
         }
         
