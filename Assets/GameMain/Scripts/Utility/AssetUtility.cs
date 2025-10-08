@@ -206,7 +206,7 @@ namespace RoundHero
         
         public static string GetBattleSoliderPrefab(int cardID)
         {
-            return Utility.Text.Format("Assets/GameMain/Entities/Soliders/BattleSoliderEntity_{0}.prefab", cardID);
+            return Utility.Text.Format("Assets/GameMain/Entities/Followers/BattleSoliderEntity_{0}.prefab", cardID);
             
         }
         
@@ -349,7 +349,7 @@ namespace RoundHero
         
         public static string GetFuneIconName(int funeID)
         {
-            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icon/Fune/{0}.png", funeID.ToString());
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icons/Funes/{0}.png", funeID.ToString());
             
         }
         

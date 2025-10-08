@@ -76,6 +76,10 @@ namespace RoundHero
             {
                 Icon.sprite = await AssetUtility.GetTacticIcon(CardID);
             }
+            else if (drCard.CardType == ECardType.Prop)
+            {
+                Icon.sprite = await AssetUtility.GetTacticIcon(CardID);
+            }
             
 
             var cardName = "";
