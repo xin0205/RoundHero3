@@ -235,6 +235,8 @@ namespace RoundHero
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
                         },
+                        
+                        
                         new List<Vector2Int>()
                         {
                             new Vector2Int(0, -1),
@@ -312,6 +314,8 @@ namespace RoundHero
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
                         },
+                        
+                        
                         new List<Vector2Int>()
                         {
                             new Vector2Int(0, -1),
@@ -421,118 +425,7 @@ namespace RoundHero
                         
                     },
                     
-                    // [EActionType.X_Extend] = new List<List<Vector2Int>>()
-                    // {
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, -1),
-                    //         new Vector2Int(-2, -2),
-                    //         new Vector2Int(-3, -3),
-                    //         new Vector2Int(-4, -4),
-                    //         new Vector2Int(-5, -5),
-                    //         new Vector2Int(-6, -6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, 1),
-                    //         new Vector2Int(2, 2),
-                    //         new Vector2Int(3, 3),
-                    //         new Vector2Int(4, 4),
-                    //         new Vector2Int(5, 5),
-                    //         new Vector2Int(6, 6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, -1),
-                    //         new Vector2Int(2, -2),
-                    //         new Vector2Int(3, -3),
-                    //         new Vector2Int(4, -4),
-                    //         new Vector2Int(5, -5),
-                    //         new Vector2Int(6, -6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, 1),
-                    //         new Vector2Int(-2, 2),
-                    //         new Vector2Int(-3, 3),
-                    //         new Vector2Int(-4, 4),
-                    //         new Vector2Int(-5, 5),
-                    //         new Vector2Int(-6, 6),
-                    //     },
-                    // },
                     
-                    // [EActionType.X_Short] = new List<List<Vector2Int>>()
-                    // {
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, -1),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, 1),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, -1),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, 1),
-                    //     },
-                    // },
-                    
-                    // [EActionType.X_Long] = new List<List<Vector2Int>>()
-                    // {
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, -1),
-                    //         new Vector2Int(-2, -2),
-                    //         new Vector2Int(-3, -3),
-                    //         new Vector2Int(-4, -4),
-                    //         new Vector2Int(-5, -5),
-                    //         new Vector2Int(-6, -6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, 1),
-                    //         new Vector2Int(2, 2),
-                    //         new Vector2Int(3, 3),
-                    //         new Vector2Int(4, 4),
-                    //         new Vector2Int(5, 5),
-                    //         new Vector2Int(6, 6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, -1),
-                    //         new Vector2Int(2, -2),
-                    //         new Vector2Int(3, -3),
-                    //         new Vector2Int(4, -4),
-                    //         new Vector2Int(5, -5),
-                    //         new Vector2Int(6, -6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, 1),
-                    //         new Vector2Int(-2, 2),
-                    //         new Vector2Int(-3, 3),
-                    //         new Vector2Int(-4, 4),
-                    //         new Vector2Int(-5, 5),
-                    //         new Vector2Int(-6, 6),
-                    //     },
-                    // },
-                
                     [EActionType.Direct82Short] = new List<List<Vector2Int>>()
                     {
                         new List<Vector2Int>()
@@ -904,157 +797,6 @@ namespace RoundHero
                         },
                     },
                     
-                    // [EActionType.Direct8_Extend] = new List<List<Vector2Int>>()
-                    // {
-                    //     // new List<Vector2Int>()
-                    //     // {
-                    //     //     new Vector2Int(0, 0),
-                    //     // },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, 0),
-                    //         new Vector2Int(-2, 0),
-                    //         new Vector2Int(-3, 0),
-                    //         new Vector2Int(-4, 0),
-                    //         new Vector2Int(-5, 0),
-                    //         new Vector2Int(-6, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, 0),
-                    //         new Vector2Int(2, 0),
-                    //         new Vector2Int(3, 0),
-                    //         new Vector2Int(4, 0),
-                    //         new Vector2Int(5, 0),
-                    //         new Vector2Int(6, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, -1),
-                    //         new Vector2Int(0, -2),
-                    //         new Vector2Int(0, -3),
-                    //         new Vector2Int(0, -4),
-                    //         new Vector2Int(0, -5),
-                    //         new Vector2Int(0, -6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, 1),
-                    //         new Vector2Int(0, 2),
-                    //         new Vector2Int(0, 3),
-                    //         new Vector2Int(0, 4),
-                    //         new Vector2Int(0, 5),
-                    //         new Vector2Int(0, 6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, -1),
-                    //         new Vector2Int(-2, -2),
-                    //         new Vector2Int(-3, -3),
-                    //         new Vector2Int(-4, -4),
-                    //         new Vector2Int(-5, -5),
-                    //         new Vector2Int(-6, -6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, 1),
-                    //         new Vector2Int(2, 2),
-                    //         new Vector2Int(3, 3),
-                    //         new Vector2Int(4, 4),
-                    //         new Vector2Int(5, 5),
-                    //         new Vector2Int(6, 6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-1, 1),
-                    //         new Vector2Int(-2, 2),
-                    //         new Vector2Int(-3, 3),
-                    //         new Vector2Int(-4, 4),
-                    //         new Vector2Int(-5, 5),
-                    //         new Vector2Int(-6, 6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(1, -1),
-                    //         new Vector2Int(2, -2),
-                    //         new Vector2Int(3, -3),
-                    //         new Vector2Int(4, -4),
-                    //         new Vector2Int(5, -5),
-                    //         new Vector2Int(6, -6),
-                    //     },
-                    // },
-
-                    // [EActionType.Parabola] = new List<List<Vector2Int>>()
-                    // {
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(-2, 0),
-                    //         new Vector2Int(-3, 0),
-                    //         new Vector2Int(-4, 0),
-                    //         new Vector2Int(-5, 0),
-                    //         new Vector2Int(-6, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(2, 0),
-                    //         new Vector2Int(3, 0),
-                    //         new Vector2Int(4, 0),
-                    //         new Vector2Int(5, 0),
-                    //         new Vector2Int(6, 0),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, -2),
-                    //         new Vector2Int(0, -3),
-                    //         new Vector2Int(0, -4),
-                    //         new Vector2Int(0, -5),
-                    //         new Vector2Int(0, -6),
-                    //     },
-                    //     new List<Vector2Int>()
-                    //     {
-                    //         new Vector2Int(0, 2),
-                    //         new Vector2Int(0, 3),
-                    //         new Vector2Int(0, 4),
-                    //         new Vector2Int(0, 5),
-                    //         new Vector2Int(0, 6),
-                    //     },
-                    //     // new List<Vector2Int>()
-                    //     // {
-                    //     //     new Vector2Int(-2, -2),
-                    //     //     new Vector2Int(-3, -3),
-                    //     //     new Vector2Int(-4, -4),
-                    //     //     new Vector2Int(-5, -5),
-                    //     //     new Vector2Int(-6, -6),
-                    //     // },
-                    //     // new List<Vector2Int>()
-                    //     // {
-                    //     //     new Vector2Int(2, 2),
-                    //     //     new Vector2Int(3, 3),
-                    //     //     new Vector2Int(4, 4),
-                    //     //     new Vector2Int(5, 5),
-                    //     //     new Vector2Int(6, 6),
-                    //     // },
-                    //     // new List<Vector2Int>()
-                    //     // {
-                    //     //     new Vector2Int(-2, 2),
-                    //     //     new Vector2Int(-3, 3),
-                    //     //     new Vector2Int(-4, 4),
-                    //     //     new Vector2Int(-5, 5),
-                    //     //     new Vector2Int(-6, 6),
-                    //     // },
-                    //     // new List<Vector2Int>()
-                    //     // {
-                    //     //     new Vector2Int(2, -2),
-                    //     //     new Vector2Int(3, -3),
-                    //     //     new Vector2Int(4, -4),
-                    //     //     new Vector2Int(5, -5),
-                    //     //     new Vector2Int(6, -6),
-                    //     // },
-                    // },
                     
                     [EActionType.Empty] = new List<List<Vector2Int>>()
                     {},
@@ -1238,6 +980,271 @@ namespace RoundHero
                             new Vector2Int(0, -6),
                         },
                     }
+                    
+                    // [EActionType.Direct8_Extend] = new List<List<Vector2Int>>()
+                    // {
+                    //     // new List<Vector2Int>()
+                    //     // {
+                    //     //     new Vector2Int(0, 0),
+                    //     // },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, 0),
+                    //         new Vector2Int(-2, 0),
+                    //         new Vector2Int(-3, 0),
+                    //         new Vector2Int(-4, 0),
+                    //         new Vector2Int(-5, 0),
+                    //         new Vector2Int(-6, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, 0),
+                    //         new Vector2Int(2, 0),
+                    //         new Vector2Int(3, 0),
+                    //         new Vector2Int(4, 0),
+                    //         new Vector2Int(5, 0),
+                    //         new Vector2Int(6, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, -1),
+                    //         new Vector2Int(0, -2),
+                    //         new Vector2Int(0, -3),
+                    //         new Vector2Int(0, -4),
+                    //         new Vector2Int(0, -5),
+                    //         new Vector2Int(0, -6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, 1),
+                    //         new Vector2Int(0, 2),
+                    //         new Vector2Int(0, 3),
+                    //         new Vector2Int(0, 4),
+                    //         new Vector2Int(0, 5),
+                    //         new Vector2Int(0, 6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, -1),
+                    //         new Vector2Int(-2, -2),
+                    //         new Vector2Int(-3, -3),
+                    //         new Vector2Int(-4, -4),
+                    //         new Vector2Int(-5, -5),
+                    //         new Vector2Int(-6, -6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, 1),
+                    //         new Vector2Int(2, 2),
+                    //         new Vector2Int(3, 3),
+                    //         new Vector2Int(4, 4),
+                    //         new Vector2Int(5, 5),
+                    //         new Vector2Int(6, 6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, 1),
+                    //         new Vector2Int(-2, 2),
+                    //         new Vector2Int(-3, 3),
+                    //         new Vector2Int(-4, 4),
+                    //         new Vector2Int(-5, 5),
+                    //         new Vector2Int(-6, 6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, -1),
+                    //         new Vector2Int(2, -2),
+                    //         new Vector2Int(3, -3),
+                    //         new Vector2Int(4, -4),
+                    //         new Vector2Int(5, -5),
+                    //         new Vector2Int(6, -6),
+                    //     },
+                    // },
+
+                    // [EActionType.Parabola] = new List<List<Vector2Int>>()
+                    // {
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-2, 0),
+                    //         new Vector2Int(-3, 0),
+                    //         new Vector2Int(-4, 0),
+                    //         new Vector2Int(-5, 0),
+                    //         new Vector2Int(-6, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(2, 0),
+                    //         new Vector2Int(3, 0),
+                    //         new Vector2Int(4, 0),
+                    //         new Vector2Int(5, 0),
+                    //         new Vector2Int(6, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, -2),
+                    //         new Vector2Int(0, -3),
+                    //         new Vector2Int(0, -4),
+                    //         new Vector2Int(0, -5),
+                    //         new Vector2Int(0, -6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, 2),
+                    //         new Vector2Int(0, 3),
+                    //         new Vector2Int(0, 4),
+                    //         new Vector2Int(0, 5),
+                    //         new Vector2Int(0, 6),
+                    //     },
+                    //     // new List<Vector2Int>()
+                    //     // {
+                    //     //     new Vector2Int(-2, -2),
+                    //     //     new Vector2Int(-3, -3),
+                    //     //     new Vector2Int(-4, -4),
+                    //     //     new Vector2Int(-5, -5),
+                    //     //     new Vector2Int(-6, -6),
+                    //     // },
+                    //     // new List<Vector2Int>()
+                    //     // {
+                    //     //     new Vector2Int(2, 2),
+                    //     //     new Vector2Int(3, 3),
+                    //     //     new Vector2Int(4, 4),
+                    //     //     new Vector2Int(5, 5),
+                    //     //     new Vector2Int(6, 6),
+                    //     // },
+                    //     // new List<Vector2Int>()
+                    //     // {
+                    //     //     new Vector2Int(-2, 2),
+                    //     //     new Vector2Int(-3, 3),
+                    //     //     new Vector2Int(-4, 4),
+                    //     //     new Vector2Int(-5, 5),
+                    //     //     new Vector2Int(-6, 6),
+                    //     // },
+                    //     // new List<Vector2Int>()
+                    //     // {
+                    //     //     new Vector2Int(2, -2),
+                    //     //     new Vector2Int(3, -3),
+                    //     //     new Vector2Int(4, -4),
+                    //     //     new Vector2Int(5, -5),
+                    //     //     new Vector2Int(6, -6),
+                    //     // },
+                    // },
+                    // [EActionType.X_Extend] = new List<List<Vector2Int>>()
+                    // {
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, -1),
+                    //         new Vector2Int(-2, -2),
+                    //         new Vector2Int(-3, -3),
+                    //         new Vector2Int(-4, -4),
+                    //         new Vector2Int(-5, -5),
+                    //         new Vector2Int(-6, -6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, 1),
+                    //         new Vector2Int(2, 2),
+                    //         new Vector2Int(3, 3),
+                    //         new Vector2Int(4, 4),
+                    //         new Vector2Int(5, 5),
+                    //         new Vector2Int(6, 6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, -1),
+                    //         new Vector2Int(2, -2),
+                    //         new Vector2Int(3, -3),
+                    //         new Vector2Int(4, -4),
+                    //         new Vector2Int(5, -5),
+                    //         new Vector2Int(6, -6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, 1),
+                    //         new Vector2Int(-2, 2),
+                    //         new Vector2Int(-3, 3),
+                    //         new Vector2Int(-4, 4),
+                    //         new Vector2Int(-5, 5),
+                    //         new Vector2Int(-6, 6),
+                    //     },
+                    // },
+                    
+                    // [EActionType.X_Short] = new List<List<Vector2Int>>()
+                    // {
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, -1),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, 1),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, -1),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, 1),
+                    //     },
+                    // },
+                    
+                    // [EActionType.X_Long] = new List<List<Vector2Int>>()
+                    // {
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(0, 0),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, -1),
+                    //         new Vector2Int(-2, -2),
+                    //         new Vector2Int(-3, -3),
+                    //         new Vector2Int(-4, -4),
+                    //         new Vector2Int(-5, -5),
+                    //         new Vector2Int(-6, -6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, 1),
+                    //         new Vector2Int(2, 2),
+                    //         new Vector2Int(3, 3),
+                    //         new Vector2Int(4, 4),
+                    //         new Vector2Int(5, 5),
+                    //         new Vector2Int(6, 6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(1, -1),
+                    //         new Vector2Int(2, -2),
+                    //         new Vector2Int(3, -3),
+                    //         new Vector2Int(4, -4),
+                    //         new Vector2Int(5, -5),
+                    //         new Vector2Int(6, -6),
+                    //     },
+                    //     new List<Vector2Int>()
+                    //     {
+                    //         new Vector2Int(-1, 1),
+                    //         new Vector2Int(-2, 2),
+                    //         new Vector2Int(-3, 3),
+                    //         new Vector2Int(-4, 4),
+                    //         new Vector2Int(-5, 5),
+                    //         new Vector2Int(-6, 6),
+                    //     },
+                    // },
+                
+                    
                 };
             
             
