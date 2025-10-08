@@ -614,8 +614,34 @@ namespace RoundHero
                 {
                     range = GameUtility.GetRange(gridPosIdx, triggerBuffData.BuffData.TriggerRange, unitCamp,
                         triggerBuffData.BuffData.TriggerUnitCamps, true);
+                    
+                    
 
                 }
+
+                // if (unitCamp == EUnitCamp.Enemy)
+                // {
+                //     //治疗型敌人会有问题
+                //     if (triggerBuffData.BuffData.TriggerUnitCamps.Count > 1)
+                //     {
+                //         var isNotFirstUnitCamp = true;
+                //         foreach (var _gridPosIdx in range)
+                //         {
+                //             var unit = GetUnitByGridPosIdx(_gridPosIdx);
+                //             if (unit != null && GameUtility.GetRelativeCamp(EUnitCamp.Enemy, unit.UnitCamp)  ==
+                //                 triggerBuffData.BuffData.TriggerUnitCamps[0])
+                //             {
+                //                 isNotFirstUnitCamp = false;
+                //             }
+                //
+                //         }
+                //
+                //         if (isNotFirstUnitCamp)
+                //         {
+                //             range.Clear();
+                //         }
+                //     }
+                // }
 
                 // || attackWithoutHero
 
