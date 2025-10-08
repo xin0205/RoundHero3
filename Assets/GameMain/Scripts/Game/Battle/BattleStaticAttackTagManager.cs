@@ -16,9 +16,9 @@ namespace RoundHero
         
         public async Task ShowStaticAttackTags()
         {
-            if (BattleManager.Instance.BattleState != EBattleState.UseCard &&
-                BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-                return;
+            // if (BattleManager.Instance.BattleState != EBattleState.UseCard &&
+            //     BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+            //     return;
             
             //Log.Debug("ShowStaticAttackTags");
             UnshowStaticAttackTags();
@@ -290,9 +290,9 @@ namespace RoundHero
 
         public void UnshowStaticAttackTags()
         {
-            if (BattleManager.Instance.BattleState != EBattleState.UseCard &&
-                BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
-                return;
+            // if (BattleManager.Instance.BattleState != EBattleState.UseCard &&
+            //     BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+            //     return;
             
             showAttackTagEntityIdx = curAttackTagEntityIdx;
             //Log.Debug("UnShowAttackTags:" + showAttackTagEntityIdx + "-" + BattleAttackTagEntities.Count);
