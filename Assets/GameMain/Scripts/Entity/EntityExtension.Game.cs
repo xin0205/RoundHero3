@@ -159,7 +159,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), Vector3.zero, gridPosIdxs, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleRouteEntity),
-                AssetUtility.GetBattleRoutePrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleRoutePrefab(), Constant.EntityGroup.Tag, 0, data);
             
             return (BattleRouteEntity)task.Logic;
         }
@@ -224,7 +224,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, gridPropData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(GridPropEntity),
-                AssetUtility.GetGridPropPrefab(gridPropData.GridPropID), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetGridPropPrefab(gridPropData.GridPropID), Constant.EntityGroup.Grid, 0, data);
             
             return (GridPropEntity)task.Logic;
         }
@@ -256,7 +256,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, gridPropData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(GridPropObstacleEntity),
-                AssetUtility.GetGridPropPrefab(gridPropID), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetGridPropPrefab(gridPropID), Constant.EntityGroup.Prop, 0, data);
             
             return (GridPropObstacleEntity)task.Logic;
         }
@@ -339,7 +339,7 @@ namespace RoundHero
         {
             //Log.Debug("task1");
             var task = await GameEntry.Entity.ShowEntityAsync(battleMoveValueEntityData.Id, typeof(BattleMoveValueEntity),
-                AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Unit, 0, battleMoveValueEntityData);
+                AssetUtility.GetBattleMoveValuePrefab(), Constant.EntityGroup.Tag, 0, battleMoveValueEntityData);
             //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleMoveValueEntity)task.Logic;
             
@@ -350,7 +350,7 @@ namespace RoundHero
         {
             //Log.Debug("task1");
             var task = await GameEntry.Entity.ShowEntityAsync(battleUnitStateValueEntityData.Id, typeof(BattleUnitStateValueEntity),
-                AssetUtility.BattleUnitStateValueEntity(), Constant.EntityGroup.Unit, 0, battleUnitStateValueEntityData);
+                AssetUtility.BattleUnitStateValueEntity(), Constant.EntityGroup.Tag, 0, battleUnitStateValueEntityData);
             //Log.Debug("task2:" + ((BattleMoveValueEntity)task.Logic).Id);
             return (BattleUnitStateValueEntity)task.Logic;
             
@@ -414,7 +414,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(EffectEntity),
-                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Effect, 0, data);
             
             return (EffectEntity)task.Logic;
         }
@@ -426,7 +426,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, color);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(CommonEffectEntity),
-                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Effect, 0, data);
             
             return (CommonEffectEntity)task.Logic;
         }
@@ -438,7 +438,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, color, gridPosIdxs);
         
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(LineMultiEffectEntity),
-                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetEffectPrefab(assetName), Constant.EntityGroup.Effect, 0, data);
             
             return (LineMultiEffectEntity)task.Logic;
         }
@@ -450,7 +450,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), shootPos, bulletData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleLineBulletEntity),
-                AssetUtility.GetBattleLineBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleLineBulletPrefab(), Constant.EntityGroup.Effect, 0, data);
             
             return (BattleLineBulletEntity)task.Logic;
         }
@@ -462,7 +462,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), shootPos, bulletData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleBeamBulletEntity),
-                AssetUtility.GetBattleBeamBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleBeamBulletPrefab(), Constant.EntityGroup.Effect, 0, data);
             
             return (BattleBeamBulletEntity)task.Logic;
         }
@@ -474,7 +474,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), shootPos, bulletData);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleParabolaBulletEntity),
-                AssetUtility.GetBattleParabolaBulletPrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleParabolaBulletPrefab(), Constant.EntityGroup.Effect, 0, data);
             
             return (BattleParabolaBulletEntity)task.Logic;
         }
@@ -486,7 +486,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), targetPos, value, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleDisplayValueEntity),
-                AssetUtility.GetBattleDisplayValuePrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleDisplayValuePrefab(), Constant.EntityGroup.Tag, 0, data);
             
             return (BattleDisplayValueEntity)task.Logic;
         }
@@ -498,7 +498,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), targetPos, value, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleValueEntity),
-                AssetUtility.GetBattleValuePrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleValuePrefab(), Constant.EntityGroup.Tag, 0, data);
             
             return (BattleValueEntity)task.Logic;
         }
@@ -511,7 +511,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), pos, startPos, targetPos, attackTagType, unitState, buffValue, attackCastType, entityIdx, showAttackLine, showAttackPos, isStatic);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleAttackTagEntity),
-                AssetUtility.GetBattleAttackTagPrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleAttackTagPrefab(), Constant.EntityGroup.Tag, 0, data);
             
             return (BattleAttackTagEntity)task.Logic;
         }
@@ -523,7 +523,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), gridPosIdx, direct, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleFlyDirectEntity),
-                AssetUtility.GetBattleFlyDirectEntityPrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleFlyDirectEntityPrefab(), Constant.EntityGroup.Tag, 0, data);
             
             return (BattleFlyDirectEntity)task.Logic;
         }
@@ -535,7 +535,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), gridPosIdx, targetGridPosIdx, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleFlyDirectEntity),
-                AssetUtility.GetBattleFlyDirectEntityPrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleFlyDirectEntityPrefab(), Constant.EntityGroup.Tag, 0, data);
             
             return (BattleFlyDirectEntity)task.Logic;
         }
@@ -550,7 +550,7 @@ namespace RoundHero
             data.Init(entityComponent.GenerateSerialId(), uiPos, battleIconType, entityIdx);
 
             var task = await GameEntry.Entity.ShowEntityAsync(data.Id, typeof(BattleIconEntity),
-                AssetUtility.GetBattleIconEntityPrefab(), Constant.EntityGroup.Unit, 0, data);
+                AssetUtility.GetBattleIconEntityPrefab(), Constant.EntityGroup.Tag, 0, data);
             
             return (BattleIconEntity)task.Logic;
         }
