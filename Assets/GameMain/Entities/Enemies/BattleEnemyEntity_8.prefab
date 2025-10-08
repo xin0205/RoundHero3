@@ -72,6 +72,8 @@ MonoBehaviour:
   ValuePos: {fileID: 6519452076117006877}
   TargetPosIdx: 0
   UnitDescTriggerItem: {fileID: 3000782954099996916}
+  multiStartAttackTrigger: 0
+  multiEndAttackTrigger: 0
   IsPointer: 0
   CurValueEntityIdx: 0
   ShowValueEntityIdx: 0
