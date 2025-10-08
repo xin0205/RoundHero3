@@ -56,7 +56,7 @@ namespace RoundHero
         public void Diffculty(EGameDifficulty difficulty)
         {
             procedureStart.Reset(EPVEType.Battle);
-            GameManager.Instance.TmpInitCards = Constant.BattleMode.InitCards;
+            GameManager.Instance.TmpInitCards = new List<int>(Constant.BattleMode.InitCards);
             
             GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
             DataManager.Instance.DataGame.User.SetCurGamePlayData(GamePlayManager.Instance.GamePlayData.PVEType);

@@ -55,8 +55,8 @@ namespace RoundHero
             }
             
             selectInitCards.Clear();
-            GameManager.Instance.TmpHeroID = 0;
-            GameManager.Instance.TmpInitCards.Clear();
+            //GameManager.Instance.TmpHeroID = 0;
+            //GameManager.Instance.TmpInitCards.Clear();
             
             
             //heroSceneEntity = await GameEntry.Entity.ShowHeroSceneEntityAsync();
