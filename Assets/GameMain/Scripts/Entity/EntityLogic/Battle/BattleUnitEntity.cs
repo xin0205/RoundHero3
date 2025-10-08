@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DG.Tweening;
 using GameFramework;
+using GameKit.Dependencies.Utilities;
 using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -507,7 +508,7 @@ namespace RoundHero
             }
 
             
-            if (UnitAttackCastType == EAttackCastType.ExtendSingle)
+            if (UnitAttackCastType.ToString().Contains("Extend"))
             {
                 foreach (var triggerActionData in bulletData.TriggerActionDataDict[triggerData.EffectUnitGridPosIdx])
                 {
@@ -532,7 +533,7 @@ namespace RoundHero
                 }
                 GameEntry.Entity.ShowBattleBeamBulletEntityAsync(bulletData, ShootPos.position);
             }
-            else if (UnitAttackCastType == EAttackCastType.ParabolaSingle)
+            else if (UnitAttackCastType.ToString().Contains("Parabola"))
             {
                 GameEntry.Entity.ShowBattleParabolaBulletEntityAsync(bulletData, ShootPos.position);
             }
