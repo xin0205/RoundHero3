@@ -143,6 +143,7 @@ namespace RoundHero
             
             public const string  Message_MissTargetUnit = "Message.MissTargetUnit"; 
             public const string Message_UnAdapteFune = "Message.UnAdapteFune";
+            public const string Message_UnPlaceUnit = "Message.UnPlaceUnit";
         }
     }
 }

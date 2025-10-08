@@ -1721,23 +1721,23 @@ namespace RoundHero
                 if(TutorialManager.Instance.Switch_UseUnitCard(ne.GridPosIdx) == ETutorialState.UnMatch)
                     return;
                 
-                if (enemyEntityID != -1)
-                {
-                    GameEntry.UI.OpenMessage("AAA");
-                    return;
-                }
-                
-                // if (soliderEntityID != -1)
+                // if (enemyEntityID != -1)
                 // {
-                //     GameEntry.UI.OpenMessage("BBB");
+                //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
                 //     return;
                 // }
-                
-                if (heroID != -1)
-                {
-                    GameEntry.UI.OpenMessage("CCC");
-                    return;
-                }
+                //
+                // if (soliderEntityID != -1)
+                // {
+                //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
+                //     return;
+                // }
+                //
+                // if (heroID != -1)
+                // {
+                //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
+                //     return;
+                // }
                 
                 HideTmpUnitEntity();
                 
@@ -2228,8 +2228,11 @@ namespace RoundHero
 
             var unPlacePosIdxs = BattleBuffManager.Instance.GetUnPlacePosIdxs(GamePlayManager.Instance.GamePlayData);
             if (unPlacePosIdxs.Contains(gridPosIdx))
+            {
+                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
                 return;
-            
+            }
+
             // var battleSoliderEntity =
             //     await GameEntry.Entity.ShowBattleSoliderEntityAsync(new Data_BattleSolider(
             //         BattleUnitManager.Instance.GetTempID(), cardID,
