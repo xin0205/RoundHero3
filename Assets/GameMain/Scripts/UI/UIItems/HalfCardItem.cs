@@ -51,13 +51,17 @@ namespace RoundHero
             var drCard = GameEntry.DataTable.GetCard(CardID);
             
             UnitIcon.gameObject.SetActive(drCard.CardType == ECardType.Unit);
-            TacticIcon.gameObject.SetActive(drCard.CardType == ECardType.Tactic);
+            TacticIcon.gameObject.SetActive(drCard.CardType == ECardType.Tactic || drCard.CardType == ECardType.Prop);
 
             if (drCard.CardType == ECardType.Unit)
             {
                 UnitIcon.sprite = await AssetUtility.GetFollowerIcon(CardID);
             }
             else if (drCard.CardType == ECardType.Tactic)
+            {
+                TacticIcon.sprite = await AssetUtility.GetTacticIcon(CardID);
+            }
+            else if (drCard.CardType == ECardType.Prop)
             {
                 TacticIcon.sprite = await AssetUtility.GetTacticIcon(CardID);
             }
