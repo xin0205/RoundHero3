@@ -16,6 +16,10 @@ namespace RoundHero
         
         public async Task ShowStaticAttackTags()
         {
+            if (BattleManager.Instance.BattleState != EBattleState.UseCard &&
+                BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                return;
+            
             //Log.Debug("ShowStaticAttackTags");
             UnshowStaticAttackTags();
             //var effectGridPosIdxs = new List<int>();
@@ -111,7 +115,10 @@ namespace RoundHero
                         if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                             continue;
 
-                        var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
+                        var ownUnit = GameUtility.GetUnitByIdx(BattleFightManager.Instance.RoundFightData.GamePlayData,
+                            triggerData.OwnUnitIdx);
+                        //BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
+                        
                         if(ownUnit == null)
                             continue;
 
@@ -283,6 +290,10 @@ namespace RoundHero
 
         public void UnshowStaticAttackTags()
         {
+            if (BattleManager.Instance.BattleState != EBattleState.UseCard &&
+                BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                return;
+            
             showAttackTagEntityIdx = curAttackTagEntityIdx;
             //Log.Debug("UnShowAttackTags:" + showAttackTagEntityIdx + "-" + BattleAttackTagEntities.Count);
 
