@@ -301,7 +301,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 13
+  m_Text: 0
 --- !u!114 &850696842044536795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1719,7 +1719,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 13
+  m_Text: 0
 --- !u!114 &5261009347589630468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2324,7 +2324,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 13
+  m_Text: 0
 --- !u!114 &4033973060087730757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3234,7 +3234,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1111
+  m_Text: 0
 --- !u!1 &8411288524055244124
 GameObject:
   m_ObjectHideFlags: 0
@@ -3889,6 +3889,10 @@ PrefabInstance:
     - target: {fileID: 3758514509710152932, guid: 5908e75fad81cd348952459c918debca, type: 3}
       propertyPath: m_Name
       value: PlayerBlessList
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758514509710152932, guid: 5908e75fad81cd348952459c918debca, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
