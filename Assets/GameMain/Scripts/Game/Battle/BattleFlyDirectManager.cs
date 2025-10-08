@@ -116,11 +116,11 @@ namespace RoundHero
                         continue;
                     }
 
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
-                    if (effectUnit != null)
+                    var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                    if (moveUnit != null)
                     {
                         var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
-                        effectUnit.Position = pos;
+                        moveUnit.Position = pos;
                         
                     }
                     

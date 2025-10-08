@@ -2365,12 +2365,15 @@ namespace RoundHero
                 {
                     // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx && actionUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
                     //     continue;
-                    
-                    if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
-                        continue;
-                    
-                    var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
-                    unitFlyDict.Add(kv.Key, moveGridPosIdxs);
+
+                    if (actionUnitIdx == kv.Value.ActionUnitIdx &&
+                        (actionUnitIdx == kv.Value.MoveActionData.MoveUnitIdx ||
+                         effectUnitIdx == kv.Value.MoveActionData.MoveUnitIdx))
+
+                    {
+                        var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
+                        unitFlyDict.Add(kv.Key, moveGridPosIdxs);
+                    }
 
                 }
             }

@@ -888,6 +888,7 @@ namespace RoundHero
                 
                 actionData.MoveData.MoveUnitDatas.Add(actionUnit.Idx, new MoveUnitData()
                 {
+                    ActionUnitIdx = actionUnitIdx,
                     UnitIdx = actionUnit.Idx,
                     MoveActionData = new MoveActionData()
                     {
@@ -900,9 +901,16 @@ namespace RoundHero
                     },
                     UnitActionState = EUnitActionState.Fly,
                 });
+                
+                // flyDirect = effectUnitCoord - actionUnitCoord;
+                // CacheUnitFlyMoveDatas(actionUnit.Idx, flyDirect, dis, moveActionDatas, actionData, triggerData,
+                //     actionUnit.GridPosIdx, EUnitActionState.Fly);
+                
+                
 
                 actionData.MoveData.MoveUnitDatas.Add(effectUnit.Idx, new MoveUnitData()
                 {
+                    ActionUnitIdx = actionUnitIdx,
                     UnitIdx = effectUnit.Idx,
                     MoveActionData = new MoveActionData()
                     {
@@ -915,6 +923,14 @@ namespace RoundHero
                     },
                     UnitActionState = EUnitActionState.Fly,
                 });
+                // flyDirect = actionUnitCoord - effectUnitCoord;
+                // CacheUnitFlyMoveDatas(effectUnit.Idx, flyDirect, dis, moveActionDatas, actionData, triggerData,
+                //     effectGridPosIdx, EUnitActionState.Fly);
+                
+                var actionUnitGridPosIdx = actionUnit.GridPosIdx;
+                actionUnit.GridPosIdx = effectUnit.GridPosIdx;
+                effectUnit.GridPosIdx = actionUnitGridPosIdx;
+                
             }
             else if (Constant.Battle.RelatedUnitFlyRanges.Contains(buffData.FlyRange) ||
                      Constant.Battle.DynamicRelatedUnitFlyRanges.Contains(buffData.FlyRange))
@@ -1713,7 +1729,7 @@ namespace RoundHero
             }
 
             CalculateHeroHPDelta(moveActionData);
-
+            
             moveActionData.MoveGridPosIdxs = new List<int>(minFullPaths);
             // if (tempFirstEnemyActionSoliders.Count > 0)
             // {
