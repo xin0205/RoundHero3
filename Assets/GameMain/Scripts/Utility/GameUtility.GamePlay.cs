@@ -1982,9 +1982,13 @@ namespace RoundHero
             var startCoord = GameUtility.GridPosIdxToCoord(startIdx);
             var endCoord = GameUtility.GridPosIdxToCoord(endIdx);
             
+            
+            var deltaCoord = endCoord - startCoord;
+            if (!(deltaCoord.x == 0 || deltaCoord.y == 0 || Mathf.Abs(deltaCoord.x) + Mathf.Abs(deltaCoord.y) == 2))
+                return moveIdxs;
+            
             moveIdxs.Add(startIdx);
 
-            var deltaCoord = endCoord - startCoord;
             deltaCoord.x = deltaCoord.x < 0 ? -1 : deltaCoord.x > 0 ? 1 : 0;
             deltaCoord.y = deltaCoord.y < 0 ? -1 : deltaCoord.y > 0 ? 1 : 0;
 
