@@ -1984,7 +1984,7 @@ namespace RoundHero
             
             
             var deltaCoord = endCoord - startCoord;
-            if (!(deltaCoord.x == 0 || deltaCoord.y == 0 || Mathf.Abs(deltaCoord.x) + Mathf.Abs(deltaCoord.y) == 2))
+            if (!(deltaCoord.x == 0 || deltaCoord.y == 0 || Mathf.Abs(deltaCoord.x) == Mathf.Abs(deltaCoord.y)))
                 return moveIdxs;
             
             moveIdxs.Add(startIdx);
