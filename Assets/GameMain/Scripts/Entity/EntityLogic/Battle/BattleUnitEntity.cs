@@ -1756,7 +1756,8 @@ namespace RoundHero
             if (showMoveValueIconTime > 0.8f)
             {
                 showMoveValueIconTime = 0;
-     
+
+                BattleUnitStateValueEntity entity = null;
                 BattleUnitStateValueEntityData data = null;
                 do
                 {
@@ -1771,14 +1772,14 @@ namespace RoundHero
                         showMoveValueIconTime = 0.8f;
                     }
 
-                } while(data != null && data.EntityIdx < ShowValueEntityIdx);
+                } while(data != null && data.EntityIdx < ShowUnitStateIconEntityIdx);
                 
                 if(data == null)
                     return;
                 
                 //var data = moveValueQueue.Dequeue();
 
-                var entity = await GameEntry.Entity.ShowUnitStateIconValueEntityAsync(data);
+                entity = await GameEntry.Entity.ShowUnitStateIconValueEntityAsync(data);
                 
                 
                 if (GameEntry.Entity.HasEntity(entity.Id))
@@ -1787,7 +1788,7 @@ namespace RoundHero
                     if (entityIdx == -1)
                     {
                     }
-                    else if (entityIdx < ShowValueEntityIdx)
+                    else if (entityIdx < ShowUnitStateIconEntityIdx)
                     {
                 
                         GameEntry.Entity.HideEntity(entity);
@@ -1795,7 +1796,7 @@ namespace RoundHero
                     else
                     {
                 
-                        BattleValueEntities.Add(entity.Entity.Id, entity);
+                        BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
                     }
                 }
             }

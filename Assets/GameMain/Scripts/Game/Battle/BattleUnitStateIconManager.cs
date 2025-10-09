@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RoundHero
 {
     public partial class BattleUnitEntity
     {
         public Dictionary<int, Entity>  BattleUnitStateIconEntities = new ();
-        private int curUnitStateIconEntityIdx = 0;
+        public int CurUnitStateIconEntityIdx = 0;
         private int _curUnitStateIconEntityIdx = 0;
-        private int showUnitStateIconEntityIdx = 0;
+        private int ShowUnitStateIconEntityIdx = 0;
         
         
         public void ShowHurtDisplayIcon(int effectUnitIdx, int actionUnitIdx)
         {
             
-            _curUnitStateIconEntityIdx = curUnitStateIconEntityIdx;
+            _curUnitStateIconEntityIdx = CurUnitStateIconEntityIdx;
             var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
                 BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
 
@@ -27,7 +28,7 @@ namespace RoundHero
                     {
                         continue;
                     }
-                    curUnitStateIconEntityIdx += 1;
+                    CurUnitStateIconEntityIdx += 1;
                 }
                
             }
@@ -46,7 +47,7 @@ namespace RoundHero
             
             //var actionUnit =  BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
             
-            _curUnitStateIconEntityIdx = curUnitStateIconEntityIdx;
+            _curUnitStateIconEntityIdx = CurUnitStateIconEntityIdx;
             var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
                 BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
 
@@ -58,7 +59,7 @@ namespace RoundHero
                     {
                         continue;
                     }
-                    curUnitStateIconEntityIdx += 1;
+                    CurUnitStateIconEntityIdx += 1;
                 }
                
             }
@@ -93,13 +94,12 @@ namespace RoundHero
                 var value = (int)triggerData.ActualValue;
                 var unitState = triggerData.UnitStateDetail.UnitState;
 
-                //InternalShowIcon(triggerData, unitState, value, _curUnitStateIconEntityIdx);
-                GameUtility.DelayExcute(idx *0.25f, () =>
-                {
-                    InternalShowIcon(triggerData, unitState, value, _curUnitStateIconEntityIdx);
-                });
-                //InternalShowValue(effectUnit, value, entityIdx++);
-
+                InternalShowIcon(triggerData, unitState, value, _curUnitStateIconEntityIdx);
+                // GameUtility.DelayExcute(idx *0.25f, () =>
+                // {
+                //     InternalShowIcon(triggerData, unitState, value, _curUnitStateIconEntityIdx);
+                // });
+                
                 idx++;
 
 
@@ -119,7 +119,7 @@ namespace RoundHero
         public void UnShowDisplayIcons()
         {
             
-            showUnitStateIconEntityIdx = curUnitStateIconEntityIdx;
+            ShowUnitStateIconEntityIdx = CurUnitStateIconEntityIdx;
             
             foreach (var kv in BattleUnitStateIconEntities)
             {
@@ -136,8 +136,8 @@ namespace RoundHero
 
         public void AnimtionChangeUnitState(EUnitState unitState, int value, TriggerData triggerData, int entityIdx, bool isLoop)
         {
-            _curUnitStateIconEntityIdx = curUnitStateIconEntityIdx;
-            curUnitStateIconEntityIdx += 1;
+            _curUnitStateIconEntityIdx = CurUnitStateIconEntityIdx;
+            CurUnitStateIconEntityIdx += 1;
             InternalAnimtionChangeUnitState(unitState, value, triggerData, entityIdx, isLoop);
         }
 
@@ -163,7 +163,7 @@ namespace RoundHero
             };
             
 
-            AddUnitStateMoveValue(unitState, value, value,  CurValueEntityIdx++,
+            AddUnitStateMoveValue(unitState, value, value,  CurUnitStateIconEntityIdx++,
                 isLoop, false,
                 moveParams,
                 targetMoveParams);
@@ -205,7 +205,7 @@ namespace RoundHero
         
         private void InternalShowHurtDisplayIcon(int effectUnitIdx, Dictionary<int, List<TriggerData>> triggerDataDict)
         {
-            var entityIdx = CurValueEntityIdx;
+            var entityIdx = CurUnitStateIconEntityIdx;
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
             
             foreach (var kv in triggerDataDict)
@@ -216,7 +216,7 @@ namespace RoundHero
                     {
                         continue;
                     }
-                    curUnitStateIconEntityIdx += 1;
+                    CurUnitStateIconEntityIdx += 1;
                         
                 }
 
