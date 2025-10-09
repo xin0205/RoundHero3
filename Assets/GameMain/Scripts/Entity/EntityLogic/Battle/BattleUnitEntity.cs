@@ -844,10 +844,10 @@ namespace RoundHero
 
         }
         
-        public async void HandleGetHit()
+        public async void HandleGetHit(BattleUnitEntity actionUnitEntity)
         {
             Log.Debug("GetHit");
-            ShowEffectHurtEntity();
+            ShowEffectHurtEntity(actionUnitEntity);
         }
 
         public void HitTrigger()
@@ -971,7 +971,7 @@ namespace RoundHero
                         {
                             //effectName = "EffectCloseSingleAttackEntity";
                             //effectPos = EffectAttackPos.position;
-                            effectUnit.ShowEffectHurtEntity();
+                            effectUnit.ShowEffectHurtEntity(this);
                         }
                         else
                         {
@@ -1550,10 +1550,10 @@ namespace RoundHero
             
         }
         
-        private async void ShowEffectHurtEntity()
+        private async void ShowEffectHurtEntity(BattleUnitEntity actionUnitEntity)
         {
             var effectHurt = await GameEntry.Entity.ShowCommonEffectEntityAsync("EffectHurtEntity",
-                EffectHurtPos.position, BattleUnitManager.Instance.GetEffectColor(this));
+                EffectHurtPos.position, BattleUnitManager.Instance.GetEffectColor(actionUnitEntity));
             effectHurt.transform.parent = EffectHurtPos;
         }
 
@@ -1564,14 +1564,14 @@ namespace RoundHero
             animator.SetInteger(AnimationParameters.Action, (int)HitType.Back1);
         }
 
-        public void Hurt()
+        public void Hurt(BattleUnitEntity actionUnitEntity)
         {
 
             HurtAnimation();
 
             GameUtility.DelayExcute(0.15f, () =>
             {
-                HandleGetHit();
+                HandleGetHit(actionUnitEntity);
             });
             
             // if (UnitActionState == EUnitActionState.Run)

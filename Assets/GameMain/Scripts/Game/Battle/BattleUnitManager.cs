@@ -689,7 +689,7 @@ namespace RoundHero
                 return drEnemy.EffectColor;
             }
 
-            return EColor.Blue;
+            return EColor.Black;
         }
 
         public EActionType GetMoveType(int unitID)

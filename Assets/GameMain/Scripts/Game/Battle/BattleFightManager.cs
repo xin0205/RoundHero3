@@ -1593,7 +1593,7 @@ namespace RoundHero
                                 //effectUnitEntity.BattleUnit.CacheHPDelta += hpDelta;
                                 //effectUnitEntity.BattleUnitData.AddHeroHP += hpDelta;
                                 HeroManager.Instance.BattleHeroData.CacheHPDelta += hpDelta;
-                                effectUnitEntity.Hurt();
+                                effectUnitEntity.Hurt(actionUnitEntity);
                                 //HeroManager.Instance.HeroEntity.AddHurts(hpDelta);
                                 // var coreHurtAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CoreHurtAcquireCard,
                                 //     PlayerManager.Instance.PlayerData.UnitCamp);
@@ -1636,7 +1636,7 @@ namespace RoundHero
                                     BattleEffectManager.Instance.ShowHurtRoundStartEffect(effectUnitEntity.Position);
                                 }
                                 
-                                effectUnitEntity.Hurt();
+                                effectUnitEntity.Hurt(actionUnitEntity);
                             } 
                             else if (triggerValue > 0)
                             {
@@ -1680,7 +1680,7 @@ namespace RoundHero
                     {
                         if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(triggerData.UnitStateDetail.UnitState))
                         {
-                            effectUnitEntity.Hurt();    
+                            effectUnitEntity.Hurt(actionUnitEntity);    
                         }
                         if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.Buff].Contains(triggerData.UnitStateDetail.UnitState))
                         {
@@ -1703,7 +1703,7 @@ namespace RoundHero
                     // {
                     //     actionUnitEntity.Attack();
                     // }
-                    effectUnitEntity.Hurt();
+                    effectUnitEntity.Hurt(actionUnitEntity);
                     effectUnitEntity.BattleUnitData.ChangeRoundState(triggerData.UnitStateDetail.UnitState, (int)(triggerData.Value + triggerData.DeltaValue));
                     break;
                 case ETriggerDataType.Card:
@@ -1819,7 +1819,7 @@ namespace RoundHero
                     if (triggerValue < 0)
                     {
                         effectUnitEntity.BattleUnitData.HurtTimes += 1;
-                        effectUnitEntity.Hurt();
+                        effectUnitEntity.Hurt(actionUnitEntity);
                     }
                     break;
                 case ETriggerDataType.RoundBuff:
