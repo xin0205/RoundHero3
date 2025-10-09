@@ -499,7 +499,7 @@ namespace RoundHero
                     var battlePlayerData =
                         BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(bePassUnit
                             .UnitCamp);
-                    if (battlePlayerData.BattleBuffs.Contains(EBuffID.Spec_AtkPassEnemyAddDmg_AtkPassUsAddDmg))
+                    if (battlePlayerData != null && battlePlayerData.BattleBuffs.Contains(EBuffID.Spec_AtkPassEnemyAddDmg_AtkPassUsAddDmg))
                     {
                         value += value < 0 ? 1 : 0;
                     }
@@ -548,7 +548,7 @@ namespace RoundHero
                     var battlePlayerData =
                         BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(
                             passUnit.UnitCamp);
-                    if (battlePlayerData.BattleBuffs.Contains(EBuffID.Spec_AtkPassEnemyAddDmg_AtkPassUsAddDmg))
+                    if (battlePlayerData != null && battlePlayerData.BattleBuffs.Contains(EBuffID.Spec_AtkPassEnemyAddDmg_AtkPassUsAddDmg))
                     {
                         value += value < 0 ? 1 : 0;
                     }
@@ -1823,7 +1823,7 @@ namespace RoundHero
                     }
                     break;
                 case ETriggerDataType.RoundBuff:
-                    var battlePlayerData = GamePlayManager.Instance.GamePlayData.BattleData.GetBattlePlayerData(effectUnitEntity.UnitCamp);
+                    //var battlePlayerData = GamePlayManager.Instance.GamePlayData.BattleData.GetBattlePlayerData(effectUnitEntity.UnitCamp);
                     //battlePlayerData.RoundBuffs.Add(triggerData.BuffID);
                     break;
                 case ETriggerDataType.ClearBuff:

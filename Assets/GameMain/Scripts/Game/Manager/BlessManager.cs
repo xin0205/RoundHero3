@@ -227,7 +227,7 @@ namespace RoundHero
             var playerBattleData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
             
             var useCardSubOtherCardEnergy = gamePlayData.GetUsefulBless(EBlessID.UseCardSubOtherCardEnergy, BattleManager.Instance.CurUnitCamp);
-            if (useCardSubOtherCardEnergy != null)
+            if (playerBattleData != null && useCardSubOtherCardEnergy != null)
             {
                 foreach (var handCardID in playerBattleData.HandCards)
                 {
@@ -280,7 +280,7 @@ namespace RoundHero
             var playerBattleData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
             
             var useCardRandomCard0EnergyCount = gamePlayData.BlessCount(EBlessID.UseCardRandomCard0Energy, BattleManager.Instance.CurUnitCamp);
-            if (useCardRandomCard0EnergyCount > 0)
+            if (playerBattleData != null && useCardRandomCard0EnergyCount > 0)
             {
                 //var drConsumeCardAcquireNewCard = GameEntry.DataTable.GetBless(EBlessID.ConsumeCardAcquireNewCard);
                 var cards = new List<int>();
@@ -396,7 +396,7 @@ namespace RoundHero
             var playerData = gamePlayData.GetPlayerData(BattleManager.Instance.CurUnitCamp);
             var playerBattleData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
             
-            if (eachUseCardDoubleHPDelta != null)
+            if (playerBattleData != null && eachUseCardDoubleHPDelta != null)
             {
                 var allCards = playerBattleData.GetAllCards();
                 if (eachUseCardDoubleHPDelta.Value > 0)
@@ -464,7 +464,7 @@ namespace RoundHero
 
             var noHandCardAcquireCard = gamePlayData.GetUsefulBless(EBlessID.NoHandCardAcquireCard,
                 PlayerManager.Instance.PlayerData.UnitCamp);
-            if (noHandCardAcquireCard != null && playerBattleData.HandCards.Count <= 0)
+            if (playerBattleData != null && noHandCardAcquireCard != null && playerBattleData.HandCards.Count <= 0)
             {
                 var drBless = GameEntry.DataTable.GetBless(EBlessID.NoHandCardAcquireCard);
                 BattleCardManager.Instance.AcquireCards((int)BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]));
@@ -505,7 +505,7 @@ namespace RoundHero
             var playerBattleData = gamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
             var eachRoundFightCardAddLink = gamePlayData.GetUsefulBless(blessID, BattleManager.Instance.CurUnitCamp);
             var drBless = GameEntry.DataTable.GetBless(blessID);
-            if (eachRoundFightCardAddLink != null)
+            if (playerBattleData != null && eachRoundFightCardAddLink != null)
             {
                 // && drCard.CardType == ECardType.Fight
                 if (playerBattleData.RoundUseCardCount == 0)

@@ -1503,8 +1503,8 @@ namespace RoundHero
             if (!passUnit.Exist())
                 return null;
 
-            var battlePlayerData = RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance
-                .CurUnitCamp);
+            // var battlePlayerData = RoundFightData.GamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance
+            //     .CurUnitCamp);
             //passUnit.GetAllStateCount(EUnitState.UnAction) > 0 ||
             if ((passUnit.GetAllStateCount(EUnitState.UnMove) > 0) &&
                 !GameUtility.ContainRoundState(RoundFightData.GamePlayData, EBuffID.Spec_CurseUnEffect))
