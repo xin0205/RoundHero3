@@ -193,6 +193,7 @@ namespace RoundHero
             //CacheSoliderAttackDatas();
             CacheRoundHandCards(true);
             CalculateEnemyPaths();
+            CacheEnemyAttackDatas();
             //CacheEnemyMoveDatas();
             //
 
@@ -1762,22 +1763,22 @@ namespace RoundHero
             //     firstUnitActionSoliders.AddRange(tempFirstEnemyActionSoliders);
             // }
 
-            if (minFullPaths.Count > 0)
-            {
-                passUnit.GridPosIdx = minFullPaths[minFullPaths.Count - 1];
-                RoundFightData.GamePlayData.BattleData.GridTypes[minFullPaths[0]] = EGridType.Empty;
-                RoundFightData.GamePlayData.BattleData.GridTypes[minFullPaths[minFullPaths.Count - 1]] = EGridType.Unit;
-
-                RefreshUnitGridPosIdx();
-                if (passUnit.UnitCamp == EUnitCamp.Enemy && unitActionState == EUnitActionState.Run)
-                {
-                    if (!RoundFightData.EnemyAttackDatas.ContainsKey(passUnit.Idx))
-                    {
-                        CacheEnemyAttackData(passUnit as Data_BattleMonster);
-                    }
-
-                }
-            }
+            // if (minFullPaths.Count > 0)
+            // {
+            //     passUnit.GridPosIdx = minFullPaths[minFullPaths.Count - 1];
+            //     RoundFightData.GamePlayData.BattleData.GridTypes[minFullPaths[0]] = EGridType.Empty;
+            //     RoundFightData.GamePlayData.BattleData.GridTypes[minFullPaths[minFullPaths.Count - 1]] = EGridType.Unit;
+            //
+            //     RefreshUnitGridPosIdx();
+            //     if (passUnit.UnitCamp == EUnitCamp.Enemy && unitActionState == EUnitActionState.Run)
+            //     {
+            //         if (!RoundFightData.EnemyAttackDatas.ContainsKey(passUnit.Idx))
+            //         {
+            //             CacheEnemyAttackData(passUnit as Data_BattleMonster);
+            //         }
+            //
+            //     }
+            // }
 
             // foreach (var kv in unitMoveDatas)
             // {
