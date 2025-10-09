@@ -71,11 +71,11 @@ namespace RoundHero
             
             //int startGameRandomSeed = 87252934;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             
-
             
             
-
-            var radomSeed = 48782803;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            
+            // 48782803;//20623119;//26349715 83353599;//31677911;//
+            var radomSeed = 5963733;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             
             GamePlayManager.Instance.GamePlayData.RandomSeed = radomSeed;
                 
