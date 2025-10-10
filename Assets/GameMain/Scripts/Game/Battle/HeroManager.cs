@@ -45,6 +45,11 @@ namespace RoundHero
     {
         public int SoliderIdx;
     }
+    
+    public class CoreHPDeltaData : HPDeltaData
+    {
+        public int CoreIdx;
+    }
         
     public class CardHPDeltaData : HPDeltaData
     {
@@ -344,6 +349,13 @@ namespace RoundHero
                     //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Solider;
                     (hpDeltaData as SoliderHPDeltaData).SoliderIdx = actionUnit.UnitIdx;
                 }
+                else if (actionUnit is BattleCoreEntity)
+                {
+                    hpDeltaData = new CoreHPDeltaData();
+                    //hpDeltaData.HPDeltaOwnerType = EHPDeltaOwnerType.Solider;
+                    (hpDeltaData as CoreHPDeltaData).CoreIdx = actionUnit.UnitIdx;
+                }
+                
                 
                 var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
                 if (effectUnit is BattleSoliderEntity)
