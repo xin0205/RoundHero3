@@ -764,21 +764,28 @@ namespace RoundHero
                 // }
                 else
                 {
-                    if (triggerData.OwnUnitIdx > 0 && triggerData.OwnUnitIdx == triggerData.ActionUnitIdx)
+                    if (triggerData.OwnUnitIdx == Constant.Battle.UnUnitTriggerIdx || (triggerData.OwnUnitIdx > 0 &&
+                            triggerData.OwnUnitIdx == triggerData.ActionUnitIdx))
                     {
-                        var ownUnit = GetUnitByIdx(triggerData.OwnUnitIdx);
-
-                        if (ownUnit != null && triggerData.UnitStateDetail.UnitState == EUnitState.Empty)
+                        //var ownUnit = GetUnitByIdx(triggerData.OwnUnitIdx);
+                        //ownUnit != null && 
+                        if (triggerData.UnitStateDetail.UnitState == EUnitState.Empty)
                         {
                             BattleGridPropManager.Instance.TriggerStayPropState(triggerData.EffectUnitGridPosIdx,
                                 effectUnitData, EUnitState.HurtAddDmg);
-                            
-                            BattleGridPropManager.Instance.TriggerStayPropState(triggerData.ActionUnitGridPosIdx,
-                                actionUnitData, EUnitState.SubDmg);
-                            
-                            BattleGridPropManager.Instance.TriggerStayPropState(triggerData.ActionUnitGridPosIdx,
-                                actionUnitData, EUnitState.AddDmg);
-                            
+
+                            if (actionUnitData != null)
+                            {
+                                BattleGridPropManager.Instance.TriggerStayPropState(triggerData.ActionUnitGridPosIdx,
+                                    actionUnitData, EUnitState.SubDmg);
+                            }
+
+                            if (actionUnitData != null)
+                            {
+                                BattleGridPropManager.Instance.TriggerStayPropState(triggerData.ActionUnitGridPosIdx,
+                                    actionUnitData, EUnitState.AddDmg);
+                            }
+
                             BattleGridPropManager.Instance.TriggerStayPropState(triggerData.EffectUnitGridPosIdx,
                                 effectUnitData, EUnitState.HurtSubDmg);
                             
@@ -854,7 +861,7 @@ namespace RoundHero
                             //     triggerDatas.Add(subAddDmgCountData);
                             // }
 
-                            if (atkAddSelfHP > 0)
+                            if (actionUnitData != null && atkAddSelfHP > 0)
                             {
                         
                                 var _triggerValue = (int)(triggerData.Value + triggerData.DeltaValue);
@@ -1000,7 +1007,11 @@ namespace RoundHero
                                         effectUnitData.Idx, triggerData.ActionUnitIdx, EUnitAttribute.HP, -useDefenseCount,
                                         ETriggerDataSubType.Unit);
                                     counterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
-                                    counterAttackTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
+                                    if (actionUnitData != null)
+                                    {
+                                        counterAttackTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
+                                    }
+                                    
                                     SimulateTriggerData(counterAttackTriggerData, triggerDatas);
                                     triggerDatas.Add(counterAttackTriggerData);
                                 }
@@ -1009,7 +1020,7 @@ namespace RoundHero
                         
                         
 
-                        if (actionUnitData is Data_BattleSolider solider &&
+                        if (actionUnitData != null && actionUnitData is Data_BattleSolider solider &&
                             actionUnitData.UnitCamp == BattleManager.Instance.CurUnitCamp)
                         {
 
