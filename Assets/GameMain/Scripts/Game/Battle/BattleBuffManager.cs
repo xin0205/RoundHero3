@@ -490,9 +490,10 @@ namespace RoundHero
         
         public void AttackTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
+            //+ triggerData.DeltaValue
             if (!(triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                 triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
-                triggerData.Value + triggerData.DeltaValue < 0))
+                triggerData.Value  < 0))
                 return;
             
             var actionUnit = BattleFightManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
@@ -507,9 +508,10 @@ namespace RoundHero
         
         private void HurtTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
+            // + triggerData.DeltaValue
             if (!(triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                   triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
-                  triggerData.Value + triggerData.DeltaValue < 0))
+                  triggerData.Value < 0))
                 return;
             
             var effectUnit = BattleFightManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
@@ -1010,7 +1012,9 @@ namespace RoundHero
                 case EBuffTriggerType.StartMove:
                     BuffParse_Normal(strList, buffData);
                     break;
-                    
+                case EBuffTriggerType.Start:
+                    BuffParse_Normal(strList, buffData);
+                    break;
                 case EBuffTriggerType.Link:
                     break;
                 case EBuffTriggerType.Trigger:
