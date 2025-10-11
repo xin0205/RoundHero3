@@ -552,9 +552,11 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx = tempUnitMovePaths[tempUnitMovePaths.Count - 1];
                         BattleManager.Instance.RefreshEnemyAttackData();
                         
-                        var triggerDataDict =
-                            GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(TmpUnitEntity.UnitIdx),
-                                BattleFightManager.Instance.GetHurtInDirectAttackDatas(TmpUnitEntity.UnitIdx));
+                        TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
+                        
+                        // var triggerDataDict =
+                        //     GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(TmpUnitEntity.UnitIdx),
+                        //         BattleFightManager.Instance.GetHurtInDirectAttackDatas(TmpUnitEntity.UnitIdx));
 
                         // var idx = 0;
                         // var actionUnitList = new List<int>();
