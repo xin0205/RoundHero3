@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c3f106a78e1aa142b294d8d1a41114b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gif: {fileID: 11400000, guid: 0c6fb2960b95e114badee58aeea8073a, type: 2}
+  Gif: {fileID: 11400000, guid: 331b445d016418d48bf769b2786d2f21, type: 2}
 --- !u!222 &7239667219517262996
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6c0928befadd29e4fa64f1a56061e2e3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b561c4c513690ff4595ac3dc55148666, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

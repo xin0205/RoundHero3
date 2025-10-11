@@ -19,7 +19,7 @@ MonoBehaviour:
     - Enemy_0
     - Enemy_1
     m_values:
-    - {fileID: 11400000, guid: c42de4b851d646944a40cc1c0eb737ba, type: 2}
-    - {fileID: 11400000, guid: 0c6fb2960b95e114badee58aeea8073a, type: 2}
-    - {fileID: 11400000, guid: c42de4b851d646944a40cc1c0eb737ba, type: 2}
-    - {fileID: 11400000, guid: c42de4b851d646944a40cc1c0eb737ba, type: 2}
+    - {fileID: 11400000, guid: 331b445d016418d48bf769b2786d2f21, type: 2}
+    - {fileID: 11400000, guid: 331b445d016418d48bf769b2786d2f21, type: 2}
+    - {fileID: 11400000, guid: 331b445d016418d48bf769b2786d2f21, type: 2}
+    - {fileID: 11400000, guid: 331b445d016418d48bf769b2786d2f21, type: 2}
