@@ -190,12 +190,26 @@ namespace RoundHero
 
             var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
 
+            
+            
+            
             foreach (var triggerDatas in triggerDataDict.Values)
             {
                 var triggerData = triggerDatas[0];
 
                 var effectUnitIdx = triggerData.EffectUnitIdx;
                 var actionUnitIdx = triggerData.ActionUnitIdx;
+                
+                // var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+                //
+                // if (effectUnit != null)
+                // {
+                //     effectUnit.ShowAttackTag(effectUnitIdx, false);
+                //     effectUnit.ShowHurtAttackTag(effectUnitIdx, -1, new List<int>(){actionUnitIdx});
+                // }
+                
+                BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
+                
                 
                 var flyPathDict =
                     BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
@@ -206,22 +220,27 @@ namespace RoundHero
                     {
                         continue;
                     }
+                    
+                    // if(kv.Key == effectUnitIdx)
+                    //     continue;
 
-                    var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
-                    if (effectUnit != null)
+                    var flyEffectUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                    
+                    
+                    if (flyEffectUnit != null)
                     {
-                        effectUnit.ShowAttackTag(effectUnitIdx, false);
-                        effectUnit.ShowHurtAttackTag(effectUnitIdx, -1, new List<int>(){actionUnitIdx});
+                        flyEffectUnit.ShowAttackTag(kv.Key, false);
+                        flyEffectUnit.ShowHurtAttackTag(kv.Key, -1, new List<int>(){actionUnitIdx});
                     }
 
-                    var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
-                    if (actionUnitIdx != null)
-                    {
-                        actionUnit.ShowHurtDisplayValue(actionUnitIdx, effectUnitIdx);
-                    }
+                    
                     
                 }
-                
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
+                if (actionUnitIdx != null)
+                {
+                    actionUnit.ShowHurtDisplayValue(actionUnitIdx, effectUnitIdx);
+                }
                 
 
             }
