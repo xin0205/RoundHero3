@@ -64,7 +64,9 @@ namespace RoundHero
             {
                 var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
                 animationPlayData.GifType = EGIFType.Enemy;
-                animationPlayData.ID = enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID;
+                var drEnemy =
+                    GameEntry.DataTable.GetEnemy(enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
+                animationPlayData.ID = drEnemy.GIFIdx;
 
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
@@ -77,9 +79,10 @@ namespace RoundHero
                 {
                     var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
                     //
-                    var drCard = CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                    //var cardData = CardManager.Instance.GetCard(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                    var drCard = CardManager.Instance.GetCardTable(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                     //
-                    animationPlayData.ID = drCard.CardID;
+                    animationPlayData.ID = drCard.GIFIdx;
                     animationPlayData.GifType = EGIFType.Solider;
                 }
             }

@@ -19,7 +19,15 @@ namespace RoundHero
         public void SetVideo(AnimationPlayData animationPlayData)
         {
             this._animationPlayData = animationPlayData;
-            var gifStr = animationPlayData.GifType.ToString() + "_" + animationPlayData.ID.ToString();
+            if (_animationPlayData.ID == -1)
+            {
+                this.gameObject.SetActive(false);
+                return;
+            }
+            
+            this.gameObject.SetActive(true);
+            //animationPlayData.GifType.ToString() + 
+            var gifStr = "GIF_" + animationPlayData.ID.ToString();
             if (videoAssets.VideoAssetDict.ContainsKey(gifStr))
             {
                 videoPlayer.clip = videoAssets.VideoAssetDict[gifStr];

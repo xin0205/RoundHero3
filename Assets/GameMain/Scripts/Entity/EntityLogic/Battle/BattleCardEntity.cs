@@ -148,8 +148,9 @@ namespace RoundHero
             
             videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.BattleLeft;
             var drCard = GameEntry.DataTable.GetCard(BattleCardEntityData.CardData.CardID);
+            
             videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;
-            videoTriggerItem.VideoFormData.AnimationPlayData.ID = BattleCardEntityData.CardData.CardID;
+            videoTriggerItem.VideoFormData.AnimationPlayData.ID = drCard.GIFIdx;
             
             // AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
             // MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);

@@ -10,7 +10,7 @@ namespace RoundHero
     public class AnimationPlayData
     {
         public EGIFType GifType;
-        public int ID;
+        public int ID = -1;
         public EShowPosition ShowPosition = EShowPosition.MousePosition;
     }
     
@@ -25,7 +25,8 @@ namespace RoundHero
         public void SetGIF(AnimationPlayData animationPlayData)
         {
             this._animationPlayData = animationPlayData;
-            var gifStr = animationPlayData.GifType.ToString() + "_" + animationPlayData.ID.ToString();
+            //animationPlayData.GifType.ToString() + 
+            var gifStr = "GIF_" + animationPlayData.ID;
             if (gifAssets.GifAssetDict.ContainsKey(gifStr))
             {
                 gifPlayer.Gif = gifAssets.GifAssetDict[gifStr];

@@ -153,6 +153,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取GIFIdx。
+        /// </summary>
+        public int GIFIdx
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -178,6 +187,7 @@ namespace RoundHero
             WeaponID = int.Parse(columnStrings[index++]);
 			AttackCastType = Enum.Parse<EAttackCastType>(columnStrings[index++]);
 			EffectColor = Enum.Parse<EColor>(columnStrings[index++]);
+            GIFIdx = int.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -203,6 +213,7 @@ namespace RoundHero
                     WeaponID = binaryReader.Read7BitEncodedInt32();
                     AttackCastType = Enum.Parse<EAttackCastType>(binaryReader.ReadString());
                     EffectColor = Enum.Parse<EColor>(binaryReader.ReadString());
+                    GIFIdx = binaryReader.Read7BitEncodedInt32();
                 }
             }
 
