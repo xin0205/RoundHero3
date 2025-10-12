@@ -42,6 +42,8 @@ namespace RoundHero
             }
 
             Show(false);
+            backupGrid.SetActive(false);
+            selectionGrid.SetActive(false);
             Refresh();
             
             var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
