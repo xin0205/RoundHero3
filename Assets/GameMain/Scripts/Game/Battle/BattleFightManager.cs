@@ -291,6 +291,7 @@ namespace RoundHero
         public Dictionary<int, ActionData> UseCardTriggerDatas = new();
         public Dictionary<int, ActionData> RoundStartBuffDatas = new();
         public Dictionary<int, ActionData> RoundStartUnitDatas = new();
+        public Dictionary<int, ActionData> PreRoundStartDatas = new();
         public Dictionary<int, ActionData> BlessTriggerDatas = new();
         public Dictionary<int, ActionData> CurseTriggerDatas = new();
         public Dictionary<int, ActionData> RoundEndDatas = new();
@@ -323,6 +324,7 @@ namespace RoundHero
         {
             RoundStartBuffDatas.Clear();
             RoundStartUnitDatas.Clear();
+            PreRoundStartDatas.Clear();
             RoundEndDatas.Clear();
             SoliderAttackDatas.Clear();
             SoliderActiveAttackDatas.Clear();
@@ -1943,6 +1945,12 @@ namespace RoundHero
             UnitAttack(RoundFightData.RoundStartUnitDatas, EActionProgress.RoundStartUnit);
         }
         
+        public void PreRoundStartUnitTrigger()
+        {
+            BattleFightManager.Instance.ActionProgress = EActionProgress.PreRoundStart;
+            UnitAttack(RoundFightData.PreRoundStartDatas, EActionProgress.PreRoundStart);
+        }
+        
         public void RoundEndTrigger()
         {
             if(ActionProgress != EActionProgress.RoundEnd)
@@ -2097,6 +2105,7 @@ namespace RoundHero
         
         public void EnemyMove()
         {
+            BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
             UnitMove(RoundFightData.EnemyMovePaths, RoundFightData.EnemyMoveDatas, RoundFightData.EnemyAttackDatas,
                 EActionProgress.EnemyMove);
             
@@ -2377,9 +2386,11 @@ namespace RoundHero
                     // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx && actionUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
                     //     continue;
 
-                    if (actionUnitIdx == kv.Value.ActionUnitIdx &&
-                        (actionUnitIdx == kv.Value.MoveActionData.MoveUnitIdx ||
-                         effectUnitIdx == kv.Value.MoveActionData.MoveUnitIdx))
+                    //选择一个单位，对单位造成{0}点伤害，并击退相邻单位
+                    // &&
+                    // (actionUnitIdx == kv.Value.MoveActionData.MoveUnitIdx ||
+                    //  effectUnitIdx == kv.Value.MoveActionData.MoveUnitIdx)
+                    if (actionUnitIdx == kv.Value.ActionUnitIdx)
 
                     {
                         var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;

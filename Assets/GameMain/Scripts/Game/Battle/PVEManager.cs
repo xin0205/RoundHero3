@@ -166,8 +166,9 @@ namespace RoundHero
             GameUtility.DelayExcute(1f, () =>
             {
                 GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
-                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
-                BattleFightManager.Instance.EnemyMove();
+
+                BattleFightManager.Instance.PreRoundStartUnitTrigger();
+                //BattleFightManager.Instance.EnemyMove();
             });
  
             
@@ -226,10 +227,16 @@ namespace RoundHero
             {
                 BattleFightManager.Instance.SoliderActiveAttack();
             }
+            
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.PreRoundStart)
+            {
+                BattleFightManager.Instance.PreRoundStartUnitTrigger();
+            }
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
                 BattleFightManager.Instance.EnemyMove();
             }
+            
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyAttack)
             {
                 BattleFightManager.Instance.EnemyAttack();
@@ -279,6 +286,12 @@ namespace RoundHero
                 {
                     GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
                 });
+            
+            }
+            else if (BattleFightManager.Instance.ActionProgress == EActionProgress.PreRoundStart)
+            {
+                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
+                
                 
                 //TutorialManager.Instance.SwitchStep(ETutorialStep.UnitHurt);
             }

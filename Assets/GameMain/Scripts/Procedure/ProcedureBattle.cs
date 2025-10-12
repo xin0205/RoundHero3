@@ -108,8 +108,8 @@ namespace RoundHero
             {
                 GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
 
-                BattleFightManager.Instance.ActionProgress = EActionProgress.EnemyMove;
-                BattleFightManager.Instance.EnemyMove();
+                BattleFightManager.Instance.PreRoundStartUnitTrigger();
+                //BattleFightManager.Instance.EnemyMove();
             });
 
             GamePlayManager.Instance.GamePlayData.LastActionBattleData = null;

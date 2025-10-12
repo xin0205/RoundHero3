@@ -152,7 +152,7 @@ namespace RoundHero
         public async Task RefreshEnemyAttackData()
         {
             //BattleFightManager.Instance.CacheEnemyAttackDatas();
-            BattleFightManager.Instance.CacheRoundFightData2();
+            BattleFightManager.Instance.CacheRoundFightData();
             // BattleRouteManager.Instance.ShowEnemyRoute();
             RefreshView();
             foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
@@ -165,7 +165,7 @@ namespace RoundHero
         public void RefreshAll()
         {
 
-            BattleFightManager.Instance.CacheRoundFightData();
+            BattleFightManager.Instance.CachePreRoundFightData();
             // BattleRouteManager.Instance.ShowEnemyRoute();
             RefreshView();
             

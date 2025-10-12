@@ -173,14 +173,14 @@ namespace RoundHero
 
         }
 
-        public void CacheRoundFightData()
+        public void CachePreRoundFightData()
         {
             //Log.Debug("CacheRoundFightData");
 
             //BattleAreaManager.Instance.RefreshObstacles();
 
             CachePreData();
-
+            CachePreRoundStartDatas();
             //CacheLinks();
 
             //CacheUseCardTriggerDatas();
@@ -206,7 +206,7 @@ namespace RoundHero
 
         }
 
-        public void CacheRoundFightData2()
+        public void CacheRoundFightData()
         {
             //Log.Debug("CacheRoundFightData");
 
@@ -429,6 +429,64 @@ namespace RoundHero
 
             }
         }
+        
+        private void CachePreRoundStartDatas()
+        {
+            foreach (var kv in BattleUnitDatas)
+            {
+                var actionData = new ActionData();
+                actionData.ActionUnitIdx = kv.Key;
+                var triggerDatas = new List<TriggerData>();
+
+
+                BattleUnitManager.Instance.GetBuffValue(RoundFightData.GamePlayData, kv.Value,
+                    out List<BuffValue> triggerBuffDatas);
+
+                if (triggerBuffDatas == null)
+                    continue;
+
+                //var attackWithoutHero = kv.Value.BuffCount(EBuffID.AttackWithoutHero) > 0;
+                var idx = -1;
+                foreach (var triggerBuffData in triggerBuffDatas)
+                {
+                    idx++;
+                    if (triggerBuffData.BuffData.BuffTriggerType != EBuffTriggerType.PreRoundStart)
+                        continue;
+
+                    // || attackWithoutHero
+                    var buffData = triggerBuffData.BuffData;
+                    var range = GameUtility.GetRange(kv.Value.GridPosIdx, buffData.TriggerRange, kv.Value.UnitCamp,
+                        buffData.TriggerUnitCamps, true);
+
+                    foreach (var rangeGridPosIdx in range)
+                    {
+                        var unit = GetUnitByGridPosIdx(rangeGridPosIdx);
+                        if (unit == null)
+                            continue;
+
+                        List<float> values = new List<float>();
+  
+                        values = triggerBuffData.ValueList;
+
+                        BattleBuffManager.Instance.PreRoundStartTrigger(triggerBuffData.BuffData, values,
+                            kv.Value.Idx,
+                            kv.Value.Idx,
+                            unit.Idx, triggerDatas);
+
+
+                    }
+
+                }
+
+                if (triggerDatas.Count > 0)
+                {
+                    RoundFightData.PreRoundStartDatas.Add(kv.Key, actionData);
+                    actionData.TriggerDatas.Add(kv.Key, triggerDatas);
+                }
+
+                CalculateHeroHPDelta(actionData);
+            }
+        }
 
         private void CacheRoundStartUnitDatas()
         {
@@ -465,56 +523,7 @@ namespace RoundHero
                             continue;
 
                         List<float> values = new List<float>();
-                        // if (triggerBuffData.DrBuff.BuffID == EBuffID.Round_HurtSubDamageSameAttack)
-                        // {
-                        //     if ((RoundFightData.GamePlayData.BattleData.Round + 1) % triggerBuffData.ValueList[0] ==
-                        //         triggerBuffData.ValueList[1])
-                        //     {
-                        //         values = new List<float>()
-                        //             {Math.Abs(GetDamage(unit.ID))};
-                        //     }
-                        //     else
-                        //     {
-                        //         continue;
-                        //     }
-                        // }
-                        // else if (triggerBuffData.DrBuff.BuffID == EBuffID.Round_AddDamageSameLastHurt ||
-                        //          triggerBuffData.DrBuff.BuffID == EBuffID.Round_HurtSubDamageSameLastHurt)
-                        // {
-                        //     
-                        //     if (unit.LastCurHPDelta < 0)
-                        //     {
-                        //         values = new List<float>()
-                        //             {-unit.LastCurHPDelta};
-                        //
-                        //     }
-                        //     else
-                        //     {
-                        //         continue;
-                        //     }
-                        // }
-                        // else if (triggerBuffData.DrBuff.BuffID == EBuffID.Round_AddDamageSameEnemyCount ||
-                        //          triggerBuffData.DrBuff.BuffID == EBuffID.Round_HurtSubDamageSameEnemyCount)
-                        // {
-                        //
-                        //     var unitCount = GameUtility.GetUnitCount(RoundFightData.GamePlayData, unit.UnitCamp,
-                        //         ERelativeCamp.Enemy);
-                        //     if (unitCount >= 0)
-                        //     {
-                        //         values = new List<float>()
-                        //             {unitCount};
-                        //
-                        //     }
-                        //     else
-                        //     {
-                        //         continue;
-                        //     }
-                        // }
-                        // else
-                        // {
-                        //     values = triggerBuffData.ValueList;
-                        //
-                        // }
+                        
                         values = triggerBuffData.ValueList;
 
                         BattleBuffManager.Instance.RoundStartTrigger(triggerBuffData.BuffData, values,

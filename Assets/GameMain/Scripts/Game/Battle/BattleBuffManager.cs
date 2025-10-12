@@ -606,6 +606,13 @@ namespace RoundHero
                 effectUnitID, triggerDatas);
         }
         
+        public void PreRoundStartTrigger(BuffData buffData, List<float> values, int ownUnitID, int actionUnitID,
+            int effectUnitID, List<TriggerData> triggerDatas)
+        {
+            BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.PreRoundStart, buffData, values, ownUnitID, actionUnitID,
+                effectUnitID, triggerDatas);
+        }
+        
         // public void AutoAttackTrigger(BuffData buffData, List<float> values, int ownUnitID, int actionUnitID,
         //     int effectUnitID, List<TriggerData> triggerDatas)
         // {
@@ -1020,6 +1027,10 @@ namespace RoundHero
                 case EBuffTriggerType.Trigger:
                     break;
                 case EBuffTriggerType.RoundStart:
+                    BuffParse_Normal(strList, buffData);
+                    break;
+                case EBuffTriggerType.PreRoundStart:
+                    BuffParse_Normal(strList, buffData);
                     break;
                 case EBuffTriggerType.RoundEnd:
                     break;

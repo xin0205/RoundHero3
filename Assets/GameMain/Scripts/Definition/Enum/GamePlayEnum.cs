@@ -149,6 +149,7 @@ namespace RoundHero
     public enum EActionProgress
     {
         UseCardTrigger,
+        PreRoundStart,
         RoundStart,
         RoundStartUnit,
         RoundStartBuff,
@@ -296,6 +297,7 @@ namespace RoundHero
         UseCard,
         Link,
         Trigger,
+        PreRoundStart,
         RoundStart,
         RoundEnd,
         Spec,
