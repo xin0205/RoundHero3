@@ -1983,6 +1983,7 @@ MonoBehaviour:
   multiStartAttackTrigger: 0
   multiEndAttackTrigger: 0
   IsPointer: 0
+  CurUnitStateIconEntityIdx: 0
   CurValueEntityIdx: 0
   ShowValueEntityIdx: 0
 --- !u!95 &4525250011595830683
