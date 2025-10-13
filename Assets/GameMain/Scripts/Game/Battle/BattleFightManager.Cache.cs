@@ -3446,5 +3446,14 @@ namespace RoundHero
         }
 
 
+        public bool IsSoliderAutoAttackData(int unitidx)
+        {
+            if (!BattleFightManager.Instance.RoundFightData.SoliderActiveAttackDatas.ContainsKey(unitidx))
+                return false;
+
+            return BattleFightManager.Instance.RoundFightData.SoliderActiveAttackDatas[unitidx].TriggerDatas.Count > 0;
+
+        }
+
     }
 }
