@@ -1003,16 +1003,13 @@ namespace RoundHero
                                 var hurtSubDmgCounterAtk =
                                     RoundFightData.GamePlayData.GetUsefulBless(EBlessID.HurtSubDmgCounterAtk,
                                         effectUnitData.UnitCamp);
-                                if (hurtSubDmgCounterAtk != null)
+                                if (hurtSubDmgCounterAtk != null && actionUnitData != null)
                                 {
                                     var counterAttackTriggerData = BattleFightManager.Instance.BattleRoleAttribute(effectUnitData.Idx,
                                         effectUnitData.Idx, triggerData.ActionUnitIdx, EUnitAttribute.HP, -useDefenseCount,
                                         ETriggerDataSubType.Unit);
                                     counterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
-                                    if (actionUnitData != null)
-                                    {
-                                        counterAttackTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
-                                    }
+                                    counterAttackTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
                                     
                                     SimulateTriggerData(counterAttackTriggerData, triggerDatas);
                                     triggerDatas.Add(counterAttackTriggerData);
