@@ -1812,7 +1812,7 @@ namespace RoundHero
 
                     if (unit.BattleUnitData.CurHP <= 0)
                     {
-                        GameEntry.UI.OpenMessage("AA");
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToAttack);
                         return;
                     }
 
@@ -1857,7 +1857,14 @@ namespace RoundHero
                             BattleUnitManager.Instance.GetBattleUnitData(unit);
 
                         if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
-                        {
+                        {  
+                            if (!BattleFightManager.Instance.IsSoliderAutoAttackData(unit.UnitIdx))
+                            {
+                                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                                return;
+                            }
+                                
+                            
                             BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.AutoAtk;
                             
                             BattleManager.Instance.RefreshEnemyAttackData();
