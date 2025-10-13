@@ -12,7 +12,7 @@ namespace RoundHero
         [SerializeField] private string name;
         [SerializeField] private string desc;
         
-        [SerializeField] private Vector2 infoDelta = new Vector2(1f, 1f);
+        [SerializeField] private Vector2 infoDelta = new Vector2(0.5f, 0.5f);
         
         private bool isShowInfo = false;
         
