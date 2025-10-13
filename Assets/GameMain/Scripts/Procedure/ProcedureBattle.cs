@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using FishNet;
-using FishNet.Connection;
-using FishNet.Transporting;
-using GameFramework;
+﻿
 using GameFramework.Event;
 using UGFExtensions.Await;
 using UnityGameFramework.Runtime;
@@ -109,7 +105,9 @@ namespace RoundHero
                 GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
 
                 BattleFightManager.Instance.PreRoundStartUnitTrigger();
+                BattleManager.Instance.ContinueAction();
                 //BattleFightManager.Instance.EnemyMove();
+                //BattleManager.Instance.StartAction();
             });
 
             GamePlayManager.Instance.GamePlayData.LastActionBattleData = null;
