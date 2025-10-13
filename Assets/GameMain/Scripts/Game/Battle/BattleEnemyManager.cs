@@ -468,7 +468,33 @@ namespace RoundHero
 
         public async Task GenerateNewEnemies()
         {
-            await GenerateEnemies();
+            
+            if (TutorialManager.Instance.IsTutorial())
+            {
+                if (BattleManager.Instance.BattleData.Round == 0)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        //test[i];//
+                        var enemyID = Constant.Tutorial.Enemies[i];
+
+                        var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
+                            Constant.Tutorial.EnemyPos[i], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round);
+                        battleEnemyData.UnitRole = EUnitRole.Staff;
+                
+                        await GenerateEnemy(battleEnemyData);
+
+                
+                    }
+                }
+                
+            }
+            else
+            {
+                await GenerateEnemies();
+            }
+            
+            
             
             //BattleSoliderManager.Instance.CacheSoliderActionRange();
         }

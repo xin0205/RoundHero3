@@ -194,6 +194,7 @@ namespace RoundHero
     
     public enum EGameDifficulty
     {
+        Difficulty0,
         Difficulty1,
         Difficulty2,
         Difficulty3,
@@ -845,8 +846,9 @@ namespace RoundHero
         CardSwitchAttack,
         SelectAttackUnit,
         SwitchTarget,
+        UnitHurt,
         EndRound,
-        //UnitHurt,
+        
         End,
         
     }

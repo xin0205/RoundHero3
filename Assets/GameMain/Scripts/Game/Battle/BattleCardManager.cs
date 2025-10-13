@@ -100,16 +100,30 @@ namespace RoundHero
             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 3));
             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
 
-            var randomPassCards = MathUtility.GetRandomNum(keyList.Count, 0, keyList.Count, Random);
-            for (int i = 0; i < randomPassCards.Count; i++)
+            if (TutorialManager.Instance.IsTutorial())
             {
-                var cardIdx = keyList[randomPassCards[i]];
-                
-                
-                //var drCard = CardManager.Instance.GetCardTable(cardIdx);
+                for (int i = 0; i < keyList.Count; i++)
+                {
+                    var cardIdx = keyList[i];
 
-                BattlePlayerData.StandByCards.Add(cardIdx);
+                    BattlePlayerData.StandByCards.Add(cardIdx);
+                }
             }
+            else
+            {
+                var randomPassCards = MathUtility.GetRandomNum(keyList.Count, 0, keyList.Count, Random);
+                for (int i = 0; i < randomPassCards.Count; i++)
+                {
+                    var cardIdx = keyList[randomPassCards[i]];
+                
+                
+                    //var drCard = CardManager.Instance.GetCardTable(cardIdx);
+
+                    BattlePlayerData.StandByCards.Add(cardIdx);
+                }
+            }
+
+            
         }
 
         public void SetCardPosList(int cardCount)

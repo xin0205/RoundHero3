@@ -20,17 +20,27 @@ namespace RoundHero
             
             public static List<int> Cores = new List<int>()
             {
-                11, 24, 38,
+                22,24,39
             };
 
             public static int RandomSeed = 42536450;//26987145;
-            public static int UseUnitCardGridPosIdx = 18;
-            public static int MoveGridPosIdx = 15;
+            public static int UseUnitCardGridPosIdx = 15;
+            public static int MoveGridPosIdx = 19;
             public static float StepInterval = 0.5f;
 
             public static List<int> Cards = new List<int>()
             {
-                0, 0, 0, 1, 1, 1, 2, 2, 2, 10000, 10000, 10000
+                0, 0, 0, 1, 1, 1, 2, 2, 2
+            };
+            
+            public static List<int> Enemies = new List<int>()
+            {
+               8, 0
+            };
+            
+            public static List<int> EnemyPos = new List<int>()
+            {
+                20, 38
             };
 
             // public static EnemyGenrateRule EnemyGenrateRule = new EnemyGenrateRule()

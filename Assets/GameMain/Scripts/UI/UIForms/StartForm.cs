@@ -190,7 +190,7 @@ namespace RoundHero
             int startGameRandomSeed = Random.Range(0, Constant.Game.RandomRange);
             
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
-                
+            GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = EGameDifficulty.Difficulty0;
             GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
             GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Tutorial;
             
