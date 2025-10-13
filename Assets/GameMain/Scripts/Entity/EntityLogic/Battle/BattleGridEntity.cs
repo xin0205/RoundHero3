@@ -12,7 +12,10 @@ namespace RoundHero
         public BattleGridEntityData BattleGridEntityData { get; protected set; }
 
         [SerializeField] private TextMesh posTag;
-        [SerializeField] private GameObject selectionGrid;
+        [SerializeField] private GameObject selectionGrid_empty;
+        [SerializeField] private GameObject selectionGrid_us;
+        [SerializeField] private GameObject selectionGrid_enemy;
+        
         [SerializeField] private GameObject backupGrid;
         [SerializeField] private GameObject grid;
         
@@ -30,6 +33,13 @@ namespace RoundHero
             set => BattleGridEntityData.GridPosIdx = value;
         }
 
+        public void SetSelectionGridActive(bool active)
+        {
+            selectionGrid_empty.SetActive(active);
+            selectionGrid_us.SetActive(active); 
+            selectionGrid_enemy.SetActive(active);
+        }
+
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
@@ -43,7 +53,7 @@ namespace RoundHero
 
             Show(false);
             backupGrid.SetActive(false);
-            selectionGrid.SetActive(false);
+            SetSelectionGridActive(false);
             Refresh();
             
             var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
@@ -54,7 +64,8 @@ namespace RoundHero
 
         public void Show(bool active)
         {
-            if(active && (backupGrid.activeSelf || selectionGrid.activeSelf))
+            // && (backupGrid.activeSelf || selectionGrid.activeSelf)
+            if(active)
                 return;
             //BattleGridEntityData.GridType != EGridType.Obstacle && 
             grid.SetActive(active);
@@ -93,9 +104,44 @@ namespace RoundHero
             {
                 grid.SetActive(true);
             }
+
+            SetSelectionGridActive(false);
+            if (!isShow)
+            {
+                return;
+            }
             
             
-            selectionGrid.SetActive(isShow);
+            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleGridEntityData.GridPosIdx);
+            
+            // if (BattleAreaManager.Instance.TmpUnitEntity != null)
+            // {
+            //     selectionGrid_us.SetActive(true);
+            // }
+            // else 
+            if (unit == null)
+            {
+                selectionGrid_empty.SetActive(true);
+            }
+            else
+            {
+                if (unit is BattleSoliderEntity ||
+                    unit is BattleCoreEntity)
+                {
+                    selectionGrid_us.SetActive(true);
+                }
+                else if (unit is BattleMonsterEntity)
+                {
+                    selectionGrid_enemy.SetActive(true);
+                }
+                else
+                {
+                    selectionGrid_empty.SetActive(true);
+                }
+            }
+
+
+           
         }
         
         public void OnPointerEnter(BaseEventData baseEventData)
