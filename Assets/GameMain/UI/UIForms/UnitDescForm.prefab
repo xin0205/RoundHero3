@@ -1392,8 +1392,6 @@ Transform:
   - {fileID: 7501468328823215974}
   - {fileID: 296062612193499509}
   - {fileID: 1479126723543373564}
-  - {fileID: 1657322249985195448}
-  - {fileID: 722028938031525711}
   - {fileID: 5388866150403330916}
   - {fileID: 5998804148491759700}
   - {fileID: 7154948719748245912}
@@ -1620,15 +1618,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 3533083712309192776}
+    m_TransformParent: {fileID: 1479126723543373564}
     m_Modifications:
     - target: {fileID: 1383942241993051931, guid: 3780550695990e644ad56b70caa9e01d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 707
+      value: -47.900024
       objectReference: {fileID: 0}
     - target: {fileID: 1383942241993051931, guid: 3780550695990e644ad56b70caa9e01d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -58
+      value: -143.7
       objectReference: {fileID: 0}
     - target: {fileID: 1383942241993051931, guid: 3780550695990e644ad56b70caa9e01d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2881,15 +2879,15 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 3533083712309192776}
+    m_TransformParent: {fileID: 1479126723543373564}
     m_Modifications:
     - target: {fileID: 1383942241993051931, guid: 3780550695990e644ad56b70caa9e01d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 707
+      value: -47.900024
       objectReference: {fileID: 0}
     - target: {fileID: 1383942241993051931, guid: 3780550695990e644ad56b70caa9e01d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -84
+      value: -169.7
       objectReference: {fileID: 0}
     - target: {fileID: 1383942241993051931, guid: 3780550695990e644ad56b70caa9e01d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3278,9 +3276,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: VideoPlayItem
       objectReference: {fileID: 0}
+    - target: {fileID: 6737811815257700014, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4559589956139492282, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1657322249985195448}
+    - targetCorrespondingSourceObject: {fileID: 4559589956139492282, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 722028938031525711}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
 --- !u!224 &1479126723543373564 stripped
