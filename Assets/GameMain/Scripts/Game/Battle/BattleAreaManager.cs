@@ -198,6 +198,10 @@ namespace RoundHero
             {
                 UpdateMoveGrid();
             }
+            else
+            {
+                pointerDownInRange = false;
+            }
 
         }
 
@@ -235,7 +239,11 @@ namespace RoundHero
                     GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 }
             }
-            
+
+            if (ne.GridPosIdx == 23)
+            {
+                var a = 6;
+            }
             
 
             // if (BattleManager.Instance.BattleState == EBattleState.UseCard)

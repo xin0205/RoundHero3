@@ -24,8 +24,14 @@ namespace RoundHero
         
         public static Vector2Int GridPosToCoord(Vector3 pos)
         {
-            return new Vector2Int((int)((pos.x - AreaController.Instance.GridRoot.position.x + Constant.Area.GridLength.x / 2) / Constant.Area.GridRange.x),
-                (int)((pos.z - AreaController.Instance.GridRoot.position.z + Constant.Area.GridLength.y / 2) / Constant.Area.GridRange.y));
+            var deltaX = pos.x - AreaController.Instance.GridRoot.position.x + Constant.Area.GridLength.x / 2;
+            var deltaZ = pos.z - AreaController.Instance.GridRoot.position.z + Constant.Area.GridLength.y / 2;
+            deltaX = deltaX < 0 ? -Constant.Area.GridRange.x : deltaX;
+            deltaZ = deltaZ < 0 ? -Constant.Area.GridRange.y : deltaZ;
+            
+            
+            return new Vector2Int((int)(deltaX / Constant.Area.GridRange.x),
+                (int)(deltaZ / Constant.Area.GridRange.y));
         }
         
         public static int GridCoordToPosIdx(Vector2Int coord)
