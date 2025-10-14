@@ -1303,16 +1303,16 @@ namespace RoundHero
 
         public void RefreshUnitGridPosIdx()
         {
-            BattleUnitDatasByGridPosIdx.Clear();
-            
-            foreach (var kv in BattleUnitDatas)
-            {
-                if (!BattleUnitDatasByGridPosIdx.ContainsKey(kv.Value.GridPosIdx))
-                {
-                    BattleUnitDatasByGridPosIdx.Add(kv.Value.GridPosIdx, kv.Value);
-                }
-
-            }
+            // BattleUnitDatasByGridPosIdx.Clear();
+            //
+            // foreach (var kv in BattleUnitDatas)
+            // {
+            //     if (!BattleUnitDatasByGridPosIdx.ContainsKey(kv.Value.GridPosIdx))
+            //     {
+            //         BattleUnitDatasByGridPosIdx.Add(kv.Value.GridPosIdx, kv.Value);
+            //     }
+            //
+            // }
         }
 
 
@@ -3350,32 +3350,53 @@ namespace RoundHero
             int gridPosIdx, EUnitCamp? selfUnitCamp = null, ERelativeCamp? unitCamp = null, EUnitRole? unitRole = null,
             int exceptUnitID = -1)
         {
-            if (BattleUnitDatasByGridPosIdx.ContainsKey(gridPosIdx))
+            foreach (var kv in BattleUnitDatas)
             {
-                var unit = BattleUnitDatasByGridPosIdx[gridPosIdx];
-                if (unitCamp == ERelativeCamp.Us && selfUnitCamp != unit.UnitCamp)
-                    return null;
+                if(kv.Value.GridPosIdx != gridPosIdx)
+                    continue;
+                
+                if (kv.Value.Idx == exceptUnitID)
+                    continue;
+                
+                if (unitCamp == ERelativeCamp.Us && selfUnitCamp != kv.Value.UnitCamp)
+                    continue;
+                
+                if (unitCamp == ERelativeCamp.Enemy && selfUnitCamp == kv.Value.UnitCamp)
+                    continue;
 
-                if (unitCamp == ERelativeCamp.Enemy && selfUnitCamp == unit.UnitCamp)
-                    return null;
-
-                if (unitRole != null && unit.UnitRole != unitRole)
-                {
-                    return null;
-                }
-
-                if (unit.Idx == exceptUnitID)
-                {
-                    return null;
-                }
-
-                return unit;
+                if (unitRole != null && kv.Value.UnitRole != unitRole)
+                    continue;
+                
+                return kv.Value;
             }
-            else
-            {
-                return null;
-            }
-            
+
+            return null;
+            // if (BattleUnitDatasByGridPosIdx.ContainsKey(gridPosIdx))
+            // {
+            //     var unit = BattleUnitDatasByGridPosIdx[gridPosIdx];
+            //     if (unitCamp == ERelativeCamp.Us && selfUnitCamp != unit.UnitCamp)
+            //         return null;
+            //
+            //     if (unitCamp == ERelativeCamp.Enemy && selfUnitCamp == unit.UnitCamp)
+            //         return null;
+            //
+            //     if (unitRole != null && unit.UnitRole != unitRole)
+            //     {
+            //         return null;
+            //     }
+            //
+            //     if (unit.Idx == exceptUnitID)
+            //     {
+            //         return null;
+            //     }
+            //
+            //     return unit;
+            // }
+            // else
+            // {
+            //     return null;
+            // }
+
             // foreach (var kv in battleUnitDatas)
             // {
             //
