@@ -20,7 +20,7 @@ namespace RoundHero
         [SerializeField] private Text name;
         [SerializeField] private GameObject root;
         private InfoFormParams infoFormParams;
-
+        [SerializeField] private RectTransform bg;
 
         protected override void OnOpen(object userData)
         {
@@ -43,41 +43,49 @@ namespace RoundHero
             name.text = infoFormParams.Name;
             desc.text = infoFormParams.Desc;
 
-            //root.transform.localPosition = infoFormParams.Position;
-            Vector3 mousePosition = Input.mousePosition;
-            
-            if (infoFormParams.ShowPosition == EShowPosition.MousePosition)
+            //root.SetActive(false);
+            GameUtility.DelayExcute(0.05f, () =>
             {
-                var pos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
-                var delta = new Vector2(1.5f,0.75f);
-                if (mousePosition.x < Screen.width / 2)
+
+                Vector3 mousePosition = Input.mousePosition;
+
+                if (infoFormParams.ShowPosition == EShowPosition.MousePosition)
                 {
-                    pos.x += delta.x;
-                    if (mousePosition.y < Screen.height / 2)
+                    var pos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x,
+                        mousePosition.y, mousePosition.z));
+                    var delta = new Vector2(0.3f + bg.rect.width / 200f, 0.15f + bg.rect.height / 200f);
+                    if (mousePosition.x < Screen.width / 2)
                     {
-                        pos.y += delta.y;
+                        pos.x += delta.x;
+                        if (mousePosition.y < Screen.height / 2)
+                        {
+                            pos.y += delta.y;
+                        }
+                        else
+                        {
+                            pos.y -= delta.y;
+                        }
                     }
                     else
                     {
-                        pos.y -= delta.y;
+                        pos.x -= delta.x;
+                        if (mousePosition.y < Screen.height / 2)
+                        {
+                            pos.y += delta.y;
+                        }
+                        else
+                        {
+                            pos.y -= delta.y;
+                        }
                     }
-                }
-                else
-                {
-                    pos.x -= delta.x;
-                    if (mousePosition.y < Screen.height / 2)
-                    {
-                        pos.y += delta.y;
-                    }
-                    else
-                    {
-                        pos.y -= delta.y;
-                    }
-                }
 
+                    //root.SetActive(true);
+                    root.transform.position = pos;
+                }
+            });
 
-                root.transform.position = pos;
-            }
+            //root.transform.localPosition = infoFormParams.Position;
+
         }
     }
 
