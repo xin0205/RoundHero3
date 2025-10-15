@@ -1287,7 +1287,6 @@ namespace RoundHero
 
             foreach (var enemy in enemies)
             {
-
                 CacheEnemyAttackData(enemy as Data_BattleMonster);
             }
 
@@ -2415,16 +2414,17 @@ namespace RoundHero
                 if (!battleUnitData.Exist())
                     continue;
 
-                var enemyData = GameEntry.DataTable.GetEnemy(battleUnitData.MonsterID);
+                var drEnemy = GameEntry.DataTable.GetEnemy(battleUnitData.MonsterID);
 
                 retGetRange.Clear();
                 retGetRange2.Clear();
 
                 retGetRange.Add(battleUnitData.GridPosIdx);
                 var intersectDict = GameUtility.GetActionGridPosIdxs(battleUnitData.UnitCamp, battleUnitData.GridPosIdx,
-                    enemyData.MoveType,
+                    drEnemy.MoveType,
                     buffData.TriggerRange, buffData.TriggerUnitCamps, buffData.BuffTriggerType, ref retGetRange,
                     ref retGetRange2, true);
+
 
                 var isFindPath = false;
 
@@ -2508,7 +2508,7 @@ namespace RoundHero
 
                         SearchPath(curObstacleMask, actionUnitIdx, battleUnitData.GridPosIdx,
                             unit.GridPosIdx, movePaths,
-                            enemyData.MoveType.ToString().Contains("Direct8"));
+                            drEnemy.MoveType.ToString().Contains("Direct8"));
                         if (movePaths.ContainsKey(battleUnitData.Idx) && movePaths[battleUnitData.Idx].Count > 0)
                         {
                             RoundFightData.GamePlayData.BattleData.GridTypes[battleUnitData.GridPosIdx] =
