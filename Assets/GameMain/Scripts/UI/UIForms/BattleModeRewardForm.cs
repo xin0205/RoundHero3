@@ -394,6 +394,10 @@ namespace RoundHero
             
         }
         
-       
+        public void Setting()
+        {
+            GameEntry.UI.OpenUIFormAsync(UIFormId.SettingForm, this);
+
+        }
     }
 }
