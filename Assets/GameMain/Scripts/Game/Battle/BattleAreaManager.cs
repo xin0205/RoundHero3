@@ -1191,7 +1191,7 @@ namespace RoundHero
         {
             if (TmpUnitEntity != null)
             {
-                Log.Debug("TmpUnitEntity != null:" + TmpUnitEntity.BattleUnitData.Idx + "-" + BattleUnitManager.Instance.BattleUnitDatas.Count);
+                Log.Debug("TmpUnitEntity != null:" + TmpUnitEntity.Id + "-" + TmpUnitEntity.BattleUnitData.Idx + "-" + BattleUnitManager.Instance.BattleUnitDatas.Count);
                 TmpUnitEntity.UnShowTags();
                             
                 BattleUnitManager.Instance.BattleUnitDatas.Remove(TmpUnitEntity.BattleUnitData.Idx);
@@ -1966,6 +1966,7 @@ namespace RoundHero
                     BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.BattleUnitData.Idx);
                     unit.BattleUnitData.RoundMoveTimes += 1;
                     BattleManager.Instance.TempTriggerData.Reset();
+                    TmpUnitEntity = null;
                     BattleManager.Instance.SetBattleState(EBattleState.Animation);
                 }
             }

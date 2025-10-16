@@ -1145,6 +1145,7 @@ namespace RoundHero
                         {
                             BattleAreaManager.Instance.ResetTmpUnitEntity();
                             BattleManager.Instance.TempTriggerData.Reset();
+                            BattleAreaManager.Instance.TmpUnitEntity = null;
                             BattleAreaManager.Instance.ShowBackupGrids(null);
 
                         }
