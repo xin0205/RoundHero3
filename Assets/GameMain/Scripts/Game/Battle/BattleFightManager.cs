@@ -2977,15 +2977,17 @@ namespace RoundHero
                         relatedDirect = GameUtility.GetDirect(relatedDirect);
 
                         var horizontals = GameUtility.GetRelatedHorizontalCoords(relatedDirect, effectUnitCoord);
-                        var horizontal1GridPosIdx = GameUtility.GridCoordToPosIdx(effectUnitCoord + horizontals[0]);
-                        var horizontal2GridPosIdx = GameUtility.GridCoordToPosIdx(effectUnitCoord + horizontals[1]);
+                        var horizontal1Coord = effectUnitCoord + horizontals[0];
+                        var horizontal2Coord = effectUnitCoord + horizontals[1];
+                        var horizontal1GridPosIdx = GameUtility.GridCoordToPosIdx(horizontal1Coord);
+                        var horizontal2GridPosIdx = GameUtility.GridCoordToPosIdx(horizontal2Coord);
                         var horizontal1Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(horizontal1GridPosIdx);
-                        if (horizontal1Unit != null)
+                        if (GameUtility.InGridRange(horizontal1Coord) && horizontal1Unit != null)
                         {
                             realEffectUnitIdxs.Add(horizontal1Unit.Idx);
                         }
                         var horizontal2Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(horizontal2GridPosIdx);
-                        if (horizontal2Unit != null)
+                        if (GameUtility.InGridRange(horizontal2Coord) && horizontal2Unit != null)
                         {
                             realEffectUnitIdxs.Add(horizontal2Unit.Idx);
                         }
