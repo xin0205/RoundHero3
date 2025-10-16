@@ -53,7 +53,7 @@ namespace RoundHero
         //private int id;
         public Random Random;
         private int randomSeed;
-        public EnemyGenerateData EnemyGenerateData = BattleManager.Instance.BattleData.EnemyGenerateData;
+        public EnemyGenerateData EnemyGenerateData => BattleManager.Instance.BattleData.EnemyGenerateData;
         
 
         public void Init(int randomSeed)
