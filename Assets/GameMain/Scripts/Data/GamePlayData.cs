@@ -6,6 +6,14 @@ using JetBrains.Annotations;
 
 namespace RoundHero
 {
+    public class BattleActionData
+    {
+        public Data_Battle BattleData;
+        public Data_Player PlayerData;
+    }
+        
+    
+    
     public class Data_Block
     {
         public int ID;
@@ -1736,12 +1744,12 @@ namespace RoundHero
     {
         //public string GamePlayFileName;
         public Data_Player PlayerData = new ();
-        public Data_Player LastActionPlayerData = new ();
+        //public Data_Player LastActionPlayerData = new ();
         public Data_Map MapData = new ();
         public Data_Area AreaData = new ();
         public Data_Battle BattleData = new ();
         public Data_Battle LastRoundBattleData = new ();
-        public Data_Battle LastActionBattleData = new ();
+        //public Data_Battle LastActionBattleData = new ();
         public Data_Enemy EnemyData = new ();
         public EGamMode GameMode;
         public EPVEType PVEType = EPVEType.Empty;
@@ -1756,7 +1764,7 @@ namespace RoundHero
         public Dictionary<ulong, Data_Player> PlayerDataIDDict = new ();
         public Dictionary<EUnitCamp, Data_Player> PlayerDataCampDict = new ();
         
-
+        public Stack<BattleActionData> BattleActionDataStack = new Stack<BattleActionData>();
         public Data_GamePlay()
         {
             
@@ -1804,11 +1812,11 @@ namespace RoundHero
             var data = new Data_GamePlay();
 
             //data.PlayerData = PlayerData.Copy();
-            data.LastActionPlayerData = LastActionPlayerData?.Copy();
+            //data.LastActionPlayerData = LastActionPlayerData?.Copy();
             data.AreaData = AreaData.Copy();
             data.BattleData = BattleData.Copy();
             data.LastRoundBattleData = LastRoundBattleData.Copy();
-            data.LastActionBattleData = LastActionBattleData?.Copy();
+            //data.LastActionBattleData = LastActionBattleData?.Copy();
             data.EnemyData = EnemyData.Copy();
             data.MapData = MapData.Copy();
             data.IsTutorialBattle = IsTutorialBattle;
@@ -1821,6 +1829,7 @@ namespace RoundHero
             data.PlayerDataCampDict.Clear();
             data.PlayerDataIDDict.Clear();
             
+            data.BattleActionDataStack = new Stack<BattleActionData>(BattleActionDataStack);
             
             foreach (var kv in PlayerDatas)
             {
@@ -1840,10 +1849,17 @@ namespace RoundHero
             BattleData.RoundInit();
         }
 
+       
         public void RecordLastAction()
         {
-            LastActionBattleData = BattleData.Copy();
-            LastActionPlayerData = PlayerData.Copy();
+            BattleActionDataStack.Push(new BattleActionData()
+            {
+                BattleData = this.BattleData.Copy(),
+                PlayerData = this.PlayerData.Copy(),
+            });
+            
+            // LastActionBattleData = BattleData.Copy();
+            // LastActionPlayerData = PlayerData.Copy();
         }
 
         public void RoundClear()

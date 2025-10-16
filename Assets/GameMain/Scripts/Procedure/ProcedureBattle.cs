@@ -110,9 +110,8 @@ namespace RoundHero
                 //BattleManager.Instance.StartAction();
             });
 
-            GamePlayManager.Instance.GamePlayData.LastActionBattleData = null;
-
-            GamePlayManager.Instance.GamePlayData.LastActionPlayerData = null;
+            //GamePlayManager.Instance.GamePlayData.LastActionBattleData = null;
+            //GamePlayManager.Instance.GamePlayData.LastActionPlayerData = null;
 
 
 

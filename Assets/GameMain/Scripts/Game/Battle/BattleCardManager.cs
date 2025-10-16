@@ -870,7 +870,7 @@ namespace RoundHero
                 }
                 else
                 {
-                    BattleManager.Instance.BattleState = EBattleState.UseCard;
+                    BattleManager.Instance.SetBattleState(EBattleState.UseCard);
                 }
 
             }
