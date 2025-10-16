@@ -4,6 +4,7 @@ using GameFramework;
 using GameFramework.Event;
 using SuperScrollView;
 using TMPro;
+using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -656,6 +657,12 @@ namespace RoundHero
             BattleManager.Instance.RefreshEnemyAttackData();
             
             
+        }
+        
+        public void Setting()
+        {
+            GameEntry.UI.OpenUIFormAsync(UIFormId.SettingForm, this);
+
         }
     }
 }

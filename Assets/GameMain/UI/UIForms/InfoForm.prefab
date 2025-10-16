@@ -86,6 +86,7 @@ MonoBehaviour:
   desc: {fileID: 2850000137933985307}
   name: {fileID: 2120781393986367690}
   root: {fileID: 5071982606379663486}
+  bg: {fileID: 7768800239951447461}
 --- !u!114 &8367046521819184008
 MonoBehaviour:
   m_ObjectHideFlags: 0

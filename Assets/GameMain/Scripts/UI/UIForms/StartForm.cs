@@ -2,6 +2,7 @@
 using CatJson;
 using HeathenEngineering.SteamworksIntegration.API;
 using Steamworks;
+using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -202,6 +203,12 @@ namespace RoundHero
         public void StartAdventure()
         {
             GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_Developing));
+
+        }
+        
+        public void Setting()
+        {
+            GameEntry.UI.OpenUIFormAsync(UIFormId.SettingForm, this);
 
         }
     }
