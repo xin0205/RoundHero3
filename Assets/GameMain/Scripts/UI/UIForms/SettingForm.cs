@@ -37,7 +37,7 @@ namespace RoundHero
 
             uiSoundToggle.isOn = !GameEntry.Sound.IsMuted("UISound");
             uiSoundSlider.value = GameEntry.Sound.GetVolume("UISound");
-
+            fullScreenToggle.isOn = GameEntry.Setting.GetBool("FullScreen");
 
             var languageList = Constant.Game.Languages.Keys.ToList();
             for (int i = 0; i < languageList.Count; i++)
@@ -49,7 +49,7 @@ namespace RoundHero
                 }
             }
 
-            fullScreenToggle.isOn = Screen.fullScreen;
+            //fullScreenToggle.isOn = Screen.fullScreen;
         }
         
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -104,6 +104,8 @@ namespace RoundHero
         public void OnFullScreenChanged(bool isOn)
         {
             Screen.fullScreen = isOn;
+            GameEntry.Setting.SetBool("FullScreen", isOn);
+            GameEntry.Setting.Save();
             GameEntry.Sound.PlayUISound(EUISound.CommonButton);
         }
 

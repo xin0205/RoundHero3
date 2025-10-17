@@ -66,8 +66,8 @@ namespace RoundHero
                         var pos1 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
                         var pos2 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 2]);
 
-                        //(pos1 + pos2) / 2.0f
-                        var centerPos = pos2;
+                        
+                        var centerPos = (pos1 + pos2) / 2.0f;
                         centerPos.y += 1f;
                         
                         var battleIconEntity =

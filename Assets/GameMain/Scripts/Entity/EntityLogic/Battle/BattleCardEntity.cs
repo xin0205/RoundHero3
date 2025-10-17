@@ -93,6 +93,9 @@ namespace RoundHero
         
         [SerializeField] private GameObject tipsGO;
         [SerializeField] private Text tipsText;
+        
+        [SerializeField]
+        private Text bottomTipsText;
 
         
         private Rect rect;
@@ -155,7 +158,8 @@ namespace RoundHero
             // AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
             // MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
   
-
+            bottomTipsText.gameObject.SetActive(false);
+            
         }
 
         protected override void OnHide(bool isShutdown, object userData)
@@ -357,6 +361,8 @@ namespace RoundHero
             RefreshCardUseTypeInfo();
             moveInfoTrigger.HideInfo();
             attackInfoTrigger.HideInfo();
+            
+            bottomTipsText.gameObject.SetActive(false);
         }
 
         private Tween moveTween;
@@ -478,8 +484,14 @@ namespace RoundHero
 
             
             BattleCardEntityData.CardData.CardUseType = ECardUseType.RawSelect;
-            if(!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
+            if (!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
+            {
+                bottomTipsText.gameObject.SetActive(true);
+                bottomTipsText.text =
+                    GameEntry.Localization.GetString(Constant.Localization.Info_UnSelectCard);
                 return;
+            }
+                
 
             BattleUnitManager.Instance.UnShowTags();
 
@@ -791,6 +803,10 @@ namespace RoundHero
                              BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid);
             
             ConfirmGO.SetActive(isConfirm);
+            bottomTipsText.text =
+                GameEntry.Localization.GetString(isConfirm
+                    ? Constant.Localization.Info_UnMoveGrid
+                    : Constant.Localization.Info_UnSelectCard);
             //ActionGO.SetActive(!isConfirm);
             moveGO.SetActive(!isConfirm);
             attackGO.SetActive(!isConfirm);

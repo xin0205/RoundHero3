@@ -134,7 +134,7 @@ namespace RoundHero
                 line.endWidth = 0.08f;
                 
                 line.material.SetColor("_Color", BattleAttackTagEntityData.IsStatic ? gray : yellow); 
-                line.material.SetInt("_Speed", BattleAttackTagEntityData.IsStatic ? 5 : 50);
+                line.material.SetInt("_Speed", BattleAttackTagEntityData.IsStatic ? 10 : 50);
             }
             
         }

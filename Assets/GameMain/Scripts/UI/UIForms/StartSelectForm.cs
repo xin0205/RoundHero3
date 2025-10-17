@@ -326,6 +326,7 @@ namespace RoundHero
             // GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             // GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(startGameRandomSeed, EGameDifficulty.Difficulty1));
             
+            GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = EGameDifficulty.Difficulty1;
             GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
             GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
             GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Test;

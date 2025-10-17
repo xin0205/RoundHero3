@@ -65,7 +65,8 @@ namespace RoundHero
         public void Show(bool active)
         {
             // && (backupGrid.activeSelf || selectionGrid.activeSelf)
-            if(active)
+            if (active && (backupGrid.activeSelf || selectionGrid_empty.activeSelf || selectionGrid_us.activeSelf ||
+                           selectionGrid_enemy.activeSelf))
                 return;
             //BattleGridEntityData.GridType != EGridType.Obstacle && 
             grid.SetActive(active);

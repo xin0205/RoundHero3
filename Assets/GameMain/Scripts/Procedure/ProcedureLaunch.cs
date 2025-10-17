@@ -48,7 +48,7 @@ namespace RoundHero
             JsonParser.Default.IsFormat = false;
             
             Constant.Init();
-            
+            Screen.fullScreen = GameEntry.Setting.GetBool("FullScreen");
         }
 
         protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)

@@ -147,6 +147,7 @@ namespace RoundHero
             public const string Message_NotTarget = "Message.NotTarget";
             public const string Message_NoHPToAttack = "Message_NoHPToAttack";
 
+            public const string Info_UnMoveGrid = "Info.UnMoveGrid";
             
         }
     }
