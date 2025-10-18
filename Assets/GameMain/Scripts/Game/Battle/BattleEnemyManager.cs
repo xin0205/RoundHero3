@@ -322,9 +322,9 @@ namespace RoundHero
             var enemyCurCount = BattleUnitManager.Instance.GetUnitCount(EUnitCamp.Enemy);
             var enemyGenerateCount = 0;
             
-
-            if (EnemyGenerateData.RoundGenerateUnitCount.ContainsKey(BattleManager.Instance.BattleData.Round) &&
-                EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] >= roundGenerateUnitCount[BattleManager.Instance.BattleData.Round])
+            // &&
+            //EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] >= roundGenerateUnitCount[BattleManager.Instance.BattleData.Round]
+            if (EnemyGenerateData.RoundGenerateUnitCount.ContainsKey(BattleManager.Instance.BattleData.Round))
             {
                 enemyGenerateCount =
                     EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round];
@@ -373,9 +373,21 @@ namespace RoundHero
             var enemyIdxs = MathUtility.GetRandomNum(
                 enemyGenerateCount, 0,
                 places.Count, Random);
+                
+
+            //10, 11, 12, 13, 14
+            //15, 16, 17, 18, 19
+            //30, 31, 32, 33, 34
+            // var test = new List<int>(){42,42};
+            //
+            // var enemyIdxs = MathUtility.GetRandomNum(
+            //     test.Count, 0,
+            //     places.Count, Random);
             
+            //enemyGenerateCount
             for (int i = 0; i < enemyGenerateCount; i++)
             {
+                //test[i];//
                 var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];//Random.Next(0, 3);
 
                 var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
