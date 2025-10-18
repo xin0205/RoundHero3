@@ -2353,7 +2353,7 @@ namespace RoundHero
             return moveDatas;
         }
        
-        public Dictionary<int, List<int>> GetAttackHurtFlyPaths(int actionUnitIdx, int effectUnitIdx)
+        public Dictionary<int, List<int>> GetAttackHurtFlyPaths(int actionUnitIdx, int effectUnitIdx = -1)
         {
             Dictionary<int, MoveUnitData> moveDataDict = new Dictionary<int, MoveUnitData>();
             var unitFlyDict = new Dictionary<int, List<int>>();
@@ -2367,8 +2367,8 @@ namespace RoundHero
                 {
                     var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
                 
-                    if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
-                        continue;
+                    // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
+                    //     continue;
  
                     unitFlyDict.Add(kv.Key, moveGridPosIdxs);
                 }
