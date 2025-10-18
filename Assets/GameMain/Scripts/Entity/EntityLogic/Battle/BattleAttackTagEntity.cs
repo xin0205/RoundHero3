@@ -81,6 +81,7 @@ namespace RoundHero
             //line.gameObject.SetActive(false);
             if (BattleAttackTagEntityData.ShowAttackLine)
             {
+                line.sortingOrder = BattleAttackTagEntityData.IsStatic ? 0 : 100;
                 //BattleAttackTagEntityData.BuffValue != null && BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Extend")
                 if (BattleAttackTagEntityData.AttackCastType.ToString().Contains("Extend"))
                 {
