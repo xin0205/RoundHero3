@@ -660,20 +660,28 @@ namespace RoundHero
                 if (unitCamp == EUnitCamp.Enemy && range.Count > 0)
                 {
 
-                    for (int i = range.Count - 1; i >= 0; i--)
+                    for (int i = 0; i < range.Count; i++)
                     {
                         var _gridPosIdx = range[i];
                         var unit = GetUnitByGridPosIdx(_gridPosIdx);
                         if (unit != null && unit.UnitRole == EUnitRole.Core)
                         {
                             range2.Add(_gridPosIdx);
-                            range.Remove(_gridPosIdx);
+                            //range.Remove(_gridPosIdx);
+                        }
+                        else if (unit != null &&  GameUtility.GetRelativeCamp(unitCamp, unit.UnitCamp) == triggerBuffData.BuffData.TriggerUnitCamps[0])
+                        {
+                            range2.Add(_gridPosIdx);
+                            //range.Remove(_gridPosIdx);
                         }
                     }
 
                     for (int i = 0; i < range.Count; i++)
                     {
                         var _gridPosIdx = range[i];
+                        if (range2.Contains(_gridPosIdx))
+                            continue;
+                        
                         range2.Add(_gridPosIdx);
 
                     }
