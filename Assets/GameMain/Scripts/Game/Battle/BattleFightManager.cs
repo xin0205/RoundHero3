@@ -1079,53 +1079,65 @@ namespace RoundHero
                         var counterValue = -counterAtkCount;
                         
                         var actualCounterAtkCount = counterAtkCount;
-                        if (effectUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualCounterAtkCount > 1)
+                        
+                        if (actualCounterAtkCount > actionUnitData.CurHP)
                         {
-                            actualCounterAtkCount = 1;
+                            actualCounterAtkCount = actionUnitData.CurHP;
+                            counterValue = -actionUnitData.CurHP;
                         }
                         
-                        var subCounterAttackTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, effectUnitData.Idx,
-                            effectUnitData.Idx, effectUnitData.Idx, EUnitState.CounterAtk, -actualCounterAtkCount,
-                            ETriggerDataType.State);
-                        subCounterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
-                        subCounterAttackTriggerData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
-      
-                        //subCounterAttackTriggerData.ActionUnitGridPosIdx
-                        SimulateTriggerData(subCounterAttackTriggerData, triggerDatas);
-                        triggerDatas.Add(subCounterAttackTriggerData);
-
-                        var counterAttackTriggerData = BattleFightManager.Instance.BattleRoleAttribute(effectUnitData.Idx,
-                            effectUnitData.Idx, triggerData.ActionUnitIdx, EUnitAttribute.HP, counterValue,
-                            ETriggerDataSubType.Unit);
-                        counterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
-                        counterAttackTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
-                        SimulateTriggerData(counterAttackTriggerData, triggerDatas);
-                        triggerDatas.Add(counterAttackTriggerData);
-                        
-                        var counterAtkAddCurHP = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CounterAtkAddCurHP,
-                            effectUnitData.UnitCamp);
-                        
-                        if (counterAtkAddCurHP != null)
+                        if (actualCounterAtkCount > 0)
                         {
-                            var counterAtkAddCurHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(effectUnitData.Idx,
-                                effectUnitData.Idx, effectUnitData.Idx, EUnitAttribute.HP, -counterValue,
-                                ETriggerDataSubType.Bless);
-                            counterAtkAddCurHPTriggerData.ActionUnitGridPosIdx = actionUnitData.GridPosIdx;
-                            counterAtkAddCurHPTriggerData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
-                            //BattleBuffManager.Instance.CacheTriggerData(counterAtkAddCurHPTriggerData, triggerDatas);
-                            SimulateTriggerData(counterAtkAddCurHPTriggerData, triggerDatas);
-                            triggerDatas.Add(counterAtkAddCurHPTriggerData);
-                        }
-
-                        var counterAtkAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CounterAtkAcquireCard,
-                            effectUnitData.UnitCamp);
-
-                        if (counterAtkAcquireCard != null)
-                        {
+                            if (effectUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualCounterAtkCount > 1)
+                            {
+                                actualCounterAtkCount = 1;
+                            }
                             
-                            BattleCardManager.Instance.CacheAcquireCards(counterAttackTriggerData, triggerDatas, 1);
+                            var subCounterAttackTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, effectUnitData.Idx,
+                                effectUnitData.Idx, effectUnitData.Idx, EUnitState.CounterAtk, -actualCounterAtkCount,
+                                ETriggerDataType.State);
+                            subCounterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
+                            subCounterAttackTriggerData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
+          
+                            //subCounterAttackTriggerData.ActionUnitGridPosIdx
+                            SimulateTriggerData(subCounterAttackTriggerData, triggerDatas);
+                            triggerDatas.Add(subCounterAttackTriggerData);
 
+                            var counterAttackTriggerData = BattleFightManager.Instance.BattleRoleAttribute(effectUnitData.Idx,
+                                effectUnitData.Idx, triggerData.ActionUnitIdx, EUnitAttribute.HP, counterValue,
+                                ETriggerDataSubType.Unit);
+                            counterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
+                            counterAttackTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
+                            SimulateTriggerData(counterAttackTriggerData, triggerDatas);
+                            triggerDatas.Add(counterAttackTriggerData);
+                            
+                            var counterAtkAddCurHP = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CounterAtkAddCurHP,
+                                effectUnitData.UnitCamp);
+                            
+                            if (counterAtkAddCurHP != null)
+                            {
+                                var counterAtkAddCurHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(effectUnitData.Idx,
+                                    effectUnitData.Idx, effectUnitData.Idx, EUnitAttribute.HP, -counterValue,
+                                    ETriggerDataSubType.Bless);
+                                counterAtkAddCurHPTriggerData.ActionUnitGridPosIdx = actionUnitData.GridPosIdx;
+                                counterAtkAddCurHPTriggerData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
+                                //BattleBuffManager.Instance.CacheTriggerData(counterAtkAddCurHPTriggerData, triggerDatas);
+                                SimulateTriggerData(counterAtkAddCurHPTriggerData, triggerDatas);
+                                triggerDatas.Add(counterAtkAddCurHPTriggerData);
+                            }
+
+                            var counterAtkAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CounterAtkAcquireCard,
+                                effectUnitData.UnitCamp);
+
+                            if (counterAtkAcquireCard != null)
+                            {
+                                
+                                BattleCardManager.Instance.CacheAcquireCards(counterAttackTriggerData, triggerDatas, 1);
+
+                            }
                         }
+                        
+                        
                         
                     }
 
