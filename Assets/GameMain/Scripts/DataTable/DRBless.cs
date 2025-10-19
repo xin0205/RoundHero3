@@ -63,6 +63,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取ExplainItems。
+        /// </summary>
+        public List<string> ExplainItems
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -78,6 +87,7 @@ namespace RoundHero
 			BlessID = Enum.Parse<EBlessID>(columnStrings[index++]);
 			Values0 = DataTableExtension.ParseStringList(columnStrings[index++]);
             Overlay = bool.Parse(columnStrings[index++]);
+			ExplainItems = DataTableExtension.ParseStringList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -93,6 +103,7 @@ namespace RoundHero
                     BlessID = Enum.Parse<EBlessID>(binaryReader.ReadString());
 					Values0 = binaryReader.ReadStringList();
                     Overlay = binaryReader.ReadBoolean();
+					ExplainItems = binaryReader.ReadStringList();
                 }
             }
 

@@ -158,6 +158,7 @@ GameObject:
   - component: {fileID: 8881381657089977692}
   - component: {fileID: 4799000937319700739}
   - component: {fileID: 301665164285146705}
+  - component: {fileID: 3142245571021760598}
   m_Layer: 0
   m_Name: SelectAcquireItem
   m_TagString: Untagged
@@ -216,6 +217,7 @@ MonoBehaviour:
   commonDescItem: {fileID: 2239845325021072652}
   scaleGameObject: {fileID: 301665164285146705}
   selectGameObject: {fileID: 7284063673815496285}
+  explainTriggerItem: {fileID: 3142245571021760598}
 --- !u!114 &4799000937319700739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,6 +247,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 3142245571021760598}
+          m_TargetAssemblyTypeName: RoundHero.ExplainTriggerItem, Assembly-CSharp
+          m_MethodName: OnPointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
@@ -253,6 +267,18 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: RoundHero.SelectAcquireItem, Assembly-CSharp
           m_MethodName: PointerOnExit
           m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 3142245571021760598}
+          m_TargetAssemblyTypeName: RoundHero.ExplainTriggerItem, Assembly-CSharp
+          m_MethodName: OnPointerExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -271,6 +297,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47fda6aa8c9e4a7fbef9b5b5e636afdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3142245571021760598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4905353502174006129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614280061fca4ec488f15579075ca072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5260484968235647958
@@ -308,7 +346,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5460313275030072867
 CanvasRenderer:
@@ -331,14 +369,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30588236, g: 0.67058825, b: 0.4431373, a: 1}
+  m_Color: {r: 1, g: 0.4009434, b: 0.4009434, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d50b1e2e93fe38b419c8b2a649071055, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 18eb310811ebb7b4a9c734ed82c5b234, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

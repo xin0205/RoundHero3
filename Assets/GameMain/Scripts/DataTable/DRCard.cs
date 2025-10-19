@@ -162,6 +162,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取ExplainItems。
+        /// </summary>
+        public List<string> ExplainItems
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -188,6 +197,7 @@ namespace RoundHero
 			AttackCastType = Enum.Parse<EAttackCastType>(columnStrings[index++]);
 			EffectColor = Enum.Parse<EColor>(columnStrings[index++]);
             GIFIdx = int.Parse(columnStrings[index++]);
+			ExplainItems = DataTableExtension.ParseStringList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -214,6 +224,7 @@ namespace RoundHero
                     AttackCastType = Enum.Parse<EAttackCastType>(binaryReader.ReadString());
                     EffectColor = Enum.Parse<EColor>(binaryReader.ReadString());
                     GIFIdx = binaryReader.Read7BitEncodedInt32();
+					ExplainItems = binaryReader.ReadStringList();
                 }
             }
 

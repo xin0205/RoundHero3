@@ -2328,5 +2328,48 @@ namespace RoundHero
         //         screenPosition, uiCamera, out var localPoint);
         //     return localPoint;
         // }
+        
+        public static CommonItemData GetCardExplainData(string  explainItemStr)
+        {
+            var split = explainItemStr.Split(';');
+            var itemType = Enum.Parse<EItemType>(split[0]);
+            int itemID = 0;
+            switch (itemType)
+            {
+                case EItemType.UnitState:
+                    itemID = (int)Enum.Parse<EUnitState>(split[1]);
+                    break;
+                case EItemType.UnitCard:
+                    break;
+                case EItemType.TacticCard:
+                    break;
+                case EItemType.Bless:
+                    break;
+                case EItemType.Fune:
+                    break;
+                case EItemType.Coin:
+                    break;
+                case EItemType.AddMaxHP:
+                    break;
+                case EItemType.RemoveCard:
+                    break;
+                case EItemType.AddCardFuneSlot:
+                    break;
+                       
+                case EItemType.ActionTimes:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+                    
+                    
+            var commonItemData = new CommonItemData()
+            {
+                ItemType =  itemType,
+                ItemID = itemID,
+            };
+
+            return commonItemData;
+        }
     }
 }

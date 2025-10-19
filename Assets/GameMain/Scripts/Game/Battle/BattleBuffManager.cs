@@ -1610,6 +1610,18 @@ namespace RoundHero
             }
             actionUnit.RemoveAllState(triggerData.UnitStateEffectTypes);
         }
+        
+        public List<CommonItemData> GetBuffExplainList(int buffID)
+        {
+            var datas = new List<CommonItemData>();
+            var drBuff = GameEntry.DataTable.GetBuff(buffID);
+            foreach (var explainItemStr in drBuff.ExplainItems)
+            {
+                datas.Add(GameUtility.GetCardExplainData(explainItemStr));
+            }
+
+            return datas;
+        }
 
     }
 }

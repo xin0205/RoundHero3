@@ -10,12 +10,16 @@ namespace RoundHero
         TacticCard,
         Bless,
         Fune,
+        UnitState,
+        Enemy,
+        
         Coin,
         AddMaxHP,
         //Heart,
         RemoveCard,
         AddCardFuneSlot,
-        UnitState,
+        ActionTimes,
+        
         
     }
     

@@ -634,6 +634,18 @@ namespace RoundHero
             return GamePlayManager.Instance.GamePlayData.BlessCount(EBlessID.AddCurHPByAttackDamage, unitCamp) > 0;
         }
         
+        public List<CommonItemData> GetBlessExplainList(int blessID)
+        {
+            var datas = new List<CommonItemData>();
+            var drBless = GameEntry.DataTable.GetBless(blessID);
+            foreach (var explainItemStr in drBless.ExplainItems)
+            {
+                datas.Add(GameUtility.GetCardExplainData(explainItemStr));
+            }
+
+            return datas;
+        }
+        
         // public void RoundEnd()
         // {
         //     TriggerAction(new List<EBlessID>(){EBlessID.EachRoundAddHeroHPInBigFight});

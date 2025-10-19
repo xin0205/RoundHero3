@@ -1,5 +1,5 @@
 ﻿using System;
-using Animancer;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -30,6 +30,8 @@ namespace RoundHero
         [SerializeField] private ScaleGameObject scaleGameObject;
         [SerializeField] private GameObject selectGameObject;
         private SelectAcquireItemData selectAcquireItemData;
+        
+        [SerializeField] private ExplainTriggerItem explainTriggerItem;
 
         public Action<int> onClickAction;
 
@@ -46,6 +48,8 @@ namespace RoundHero
         {
             isSelect = false;
             selectGameObject.SetActive(false);
+
+            
         }
         
 
@@ -92,6 +96,13 @@ namespace RoundHero
                 
             }
             
+            explainTriggerItem.ExplainData = new ExplainData()
+            {
+                ItemType = selectAcquireItemData.ItemType,
+                ItemID = selectAcquireItemData.ItemID,
+                ShowPosition = EShowPosition.MousePosition,
+            };
+            
             Refresh();
         }
         
@@ -121,11 +132,14 @@ namespace RoundHero
 
         }
 
+        private int siblingIndex;
         public void PointerOnEnter(BaseEventData baseEventData)
         {
             if(isSelect)
                 return;
-            
+
+            siblingIndex = scaleGameObject.transform.GetSiblingIndex();
+            scaleGameObject.transform.SetSiblingIndex(99);
             scaleGameObject.Scale(Vector3.one, Vector3.one * 1.2f, 0.1f);
         }
         
@@ -134,6 +148,7 @@ namespace RoundHero
             if(isSelect)
                 return;
             
+            scaleGameObject.transform.SetSiblingIndex(siblingIndex);
             scaleGameObject.Scale(Vector3.one * 1.2f, Vector3.one, 0.1f);
         }
     }

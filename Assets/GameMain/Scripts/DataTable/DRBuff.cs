@@ -81,6 +81,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取ExplainItems。
+        /// </summary>
+        public List<string> ExplainItems
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -98,6 +107,7 @@ namespace RoundHero
 			Values1 = DataTableExtension.ParseStringList(columnStrings[index++]);
 			BuffTypes = DataTableExtension.ParseEBuffTypeList(columnStrings[index++]);
 			AdapteCardType = DataTableExtension.ParseECardTypeList(columnStrings[index++]);
+			ExplainItems = DataTableExtension.ParseStringList(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -115,6 +125,7 @@ namespace RoundHero
 					Values1 = binaryReader.ReadStringList();
 					BuffTypes = binaryReader.ReadEBuffTypeList();
 					AdapteCardType = binaryReader.ReadECardTypeList();
+					ExplainItems = binaryReader.ReadStringList();
                 }
             }
 

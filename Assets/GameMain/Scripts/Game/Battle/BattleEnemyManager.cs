@@ -735,6 +735,17 @@ namespace RoundHero
             }
         }
         
+        public List<CommonItemData> GetEnemyExplainList(int enemyID)
+        {
+            var datas = new List<CommonItemData>();
+            var drEnemy = GameEntry.DataTable.GetEnemy(enemyID);
+            foreach (var explainItemStr in drEnemy.ExplainItems)
+            {
+                datas.Add(GameUtility.GetCardExplainData(explainItemStr));
+            }
+
+            return datas;
+        }
 
     }
 }

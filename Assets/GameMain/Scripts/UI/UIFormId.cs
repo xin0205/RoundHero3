@@ -104,5 +104,7 @@ namespace RoundHero
         VideoForm = 139,
         
         BattleModeRewardForm = 140,
+        
+        ExplainForm = 141,
     }
 }

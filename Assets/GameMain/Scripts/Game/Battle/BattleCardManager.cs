@@ -1816,5 +1816,19 @@ namespace RoundHero
 
         }
         
+        public List<CommonItemData> GetCardExplainList(int cardID)
+        {
+            var datas = new List<CommonItemData>();
+            var drCard = GameEntry.DataTable.GetCard(cardID);
+            foreach (var explainItemStr in drCard.ExplainItems)
+            {
+                datas.Add(GameUtility.GetCardExplainData(explainItemStr));
+            }
+
+            return datas;
+        }
+
+        
+        
     }
 }
