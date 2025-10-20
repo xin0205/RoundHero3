@@ -330,51 +330,51 @@ namespace RoundHero
                     EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round];
                 EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] -=
                     enemyGenerateCount;
-            }
-            else
-            {
-                if (enemyCurCount < rule.EachRoundUnitCount)
-                {
-                    var needCount = rule.EachRoundUnitCount - enemyCurCount;
-                    var curNeedCount = needCount;
-                    var keys = EnemyGenerateData.RoundGenerateUnitCount.Keys.ToList();
-                    
-                    
-                    for (int i = 0; i < EnemyGenerateData.RoundGenerateUnitCount.Count; i++)
-                    {
-                        var idx = keys[i];
-                        var roundCount = EnemyGenerateData.RoundGenerateUnitCount[idx];
-                        if (idx >= BattleManager.Instance.BattleData.Round)
-                        {
-                            if (roundCount >= curNeedCount)
-                            {
-                                EnemyGenerateData.RoundGenerateUnitCount[idx] -= curNeedCount;
-                                enemyGenerateCount += curNeedCount;
-                                curNeedCount = 0;
 
-                            }
-                            else if(roundCount < curNeedCount)
-                            {
-                                EnemyGenerateData.RoundGenerateUnitCount[idx] = 0;
-                                enemyGenerateCount += roundCount;
-                                curNeedCount -= roundCount;
-                            }
+                enemyCurCount += enemyGenerateCount;
+            }
+
+            if (enemyCurCount < rule.EachRoundUnitCount)
+            {
+                var needCount = rule.EachRoundUnitCount - enemyCurCount;
+                var curNeedCount = needCount;
+                var keys = EnemyGenerateData.RoundGenerateUnitCount.Keys.ToList();
+                    
+                    
+                for (int i = 0; i < EnemyGenerateData.RoundGenerateUnitCount.Count; i++)
+                {
+                    var idx = keys[i];
+                    var roundCount = EnemyGenerateData.RoundGenerateUnitCount[idx];
+                    if (idx >= BattleManager.Instance.BattleData.Round)
+                    {
+                        if (roundCount >= curNeedCount)
+                        {
+                            EnemyGenerateData.RoundGenerateUnitCount[idx] -= curNeedCount;
+                            enemyGenerateCount += curNeedCount;
+                            curNeedCount = 0;
+
+                        }
+                        else if(roundCount < curNeedCount)
+                        {
+                            EnemyGenerateData.RoundGenerateUnitCount[idx] = 0;
+                            enemyGenerateCount += roundCount;
+                            curNeedCount -= roundCount;
+                        }
                             
-                            if (enemyGenerateCount >= needCount)
-                            {
-                                break;
-                            }
+                        if (enemyGenerateCount >= rule.EachRoundUnitCount)
+                        {
+                            break;
                         }
                     }
-                    
                 }
+                    
             }
 
             var enemyIdxs = MathUtility.GetRandomNum(
                 enemyGenerateCount, 0,
                 places.Count, Random);
                 
-
+            
             //10, 11, 12, 13, 14
             //15, 16, 17, 18, 19
             //30, 31, 32, 33, 34

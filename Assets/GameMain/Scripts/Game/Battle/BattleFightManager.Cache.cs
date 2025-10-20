@@ -669,7 +669,14 @@ namespace RoundHero
                             range2.Add(_gridPosIdx);
                             //range.Remove(_gridPosIdx);
                         }
-                        else if (unit != null &&  GameUtility.GetRelativeCamp(unitCamp, unit.UnitCamp) == triggerBuffData.BuffData.TriggerUnitCamps[0])
+                        
+                    }
+                    
+                    for (int i = 0; i < range.Count; i++)
+                    {
+                        var _gridPosIdx = range[i];
+                        var unit = GetUnitByGridPosIdx(_gridPosIdx);
+                        if (unit != null &&  GameUtility.GetRelativeCamp(unitCamp, unit.UnitCamp) == triggerBuffData.BuffData.TriggerUnitCamps[0])
                         {
                             range2.Add(_gridPosIdx);
                             //range.Remove(_gridPosIdx);
