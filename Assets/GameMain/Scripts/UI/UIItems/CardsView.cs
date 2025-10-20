@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using SuperScrollView;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
@@ -32,7 +33,7 @@ namespace RoundHero
         
         public int CurSelectCardIdx = -1;
         
-        [SerializeField] private Toggle unitToggle;
+        [SerializeField] private Toggle allToggle;
 
         private Action<int> onClickAction;
         private bool isShowAllFune;
@@ -40,8 +41,13 @@ namespace RoundHero
         private void Awake()
         {
             cardView.InitGridView(0,  OnGetCardItemByRowColumn);
-            unitToggle.isOn = false;
-            unitToggle.isOn = true;
+            
+        }
+
+        private void OnEnable()
+        {
+            allToggle.isOn = false;
+            allToggle.isOn = true;
         }
 
         public void Init(Action<int> onClickAction, bool isShowAllFune)
@@ -121,11 +127,20 @@ namespace RoundHero
             
         }
         
+        public void SelectAll(bool isSelect)
+        {
+            if (isSelect)
+            {
+                SelectCardType(new List<ECardType>(){ECardType.Unit, ECardType.Tactic});
+            }
+            
+        }
+        
         public void SelectUnit(bool isSelect)
         {
             if (isSelect)
             {
-                SelectCardType(ECardType.Unit);
+                SelectCardType(new List<ECardType>(){ECardType.Unit});
             }
             
         }
@@ -134,7 +149,7 @@ namespace RoundHero
         {
             if (isSelect)
             {
-                SelectCardType(ECardType.Tactic);
+                SelectCardType(new List<ECardType>(){ECardType.Tactic});
             }
             
         }
@@ -143,18 +158,18 @@ namespace RoundHero
         {
             if (isSelect)
             {
-                SelectCardType(ECardType.State);
+                SelectCardType(new List<ECardType>(){ECardType.State});
             }
             
         }
 
-        public void SelectCardType(ECardType cardType)
+        public void SelectCardType(List<ECardType> cardTypes)
         {
             cardIdxs.Clear();
             foreach (var kv in CardManager.Instance.CardDatas)
             {
                 var drCard = CardManager.Instance.GetCardTable(kv.Key);
-                if (drCard.CardType == cardType)
+                if (cardTypes.Contains(drCard.CardType))
                 {
                     cardIdxs.Add(kv.Key);
                 }

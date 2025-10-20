@@ -43,27 +43,27 @@ namespace RoundHero
                 return;
             }
             
-            foreach (var kv in toggles)
-            {
-                kv.Value.gameObject.SetActive(false);
-            }
-
-            foreach (var cardType in cardsFormParams.ShowCardTypes)
-            {
-                toggles[cardType].gameObject.SetActive(true);
-            }
+            // foreach (var kv in toggles)
+            // {
+            //     kv.Value.gameObject.SetActive(false);
+            // }
+            //
+            // foreach (var cardType in cardsFormParams.ShowCardTypes)
+            // {
+            //     toggles[cardType].gameObject.SetActive(true);
+            // }
             
             
             
             tips.text = cardsFormParams.Tips;
             
             CardsViews.Init(OnClick, cardsFormParams.IsShowAllFune);
-            if (cardsFormParams.ShowCardTypes.Count > 0)
-            {
-                var cardType = cardsFormParams.ShowCardTypes[0];
-                toggles[cardType].isOn = false;
-                toggles[cardType].isOn = true;
-            }
+            // if (cardsFormParams.ShowCardTypes.Count > 0)
+            // {
+            //     var cardType = cardsFormParams.ShowCardTypes[0];
+            //     toggles[cardType].isOn = false;
+            //     toggles[cardType].isOn = true;
+            // }
 
             GameEntry.Event.Subscribe(RefreshCardsFormEventArgs.EventId, OnRefreshCardsForm);
             

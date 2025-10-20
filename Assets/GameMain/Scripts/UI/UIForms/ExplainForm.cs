@@ -43,23 +43,15 @@ namespace RoundHero
 
         }
 
-
-        private Vector3 pos;
-        private void SetData()
+        private void Update()
         {
-            var gifStr = "GIF_" + explainData.ItemID.ToString();
-            var showVideo =
-                (explainData.ItemType == EItemType.UnitCard || explainData.ItemType == EItemType.TacticCard) &&
-                explainData.ItemID != -1 &&
-                videoAssets.VideoAssetDict.ContainsKey(gifStr);
+            UpdatePos();
+        }
 
-            this.videoPlayer.gameObject.SetActive(showVideo);
-            //animationPlayData.GifType.ToString() + 
+
+        public void UpdatePos()
+        {
             
-            if (showVideo)
-            {
-                videoPlayer.clip = videoAssets.VideoAssetDict[gifStr];
-            }
             
             Vector3 mousePosition = Input.mousePosition;
             mousePosition.z = 0;
@@ -134,7 +126,25 @@ namespace RoundHero
             }
             
             transform.localPosition = uiLocalPos;
+        }
 
+        private bool showVideo;
+        private void SetData()
+        {
+            var gifStr = "GIF_" + explainData.ItemID.ToString();
+            showVideo =
+                (explainData.ItemType == EItemType.UnitCard || explainData.ItemType == EItemType.TacticCard) &&
+                explainData.ItemID != -1 &&
+                videoAssets.VideoAssetDict.ContainsKey(gifStr);
+
+            this.videoPlayer.gameObject.SetActive(showVideo);
+            //animationPlayData.GifType.ToString() + 
+            
+            if (showVideo)
+            {
+                videoPlayer.clip = videoAssets.VideoAssetDict[gifStr];
+            }
+            
             explainList.gameObject.SetActive(false);
             switch (explainData.ItemType)
             {

@@ -60,8 +60,8 @@ namespace RoundHero
             public const string Attribute_MaxHP = "Attribute.MaxHP";
             public const string Attribute_Heart = "Attribute.Heart";
             public const string Message_ConfirmUnChangeCard = "Message.ConfirmUnChangeCard";
-            public const string Message_ConfirmUnCopyCard = "Message.ConfirmUnChangeCard";
-            public const string Message_ConfirmUnRemoveCard = "Message.ConfirmUnChangeCard";
+            public const string Message_ConfirmUnCopyCard = "Message.ConfirmUnCopyCard";
+            public const string Message_ConfirmUnRemoveCard = "Message.ConfirmUnRemoveCard";
             public const string Message_ConfirmSubHeart = "Message.ConfirmSubHeart";
             public const string Message_ConfirmExitBattle = "Message.ConfirmExitBattle";
             

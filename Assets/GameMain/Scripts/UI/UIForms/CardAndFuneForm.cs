@@ -28,10 +28,7 @@ namespace RoundHero
         //
         // [SerializeField]
         // private Toggle switchViewToggle;
-        
-        [SerializeField]
-        private Toggle unitToggle;
-        
+
         protected override void OnOpen(object userData)
         {
             base.OnOpen(userData);
@@ -39,8 +36,7 @@ namespace RoundHero
             CardsViews.Init(null, true);
             FunesViews.Init(this.gameObject);
 
-            unitToggle.isOn = false;
-            unitToggle.isOn = true;
+            
 
             // switchViewToggle.isOn = true;
             // switchViewToggle.isOn = false;
