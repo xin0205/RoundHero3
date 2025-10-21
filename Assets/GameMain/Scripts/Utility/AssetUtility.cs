@@ -355,7 +355,7 @@ namespace RoundHero
         
         public static string GetCommonIconName(EItemType itemType)
         {
-            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Icon/Common/{0}.png", itemType.ToString());
+            return Utility.Text.Format("Assets/GameMain/UI/UISprites/Common/{0}.png", itemType.ToString());
             
         }
         

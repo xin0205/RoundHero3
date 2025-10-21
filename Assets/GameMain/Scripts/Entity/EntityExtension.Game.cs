@@ -194,8 +194,8 @@ namespace RoundHero
             // newBattleSoliderData.Idx = BattleUnitManager.Instance.GetIdx();
             
             var card = BattleManager.Instance.GetCard(battleSoliderData.CardIdx);
-            
-            //battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 2);
+            // battleSoliderData.CurHP = 5;
+            // battleSoliderData.ChangeState(EUnitState.CounterAtk, 3);
             // battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 2);
             //
             //

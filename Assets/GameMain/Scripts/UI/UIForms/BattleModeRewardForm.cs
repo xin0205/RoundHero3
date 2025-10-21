@@ -254,15 +254,77 @@ namespace RoundHero
             //         continue;
             //     
             // }
+            var isUnusedFune = PlayerManager.Instance.PlayerData.UnusedFuneIdxs.Count > 0;
+            var isUnAcquireReward = selectAcquireItemDatas.FindAll(data => data.IsSelected).Count <
+                                    Constant.BattleMode.MaxRewardCount;
             
+            if (isUnusedFune)
+            {
+                GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+                {
+                    Message = GameEntry.Localization.GetString(Constant.Localization.Message_UnusedFune),
+                    OnConfirm = () =>
+                    {
+                        if (isUnAcquireReward)
+                        {
+                            GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+                            {
+                                Message =
+                                    GameEntry.Localization.GetString(Constant.Localization.Message_MaxRewardCount),
+                                OnConfirm = () =>
+                                {
+                                    ContinueBattle();
+                                }
+
+                            });
+                        }
+                        else
+                        {
+                            ContinueBattle();
+                        }
+
+                    }
+                
+                });
+            }
+            else
+            {
+                if (isUnAcquireReward)
+                {
+                    GameEntry.UI.OpenConfirm(new ConfirmFormParams()
+                    {
+                        Message =
+                            GameEntry.Localization.GetString(Constant.Localization.Message_MaxRewardCount),
+                        OnConfirm = () =>
+                        {
+                            ContinueBattle();
+                        }
+
+                    });
+                }
+                else
+                {
+                    ContinueBattle();
+                }
+            }
+            
+            
+            
+            
+            
+            
+
+            
+            
+        }
+
+        private void ContinueBattle()
+        {
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.selectAcquireItemDatas.Clear();
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session += 1;
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Battle;
             
             GameEntry.UI.CloseUIForm(this);
-            
-
-            
             GameEntry.Event.Fire(null,
                 GamePlayStartGameEventArgs.Create());
         }

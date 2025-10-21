@@ -1916,7 +1916,7 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
 
-            BattleStaticAttackTagManager.Instance.UnshowStaticAttackTags();
+            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
             ShowAttackTag(actionUnitIdx, isShowAttackPos);
             await ShowFlyDirect(actionUnitIdx);
             ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);

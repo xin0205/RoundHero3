@@ -7,7 +7,8 @@ namespace RoundHero
 {
     public enum EShowPosition
     {
-        BattleRight,
+        Left,
+        Right,
         MousePosition,
     }
     

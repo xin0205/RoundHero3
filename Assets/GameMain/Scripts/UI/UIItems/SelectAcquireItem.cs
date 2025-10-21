@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace RoundHero
 {
@@ -25,6 +26,7 @@ namespace RoundHero
     public class SelectAcquireItem : MonoBehaviour
     {
         [SerializeField] private CardItem cardItem;
+        [SerializeField] private CommonDescItem funeDescItem;
         [SerializeField] private CommonDescItem commonDescItem;
         //[SerializeField] private GameObject selectIcon;
         [SerializeField] private ScaleGameObject scaleGameObject;
@@ -79,12 +81,39 @@ namespace RoundHero
             this.onClickAction = onClick;
             this.itemIdx = itemIndex;
             SetSelect(selectAcquireItemData.IsSelected);
+
+            cardItem.gameObject.SetActive(false);
+            funeDescItem.gameObject.SetActive(false);
+            commonDescItem.gameObject.SetActive(false);
+            
             cardItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.TacticCard || selectAcquireItemData.ItemType == EItemType.UnitCard);
-            commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType != EItemType.TacticCard && selectAcquireItemData.ItemType != EItemType.UnitCard);
+            funeDescItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.Fune);
+            commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.RemoveCard ||
+                                                 selectAcquireItemData.ItemType == EItemType.AddMaxHP ||
+                                                 selectAcquireItemData.ItemType == EItemType.AddCardFuneSlot);
+
+            
+            explainTriggerItem.ExplainData = new ExplainData()
+            {
+                ItemType = selectAcquireItemData.ItemType,
+                ItemID = selectAcquireItemData.ItemID,
+                ShowPosition = EShowPosition.Left,
+            };
             
             if (selectAcquireItemData.ItemType == EItemType.TacticCard || selectAcquireItemData.ItemType == EItemType.UnitCard)
             {
                 cardItem.SetCard(selectAcquireItemData.ItemID);
+                var drCard = GameEntry.DataTable.GetCard(selectAcquireItemData.ItemID);
+                explainTriggerItem.ExplainData.VideoID = drCard.GIFIdx;
+            }
+            else if (selectAcquireItemData.ItemType == EItemType.Fune)
+            {
+                funeDescItem.SetItemData(new CommonItemData()
+                {
+                    ItemType = this.selectAcquireItemData.ItemType,
+                    ItemID = this.selectAcquireItemData.ItemID,
+                });
+                
             }
             else if (Constant.Hero.CommonItemTypes.Contains(selectAcquireItemData.ItemType))
             {
@@ -96,12 +125,7 @@ namespace RoundHero
                 
             }
             
-            explainTriggerItem.ExplainData = new ExplainData()
-            {
-                ItemType = selectAcquireItemData.ItemType,
-                ItemID = selectAcquireItemData.ItemID,
-                ShowPosition = EShowPosition.MousePosition,
-            };
+            
             
             Refresh();
         }
@@ -114,9 +138,15 @@ namespace RoundHero
             {
                 cardItem.Refresh();
             }
+            else if (selectAcquireItemData.ItemType == EItemType.Fune)
+            {
+                funeDescItem.Refresh();
+                
+            }
             else if (Constant.Hero.CommonItemTypes.Contains(selectAcquireItemData.ItemType))
             {
                 commonDescItem.Refresh();
+                
             }
             
         }

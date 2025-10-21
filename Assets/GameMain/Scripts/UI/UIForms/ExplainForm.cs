@@ -10,6 +10,7 @@ namespace RoundHero
         public EItemType ItemType;
         public int ItemID = -1;
         public EShowPosition ShowPosition = EShowPosition.MousePosition;
+        public int VideoID = -1;
         //public AnimationPlayData AnimationPlayData;
     }
     
@@ -32,7 +33,10 @@ namespace RoundHero
         [SerializeField] private Transform mouseLeftDownPosNoVideo;
         [SerializeField] private Transform mouseRightDownPosNoVideo;
         
-        [SerializeField] private Transform battleRightTransform;
+        [SerializeField] private Transform downPos;
+        
+        [SerializeField] private Transform rightTransform;
+        [SerializeField] private Transform leftTransform;
         
         protected override void OnOpen(object userData)
         {
@@ -68,7 +72,7 @@ namespace RoundHero
                 );
                 
                 //var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
-                var delta = showVideo ? 150f : 50f;
+                var delta = showVideo ? 250f : 50f;
                 if (mousePosition.x < Screen.width / 2)
                 {
                     uiLocalPos.x += delta;
@@ -116,13 +120,21 @@ namespace RoundHero
                 
                 
             }
-            else if (explainData.ShowPosition == EShowPosition.BattleRight)
+            else if (explainData.ShowPosition == EShowPosition.Right)
             {
-                uiLocalPos = battleRightTransform.localPosition;
+                uiLocalPos = rightTransform.localPosition;
                 
                 explainListGridLayoutGroup.startCorner = GridLayoutGroup.Corner.UpperRight;
-                explainListGridLayoutGroup.childAlignment = TextAnchor.UpperRight;
-                explainList.transform.localPosition = showVideo ? mouseRightUpPos.localPosition : mouseRightUpPosNoVideo.localPosition;
+                explainListGridLayoutGroup.childAlignment = TextAnchor.UpperCenter;
+                explainList.transform.localPosition = showVideo ? downPos.localPosition : Vector3.zero;
+            }
+            else if (explainData.ShowPosition == EShowPosition.Left)
+            {
+                uiLocalPos = leftTransform.localPosition;
+                
+                explainListGridLayoutGroup.startCorner = GridLayoutGroup.Corner.UpperLeft;
+                explainListGridLayoutGroup.childAlignment = TextAnchor.UpperCenter;
+                explainList.transform.localPosition = showVideo ? downPos.localPosition : Vector3.zero;
             }
             
             transform.localPosition = uiLocalPos;
@@ -131,10 +143,10 @@ namespace RoundHero
         private bool showVideo;
         private void SetData()
         {
-            var gifStr = "GIF_" + explainData.ItemID.ToString();
+            var gifStr = "GIF_" + explainData.VideoID.ToString();
             showVideo =
                 (explainData.ItemType == EItemType.UnitCard || explainData.ItemType == EItemType.TacticCard) &&
-                explainData.ItemID != -1 &&
+                explainData.VideoID != -1 &&
                 videoAssets.VideoAssetDict.ContainsKey(gifStr);
 
             this.videoPlayer.gameObject.SetActive(showVideo);

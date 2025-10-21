@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RoundHero
 {
@@ -11,8 +12,13 @@ namespace RoundHero
         private float scaleSpeed;
         private bool isLoop;
         private Vector3 scaleDelta;
-        
-        public void Scale(Vector3 startScale, Vector3 endScale, float scaleTime, bool isLoop = false)
+
+        private void Awake()
+        {
+            oriScale = transform.localScale;
+        }
+
+        public void Scale(Vector3 startScale, Vector3 endScale, float scaleTime = 0.1f, bool isLoop = false)
         {
             this.startScale = startScale;
             this.endScale = endScale;
@@ -22,6 +28,14 @@ namespace RoundHero
             
             scaleDelta = (endScale - startScale) / scaleTime;
             this.transform.localScale = startScale;
+        }
+
+        private Vector3 oriScale;
+        public void Scale(float endScale)
+        {
+            Scale(oriScale,
+                new Vector3(oriScale.x * endScale, oriScale.y * endScale,
+                    oriScale.z * endScale));
         }
 
         public void Update()

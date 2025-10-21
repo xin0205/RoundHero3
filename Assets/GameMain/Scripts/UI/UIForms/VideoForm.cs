@@ -61,7 +61,7 @@ namespace RoundHero
             
                 videoPlayItem.transform.position = gifPos;
             }
-            else if (videoFormData.AnimationPlayData.ShowPosition == EShowPosition.BattleRight)
+            else if (videoFormData.AnimationPlayData.ShowPosition == EShowPosition.Right)
             {
                 videoPlayItem.transform.position = battleLeftTransform.position;
             }

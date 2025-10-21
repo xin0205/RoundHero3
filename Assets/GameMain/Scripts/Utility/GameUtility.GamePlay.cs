@@ -219,16 +219,16 @@ namespace RoundHero
                 //     desc = Constant.Localization.Attribute_Coin;
                 //     break;
                 case EItemType.AddMaxHP:
-                    name = Constant.Localization.ItemTypeName_AddMaxHP;
-                    desc = Constant.Localization.ItemTypeDesc_AddMaxHP;
+                    name = GameEntry.Localization.GetString(Constant.Localization.ItemTypeName_AddMaxHP);
+                    desc = GameEntry.Localization.GetString(Constant.Localization.ItemTypeDesc_AddMaxHP);
                     break;
                 case EItemType.AddCardFuneSlot:
-                    name = Constant.Localization.ItemTypeName_AddCardFuneSlots;
-                    desc = Constant.Localization.ItemTypeDesc_AddCardFuneSlots;
+                    name = GameEntry.Localization.GetString(Constant.Localization.ItemTypeName_AddCardFuneSlot);
+                    desc = GameEntry.Localization.GetString(Constant.Localization.ItemTypeDesc_AddCardFuneSlot);
                     break;
                 case EItemType.RemoveCard:
-                    name = Constant.Localization.ItemTypeName_RemoveCard;
-                    desc = Constant.Localization.ItemTypeDesc_RemoveCard;
+                    name = GameEntry.Localization.GetString(Constant.Localization.ItemTypeName_RemoveCard);
+                    desc = GameEntry.Localization.GetString(Constant.Localization.ItemTypeDesc_RemoveCard);
                     break;
                 // case EItemType.Heart:
                 //     name = Constant.Localization.Attribute_Heart;

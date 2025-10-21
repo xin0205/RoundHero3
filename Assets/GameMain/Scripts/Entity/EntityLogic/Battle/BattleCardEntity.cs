@@ -152,7 +152,7 @@ namespace RoundHero
             // moveCheckMark.SetActive(false);                                                                                                                                                                                                                                                                    
             PlayerCardFuneList.Init(this.BattleCardEntityData.CardIdx, false);
             
-            videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.BattleRight;
+            videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.Right;
             var drCard = GameEntry.DataTable.GetCard(BattleCardEntityData.CardData.CardID);
             
             videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;

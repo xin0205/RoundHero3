@@ -101,8 +101,8 @@ namespace RoundHero
             
             public const string ItemTypeName_AddMaxHP = "ItemTypeName.AddMaxHP";
             public const string ItemTypeDesc_AddMaxHP = "ItemTypeDesc.AddMaxHP";
-            public const string ItemTypeName_AddCardFuneSlots = "ItemTypeName.AddCardFuneSlots";
-            public const string ItemTypeDesc_AddCardFuneSlots = "ItemTypeDesc.AddCardFuneSlots";
+            public const string ItemTypeName_AddCardFuneSlot = "ItemTypeName.AddCardFuneSlot";
+            public const string ItemTypeDesc_AddCardFuneSlot = "ItemTypeDesc.AddCardFuneSlot";
             public const string ItemTypeName_RemoveCard = "ItemTypeName.RemoveCard";
             public const string ItemTypeDesc_RemoveCard = "ItemTypeDesc.RemoveCard";
             public const string Message_RewardMaxCount = "Message.RewardMaxCount";
@@ -145,10 +145,11 @@ namespace RoundHero
             public const string Message_UnAdapteFune = "Message.UnAdapteFune";
             public const string Message_UnPlaceUnit = "Message.UnPlaceUnit";
             public const string Message_NotTarget = "Message.NotTarget";
-            public const string Message_NoHPToAttack = "Message_NoHPToAttack";
+            public const string Message_NoHPToAttack = "Message.NoHPToAttack";
 
             public const string Info_UnMoveGrid = "Info.UnMoveGrid";
-            
+            public const string Message_MaxRewardCount = "Message.MaxRewardCount";
+            public const string Message_UnusedFune = "Message.UnusedFune";
         }
     }
 }

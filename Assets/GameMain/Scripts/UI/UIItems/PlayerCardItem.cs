@@ -21,7 +21,7 @@ namespace RoundHero
         // [SerializeField] private List<GameObject> FuneDownGOs = new List<GameObject>();
 
         [SerializeField] private PlayerCardFuneList PlayerCardFuneList;
-        
+        [SerializeField] private ExplainTriggerItem explainTriggerItem;
 
         public Action<int> OnPointEnterAction;
         public Action OnPointExitAction;
@@ -44,6 +44,16 @@ namespace RoundHero
             this.playerCardData = playerCardData;
             
             //OnDropAction = onPointUpAction;
+            var drCard = CardManager.Instance.GetCardTable(this.playerCardData.CardIdx);
+            
+            explainTriggerItem.ExplainData = new ExplainData()
+            {
+                ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
+                ItemID = playerCardData.CardID,
+                ShowPosition = EShowPosition.MousePosition,
+                VideoID = drCard.GIFIdx,
+            };
+
             
             CardItem.SetCard(this.playerCardData.CardID,this.playerCardData.CardIdx);
             PlayerCardFuneList.Init(this.playerCardData.CardIdx, isShowAllFune);

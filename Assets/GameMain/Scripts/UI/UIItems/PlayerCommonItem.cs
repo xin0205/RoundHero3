@@ -16,7 +16,8 @@ namespace RoundHero
     
     public class PlayerCommonItem : MonoBehaviour
     {
-        [FormerlySerializedAs("commonItem")] [SerializeField] public CommonDescItem commonDescItem;
+        [SerializeField] public CommonDescItem commonDescItem;
+        [SerializeField] private ExplainTriggerItem explainTriggerItem;
 
         public Action<int> OnPointDownAction;
         
@@ -38,6 +39,13 @@ namespace RoundHero
             commonDescItem.SetItemData(playerCommonItemData.CommonItemData);
             OnPointDownAction = onPointDownAction;
             OnPointUpAction = onPointUpAction;
+            
+            explainTriggerItem.ExplainData = new ExplainData()
+            {
+                ItemType = playerCommonItemData.CommonItemData.ItemType,
+                ItemID = playerCommonItemData.CommonItemData.ItemID,
+                ShowPosition = EShowPosition.MousePosition,
+            };
 
         }
 

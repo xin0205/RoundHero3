@@ -151,6 +151,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6184208619046824844, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6737811815257700014, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
       propertyPath: m_Name
       value: TacticCardItem
@@ -263,6 +267,10 @@ PrefabInstance:
     - target: {fileID: 4559589956139492282, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184208619046824844, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6737811815257700014, guid: a7d086ee1bda61848a2b1b4dad43a52a, type: 3}
       propertyPath: m_Name

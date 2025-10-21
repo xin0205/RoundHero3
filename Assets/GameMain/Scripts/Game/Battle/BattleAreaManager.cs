@@ -391,7 +391,7 @@ namespace RoundHero
                             BattleManager.Instance.RefreshEnemyAttackData();
                             
                             
-                            TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
+                            //TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
                             //tmpSoliderEntity.RefreshDamageState();
                         }
 
