@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameKit.Dependencies.Utilities;
@@ -18,7 +19,9 @@ namespace RoundHero
             
             if (unComsumeCard != null && card.CardDestination == ECardDestination.Consume)
             {
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = Random.Next(0, 2) == 0 ? ECardDestination.Pass : ECardDestination.Consume;
+                var random = new Random(GetRandomSeed());
+
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.CardDestination = random.Next(0, 2) == 0 ? ECardDestination.Pass : ECardDestination.Consume;
             }
             else
             {

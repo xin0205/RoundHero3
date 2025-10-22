@@ -146,6 +146,11 @@ namespace RoundHero
             }
         }
 
+        public void Start()
+        {
+            InitHeroData(0);
+        }
+
         public async Task GenerateHero()
         {
             // BattleAreaManager.Instance.RefreshObstacles();

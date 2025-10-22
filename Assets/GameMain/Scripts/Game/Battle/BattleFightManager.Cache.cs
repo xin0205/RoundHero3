@@ -667,7 +667,7 @@ namespace RoundHero
                         if (unit != null && unit.UnitRole == EUnitRole.Core)
                         {
                             range2.Add(_gridPosIdx);
-                            //range.Remove(_gridPosIdx);
+                            range.Remove(_gridPosIdx);
                         }
                         
                     }
@@ -679,7 +679,7 @@ namespace RoundHero
                         if (unit != null &&  GameUtility.GetRelativeCamp(unitCamp, unit.UnitCamp) == triggerBuffData.BuffData.TriggerUnitCamps[0])
                         {
                             range2.Add(_gridPosIdx);
-                            //range.Remove(_gridPosIdx);
+                            range.Remove(_gridPosIdx);
                         }
                     }
 

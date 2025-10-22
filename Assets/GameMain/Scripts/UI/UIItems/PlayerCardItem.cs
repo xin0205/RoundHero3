@@ -46,13 +46,13 @@ namespace RoundHero
             //OnDropAction = onPointUpAction;
             var drCard = CardManager.Instance.GetCardTable(this.playerCardData.CardIdx);
             
-            explainTriggerItem.ExplainData = new ExplainData()
-            {
-                ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
-                ItemID = playerCardData.CardID,
-                ShowPosition = EShowPosition.MousePosition,
-                VideoID = drCard.GIFIdx,
-            };
+            // explainTriggerItem.ExplainData = new ExplainData()
+            // {
+            //     ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
+            //     ItemID = playerCardData.CardID,
+            //     ShowPosition = EShowPosition.MousePosition,
+            //     VideoID = drCard.GIFIdx,
+            // };
 
             
             CardItem.SetCard(this.playerCardData.CardID,this.playerCardData.CardIdx);

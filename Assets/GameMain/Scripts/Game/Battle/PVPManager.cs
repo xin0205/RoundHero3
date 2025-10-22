@@ -234,7 +234,7 @@ namespace RoundHero
             OpenUIFormSuccessEventArgs ne = (OpenUIFormSuccessEventArgs)e;
             if (ne.UIForm.Logic is BattleForm)
             {
-                await BattleAreaManager.Instance.InitArea();
+                await BattleAreaManager.Instance.GenerateArea();
                 SetCurPlayer(EUnitCamp.Player1);
                 await HeroManager.Instance.GenerateHero();
                 SetCurPlayer(EUnitCamp.Player2);

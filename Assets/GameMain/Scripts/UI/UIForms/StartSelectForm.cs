@@ -78,13 +78,13 @@ namespace RoundHero
                 selectInitCards.Add(drCard.Id);
             }
             
-            GameManager.Instance.TmpInitCards = DataManager.Instance.DataGame.User.DefaultInitSelectCards;
+            GameManager.Instance.InitCards = DataManager.Instance.DataGame.User.DefaultInitSelectCards;
             
             selectCardGridView.SetListItemCount(selectInitCards.Count);
             selectCardGridView.RefreshAllShownItem();
 
             
-            inBattleGridView.SetListItemCount(GameManager.Instance.TmpInitCards.Count);
+            inBattleGridView.SetListItemCount(GameManager.Instance.InitCards.Count);
             selectCardGridView.RefreshAllShownItem();
             
             GameEntry.Event.Fire(null, StartSelect_SelectHeroEventArgs.Create(0));
@@ -228,13 +228,13 @@ namespace RoundHero
                 itemScript.ClickAction = CardRemoveBattle;
             }
             
-            itemScript.SetItemData(GameManager.Instance.TmpInitCards[itemIndex], itemIndex, row, column);
+            itemScript.SetItemData(GameManager.Instance.InitCards[itemIndex], itemIndex, row, column);
             return item;
         }
 
         public void CardAddOrRemoveBattle(int cardID)
         {
-            if (GameManager.Instance.TmpInitCards.Contains(cardID))
+            if (GameManager.Instance.InitCards.Contains(cardID))
             {
                 CardRemoveBattle(cardID);
             }
@@ -261,21 +261,21 @@ namespace RoundHero
             
             for (int i = 0; i < Constant.Battle.SelectInitCardEachCount; i++)
             {
-                GameManager.Instance.TmpInitCards.Add(cardID);
+                GameManager.Instance.InitCards.Add(cardID);
             }
             
-            inBattleGridView.SetListItemCount(GameManager.Instance.TmpInitCards.Count);
+            inBattleGridView.SetListItemCount(GameManager.Instance.InitCards.Count);
             inBattleGridView.RefreshAllShownItem();
             inBattleGridView.GetComponent<ScrollRect>().normalizedPosition = Vector2.zero;
         }
 
         public void CardRemoveBattle(int cardSortIdx)
         {
-            GameManager.Instance.TmpInitCards.RemoveAt(cardSortIdx);
+            GameManager.Instance.InitCards.RemoveAt(cardSortIdx);
             
             //GameManager.Instance.TmpInitCards.RemoveAll((BattleCardID) => BattleCardID == cardID);
             
-            inBattleGridView.SetListItemCount(GameManager.Instance.TmpInitCards.Count);
+            inBattleGridView.SetListItemCount(GameManager.Instance.InitCards.Count);
             inBattleGridView.RefreshAllShownItem();
             inBattleGridView.GetComponent<ScrollRect>().normalizedPosition = Vector2.zero;
             
@@ -309,7 +309,7 @@ namespace RoundHero
 
         public void StartTest()
         {
-            if (GameManager.Instance.TmpInitCards.Count < Constant.Battle.InitCardMaxCount)
+            if (GameManager.Instance.InitCards.Count < Constant.Battle.InitCardMaxCount)
             {
                 GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_InitCardCount,
                     Constant.Battle.InitCardMaxCount);
@@ -319,8 +319,9 @@ namespace RoundHero
             
             GameEntry.UI.CloseUIForm(this);
 
-            //83353599;//91408126;//
-            startGameRandomSeed = 56162375;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            //83353599;//91408126;//38028770;//
+            //67760859;//704319;//
+            startGameRandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             //startGameRandomSeed = 40611504;//6036588;//94204398;//2198030
             // Log.Debug("randomSeed:" + startGameRandomSeed);
             // GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
@@ -333,7 +334,7 @@ namespace RoundHero
 
 
             GameEntry.Event.Fire(null,
-                GamePlayInitGameEventArgs.Create());
+                GamePlayStartGameEventArgs.Create());
 
         }
     }

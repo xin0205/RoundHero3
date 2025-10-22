@@ -173,10 +173,7 @@ namespace RoundHero
         
         public void ContinueBattleMode()
         {
-            
             procedureStart.ContinueBattleMode();
-            
-            
         }
 
         public void Tutorial()
@@ -197,7 +194,7 @@ namespace RoundHero
             
             Log.Debug("randomSeed:" + startGameRandomSeed);
             //GamePlayManager.Instance.GamePlayData.RandomSeed = startGameRandomSeed;
-            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create());
+            GameEntry.Event.Fire(null, GamePlayStartGameEventArgs.Create());
         }
 
         public void StartAdventure()

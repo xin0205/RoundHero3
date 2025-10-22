@@ -69,6 +69,11 @@ namespace RoundHero
             
         }
 
+        public void Continue()
+        {
+            
+        }
+
         public void Destory()
         {
             SoliderEntities.Clear();

@@ -51,6 +51,11 @@ namespace RoundHero
 
             return false;
         }
+        
+        public async Task Start()
+        {
+            await GenerateCores();
+        }
 
         public async Task GenerateCores()
         {

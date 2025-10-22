@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Animancer;
 using GameFramework.Event;
 using UnityEngine;
@@ -122,8 +123,7 @@ namespace RoundHero
                 {
                     GameEntry.Entity.HideEntity(kv.Value);
                 }
-                
-                
+  
             }
             BattleUnitEntities.Clear();
         }
@@ -812,6 +812,44 @@ namespace RoundHero
                 kv.Value.UnShowTags();
             }
             BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+        }
+
+        public void Continue()
+        {
+            
+        }
+
+        public async Task GenerateUnits()
+        {
+            var battleUnitData =
+                new Dictionary<int, Data_BattleUnit>(GamePlayManager.Instance.GamePlayData.BattleData.BattleUnitDatas);
+            
+            GamePlayManager.Instance.GamePlayData.BattleData.BattleUnitDatas.Clear();
+            foreach (var kv in battleUnitData)
+            {
+                if (kv.Value is Data_BattleCore battleCore)
+                {
+                    var battleCoreData = battleCore.Copy();
+                    await BattleCoreManager.Instance.GenerateCoreEntity(battleCoreData);
+            
+            
+                }
+                else if (kv.Value is Data_BattleSolider battleSolider)
+                {
+                    var battleSoliderData = battleSolider.Copy();
+                    await BattleAreaManager.Instance.GenerateSolider(battleSoliderData);
+                    
+                }
+                else if (kv.Value is Data_BattleMonster battleMonster)
+                {
+            
+                    var battleEnemyData = battleMonster.Copy();
+                    
+                    await BattleEnemyManager.Instance.GenerateEnemy(battleEnemyData);
+                   
+                }
+                
+            }    
         }
         
     }

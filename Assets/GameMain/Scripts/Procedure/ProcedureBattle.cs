@@ -1,6 +1,7 @@
 ﻿
 using GameFramework.Event;
 using UGFExtensions.Await;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -55,25 +56,9 @@ namespace RoundHero
 
         public async void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
+            InitSuccess = true;
             AreaController.Instance.RefreshCameraPlane();
 
-            // var initData = procedureOwner.GetData<VarGamePlayInitData>("GamePlayInitData");
-            
-            // if (initData.Value.GameMode == EGamMode.PVP)
-            // {
-            //     PVPManager.Instance.Init(initData.Value.RandomSeed, initData.Value.PlayerDatas);
-            // }
-            // else if (initData.Value.GameMode == EGamMode.PVE)
-            // {
-            //     PVEManager.Instance.Init(initData.Value.RandomSeed, initData.Value.EnemyType);
-            // }
-            
-            
-            InitSuccess = true;
-            
-            // var playerInfoFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.PlayerInfoForm, this);
-            // playerInfoForm = playerInfoFormTask.Logic as PlayerInfoForm;
-            
             if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
                 var tutorialFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.TutorialForm, this);
@@ -83,37 +68,39 @@ namespace RoundHero
             var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
             battleForm = battleFormTask.Logic as BattleForm;
 
+            if (GameManager.Instance.IsStartGame)
+            {
+                await BattleAreaManager.Instance.GenerateArea();
+                await BattleCoreManager.Instance.GenerateCores();
+                await BattleEnemyManager.Instance.GenerateEnemies();
             
-            
-            //await HeroManager.Instance.GenerateHero();
-            await BattleAreaManager.Instance.InitArea();
-            await BattleCoreManager.Instance.GenerateCores();
-            await BattleEnemyManager.Instance.GenerateNewEnemies();
-            
-            PVEManager.Instance.BattleState = EBattleState.UseCard;
+                PVEManager.Instance.BattleState = EBattleState.UseCard;
             
                 
-            BattleAreaManager.Instance.RefreshObstacles();
-            BattleManager.Instance.RoundStartTrigger();
-            BattleManager.Instance.RefreshAll();
-            BattleCardManager.Instance.RoundAcquireCards(true);
+                BattleAreaManager.Instance.RefreshObstacles();
+                BattleManager.Instance.RoundStartTrigger();
+                BattleManager.Instance.RefreshAll();
+                BattleCardManager.Instance.RoundAcquireCards(true);
 
-            GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
-            BattleManager.Instance.SwitchActionCamp(false);
-            GameUtility.DelayExcute(1f, () =>
+                GameEntry.Event.Fire(null, RefreshRoundEventArgs.Create());
+                BattleManager.Instance.SwitchActionCamp(false);
+                GameUtility.DelayExcute(1f, () =>
+                {
+                    GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
+
+                    BattleFightManager.Instance.PreRoundStartUnitTrigger();
+                    BattleManager.Instance.ContinueAction();
+                });
+
+            }
+            else
             {
-                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
+                var battleData = GamePlayManager.Instance.GamePlayData.BattleData.Copy();
+                GamePlayManager.Instance.ShowBattleData(battleData);
+                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+            }
 
-                BattleFightManager.Instance.PreRoundStartUnitTrigger();
-                BattleManager.Instance.ContinueAction();
-                //BattleFightManager.Instance.EnemyMove();
-                //BattleManager.Instance.StartAction();
-            });
-
-            //GamePlayManager.Instance.GamePlayData.LastActionBattleData = null;
-            //GamePlayManager.Instance.GamePlayData.LastActionPlayerData = null;
-
-
+            
 
         }
         

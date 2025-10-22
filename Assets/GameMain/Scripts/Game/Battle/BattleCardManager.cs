@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GameFramework;
 using UnityEngine;
 using UnityGameFramework.Runtime;
+using Random = System.Random;
 
 namespace RoundHero
 {
@@ -20,19 +21,37 @@ namespace RoundHero
 
         public Data_BattlePlayer BattlePlayerData => BattlePlayerManager.Instance.BattlePlayerData;
 
-        public System.Random Random;
         private int randomSeed;
 
         public int SelectCardIdx = -1;
         public int SelectPassCardIdx = -1;
         public int SelectCardHandOrder = -1;
 
+        public int RandomIdx
+        {
+            get
+            {
+                return BattleManager.Instance.BattleData.CardRandomIdx;
+            }
+
+            set
+            {
+                BattleManager.Instance.BattleData.CardRandomIdx = value;
+            }
+        }
+        
+        public List<int> RandomCaches = new List<int>();
+
 
         public void Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
-            Random = new System.Random(this.randomSeed);
+            var random = new Random(this.randomSeed);
 
+            for (int i = 0; i < 100; i++)
+            {
+                RandomCaches.Add(random.Next());
+            }
         }
 
         public void Destory()
@@ -48,6 +67,7 @@ namespace RoundHero
             SelectCardHandOrder = -1;
             //PointerCardIdx = -1;
         }
+
 
         public void InitCards()
         {
@@ -111,7 +131,9 @@ namespace RoundHero
             }
             else
             {
-                var randomPassCards = MathUtility.GetRandomNum(keyList.Count, 0, keyList.Count, Random);
+                var random = new Random(GetRandomSeed());
+
+                var randomPassCards = MathUtility.GetRandomNum(keyList.Count, 0, keyList.Count, random);
                 for (int i = 0; i < randomPassCards.Count; i++)
                 {
                     var cardIdx = keyList[randomPassCards[i]];
@@ -123,6 +145,16 @@ namespace RoundHero
                 }
             }
 
+            
+        }
+
+        public void Start()
+        {
+            InitCards();
+        }
+
+        public void Continue()
+        {
             
         }
 
@@ -428,8 +460,10 @@ namespace RoundHero
                 return;
             
             Log.Debug("AnimationConsumeToHand2");
-            var random = BattleCardManager.Instance.Random.Next(0, BattlePlayerData.ConsumeCards.Count);
-            var cardIdx = BattlePlayerData.ConsumeCards[random];
+            var random = new Random(GetRandomSeed());
+
+            var randomIdx = random.Next(0, BattlePlayerData.ConsumeCards.Count);
+            var cardIdx = BattlePlayerData.ConsumeCards[randomIdx];
             
             var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
             AddHandCard(card);
@@ -1697,7 +1731,9 @@ namespace RoundHero
             var newCards = new List<int>();
             for (int i = 0; i < newCardCount; i++)
             {
-                var randomIdx = Random.Next(0, cardIDList.Count);
+                var random = new Random(GetRandomSeed());
+
+                var randomIdx = random.Next(0, cardIDList.Count);
 
                 var tempCardIdx = AddTempNewCard(cardIDList[randomIdx]);
                 newCards.Add(tempCardIdx);
@@ -1829,7 +1865,10 @@ namespace RoundHero
             return datas;
         }
 
-        
+        public int GetRandomSeed()
+        {
+            return RandomCaches[RandomIdx++ % RandomCaches.Count];
+        }
         
     }
 }

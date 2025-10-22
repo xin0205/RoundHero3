@@ -1,4 +1,5 @@
 ﻿using UGFExtensions.Await;
+using Unity.Mathematics;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
 namespace RoundHero
@@ -89,10 +90,11 @@ namespace RoundHero
         }
 
 
-        public void StartAdventure(int randomSeed)
+        public void StartAdventureMode(int randomSeed)
         {
             
             BattleManager.Instance.Init(randomSeed);
+            BattleCardManager.Instance.Start();
             // DRScene drScene = GameEntry.DataTable.GetScene(1);
             // GameEntry.Scene.LoadScene(AssetUtility.GetSceneAsset(drScene.AssetName), Constant.AssetPriority.SceneAsset);
             GameEntry.UI.CloseUIForm(playerInfoForm);
@@ -100,11 +102,19 @@ namespace RoundHero
             ChangeState<ProcedureBattle>(procedureOwner);
         }
         
-        public void StartBattle(int randomSeed)
+        public void StartBattleMode(int randomSeed)
         {
-            
-            BattleManager.Instance.Init(randomSeed);
+            var random = new System.Random(randomSeed);
+            GamePlayManager.Instance.Start(random.Next());
+            BattleManager.Instance.Start(random.Next());
+            PVEManager.Instance.Start(random.Next());
 
+
+            ChangeState<ProcedureBattle>(procedureOwner);
+        }
+        
+        public void ContinueBattleMode()
+        {
             ChangeState<ProcedureBattle>(procedureOwner);
         }
         
@@ -112,7 +122,7 @@ namespace RoundHero
         {
             
             BattleManager.Instance.Init(randomSeed);
-
+            BattleCardManager.Instance.Start();
             ChangeState<ProcedureBattle>(procedureOwner);
         }
         

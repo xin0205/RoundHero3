@@ -56,38 +56,29 @@ namespace RoundHero
         public void Diffculty(EGameDifficulty difficulty)
         {
             procedureStart.Reset(EPVEType.Battle);
-            GameManager.Instance.TmpInitCards = new List<int>(Constant.BattleMode.InitCards);
+            GameManager.Instance.InitCards = new List<int>(Constant.BattleMode.InitCards);
+
+            DataManager.Instance.DataGame.User.SetCurGamePlayData(EPVEType.Battle);
             
-            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
-            DataManager.Instance.DataGame.User.SetCurGamePlayData(GamePlayManager.Instance.GamePlayData.PVEType);
+            // DataManager.Instance.DataGame.User.DefaultInitSelectCards =
+            //     new List<int>(GameManager.Instance.InitCards);
             
-            
-            DataManager.Instance.DataGame.User.DefaultInitSelectCards =
-                new List<int>(GameManager.Instance.TmpInitCards);
-            
-            //GameEntry.UI.CloseUIForm(form);
             GameEntry.UI.CloseUIForm(this);
             procedureStart.CloseStartForm();
             
-            //int startGameRandomSeed = 87252934;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
-            
-            
-            
-            
-            // 48782803;//20623119;//26349715 83353599;//31677911;//
-            var radomSeed = 5963733;//UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+            var radomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
             
             GamePlayManager.Instance.GamePlayData.RandomSeed = radomSeed;
-                
             GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
             GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = difficulty;
             GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
             
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session = 0;
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Battle;
+
             
             GameEntry.Event.Fire(null,
-                GamePlayInitGameEventArgs.Create());
+                GamePlayStartGameEventArgs.Create());
             
             
         }

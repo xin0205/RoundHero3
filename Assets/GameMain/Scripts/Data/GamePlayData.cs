@@ -2019,11 +2019,15 @@ namespace RoundHero
         public EGameDifficulty GameDifficulty;
         public Dictionary<EUnitCamp, Data_BattlePlayer> BattlePlayerDatas = new (10);
         public int ResetActionTimes = Constant.Battle.ResetActionTimes;
-
+        public int EnemyRandomIdx = 0;
+        public int CardRandomIdx = 0;
+        
         public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new(10);
         public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
         public Dictionary<int, EGridType> GridTypes = new (100);
         public EnemyGenerateData EnemyGenerateData = new EnemyGenerateData();
+
+        
 
         public Data_Battle()
         {
@@ -2081,7 +2085,9 @@ namespace RoundHero
             dataBattle.EnemyType = EnemyType;
             dataBattle.GameDifficulty = GameDifficulty;
             dataBattle.ResetActionTimes = ResetActionTimes;
-
+            dataBattle.EnemyRandomIdx = EnemyRandomIdx;
+            dataBattle.CardRandomIdx = CardRandomIdx;
+            
             foreach (var kv in BattleUnitDatas)
             {
                 if (kv.Value is Data_BattleSolider solider)

@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using GameFramework;
-using UnityEngine;
 using Random = System.Random;
 
 namespace RoundHero
@@ -37,8 +34,6 @@ namespace RoundHero
             this.randomSeed = randomSeed;
             Random = new Random(randomSeed);
             
-            // var randoms = MathUtility.GetRandomNum(8, 0,
-            //     Constant.Game.RandomRange, Random);
             TutorialManager.Instance.Init();
             
             BattleCoreManager.Instance.Init(Random.Next());
@@ -51,13 +46,26 @@ namespace RoundHero
             BattleBuffManager.Instance.Init(Random.Next());
             BattleFightManager.Instance.Init(Random.Next());
             BattleCurseManager.Instance.Init(Random.Next());
-            BattleCardManager.Instance.Init(Random.Next());
+           
             
             BattleAreaManager.Instance.Init(Random.Next());
             BattleUnitManager.Instance.Init(Random.Next());
             HeroManager.Instance.Init(Random.Next());
+
+        }
+
+        public void Start(int randomSeed)
+        {
+            BattleManager.Instance.Init(randomSeed);
+            BattleAreaManager.Instance.Start();
+            BattleEnemyManager.Instance.Start();
+        }
+
+        public void Continue(int randomSeed)
+        {
+            BattleManager.Instance.Init(randomSeed);
+            BattleEnemyManager.Instance.Continue();
             
-            BattleCardManager.Instance.InitCards();
         }
 
         public void SetBattleTypeManager(IBattleTypeManager battleTypeManager)
@@ -86,9 +94,9 @@ namespace RoundHero
         public void Destory()
         {
             
-            BattleData.Clear();
+            //BattleData.Clear();
             BattleState = EBattleState.EndBattle;
-            HeroManager.Instance.BattleHeroData.CurHP = HeroManager.Instance.BattleHeroData.MaxHP;
+            //HeroManager.Instance.BattleHeroData.CurHP = HeroManager.Instance.BattleHeroData.MaxHP;
             BattleManager.Instance.TempTriggerData.Reset();
             BattleSoliderManager.Instance.Destory();
             BattleThirdUnitManager.Instance.Destory();
@@ -524,8 +532,12 @@ namespace RoundHero
         
         public void EndBattle(EBattleResult battleResult)
         {
-            BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
-                BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
+            if (battleResult == EBattleResult.Success)
+            {
+                BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
+                    BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
+            }
+            
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Tutorial)
             {
                 ProcedureBattle.EndBattle(battleResult);

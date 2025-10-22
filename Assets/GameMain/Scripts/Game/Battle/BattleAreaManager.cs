@@ -47,23 +47,25 @@ namespace RoundHero
             pointerDownInRange = false;
             Subscribe();
 
-            BattleManager.Instance.BattleData.GridTypes.Clear();
-            for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
-            {
-                BattleManager.Instance.BattleData.GridTypes.Add(i, EGridType.Empty);
-                //CurObstacleMask.Add(i, EGridType.Empty);
-            }
+            
             
             this.randomSeed = randomSeed;
             Random = new Random(randomSeed);
 
         }
 
-        
-        
-        
-        
-        public async Task InitArea()
+        public async Task Start()
+        {
+            BattleManager.Instance.BattleData.GridTypes.Clear();
+            for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
+            {
+                BattleManager.Instance.BattleData.GridTypes.Add(i, EGridType.Empty);
+                //CurObstacleMask.Add(i, EGridType.Empty);
+            }
+            //await GenerateArea();
+        }
+
+        public async Task GenerateArea()
         {
             BattleAreaManager.Instance.RefreshObstacles();
 

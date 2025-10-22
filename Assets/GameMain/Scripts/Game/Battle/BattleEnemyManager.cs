@@ -51,7 +51,21 @@ namespace RoundHero
         //public Dictionary<int, Data_BattleMonster> BattleEnemyDatas => DataManager.Instance.CurUser.GamePlayData.BattleData.BattleEnemies;
 
         //private int id;
-        public Random Random;
+        //public Random Random;
+        public int RandomIdx
+        {
+            get
+            {
+                return BattleManager.Instance.BattleData.EnemyRandomIdx;
+            }
+
+            set
+            {
+                BattleManager.Instance.BattleData.EnemyRandomIdx = value;
+            }
+        }
+
+        public List<int> RandomCaches = new List<int>();
         private int randomSeed;
         public EnemyGenerateData EnemyGenerateData => BattleManager.Instance.BattleData.EnemyGenerateData;
         
@@ -59,21 +73,14 @@ namespace RoundHero
         public void Init(int randomSeed)
         {
             Subscribe();
-            
-            //GameEntry.Event.Subscribe(RefreshUnitDataEventArgs.EventId, OnRefreshUnitData);
-            
             this.randomSeed = randomSeed;
-            Random = new System.Random(this.randomSeed);
-            EnemyGenerateData.Clear(); 
-            //BattleManager.Instance.BattleData.EnemyType = enemyType;
-            
-            //id = 0;
+            var random = new Random(this.randomSeed);
 
-            // var ranges = new Dictionary<int, bool>(Constant.Area.GridSize.x * Constant.Area.GridSize.y);
-            // for (int i = 0; i < Constant.Area.GridSize.x * Constant.Area.GridSize.y; i++)
-            // {
-            //     ranges.Add(i, false);
-            //}
+            for (int i = 0; i < 100; i++)
+            {
+                RandomCaches.Add(random.Next());
+            }
+            
             buffValuelist = new List<List<float>>(10);
             for (int i = 0; i < 10; i++)
             {
@@ -85,11 +92,27 @@ namespace RoundHero
                 buffValuelist.Add(values);
             }
 
-            InitGenerateRole(Random.Next());
+            InitGenerateEnemyRuleData(GetRandomSeed());
         }
 
-        public void InitGenerateRole(int randomSeed)
+        public void Start()
         {
+            
+        }
+
+        public void Continue()
+        {
+            
+        }
+
+        public int GetRandomSeed()
+        {
+            return RandomCaches[RandomIdx++ % RandomCaches.Count];
+        }
+
+        public void InitGenerateEnemyRuleData(int randomSeed)
+        {
+            EnemyGenerateData.Clear(); 
             //Log.Debug("InitGenerateRole:" + randomSeed);
             var random = new Random(randomSeed);
 
@@ -294,7 +317,7 @@ namespace RoundHero
 
         
         
-        public async Task GenerateEnemies()
+        private async Task InternalGenerateEnemies()
         {
             // if(BattleManager.Instance.BattleData.Round >= Constant.Enemy.EnemyGenerateTurns[BattleManager.Instance.BattleData.EnemyType])
             //     return;
@@ -372,7 +395,7 @@ namespace RoundHero
 
             var enemyIdxs = MathUtility.GetRandomNum(
                 enemyGenerateCount, 0,
-                places.Count, Random);
+                places.Count, new Random(GetRandomSeed()));
                 
             
             //10, 11, 12, 13, 14
@@ -423,7 +446,8 @@ namespace RoundHero
             var enemyGenerateAddDebuff = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EnemyGenerateAddDebuff, BattleManager.Instance.CurUnitCamp);
             if (enemyGenerateAddDebuff != null )
             {
-                var randomDebuffIdx = Random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Count);
+                var random = new Random(GetRandomSeed());
+                var randomDebuffIdx = random.Next(0, Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Count);
                 var randomDeBuff = Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff][randomDebuffIdx];
                 battleEnemyEntity.BattleMonsterEntityData.BattleMonsterData.ChangeState(randomDeBuff);
             }
@@ -478,7 +502,7 @@ namespace RoundHero
 
         }
 
-        public async Task GenerateNewEnemies()
+        public async Task GenerateEnemies()
         {
             
             if (TutorialManager.Instance.IsTutorial())
@@ -503,7 +527,7 @@ namespace RoundHero
             }
             else
             {
-                await GenerateEnemies();
+                await InternalGenerateEnemies();
             }
             
             

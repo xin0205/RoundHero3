@@ -131,7 +131,7 @@ namespace RoundHero
             }
 
             GameEntry.UI.CloseUIForm(this);
-            GameEntry.Event.Fire(null, GamePlayInitGameEventArgs.Create(msg.RandomSeed, msg.PlayerDatas));
+            GameEntry.Event.Fire(null, GamePlayStartGameEventArgs.Create(msg.RandomSeed, msg.PlayerDatas));
         }
 
 

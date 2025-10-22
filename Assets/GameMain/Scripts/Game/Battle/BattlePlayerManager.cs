@@ -49,7 +49,7 @@ namespace RoundHero
             }
             else
             {
-                foreach (var cardID in GameManager.Instance.TmpInitCards)
+                foreach (var cardID in GameManager.Instance.InitCards)
                 {
                     var cardIdx = playerData.CardIdx++;
                     playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
@@ -102,5 +102,9 @@ namespace RoundHero
             
         }
 
+        public void Start()
+        {
+            InitData(EUnitCamp.Player1);
+        }
     }
 }

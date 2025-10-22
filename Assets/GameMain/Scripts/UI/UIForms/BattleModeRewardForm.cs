@@ -326,7 +326,7 @@ namespace RoundHero
             
             GameEntry.UI.CloseUIForm(this);
             GameEntry.Event.Fire(null,
-                GamePlayStartGameEventArgs.Create());
+                GamePlayContinueGameEventArgs.Create());
         }
 
         public void Back()
