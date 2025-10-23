@@ -26,9 +26,20 @@ namespace RoundHero
         
         public Data_Battle BattleData => GamePlayManager.Instance.GamePlayData.BattleData;
 
-        public EUnitCamp CurUnitCamp;
+        public EUnitCamp CurUnitCamp
+        {
+            get
+            {
+                return BattleData.CurUnitCamp;
+            }
 
-        
+            set
+            {
+               BattleData.CurUnitCamp = value;
+            }
+        }
+
+
         public void Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
@@ -77,7 +88,6 @@ namespace RoundHero
         {
             CurUnitCamp = unitCamp;
             
-            BattlePlayerManager.Instance.SetCurPlayer();
     
         }
 

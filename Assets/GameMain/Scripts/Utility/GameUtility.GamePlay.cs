@@ -230,6 +230,16 @@ namespace RoundHero
                     name = GameEntry.Localization.GetString(Constant.Localization.ItemTypeName_RemoveCard);
                     desc = GameEntry.Localization.GetString(Constant.Localization.ItemTypeDesc_RemoveCard);
                     break;
+                case EItemType.ActionTimes:
+                case EItemType.PassBePass:
+                case EItemType.Pass:
+                case EItemType.BePass:
+                case EItemType.Buff:
+                case EItemType.DeBuff:
+                    
+                    name = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.ItemTypeName, itemType.ToString()));
+                    desc = GameEntry.Localization.GetString(Utility.Text.Format(Constant.Localization.ItemTypeDesc, itemType.ToString()));
+                    break;
                 // case EItemType.Heart:
                 //     name = Constant.Localization.Attribute_Heart;
                 //     desc = Constant.Localization.Attribute_Heart;
@@ -2329,7 +2339,7 @@ namespace RoundHero
         //     return localPoint;
         // }
         
-        public static CommonItemData GetCardExplainData(string  explainItemStr)
+        public static CommonItemData GetCommonExplainData(string  explainItemStr)
         {
             var split = explainItemStr.Split(';');
             var itemType = Enum.Parse<EItemType>(split[0]);
@@ -2371,5 +2381,7 @@ namespace RoundHero
 
             return commonItemData;
         }
+        
+        
     }
 }

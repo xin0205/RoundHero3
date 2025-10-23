@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -189,6 +190,17 @@ namespace RoundHero
                 case EItemType.AddCardFuneSlot:
                     break;
                 case EItemType.ActionTimes:
+                case EItemType.PassBePass:
+                case EItemType.Pass:
+                case EItemType.BePass:
+                case EItemType.Buff:
+                case EItemType.DeBuff:
+                    var newExplainData = GameUtility.GetCommonExplainData(explainData.ItemType.ToString());
+                    explainList.SetData(new List<CommonItemData>()
+                    {
+                        newExplainData,
+                    });
+                    explainList.gameObject.SetActive(true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

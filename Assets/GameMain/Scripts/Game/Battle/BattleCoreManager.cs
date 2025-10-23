@@ -134,9 +134,9 @@ namespace RoundHero
             //PlayerManager.Instance.GetPlayerID(BattleManager.Instance.CurUnitCamp)
             if (!CoreEntities.ContainsKey(BattlePlayerManager.Instance.PlayerData.UnitCamp))
             {
-                CoreEntities.Add(BattleManager.Instance.CurUnitCamp, new Dictionary<int, BattleCoreEntity>());
+                CoreEntities.Add(BattlePlayerManager.Instance.PlayerData.UnitCamp, new Dictionary<int, BattleCoreEntity>());
             }
-            CoreEntities[BattleManager.Instance.CurUnitCamp].Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
+            CoreEntities[BattlePlayerManager.Instance.PlayerData.UnitCamp].Add(coreEntity.BattleCoreEntityData.BattleCoreData.Idx, coreEntity);
             
             return coreEntity;
         }

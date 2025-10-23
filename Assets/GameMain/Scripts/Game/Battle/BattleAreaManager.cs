@@ -1886,6 +1886,7 @@ namespace RoundHero
                             BattleManager.Instance.TempTriggerData.Reset();
                             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
                             unit.BattleUnitData.RoundAttackTimes += 1;
+                            DataManager.Instance.Save();
                         }   
                         else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
                         {
@@ -1917,6 +1918,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                     BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.Clear();
+                    DataManager.Instance.Save();
                 }
                
             }
@@ -1924,7 +1926,7 @@ namespace RoundHero
             {
                 BattleManager.Instance.RecordLastActionBattleData();
                 BattleBuffManager.Instance.UseBuff(ne.GridPosIdx);
-                
+                DataManager.Instance.Save();
             }
             else if (BattleManager.Instance.BattleState == EBattleState.MoveUnit)
             {
@@ -1979,6 +1981,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.Reset();
                     TmpUnitEntity = null;
                     BattleManager.Instance.SetBattleState(EBattleState.Animation);
+                    DataManager.Instance.Save();
                 }
             }
             else if (BattleManager.Instance.BattleState == EBattleState.FuneMoveUnit)
@@ -2110,7 +2113,7 @@ namespace RoundHero
                     //BattleUnitManager.Instance.TempUnitData.UnitData = null;
                     BattleManager.Instance.SetBattleState(EBattleState.UseCard);
                     //BattleManager.Instance.TempTriggerData.UnitData.RemoveState(EUnitState.ActiveAtk);
-                   
+                    DataManager.Instance.Save();
                 }
                 
        
@@ -2236,7 +2239,7 @@ namespace RoundHero
             {
                 BattleManager.Instance.RecordLastActionBattleData();
                 BattleBuffManager.Instance.UseBuff(gridPosIdx);
-                
+                DataManager.Instance.Save();
             }
             var gridPropData = BattleManager.Instance.TempTriggerData.PropData.Copy();
             //battleSoliderData.UnitRole = EUnitRole.Staff;
@@ -2296,6 +2299,7 @@ namespace RoundHero
             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
             
             GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
+            DataManager.Instance.Save();
         }
 
         public async Task<BattleSoliderEntity> GenerateSolider(Data_BattleSolider battleSoliderData)

@@ -92,12 +92,12 @@ namespace RoundHero
                 buffValuelist.Add(values);
             }
 
-            InitGenerateEnemyRuleData(GetRandomSeed());
+            
         }
 
         public void Start()
         {
-            
+            GenerateEnemyRuleData(GetRandomSeed());
         }
 
         public void Continue()
@@ -110,7 +110,7 @@ namespace RoundHero
             return RandomCaches[RandomIdx++ % RandomCaches.Count];
         }
 
-        public void InitGenerateEnemyRuleData(int randomSeed)
+        public void GenerateEnemyRuleData(int randomSeed)
         {
             EnemyGenerateData.Clear(); 
             //Log.Debug("InitGenerateRole:" + randomSeed);
@@ -765,7 +765,7 @@ namespace RoundHero
             var drEnemy = GameEntry.DataTable.GetEnemy(enemyID);
             foreach (var explainItemStr in drEnemy.ExplainItems)
             {
-                datas.Add(GameUtility.GetCardExplainData(explainItemStr));
+                datas.Add(GameUtility.GetCommonExplainData(explainItemStr));
             }
 
             return datas;

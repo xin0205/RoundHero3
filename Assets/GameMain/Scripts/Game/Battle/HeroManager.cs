@@ -137,7 +137,7 @@ namespace RoundHero
         public void InitHeroData(EHeroID heroID)
         {
             BattleHeroData = new Data_BattleHero(BattleUnitManager.Instance.GetIdx(),
-                heroID, 0, BattleManager.Instance.CurUnitCamp, new List<int>(), BattleManager.Instance.BattleData.Round);
+                heroID, 0, PlayerManager.Instance.PlayerData.UnitCamp, new List<int>(), BattleManager.Instance.BattleData.Round);
             BattleHeroData.UnitRole = EUnitRole.Core;
             if (BattleManager.Instance.BattleData.GameDifficulty >= EGameDifficulty.Difficulty4)
             {

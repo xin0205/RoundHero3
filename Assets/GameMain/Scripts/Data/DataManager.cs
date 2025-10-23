@@ -79,6 +79,13 @@ namespace RoundHero
             Save();
 
         }
+
+        public void ReloadData()
+        {
+            var userID = DataGame.User.UserID;
+            DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
+            DataGame.User = DataGame.DataUsers[userID];
+        }
         
         public void Save()       
         {

@@ -18,7 +18,13 @@ namespace RoundHero
         //Heart,
         RemoveCard,
         AddCardFuneSlot,
+        
         ActionTimes,
+        PassBePass,
+        Pass,
+        BePass,
+        Buff,
+        DeBuff,
         
         
     }

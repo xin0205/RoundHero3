@@ -57,7 +57,7 @@ namespace RoundHero
         {
             this.randomSeed = randomSeed;
             
-            Log.Debug(randomSeed);
+            
             
             Random = new Random(randomSeed);
             
@@ -91,9 +91,9 @@ namespace RoundHero
             //GameEntry.UI.OpenUIForm(UIFormId.BattleForm);
         }
 
-        public void SetCurPlayer()
+        public void SetCurPlayer(EUnitCamp unitCamp)
         {
-            BattleManager.Instance.SetCurPlayer(EUnitCamp.Player1);
+            BattleManager.Instance.SetCurPlayer(unitCamp);
 
         }
 
@@ -280,6 +280,7 @@ namespace RoundHero
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
             {
                 BattleManager.Instance.RefreshEnemyAttackData();
+                
             }
             
         }
@@ -295,6 +296,7 @@ namespace RoundHero
                 {
                     GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
                 });
+                DataManager.Instance.Save();
             
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.PreRoundStart)

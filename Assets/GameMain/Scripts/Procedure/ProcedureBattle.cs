@@ -91,13 +91,32 @@ namespace RoundHero
                     BattleFightManager.Instance.PreRoundStartUnitTrigger();
                     BattleManager.Instance.ContinueAction();
                 });
+                DataManager.Instance.Save();
 
             }
             else
             {
                 var battleData = GamePlayManager.Instance.GamePlayData.BattleData.Copy();
-                GamePlayManager.Instance.ShowBattleData(battleData);
-                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+                await GamePlayManager.Instance.ShowBattleData(battleData);
+                //GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+                if (battleData.CurUnitCamp == EUnitCamp.Player1)
+                {
+                    GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+                }
+                else
+                {
+                    BattleManager.Instance.RefreshAll();
+                    GameUtility.DelayExcute(1f, () =>
+                    {
+                        GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
+
+                        BattleFightManager.Instance.PreRoundStartUnitTrigger();
+                        BattleManager.Instance.ContinueAction();
+                    });
+                    
+                }
+                
+                
             }
 
             

@@ -14,7 +14,7 @@ namespace RoundHero
         {
             if (GamePlayData.GameMode == EGamMode.PVE)
             {
-                PVEManager.Instance.SetCurPlayer();
+                PVEManager.Instance.SetCurPlayer(BattleManager.Instance.CurUnitCamp);
                 
                 var random = new Random(randomSeed);
                 
@@ -26,7 +26,7 @@ namespace RoundHero
                     GamePlayManager.Instance.GamePlayData.ClearPlayerDataList();
                     GamePlayManager.Instance.GamePlayData.AddPlayerData(PlayerManager.Instance.PlayerData);
                     GamePlayManager.Instance.GamePlayData.IsStartGame = true;
-                    InitPlayerData();
+                    //InitPlayerData();
                     //PlayerManager.Instance.PlayerData.Clear();
                 
                     // var drHero = GameEntry.DataTable.GetHero(GameManager.Instance.TmpHeroID);
@@ -63,8 +63,8 @@ namespace RoundHero
         public void Start(int randomSeed)
         {
             GamePlayManager.Instance.Init(randomSeed);
-            HeroManager.Instance.Start();
             BattlePlayerManager.Instance.Start();
+            HeroManager.Instance.Start();
             BattleCardManager.Instance.Start();
            
         }
@@ -72,12 +72,13 @@ namespace RoundHero
         public void Continue(int randomSeed)
         {
             GamePlayManager.Instance.Init(randomSeed);
+            BattlePlayerManager.Instance.Continue();
             BattleCardManager.Instance.Continue();
         }
 
         public void InitPlayerData()
         {
-            PVEManager.Instance.SetCurPlayer();
+            PVEManager.Instance.SetCurPlayer(BattleManager.Instance.CurUnitCamp);
         }
 
         public void Back()

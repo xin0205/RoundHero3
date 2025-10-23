@@ -640,7 +640,7 @@ namespace RoundHero
             var drBless = GameEntry.DataTable.GetBless(blessID);
             foreach (var explainItemStr in drBless.ExplainItems)
             {
-                datas.Add(GameUtility.GetCardExplainData(explainItemStr));
+                datas.Add(GameUtility.GetCommonExplainData(explainItemStr));
             }
 
             return datas;

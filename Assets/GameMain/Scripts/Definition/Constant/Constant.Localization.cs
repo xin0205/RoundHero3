@@ -106,6 +106,8 @@ namespace RoundHero
             public const string ItemTypeName_RemoveCard = "ItemTypeName.RemoveCard";
             public const string ItemTypeDesc_RemoveCard = "ItemTypeDesc.RemoveCard";
             public const string Message_RewardMaxCount = "Message.RewardMaxCount";
+            public const string ItemTypeName = "ItemTypeName.{0}";
+            public const string ItemTypeDesc = "ItemTypeDesc.{0}";
             
             public const string Tips_AddCardFuneSlot = "Tips.AddCardFuneSlot";
             public const string Message_ConfirmUnAddCardFuneSlot = "Message.ConfirmUnAddCardFuneSlot";

@@ -1764,7 +1764,7 @@ namespace RoundHero
         public Dictionary<ulong, Data_Player> PlayerDataIDDict = new ();
         public Dictionary<EUnitCamp, Data_Player> PlayerDataCampDict = new ();
         
-        public Stack<BattleActionData> BattleActionDataStack = new Stack<BattleActionData>();
+        public List<BattleActionData> BattleActionDataList = new List<BattleActionData>();
         public Data_GamePlay()
         {
             
@@ -1829,7 +1829,7 @@ namespace RoundHero
             data.PlayerDataCampDict.Clear();
             data.PlayerDataIDDict.Clear();
             
-            data.BattleActionDataStack = new Stack<BattleActionData>(BattleActionDataStack);
+            data.BattleActionDataList = new List<BattleActionData>(BattleActionDataList);
             
             foreach (var kv in PlayerDatas)
             {
@@ -1852,12 +1852,12 @@ namespace RoundHero
        
         public void RecordLastAction()
         {
-            BattleActionDataStack.Push(new BattleActionData()
+            BattleActionDataList.Add(new BattleActionData()
             {
                 BattleData = this.BattleData.Copy(),
                 PlayerData = this.PlayerData.Copy(),
             });
-            
+
             // LastActionBattleData = BattleData.Copy();
             // LastActionPlayerData = PlayerData.Copy();
         }
@@ -2026,7 +2026,7 @@ namespace RoundHero
         public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
         public Dictionary<int, EGridType> GridTypes = new (100);
         public EnemyGenerateData EnemyGenerateData = new EnemyGenerateData();
-
+        public EUnitCamp CurUnitCamp;
         
 
         public Data_Battle()
@@ -2087,6 +2087,7 @@ namespace RoundHero
             dataBattle.ResetActionTimes = ResetActionTimes;
             dataBattle.EnemyRandomIdx = EnemyRandomIdx;
             dataBattle.CardRandomIdx = CardRandomIdx;
+            dataBattle.CurUnitCamp = CurUnitCamp;
             
             foreach (var kv in BattleUnitDatas)
             {

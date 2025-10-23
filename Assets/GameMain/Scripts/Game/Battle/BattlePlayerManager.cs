@@ -8,15 +8,16 @@ namespace RoundHero
         
         
         
-        public void SetCurPlayer()
+        public void SetCurPlayer(EUnitCamp unitCamp)
         {
-            BattlePlayerData = GamePlayManager.Instance.GamePlayData.BattleData.GetBattlePlayerData(BattleManager.Instance.CurUnitCamp);
-            PlayerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(BattleManager.Instance.CurUnitCamp);
+            BattlePlayerData = GamePlayManager.Instance.GamePlayData.BattleData.GetBattlePlayerData(unitCamp);
+            PlayerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
 
         }
         
         public void InitData(EUnitCamp unitCamp)
         {
+            SetCurPlayer(unitCamp);
             var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
             playerData.Coin = Constant.Hero.InitDatas[unitCamp].Coin;
             
@@ -103,6 +104,11 @@ namespace RoundHero
         }
 
         public void Start()
+        {
+            InitData(EUnitCamp.Player1);
+        }
+        
+        public void Continue()
         {
             InitData(EUnitCamp.Player1);
         }

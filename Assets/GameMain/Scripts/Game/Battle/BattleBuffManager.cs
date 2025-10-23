@@ -1617,7 +1617,7 @@ namespace RoundHero
             var drBuff = GameEntry.DataTable.GetBuff(buffID);
             foreach (var explainItemStr in drBuff.ExplainItems)
             {
-                datas.Add(GameUtility.GetCardExplainData(explainItemStr));
+                datas.Add(GameUtility.GetCommonExplainData(explainItemStr));
             }
 
             return datas;

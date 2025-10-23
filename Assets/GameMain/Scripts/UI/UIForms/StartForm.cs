@@ -50,6 +50,8 @@ namespace RoundHero
 
             BattleModeOnPointerExit();
             version.text= Application.version.ToString();
+            
+            DataManager.Instance.ReloadData();
         }
 
         public void BattleModeOnPointerEnter()
