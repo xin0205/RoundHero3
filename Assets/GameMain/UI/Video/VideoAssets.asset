@@ -34,6 +34,7 @@ MonoBehaviour:
     - GIF_17
     - GIF_18
     - GIF_19
+    - GIF_20
     m_values:
     - {fileID: 32900000, guid: e50869dcf7d8d0d479c773d5d87d33b8, type: 3}
     - {fileID: 32900000, guid: 78a71e7ebc663d94e9719244b2d875a7, type: 3}
@@ -55,3 +56,4 @@ MonoBehaviour:
     - {fileID: 32900000, guid: 4722d018316c4914a8ac39e701fab7f2, type: 3}
     - {fileID: 32900000, guid: cfd15921f6387d2418d2c21ead35aed1, type: 3}
     - {fileID: 32900000, guid: 67707227dfac55f4ca89a2b727a53253, type: 3}
+    - {fileID: 32900000, guid: bc8a272c2c495f84f80f76bf7d192f20, type: 3}
