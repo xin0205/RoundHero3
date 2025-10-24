@@ -94,8 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e269f7f845442b2a923ebd862fd3686, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoPlayer: {fileID: 7943904316112357841}
-  videoAssets: {fileID: 11400000, guid: f9ee8794b5ec360439f46b948cda80a3, type: 2}
+  videoPlayItem: {fileID: 624911596537325366}
   explainList: {fileID: 3697158101107868082}
   explainListGridLayoutGroup: {fileID: 8413359071692540957}
   mouseLeftUpPos: {fileID: 4224682192357609215}
@@ -1663,14 +1662,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
+--- !u!114 &624911596537325366 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5767541938578621316, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
+  m_PrefabInstance: {fileID: 6387877907943171250}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33259cfbb7d462bba7e15b82dba6a9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7485167249966663432 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4559589956139492282, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
-  m_PrefabInstance: {fileID: 6387877907943171250}
-  m_PrefabAsset: {fileID: 0}
---- !u!328 &7943904316112357841 stripped
-VideoPlayer:
-  m_CorrespondingSourceObject: {fileID: 3933938254571990371, guid: a8f6563101694ba44a058f9b837980ed, type: 3}
   m_PrefabInstance: {fileID: 6387877907943171250}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7607366551336432423

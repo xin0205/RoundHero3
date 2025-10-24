@@ -39,42 +39,42 @@ namespace RoundHero
 
             Vector3 mousePosition = Input.mousePosition;
             
-            if (gifFormData.animationPlayData.ShowPosition == EShowPosition.MousePosition)
-            {
-                var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
-                var delta = 2f;
-                if (mousePosition.x < Screen.width / 2)
-                {
-                    gifPos.x += delta;
-                    if (mousePosition.y < Screen.height / 2)
-                    {
-                        gifPos.y += delta;
-                    }
-                    else
-                    {
-                        gifPos.y -= delta;
-                    }
-                }
-                else
-                {
-                    gifPos.x -= delta;
-                    if (mousePosition.y < Screen.height / 2)
-                    {
-                        gifPos.y += delta;
-                    }
-                    else
-                    {
-                        gifPos.y -= delta;
-                    }
-                }
-            
-            
-                gifPlayItem.transform.position = gifPos;
-            }
-            else if (gifFormData.animationPlayData.ShowPosition == EShowPosition.Right)
-            {
-                gifPlayItem.transform.position = battleLeftTransform.position;
-            }
+            // if (gifFormData.animationPlayData.ShowPosition == EShowPosition.MousePosition)
+            // {
+            //     var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
+            //     var delta = 2f;
+            //     if (mousePosition.x < Screen.width / 2)
+            //     {
+            //         gifPos.x += delta;
+            //         if (mousePosition.y < Screen.height / 2)
+            //         {
+            //             gifPos.y += delta;
+            //         }
+            //         else
+            //         {
+            //             gifPos.y -= delta;
+            //         }
+            //     }
+            //     else
+            //     {
+            //         gifPos.x -= delta;
+            //         if (mousePosition.y < Screen.height / 2)
+            //         {
+            //             gifPos.y += delta;
+            //         }
+            //         else
+            //         {
+            //             gifPos.y -= delta;
+            //         }
+            //     }
+            //
+            //
+            //     gifPlayItem.transform.position = gifPos;
+            // }
+            // else if (gifFormData.animationPlayData.ShowPosition == EShowPosition.Right)
+            // {
+            //     gifPlayItem.transform.position = battleLeftTransform.position;
+            // }
             
         }
     }

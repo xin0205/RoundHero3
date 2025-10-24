@@ -9,9 +9,9 @@ namespace RoundHero
     [Serializable]
     public class AnimationPlayData
     {
-        public EGIFType GifType;
+        //public EGIFType GifType;
         public int ID = -1;
-        public EShowPosition ShowPosition = EShowPosition.MousePosition;
+        //public EShowPosition ShowPosition = EShowPosition.MousePosition;
     }
     
     public class GIFPlayItem : MonoBehaviour

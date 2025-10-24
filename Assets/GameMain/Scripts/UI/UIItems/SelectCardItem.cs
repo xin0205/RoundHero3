@@ -42,7 +42,7 @@ namespace RoundHero
             //     tag.SetActive(false);
             // }
             var drCard = GameEntry.DataTable.GetCard(cardID);
-            videoTriggerItem.VideoFormData.AnimationPlayData.GifType = EGIFType.Solider;
+            //videoTriggerItem.VideoFormData.AnimationPlayData.GifType = EGIFType.Solider;
             videoTriggerItem.VideoFormData.AnimationPlayData.ID = drCard.GIFIdx;
         }
         

@@ -110,22 +110,19 @@ namespace RoundHero
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
                 var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
-                animationPlayData.GifType = EGIFType.Enemy;
+                //animationPlayData.GifType = EGIFType.Enemy;
                 var drEnemy =
                     GameEntry.DataTable.GetEnemy(enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
                 animationPlayData.ID = drEnemy.GIFIdx;
-                
-                videoPlayItem.gameObject.SetActive(true);
-                videoPlayItem.SetVideo(animationPlayData);
+
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
-                videoPlayItem.gameObject.SetActive(true);
-                videoPlayItem.SetVideo(animationPlayData);
+                
                 
                 if (UnitDescFormData.UnitRole == EUnitRole.Core)
                 {
-                    animationPlayData.GifType = EGIFType.Hero;
+                    //animationPlayData.GifType = EGIFType.Hero;
                 }
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
@@ -135,9 +132,12 @@ namespace RoundHero
                     var drCard = CardManager.Instance.GetCardTable(unitEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
                     //
                     animationPlayData.ID = drCard.GIFIdx;
-                    animationPlayData.GifType = EGIFType.Solider;
+                    //animationPlayData.GifType = EGIFType.Solider;
                 }
             }
+            
+            videoPlayItem.gameObject.SetActive(true);
+            videoPlayItem.SetVideo(animationPlayData);
         }
 
         private void RefreshDesc()

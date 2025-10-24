@@ -19,8 +19,10 @@ namespace RoundHero
     {
         private ExplainData explainData;
 
-        [SerializeField] private VideoPlayer videoPlayer;
-        [SerializeField] private VideoAssets videoAssets;
+        [SerializeField] private VideoPlayItem videoPlayItem;
+        
+        // [SerializeField] private VideoPlayer videoPlayer;
+        // [SerializeField] private VideoAssets videoAssets;
         [SerializeField] private ExplainList explainList;
         [SerializeField] private GridLayoutGroup explainListGridLayoutGroup;
         
@@ -144,19 +146,24 @@ namespace RoundHero
         private bool showVideo;
         private void SetData()
         {
-            var gifStr = "GIF_" + explainData.VideoID.ToString();
-            showVideo =
-                (explainData.ItemType == EItemType.UnitCard || explainData.ItemType == EItemType.TacticCard) &&
-                explainData.VideoID != -1 &&
-                videoAssets.VideoAssetDict.ContainsKey(gifStr);
-
-            this.videoPlayer.gameObject.SetActive(showVideo);
-            //animationPlayData.GifType.ToString() + 
-            
-            if (showVideo)
+            videoPlayItem.SetVideo(new AnimationPlayData()
             {
-                videoPlayer.clip = videoAssets.VideoAssetDict[gifStr];
-            }
+                ID = explainData.VideoID,
+            });
+            
+            // var gifStr = "GIF_" + explainData.VideoID.ToString();
+            // showVideo =
+            //     (explainData.ItemType == EItemType.UnitCard || explainData.ItemType == EItemType.TacticCard) &&
+            //     explainData.VideoID != -1 &&
+            //     videoAssets.VideoAssetDict.ContainsKey(gifStr);
+            //
+            // this.videoPlayer.gameObject.SetActive(showVideo);
+            // //animationPlayData.GifType.ToString() + 
+            //
+            // if (showVideo)
+            // {
+            //     videoPlayer.clip = videoAssets.VideoAssetDict[gifStr];
+            // }
             
             explainList.gameObject.SetActive(false);
             switch (explainData.ItemType)
