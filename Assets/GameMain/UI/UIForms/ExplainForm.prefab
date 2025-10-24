@@ -33,6 +33,7 @@ RectTransform:
   m_Children:
   - {fileID: 3391543298656991505}
   - {fileID: 7485167249966663432}
+  - {fileID: 7986890312734076747}
   - {fileID: 2579347306422290537}
   - {fileID: 4224682192357609215}
   - {fileID: 7761345648025464321}
@@ -42,7 +43,6 @@ RectTransform:
   - {fileID: 2219529299211971233}
   - {fileID: 7856394009283667802}
   - {fileID: 6976888490658098858}
-  - {fileID: 7986890312734076747}
   - {fileID: 8079869999268700172}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

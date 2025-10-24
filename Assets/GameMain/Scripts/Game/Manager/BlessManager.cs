@@ -638,6 +638,8 @@ namespace RoundHero
         {
             var datas = new List<CommonItemData>();
             var drBless = GameEntry.DataTable.GetBless(blessID);
+            if (drBless.ExplainItems == null)
+                return datas;
             foreach (var explainItemStr in drBless.ExplainItems)
             {
                 datas.Add(GameUtility.GetCommonExplainData(explainItemStr));

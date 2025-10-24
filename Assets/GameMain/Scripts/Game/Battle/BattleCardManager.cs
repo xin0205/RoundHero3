@@ -1857,6 +1857,9 @@ namespace RoundHero
         {
             var datas = new List<CommonItemData>();
             var drCard = GameEntry.DataTable.GetCard(cardID);
+            if (drCard.ExplainItems == null)
+                return datas;
+            
             foreach (var explainItemStr in drCard.ExplainItems)
             {
                 datas.Add(GameUtility.GetCommonExplainData(explainItemStr));

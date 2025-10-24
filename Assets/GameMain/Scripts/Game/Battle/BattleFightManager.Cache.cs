@@ -624,8 +624,6 @@ namespace RoundHero
                 {
                     range = GameUtility.GetRange(gridPosIdx, triggerBuffData.BuffData.TriggerRange, unitCamp,
                         triggerBuffData.BuffData.TriggerUnitCamps, true);
-                    
-                    
 
                 }
 
@@ -660,17 +658,17 @@ namespace RoundHero
                 if (unitCamp == EUnitCamp.Enemy && range.Count > 0)
                 {
 
-                    for (int i = 0; i < range.Count; i++)
-                    {
-                        var _gridPosIdx = range[i];
-                        var unit = GetUnitByGridPosIdx(_gridPosIdx);
-                        if (unit != null && unit.UnitRole == EUnitRole.Core)
-                        {
-                            range2.Add(_gridPosIdx);
-                            range.Remove(_gridPosIdx);
-                        }
-                        
-                    }
+                    // for (int i = 0; i < range.Count; i++)
+                    // {
+                    //     var _gridPosIdx = range[i];
+                    //     var unit = GetUnitByGridPosIdx(_gridPosIdx);
+                    //     if (unit != null && unit.UnitRole == EUnitRole.Core)
+                    //     {
+                    //         range2.Add(_gridPosIdx);
+                    //         range.Remove(_gridPosIdx);
+                    //     }
+                    //     
+                    // }
                     
                     for (int i = 0; i < range.Count; i++)
                     {

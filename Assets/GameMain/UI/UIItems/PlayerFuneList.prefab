@@ -94,6 +94,7 @@ MonoBehaviour:
   - {fileID: 4982106011688522338}
   - {fileID: 1727428260581874201}
   - {fileID: 3614765860440846160}
+  funeListGO: {fileID: 8198822436999628210}
   IsShowFuneDownTag: 1
 --- !u!1001 &327906568085254313
 PrefabInstance:

@@ -77,8 +77,8 @@ namespace RoundHero
         
         [SerializeField] private Text ConfirmText;
         
-        [SerializeField]
-        private VideoTriggerItem videoTriggerItem;
+        // [SerializeField]
+        // private VideoTriggerItem videoTriggerItem;
 
         [SerializeField]
         private MoveGameObject moveGameObject;
@@ -96,9 +96,11 @@ namespace RoundHero
         
         [SerializeField]
         private Text bottomTipsText;
+        
+        [SerializeField] private ExplainTriggerItem explainTriggerItem;
 
-        [SerializeField]
-        private ExplainList explainList;
+        // [SerializeField]
+        // private ExplainList explainList;
         
         
         private Rect rect;
@@ -152,25 +154,33 @@ namespace RoundHero
             // moveCheckMark.SetActive(false);                                                                                                                                                                                                                                                                    
             PlayerCardFuneList.Init(this.BattleCardEntityData.CardIdx, false);
             
-            videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.Right;
+            //videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.Right;
             var drCard = GameEntry.DataTable.GetCard(BattleCardEntityData.CardData.CardID);
             
-            videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;
-            videoTriggerItem.VideoFormData.AnimationPlayData.ID = drCard.GIFIdx;
+            explainTriggerItem.ExplainData = new ExplainData()
+            {
+                ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
+                ItemID = BattleCardEntityData.CardData.CardID,
+                ShowPosition = EShowPosition.Right,
+                VideoID = drCard.GIFIdx,
+            };
+            
+            // videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;
+            // videoTriggerItem.VideoFormData.AnimationPlayData.ID = drCard.GIFIdx;
             
             // AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
             // MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
   
             bottomTipsText.gameObject.SetActive(false);
             
-            explainList.gameObject.SetActive(false);
+            //explainTriggerItem.gameObject.SetActive(false);
 
-            if (drCard.ExplainItems != null)
-            {
-                var datas = BattleCardManager.Instance.GetCardExplainList(BattleCardEntityData.CardData.CardID);
-                
-                explainList.SetData(datas);
-            }
+            // if (drCard.ExplainItems != null)
+            // {
+            //     var datas = BattleCardManager.Instance.GetCardExplainList(BattleCardEntityData.CardData.CardID);
+            //     
+            //     explainList.SetData(datas);
+            // }
             
             
             
@@ -239,7 +249,7 @@ namespace RoundHero
         
         public void OnPointerEnter()
         { 
-            explainList.gameObject.SetActive(true);
+            //explainTriggerItem.gameObject.SetActive(true);
             //isShow && 
             cardInfoTrigger.SetNameDesc("",
                 BattleManager.Instance.BattleState != EBattleState.UseCard
@@ -324,7 +334,7 @@ namespace RoundHero
         
         public void OnPointerExit()
         {
-            explainList.gameObject.SetActive(false);
+            //explainTriggerItem.gameObject.SetActive(false);
             if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
                 TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
                 TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)

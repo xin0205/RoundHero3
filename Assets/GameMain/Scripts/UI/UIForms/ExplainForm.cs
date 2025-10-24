@@ -180,6 +180,9 @@ namespace RoundHero
                 case EItemType.UnitState:
                     break;
                 case EItemType.Enemy:
+                    var enemyExplainList = BattleEnemyManager.Instance.GetEnemyExplainList(explainData.ItemID);
+                    explainList.SetData(enemyExplainList);
+                    explainList.gameObject.SetActive(true);
                     break;
                 case EItemType.Coin:
                     break;

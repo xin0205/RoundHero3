@@ -94,7 +94,7 @@ namespace RoundHero
             
             public static List<int> InitCards = new List<int>()
             {
-                0, 0, 0, 1, 1, 1, 10000, 10000, 10009, 10009
+                0, 0, 1, 1, 6, 6, 10000, 10000, 10009, 10009
             };
         }
 
@@ -1676,8 +1676,6 @@ namespace RoundHero
             
             public static List<EItemType> CommonItemTypes = new List<EItemType>()
             {
-                EItemType.Bless,
-                EItemType.Fune,
                 EItemType.AddCardFuneSlot,
                 EItemType.AddMaxHP,
                 EItemType.RemoveCard,

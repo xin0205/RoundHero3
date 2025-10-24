@@ -401,17 +401,17 @@ namespace RoundHero
             //10, 11, 12, 13, 14
             //15, 16, 17, 18, 19
             //30, 31, 32, 33, 34
-            // var test = new List<int>(){42,42};
-            //
+            //var test = new List<int>(){3,3};
+            
             // var enemyIdxs = MathUtility.GetRandomNum(
             //     test.Count, 0,
-            //     places.Count, Random);
+            //     places.Count, new Random(GetRandomSeed()));
             
             //enemyGenerateCount
             for (int i = 0; i < enemyGenerateCount; i++)
             {
-                //test[i];//
-                var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];//Random.Next(0, 3);
+                //test[i];//EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];
+                var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];
 
                 var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
                     places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round);
@@ -763,6 +763,9 @@ namespace RoundHero
         {
             var datas = new List<CommonItemData>();
             var drEnemy = GameEntry.DataTable.GetEnemy(enemyID);
+            if (drEnemy.ExplainItems == null)
+                return datas;
+            
             foreach (var explainItemStr in drEnemy.ExplainItems)
             {
                 datas.Add(GameUtility.GetCommonExplainData(explainItemStr));

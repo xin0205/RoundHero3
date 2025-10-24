@@ -83,59 +83,112 @@ namespace RoundHero
             {
                 line.sortingOrder = BattleAttackTagEntityData.IsStatic ? 0 : 100;
                 //BattleAttackTagEntityData.BuffValue != null && BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Extend")
-                if (BattleAttackTagEntityData.AttackCastType.ToString().Contains("Extend"))
-                {
-                    line.positionCount = gridPosIdxs.Count;
-                    line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
-                    var idx = 0;
-                    foreach (var gridPosIdx in gridPosIdxs)
-                    {
-                        var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
-                        pos.y += 1f;
-                        line.SetPosition(idx++, pos);
-                    }
-                }
-                // if (BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Parabola"))
-                else
-                {
-                    var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
-                    var endPos = GameUtility.GridPosIdxToPos(targetGridPosIdx) + new Vector3(0, 1f, 0);
-                    
-                    var deg = new Vector2(endPos.x - startPos.x, endPos.z -  startPos.z);
-                    var dis = Vector3.Distance(startPos, endPos);
-                    var radian = Vector2.SignedAngle(new Vector2(1, 0), deg) * Mathf.Deg2Rad;
-
-                    var time = dis * Constant.Battle.ParabolaBulletShootTime / Constant.Area.GridRange.x;
-                    var horizontalVelocity = dis / time;
-
-                    var verticalVelocity = Constant.Battle.G * 0.5f * time;
-
-                    var gridCount = (int)Mathf.Ceil(dis / Constant.Area.GridRange.x);
-                    var lineCount = gridCount * 10;
-                    var intervalTime = time / lineCount;
-
-                    line.positionCount = (int)lineCount;
-                    line.material.SetInt("_Number", 3 * gridCount);
-
-                    var addTime = 0f;
-                    for (int i = 0; i < lineCount; i++)
-                    {
-                        var posY = verticalVelocity * addTime + 0.5f * -Constant.Battle.G * addTime * addTime;
-                        line.SetPosition(i,
-                            startPos + new Vector3(horizontalVelocity * addTime * Mathf.Cos(radian), posY,
-                                horizontalVelocity * addTime * Mathf.Sin(radian)));
-
-                        addTime += intervalTime;
-
-                    }
-                }
+                // if (BattleAttackTagEntityData.AttackCastType.ToString().Contains("Extend"))
+                // {
+                //     line.positionCount = gridPosIdxs.Count;
+                //     line.material.SetInt("_Number", 3 * (gridPosIdxs.Count - 1));
+                //     var idx = 0;
+                //     foreach (var gridPosIdx in gridPosIdxs)
+                //     {
+                //         var pos = GameUtility.GridPosIdxToPos(gridPosIdx);
+                //         pos.y += 1f;
+                //         line.SetPosition(idx++, pos);
+                //     }
+                //     
+                //     var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
+                //     var endPos = GameUtility.GridPosIdxToPos(targetGridPosIdx) + new Vector3(0, 1f, 0);
+                //     var dis = Vector3.Distance(startPos, endPos);
+                //     var gridCount = (int)Mathf.Ceil(dis / Constant.Area.GridRange.x);
+                //     var lineCount = gridCount * 10;
+                //     
+                //     line.positionCount = (int)lineCount;
+                //     line.material.SetInt("_Number", 3 * gridCount);
+                //
+                //     var addTime = 0f;
+                //     for (int i = 0; i < lineCount; i++)
+                //     {
+                //         var posY = 1;
+                //         line.SetPosition(i,
+                //             startPos + new Vector3(horizontalVelocity * addTime * Mathf.Cos(radian), posY,
+                //                 1);
+                //
+                //         addTime += intervalTime;
+                //
+                //     }
+                // }
+                // // if (BattleAttackTagEntityData.BuffValue.BuffData.TriggerRange.ToString().Contains("Parabola"))
+                // else
+                // {
+                //     var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
+                //     var endPos = GameUtility.GridPosIdxToPos(targetGridPosIdx) + new Vector3(0, 1f, 0);
+                //     
+                //     var deg = new Vector2(endPos.x - startPos.x, endPos.z -  startPos.z);
+                //     var dis = Vector3.Distance(startPos, endPos);
+                //     var radian = Vector2.SignedAngle(new Vector2(1, 0), deg) * Mathf.Deg2Rad;
+                //
+                //     var time = dis * Constant.Battle.ParabolaBulletShootTime / Constant.Area.GridRange.x;
+                //     var horizontalVelocity = dis / time;
+                //
+                //     var verticalVelocity = Constant.Battle.G * 0.5f * time;
+                //
+                //     var gridCount = (int)Mathf.Ceil(dis / Constant.Area.GridRange.x);
+                //     var lineCount = gridCount * 10;
+                //     var intervalTime = time / lineCount;
+                //
+                //     line.positionCount = (int)lineCount;
+                //     line.material.SetInt("_Number", 3 * gridCount);
+                //
+                //     var addTime = 0f;
+                //     for (int i = 0; i < lineCount; i++)
+                //     {
+                //         var posY = verticalVelocity * addTime + 0.5f * -Constant.Battle.G * addTime * addTime;
+                //         line.SetPosition(i,
+                //             startPos + new Vector3(horizontalVelocity * addTime * Mathf.Cos(radian), posY,
+                //                 horizontalVelocity * addTime * Mathf.Sin(radian)));
+                //
+                //         addTime += intervalTime;
+                //
+                //     }
+                // }
                 
+                var startPos = GameUtility.GridPosIdxToPos(startGridPosIdx) + new Vector3(0, 1f, 0);
+                var endPos = GameUtility.GridPosIdxToPos(targetGridPosIdx) + new Vector3(0, 1f, 0);
+                    
+                var deg = new Vector2(endPos.x - startPos.x, endPos.z -  startPos.z);
+                var dis = Vector3.Distance(startPos, endPos);
+                var radian = Vector2.SignedAngle(new Vector2(1, 0), deg) * Mathf.Deg2Rad;
+
+                var time = dis * Constant.Battle.ParabolaBulletShootTime / Constant.Area.GridRange.x;
+                var horizontalVelocity = dis / time;
+
+                var verticalVelocity = Constant.Battle.G * 0.5f * time;
+
+                var gridCount = (int)Mathf.Ceil(dis / Constant.Area.GridRange.x);
+                var lineCount = gridCount * 10;
+                var intervalTime = time / lineCount;
+
+                line.positionCount = (int)lineCount;
+                line.material.SetInt("_Number", 3 * gridCount);
+
+                var addTime = 0f;
+                for (int i = 0; i < lineCount; i++)
+                {
+                    var posY = BattleAttackTagEntityData.AttackCastType.ToString().Contains("Parabola")
+                        ? verticalVelocity * addTime + 0.5f * -Constant.Battle.G * addTime * addTime
+                        : 0f;
+                    line.SetPosition(i,
+                        startPos + new Vector3(horizontalVelocity * addTime * Mathf.Cos(radian), posY,
+                            horizontalVelocity * addTime * Mathf.Sin(radian)));
+
+                    addTime += intervalTime;
+
+                }
             
                 line.startWidth = 0.08f;
                 line.endWidth = 0.08f;
                 
                 line.material.SetColor("_Color", BattleAttackTagEntityData.IsStatic ? gray : yellow); 
-                line.material.SetInt("_Speed", BattleAttackTagEntityData.IsStatic ? 10 : 50);
+                line.material.SetInt("_Speed", BattleAttackTagEntityData.IsStatic ? 25 : 50);
             }
             
         }

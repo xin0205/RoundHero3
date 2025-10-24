@@ -25,6 +25,7 @@ namespace RoundHero
         private GameObject root;
 
         [SerializeField] private VideoPlayItem videoPlayItem;
+        [SerializeField] private ExplainList explainList;
         
         [SerializeField] private PlayerCardItem playerCardItem;
         [SerializeField] private UnitDescItem unitDescItem;
@@ -33,9 +34,6 @@ namespace RoundHero
         
         [SerializeField] private Text actionTimeStr;
         
-        [SerializeField] private List<PlayerCommonItem> funeList = new List<PlayerCommonItem>();
-        [SerializeField] private List<PlayerCommonItem> unitStateList = new List<PlayerCommonItem>();
-        [SerializeField] private List<UnitStateIconItem> unitStateIconList = new List<UnitStateIconItem>();
         
         
         [SerializeField]
@@ -46,8 +44,20 @@ namespace RoundHero
         private GameObject unitStateIconListGO;
         [SerializeField]
         private GameObject keyshortcutGO;
+        
 
         private bool hasDetail;
+        private bool hasFune;
+
+        [SerializeField]
+        private Transform explainPos1;
+        [SerializeField]
+        private Transform explainPos2;
+        
+        [SerializeField] private List<PlayerCommonItem> funeList = new List<PlayerCommonItem>();
+        [SerializeField] private List<PlayerCommonItem> unitStateList = new List<PlayerCommonItem>();
+        [SerializeField] private List<UnitStateIconItem> unitStateIconList = new List<UnitStateIconItem>();
+
 
         
         protected override void OnOpen(object userData)
@@ -57,8 +67,45 @@ namespace RoundHero
             
             // if(BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) == null)
             //     return;
+            
+            videoPlayItem.gameObject.SetActive(false);
+            unitDescItem.gameObject.SetActive(false);
+            playerCardItem.gameObject.SetActive(false);
+            unitBattleData.SetActive(false);
+            gridDescItem.gameObject.SetActive(false);
+            
+            funeListGO.SetActive(false);
+            unitStateListGO.SetActive(false);
+            unitStateIconListGO.SetActive(true);
+
+            var items = funeListGO.GetComponentsInChildren<PlayerCommonItem>(true);
+            funeList.Clear();
+            funeList.AddRange(items);
+            
+            var items2 = unitStateListGO.GetComponentsInChildren<PlayerCommonItem>(true);
+            unitStateList.Clear();
+            unitStateList.AddRange(items2);
+            
+            var items3 = unitStateIconListGO.GetComponentsInChildren<UnitStateIconItem>(true);
+            unitStateIconList.Clear();
+            unitStateIconList.AddRange(items3);
+            
+            
+            
             hasDetail = false;
 
+            RefreshVideo();
+            RefreshDesc();
+            RefreshUnitStates();
+            RefreshExplain(false);
+            
+            explainList.transform.localPosition = explainPos1.localPosition;
+            
+            keyshortcutGO.SetActive(hasDetail);
+        }
+
+        private void RefreshVideo()
+        {
             var animationPlayData = new AnimationPlayData();
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
@@ -67,10 +114,15 @@ namespace RoundHero
                 var drEnemy =
                     GameEntry.DataTable.GetEnemy(enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);
                 animationPlayData.ID = drEnemy.GIFIdx;
-
+                
+                videoPlayItem.gameObject.SetActive(true);
+                videoPlayItem.SetVideo(animationPlayData);
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
+                videoPlayItem.gameObject.SetActive(true);
+                videoPlayItem.SetVideo(animationPlayData);
+                
                 if (UnitDescFormData.UnitRole == EUnitRole.Core)
                 {
                     animationPlayData.GifType = EGIFType.Hero;
@@ -86,13 +138,10 @@ namespace RoundHero
                     animationPlayData.GifType = EGIFType.Solider;
                 }
             }
-            
-            
-            videoPlayItem.gameObject.SetActive(false);
-            unitDescItem.gameObject.SetActive(false);
-            playerCardItem.gameObject.SetActive(false);
-            unitBattleData.SetActive(false);
-            gridDescItem.gameObject.SetActive(false);
+        }
+
+        private void RefreshDesc()
+        {
             foreach (var playerCommonItem in funeList)
             {
                 playerCommonItem.gameObject.SetActive(false);
@@ -102,8 +151,7 @@ namespace RoundHero
             {
                 unitDescItem.gameObject.SetActive(true);
                 unitBattleData.SetActive(true);
-                videoPlayItem.gameObject.SetActive(true);
-                videoPlayItem.SetVideo(animationPlayData);
+                
                 
                 var name = "";
                 var desc = "";
@@ -153,13 +201,10 @@ namespace RoundHero
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
                 unitBattleData.SetActive(true);
-                videoPlayItem.gameObject.SetActive(true);
-                videoPlayItem.SetVideo(animationPlayData);
                 
                 if (UnitDescFormData.UnitRole == EUnitRole.Core)
                 {
                     unitDescItem.gameObject.SetActive(true);
-                    animationPlayData.GifType = EGIFType.Hero;
                     unitDescItem.SetDesc(GameEntry.Localization.GetString(Constant.Localization.UI_CoreName),
                         BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP + "/" +
                         BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP,
@@ -168,7 +213,6 @@ namespace RoundHero
                 else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
                 {
                     playerCardItem.gameObject.SetActive(true);
-                    animationPlayData.GifType = EGIFType.Solider;
                     var unitEntity =
                         BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
                     var cardData =
@@ -193,7 +237,8 @@ namespace RoundHero
                         var funeData = FuneManager.Instance.GetFuneData(funeIdx);
                         if(idx >= funeList.Count)
                             break;
-                        
+
+                        hasFune = true;
                         hasDetail = true;
                         funeList[idx].gameObject.SetActive(true);
                         funeList[idx].SetItemData(new PlayerCommonItemData()
@@ -211,7 +256,6 @@ namespace RoundHero
 
                 }
             }
-            
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Empty)
             {
                 //gridDescItem.gameObject.SetActive(true);
@@ -226,47 +270,6 @@ namespace RoundHero
                 // gridDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
                 //     GameEntry.Localization.GetString(gridTypeDesc));
             }
-            
-           
-           
-            //Vector3 mousePosition = Input.mousePosition;
-            
-            // var gifPos = AreaController.Instance.UICamera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, mousePosition.z));
-            // var delta = 2f;
-            //
-            // if (mousePosition.x < Screen.width / 2)
-            // {
-            //     gifPos.x += delta;
-            //     if (mousePosition.y < Screen.height / 2)
-            //     {
-            //         gifPos.y += delta;
-            //     }
-            //     else
-            //     {
-            //         gifPos.y -= delta;
-            //     }
-            // }
-            // else
-            // {
-            //     gifPos.x -= delta;
-            //     if (mousePosition.y < Screen.height / 2)
-            //     {
-            //         gifPos.y += delta;
-            //     }
-            //     else
-            //     {
-            //         gifPos.y -= delta;
-            //     }
-            // }
-            //
-            // root.transform.position = gifPos;
-
-            RefreshUnitStates();
-            
-            funeListGO.SetActive(false);
-            unitStateListGO.SetActive(false);
-            unitStateIconListGO.SetActive(true);
-            keyshortcutGO.SetActive(hasDetail);
         }
 
         private void RefreshUnitStates()
@@ -295,17 +298,7 @@ namespace RoundHero
                     hasDetail = true;
                     unitStateIconList[idx].gameObject.SetActive(true);
                     unitStateIconList[idx].SetIcon(kv.Value.UnitState, kv.Value.Value);
-                    idx++;
-                }
-                
-                idx = 0;
-                foreach (var kv in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.UnitStateData.UnitStates)
-                {
-                    unitStateList[idx].gameObject.SetActive(false);
-                    if(idx >= unitStateList.Count)
-                        break;
-                        
-                    hasDetail = true;
+                    
                     unitStateList[idx].gameObject.SetActive(true);
                     unitStateList[idx].SetItemData(new PlayerCommonItemData()
                     {
@@ -319,7 +312,7 @@ namespace RoundHero
                     }, null, null);
                     idx++;
                 }
-                
+
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
@@ -400,9 +393,61 @@ namespace RoundHero
                         }, null, null);
                         idx++;
                     }
+     
+                }
+            }
+            
+        }
+
+        public void RefreshExplain(bool isShowDetail)
+        {
+            var explainListData = new List<CommonItemData>();
+            if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
+            {
+                var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
+                explainListData.AddRange(
+                    BattleEnemyManager.Instance.GetEnemyExplainList(enemyEntity.BattleMonsterEntityData
+                        .BattleMonsterData.MonsterID));
+                
+                
+            }
+            else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
+            {
+                if (UnitDescFormData.UnitRole == EUnitRole.Core)
+                {
+                    
+                }
+                else if (UnitDescFormData.UnitRole == EUnitRole.Staff)
+                {
+                    var soliderEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleSoliderEntity;
+                    var drCard = CardManager.Instance.GetCardTable(soliderEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                    
+                    explainListData.AddRange(BattleCardManager.Instance.GetCardExplainList(drCard.Id));
+                    
+                    if (isShowDetail)
+                    {
+                        var cardData =
+                            CardManager.Instance.GetCard(soliderEntity.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                        
+                        var idx = 0;
+                        foreach (var funeIdx in cardData.FuneIdxs)
+                        {
+                            if(idx >= funeList.Count)
+                                continue;
+
+                            var funeData = FuneManager.Instance.GetFuneData(funeIdx);
+                            explainListData.AddRange(
+                                BattleBuffManager.Instance.GetBuffExplainList(funeData.FuneID));;
+                        
+                            idx++;
+                        }
+                    }
+                    
 
                 }
             }
+            
+            explainList.SetData(explainListData);
         }
         
         public void Update()
@@ -419,14 +464,20 @@ namespace RoundHero
                 unitStateListGO.SetActive(true);
                 unitStateIconListGO.SetActive(false);
                 keyshortcutGO.SetActive(false);
+                //explainList.gameObject.SetActive(false);
+                RefreshExplain(true);
+                explainList.transform.localPosition = explainPos2.localPosition;
             }
             
             if (hasDetail && Input.GetKeyUp(KeyCode.Q))
             {
                 funeListGO.SetActive(false);
                 unitStateListGO.SetActive(false);
-                unitStateIconListGO.SetActive(true);
+                unitStateIconListGO.SetActive(hasDetail);
                 keyshortcutGO.SetActive(true);
+                //explainList.gameObject.SetActive(true);
+                RefreshExplain(false);
+                explainList.transform.localPosition = explainPos1.localPosition;
             }
         }
     }

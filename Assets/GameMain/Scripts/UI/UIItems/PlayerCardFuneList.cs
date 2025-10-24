@@ -8,6 +8,8 @@ namespace RoundHero
     public class PlayerCardFuneList : MonoBehaviour
     {
         [SerializeField] private List<PlayerFuneItem> PlayerFuneItems = new List<PlayerFuneItem>();
+        
+        [SerializeField] private GameObject funeListGO;
 
         private int CardIdx;
         [SerializeField] public bool IsShowFuneDownTag = false;
@@ -16,6 +18,10 @@ namespace RoundHero
         private void OnEnable()
         {
             GameEntry.Event.Subscribe(UnEquipFuneEventArgs.EventId, OnUnEquipFune);
+            
+            var items = funeListGO.GetComponentsInChildren<PlayerFuneItem>(true);
+            PlayerFuneItems.Clear();
+            PlayerFuneItems.AddRange(items);
         }
 
         private void OnDisable()

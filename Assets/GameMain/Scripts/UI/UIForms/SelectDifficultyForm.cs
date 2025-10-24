@@ -65,9 +65,9 @@ namespace RoundHero
             
             GameEntry.UI.CloseUIForm(this);
             procedureStart.CloseStartForm();
-            
+
             var radomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
-            
+            Log.Debug(radomSeed);
             GamePlayManager.Instance.GamePlayData.RandomSeed = radomSeed;
             GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
             GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = difficulty;

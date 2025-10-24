@@ -2595,6 +2595,10 @@ PrefabInstance:
       propertyPath: isShowFuneDownTag
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3135670615847494446, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      propertyPath: explainTriggerItem
+      value: 
+      objectReference: {fileID: 2260260252757523054}
     - target: {fileID: 3333522480776468326, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2931,6 +2935,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6737811815257700014, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5563492418328338070}
+    - targetCorrespondingSourceObject: {fileID: 6737811815257700014, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2260260252757523054}
     - targetCorrespondingSourceObject: {fileID: 3228503618961332318, guid: 1a8535850a5870f429c2b1494e471505, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6573043262092553176}
@@ -3110,6 +3117,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 47fda6aa8c9e4a7fbef9b5b5e636afdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2260260252757523054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6826102939445262021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 614280061fca4ec488f15579075ca072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8731249614564042189 stripped

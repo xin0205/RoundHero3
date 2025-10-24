@@ -1615,6 +1615,8 @@ namespace RoundHero
         {
             var datas = new List<CommonItemData>();
             var drBuff = GameEntry.DataTable.GetBuff(buffID);
+            if (drBuff.ExplainItems == null)
+                return datas;
             foreach (var explainItemStr in drBuff.ExplainItems)
             {
                 datas.Add(GameUtility.GetCommonExplainData(explainItemStr));

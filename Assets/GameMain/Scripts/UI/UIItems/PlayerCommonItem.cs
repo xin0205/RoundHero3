@@ -39,13 +39,17 @@ namespace RoundHero
             commonDescItem.SetItemData(playerCommonItemData.CommonItemData);
             OnPointDownAction = onPointDownAction;
             OnPointUpAction = onPointUpAction;
-            
-            explainTriggerItem.ExplainData = new ExplainData()
+
+            if (explainTriggerItem != null)
             {
-                ItemType = playerCommonItemData.CommonItemData.ItemType,
-                ItemID = playerCommonItemData.CommonItemData.ItemID,
-                ShowPosition = EShowPosition.MousePosition,
-            };
+                explainTriggerItem.ExplainData = new ExplainData()
+                {
+                    ItemType = playerCommonItemData.CommonItemData.ItemType,
+                    ItemID = playerCommonItemData.CommonItemData.ItemID,
+                    ShowPosition = EShowPosition.MousePosition,
+                };
+            }
+            
 
         }
 

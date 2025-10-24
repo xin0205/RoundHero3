@@ -2349,27 +2349,26 @@ namespace RoundHero
                 case EItemType.UnitState:
                     itemID = (int)Enum.Parse<EUnitState>(split[1]);
                     break;
-                case EItemType.UnitCard:
-                    break;
-                case EItemType.TacticCard:
-                    break;
-                case EItemType.Bless:
-                    break;
-                case EItemType.Fune:
-                    break;
-                case EItemType.Coin:
-                    break;
-                case EItemType.AddMaxHP:
-                    break;
-                case EItemType.RemoveCard:
-                    break;
-                case EItemType.AddCardFuneSlot:
-                    break;
-                       
-                case EItemType.ActionTimes:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                // case EItemType.UnitCard:
+                //     break;
+                // case EItemType.TacticCard:
+                //     break;
+                // case EItemType.Bless:
+                //     break;
+                // case EItemType.Fune:
+                //     break;
+                // case EItemType.Coin:
+                //     break;
+                // case EItemType.AddMaxHP:
+                //     break;
+                // case EItemType.RemoveCard:
+                //     break;
+                // case EItemType.AddCardFuneSlot:
+                //     break;
+                //        
+                // case EItemType.ActionTimes:
+                //     break;
+                
             }
                     
                     

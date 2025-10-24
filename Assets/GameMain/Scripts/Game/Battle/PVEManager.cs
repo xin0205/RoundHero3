@@ -1,5 +1,6 @@
 ﻿using UnityGameFramework.Runtime;
 using GameFramework.Event;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = System.Random;
 
@@ -280,7 +281,7 @@ namespace RoundHero
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
             {
                 BattleManager.Instance.RefreshEnemyAttackData();
-                
+                DataManager.Instance.Save();
             }
             
         }
@@ -351,6 +352,7 @@ namespace RoundHero
                 
                 
                 BattleManager.Instance.RefreshEnemyAttackData();
+
             }
         }
         
