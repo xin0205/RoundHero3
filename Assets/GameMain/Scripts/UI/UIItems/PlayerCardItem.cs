@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
 
 
 namespace RoundHero
@@ -43,16 +42,18 @@ namespace RoundHero
             
             this.playerCardData = playerCardData;
             
+            var cardData = CardManager.Instance.CardDatas[this.playerCardData.CardIdx];
+
             //OnDropAction = onPointUpAction;
-            var drCard = CardManager.Instance.GetCardTable(this.playerCardData.CardIdx);
+            var drCard = GameEntry.DataTable.GetCard(cardData.CardID);
             
-            // explainTriggerItem.ExplainData = new ExplainData()
-            // {
-            //     ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
-            //     ItemID = playerCardData.CardID,
-            //     ShowPosition = EShowPosition.MousePosition,
-            //     VideoID = drCard.GIFIdx,
-            // };
+            explainTriggerItem.ExplainData = new ExplainData()
+            {
+                ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
+                ItemID = playerCardData.CardID,
+                ShowPosition = EShowPosition.MousePosition,
+                VideoID = drCard.GIFIdx,
+            };
 
             
             CardItem.SetCard(this.playerCardData.CardID,this.playerCardData.CardIdx);

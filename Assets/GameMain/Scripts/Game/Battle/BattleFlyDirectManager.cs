@@ -186,7 +186,7 @@ namespace RoundHero
 
         }
         
-        public void ShowFlyUnitIdx(int unitIdx)
+        public async Task ShowFlyUnitIdx(int unitIdx)
         {
 
             
@@ -205,8 +205,8 @@ namespace RoundHero
                 
                 if (flyEffectUnit != null)
                 {
-                    flyEffectUnit.ShowAttackTag(kv.Key, false);
-                    flyEffectUnit.ShowHurtAttackTag(kv.Key, -1, new List<int>(){unitIdx});
+                    await flyEffectUnit.ShowAttackTag(kv.Key, false);
+                    await flyEffectUnit.ShowHurtAttackTag(kv.Key, -1, new List<int>(){unitIdx});
                 }
 
                     

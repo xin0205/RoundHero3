@@ -10,8 +10,9 @@ namespace RoundHero
     {
 
         //private int id;
-        public Random Random;
+        
         private int randomSeed;
+        public List<int> RandomCaches = new List<int>();
         
         public Dictionary<EUnitCamp, Dictionary<int, BattleCoreEntity>> CoreEntities = new ();
         
@@ -20,8 +21,12 @@ namespace RoundHero
         public void Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
-            Random = new System.Random(this.randomSeed);
-            
+            var random = new System.Random(this.randomSeed);
+            RandomCaches.Clear();
+            for (int i = 0; i < 100; i++)
+            {
+                RandomCaches.Add(random.Next());
+            }
         }
 
         
@@ -82,7 +87,7 @@ namespace RoundHero
              else
              {
                  var randomList = MathUtility.GetRandomNum(Constant.Battle.CoreCount, 0,
-                     places2.Count, Random);
+                     places2.Count, new Random(GetRandomSeed()));
                  coreGridPosIdxs = new List<int>();
                  foreach (var idx in randomList)
                  {
@@ -141,6 +146,22 @@ namespace RoundHero
             return coreEntity;
         }
         
+        public int GetRandomSeed()
+        {
+            return RandomCaches[RandomIdx++ % RandomCaches.Count];
+        }
+        
+        public int RandomIdx
+        {
+            get
+            {
+                return BattleManager.Instance.BattleData.CoreRandomIdx;
+            }
 
+            set
+            {
+                BattleManager.Instance.BattleData.CoreRandomIdx = value;
+            }
+        }
     }
 }

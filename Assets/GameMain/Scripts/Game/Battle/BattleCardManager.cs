@@ -48,6 +48,7 @@ namespace RoundHero
             this.randomSeed = randomSeed;
             var random = new Random(this.randomSeed);
 
+            RandomCaches.Clear();
             for (int i = 0; i < 100; i++)
             {
                 RandomCaches.Add(random.Next());

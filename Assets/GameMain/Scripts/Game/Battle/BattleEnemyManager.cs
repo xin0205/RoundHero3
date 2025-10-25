@@ -76,6 +76,7 @@ namespace RoundHero
             this.randomSeed = randomSeed;
             var random = new Random(this.randomSeed);
 
+            RandomCaches.Clear();
             for (int i = 0; i < 100; i++)
             {
                 RandomCaches.Add(random.Next());
@@ -401,11 +402,11 @@ namespace RoundHero
             //10, 11, 12, 13, 14
             //15, 16, 17, 18, 19
             //30, 31, 32, 33, 34
-            //var test = new List<int>(){3,3};
-            
-            // var enemyIdxs = MathUtility.GetRandomNum(
-            //     test.Count, 0,
-            //     places.Count, new Random(GetRandomSeed()));
+            // var test = new List<int>(){27,27};
+            //
+            //  var enemyIdxs = MathUtility.GetRandomNum(
+            //      test.Count, 0,
+            //      places.Count, new Random(GetRandomSeed()));
             
             //enemyGenerateCount
             for (int i = 0; i < enemyGenerateCount; i++)

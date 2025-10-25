@@ -131,19 +131,22 @@ namespace RoundHero
         {
             var random = new System.Random(GamePlayManager.Instance.GamePlayData.RandomSeed);
             GamePlayManager.Instance.Continue(random.Next());
-            BattleManager.Instance.Continue(random.Next());
-            PVEManager.Instance.Continue(random.Next());
+            
 
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
                 if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Tutorial)
                 {
+                    BattleManager.Instance.Continue(random.Next());
+                    PVEManager.Instance.Continue(random.Next());
                     ContinueBattle();
                 }
                 else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
                 {
                     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Battle)
                     {
+                        BattleManager.Instance.Continue(random.Next());
+                        PVEManager.Instance.Continue(random.Next());
                         ContinueBattle();
                     }
                     else if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage ==
@@ -156,6 +159,8 @@ namespace RoundHero
                 }
                 else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Test)
                 {
+                    BattleManager.Instance.Continue(random.Next());
+                    PVEManager.Instance.Continue(random.Next());
                     ContinueBattle();
                 }
             }

@@ -1908,14 +1908,14 @@ namespace RoundHero
         public async Task ShowTagsWithFlyUnitIdx(int actionUnitIdx, bool isShowAttackPos = true)
         {
             await ShowTags(actionUnitIdx, isShowAttackPos);
-            ShowFlyUnitIdx(actionUnitIdx);
+            await ShowFlyUnitIdx(actionUnitIdx);
         }
         
         public async Task ShowTags(int actionUnitIdx, bool isShowAttackPos = true)
         {
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
-
+            
             BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
             ShowAttackTag(actionUnitIdx, isShowAttackPos);
             await ShowFlyDirect(actionUnitIdx);

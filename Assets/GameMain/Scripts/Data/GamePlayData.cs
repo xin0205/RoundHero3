@@ -2021,6 +2021,7 @@ namespace RoundHero
         public int ResetActionTimes = Constant.Battle.ResetActionTimes;
         public int EnemyRandomIdx = 0;
         public int CardRandomIdx = 0;
+        public int CoreRandomIdx = 0;
         
         public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new(10);
         public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
@@ -2087,6 +2088,7 @@ namespace RoundHero
             dataBattle.ResetActionTimes = ResetActionTimes;
             dataBattle.EnemyRandomIdx = EnemyRandomIdx;
             dataBattle.CardRandomIdx = CardRandomIdx;
+            dataBattle.CoreRandomIdx = CoreRandomIdx;
             dataBattle.CurUnitCamp = CurUnitCamp;
             
             foreach (var kv in BattleUnitDatas)

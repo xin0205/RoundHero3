@@ -87,6 +87,7 @@ namespace RoundHero
                     if (kv.Value.FuneIdxs.Contains(equipFuneIdx))
                     {
                         kv.Value.FuneIdxs.Remove(equipFuneIdx);
+                        BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Add(equipFuneIdx);
                     }
                 }
 

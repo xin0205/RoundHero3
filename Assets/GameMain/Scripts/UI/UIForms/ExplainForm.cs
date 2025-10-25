@@ -150,6 +150,13 @@ namespace RoundHero
             {
                 ID = explainData.VideoID,
             });
+
+            showVideo = explainData.VideoID != -1;
+            
+            // showVideo =
+            //     (explainData.ItemType == EItemType.UnitCard || explainData.ItemType == EItemType.TacticCard) &&
+            //     explainData.VideoID != -1 &&
+            //     videoAssets.VideoAssetDict.ContainsKey(gifStr);
             
             // var gifStr = "GIF_" + explainData.VideoID.ToString();
             // showVideo =

@@ -1073,6 +1073,35 @@ namespace RoundHero
                     
                     
                     //hpDelta = (int) (triggerData.Value + triggerData.DeltaValue);
+                    
+
+
+                    if (actionUnitData != null && actionUnitData.GetStateCount(EUnitState.RecoverHP) > 0)
+                    {
+                        var recoverHPValue = -hpDelta;
+                        var recoverHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(actionUnitData.Idx,
+                            actionUnitData.Idx, actionUnitData.Idx, EUnitAttribute.HP, recoverHPValue,
+                            ETriggerDataSubType.Unit);
+                        recoverHPTriggerData.ActionUnitGridPosIdx =
+                            recoverHPTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
+                        SimulateTriggerData(recoverHPTriggerData, triggerDatas);
+                        triggerDatas.Add(recoverHPTriggerData);
+                    }
+
+                    if ( actionUnitData!= null  && actionUnitData.GetStateCount(EUnitState.DoubleDmg) > 0 && !GameUtility.ContainRoundState(
+                        GamePlayManager.Instance.GamePlayData, EBuffID.Spec_CurseUnEffect))
+                    {
+                        triggerData.Value *= 2;
+                        triggerData.DeltaValue *= 2;
+ 
+                    }
+                    
+                    triggerValue = triggerData.Value + triggerData.DeltaValue;
+                    
+
+                    triggerValue = BattleFightManager.Instance.ChangeHP(effectUnitData, triggerValue, EHPChangeType.Unit, true,
+                        triggerData.ChangeHPInstantly);
+                    
                     var counterAtkCount = effectUnitData.GetAllStateCount(EUnitState.CounterAtk);
                     if (counterAtkCount > 0 && actionUnitData != null)
                     {
@@ -1094,7 +1123,7 @@ namespace RoundHero
                             }
                             
                             var subCounterAttackTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, effectUnitData.Idx,
-                                effectUnitData.Idx, effectUnitData.Idx, EUnitState.CounterAtk, -actualCounterAtkCount,
+                                actionUnitData.Idx, effectUnitData.Idx, EUnitState.CounterAtk, -actualCounterAtkCount,
                                 ETriggerDataType.State);
                             subCounterAttackTriggerData.ActionUnitGridPosIdx = effectUnitData.GridPosIdx;
                             subCounterAttackTriggerData.EffectUnitGridPosIdx = effectUnitData.GridPosIdx;
@@ -1140,35 +1169,6 @@ namespace RoundHero
                         
                         
                     }
-
-
-                    if (actionUnitData != null && actionUnitData.GetStateCount(EUnitState.RecoverHP) > 0)
-                    {
-                        var recoverHPValue = -hpDelta;
-                        var recoverHPTriggerData = BattleFightManager.Instance.BattleRoleAttribute(actionUnitData.Idx,
-                            actionUnitData.Idx, actionUnitData.Idx, EUnitAttribute.HP, recoverHPValue,
-                            ETriggerDataSubType.Unit);
-                        recoverHPTriggerData.ActionUnitGridPosIdx =
-                            recoverHPTriggerData.EffectUnitGridPosIdx = actionUnitData.GridPosIdx;
-                        SimulateTriggerData(recoverHPTriggerData, triggerDatas);
-                        triggerDatas.Add(recoverHPTriggerData);
-                    }
-
-                    if ( actionUnitData!= null  && actionUnitData.GetStateCount(EUnitState.DoubleDmg) > 0 && !GameUtility.ContainRoundState(
-                        GamePlayManager.Instance.GamePlayData, EBuffID.Spec_CurseUnEffect))
-                    {
-                        triggerData.Value *= 2;
-                        triggerData.DeltaValue *= 2;
- 
-                    }
-                    
-                    triggerValue = triggerData.Value + triggerData.DeltaValue;
-                    
-
-                    triggerValue = BattleFightManager.Instance.ChangeHP(effectUnitData, triggerValue, EHPChangeType.Unit, true,
-                        triggerData.ChangeHPInstantly);
-                    
-                    
                     
                 }
 

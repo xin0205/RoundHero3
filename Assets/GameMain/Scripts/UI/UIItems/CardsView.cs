@@ -66,7 +66,11 @@ namespace RoundHero
             var idx = 0;
             foreach (var cardIdx in cardIdxs)
             {
-                var drCard = CardManager.Instance.GetCardTable(cardIdx);
+                if(!CardManager.Instance.CardDatas.ContainsKey(cardIdx))
+                    continue;
+                
+                var cardData = CardManager.Instance.CardDatas[cardIdx];
+                var drCard = GameEntry.DataTable.GetCard(cardData.CardID);
                 this.cards.Add(new PlayerCardData()
                 {
                     CardIdx = cardIdx,
@@ -168,7 +172,7 @@ namespace RoundHero
             cardIdxs.Clear();
             foreach (var kv in CardManager.Instance.CardDatas)
             {
-                var drCard = CardManager.Instance.GetCardTable(kv.Key);
+                var drCard = GameEntry.DataTable.GetCard(kv.Value.CardID);
                 if (cardTypes.Contains(drCard.CardType))
                 {
                     cardIdxs.Add(kv.Key);

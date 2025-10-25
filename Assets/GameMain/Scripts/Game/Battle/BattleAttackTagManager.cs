@@ -12,7 +12,7 @@ namespace RoundHero
         private int curAttackTagEntityIdx = 0;
         private int showAttackTagEntityIdx = 0;
         
-        public async void ShowHurtAttackTag(int effectUnitIdx, int actionUnitIdx, List<int> exceptUnitIdxs = null)
+        public async Task ShowHurtAttackTag(int effectUnitIdx, int actionUnitIdx, List<int> exceptUnitIdxs = null)
         {
             // || BattleManager.Instance.BattleState == EBattleState.End
             if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
@@ -116,7 +116,7 @@ namespace RoundHero
         
         }
         
-        public async void ShowAttackTag(int actionUnitIdx, bool showAttackPos)
+        public async Task ShowAttackTag(int actionUnitIdx, bool showAttackPos)
         {
 
             if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
