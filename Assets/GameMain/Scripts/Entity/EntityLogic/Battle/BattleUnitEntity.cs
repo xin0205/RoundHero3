@@ -1924,7 +1924,7 @@ namespace RoundHero
             ShowDisplayIcon(actionUnitIdx);
         }
 
-        public void ShowHurtTags(int effectUnitIdx, int actionUnitIdx = -1)
+        public async Task ShowHurtTags(int effectUnitIdx, int actionUnitIdx = -1)
         {
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;

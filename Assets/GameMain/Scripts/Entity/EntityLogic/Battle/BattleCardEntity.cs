@@ -692,6 +692,7 @@ namespace RoundHero
             }
             else
             {
+                BattleCardEntityData.CardData.CardUseType = ECardUseType.RawUnSelect;
                 toScale = 0f;
             }
             
@@ -1029,40 +1030,59 @@ namespace RoundHero
             {
                 return;
             }
+
+            var moveGridPosIdxs = new Dictionary<int, int>();
+            if (battleState == EBattleState.MoveGrid)
+            {
+                foreach (var kv in BattleAreaManager.Instance.MoveGridPosIdxs)
+                {
+                    var moveGrid = BattleAreaManager.Instance.MoveGrids[kv.Key];
+                    moveGridPosIdxs.Add(kv.Key, moveGrid.GridPosIdx);
+                    moveGrid.GridPosIdx = kv.Value;
+                }
+            }
+
+            BattleManager.Instance.RecordLastActionBattleData();
+            
+            if (battleState == EBattleState.MoveGrid)
+            {
+                foreach (var kv in moveGridPosIdxs)
+                {
+                    var moveGrid = BattleAreaManager.Instance.MoveGrids[kv.Key];
+                    moveGrid.GridPosIdx = kv.Value;
+                }
+            }
+            
             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
             //移动格子卡，卡使用后要移动到屏幕中间
             BattleCardManager.Instance.UseCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
             //BattleCardManager.Instance.CardEntities[BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx].
             UseCardAnimation();
 
-            var moveGridPosIdx = new Dictionary<int, int>();
-            if (battleState == EBattleState.MoveGrid)
-            {
-                
-                foreach (var kv in BattleAreaManager.Instance.MoveGrids)
-                {
-                    moveGridPosIdx.Add(kv.Key, kv.Value.GridPosIdx);
-                }
-                
-                foreach (var kv in BattleAreaManager.Instance.MoveGridPosIdxs)
-                {
-                    var moveGrid = BattleAreaManager.Instance.MoveGrids[kv.Key];
-                    moveGrid.GridPosIdx = kv.Value;
-                }
-            }
-
-            
-            
-            
-            
-            if (battleState == EBattleState.MoveGrid)
-            {
-                foreach (var kv in BattleAreaManager.Instance.MoveGrids)
-                {
-                    kv.Value.GridPosIdx = moveGridPosIdx[kv.Key];
-
-                }
-            }
+            // var moveGridPosIdx = new Dictionary<int, int>();
+            // if (battleState == EBattleState.MoveGrid)
+            // {
+            //     
+            //     foreach (var kv in BattleAreaManager.Instance.MoveGrids)
+            //     {
+            //         moveGridPosIdx.Add(kv.Key, kv.Value.GridPosIdx);
+            //     }
+            //     
+            //     foreach (var kv in BattleAreaManager.Instance.MoveGridPosIdxs)
+            //     {
+            //         var moveGrid = BattleAreaManager.Instance.MoveGrids[kv.Key];
+            //         moveGrid.GridPosIdx = kv.Value;
+            //     }
+            // }
+            //
+            // if (battleState == EBattleState.MoveGrid)
+            // {
+            //     foreach (var kv in BattleAreaManager.Instance.MoveGrids)
+            //     {
+            //         kv.Value.GridPosIdx = moveGridPosIdx[kv.Key];
+            //
+            //     }
+            // }
             
             if (battleState == EBattleState.MoveGrid)
             {

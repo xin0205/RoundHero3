@@ -205,8 +205,13 @@ namespace RoundHero
                 
                 if (flyEffectUnit != null)
                 {
-                    await flyEffectUnit.ShowAttackTag(kv.Key, false);
                     await flyEffectUnit.ShowHurtAttackTag(kv.Key, -1, new List<int>(){unitIdx});
+                    await flyEffectUnit.ShowAttackTag(kv.Key, false);
+                    
+                    //, new List<int>(){unitIdx}
+                    // await flyEffectUnit.ShowHurtTags(kv.Key, -1);
+                    // await flyEffectUnit.ShowTags(kv.Key, false);
+                    //
                 }
 
                     

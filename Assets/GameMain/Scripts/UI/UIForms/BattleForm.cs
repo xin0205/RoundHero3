@@ -577,8 +577,12 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.AddPlayerData(GamePlayManager.Instance.GamePlayData.PlayerData);
             
             //GamePlayManager.Instance.GamePlayData.LastActionPlayerData.Clear();
+            foreach (var data in GamePlayManager.Instance.GamePlayData.BattleActionDataList)
+            {
+                data.BattleData.ResetActionTimes -= 1;
+            }
 
-            battleData.ResetActionTimes -= 1;
+            //battleData.ResetActionTimes -= 1;
             GamePlayManager.Instance.GamePlayData.BattleData = battleData.Copy();
             BattlePlayerManager.Instance.SetCurPlayer(EUnitCamp.Player1);
             await GamePlayManager.Instance.ShowBattleData(battleData);

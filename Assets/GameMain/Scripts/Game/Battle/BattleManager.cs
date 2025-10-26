@@ -490,7 +490,7 @@ namespace RoundHero
         
         public Data_Card GetCard(int cardIdx)
         {
-            return BattleTypeManager.GetCard(cardIdx);
+            return CardManager.Instance.GetCard(cardIdx);
         }
         
         public Data_EnergyBuff GetEnergyBuff(EUnitCamp unitCamp, int heart, int hp)

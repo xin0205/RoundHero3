@@ -66,7 +66,31 @@ namespace RoundHero
                         var pos1 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
                         var pos2 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 2]);
 
-                        
+                        var unit1 = GameUtility.GetUnitByGridPosIdx(kv.Value[kv.Value.Count - 1]);
+                        var unit2 = GameUtility.GetUnitByGridPosIdx(kv.Value[kv.Value.Count - 2]);
+
+                        if (unit1 != null)
+                        {
+                            var unit1Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
+                                unit2.Idx);
+                            foreach (var kv2 in unit1Dict)
+                            {
+                                ShowValues(kv2.Value);
+                            
+                            }
+                        }
+
+                        if (unit2 != null)
+                        {
+                            var unit2Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
+                                unit1.Idx);
+                            foreach (var kv2 in unit2Dict)
+                            {
+                                ShowValues(kv2.Value);
+
+                            }
+                        }
+
                         var centerPos = (pos1 + pos2) / 2.0f;
                         centerPos.y += 1f;
                         

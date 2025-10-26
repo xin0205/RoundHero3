@@ -141,6 +141,7 @@ namespace RoundHero
             DmgDelta = 0;
             CardDestination = ECardDestination.Pass;
             IsPassable = false;
+            CardUseType = ECardUseType.RawUnSelect;
         }
         
         public Data_Card()

@@ -669,14 +669,14 @@ namespace RoundHero
                          
                          if (unitCamps == null || selfUnitCamp == EUnitCamp.Empty)
                          {
-                             unitCount += unit is Data_BattleCore ? 50 : 0;
+                             unitCount += unit is Data_BattleCore ? 0 : 0;
 
                          }
                          else if (unitCamps != null && selfUnitCamp != EUnitCamp.Empty)
                          {
                              if (unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
                              {
-                                 unitCount += unit is Data_BattleCore ? 50 : 10;
+                                 unitCount += unit is Data_BattleCore ? 10 : 10;
 
                              }
                          

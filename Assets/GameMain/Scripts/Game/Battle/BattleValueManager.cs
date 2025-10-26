@@ -48,7 +48,7 @@ namespace RoundHero
                     // {
                     //     ShowValues(values, _entityIdx);
                     // });
-                    ShowValues(kv.Value, _curValueEntityIdx);
+                    ShowValues(kv.Value);
                     idx++;
                     //entityIdx += kv.Value.Count;
                 }
@@ -58,32 +58,31 @@ namespace RoundHero
                 var startValue = 0;
                 var endValue = 0;
                 var isShow = false;
+                
+                var idx = 0;
                 foreach (var kv in triggerDataDict)
                 {
-                    foreach (var triggerData in kv.Value)
-                    {
-                        if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
-                        {
-                            continue;
-                        }
-                        isShow = true;
-                        startValue += (int)triggerData.ActualValue;
-                        endValue += BlessManager.Instance.AddCurHPByAttackDamage()
-                            ? (int)(triggerData.Value + triggerData.DeltaValue)
-                            : (int)triggerData.ActualValue;
-                    }
+                    ShowValues(kv.Value);
+                    idx++;
+                    
+                    // foreach (var triggerData in kv.Value)
+                    // {
+                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
+                    //     {
+                    //         continue;
+                    //     }
+                    //     isShow = true;
+                    //     startValue += (int)triggerData.ActualValue;
+                    //     endValue += BlessManager.Instance.AddCurHPByAttackDamage()
+                    //         ? (int)(triggerData.Value + triggerData.DeltaValue)
+                    //         : (int)triggerData.ActualValue;
+                    // }
                 }
 
-                // if (startValue != 0)
+                // if (isShow)
                 // {
-                //     //CurValueEntityIdx += 1;
                 //     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
                 // }
-
-                if (isShow)
-                {
-                    InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
-                }
                
             }
         }
@@ -169,7 +168,7 @@ namespace RoundHero
                         //CurValueEntityIdx += 1;
                         
                     }
-                    ShowValues(kv.Value, CurValueEntityIdx);
+                    ShowValues(kv.Value);
                     //entityIdx += kv.Value.Count;
                 }
                 else
@@ -186,7 +185,7 @@ namespace RoundHero
                         //CurValueEntityIdx += 1;
                         
                     }
-                    ShowValues(kv.Value, CurValueEntityIdx);
+                    ShowValues(kv.Value);
                     
                     // var startValue = 0;
                     // var endValue = 0;
@@ -385,7 +384,8 @@ namespace RoundHero
             }
         }
 
-        private async void ShowValues(List<TriggerData> triggerDatas, int entityIdx)
+        //, _curValueEntityIdx
+        private async void ShowValues(List<TriggerData> triggerDatas)
         {
             var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].ActionUnitIdx);
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].EffectUnitIdx);
