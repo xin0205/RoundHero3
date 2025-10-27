@@ -22,7 +22,7 @@ namespace RoundHero
         {
             UserID = userID;
             CurFileIdx = 0;
-            SetGamePlayData(EPVEType.Battle, CurFileIdx);
+            SetGamePlayData(EPVEType.BattleMode, CurFileIdx);
             SetGamePlayData(EPVEType.Test, CurFileIdx);
         }
 

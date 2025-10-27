@@ -429,6 +429,15 @@ namespace RoundHero
             
             if(gameResult == EBattleResult.Success)
             {
+
+                if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode
+                    && GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 <
+                    Constant.BattleMode.MaxBattleCount)
+                {
+                    BattleManager.Instance.BattleData.IsReward = true;
+                }
+                
+                
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
                 {
                     IsCloseAvailable = false,

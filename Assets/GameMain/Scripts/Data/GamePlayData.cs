@@ -1759,13 +1759,21 @@ namespace RoundHero
         public bool IsTutorialBattle = false;
         //public bool IsEndTutorial = false;
         //public bool IsTutorial = false;
-        public bool IsStartGame = false;
+        public bool IsGamePlaying = false;
+        public bool IsInitGame = false;
         
         public List<Data_Player> PlayerDatas = new();
         public Dictionary<ulong, Data_Player> PlayerDataIDDict = new ();
         public Dictionary<EUnitCamp, Data_Player> PlayerDataCampDict = new ();
         
         public List<BattleActionData> BattleActionDataList = new List<BattleActionData>();
+
+        public void BattleClear()
+        {
+            BattleActionDataList.Clear();
+            LastRoundBattleData.Clear();
+            
+        }
         public Data_GamePlay()
         {
             
@@ -2023,12 +2031,16 @@ namespace RoundHero
         public int EnemyRandomIdx = 0;
         public int CardRandomIdx = 0;
         public int CoreRandomIdx = 0;
+        public int BattleModeRandomIdx = 0;
         
         public Dictionary<int, Data_BattleUnit> BattleUnitDatas = new(10);
         public Dictionary<int, Data_GridProp> GridPropDatas = new(10);
         public Dictionary<int, EGridType> GridTypes = new (100);
         public EnemyGenerateData EnemyGenerateData = new EnemyGenerateData();
         public EUnitCamp CurUnitCamp;
+
+        public bool IsNewBattle = false;
+        public bool IsReward = false;
         
 
         public Data_Battle()
@@ -2090,7 +2102,10 @@ namespace RoundHero
             dataBattle.EnemyRandomIdx = EnemyRandomIdx;
             dataBattle.CardRandomIdx = CardRandomIdx;
             dataBattle.CoreRandomIdx = CoreRandomIdx;
+            dataBattle.BattleModeRandomIdx = BattleModeRandomIdx;
             dataBattle.CurUnitCamp = CurUnitCamp;
+            dataBattle.IsNewBattle = IsNewBattle;
+            dataBattle.IsReward = IsReward;
             
             foreach (var kv in BattleUnitDatas)
             {

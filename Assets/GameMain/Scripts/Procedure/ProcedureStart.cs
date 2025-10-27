@@ -96,7 +96,7 @@ namespace RoundHero
 
             if (ne.GamePlayInitData.GameMode == EGamMode.PVE)
             {
-                GameManager.Instance.IsStartGame = true;
+                GameManager.Instance.IsStartBattle = true;
                 ChangeState<ProcedureGamePlay>(procedureOwner);
 
                 var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
@@ -114,8 +114,23 @@ namespace RoundHero
 
         public void OnGamePlayContinueGame(object sender, GameEventArgs e)
         {
-            GameManager.Instance.IsStartGame = false;
-            ContinueGame();
+            
+            if (BattleManager.Instance.BattleData.IsNewBattle && !BattleManager.Instance.BattleData.IsReward)
+            {
+                GameManager.Instance.IsStartBattle = true;
+                ChangeState<ProcedureGamePlay>(procedureOwner);
+                
+                var gamePlayProcedure = procedureOwner.CurrentState as ProcedureGamePlay;
+                GamePlayManager.Instance.GamePlayData.RandomSeed = UnityEngine.Random.Range(0, Constant.Game.RandomRange);
+                gamePlayProcedure.StartBattleMode(GamePlayManager.Instance.GamePlayData.RandomSeed);
+                BattleManager.Instance.BattleData.IsNewBattle = false;
+            }
+            else
+            {
+                GameManager.Instance.IsStartBattle = false;
+                ContinueGame();
+            }
+            
             DataManager.Instance.Save();
 
         }
@@ -141,7 +156,7 @@ namespace RoundHero
                     PVEManager.Instance.Continue(random.Next());
                     ContinueBattle();
                 }
-                else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+                else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
                 {
                     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Battle)
                     {
@@ -217,7 +232,7 @@ namespace RoundHero
             
             //GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
             //GamePlayManager.Instance.GamePlayData.PVEType
-            DataManager.Instance.DataGame.User.SetCurGamePlayData(EPVEType.Battle);
+            DataManager.Instance.DataGame.User.SetCurGamePlayData(EPVEType.BattleMode);
             
             GameEntry.Event.Fire(null,
                 GamePlayContinueGameEventArgs.Create());

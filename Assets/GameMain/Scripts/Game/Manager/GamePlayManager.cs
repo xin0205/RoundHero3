@@ -25,7 +25,7 @@ namespace RoundHero
                 {
                     GamePlayManager.Instance.GamePlayData.ClearPlayerDataList();
                     GamePlayManager.Instance.GamePlayData.AddPlayerData(PlayerManager.Instance.PlayerData);
-                    GamePlayManager.Instance.GamePlayData.IsStartGame = true;
+                    GamePlayManager.Instance.GamePlayData.IsGamePlaying = true;
                     //InitPlayerData();
                     //PlayerManager.Instance.PlayerData.Clear();
                 
@@ -34,7 +34,7 @@ namespace RoundHero
 
                 }
                 
-                if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+                if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
                 {
                     BattleModeManager.Instance.Init(random.Next());
                 }

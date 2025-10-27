@@ -68,7 +68,7 @@ namespace RoundHero
             var battleFormTask = await GameEntry.UI.OpenUIFormAsync(UIFormId.BattleForm, this);
             battleForm = battleFormTask.Logic as BattleForm;
 
-            if (GameManager.Instance.IsStartGame)
+            if (GameManager.Instance.IsStartBattle)
             {
                 await BattleAreaManager.Instance.GenerateArea();
                 await BattleCoreManager.Instance.GenerateCores();
@@ -197,7 +197,7 @@ namespace RoundHero
                 GameEntry.UI.CloseUIForm(tutorialForm);
                 procedureStart.Start();
             }
-            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
             {
                 if (battleResult == EBattleResult.Failed)
                 {
@@ -205,9 +205,20 @@ namespace RoundHero
                 }
                 else if(battleResult == EBattleResult.Success)
                 {
-                    GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
-                        BattleModeManager.Instance.Random.Next(0, Constant.Game.RandomRange);
-                    procedureStart.BattleModeReward();
+                    if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 ==
+                        Constant.BattleMode.MaxBattleCount)
+                    {
+                        GamePlayManager.Instance.GamePlayData.IsGamePlaying = false;
+                        procedureStart.Start();
+                    }
+                    else
+                    {
+                        
+                        GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
+                            BattleModeManager.Instance.GetRandomSeed();
+                        procedureStart.BattleModeReward();
+                    }
+                    
                 }
 
                 else

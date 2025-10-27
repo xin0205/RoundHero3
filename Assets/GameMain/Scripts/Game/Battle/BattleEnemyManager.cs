@@ -103,7 +103,10 @@ namespace RoundHero
 
         public void Continue()
         {
-            
+            // if (BattleManager.Instance.BattleData.IsNewBattle)
+            // {
+            //     Start();
+            // }
         }
 
         public int GetRandomSeed()

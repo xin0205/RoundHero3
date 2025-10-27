@@ -117,7 +117,7 @@ namespace RoundHero
             battleSession.gameObject.SetActive(false);
             enemyCount.gameObject.SetActive(false);
             
-            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
             {
                 battleSession.gameObject.SetActive(true);
 
@@ -278,7 +278,7 @@ namespace RoundHero
         private void RefreshUI()
         {
             RefreshEnergy();
-            //RefreshRound();
+            RefreshRound();
             RefreshCardCount();
             RefreshHeroHP();
             //RefreshCoin();
@@ -290,7 +290,7 @@ namespace RoundHero
                 Constant.Battle.ResetActionTimes.ToString()
             });
             
-            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
             {
                 var _enemyCount = 0;
                 foreach (var kv in BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount)
@@ -469,8 +469,10 @@ namespace RoundHero
             
             if (TutorialManager.Instance.IsTutorial() && !TutorialManager.Instance.CheckTutorialEnd())
                 return;
+
+            BattleManager.Instance.BattleSuccess();
             
-            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
             {
                 procedureBattle.EndBattleMode(EBattleResult.Success);
             }
@@ -496,6 +498,7 @@ namespace RoundHero
                 Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmExitBattle),
                 OnConfirm = () =>
                 {
+                    DataManager.Instance.Save();
                     BattleManager.Instance.EndBattle(EBattleResult.Empty);
 
                 },

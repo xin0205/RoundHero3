@@ -57,13 +57,13 @@ namespace RoundHero
         public void BattleModeOnPointerEnter()
         {
             var gamePlayData = DataManager.Instance.DataGame.User.GamePlayDatas[DataManager.Instance.DataGame.User.CurFileIdx][
-                EPVEType.Battle];
+                EPVEType.BattleMode];
 
             if (gamePlayData != null)
             {
-                battleMode_startGame.SetActive(!gamePlayData.IsStartGame);
-                battleMode_continueGame.SetActive(gamePlayData.IsStartGame);
-                battleMode_restartGame.SetActive(gamePlayData.IsStartGame);
+                battleMode_startGame.SetActive(!gamePlayData.IsGamePlaying);
+                battleMode_continueGame.SetActive(gamePlayData.IsGamePlaying);
+                battleMode_restartGame.SetActive(gamePlayData.IsGamePlaying);
 
             }
         }

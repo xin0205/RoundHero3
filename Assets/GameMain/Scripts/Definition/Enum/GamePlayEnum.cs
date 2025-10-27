@@ -555,7 +555,7 @@ namespace RoundHero
     public enum EPVEType
     {
         Empty,
-        Battle,
+        BattleMode,
         Adventure,
         Test,
         Tutorial

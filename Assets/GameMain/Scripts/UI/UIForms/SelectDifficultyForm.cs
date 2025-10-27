@@ -55,10 +55,10 @@ namespace RoundHero
 
         public void Diffculty(EGameDifficulty difficulty)
         {
-            procedureStart.Reset(EPVEType.Battle);
+            procedureStart.Reset(EPVEType.BattleMode);
             GameManager.Instance.InitCards = new List<int>(Constant.BattleMode.InitCards);
 
-            DataManager.Instance.DataGame.User.SetCurGamePlayData(EPVEType.Battle);
+            DataManager.Instance.DataGame.User.SetCurGamePlayData(EPVEType.BattleMode);
             
             // DataManager.Instance.DataGame.User.DefaultInitSelectCards =
             //     new List<int>(GameManager.Instance.InitCards);
@@ -71,7 +71,7 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.RandomSeed = radomSeed;
             GamePlayManager.Instance.GamePlayData.GameMode = EGamMode.PVE;
             GamePlayManager.Instance.GamePlayData.BattleData.GameDifficulty = difficulty;
-            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.Battle;
+            GamePlayManager.Instance.GamePlayData.PVEType = EPVEType.BattleMode;
             
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session = 0;
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Battle;

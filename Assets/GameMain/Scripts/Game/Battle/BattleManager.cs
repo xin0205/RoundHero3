@@ -68,6 +68,7 @@ namespace RoundHero
         public void Start(int randomSeed)
         {
             BattleManager.Instance.Init(randomSeed);
+            BattleManager.Instance.BattleData.Round = 0;
             BattleAreaManager.Instance.Start();
             BattleEnemyManager.Instance.Start();
         }
@@ -544,6 +545,7 @@ namespace RoundHero
         {
             if (battleResult == EBattleResult.Success)
             {
+                BattleManager.Instance.BattleSuccess();
                 BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
                     BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
             }
@@ -552,7 +554,7 @@ namespace RoundHero
             {
                 ProcedureBattle.EndBattle(battleResult);
             }
-            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.Battle)
+            else if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
             {
                 ProcedureBattle.EndBattleMode(battleResult);
             }
@@ -563,6 +565,12 @@ namespace RoundHero
             
             
             
+        }
+
+        public void BattleSuccess()
+        {
+            GamePlayManager.Instance.GamePlayData.BattleClear();
+            BattleManager.Instance.BattleData.IsNewBattle = true;
         }
         
         public void EndBattleMode()

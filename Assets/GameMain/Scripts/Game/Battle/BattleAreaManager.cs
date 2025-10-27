@@ -1926,7 +1926,6 @@ namespace RoundHero
                     //BattleUnitManager.Instance.TempUnitData.UnitData = null;
                     BattleManager.Instance.SetBattleState(EBattleState.UseCard);
                     //BattleManager.Instance.TempTriggerData.UnitData.RemoveState(EUnitState.ActiveAtk);
-                    
                 }
                 
        
@@ -2112,7 +2111,6 @@ namespace RoundHero
             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
             
             GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
-            
         }
 
         public async Task<BattleSoliderEntity> GenerateSolider(Data_BattleSolider battleSoliderData)

@@ -156,7 +156,10 @@ namespace RoundHero
 
         public void Continue()
         {
-            
+            // if (BattleManager.Instance.BattleData.IsNewBattle)
+            // {
+            //     Start();
+            // }
         }
 
         public void SetCardPosList(int cardCount)
@@ -1031,6 +1034,7 @@ namespace RoundHero
             {
                 HeroManager.Instance.UpdateCacheHPDelta();
                 BattleManager.Instance.RefreshEnemyAttackData();
+                
             });
             
             

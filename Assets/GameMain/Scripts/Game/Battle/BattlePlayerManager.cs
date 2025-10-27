@@ -20,42 +20,46 @@ namespace RoundHero
             SetCurPlayer(unitCamp);
             var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unitCamp);
             playerData.Coin = Constant.Hero.InitDatas[unitCamp].Coin;
-            
-            
-            foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
-            {
-                var funeIdx = playerData.FuneIdx++;
-                var drFune = GameEntry.DataTable.GetBuff(funeID);
-                var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.GetValues(0)[0]);
-                playerData.FuneDatas.Add(funeIdx, new Data_Fune(funeIdx, funeID, (int)value));
-                playerData.UnusedFuneIdxs.Add(funeIdx);
-            }
-            
-            foreach (var blessID in Constant.Hero.InitDatas[unitCamp].InitBlesses)
-            {
-                var blessIdx = playerData.BlessIdx++;
-                var drBless = GameEntry.DataTable.GetBless(blessID);
-                
-                playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, drBless.BlessID));
-                
-            }
 
-            if (TutorialManager.Instance.IsTutorial())
+            if (!GamePlayManager.Instance.GamePlayData.IsInitGame)
             {
-                foreach (var cardID in Constant.Tutorial.Cards)
+                GamePlayManager.Instance.GamePlayData.IsInitGame = true;
+                foreach (var funeID in Constant.Hero.InitDatas[unitCamp].InitFunes)
                 {
-                    var cardIdx = playerData.CardIdx++;
-                    playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
+                    var funeIdx = playerData.FuneIdx++;
+                    var drFune = GameEntry.DataTable.GetBuff(funeID);
+                    var value = drFune == null ? 0 : BattleBuffManager.Instance.GetBuffValue(drFune.GetValues(0)[0]);
+                    playerData.FuneDatas.Add(funeIdx, new Data_Fune(funeIdx, funeID, (int)value));
+                    playerData.UnusedFuneIdxs.Add(funeIdx);
+                }
+            
+                foreach (var blessID in Constant.Hero.InitDatas[unitCamp].InitBlesses)
+                {
+                    var blessIdx = playerData.BlessIdx++;
+                    var drBless = GameEntry.DataTable.GetBless(blessID);
+                
+                    playerData.BlessDatas.Add(blessIdx, new Data_Bless(blessIdx, drBless.BlessID));
+                
+                }
+
+                if (TutorialManager.Instance.IsTutorial())
+                {
+                    foreach (var cardID in Constant.Tutorial.Cards)
+                    {
+                        var cardIdx = playerData.CardIdx++;
+                        playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
+                    }
+                }
+                else
+                {
+                    foreach (var cardID in GameManager.Instance.InitCards)
+                    {
+                        var cardIdx = playerData.CardIdx++;
+                        playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
+                    }
                 }
             }
-            else
-            {
-                foreach (var cardID in GameManager.Instance.InitCards)
-                {
-                    var cardIdx = playerData.CardIdx++;
-                    playerData.CardDatas.Add(cardIdx, new Data_Card(cardIdx, cardID));
-                }
-            }
+            
             
 
             // var energyBuffDict = new Dictionary<int, string>();

@@ -28,18 +28,44 @@ namespace RoundHero
     
     public class BattleModeManager: Singleton<BattleModeManager>
     {
-        public System.Random Random;
+        //public System.Random Random;
         private int randomSeed;
+        
+        public int RandomIdx
+        {
+            get
+            {
+                return BattleManager.Instance.BattleData.BattleModeRandomIdx;
+            }
+
+            set
+            {
+                BattleManager.Instance.BattleData.BattleModeRandomIdx = value;
+            }
+        }
+
+        public List<int> RandomCaches = new List<int>();
 
         public void Init(int randomSeed)
         {
             this.randomSeed = randomSeed;
-            Random = new System.Random(this.randomSeed);
+            var random = new System.Random(this.randomSeed);
+            
+            RandomCaches.Clear();
+            for (int i = 0; i < 100; i++)
+            {
+                RandomCaches.Add(random.Next());
+            }
         }
         
         public void Destory()
         {
             
+        }
+        
+        public int GetRandomSeed()
+        {
+            return RandomCaches[RandomIdx++ % RandomCaches.Count];
         }
     }
 }

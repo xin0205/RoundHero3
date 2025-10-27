@@ -115,6 +115,16 @@ namespace RoundHero
         
         public void ContinueBattleMode()
         {
+            
+            // if (BattleManager.Instance.BattleData.IsNewBattle)
+            // {
+            //     StartBattleMode(UnityEngine.Random.Range(0, Constant.Game.RandomRange));
+            //     BattleManager.Instance.BattleData.IsNewBattle = false;
+            // }
+            // else
+            // {
+            //     ChangeState<ProcedureBattle>(procedureOwner);
+            // }
             ChangeState<ProcedureBattle>(procedureOwner);
         }
         

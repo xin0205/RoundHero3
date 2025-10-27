@@ -9,7 +9,7 @@ namespace RoundHero
         
         public List<int> CardsForm_EquipFuneIdxs = new List<int>();
         
-        public bool IsStartGame = false;
+        public bool IsStartBattle = false;
         
         
         public Data_Game GameData => DataManager.Instance.DataGame;

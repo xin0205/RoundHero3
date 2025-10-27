@@ -126,6 +126,7 @@ namespace RoundHero
   
             }
             BattleUnitEntities.Clear();
+            BattleUnitDatas.Clear();
         }
         
         public void Subscribe()
