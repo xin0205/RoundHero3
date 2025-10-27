@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 
@@ -35,9 +36,9 @@ namespace RoundHero
             
             BattleIconEntities.Clear();
             
-            
-            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unitIdx),
-                BattleFightManager.Instance.GetInDirectAttackDatas(unitIdx));
+            //GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(unitIdx),
+            //BattleFightManager.Instance.GetInDirectAttackDatas(unitIdx));
+            var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
 
             var entityIdx = curEntityIdx;
             curEntityIdx += triggerDataDict.Count;
@@ -69,25 +70,47 @@ namespace RoundHero
                         var unit1 = GameUtility.GetUnitByGridPosIdx(kv.Value[kv.Value.Count - 1]);
                         var unit2 = GameUtility.GetUnitByGridPosIdx(kv.Value[kv.Value.Count - 2]);
 
-                        if (unit1 != null)
+                        if (unit1 != null )
                         {
                             var unit1Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
                                 unit2.Idx);
                             foreach (var kv2 in unit1Dict)
                             {
-                                ShowValues(kv2.Value);
+                                var datas = new List<TriggerData>();
+                                foreach (var data in kv2.Value)
+                                {
+                                    if(data.ActionUnitIdx == actionUnitIdx)
+                                        continue;
+                                    datas.Add(data);
+                                }
+                                if (datas.Count > 0)
+                                {
+                                    ShowValues(datas);
+                                }
                             
                             }
                         }
-
+                        
                         if (unit2 != null)
                         {
                             var unit2Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
                                 unit1.Idx);
                             foreach (var kv2 in unit2Dict)
                             {
-                                ShowValues(kv2.Value);
+                                var datas = new List<TriggerData>();
+                                foreach (var data in kv2.Value)
+                                {
+                                    if(data.ActionUnitIdx == actionUnitIdx)
+                                        continue;
+                                    datas.Add(data);
+                                }
 
+                                if (datas.Count > 0)
+                                {
+                                    ShowValues(datas);
+                                }
+                                
+                        
                             }
                         }
 

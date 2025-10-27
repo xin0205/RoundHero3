@@ -1707,10 +1707,10 @@ namespace RoundHero
                     {
                         data = moveValueQueue.Dequeue();
                     }
-                    if (moveValueQueue.Count <= 0)
-                    {
-                        showMoveValueTime = 0.8f;
-                    }
+                    // if (moveValueQueue.Count <= 0)
+                    // {
+                    //     showMoveValueTime = 0.8f;
+                    // }
                 } while(data != null && data.EntityIdx < ShowValueEntityIdx);
                 
                 if(data == null)
