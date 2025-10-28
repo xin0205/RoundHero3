@@ -323,7 +323,7 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.selectAcquireItemDatas.Clear();
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session += 1;
             GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Battle;
-            BattleManager.Instance.BattleData.IsReward = false;
+            //BattleManager.Instance.BattleData.IsReward = false;
             
             GameEntry.UI.CloseUIForm(this);
             GameEntry.Event.Fire(null,

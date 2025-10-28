@@ -408,6 +408,7 @@ namespace RoundHero
                     GameEntry.Event.Fire(null, SwitchActionCampEventArgs.Create(EUnitCamp.Player1));
                 }
             }
+            DataManager.Instance.Save();
             
         }
         

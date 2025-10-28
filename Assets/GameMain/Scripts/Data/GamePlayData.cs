@@ -880,7 +880,11 @@ namespace RoundHero
                 var deltaHeart = changeHP / MaxHP;
                 var deltaHP = changeHP % MaxHP;
                 var curHeart = Attribute.GetAttribute(EHeroAttribute.CurHeart);
-
+                if (deltaHP == 0 && changeHP != 0)
+                {
+                    deltaHP = changeHP;
+                }
+                
                 if (CurHP + deltaHP <= 0)
                 {
                     deltaHeart -= 1;
@@ -2040,7 +2044,7 @@ namespace RoundHero
         public EUnitCamp CurUnitCamp;
 
         public bool IsNewBattle = false;
-        public bool IsReward = false;
+        //public bool IsReward = false;
         
 
         public Data_Battle()
@@ -2105,7 +2109,7 @@ namespace RoundHero
             dataBattle.BattleModeRandomIdx = BattleModeRandomIdx;
             dataBattle.CurUnitCamp = CurUnitCamp;
             dataBattle.IsNewBattle = IsNewBattle;
-            dataBattle.IsReward = IsReward;
+            //dataBattle.IsReward = IsReward;
             
             foreach (var kv in BattleUnitDatas)
             {

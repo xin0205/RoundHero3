@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using System.Collections.Generic;
+using Steamworks;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -8,30 +9,41 @@ namespace RoundHero
     {
         public Data_Game DataGame;
 
+        public class VersionList
+        {
+            public List<string> versions = new List<string>();
+        }
+
         public DataManager()
         {
             var appVersions = Application.version.Split("_");
             var isForceDataReset = appVersions[appVersions.Length - 1] == "1";
 
-            if (isForceDataReset)
+            var versionList = GameEntry.Setting.GetObject<VersionList>(Constant.Game.VersionListKey, new VersionList());
+
+            if (!versionList.versions.Contains(Application.version) && isForceDataReset)
             {
+                versionList.versions.Add(Application.version);
                 DataGame = new Data_Game();
+                GameEntry.Setting.SetObject(Constant.Game.VersionListKey, versionList);
+                Save();
             }
             else
             {
-                Log.Info("DataManager");
-                var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
-              
-                if (hasSetting)
-                {
-                    Log.Info("hasSetting");
-                    DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
-                }
-                else
-                {
-                    Log.Info("!!hasSetting");
-                    DataGame = new Data_Game();
-                }
+                // Log.Info("DataManager");
+                // var hasSetting = GameEntry.Setting.HasSetting(Constant.Game.GameDataKey);
+                //
+                // if (hasSetting)
+                // {
+                //     Log.Info("hasSetting");
+                //     DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey);
+                // }
+                // else
+                // {
+                //     Log.Info("!!hasSetting");
+                //     DataGame = new Data_Game();
+                // }
+                DataGame = GameEntry.Setting.GetObject<Data_Game>(Constant.Game.GameDataKey, new Data_Game());
             }
             
 

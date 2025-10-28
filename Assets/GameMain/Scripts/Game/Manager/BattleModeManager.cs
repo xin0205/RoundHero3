@@ -22,6 +22,7 @@ namespace RoundHero
             var battleModeProduce = new BattleModeProduce();
             battleModeProduce.Session = Session;
             battleModeProduce.BattleModeStage = BattleModeStage;
+            battleModeProduce.RewardRandomSeed = RewardRandomSeed;
             return battleModeProduce;
         }
     }

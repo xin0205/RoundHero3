@@ -214,8 +214,7 @@ namespace RoundHero
                     else
                     {
                         
-                        GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
-                            BattleModeManager.Instance.GetRandomSeed();
+                        
                         procedureStart.BattleModeReward();
                     }
                     

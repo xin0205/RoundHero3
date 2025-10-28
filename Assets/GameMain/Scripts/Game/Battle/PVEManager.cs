@@ -430,12 +430,26 @@ namespace RoundHero
             if(gameResult == EBattleResult.Success)
             {
 
-                if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode
-                    && GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 <
-                    Constant.BattleMode.MaxBattleCount)
-                {
-                    BattleManager.Instance.BattleData.IsReward = true;
-                }
+                // if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
+                // {
+                //     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 <
+                //         Constant.BattleMode.MaxBattleCount)
+                //     {
+                //         //BattleManager.Instance.BattleData.IsReward = true;
+                //         GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Reward;
+                //
+                //     }
+                //     
+                //     
+                //     BattleManager.Instance.BattleSuccess();
+                //     BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
+                //         BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
+                //     
+                //     GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
+                //         BattleModeManager.Instance.GetRandomSeed();
+                //     
+                //     DataManager.Instance.Save();
+                // }
                 
                 
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
@@ -446,7 +460,23 @@ namespace RoundHero
                     OnConfirm = () =>
                     {
                         BattleManager.Instance.EndBattle(gameResult);
+                        if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 <
+                            Constant.BattleMode.MaxBattleCount)
+                        {
+                            //BattleManager.Instance.BattleData.IsReward = true;
+                            GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Reward;
+
+                        }
                     
+                    
+                        BattleManager.Instance.BattleSuccess();
+                        BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
+                            BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
+                    
+                        GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
+                            BattleModeManager.Instance.GetRandomSeed();
+                    
+                        DataManager.Instance.Save();
                     }
                 
                 });

@@ -12,7 +12,8 @@ namespace RoundHero
             public const string GameDataKey = "GameData";
             public const string VersionKey = "Version";
             public const int RandomRange = 99999999;
-
+            public const string VersionListKey = "VersionList";
+            
             
             
             public static Dictionary<Language, string> Languages = new Dictionary<Language, string>()

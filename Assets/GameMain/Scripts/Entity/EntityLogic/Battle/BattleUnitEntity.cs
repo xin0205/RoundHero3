@@ -532,6 +532,7 @@ namespace RoundHero
                     BattleManager.Instance.RefreshView();
                 }
                 GameEntry.Entity.ShowBattleBeamBulletEntityAsync(bulletData, ShootPos.position);
+                HeroManager.Instance.UpdateCacheHPDelta();
             }
             else if (UnitAttackCastType.ToString().Contains("Parabola"))
             {
@@ -556,6 +557,7 @@ namespace RoundHero
                     if (triggerData.BuffValue == null)
                     {
                         BattleBulletManager.Instance.UseTriggerData(triggerData);
+                        HeroManager.Instance.UpdateCacheHPDelta();
                         continue;
                     }
                         
@@ -567,6 +569,7 @@ namespace RoundHero
                             triggerData.BattleUnitAttribute == EUnitAttribute.HP)
                         {
                             HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+                            HeroManager.Instance.UpdateCacheHPDelta();
                         }
                             
                         continue;
@@ -1429,6 +1432,7 @@ namespace RoundHero
             GameUtility.DelayExcute(0.15f, () =>
             {
                 HandleHit(EAttackCastType.CloseSingle);
+                HeroManager.Instance.UpdateCacheHPDelta();
             });
         }
         

@@ -114,8 +114,9 @@ namespace RoundHero
 
         public void OnGamePlayContinueGame(object sender, GameEventArgs e)
         {
-            
-            if (BattleManager.Instance.BattleData.IsNewBattle && !BattleManager.Instance.BattleData.IsReward)
+
+            if (BattleManager.Instance.BattleData.IsNewBattle &&
+                GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage == BattleModeStage.Battle)
             {
                 GameManager.Instance.IsStartBattle = true;
                 ChangeState<ProcedureGamePlay>(procedureOwner);
@@ -210,8 +211,7 @@ namespace RoundHero
         
         public async void BattleModeReward()
         {
-            GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Reward;
-            DataManager.Instance.Save();
+            
 
             
             GameEntry.UI.OpenUIForm(UIFormId.BattleModeRewardForm, this);

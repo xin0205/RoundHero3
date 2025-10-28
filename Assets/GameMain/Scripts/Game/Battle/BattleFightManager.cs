@@ -2322,7 +2322,7 @@ namespace RoundHero
                 //     
                 //     
                 // }
-                
+                HeroManager.Instance.UpdateCacheHPDelta();
                 
                 
             }
