@@ -123,7 +123,7 @@ namespace RoundHero
                 battleSession.gameObject.SetActive(true);
 
                 battleSession.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_BattleSession,
-                    GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1, Constant.BattleMode.MaxBattleCount);
+                    GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1, Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount);
                 
             }
 

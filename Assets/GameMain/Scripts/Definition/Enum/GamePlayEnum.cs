@@ -194,7 +194,7 @@ namespace RoundHero
     
     public enum EGameDifficulty
     {
-        Difficulty0,
+        Difficulty0,//教程
         Difficulty1,
         Difficulty2,
         Difficulty3,

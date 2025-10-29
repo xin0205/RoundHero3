@@ -206,7 +206,7 @@ namespace RoundHero
                 else if(battleResult == EBattleResult.Success)
                 {
                     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 ==
-                        Constant.BattleMode.MaxBattleCount)
+                        Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount)
                     {
                         GamePlayManager.Instance.GamePlayData.IsGamePlaying = false;
                         procedureStart.Start();

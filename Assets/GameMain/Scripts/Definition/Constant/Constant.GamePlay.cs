@@ -109,11 +109,40 @@ namespace RoundHero
 
         }
 
+        public class DiffcultySetting
+        {
+            public int MaxBattleCount;
+        }
+
         public static class BattleMode
         {
             public static int MaxRewardCount = 3;
             //public static int MaxFuneCount = 4;
-            public static int MaxBattleCount = 12;
+
+            public static Dictionary<EGameDifficulty, DiffcultySetting> DiffcultySettings =
+                new Dictionary<EGameDifficulty, DiffcultySetting>()
+                {
+                    [EGameDifficulty.Difficulty0] = new DiffcultySetting()
+                    {
+                        MaxBattleCount = 1,
+                    },
+                    [EGameDifficulty.Difficulty1] = new DiffcultySetting()
+                    {
+                        MaxBattleCount = 9,
+                    },
+                    [EGameDifficulty.Difficulty2] = new DiffcultySetting()
+                    {
+                        MaxBattleCount = 12,
+                    },
+                    [EGameDifficulty.Difficulty3] = new DiffcultySetting()
+                    {
+                        MaxBattleCount = 12,
+                    },
+                    [EGameDifficulty.Difficulty4] = new DiffcultySetting()
+                    {
+                        MaxBattleCount = 12,
+                    },
+                };
             
             
             public static List<int> InitCards = new List<int>()

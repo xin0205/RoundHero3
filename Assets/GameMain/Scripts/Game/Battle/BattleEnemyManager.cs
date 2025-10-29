@@ -513,6 +513,9 @@ namespace RoundHero
             {
                 if (BattleManager.Instance.BattleData.Round == 0)
                 {
+                    EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] -=
+                        Constant.Tutorial.Enemies.Count;
+                    
                     for (int i = 0; i < Constant.Tutorial.Enemies.Count; i++)
                     {
                         //test[i];//

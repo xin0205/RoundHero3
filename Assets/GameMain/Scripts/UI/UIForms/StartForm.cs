@@ -161,16 +161,16 @@ namespace RoundHero
         
         public void StartBattleMode()
         {
-            // if (!GameManager.Instance.GameData.User.IsEndTutorial)
-            // {
-            //     GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
-            //     Tutorial();
-            // }
-            // else
-            // {
-            //     procedureStart.RestartBattleMode();
-            // }
-            procedureStart.RestartBattleMode();
+            if (!GameManager.Instance.GameData.User.IsEndTutorial)
+            {
+                GamePlayManager.Instance.GamePlayData.IsTutorialBattle = true;
+                Tutorial();
+            }
+            else
+            {
+                procedureStart.RestartBattleMode();
+            }
+            //procedureStart.RestartBattleMode();
         }
         
         public void ContinueBattleMode()

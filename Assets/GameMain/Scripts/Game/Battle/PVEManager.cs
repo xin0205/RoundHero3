@@ -461,7 +461,7 @@ namespace RoundHero
                     {
                         BattleManager.Instance.EndBattle(gameResult);
                         if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 <
-                            Constant.BattleMode.MaxBattleCount)
+                            Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount)
                         {
                             //BattleManager.Instance.BattleData.IsReward = true;
                             GamePlayManager.Instance.GamePlayData.BattleModeProduce.BattleModeStage = BattleModeStage.Reward;
@@ -472,9 +472,13 @@ namespace RoundHero
                         BattleManager.Instance.BattleSuccess();
                         BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
                             BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
-                    
-                        GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
-                            BattleModeManager.Instance.GetRandomSeed();
+
+                        if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
+                        {
+                            GamePlayManager.Instance.GamePlayData.BattleModeProduce.RewardRandomSeed =
+                                BattleModeManager.Instance.GetRandomSeed();
+                        }
+                        
                     
                         DataManager.Instance.Save();
                     }
