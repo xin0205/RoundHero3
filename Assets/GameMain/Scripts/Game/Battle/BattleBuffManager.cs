@@ -288,6 +288,7 @@ namespace RoundHero
 
                     if (triggerData != null)
                     {
+                        triggerData.ActionUnitGridPosIdx = actionUnitGridPosIdx;
                         CacheTriggerData(triggerData, triggerDatas, realEffectUnitIdx, buffTriggerType, buffData, values,
                             ownUnitIdx, actionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
                         _triggerDatas.Add(triggerData);
@@ -922,7 +923,6 @@ namespace RoundHero
                     switch (drCard.AttackCastType)
                     {
                         case EAttackCastType.TacticDownMulti:
-                                
                             BattleCardManager.Instance.ShowTacticDownMulti(gridPosIdxs);
                             break;
                             

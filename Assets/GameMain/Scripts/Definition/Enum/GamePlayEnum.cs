@@ -848,9 +848,8 @@ namespace RoundHero
         SwitchTarget,
         UnitHurt,
         EndRound,
-        
         End,
-        
+        ContinueBattle,
     }
 
     

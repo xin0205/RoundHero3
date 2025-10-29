@@ -43,11 +43,11 @@ RectTransform:
   - {fileID: 6866898521691695748}
   - {fileID: 3524641887342078045}
   - {fileID: 4178524887026759625}
+  - {fileID: 350130015448814346}
   - {fileID: 6403894401488895561}
   - {fileID: 1004046033903169853}
   - {fileID: 5618932228005975369}
   - {fileID: 8431638197838496581}
-  - {fileID: 350130015448814346}
   - {fileID: 5232777641253484336}
   - {fileID: 4244048598853325126}
   m_Father: {fileID: 0}
@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 0
+  TutorialStep: 1
 --- !u!114 &5621091171913987599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,7 +729,7 @@ GameObject:
   - component: {fileID: 8934424924814454358}
   - component: {fileID: 5941530863470488790}
   m_Layer: 0
-  m_Name: End
+  m_Name: ContinueBattle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -768,7 +768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 17
+  TutorialStep: 19
 --- !u!114 &5941530863470488790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 1
+  TutorialStep: 2
 --- !u!114 &6520713601644663941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1154,7 +1154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 6
+  TutorialStep: 7
 --- !u!114 &574334071401839605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1219,7 +1219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 5
+  TutorialStep: 6
 --- !u!114 &4375900212018769816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1284,7 +1284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 12
+  TutorialStep: 13
 --- !u!114 &8796018490730203846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1349,7 +1349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 4
+  TutorialStep: 5
 --- !u!114 &2704972946665363055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1414,7 +1414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 7
+  TutorialStep: 8
 --- !u!114 &7641310390094021158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,7 +1479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 3
+  TutorialStep: 4
 --- !u!114 &4271470178391643695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1636,7 +1636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 10
+  TutorialStep: 11
 --- !u!114 &2347576987338000084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1686,7 +1686,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 255, y: 326}
+  m_AnchoredPosition: {x: 305, y: 18}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3694827971476800992
@@ -1714,7 +1714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 14
+  TutorialStep: 15
 --- !u!1 &6648054485040335145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1766,7 +1766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 2
+  TutorialStep: 3
 --- !u!114 &3120631273706560244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1831,7 +1831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 11
+  TutorialStep: 12
 --- !u!114 &1643988791442138386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1988,7 +1988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 16
+  TutorialStep: 17
 --- !u!114 &6628922708643192919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2237,7 +2237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 9
+  TutorialStep: 10
 --- !u!114 &8571401488023347127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2499,7 +2499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 15
+  TutorialStep: 16
 --- !u!1 &8009121283708992012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,7 +2551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 8
+  TutorialStep: 9
 --- !u!114 &4052133855632774756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2984,7 +2984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 567602282104412aa769ce7615873d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialStep: 13
+  TutorialStep: 14
 --- !u!114 &6559392484633957297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3442,7 +3442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5308852486439603564, guid: 0becd7ce414a7d744a3c4afff59e269c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 31
+      value: 178
       objectReference: {fileID: 0}
     - target: {fileID: 5308852486439603564, guid: 0becd7ce414a7d744a3c4afff59e269c, type: 3}
       propertyPath: m_AnchoredPosition.y

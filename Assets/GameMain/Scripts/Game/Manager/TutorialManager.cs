@@ -1,5 +1,7 @@
 ﻿
+using System.Linq;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace RoundHero
 {
@@ -28,8 +30,8 @@ namespace RoundHero
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                var preStep = GetPreStep(ETutorialStep.SelectUnitCard);
-                if (BattleManager.Instance.TutorialStep == preStep)
+                //var preStep = GetPreStep(ETutorialStep.SelectUnitCard);
+                if (BattleManager.Instance.TutorialStep == ETutorialStep.SelectUnitCard)
                 {
                     if (battleCardEntity.BattleCardEntityData.HandSortingIdx == 0)
                     {
@@ -58,8 +60,8 @@ namespace RoundHero
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                var preStep = GetPreStep(ETutorialStep.SelectMoveCard);
-                if (BattleManager.Instance.TutorialStep == preStep)
+                //var preStep = GetPreStep(ETutorialStep.SelectMoveCard);
+                if (BattleManager.Instance.TutorialStep == ETutorialStep.SelectMoveCard)
                 {
                     if (battleCardEntity.BattleCardEntityData.HandSortingIdx == 0)
                     {
@@ -88,8 +90,8 @@ namespace RoundHero
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                var preStep = GetPreStep(ETutorialStep.UseUnitCard);
-                if (BattleManager.Instance.TutorialStep == preStep)
+                //var preStep = GetPreStep(ETutorialStep.UseUnitCard);
+                if (BattleManager.Instance.TutorialStep == ETutorialStep.UseUnitCard)
                 {
                     if (gridPosIdx == Constant.Tutorial.UseUnitCardGridPosIdx)
                     {
@@ -117,8 +119,8 @@ namespace RoundHero
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                var preStep = GetPreStep(ETutorialStep.SelectMoveUnit);
-                if (BattleManager.Instance.TutorialStep == preStep)
+                //var preStep = GetPreStep(ETutorialStep.SelectMoveUnit);
+                if (BattleManager.Instance.TutorialStep == ETutorialStep.SelectMoveUnit)
                 {
                     if (gridPosIdx == Constant.Tutorial.UseUnitCardGridPosIdx)
                     {
@@ -146,8 +148,8 @@ namespace RoundHero
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                var preStep = GetPreStep(ETutorialStep.SelectMovePos);
-                if (BattleManager.Instance.TutorialStep == preStep)
+                //var preStep = GetPreStep(ETutorialStep.SelectMovePos);
+                if (BattleManager.Instance.TutorialStep == ETutorialStep.SelectMovePos)
                 {
                     if (gridPosIdx == Constant.Tutorial.MoveGridPosIdx)
                     {
@@ -175,8 +177,8 @@ namespace RoundHero
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                var preStep = GetPreStep(ETutorialStep.SelectAttackCard);
-                if (BattleManager.Instance.TutorialStep == preStep)
+                //var preStep = GetPreStep(ETutorialStep.SelectAttackCard);
+                if (BattleManager.Instance.TutorialStep == ETutorialStep.SelectAttackCard)
                 {
                     if (battleCardEntity.BattleCardEntityData.HandSortingIdx == 0)
                     {
@@ -204,8 +206,8 @@ namespace RoundHero
             }
             else if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                var preStep = GetPreStep(ETutorialStep.SelectAttackUnit);
-                if (BattleManager.Instance.TutorialStep == preStep)
+                //var preStep = GetPreStep(ETutorialStep.SelectAttackUnit);
+                if (BattleManager.Instance.TutorialStep == ETutorialStep.SelectAttackUnit)
                 {
                     if (gridPosIdx == Constant.Tutorial.MoveGridPosIdx)
                     {
@@ -255,7 +257,8 @@ namespace RoundHero
             if (state == ETutorialState.Match)
             {
                 stepIntverval = 0;
-                BattleManager.Instance.TutorialStep = ETutorialStep.SelectUnitCard;
+                var nextStep = GetNextStep(ETutorialStep.SelectUnitCard);
+                BattleManager.Instance.TutorialStep = nextStep;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 
@@ -268,7 +271,8 @@ namespace RoundHero
             if (state == ETutorialState.Match)
             {
                 stepIntverval = 0;
-                BattleManager.Instance.TutorialStep = ETutorialStep.SelectMoveCard;
+                var nextStep = GetNextStep(ETutorialStep.SelectMoveCard);
+                BattleManager.Instance.TutorialStep = nextStep;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 
@@ -281,7 +285,8 @@ namespace RoundHero
             if (state == ETutorialState.Match)
             {
                 stepIntverval = 0;
-                BattleManager.Instance.TutorialStep = ETutorialStep.SelectAttackCard;
+                var nextStep = GetNextStep(ETutorialStep.SelectAttackCard);
+                BattleManager.Instance.TutorialStep = nextStep;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 
@@ -294,7 +299,8 @@ namespace RoundHero
             if (state == ETutorialState.Match)
             {
                 stepIntverval = 0;
-                BattleManager.Instance.TutorialStep = ETutorialStep.UseUnitCard;
+                var nextStep = GetNextStep(ETutorialStep.UseUnitCard);
+                BattleManager.Instance.TutorialStep = nextStep;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 
@@ -307,7 +313,8 @@ namespace RoundHero
             if (state == ETutorialState.Match)
             {
                 stepIntverval = 0;
-                BattleManager.Instance.TutorialStep = ETutorialStep.SelectMoveUnit;
+                var nextStep = GetNextStep(ETutorialStep.SelectMoveUnit);
+                BattleManager.Instance.TutorialStep = nextStep;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 
@@ -320,7 +327,8 @@ namespace RoundHero
             if (state == ETutorialState.Match)
             {
                 stepIntverval = 0;
-                BattleManager.Instance.TutorialStep = ETutorialStep.SelectMovePos;
+                var nextStep = GetNextStep(ETutorialStep.SelectMovePos);
+                BattleManager.Instance.TutorialStep = nextStep;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 
@@ -333,7 +341,8 @@ namespace RoundHero
             if (state == ETutorialState.Match)
             {
                 stepIntverval = 0;
-                BattleManager.Instance.TutorialStep = ETutorialStep.SelectAttackUnit;
+                var nextStep = GetNextStep(ETutorialStep.SelectAttackUnit);
+                BattleManager.Instance.TutorialStep = nextStep;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 
@@ -344,24 +353,48 @@ namespace RoundHero
 
         public ETutorialStep GetPreStep(ETutorialStep tutorialStep)
         {
-            return (ETutorialStep)((int)tutorialStep - 1);
+            for (int i = 0; i < Constant.Tutorial.StepSort.Count; i++)
+            {
+                if (Constant.Tutorial.StepSort[i] == tutorialStep)
+                {
+                    if (i - 1 >= 0 && i - 1 < Constant.Tutorial.StepSort.Count - 1)
+                    {
+                        return Constant.Tutorial.StepSort[i - 1];
+                    }
+                    
+                }
+            }
+
+            return tutorialStep;
+
         }
         
         public ETutorialStep GetNextStep(ETutorialStep tutorialStep)
         {
-            return (ETutorialStep)((int)tutorialStep + 1);
+            for (int i = 0; i < Constant.Tutorial.StepSort.Count; i++)
+            {
+                if (Constant.Tutorial.StepSort[i] == tutorialStep)
+                {
+                    if (i + 1 >= 0 && i + 1 < Constant.Tutorial.StepSort.Count)
+                    {
+                        return Constant.Tutorial.StepSort[i + 1];
+                    }
+                }
+            }
+
+            return tutorialStep;
         }
 
         public ETutorialState SwitchStep(ETutorialStep tutorialStep)
         {
-            var preStep = GetPreStep(tutorialStep);
-            if (preStep != null)
+            var nextStep = GetNextStep(tutorialStep);
+            if (nextStep != tutorialStep)
             {
                 stepIntverval = 0;
-                return Switch_Common(preStep, tutorialStep);
+                return Switch_Common(tutorialStep, nextStep);
             }
 
-            return ETutorialState.None;
+            return ETutorialState.UnMatch;
         }
 
 
@@ -401,6 +434,10 @@ namespace RoundHero
             if (Input.GetMouseButtonDown(0))
             {
                 var tutorialStep = BattleManager.Instance.TutorialStep;
+                Log.Debug("AE");
+                // SwitchStep(ETutorialStep.CoreHP);
+                // if(tutorialStep != BattleManager.Instance.TutorialStep)
+                //     return;
                 
                 SwitchStep(ETutorialStep.CoreHP);
                 if(tutorialStep != BattleManager.Instance.TutorialStep)
@@ -413,6 +450,10 @@ namespace RoundHero
                 SwitchStep(ETutorialStep.CoreHPDelta);
                 if(tutorialStep != BattleManager.Instance.TutorialStep)
                     return;
+                
+                // SwitchStep(ETutorialStep.UseCardEnergy);
+                // if(tutorialStep != BattleManager.Instance.TutorialStep)
+                //     return;
                 
                 SwitchStep(ETutorialStep.UseCardEnergy);
                 if(tutorialStep != BattleManager.Instance.TutorialStep)
@@ -431,7 +472,8 @@ namespace RoundHero
                 if(tutorialStep != BattleManager.Instance.TutorialStep)
                     return;
                 
-                SwitchStep(ETutorialStep.End);
+               
+                SwitchStep(ETutorialStep.ContinueBattle);
                 if(tutorialStep != BattleManager.Instance.TutorialStep)
                     return;
 

@@ -160,7 +160,7 @@ namespace RoundHero
             if (TutorialManager.Instance.IsTutorial())
             {
                 GamePlayManager.Instance.GamePlayData.IsTutorialBattle = false;
-                BattleManager.Instance.TutorialStep = ETutorialStep.Start;
+                BattleManager.Instance.TutorialStep = ETutorialStep.CoreHP;
                 GameEntry.UI.CloseUIForm(tutorialForm);
                 procedureStart.Start();
             }

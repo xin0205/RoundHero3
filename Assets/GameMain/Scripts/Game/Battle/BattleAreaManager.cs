@@ -774,6 +774,7 @@ namespace RoundHero
                     {
                         unit.ShowTacticHurtDisplayValues(unit.UnitIdx);
                         unit.ShowTacticHurtDisplayIcons(unit.UnitIdx);
+                        unit.ShowTacticHurtAttackTag(unit.UnitIdx, Constant.Battle.UnUnitTriggerIdx);
                     }
                     else
                     {

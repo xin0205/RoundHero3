@@ -7,6 +7,7 @@ using TMPro;
 using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityGameFramework.Runtime;
 
 
 namespace RoundHero
@@ -110,7 +111,7 @@ namespace RoundHero
 
             if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
             {
-                BattleManager.Instance.TutorialStep = ETutorialStep.Start;
+                BattleManager.Instance.TutorialStep = ETutorialStep.CoreHP;
                 GameEntry.Event.Fire(null, RefreshTutorialEventArgs.Create());
             }
 

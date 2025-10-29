@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -96,6 +97,108 @@ namespace RoundHero
 
             
         }
+        
+        public async Task ShowTacticHurtAttackTag(int effectUnitIdx, int actionUnitIdx, List<int> exceptUnitIdxs = null)
+        {
+
+            if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+            {
+                return;
+            }
+
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+        
+            if (effectUnit == null)
+                return;
+        
+            var triggerDataDict =
+                BattleFightManager.Instance.GetTacticHurtAttackDatas(effectUnitIdx);
+        
+            if (triggerDataDict.Values.Count <= 0)
+            {
+                return;
+            }
+        
+            var values = triggerDataDict.Values.ToList();
+            if (values[0].Count <= 0)
+            {
+                return;
+            }
+            
+            var entityIdx = curAttackTagEntityIdx;
+            
+            
+            foreach (var triggerDatas in values)
+            {
+                foreach (var triggerData in triggerDatas)
+                {
+                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                        continue;
+                    
+                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
+                        continue;
+                    
+                    if(exceptUnitIdxs != null && exceptUnitIdxs.Contains(triggerData.ActionUnitIdx))
+                        continue;
+                    
+                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    // if(actionUnit == null)
+                    //     continue;
+        
+                    curAttackTagEntityIdx++;
+                }
+        
+            }
+            
+            var effectGridPosIdxs = new List<int>();
+            foreach (var triggerDatas in values)
+            {
+                foreach (var triggerData in triggerDatas)
+                {
+                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                        continue;
+                    
+                    if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
+                        continue;
+                    
+                    if(exceptUnitIdxs != null && exceptUnitIdxs.Contains(triggerData.ActionUnitIdx))
+                        continue;
+                    
+                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    // if(actionUnit == null)
+                    //     continue;
+                    
+                    if(triggerData.ActionUnitGridPosIdx == -1)
+                        continue;
+                    
+                    var _entityIdx = entityIdx;
+                    var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(
+                        triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData, _entityIdx,
+                        triggerData.ActionUnitIdx == Constant.Battle.UnUnitTriggerIdx,
+                        !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx),
+                        triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, false);
+                    effectGridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
+                    entityIdx++;
+                    
+                    if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < showAttackTagEntityIdx)
+                    {
+                        //Log.Debug("Tag hide");
+                        GameEntry.Entity.HideEntity(battleAttackTagEntity);
+                    }
+                    else
+                    {
+                
+                        BattleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
+                        //Log.Debug("Tag add:" + BattleUnitData.Idx + "-" + BattleAttackTagEntities.Count); 
+                    }
+                    
+                    //InternalShowTag(actionUnit.BattleUnitData, triggerData.BuffValue);
+                }
+        
+            }
+        
+        }
+        
         
         public async void ShowHurtDisplayValues(int effectUnitIdx, int actionUnitIdx)
         {

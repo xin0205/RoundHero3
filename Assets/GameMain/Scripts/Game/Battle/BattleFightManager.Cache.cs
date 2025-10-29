@@ -192,7 +192,11 @@ namespace RoundHero
             //CacheSoliderMoveDatas();
             //CacheSoliderAttackDatas();
             CacheRoundHandCards(true);
-            CalculateEnemyPaths();
+            if (!(TutorialManager.Instance.IsTutorial() && BattleManager.Instance.BattleData.Round == 0))
+            {
+                CalculateEnemyPaths();
+            }
+            
             CacheEnemyAttackDatas();
             //CacheEnemyMoveDatas();
             //

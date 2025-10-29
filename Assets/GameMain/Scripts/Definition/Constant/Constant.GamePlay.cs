@@ -20,27 +20,51 @@ namespace RoundHero
             
             public static List<int> Cores = new List<int>()
             {
-                22,24,39
+                22,11,24
             };
 
-            public static int RandomSeed = 42536450;//26987145;
+            //public static int RandomSeed = 42536450;//26987145;
             public static int UseUnitCardGridPosIdx = 15;
             public static int MoveGridPosIdx = 19;
             public static float StepInterval = 0.5f;
 
             public static List<int> Cards = new List<int>()
             {
-                0, 0, 0, 1, 1, 1, 2, 2, 2
+                0, 0, 1, 1, 10009, 10009, 10009, 10009, 10009, 10009
             };
             
             public static List<int> Enemies = new List<int>()
             {
-               8, 0
+               0, 7
             };
             
             public static List<int> EnemyPos = new List<int>()
             {
-                20, 38
+                29, 12
+            };
+
+            public static List<ETutorialStep> StepSort = new List<ETutorialStep>()
+            {
+                //ETutorialStep.Start,
+                ETutorialStep.CoreHP,
+                ETutorialStep.Core,
+                ETutorialStep.CoreHPDelta,
+                ETutorialStep.SelectUnitCard,
+                ETutorialStep.UseCardEnergy,
+                ETutorialStep.UnitOwnEnergy,
+                ETutorialStep.UseUnitCard,
+                ETutorialStep.SelectMoveCard,
+                ETutorialStep.CardSwitchMove,
+                ETutorialStep.SelectMoveUnit,
+                ETutorialStep.SelectMovePos,
+                ETutorialStep.SwitchTarget,
+                ETutorialStep.SelectAttackCard,
+                ETutorialStep.CardSwitchAttack,
+                ETutorialStep.SelectAttackUnit,
+                ETutorialStep.UnitHurt,
+                ETutorialStep.EndRound,
+                ETutorialStep.ContinueBattle,
+                ETutorialStep.End,
             };
 
             // public static EnemyGenrateRule EnemyGenrateRule = new EnemyGenrateRule()

@@ -436,11 +436,11 @@ namespace RoundHero
                 battleMonsterData.CurHP = battleMonsterData.MaxHP;
             }
             
-            if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
-            {
-                battleMonsterData.BaseMaxHP = 3;
-                battleMonsterData.CurHP = battleMonsterData.MaxHP;
-            }
+            // if (GamePlayManager.Instance.GamePlayData.IsTutorialBattle)
+            // {
+            //     battleMonsterData.BaseMaxHP = 3;
+            //     battleMonsterData.CurHP = battleMonsterData.MaxHP;
+            // }
             
             var battleEnemyEntity = await GameEntry.Entity.ShowBattleMonsterEntityAsync(battleMonsterData);
             
@@ -513,7 +513,7 @@ namespace RoundHero
             {
                 if (BattleManager.Instance.BattleData.Round == 0)
                 {
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < Constant.Tutorial.Enemies.Count; i++)
                     {
                         //test[i];//
                         var enemyID = Constant.Tutorial.Enemies[i];
