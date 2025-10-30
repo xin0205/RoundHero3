@@ -106,5 +106,7 @@ namespace RoundHero
         BattleModeRewardForm = 140,
         
         ExplainForm = 141,
+        
+        GridDescForm = 142,
     }
 }

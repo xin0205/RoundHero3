@@ -24,8 +24,8 @@ namespace RoundHero
             var showVideo =
                 videoAssets.VideoAssetDict.ContainsKey(gifStr);
                 
-
-            this.videoPlayer.gameObject.SetActive(showVideo);
+            this.gameObject.SetActive(showVideo);
+            //this.videoPlayer.gameObject.SetActive(showVideo);
 
             if (showVideo)
             {

@@ -258,18 +258,20 @@ namespace RoundHero
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Empty)
             {
-                //gridDescItem.gameObject.SetActive(true);
                 
-                var gridTypeName =
-                    Utility.Text.Format(Constant.Localization.GridTypeName, UnitDescFormData.GridType);
-                
-                var gridTypeDesc =
-                    Utility.Text.Format(Constant.Localization.GridTypeDesc, UnitDescFormData.GridType); 
-
- 
-                // gridDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
-                //     GameEntry.Localization.GetString(gridTypeDesc));
             }
+            
+            // gridDescItem.gameObject.SetActive(true);
+            //     
+            // var gridTypeName =
+            //     Utility.Text.Format(Constant.Localization.GridTypeName, UnitDescFormData.GridType);
+            //     
+            // var gridTypeDesc =
+            //     Utility.Text.Format(Constant.Localization.GridTypeDesc, UnitDescFormData.GridType); 
+            //
+            //
+            // gridDescItem.SetDesc(GameEntry.Localization.GetString(gridTypeName),
+            //     GameEntry.Localization.GetString(gridTypeDesc));
         }
 
         private void RefreshUnitStates()

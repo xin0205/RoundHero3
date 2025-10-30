@@ -69,7 +69,7 @@ namespace RoundHero
             
         }
 
-        public override void OnPointerEnter(BaseEventData baseEventData)
+        public override async Task OnPointerEnter(BaseEventData baseEventData)
         {
             base.OnPointerEnter(baseEventData);
             

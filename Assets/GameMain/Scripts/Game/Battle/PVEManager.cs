@@ -159,8 +159,8 @@ namespace RoundHero
             
             BattleData.Round += 1;
             BattleState = EBattleState.UseCard;
-            
-            
+
+            BattleEnemyManager.Instance.RefreshRoundStartTag();
             await BattleEnemyManager.Instance.GenerateEnemies();
             BattleManager.Instance.RoundStartTrigger();
             

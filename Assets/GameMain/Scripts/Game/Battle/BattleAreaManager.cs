@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameFramework.Event;
+using UGFExtensions.Await;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 using Random = System.Random;
@@ -218,7 +219,10 @@ namespace RoundHero
 
             if (ne.ShowState == EShowState.Show)
             {
-
+                await GameEntry.UI.OpenUIFormAsync(UIFormId.GridDescForm, new GridDescData()
+                {
+                    GridPosIdx = ne.GridPosIdx,
+                });
                 ShowAllGrid(true);
                 BattleAreaManager.Instance.CurPointGridPosIdx = ne.GridPosIdx;
                 BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;

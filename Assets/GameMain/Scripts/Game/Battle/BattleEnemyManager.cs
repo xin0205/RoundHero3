@@ -101,6 +101,17 @@ namespace RoundHero
             GenerateEnemyRuleData(GetRandomSeed());
         }
 
+        public void RefreshRoundStartTag()
+        {
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitDatas)
+            {
+                if (kv.Value is Data_BattleMonster monsterData)
+                {
+                    monsterData.IsRoundStart = true;
+                }
+            }
+        }
+        
         public void Continue()
         {
             // if (BattleManager.Instance.BattleData.IsNewBattle)
@@ -321,7 +332,7 @@ namespace RoundHero
 
         
         
-        private async Task InternalGenerateEnemies()
+        private async Task InternalGenerateEnemies(bool isRoundStart)
         {
             // if(BattleManager.Instance.BattleData.Round >= Constant.Enemy.EnemyGenerateTurns[BattleManager.Instance.BattleData.EnemyType])
             //     return;
@@ -418,7 +429,7 @@ namespace RoundHero
                 var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];
 
                 var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
-                    places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round);
+                    places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round, isRoundStart);
                 battleEnemyData.UnitRole = EUnitRole.Staff;
                 
                 await GenerateEnemy(battleEnemyData);
@@ -506,7 +517,7 @@ namespace RoundHero
 
         }
 
-        public async Task GenerateEnemies()
+        public async Task GenerateEnemies(bool isRoundStart = true)
         {
             
             if (TutorialManager.Instance.IsTutorial())
@@ -522,7 +533,7 @@ namespace RoundHero
                         var enemyID = Constant.Tutorial.Enemies[i];
 
                         var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
-                            Constant.Tutorial.EnemyPos[i], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round);
+                            Constant.Tutorial.EnemyPos[i], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round, isRoundStart);
                         battleEnemyData.UnitRole = EUnitRole.Staff;
                 
                         await GenerateEnemy(battleEnemyData);
@@ -534,7 +545,7 @@ namespace RoundHero
             }
             else
             {
-                await InternalGenerateEnemies();
+                await InternalGenerateEnemies(isRoundStart);
             }
             
             

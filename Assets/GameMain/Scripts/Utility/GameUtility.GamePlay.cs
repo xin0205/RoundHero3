@@ -178,6 +178,36 @@ namespace RoundHero
 
 
         }
+        
+        public static void GetPropText(int propID, ref string name, ref string desc)
+        {
+            var propName =
+                Utility.Text.Format(Constant.Localization.PropName, propID); 
+
+            name = GameEntry.Localization.GetString(propName);
+
+            var drGridProp = GameEntry.DataTable.GetGridProp(propID);
+
+            var values = new List<float>();
+            foreach (var value in drGridProp.Values0)
+            {
+                var val = Mathf.Abs(BattleBuffManager.Instance.GetBuffValue(value));
+                if (val != 0)
+                {
+                    values.Add(val);
+                }
+               
+            }
+            
+            
+            var propDesc =
+                Utility.Text.Format(Constant.Localization.PropDesc, propID);
+
+            desc = GetStrByValues(GameEntry.Localization.GetString(propDesc), values);
+
+            
+            
+        }
 
         public static void GetUnitStateText(EUnitState unitState, ref string name, ref string desc)
         {

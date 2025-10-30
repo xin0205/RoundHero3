@@ -1296,6 +1296,9 @@ namespace RoundHero
 
                 if (!kv.Value.Exist())
                     continue;
+                
+                if (!(kv.Value as Data_BattleMonster).IsRoundStart)
+                    continue;
 
                 enemies.Add(kv.Value);
             }

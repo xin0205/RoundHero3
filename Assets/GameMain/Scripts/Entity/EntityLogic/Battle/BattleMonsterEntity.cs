@@ -55,6 +55,7 @@ namespace RoundHero
         {
             base.Dead();
             BattleEnemyManager.Instance.RemoveEnemy(BattleMonsterEntityData.BattleMonsterData.Idx);
+            BattleEnemyManager.Instance.GenerateEnemies(false);
             BattleManager.Instance.ShowGameOver();
             GameUtility.DelayExcute(3f, () =>
             {
@@ -101,15 +102,37 @@ namespace RoundHero
                 
             }
             
-            
-            
+        }
+        
+        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+            if (infoForm != null && !IsPointer)
+            {
+                GameEntry.UI.CloseUIForm(infoForm);
+                infoForm = null;
+            }
         }
 
 
-
-        public override void OnPointerEnter(BaseEventData baseEventData)
+        private InfoForm infoForm;
+        public override async Task OnPointerEnter()
         {
-            base.OnPointerEnter(baseEventData);
+            base.OnPointerEnter();
+
+            if (BattleMonsterEntityData.BattleMonsterData.IsRoundStart == false)
+            {
+                var infoFormParams = new InfoFormParams()
+                {
+                    
+                    Desc = GameEntry.Localization.GetString(Constant.Localization.Tips_RoundGenerateEenmy),
+                    //Position = mousePosition + infoDelta,
+                };
+                
+                var uiForm = await GameEntry.UI.OpenInfoFormAsync(infoFormParams);
+            
+                infoForm = uiForm.Logic as InfoForm;
+            }
             
             // if(CurHP <= 0)
             //     return;
@@ -151,7 +174,16 @@ namespace RoundHero
             
         }
 
-        
+        public override void OnPointerExit()
+        {
+            base.OnPointerExit();
+            if (infoForm != null)
+            {
+                GameEntry.UI.CloseUIForm(infoForm);
+                infoForm = null;
+            }
+        }
+
 
         public override void OnPointerExit(BaseEventData baseEventData)
         {

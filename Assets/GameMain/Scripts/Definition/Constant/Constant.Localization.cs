@@ -30,6 +30,8 @@ namespace RoundHero
             public const string HeroDesc = "HeroDesc.{0}";
             public const string EnemyName = "EnemyName.{0}";
             public const string EnemyDesc = "EnemyDesc.{0}";
+            public const string PropName = "PropName.{0}";
+            public const string PropDesc = "PropDesc.{0}";
 
             public const string Message_InitCardMaxCount = "Message.InitCardMaxCount";
             public const string Message_InitCardCount = "Message.InitCardCount";
@@ -117,6 +119,7 @@ namespace RoundHero
             public const string Tips_BattleSession = "Tips.BattleSession";
             public const string Tips_EnemyCount = "Tips.EnemyCount";
             public const string UI_ActionTime = "UI.ActionTime";
+            public const string Tips_RoundGenerateEenmy = "Tips.RoundGenerateEenmy";
             
             public static Dictionary<EHPDeltaOwnerType, string> HPDeltaOwners =
                 new Dictionary<EHPDeltaOwnerType, string>()
@@ -152,6 +155,8 @@ namespace RoundHero
             public const string Info_UnMoveGrid = "Info.UnMoveGrid";
             public const string Message_MaxRewardCount = "Message.MaxRewardCount";
             public const string Message_UnusedFune = "Message.UnusedFune";
+
+            public const string DifficultyDesc = "DifficultyDesc.{0}";
         }
     }
 }

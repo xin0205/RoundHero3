@@ -1079,6 +1079,8 @@ namespace RoundHero
         public int MonsterID;
 
         public bool IsCalculateAction = false;
+
+        public bool IsRoundStart = true;
         //public int EnemyTypeID;
 
         public Data_BattleMonster()
@@ -1086,9 +1088,10 @@ namespace RoundHero
         }
 
         public Data_BattleMonster(int idx, int monsterID, int gridPosIdx, EUnitCamp unitCamp,
-            List<int> funeIdxs, int startRound) : base(idx, gridPosIdx, unitCamp, funeIdxs, startRound)
+            List<int> funeIdxs, int startRound, bool isRoundStart) : base(idx, gridPosIdx, unitCamp, funeIdxs, startRound)
         {
             MonsterID = monsterID;
+            IsRoundStart = isRoundStart;
             //EnemyTypeID = enemyTypeID;
 
             var drEnemy = GameEntry.DataTable.GetEnemy(monsterID);
@@ -1135,6 +1138,7 @@ namespace RoundHero
             
             dataBattleUnit.MonsterID = MonsterID;
             dataBattleUnit.IsCalculateAction = IsCalculateAction;
+            dataBattleUnit.IsRoundStart = IsRoundStart;
             
             return dataBattleUnit;
 

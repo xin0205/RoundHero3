@@ -44,7 +44,7 @@ namespace RoundHero
             desc.text = infoFormParams.Desc;
 
             //root.SetActive(false);
-            GameUtility.DelayExcute(0.05f, () =>
+            GameUtility.DelayExcute(0.1f, () =>
             {
 
                 Vector3 mousePosition = Input.mousePosition;
@@ -79,8 +79,9 @@ namespace RoundHero
                         }
                     }
 
-                    //root.SetActive(true);
                     root.transform.position = pos;
+                    //root.SetActive(true);
+
                 }
             });
 

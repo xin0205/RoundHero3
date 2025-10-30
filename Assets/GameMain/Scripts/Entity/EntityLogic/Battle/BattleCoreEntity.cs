@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
 
@@ -80,7 +81,7 @@ namespace RoundHero
 
         }
         
-        public override void OnPointerEnter(BaseEventData baseEventData)
+        public override async Task OnPointerEnter(BaseEventData baseEventData)
         {
             base.OnPointerEnter(baseEventData);
             

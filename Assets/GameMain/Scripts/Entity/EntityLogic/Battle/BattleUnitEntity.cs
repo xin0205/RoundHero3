@@ -1868,14 +1868,13 @@ namespace RoundHero
 
         public bool IsPointer = false;
         
-        public virtual void OnPointerEnter(BaseEventData baseEventData)
+        public virtual async Task OnPointerEnter(BaseEventData baseEventData)
         {
             //IsPointer = true;
             //GameEntry.Event.Fire(null, SelectGridEventArgs.Create(BattleUnitData.GridPosIdx, true));
             //GameEntry.Event.Fire(null, ShowGridDetailEventArgs.Create(BattleUnitData.GridPosIdx, EShowState.Show)); 
             //RefreshHP();
-            
-            
+
         }
         
         public virtual void OnPointerExit(BaseEventData baseEventData)
@@ -1895,14 +1894,14 @@ namespace RoundHero
             
         }
 
-        public void OnPointerEnter()
+        public virtual async Task OnPointerEnter()
         {
             IsPointer = true;
             RefreshHP();
             UnitDescTriggerItem.OnPointerEnter();
         }
         
-        public void OnPointerExit()
+        public virtual void OnPointerExit()
         {
             IsPointer = false;
             RefreshDamageState();
