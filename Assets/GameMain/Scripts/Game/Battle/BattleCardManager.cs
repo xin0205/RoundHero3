@@ -1364,7 +1364,8 @@ namespace RoundHero
             var cardData = CardManager.Instance.GetCard(cardIdx);
                 
             var drBuff = GameEntry.DataTable.GetBuff(EBuffID.Spec_SameUnitSubEnergy);
-            if (cardData.FuneCount(EBuffID.Spec_SameUnitSubEnergy) > 0)
+            var sameUnitSubEnergyCount = cardData.FuneCount(EBuffID.Spec_SameUnitSubEnergy);
+            if (sameUnitSubEnergyCount > 0)
             {
                 foreach (var kv in BattleUnitManager.Instance.BattleUnitDatas)
                 {
@@ -1378,7 +1379,7 @@ namespace RoundHero
                         {
                             if (cardEnergy > 0)
                             {
-                                cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff.GetValues(0)[0]);
+                                cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff.GetValues(0)[0]) * sameUnitSubEnergyCount;
 
                             }
                                 
@@ -1388,13 +1389,16 @@ namespace RoundHero
                     
                 }
             }
+            
+            
 
             if (BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Contains(EBuffID.Spec_NextCardSubEnergy))
             {
                 var drBuff2 = GameEntry.DataTable.GetBuff(EBuffID.Spec_NextCardSubEnergy);
                 if (cardEnergy > 0)
                 {
-                    cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff2.GetValues(0)[0]);
+                    var nextCardSubEnergyCount = cardData.FuneCount(EBuffID.Spec_NextCardSubEnergy);
+                    cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff2.GetValues(0)[0]) * nextCardSubEnergyCount;
                 }
             }
             

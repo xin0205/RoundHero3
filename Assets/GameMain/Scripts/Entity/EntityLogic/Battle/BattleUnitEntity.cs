@@ -468,13 +468,14 @@ namespace RoundHero
             }
             
             
-            List<int> paths;
+            List<int> paths = new List<int>();
             var triggerRange = triggerData.BuffValue.BuffData.TriggerRange.ToString(); 
             if (triggerRange.Contains("Extend"))
             {
                 paths = GameUtility.GetMoveIdxs(triggerData.ActionUnitGridPosIdx, triggerData.EffectUnitGridPosIdx);
             }
-            else
+            
+            if(paths.Count == 0)
             {
                 paths = new List<int>();
                 paths.Add(triggerData.ActionUnitGridPosIdx);
@@ -569,6 +570,11 @@ namespace RoundHero
                             triggerData.BattleUnitAttribute == EUnitAttribute.HP)
                         {
                             HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+                            HeroManager.Instance.UpdateCacheHPDelta();
+                        }
+                        else
+                        {
+                            BattleBulletManager.Instance.UseTriggerData(triggerData);
                             HeroManager.Instance.UpdateCacheHPDelta();
                         }
                             
