@@ -70,6 +70,7 @@ namespace RoundHero
         StandByToConsume,
         ConsumeToStandBy,
         ConsumeToHand,
+        PassToHand,
         StandByToPass,
         AddSpecificCard,
         ConsumeSpecificCard,

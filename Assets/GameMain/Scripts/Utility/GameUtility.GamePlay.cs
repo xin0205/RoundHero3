@@ -838,6 +838,9 @@ namespace RoundHero
                 if (!Constant.Battle.ActionTypePoints.ContainsKey(actionType))
                     return retGetRange;
                 
+                if (!GameUtility.InGridRange(GameUtility.GridPosIdxToCoord(gridPosIdx)))
+                    return retGetRange;
+                
                 var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
 
                 var idx = 0;

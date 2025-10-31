@@ -459,11 +459,10 @@ namespace RoundHero
 
         public async Task AnimationConsumeToHand()
         {
-            Log.Debug("AnimationConsumeToHand");
+
             if(BattlePlayerData.ConsumeCards.Count <= 0)
                 return;
-            
-            Log.Debug("AnimationConsumeToHand2");
+
             var random = new Random(GetRandomSeed());
 
             var randomIdx = random.Next(0, BattlePlayerData.ConsumeCards.Count);
@@ -480,6 +479,34 @@ namespace RoundHero
             {
                 ResetCardsPos(true);
             });
+        }
+        
+        public async Task AnimationPassToHand(int count)
+        {
+
+            for (int i = 0; i < count; i++)
+            {
+                if(BattlePlayerData.PassCards.Count <= 0)
+                    return;
+
+                var random = new Random(GetRandomSeed());
+
+                var randomIdx = random.Next(0, BattlePlayerData.PassCards.Count);
+                var cardIdx = BattlePlayerData.PassCards[randomIdx];
+            
+                var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
+                AddHandCard(card);
+            
+                BattlePlayerData.PassCards.Remove(cardIdx);
+                BattlePlayerData.HandCards.Add(cardIdx);
+                card.MoveCard(ECardPos.Pass, ECardPos.Hand, 0.5f); 
+
+                GameUtility.DelayExcute(0.5f, () =>
+                {
+                    ResetCardsPos(true);
+                });
+            }
+            
         }
         
         public async Task AnimationToConsumeCards(int cardIdx)

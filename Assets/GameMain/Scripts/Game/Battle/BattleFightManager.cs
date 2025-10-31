@@ -1729,7 +1729,7 @@ namespace RoundHero
                     effectUnitEntity.BattleUnitData.ChangeRoundState(triggerData.UnitStateDetail.UnitState, (int)(triggerData.Value + triggerData.DeltaValue));
                     break;
                 case ETriggerDataType.Card:
-                    
+                    triggerValue = (int)(triggerData.ActualValue = triggerData.Value + triggerData.DeltaValue);
                     switch (triggerData.CardTriggerType)
                     {
                         case ECardTriggerType.AcquireCard:
@@ -1795,6 +1795,9 @@ namespace RoundHero
                             break;
                         case ECardTriggerType.ConsumeToHand:
                             BattleCardManager.Instance.AnimationConsumeToHand();
+                            break;
+                        case ECardTriggerType.PassToHand:
+                            BattleCardManager.Instance.AnimationPassToHand(triggerValue);
                             break;
                         case ECardTriggerType.CardEnergy:
                             if (triggerData.TriggerCardIdx != -1)

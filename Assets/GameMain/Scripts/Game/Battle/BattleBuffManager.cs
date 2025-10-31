@@ -908,7 +908,11 @@ namespace RoundHero
                 var gridPosIdxs = new List<int>();
                 foreach (var triggerData in kv.Value)
                 {
-                    gridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
+                    if (GameUtility.InGridRange(GameUtility.GridPosIdxToCoord(triggerData.EffectUnitGridPosIdx)))
+                    {
+                        gridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
+                    }
+                    
 
                     GameUtility.DelayExcute(0.5f, () =>
                     {
