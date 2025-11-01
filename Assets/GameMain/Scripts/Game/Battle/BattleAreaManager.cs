@@ -316,14 +316,18 @@ namespace RoundHero
                     !unPlacePosIdxs.Contains(ne.GridPosIdx))
                 {
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.NewUnit;
-
                     var triggerBuffData = BattleManager.Instance.TempTriggerData.TriggerBuffData;
-                    
                     var cardIdx = triggerBuffData.CardIdx;
+                    
+                    BattleManager.Instance.TempTriggerData.UnitData = new Data_BattleSolider(
+                        BattleUnitManager.Instance.GetIdx(), cardIdx,
+                        ne.GridPosIdx, BattleManager.Instance.CurUnitCamp, BattleManager.Instance.BattleData.Round);
+                    
                     var cardData = BattleManager.Instance.GetCard(cardIdx);
                     if (cardData != null)
                     {
-                        var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
+                        var cardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx,
+                            BattleManager.Instance.TempTriggerData.UnitData.Idx);
                     
                         var aroundHeroRange = GameUtility.GetRange(HeroManager.Instance.BattleHeroData.GridPosIdx, EActionType.Direct82Short, EUnitCamp.Player1, null);
 
@@ -338,9 +342,6 @@ namespace RoundHero
                             
                         }
                         //cardEnergy, ,  cardData.FuneIdxs
-                        BattleManager.Instance.TempTriggerData.UnitData = new Data_BattleSolider(
-                            BattleUnitManager.Instance.GetIdx(), cardIdx,
-                            ne.GridPosIdx, BattleManager.Instance.CurUnitCamp, BattleManager.Instance.BattleData.Round);
                         
                         //AddUnitState
                         //BattleUnitManager.Instance.TempUnitData.UnitData.AddState(EUnitState.AttackPassUs, 1);
@@ -1640,7 +1641,7 @@ namespace RoundHero
 
                     if (unit.BattleUnitData.CurHP <= 0)
                     {
-                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToAttack);
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToMove);
                         return;
                     }
 

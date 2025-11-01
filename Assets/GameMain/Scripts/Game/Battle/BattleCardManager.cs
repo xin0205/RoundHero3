@@ -1399,7 +1399,7 @@ namespace RoundHero
                     {
                         var soliderCard = CardManager.Instance.GetCard(solider.CardIdx);
                         // && solider.CardIdx != cardIdx
-                        if (soliderCard.CardID == cardData.CardID)
+                        if (soliderCard.CardID == cardData.CardID && unitIdx != solider.Idx)
                         {
                             if (cardEnergy > 0)
                             {
@@ -1421,7 +1421,9 @@ namespace RoundHero
                 var drBuff2 = GameEntry.DataTable.GetBuff(EBuffID.Spec_NextCardSubEnergy);
                 if (cardEnergy > 0)
                 {
-                    var nextCardSubEnergyCount = cardData.FuneCount(EBuffID.Spec_NextCardSubEnergy);
+                    var nextCardSubEnergyCount =
+                        BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Count(buffID =>
+                            buffID == EBuffID.Spec_NextCardSubEnergy);
                     cardEnergy += (int)BattleBuffManager.Instance.GetBuffValue(drBuff2.GetValues(0)[0]) * nextCardSubEnergyCount;
                 }
             }

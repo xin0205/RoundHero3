@@ -237,16 +237,16 @@ namespace RoundHero
 
                 if (kv.Key == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                 {
-                    foreach (var triggerData in kv.Value)
-                    {
-                        if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
-                            triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
-                        {
-                            continue;
-                        }
-                        //CurValueEntityIdx += 1;
-                        
-                    }
+                    // foreach (var triggerData in kv.Value)
+                    // {
+                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                    //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
+                    //     {
+                    //         continue;
+                    //     }
+                    //     //CurValueEntityIdx += 1;
+                    //     
+                    // }
                     
                     foreach (var triggerData in kv.Value)
                     {

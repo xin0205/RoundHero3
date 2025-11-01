@@ -1713,13 +1713,15 @@ namespace RoundHero
                         {
                             effectUnitEntity.Recover();    
                         }
+                        
+                        if (triggerData.UnitStateDetail.UnitState == EUnitState.HurtRoundStart)
+                        {
+                            BattleEffectManager.Instance.ShowHurtRoundStartEffect(effectUnitEntity.Position, effectUnitEntity.transform);
+                        
+                        }
                     }
                     
-                    if (triggerData.UnitStateDetail.UnitState == EUnitState.HurtRoundStart)
-                    {
-                        BattleEffectManager.Instance.ShowHurtRoundStartEffect(effectUnitEntity.Position, effectUnitEntity.transform);
-                        
-                    }
+                    
                     effectUnitEntity.AnimtionChangeUnitState(triggerData.UnitStateDetail.UnitState, triggerValue,
                         triggerData,  -1, false);
 

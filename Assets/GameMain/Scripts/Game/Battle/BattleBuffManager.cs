@@ -1566,7 +1566,7 @@ namespace RoundHero
                             var drCard = CardManager.Instance.GetCardTable(cardIdx);
                             
                             var cardEnergy = drCard.Energy;
-                            var actualCardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx);
+                            var actualCardEnergy = BattleCardManager.Instance.GetCardEnergy(cardIdx, effectUnitIdx);
                             var energyDelta = actualCardEnergy - cardEnergy;
                             if (energyDelta < 0)
                                 return -energyDelta * valueTag;

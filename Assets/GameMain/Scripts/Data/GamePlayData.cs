@@ -973,7 +973,7 @@ namespace RoundHero
         public void RefreshCardData()
         {
             var card = BattleManager.Instance.GetCard(CardIdx);
-            Energy = BattleCardManager.Instance.GetCardEnergy(CardIdx);
+            Energy = BattleCardManager.Instance.GetCardEnergy(CardIdx, Idx);
             BaseMaxHP = BattleCardManager.Instance.GetCardBaseMaxHP(card.CardID, card.CardIdx);
             CurHP = MaxHP;
             LastCurHP = CurHP;
