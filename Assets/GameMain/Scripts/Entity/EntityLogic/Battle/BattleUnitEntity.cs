@@ -1634,7 +1634,7 @@ namespace RoundHero
                     IsUIGO = false,
                 };
 
-                var isAddHP = (this is BattleSoliderEntity && changeHP < 0) || this is BattleCoreEntity;
+                var isAddHP = addHeroHP;//(this is BattleSoliderEntity && changeHP < 0) || this is BattleCoreEntity;
             
                 var targetMoveParams = new MoveParams()
                 {
@@ -1646,16 +1646,18 @@ namespace RoundHero
 
                 if (!changeHPInstantly)
                 {
+                    //this is BattleSoliderEntity && changeHP < 0
                     AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
-                        this is BattleSoliderEntity && changeHP < 0, moveParams,
+                        addHeroHP, moveParams,
                         targetMoveParams);
                     //AddHurts(changeHP);
                 }
                 // if (hpDelta != 0)
                 else
                 {
+                    //this is BattleSoliderEntity && changeHP < 0
                     AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
-                        this is BattleSoliderEntity && changeHP < 0, moveParams,
+                        addHeroHP, moveParams,
                         targetMoveParams);
                     //AddHurts(hpDelta);
                 }

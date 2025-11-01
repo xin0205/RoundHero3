@@ -948,7 +948,13 @@ namespace RoundHero
         //public List<BuffData> FuneDatas;
         public int Energy;
        
+        public override int MaxHP { get
+            {
+                var cardData = CardManager.Instance.GetCard(CardIdx);
+                return BaseMaxHP + FuneCount(EBuffID.Spec_AddMaxHP) + cardData.MaxHPDelta;
+            }
 
+        }
 
         public Data_BattleSolider()
         {

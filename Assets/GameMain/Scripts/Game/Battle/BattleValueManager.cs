@@ -392,7 +392,7 @@ namespace RoundHero
             // }
         }
 
-        private async void InternalShowValue(BattleUnitEntity effectUnit, int startValue, int endValue, int entityIdx)
+        private async void InternalShowValue(BattleUnitEntity effectUnit, int startValue, int endValue, int entityIdx, bool isAdd)
         {
             
             if (effectUnit == null)
@@ -400,8 +400,8 @@ namespace RoundHero
                 return;
             }
 
-            
-            if (effectUnit is BattleMonsterEntity)
+            //effectUnit is BattleMonsterEntity
+            if (isAdd || effectUnit is BattleCoreEntity)
             {
  
                 var moveParams = new MoveParams()
@@ -413,15 +413,17 @@ namespace RoundHero
             
                 var targetMoveParams = new MoveParams()
                 {
-                    FollowGO = effectUnit.gameObject,
-                    DeltaPos = new Vector2(0, 100f),
-                    IsUIGO = false,
+                    FollowGO = startValue < 0 ? AreaController.Instance.UICore :  effectUnit.gameObject,
+                    DeltaPos = new Vector2(0, startValue < 0 ? -25f : 100f),
+                    IsUIGO = startValue < 0,
                 };
                 
-                AddMoveValue(startValue, endValue, CurValueEntityIdx++,
-                    true, effectUnit is BattleSoliderEntity,
+                AddMoveValue(startValue, endValue, CurValueEntityIdx++, true,
+                    isAdd,
                     moveParams,
                     targetMoveParams);
+                
+                
 
                 // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++,
                 //     true, effectUnit is BattleSoliderEntity,
@@ -445,7 +447,6 @@ namespace RoundHero
             }
             else
             {
-                
                 var moveParams = new MoveParams()
                 {
                     FollowGO = effectUnit.gameObject,
@@ -455,15 +456,16 @@ namespace RoundHero
             
                 var targetMoveParams = new MoveParams()
                 {
-                    FollowGO = startValue < 0 ? AreaController.Instance.UICore :  effectUnit.gameObject,
-                    DeltaPos = new Vector2(0, startValue < 0 ? -25f : 100f),
-                    IsUIGO = startValue < 0,
+                    FollowGO = effectUnit.gameObject,
+                    DeltaPos = new Vector2(0, 100f),
+                    IsUIGO = false,
                 };
                 
-                AddMoveValue(startValue, endValue, CurValueEntityIdx++, true,
-                    effectUnit is BattleSoliderEntity && startValue < 0,
+                AddMoveValue(startValue, endValue, CurValueEntityIdx++,
+                    true, isAdd,
                     moveParams,
                     targetMoveParams);
+                
 
                 // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++, true,
                 //     effectUnit is BattleSoliderEntity && startValue < 0,
@@ -510,6 +512,11 @@ namespace RoundHero
                 var endValue = BlessManager.Instance.AddCurHPByAttackDamage()
                     ? (int)(triggerData.Value + triggerData.DeltaValue)
                     : (int)triggerData.ActualValue;
+
+                // if (triggerData.HeroHPDelta)
+                // {
+                //     endValue = Mathf.Abs(endValue);
+                // }
                 // if(value == 0)
                 //     continue;
 
@@ -517,7 +524,7 @@ namespace RoundHero
                 // {
                 //     
                 // });
-                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx);
+                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx, triggerData.HeroHPDelta);
                 //InternalShowValue(effectUnit, value, entityIdx++);
 
                 idx++;

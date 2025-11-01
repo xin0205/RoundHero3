@@ -1269,7 +1269,7 @@ namespace RoundHero
             }
             else if (triggerValue < 0)
             {
-                if (Mathf.Abs(triggerValue) > effectUnitOldHP)
+                if (Mathf.Abs(triggerValue) > effectUnitOldHP && effectUnitOldHP > 0)
                 {
                     triggerData.ActualValue = -effectUnitOldHP;
                 }
@@ -1607,7 +1607,7 @@ namespace RoundHero
                     {
                         case EUnitAttribute.HP:
                             
-                            var hpDelta = effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly);
+                            var hpDelta = effectUnitEntity.ChangeCurHP(triggerValue, true, triggerData.HeroHPDelta, triggerData.ChangeHPInstantly);
                             
                             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                                 !triggerData.ChangeHPInstantly && hpDelta != 0)
@@ -1629,10 +1629,15 @@ namespace RoundHero
                                 
                     
                             }
-                            else if (triggerData.HeroHPDelta && hpDelta != 0)
+                            //triggerData.HeroHPDelta && hpDelta != 0
+                            else if (effectUnitEntity.BattleUnitData.AddHeroHP > 0)
                             {
-                                effectUnitEntity.BattleUnitData.AddHeroHP += hpDelta;
-                                HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
+                                
+                                //effectUnitEntity.BattleUnitData.AddHeroHP += hpDelta;\
+                                //-hpDelta;
+                                HeroManager.Instance.BattleHeroData.CacheHPDelta +=
+                                    effectUnitEntity.BattleUnitData.AddHeroHP;
+                                effectUnitEntity.BattleUnitData.AddHeroHP = 0;
                                 //HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
                                 triggerData.HeroHPDelta = false;
                                 // var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);

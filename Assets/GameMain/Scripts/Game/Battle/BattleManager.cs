@@ -331,13 +331,20 @@ namespace RoundHero
                 // {
                 //     addHP += useDefenseCount;
                 // }
-                
-                if (addHP > 0 && (unit.UnitCamp == EUnitCamp.Player1 || unit.UnitCamp == EUnitCamp.Player2) && unit.GetStateCount(EUnitState.UnRecover) <= 0)
+
+                if (oldHP > 0)
                 {
-                    //var playerData = gamePlayData.GetPlayerData(BattleManager.Instance.CurUnitCamp);
-                    //ChangeUnitHP(gamePlayData, playerData.BattleHero, addHP, changeHPInstantly);
-                    unit.AddHeroHP += addHP;
+                    addHP =  addHP > oldHP ? oldHP : addHP;
+                
+                    if (addHP > 0  &&
+                        unit.GetStateCount(EUnitState.UnRecover) <= 0)
+                    {
+                        //var playerData = gamePlayData.GetPlayerData(BattleManager.Instance.CurUnitCamp);
+                        //ChangeUnitHP(gamePlayData, playerData.BattleHero, addHP, changeHPInstantly);
+                        unit.AddHeroHP += addHP;
+                    }
                 }
+               
             }
 
             // var drDamageOverDefenseAddDamage =

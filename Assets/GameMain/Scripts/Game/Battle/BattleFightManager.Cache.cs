@@ -2192,6 +2192,11 @@ namespace RoundHero
 
 
                         var value = effectUnit.AddHeroHP;
+                        if (value > 0)
+                        {
+                            triggerData.HeroHPDelta = true;
+                        }
+                        
                         if (RoundFightData.GamePlayData.BlessCount(EBlessID.AddCurHPByAttackDamage,
                                 BattleManager.Instance.CurUnitCamp) > 0)
                         {
@@ -2209,10 +2214,10 @@ namespace RoundHero
                                 EBuffID.Spec_CurseUnEffect))
                             continue;
 
-                        if (effectUnit.UnitRole != EUnitRole.Core)
-                        {
-                            triggerData.HeroHPDelta = true;
-                        }
+                        // if (effectUnit.CurHP >= 0 && effectUnit is Data_BattleSolider)
+                        // {
+                        //     triggerData.HeroHPDelta = true;
+                        // }
 
 
                         // var playerData = GamePlayManager.Instance.GamePlayData.GetPlayerData(unit.UnitCamp);
