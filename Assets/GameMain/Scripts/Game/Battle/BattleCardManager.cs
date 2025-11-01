@@ -992,13 +992,10 @@ namespace RoundHero
             BlessManager.Instance.EachUseCard(GamePlayManager.Instance.GamePlayData, cardIdx, unitIdx);
 
             BattleBuffManager.Instance.TriggerBuff();
-            
-            
-            
-            if (BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Contains(EBuffID.Spec_NextCardSubEnergy))
-            {
-                BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Remove(EBuffID.Spec_NextCardSubEnergy);
-            }
+
+
+
+            BattleManager.Instance.RemoveBattleBuff(EBuffID.Spec_NextCardSubEnergy);
 
             foreach (var funeIdx in card.FuneIdxs)
             {

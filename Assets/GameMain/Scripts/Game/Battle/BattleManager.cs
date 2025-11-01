@@ -678,5 +678,17 @@ namespace RoundHero
         //         }
         //     }
         // }
+        
+        public void RemoveBattleBuff(EBuffID buffID)
+        {
+            for (int i = BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Count - 1; i >= 0; i--)
+            {
+                if (BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs[i] == buffID)
+                {
+                    BattlePlayerManager.Instance.BattlePlayerData.BattleBuffs.Remove(buffID);
+                }
+            }
+        }
+
     }
 }

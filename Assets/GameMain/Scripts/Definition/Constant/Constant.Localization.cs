@@ -151,6 +151,7 @@ namespace RoundHero
             public const string Message_UnPlaceUnit = "Message.UnPlaceUnit";
             public const string Message_NotTarget = "Message.NotTarget";
             public const string Message_NoHPToAttack = "Message.NoHPToAttack";
+            public const string Message_NoHPToMove = "Message.NoHPToMove";
 
             public const string Info_UnMoveGrid = "Info.UnMoveGrid";
             public const string Message_MaxRewardCount = "Message.MaxRewardCount";
