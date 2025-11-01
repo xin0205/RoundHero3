@@ -981,20 +981,23 @@ namespace RoundHero
                         if (unit == null)
                         {
                             newRetGetRange.Add(_gridPosIdx);
+                            retGetRange.Remove(i);
                         }
                         else
                         {
                             if(relativeCamp == ERelativeCamp.Us && selfUnitCamp == unit.UnitCamp)
                             {
                                 newRetGetRange.Add(_gridPosIdx);
+                                retGetRange.Remove(i);
                             }
                             if(relativeCamp == ERelativeCamp.Enemy && selfUnitCamp != unit.UnitCamp)
                             {
                                 newRetGetRange.Add(_gridPosIdx);
+                                retGetRange.Remove(i);
                             }
                         }
 
-                        retGetRange.Remove(i);
+                        
 
                     }
                 
