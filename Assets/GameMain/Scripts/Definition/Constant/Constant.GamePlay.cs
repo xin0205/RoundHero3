@@ -112,6 +112,7 @@ namespace RoundHero
         public class DiffcultySetting
         {
             public int MaxBattleCount;
+            public int CoreHP;
         }
 
         public static class BattleMode
@@ -125,22 +126,27 @@ namespace RoundHero
                     [EGameDifficulty.Difficulty0] = new DiffcultySetting()
                     {
                         MaxBattleCount = 1,
+                        CoreHP = 15,
                     },
                     [EGameDifficulty.Difficulty1] = new DiffcultySetting()
                     {
                         MaxBattleCount = 9,
+                        CoreHP = 115,
                     },
                     [EGameDifficulty.Difficulty2] = new DiffcultySetting()
                     {
                         MaxBattleCount = 12,
+                        CoreHP = 12,
                     },
                     [EGameDifficulty.Difficulty3] = new DiffcultySetting()
                     {
                         MaxBattleCount = 12,
+                        CoreHP = 10,
                     },
                     [EGameDifficulty.Difficulty4] = new DiffcultySetting()
                     {
                         MaxBattleCount = 12,
+                        CoreHP = 10,
                     },
                 };
             

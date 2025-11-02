@@ -79,11 +79,16 @@ namespace RoundHero
 
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
             
-             // var funeIdx = FuneManager.Instance.GetIdx();
-             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
-             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
-             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].CardDestination = ECardDestination.Consume;
+             var funeIdx = FuneManager.Instance.GetIdx();
+             FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 4));
+             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
              //
+             funeIdx = FuneManager.Instance.GetIdx();
+             FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 4));
+             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             
+             //BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].CardDestination = ECardDestination.Consume;
+             
              // funeIdx = FuneManager.Instance.GetIdx();
              // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 37));
              // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
@@ -256,7 +261,7 @@ namespace RoundHero
             
             
             
-            AnimationAcquireCard(roundAcquireCardCirculation.HandCards, unuseCount);
+            AnimationAcquireCard(roundAcquireCardCirculation.HandCards, roundAcquireCardCirculation.HandCards.Count, unuseCount);
             BattlePlayerData.HandCards = new List<int>(roundAcquireCardCirculation.HandCards);
             BattlePlayerData.StandByCards = new List<int>(roundAcquireCardCirculation.StandByCards);
             BattlePlayerData.PassCards = new List<int>(roundAcquireCardCirculation.PassCards);
@@ -280,8 +285,8 @@ namespace RoundHero
             var handCards = CacheAcquireHandCards(GamePlayManager.Instance.GamePlayData, cardCount, firstRound);
 
             BattlePlayerManager.Instance.BattlePlayerData.RoundAcquireCardCount += handCards.Count - beforeHandCardCount;
-
-            AnimationAcquireCard(handCards, unuseCount);
+            var newCards = handCards.Except(BattlePlayerData.HandCards).ToList();
+            AnimationAcquireCard(newCards, handCards.Count, unuseCount);
 
             //GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
@@ -293,8 +298,9 @@ namespace RoundHero
             var handCards = triggerData.AcquireCardCirculation.HandCards;
 
             BattlePlayerManager.Instance.BattlePlayerData.RoundAcquireCardCount += handCards.Count - beforeHandCardCount;
+            var newCards = handCards.Except(BattlePlayerData.HandCards).ToList();
 
-            AnimationAcquireCard(handCards, 0);
+            AnimationAcquireCard(newCards, handCards.Count, 0);
             BattlePlayerData.HandCards = new List<int>(triggerData.AcquireCardCirculation.HandCards);
             BattlePlayerData.StandByCards = new List<int>(triggerData.AcquireCardCirculation.StandByCards);
             BattlePlayerData.PassCards = new List<int>(triggerData.AcquireCardCirculation.PassCards);
@@ -367,33 +373,34 @@ namespace RoundHero
             return eachHandCardCount;
         }
 
-        public async Task AnimationAcquireCard(List<int> handCards, int unuseCount = 0)
+        public async Task AnimationAcquireCard(List<int> handCards, int allCardCount = 0, int unuseCount = 0)
         {
-            Log.Debug("AnimationAcquireCard:" + handCards.Count);
-            SetCardPosList(handCards.Count);
-
-            for (int i = 0; i < handCards.Count; i++)
+            Log.Debug("AnimationAcquireCard:" + allCardCount);
+            SetCardPosList(allCardCount);
+            var startIdx = allCardCount - handCards.Count;
+            for (int i = startIdx; i < allCardCount; i++)
             {
+                var sortIdx = i - startIdx;
                 var idx = i;
                 BattleCardEntity card;
-                if (CardEntities.ContainsKey(handCards[idx]))
+                if (CardEntities.ContainsKey(handCards[sortIdx]))
                 {
-                    card = CardEntities[handCards[idx]];
+                    card = CardEntities[handCards[sortIdx]];
                     card.BattleCardEntityData.HandSortingIdx = idx;
                     card.MoveCard(
                         new Vector3(CardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
-                    card.SetSortingOrder(idx * 10);
+                    card.SetSortingOrder(sortIdx * 10);
                 }
                 else
                 {
-                    card = await GameEntry.Entity.ShowBattleCardEntityAsync(handCards[idx], idx);
+                    card = await GameEntry.Entity.ShowBattleCardEntityAsync(handCards[sortIdx], sortIdx);
                     if(CardEntities.ContainsKey(card.BattleCardEntityData.CardIdx))
                         continue;
                     
                     card.transform.position = BattleController.Instance.StandByCardPos.position;
                     card.SetSortingOrder(idx * 10);
                     card.AcquireCard(new Vector2(CardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y),
-                         idx * 0.15f + 0.15f);
+                        idx * 0.15f + 0.15f);
 
                     AddHandCard(card);
                 }
@@ -1082,6 +1089,7 @@ namespace RoundHero
 
         }
 
+        
         // public void ToHandCards(int cardID)
         // {
         //     if(BattleData.HandCards.Contains(cardID))

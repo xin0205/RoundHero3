@@ -86,21 +86,45 @@ namespace RoundHero
                      isLook = true;
                      var pos = unitEntity.Position;
                      roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                     break;
                  }
             }
-
-            if (!isLook && attackDatas.Count > 0)
+            foreach (var kv in attackDatas)
             {
-                var list = attackDatas.Keys.ToList();
-                
-                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(list[0]);
-                if (unitEntity != null)
+                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                if (unitEntity is BattleSoliderEntity)
                 {
+                    isLook = true;
                     var pos = unitEntity.Position;
                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                    break;
                 }
-                
             }
+            
+            foreach (var kv in attackDatas)
+            {
+                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                if (unitEntity.UnitIdx != UnitIdx)
+                {
+                    isLook = true;
+                    var pos = unitEntity.Position;
+                    roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                    break;
+                }
+            }
+
+            // if (!isLook && attackDatas.Count > 0)
+            // {
+            //     var list = attackDatas.Keys.ToList();
+            //     
+            //     var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(list[0]);
+            //     if (unitEntity != null)
+            //     {
+            //         var pos = unitEntity.Position;
+            //         roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+            //     }
+            //     
+            // }
             
         }
         

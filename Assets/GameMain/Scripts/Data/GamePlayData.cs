@@ -796,7 +796,7 @@ namespace RoundHero
             var drHero = GameEntry.DataTable.GetHero(heroID);
             
             HeroID = heroID;
-            BaseMaxHP = drHero.HP;
+            BaseMaxHP = Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].CoreHP;// drHero.HP;
             BaseMaxHeart = drHero.Heart;
             CurHeart = MaxHeart;
             CurHP = MaxHP;
