@@ -908,7 +908,8 @@ namespace RoundHero
                 var gridPosIdxs = new List<int>();
                 foreach (var triggerData in kv.Value)
                 {
-                    if (GameUtility.InGridRange(GameUtility.GridPosIdxToCoord(triggerData.EffectUnitGridPosIdx)))
+                    if (GameUtility.InGridRange(GameUtility.GridPosIdxToCoord(triggerData.EffectUnitGridPosIdx)) &&
+                        triggerData.BuffTriggerType.ToString().Contains("Tactic"))
                     {
                         gridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
                     }

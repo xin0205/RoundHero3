@@ -3310,10 +3310,10 @@ namespace RoundHero
                     //     continue;
                     // }
 
-                    if (triggerData.EffectUnitIdx != effectUnitIdx)
-                    {
-                        continue;
-                    }
+                    // if (triggerData.EffectUnitIdx != effectUnitIdx)
+                    // {
+                    //     continue;
+                    // }
 
                     // if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                     // {

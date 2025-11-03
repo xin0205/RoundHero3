@@ -127,6 +127,8 @@ namespace RoundHero
                 return;
 
             time += Time.deltaTime;
+            if(time < 0)
+                return;
 
             if (BattleUnitStateValueEntityData.FollowParams.FollowGO.IsDestroyed())
             {
@@ -180,7 +182,7 @@ namespace RoundHero
             
             if (BattleUnitStateValueEntityData.IsAdd)
             {
-                if ((time - timeShow) >= 0.25f)
+                if ((time - timeShow) >= 0.5f)
                 {
                     text.text = positiveEndValue;
                     text.color = recoverColor;
@@ -198,9 +200,10 @@ namespace RoundHero
             {
                 if (BattleUnitStateValueEntityData.IsLoop)
                 {
-                    time = 0;
-                    this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1f);
-                    this.text.color = new Color(this.text.color.r, this.text.color.g, this.text.color.b, 1f);
+                    time = -1.5f;
+                    this.transform.localPosition = new Vector3(9999, 9999, 9999);
+                    // this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, 1f);
+                    // this.text.color = new Color(this.text.color.r, this.text.color.g, this.text.color.b, 1f);
                 }
                 else
                 {
