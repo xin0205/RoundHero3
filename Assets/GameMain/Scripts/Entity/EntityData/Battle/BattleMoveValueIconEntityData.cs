@@ -8,10 +8,10 @@ namespace RoundHero
         public EUnitState UnitState;
 
         public void Init(int entityId, int startValue, int endValue, EUnitState unitState, int entityIdx = -1, bool isLoop = false,
-            bool isAdd = false, MoveParams followParams = null,MoveParams targetFollowParams = null)
+            bool isAdd = false, MoveParams followParams = null,MoveParams targetFollowParams = null, int triggerDataIdx = -1)
         {
             base.Init(entityId, startValue, endValue, entityIdx, isLoop,
-                isAdd, followParams, targetFollowParams);
+                isAdd, followParams, targetFollowParams, triggerDataIdx);
             this.UnitState = unitState;
         }
         

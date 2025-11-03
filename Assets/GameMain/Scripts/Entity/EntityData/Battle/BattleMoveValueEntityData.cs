@@ -21,12 +21,14 @@ namespace RoundHero
         
         public MoveParams FollowParams;
         public MoveParams TargetFollowParams;
+
+        public int TriggerDataIdx;
         
         
         //Vector3 pos, Vector3 targetPos, 
 
         public void Init(int entityId, int startValue, int endValue, int entityIdx = -1,  bool isLoop = false,
-            bool isAdd = false, MoveParams followParams = null,MoveParams targetFollowParams = null)
+            bool isAdd = false, MoveParams followParams = null,MoveParams targetFollowParams = null, int triggerDataIdx = -1)
 
         {
             base.Init(entityId, Vector3.zero);
@@ -40,7 +42,7 @@ namespace RoundHero
             
             FollowParams = followParams;
             TargetFollowParams = targetFollowParams;
-            
+            TriggerDataIdx = triggerDataIdx;
         }
     }
 }

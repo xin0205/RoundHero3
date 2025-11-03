@@ -44,8 +44,8 @@ namespace RoundHero
         public EAttackCastType UnitAttackCastType;
         public Transform ValuePos;
         protected Queue<int> hurtQueue = new Queue<int>();
-        protected Queue<BattleMoveValueEntityData> moveValueQueue = new();
-        protected Queue<BattleUnitStateValueEntityData> unitStateIconValueQueue = new();
+        protected List<BattleMoveValueEntityData> moveValueList = new();
+        protected List<BattleUnitStateValueEntityData> unitStateIconValueList = new();
 
         public int TargetPosIdx;
         
@@ -1620,10 +1620,10 @@ namespace RoundHero
             //SetAction(EUnitActionState.Recover);
         }
         
-        public virtual int  ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly, bool showValue = true)
+        public virtual int  ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly, bool showValue = true, TriggerData triggerData = null)
         {
             var hpDelta = BattleManager.Instance.ChangeHP(BattleUnitData, changeHP, GamePlayManager.Instance.GamePlayData,
-                EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly);
+                EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly, triggerData);
 
             if (showValue)
             {
@@ -1649,7 +1649,7 @@ namespace RoundHero
                     //this is BattleSoliderEntity && changeHP < 0
                     AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
                         addHeroHP, moveParams,
-                        targetMoveParams);
+                        targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
                     //AddHurts(changeHP);
                 }
                 // if (hpDelta != 0)
@@ -1658,7 +1658,7 @@ namespace RoundHero
                     //this is BattleSoliderEntity && changeHP < 0
                     AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
                         addHeroHP, moveParams,
-                        targetMoveParams);
+                        targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
                     //AddHurts(hpDelta);
                 }
                         
@@ -1679,33 +1679,56 @@ namespace RoundHero
         // }
         
         public void AddMoveValue(int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
-             MoveParams moveParams = null, MoveParams targetMoveParams = null)
+            MoveParams moveParams = null, MoveParams targetMoveParams = null, int triggerDataIdx = -1)
         {
+            if (triggerDataIdx != -1)
+            {
+                for (int i = moveValueList.Count - 1; i >= 0; i--)
+                {
+                    if (moveValueList[i].TriggerDataIdx == triggerDataIdx)
+                    {
+                        moveValueList.RemoveAt(i);
+                    }
+                }
+            }
+            
+            
             var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
             data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, entityIdx, isLoop,
-                isAdd, moveParams, targetMoveParams);
+                isAdd, moveParams, targetMoveParams, triggerDataIdx);
 
-            moveValueQueue.Enqueue(data);
+            moveValueList.Add(data);
         }
         
         public void AddUnitStateMoveValue(EUnitState unitState, int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
-            MoveParams moveParams = null, MoveParams targetMoveParams = null)
+            MoveParams moveParams = null, MoveParams targetMoveParams = null, int triggerDataIdx = -1)
         {
+            if (triggerDataIdx != -1)
+            {
+                for (int i = unitStateIconValueList.Count - 1; i >= 0; i--)
+                {
+                    if (unitStateIconValueList[i].TriggerDataIdx == triggerDataIdx)
+                    {
+                        unitStateIconValueList.RemoveAt(i);
+                    }
+                }
+            }
+
             var data = ReferencePool.Acquire<BattleUnitStateValueEntityData>();
             data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
-                targetMoveParams);
+                targetMoveParams, triggerDataIdx);
 
-            unitStateIconValueQueue.Enqueue(data);
+            unitStateIconValueList.Add(data);
         }
 
-        private float showMoveValueTime = 0.8f;
+        private float showMoveValueTime = 0.2f;
         protected async void ShowMoveValues()
         {
-            if(moveValueQueue.Count <= 0)
+            if(moveValueList.Count <= 0)
                 return;
             
             showMoveValueTime += Time.deltaTime;
-            if (showMoveValueTime > 0.8f)
+            if (showMoveValueTime > 0.2f)
             {
                 showMoveValueTime = 0;
                 
@@ -1715,9 +1738,10 @@ namespace RoundHero
                 do
                 {
                     data = null;
-                    if (moveValueQueue.Count > 0)
+                    if (moveValueList.Count > 0)
                     {
-                        data = moveValueQueue.Dequeue();
+                        data = moveValueList[0];
+                        moveValueList.RemoveAt(0);
                     }
                     // if (moveValueQueue.Count <= 0)
                     // {
@@ -1758,14 +1782,14 @@ namespace RoundHero
             }
         }
         
-        private float showMoveValueIconTime = 0.8f;
+        private float showMoveValueIconTime = 0.2f;
         protected async void ShowMoveValueIcons()
         {
-            if(unitStateIconValueQueue.Count <= 0)
+            if(unitStateIconValueList.Count <= 0)
                 return;
             
             showMoveValueIconTime += Time.deltaTime;
-            if (showMoveValueIconTime > 0.8f)
+            if (showMoveValueIconTime > 0.2f)
             {
                 showMoveValueIconTime = 0;
 
@@ -1774,15 +1798,16 @@ namespace RoundHero
                 do
                 {
                     data = null;
-                    if (unitStateIconValueQueue.Count > 0)
+                    if (unitStateIconValueList.Count > 0)
                     {
-                        data = unitStateIconValueQueue.Dequeue();
+                        data = unitStateIconValueList[0];
+                        unitStateIconValueList.RemoveAt(0);
                     }
                     
-                    if (unitStateIconValueQueue.Count <= 0)
-                    {
-                        showMoveValueIconTime = 0.8f;
-                    }
+                    // if (unitStateIconValueQueue.Count <= 0)
+                    // {
+                    //     showMoveValueIconTime = 0.8f;
+                    // }
 
                 } while(data != null && data.EntityIdx < ShowUnitStateIconEntityIdx);
                 

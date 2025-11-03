@@ -166,7 +166,7 @@ namespace RoundHero
             AddUnitStateMoveValue(unitState, value, value,  CurUnitStateIconEntityIdx++,
                 isLoop, false,
                 moveParams,
-                targetMoveParams);
+                targetMoveParams, triggerData.Idx);
 
             // var entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(value, value, unitState, _curUnitStateIconEntityIdx++,
             //     isLoop, false,

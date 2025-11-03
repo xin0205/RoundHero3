@@ -176,6 +176,7 @@ namespace RoundHero
             }
             GridEntities.Clear();
             GridEntitiesMap.Clear();
+            BattleAreaManager.Instance.CurPointGridPosIdx = -1;
         }
         
         public void Subscribe()

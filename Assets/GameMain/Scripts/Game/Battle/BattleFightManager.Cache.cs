@@ -2191,11 +2191,11 @@ namespace RoundHero
                         }
 
 
-                        var value = effectUnit.AddHeroHP;
-                        if (value > 0)
-                        {
-                            triggerData.HeroHPDelta = true;
-                        }
+                        var value = effectUnit.AddCoreHP;
+                        // if (value > 0)
+                        // {
+                        //     triggerData.HeroHPDelta = value;
+                        // }
                         
                         if (RoundFightData.GamePlayData.BlessCount(EBlessID.AddCurHPByAttackDamage,
                                 BattleManager.Instance.CurUnitCamp) > 0)
@@ -2203,7 +2203,7 @@ namespace RoundHero
                             value = Math.Abs((int)triggerValue);
                         }
 
-                        effectUnit.AddHeroHP = 0;
+                        effectUnit.AddCoreHP = 0;
 
                         if (BattleCurseManager.Instance.CurseIDs.Contains(ECurseID.UnitDeadUnRecoverHeroHP) &&
                             !effectUnit.Exist())

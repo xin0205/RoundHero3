@@ -2152,8 +2152,8 @@ namespace RoundHero
             //     
             //     
             // };
-            public static int MaxFuneCount = 4;
-            public static int InitFuneCount = 2;
+            public static int MaxFuneCount = 5;
+            public static int InitFuneCount = 3;
         }
 
         public static class BattleEvent

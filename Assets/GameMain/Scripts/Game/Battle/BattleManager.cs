@@ -228,7 +228,7 @@ namespace RoundHero
         }
 
         public int ChangeHP(Data_BattleUnit unit, int value, Data_GamePlay gamePlayData, EHPChangeType hpChangeType,
-            bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = false)
+            bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = false, TriggerData triggerData = null)
 
         {
             if(unit == null)
@@ -341,7 +341,12 @@ namespace RoundHero
                     {
                         //var playerData = gamePlayData.GetPlayerData(BattleManager.Instance.CurUnitCamp);
                         //ChangeUnitHP(gamePlayData, playerData.BattleHero, addHP, changeHPInstantly);
-                        unit.AddHeroHP += addHP;
+                        //unit.AddCoreHP += addHP;
+                        if (triggerData != null)
+                        {
+                            triggerData.HeroHPDelta += addHP;
+                        }
+                        
                     }
                 }
                

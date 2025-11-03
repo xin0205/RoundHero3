@@ -25,19 +25,19 @@ namespace RoundHero
             
             if (effectUnit is BattleSoliderEntity)
             {
-                foreach (var kv in triggerDataDict)
-                {
-                    foreach (var triggerData in kv.Value)
-                    {
-                        if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
-                        {
-                            continue;
-                        }
-                        //CurValueEntityIdx += 1;
-                        
-                    }
-
-                }
+                // foreach (var kv in triggerDataDict)
+                // {
+                //     foreach (var triggerData in kv.Value)
+                //     {
+                //         if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
+                //         {
+                //             continue;
+                //         }
+                //         //CurValueEntityIdx += 1;
+                //         
+                //     }
+                //
+                // }
                 
                 var idx = 0;
                 foreach (var kv in triggerDataDict)
@@ -255,7 +255,7 @@ namespace RoundHero
                         {
                             continue;
                         }
-                        ShowHeroValue(triggerData.ActionUnitGridPosIdx, (int)triggerData.ActualValue, _curValueEntityIdx);
+                        ShowHeroValue(triggerData.ActionUnitGridPosIdx, (int)triggerData.ActualValue, _curValueEntityIdx, triggerData);
                     }
 
                 }
@@ -350,7 +350,7 @@ namespace RoundHero
             }
         }
         
-        private async Task ShowHeroValue(int gridPosIdx, int value, int entityIdx)
+        private async Task ShowHeroValue(int gridPosIdx, int value, int entityIdx, TriggerData triggerData)
         {
 
             var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
@@ -369,7 +369,7 @@ namespace RoundHero
             };
             
             AddMoveValue(value, value, CurValueEntityIdx++, true,
-                false, moveParams, targetMoveParams);
+                false, moveParams, targetMoveParams, triggerData.Idx);
 
             // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(value, value, showValueIdx++, _curValueEntityIdx++, true, false,
             //     moveParams,
@@ -392,7 +392,7 @@ namespace RoundHero
             // }
         }
 
-        private async void InternalShowValue(BattleUnitEntity effectUnit, int startValue, int endValue, int entityIdx, bool isAdd)
+        private async void InternalShowValue(BattleUnitEntity effectUnit, int startValue, int endValue, int entityIdx, bool isAdd, TriggerData triggerData)
         {
             
             if (effectUnit == null)
@@ -421,7 +421,7 @@ namespace RoundHero
                 AddMoveValue(startValue, endValue, CurValueEntityIdx++, true,
                     isAdd,
                     moveParams,
-                    targetMoveParams);
+                    targetMoveParams, triggerData.Idx);
                 
                 
 
@@ -464,7 +464,7 @@ namespace RoundHero
                 AddMoveValue(startValue, endValue, CurValueEntityIdx++,
                     true, isAdd,
                     moveParams,
-                    targetMoveParams);
+                    targetMoveParams, triggerData.Idx);
                 
 
                 // var entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(startValue, endValue, _curValueEntityIdx++, true,
@@ -524,7 +524,7 @@ namespace RoundHero
                 // {
                 //     
                 // });
-                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx, triggerData.HeroHPDelta);
+                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx, triggerData.HeroHPDelta > 0, triggerData);
                 //InternalShowValue(effectUnit, value, entityIdx++);
 
                 idx++;

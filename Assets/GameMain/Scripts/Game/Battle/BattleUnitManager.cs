@@ -350,7 +350,7 @@ namespace RoundHero
 
                 }
 
-                kv.Value.BattleUnitData.AddHeroHP = 0;
+                kv.Value.BattleUnitData.AddCoreHP = 0;
             }
         }
         

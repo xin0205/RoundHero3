@@ -469,7 +469,7 @@ namespace RoundHero
         public List<int> Links = new();
         public int RoundGridMoveCount = 0;
         public UnitStateData RoundUnitState = new();
-        public int AddHeroHP = 0;
+        public int AddCoreHP = 0;
         public int RoundMoveTimes = 0;
         public int RoundAttackTimes = 0;
         public int CacheHPDelta;
@@ -835,7 +835,7 @@ namespace RoundHero
             dataBattleUnit.Links = new List<int>(Links);
             dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
             dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
-            dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.AddCoreHP = AddCoreHP;
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
             dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;
@@ -1004,7 +1004,7 @@ namespace RoundHero
             dataBattleUnit.Links = new List<int>(Links);
             dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
             dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
-            dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.AddCoreHP = AddCoreHP;
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
             dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;
@@ -1135,7 +1135,7 @@ namespace RoundHero
             dataBattleUnit.Links = new List<int>(Links);
             dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
             dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
-            dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.AddCoreHP = AddCoreHP;
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
             dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;
@@ -1221,7 +1221,7 @@ namespace RoundHero
             dataBattleUnit.Links = new List<int>(Links);
             dataBattleUnit.RoundGridMoveCount = RoundGridMoveCount;
             dataBattleUnit.RoundUnitState = RoundUnitState.Copy();
-            dataBattleUnit.AddHeroHP = AddHeroHP;
+            dataBattleUnit.AddCoreHP = AddCoreHP;
             dataBattleUnit.RoundMoveTimes = RoundMoveTimes;
             dataBattleUnit.RoundAttackTimes = RoundAttackTimes;
             dataBattleUnit.CacheHPDelta = CacheHPDelta;

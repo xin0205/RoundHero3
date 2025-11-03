@@ -198,18 +198,21 @@ namespace RoundHero
 
         public bool ChangeHPInstantly = true;
 
-        public bool HeroHPDelta = false;
+        public int HeroHPDelta = 0;
 
         public int ActionUnitGridPosIdx = -1;
         public int EffectUnitGridPosIdx = -1;
         public bool IsTrigger = false;
         public CardCirculation AcquireCardCirculation = new();
 
+        public int Idx;
+
+        public static int generateIdx;
         //public bool AddHeroHP = true;
 
         public TriggerData()
         {
-
+            Idx = generateIdx++;
         }
 
         public TriggerData Copy()
@@ -242,6 +245,9 @@ namespace RoundHero
             triggerData.TriggerFuneIdx = TriggerFuneIdx;
             triggerData.TriggerCardIdx = TriggerCardIdx;
             triggerData.AcquireCardCirculation = AcquireCardCirculation.Copy();
+            
+            triggerData.Idx = Idx;
+            
             return triggerData;
         }
     }
@@ -1100,7 +1106,7 @@ namespace RoundHero
                     
 
                     triggerValue = BattleFightManager.Instance.ChangeHP(effectUnitData, triggerValue, EHPChangeType.Unit, true,
-                        triggerData.ChangeHPInstantly);
+                        triggerData.ChangeHPInstantly, triggerData);
                     
                     var counterAtkCount = effectUnitData.GetAllStateCount(EUnitState.CounterAtk);
                     if (counterAtkCount > 0 && actionUnitData != null)
@@ -1258,7 +1264,7 @@ namespace RoundHero
                 triggerValue = triggerData.Value + triggerData.DeltaValue;
 
                 BattleFightManager.Instance.ChangeHP(effectUnitData, triggerValue,
-                    EHPChangeType.Unit, true, triggerData.ChangeHPInstantly);
+                    EHPChangeType.Unit, true, triggerData.ChangeHPInstantly, triggerData);
 
             }
 
@@ -1607,7 +1613,7 @@ namespace RoundHero
                     {
                         case EUnitAttribute.HP:
                             
-                            var hpDelta = effectUnitEntity.ChangeCurHP(triggerValue, true, triggerData.HeroHPDelta, triggerData.ChangeHPInstantly);
+                            var hpDelta = effectUnitEntity.ChangeCurHP(triggerValue, true, triggerData.HeroHPDelta > 0, triggerData.ChangeHPInstantly, true);
                             
                             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                                 !triggerData.ChangeHPInstantly && hpDelta != 0)
@@ -1630,16 +1636,15 @@ namespace RoundHero
                     
                             }
                             //triggerData.HeroHPDelta && hpDelta != 0
-                            else if (effectUnitEntity.BattleUnitData.AddHeroHP > 0)
+                            else if (triggerData.HeroHPDelta > 0)
                             {
                                 
                                 //effectUnitEntity.BattleUnitData.AddHeroHP += hpDelta;\
                                 //-hpDelta;
                                 HeroManager.Instance.BattleHeroData.CacheHPDelta +=
-                                    effectUnitEntity.BattleUnitData.AddHeroHP;
-                                effectUnitEntity.BattleUnitData.AddHeroHP = 0;
+                                    triggerData.HeroHPDelta;
                                 //HeroManager.Instance.BattleHeroData.CacheHPDelta += -hpDelta;
-                                triggerData.HeroHPDelta = false;
+                                //triggerData.HeroHPDelta = 0;
                                 // var heroEntity = HeroManager.Instance.GetHeroEntity(effectUnitEntity.UnitCamp);
                                 //
                                 // if (heroEntity != null)
@@ -1689,7 +1694,7 @@ namespace RoundHero
                         case EUnitAttribute.MaxHP:
                             var recover = (int) (triggerData.Value + triggerData.DeltaValue);
                             effectUnitEntity.BattleUnitData.BaseMaxHP += recover;
-                            effectUnitEntity.ChangeCurHP(recover, true, true, true);
+                            effectUnitEntity.ChangeCurHP(recover, true, true, true, true);
                             break;
                         case EUnitAttribute.Empty:
                             break;
@@ -1847,7 +1852,7 @@ namespace RoundHero
                     break;
                 case ETriggerDataType.RemoveUnit:
                     effectUnitEntity.BattleUnitData.RemoveAllState();
-                    effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly);
+                    effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly, true);
                     if (triggerValue < 0)
                     {
                         effectUnitEntity.BattleUnitData.HurtTimes += 1;
@@ -2761,9 +2766,9 @@ namespace RoundHero
         
         
 
-        public int ChangeHP(Data_BattleUnit unit, float value, EHPChangeType hpChangeType, bool useDefense = true, bool changeHPInstantly = false)
+        public int ChangeHP(Data_BattleUnit unit, float value, EHPChangeType hpChangeType, bool useDefense = true, bool changeHPInstantly = false, TriggerData triggerData = null)
         {
-            return BattleManager.Instance.ChangeHP(unit, (int)value, RoundFightData.GamePlayData, hpChangeType, useDefense, true, changeHPInstantly);
+            return BattleManager.Instance.ChangeHP(unit, (int)value, RoundFightData.GamePlayData, hpChangeType, useDefense, true, changeHPInstantly, triggerData);
 
         }
         
