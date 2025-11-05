@@ -837,12 +837,66 @@ namespace RoundHero
                 // }
             }
 
-            if (isTrigger)
+            for (int j = actionData.TriggerDatas.Values.Count -1; j >= 0; j--)
             {
-                SubUnitState(attackUnit, EUnitState.SubDmg, actionData.TriggerDatas);
-                SubUnitState(attackUnit, EUnitState.AddDmg, actionData.TriggerDatas);
+                var triggerDatas = actionData.TriggerDatas.Values.ToList()[j];
+                for (int i = triggerDatas.Count -1; i >= 0; i--)
+                {
+                    var triggerData = triggerDatas[i];
+                    if (GameUtility.IsSubCurHPTrigger(triggerData))
+                    {
+                        var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
+                        if (_attackUnit != null)
+                        {
+                            SubUnitState(_attackUnit, EUnitState.SubDmg, actionData.TriggerDatas);
+                            SubUnitState(_attackUnit, EUnitState.AddDmg, actionData.TriggerDatas);
+                        }
+                        
+                    }
+                }
             }
             
+            for (int k = actionData.MoveData.MoveUnitDatas.Values.Count -1; k >= 0; k--)
+            {
+
+                var moveUnitData = actionData.MoveData.MoveUnitDatas.Values.ToList()[k];
+                for (int i = moveUnitData.MoveActionData.TriggerDatas.Count -1; i >= 0; i--)
+                {
+                    var triggerDatas = moveUnitData.MoveActionData.TriggerDatas.Values.ToList()[i];
+                    for (int j = triggerDatas.Count -1; j >= 0; j--)
+                    {
+                        var triggerData = triggerDatas[j];
+                        if (GameUtility.IsSubCurHPTrigger(triggerData))
+                        {
+                            var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
+                            if (_attackUnit != null)
+                            {
+                                SubUnitState(_attackUnit, EUnitState.SubDmg, moveUnitData.MoveActionData.TriggerDatas);
+                                SubUnitState(_attackUnit, EUnitState.AddDmg, moveUnitData.MoveActionData.TriggerDatas);
+                            }
+                        
+                        }
+                    }
+                }
+            }
+
+            // if (isTrigger)
+            // {
+            //     SubUnitState(attackUnit, EUnitState.SubDmg, actionData.TriggerDatas);
+            //     SubUnitState(attackUnit, EUnitState.AddDmg, actionData.TriggerDatas);
+            // }
+
+            foreach (var kv in actionData.MoveData.MoveUnitDatas)
+            {
+                foreach (var kv2 in kv.Value.MoveActionData.TriggerDatas)
+                {
+                    foreach (var data in kv2.Value)
+                    {
+                        data.InterrelatedActionUnitIdx = attackUnitIdx;
+                        data.InterrelatedEffectUnitIdx = kv2.Key;
+                    }
+                }
+            }
         }
 
         // private void CacheUnitActiveAttackData(EUnitCamp unitCamp, List<BuffValue> triggerBuffDatas, int gridPosIdx,
