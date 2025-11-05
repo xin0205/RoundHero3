@@ -775,6 +775,11 @@ namespace RoundHero
                     unit.UnShowTags();
                 }
             }
+
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                kv.Value.ShowRoundStartBuffIcon();
+            }
         }
         
         public List<CommonItemData> GetEnemyExplainList(int enemyID)

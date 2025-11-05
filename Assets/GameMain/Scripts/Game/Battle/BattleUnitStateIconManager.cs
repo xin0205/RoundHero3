@@ -73,6 +73,38 @@ namespace RoundHero
    
 
         }
+        
+        public async void ShowRoundStartBuffIcon()
+        {
+            UnShowDisplayIcons();
+            UnShowDisplayValues();
+            _curUnitStateIconEntityIdx = CurUnitStateIconEntityIdx;
+            var triggerDataDict = BattleFightManager.Instance.GetRounbStartBuffDatas(UnitIdx);
+
+            foreach (var kv2 in triggerDataDict)
+            {
+                foreach (var triggerData in kv2.Value)
+                {
+                    if (triggerData.TriggerDataType != ETriggerDataType.State)
+                    {
+                        continue;
+                    }
+                    CurUnitStateIconEntityIdx += 1;
+                }
+               
+            }
+            
+            var idx = 0;
+            foreach (var kv2 in triggerDataDict)
+            {
+                ShowIcons(kv2.Value, _curUnitStateIconEntityIdx);
+                
+            }
+            ShowDisplayValue(UnitIdx);
+   
+
+        }
+        
         private async void ShowIcons(List<TriggerData> triggerDatas, int entityIdx)
         {
             var idx = 0;

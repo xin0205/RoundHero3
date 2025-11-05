@@ -1782,14 +1782,14 @@ namespace RoundHero
             }
         }
         
-        private float showMoveValueIconTime = 0.2f;
+        private float showMoveValueIconTime = 0.3f;
         protected async void ShowMoveValueIcons()
         {
             if(unitStateIconValueList.Count <= 0)
                 return;
             
             showMoveValueIconTime += Time.deltaTime;
-            if (showMoveValueIconTime > 0.2f)
+            if (showMoveValueIconTime > 0.3f)
             {
                 showMoveValueIconTime = 0;
 

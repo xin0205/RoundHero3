@@ -208,6 +208,9 @@ namespace RoundHero
         public int Idx;
 
         public static int generateIdx;
+        public int InterrelatedActionUnitIdx;
+        public int InterrelatedEffectUnitIdx;
+            
         //public bool AddHeroHP = true;
 
         public TriggerData()
@@ -247,6 +250,9 @@ namespace RoundHero
             triggerData.AcquireCardCirculation = AcquireCardCirculation.Copy();
             
             triggerData.Idx = Idx;
+            triggerData.InterrelatedActionUnitIdx = InterrelatedActionUnitIdx;
+            triggerData.InterrelatedEffectUnitIdx = InterrelatedEffectUnitIdx;
+
             
             return triggerData;
         }
@@ -2927,6 +2933,32 @@ namespace RoundHero
 
                         break;
                     case ETriggerTarget.Action:
+                        var triggerUnitCamps = buffData.TriggerUnitCamps;
+                        
+                        EUnitCamp actionUnitCamp;
+                        ERelativeCamp relativeCamp;
+                        if (actionUnitIdx == Constant.Battle.UnUnitTriggerIdx)
+                        {
+                            actionUnitCamp = EUnitCamp.Player1;
+                            relativeCamp = GameUtility.GetRelativeCamp(actionUnitCamp, effectUnit.UnitCamp);
+                            if (triggerUnitCamps.Contains(relativeCamp))
+                            {
+                                realEffectUnitIdxs.Add(actionUnitIdx);
+
+                            }  
+                        }
+                        else
+                        {
+                            actionUnitCamp = actionUnit.UnitCamp;
+                            
+                            relativeCamp = GameUtility.GetRelativeCamp(actionUnitCamp, effectUnit.UnitCamp);
+                            if (triggerUnitCamps.Contains(relativeCamp))
+                            {
+                                realEffectUnitIdxs.Add(actionUnitIdx);
+
+                            }
+                        }
+
                         // var Action_isEnemy = false;
                         // if (actionUnitIdx != -1 && actionUnitIdx != Constant.Battle.UnUnitTriggerIdx && effectUnitIdx != -1)
                         // {
@@ -2946,8 +2978,7 @@ namespace RoundHero
                         //     realEffectUnitIdxs.Add(actionUnitIdx);
                         // }
                 
-                        realEffectUnitIdxs.Add(actionUnitIdx);
-                            
+                         
 
                         break;
                     case ETriggerTarget.Hero:
