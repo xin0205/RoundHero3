@@ -782,8 +782,8 @@ namespace RoundHero
                         var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
                         if (_attackUnit != null)
                         {
-                            SubUnitState(_attackUnit, EUnitState.SubDmg, actionData.TriggerDatas[keys[i]]);
-                            SubUnitState(_attackUnit, EUnitState.AddDmg, actionData.TriggerDatas[keys[i]]);
+                            SubUnitState(_attackUnit, EUnitState.SubDmg, actionData.TriggerDatas[keys[j]]);
+                            SubUnitState(_attackUnit, EUnitState.AddDmg, actionData.TriggerDatas[keys[j]]);
                         }
                         
                     }

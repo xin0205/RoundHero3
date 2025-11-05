@@ -1634,7 +1634,7 @@ namespace RoundHero
                     IsUIGO = false,
                 };
 
-                var isAddHP = addHeroHP;//(this is BattleSoliderEntity && changeHP < 0) || this is BattleCoreEntity;
+                var isAddHP = addHeroHP || this is BattleCoreEntity;
             
                 var targetMoveParams = new MoveParams()
                 {
