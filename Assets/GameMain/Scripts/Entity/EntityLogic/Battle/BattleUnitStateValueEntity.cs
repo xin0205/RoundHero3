@@ -173,12 +173,9 @@ namespace RoundHero
             this.transform.localPosition = Vector2.Lerp(startPos, endPos, (time - timeShow) * 1f);
             
             
-            var colorAlpha = Mathf.Lerp(1f, 0f, (time - timeShow) * 1f);
-            
-            
-            
-            this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, colorAlpha);
-            this.text.color = new Color(this.text.color.r, this.text.color.g, this.text.color.b, colorAlpha);
+            // var colorAlpha = Mathf.Lerp(1f, 0f, (time - timeShow) * 1f);
+            // this.Icon.color = new Color(this.Icon.color.r, this.Icon.color.g, this.Icon.color.b, colorAlpha);
+            // this.text.color = new Color(this.text.color.r, this.text.color.g, this.text.color.b, colorAlpha);
             
             if (BattleUnitStateValueEntityData.IsAdd)
             {

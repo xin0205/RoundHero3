@@ -143,7 +143,7 @@ namespace RoundHero
     {
         public int MoveUnitIdx;
         public List<int> MoveGridPosIdxs = new();
-        public Dictionary<int, List<TriggerData>> TriggerDatas = new();
+        public Dictionary<int, List<TriggerData>> TriggerDataDict = new();
 
         public MoveActionData Copy()
         {
@@ -152,10 +152,10 @@ namespace RoundHero
             moveActionData.MoveGridPosIdxs = new List<int>(MoveGridPosIdxs);
 
 
-            foreach (var kv in TriggerDatas)
+            foreach (var kv in TriggerDataDict)
             {
                 var triggerDatas = new List<TriggerData>(kv.Value);
-                moveActionData.TriggerDatas.Add(kv.Key, triggerDatas);
+                moveActionData.TriggerDataDict.Add(kv.Key, triggerDatas);
             }
 
             return moveActionData;
@@ -164,7 +164,7 @@ namespace RoundHero
         public void Clear()
         {
             MoveGridPosIdxs.Clear();
-            TriggerDatas.Clear();
+            TriggerDataDict.Clear();
         }
     }
 
@@ -2287,8 +2287,8 @@ namespace RoundHero
             if(moveActionData == null)
                 return null;
             
-            if(moveActionData.TriggerDatas.ContainsKey(moveIdx))
-                return moveActionData.TriggerDatas[moveIdx];
+            if(moveActionData.TriggerDataDict.ContainsKey(moveIdx))
+                return moveActionData.TriggerDataDict[moveIdx];
             
             return null;
         }
