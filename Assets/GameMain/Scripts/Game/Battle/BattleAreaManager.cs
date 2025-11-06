@@ -373,35 +373,42 @@ namespace RoundHero
                         
                         var battleSoliderData = (BattleManager.Instance.TempTriggerData.UnitData as Data_BattleSolider).Copy();
                         
+                        Log.Debug("ShowBattleSolider:" + BattleManager.Instance.TempTriggerData.UnitData.Idx + "-" + ne.GridPosIdx);
                         //battleSoliderData.Idx = BattleUnitManager.Instance.GetIdx();
-                        var tmpEntity =
-                            await GameEntry.Entity.ShowBattleSoliderEntityAsync(battleSoliderData);
                         
-
-                        if(BattleManager.Instance.TempTriggerData.UnitData == null || tmpEntity.UnitIdx < BattleManager.Instance.TempTriggerData.UnitData.Idx)
-                        {
-                            BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpEntity.BattleSoliderEntityData
-                                .BattleSoliderData.Idx);
-                            // BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpEntity.BattleSoliderEntityData
-                            //     .BattleSoliderData.Idx);
-                            GameEntry.Entity.HideEntity(tmpEntity);
-                            BattleManager.Instance.RefreshEnemyAttackData();
-                        }
-                        else
-                        {
-                            TmpUnitEntity = tmpEntity;
-                            //TmpUnitEntity.ShowCollider(false);
+                        HideTmpUnitEntity();
+                            var tmpEntity =
+                                await GameEntry.Entity.ShowBattleSoliderEntityAsync(battleSoliderData);
+                            Log.Debug("ShowBattleSolider2:" + tmpEntity.UnitIdx + "-" + ne.GridPosIdx);
                             
-                            BattleUnitManager.Instance.BattleUnitDatas.Add(battleSoliderData.Idx, battleSoliderData);
-                            BattleUnitManager.Instance.BattleUnitEntities.Add(
-                                TmpUnitEntity.BattleUnitData.Idx, TmpUnitEntity);
+                            if(BattleManager.Instance.TempTriggerData.UnitData == null || tmpEntity.UnitIdx < BattleManager.Instance.TempTriggerData.UnitData.Idx)
+                            {
+                                Log.Debug("HideEntity:");
+                                BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpEntity.BattleSoliderEntityData
+                                    .BattleSoliderData.Idx);
+                                // BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpEntity.BattleSoliderEntityData
+                                //     .BattleSoliderData.Idx);
+                                GameEntry.Entity.HideEntity(tmpEntity);
+                                BattleManager.Instance.RefreshEnemyAttackData();
+                            }
+                            else
+                            {
+                                Log.Debug("AddEntity：" + BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                                TmpUnitEntity = tmpEntity;
+                                //TmpUnitEntity.ShowCollider(false);
                             
-                            BattleManager.Instance.RefreshEnemyAttackData();
+                                BattleUnitManager.Instance.BattleUnitDatas.Add(battleSoliderData.Idx, battleSoliderData);
+                                BattleUnitManager.Instance.BattleUnitEntities.Add(
+                                    TmpUnitEntity.BattleUnitData.Idx, TmpUnitEntity);
                             
-                            TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
-                            TmpUnitEntity.ShowTags(TmpUnitEntity.UnitIdx);
-                        }
-
+                                BattleManager.Instance.RefreshEnemyAttackData();
+                            
+                                //showhurt
+                                TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
+                                //TmpUnitEntity.ShowTags(TmpUnitEntity.UnitIdx);
+                            }
+                        
+                        
 
                         //BattleEnemyManager.Instance.ShowEnemyRoutes();
                         GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
@@ -412,18 +419,19 @@ namespace RoundHero
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
-                    if (BattleManager.Instance.TempTriggerData.UnitData != null &&
-                        BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx == ne.GridPosIdx)
+                    Log.Debug("Unshow" + "-" + ne.GridPosIdx);
+                    // && BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx == ne.GridPosIdx
+                    if (BattleManager.Instance.TempTriggerData.UnitData != null)
                     {
-
+                        Log.Debug("HideTmpUnitEntity");
                         BattleManager.Instance.TempTriggerData.UnitData = null;
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                         HideTmpUnitEntity();
                         
-
+                        Log.Debug("HideTmpUnitEntity2");
                         BattleManager.Instance.RefreshEnemyAttackData();
                         GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
-                        
+                        Log.Debug("HideTmpUnitEntity3");
                     }
 
                     // if (BattleManager.Instance.BattleData.GridTypes[ne.GridPosIdx] == EGridType.TemporaryUnit)
@@ -987,7 +995,8 @@ namespace RoundHero
                             }
                             else
                             {
-                                unit.ShowHurtTags(unit.UnitIdx);
+                                //showhurt
+                                //unit.ShowHurtTags(unit.UnitIdx);
                                 unit.ShowTagsWithFlyUnitIdx(unit.UnitIdx);
                                 //unit.ShowHurtTags(unit.UnitIdx);
                             }
