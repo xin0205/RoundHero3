@@ -1504,7 +1504,8 @@ namespace RoundHero
                             BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData, triggerDatas);
                         }
 
-
+                        BattleUnitStateManager.Instance.HurtRoundStartMoveTrigger(passUnit.Idx, bePassUnit.Idx,
+                            triggerDatas);
 
 
                         // var bePassUnitHeroEntity = HeroManager.Instance.GetHeroEntity(bePassUnit.UnitCamp);
