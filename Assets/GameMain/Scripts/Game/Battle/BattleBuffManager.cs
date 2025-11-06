@@ -141,6 +141,13 @@ namespace RoundHero
             int actionUnitPreGridPosIdx = -1, int cardIdx = -1, int funeIdx = -1, ETriggerDataSubType triggerDataSubType = ETriggerDataSubType.Empty, TriggerData preTriggerData = null)
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
+            var newActionUnitIdx = actionUnitIdx;
+            if (buffTriggerType == EBuffTriggerType.BePass || buffTriggerType == EBuffTriggerType.Hurt
+                                                           || buffTriggerType == EBuffTriggerType.Dead)
+            {
+                newActionUnitIdx = effectUnitIdx;
+            }
+            
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
             //     !GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData, ECardID.RoundDeBuffUnEffect))
             // {
@@ -180,20 +187,20 @@ namespace RoundHero
                         
                         buffValues.Add(BattleBuffManager.Instance.GetBuffValue(value, realEffectUnitIdx, cardIdx, preTriggerData));
                     }
-        
+
                     switch (buffvalueType)
                     {
                         case ETriggerDataType.HeroAtrb:
-                            triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitIdx, actionUnitIdx,
+                            triggerData = BattleFightManager.Instance.Unit_HeroAttribute(ownUnitIdx, newActionUnitIdx,
                                 realEffectUnitIdx, buffData.HeroAttribute, buffValues[0]);
-                            
+
                             break;
                         case ETriggerDataType.Atrb:
-                            triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitIdx, actionUnitIdx,
+                            triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitIdx, newActionUnitIdx,
                                 realEffectUnitIdx, buffData.UnitAttribute, buffValues[0], ETriggerDataSubType.Unit);
                             break;
                         case ETriggerDataType.State:
-                            
+
                             // switch (buffData.BuffTriggerType)
                             // {
                             //     case EBuffTriggerType.TacticClearBuff:
@@ -205,7 +212,9 @@ namespace RoundHero
                             //     //     break;
                             // }
                             var unitState = buffData.UnitState;
-                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
+                            
+
+                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, newActionUnitIdx, realEffectUnitIdx,
                                 unitState, (int)buffValues[0], ETriggerDataType.State);
                             
                             var addEnemyMoreDebuff =
@@ -230,11 +239,11 @@ namespace RoundHero
                             //         value = Math.Abs(BattleUnitManager.Instance.GetDamage(effectUnitID)) - 1;
                             //         break;
                             // }
-                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
+                            triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx, newActionUnitIdx, realEffectUnitIdx,
                                 buffData.UnitState, (int)buffValues[0], ETriggerDataType.RoundState);
                             break;
                         case ETriggerDataType.Card:
-                            triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, actionUnitIdx, realEffectUnitIdx,
+                            triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, newActionUnitIdx, realEffectUnitIdx,
                                 buffValues[0], buffData.CardTriggerType);
                             triggerData.EffectUnitIdx = realEffectUnitIdx;
                             break;
@@ -257,13 +266,13 @@ namespace RoundHero
                                     if (Constant.Battle.EffectUnitStates[unitStateEffectType].Contains(keyList[i]))
                                     {
                                         var subUnitStateTriggerData = BattleFightManager.Instance.Unit_State(triggerDatas, ownUnitIdx,
-                                            actionUnitIdx, buffData.TriggerRange == EActionType.Self ? actionUnitIdx : realEffectUnit.Idx, unitStateData.UnitState, -unitStateData.Value,
+                                            newActionUnitIdx, buffData.TriggerRange == EActionType.Self ? newActionUnitIdx : realEffectUnit.Idx, unitStateData.UnitState, -unitStateData.Value,
                                             ETriggerDataType.State);
                                         subUnitStateTriggerData.ActionUnitGridPosIdx =
                                             subUnitStateTriggerData.EffectUnitGridPosIdx = realEffectUnit.GridPosIdx;
                                         
                                         CacheTriggerData(subUnitStateTriggerData, triggerDatas, realEffectUnitIdx, buffTriggerType, buffData, values,
-                                            ownUnitIdx, actionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
+                                            ownUnitIdx, newActionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
                                         _triggerDatas.Add(subUnitStateTriggerData);
                                     }
                                 }
@@ -340,7 +349,7 @@ namespace RoundHero
                     {
                         triggerData.ActionUnitGridPosIdx = actionUnitGridPosIdx;
                         CacheTriggerData(triggerData, triggerDatas, realEffectUnitIdx, buffTriggerType, buffData, values,
-                            ownUnitIdx, actionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
+                            ownUnitIdx, newActionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
                         _triggerDatas.Add(triggerData);
                     }
                     

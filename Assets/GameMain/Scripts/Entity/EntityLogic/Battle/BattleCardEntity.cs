@@ -97,7 +97,9 @@ namespace RoundHero
         [SerializeField]
         private Text bottomTipsText;
         
-        [SerializeField] private ExplainTriggerItem explainTriggerItem;
+        //[SerializeField] private ExplainTriggerItem explainTriggerItem;
+        
+        [SerializeField] private CardDescTriggerItem cardDescTriggerItem;
 
         // [SerializeField]
         // private ExplainList explainList;
@@ -157,12 +159,10 @@ namespace RoundHero
             //videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.Right;
             var drCard = GameEntry.DataTable.GetCard(BattleCardEntityData.CardData.CardID);
             
-            explainTriggerItem.ExplainData = new ExplainData()
+            cardDescTriggerItem.CardDescFormData = new CardDescFormData()
             {
-                ItemType = drCard.CardType == ECardType.Unit ? EItemType.UnitCard : EItemType.TacticCard,
-                ItemID = BattleCardEntityData.CardData.CardID,
-                ShowPosition = EShowPosition.Right,
-                VideoID = drCard.GIFIdx,
+                CardIdx = BattleCardEntityData.CardData.CardIdx,
+     
             };
             
             // videoTriggerItem.VideoFormData.AnimationPlayData.GifType = drCard.CardType == ECardType.Unit ? EGIFType.Solider : EGIFType.Tactic;

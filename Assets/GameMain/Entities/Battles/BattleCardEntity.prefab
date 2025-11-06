@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2119816460734165677}
   - component: {fileID: 4961554440136780537}
   - component: {fileID: 685717117239060014}
-  - component: {fileID: 4557677915090331140}
+  - component: {fileID: 3105924773901081012}
   m_Layer: 5
   m_Name: BattleCardEntity
   m_TagString: Untagged
@@ -102,7 +102,7 @@ MonoBehaviour:
   tipsGO: {fileID: 2912342457740305563}
   tipsText: {fileID: 8695362468359304999}
   bottomTipsText: {fileID: 6762076150507065505}
-  explainTriggerItem: {fileID: 4557677915090331140}
+  cardDescTriggerItem: {fileID: 3105924773901081012}
 --- !u!223 &906767259617834939
 Canvas:
   m_ObjectHideFlags: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47fda6aa8c9e4a7fbef9b5b5e636afdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4557677915090331140
+--- !u!114 &3105924773901081012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,9 +176,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 128074}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 614280061fca4ec488f15579075ca072, type: 3}
+  m_Script: {fileID: 11500000, guid: f32a11aa11af4749b3fcfcaa37d9c7de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardDescFormData:
+    CardIdx: 0
 --- !u!1 &214086109826786
 GameObject:
   m_ObjectHideFlags: 0
@@ -17079,7 +17081,7 @@ PrefabInstance:
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4557677915090331140}
+      objectReference: {fileID: 3105924773901081012}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -17091,7 +17093,7 @@ PrefabInstance:
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4557677915090331140}
+      objectReference: {fileID: 3105924773901081012}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -17166,7 +17168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RoundHero.ExplainTriggerItem, Assembly-CSharp
+      value: RoundHero.CardDescTriggerItem, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -17178,7 +17180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RoundHero.ExplainTriggerItem, Assembly-CSharp
+      value: RoundHero.CardDescTriggerItem, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2620951388934138320, guid: 7493bf06825eb3d4cb817c5d5d6574d2, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
