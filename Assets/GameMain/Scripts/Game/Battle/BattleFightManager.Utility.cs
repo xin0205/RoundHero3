@@ -109,7 +109,7 @@ namespace RoundHero
                         }
 
 
-                        var value = effectUnit.AddCoreHP;
+                        var value = triggerData.CoreHPDelta;
                         // if (value > 0)
                         // {
                         //     triggerData.HeroHPDelta = value;
@@ -149,7 +149,7 @@ namespace RoundHero
                         //hpDeltaDict[effectUnit.UnitCamp].Key = isMoveTriggerData ? kv.Key : playerData.BattleHero.Idx;
 
                         var hpDeltaData = HeroManager.Instance.AddHPDelta(triggerData);
-                        hpDeltaData.HPDelta = (int)(isCoreUnit ? triggerValue : Math.Abs(value));
+                        hpDeltaData.HPDelta = (int)(isCoreUnit ? triggerValue : value);
                         //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
                         AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, hpDeltaData);
                         hpDeltaList.Add(hpDeltaData);

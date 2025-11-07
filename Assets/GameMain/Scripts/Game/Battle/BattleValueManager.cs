@@ -524,7 +524,7 @@ namespace RoundHero
                 // {
                 //     
                 // });
-                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx, triggerData.HeroHPDelta > 0, triggerData);
+                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx, triggerData.CoreHPDelta > 0, triggerData);
                 //InternalShowValue(effectUnit, value, entityIdx++);
 
                 idx++;

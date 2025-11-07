@@ -344,7 +344,7 @@ namespace RoundHero
                         //unit.AddCoreHP += addHP;
                         if (triggerData != null)
                         {
-                            triggerData.HeroHPDelta += addHP;
+                            triggerData.CoreHPDelta += addHP;
                         }
                         
                     }
