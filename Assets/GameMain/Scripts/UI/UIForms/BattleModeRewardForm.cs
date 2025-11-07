@@ -19,6 +19,8 @@ namespace RoundHero
         //private List<int> selectedIdxs = new List<int>();
         [SerializeField] private Text tips;
         [SerializeField] private Text heroHP;
+        
+        [SerializeField] private GameObject unEquipFuneTag;
 
         private Random random;
         
@@ -131,6 +133,13 @@ namespace RoundHero
             RefreshItems();
             SetTips();
             RefreshHP();
+            
+            RefreshUnEquipFuneTag();
+        }
+
+        public void RefreshUnEquipFuneTag()
+        {
+            unEquipFuneTag.SetActive(BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Count > 0);
         }
         
         public void RefreshItems()
@@ -191,6 +200,7 @@ namespace RoundHero
             selectAcquireItemData.IsSelected = true;
             SetTips();
             RefreshHP();
+            RefreshUnEquipFuneTag();
         }
 
         public void OnSelectItem(int selectIdx)
