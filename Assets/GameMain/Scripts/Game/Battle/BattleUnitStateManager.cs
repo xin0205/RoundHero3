@@ -106,6 +106,8 @@ namespace RoundHero
 
             if(passUnit == null || bePassUnit == null)
                 return;
+
+            var passUnitHurtRoundStart = passUnit.GetStateCount(EUnitState.HurtRoundStart);
             
             if (bePassUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
             {
@@ -117,7 +119,7 @@ namespace RoundHero
                 BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
                 
             }
-            if (passUnit.GetStateCount(EUnitState.HurtRoundStart) > 0)
+            if (passUnitHurtRoundStart > 0)
             {
                 var triggerData = BattleFightManager.Instance.Unit_State(triggerDatas, passUnitIdx, passUnitIdx, bePassUnitIdx,
                     EUnitState.HurtRoundStart, 1, ETriggerDataType.State);
