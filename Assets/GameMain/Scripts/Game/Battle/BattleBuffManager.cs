@@ -142,11 +142,12 @@ namespace RoundHero
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
             var newActionUnitIdx = actionUnitIdx;
-            if (buffTriggerType == EBuffTriggerType.BePass || buffTriggerType == EBuffTriggerType.Hurt
-                                                           || buffTriggerType == EBuffTriggerType.Dead)
-            {
-                newActionUnitIdx = effectUnitIdx;
-            }
+            //攻击带有 受击触发效果的单位，看不到预览
+            // if (buffTriggerType == EBuffTriggerType.BePass || buffTriggerType == EBuffTriggerType.Hurt
+            //                                                || buffTriggerType == EBuffTriggerType.Dead)
+            // {
+            //     newActionUnitIdx = effectUnitIdx;
+            // }
             
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
             //     !GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData, ECardID.RoundDeBuffUnEffect))

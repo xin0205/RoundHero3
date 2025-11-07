@@ -284,6 +284,14 @@ namespace RoundHero
                 DataManager.Instance.Save();
             }
             
+            if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStart)
+            {
+                BattleManager.Instance.RefreshEnemyAttackData();
+                BattleManager.Instance.SwitchActionCamp(true);
+                GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
+                DataManager.Instance.Save();
+            }
+            
         }
 
         public void NextAction()
@@ -291,13 +299,7 @@ namespace RoundHero
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStart;
-                BattleManager.Instance.RefreshEnemyAttackData();
-                BattleManager.Instance.SwitchActionCamp(true);
-                GameUtility.DelayExcute(1.5f, () =>
-                {
-                    GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(true));
-                });
-                DataManager.Instance.Save();
+                
             
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.PreRoundStart)

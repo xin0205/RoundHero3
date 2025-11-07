@@ -572,11 +572,12 @@ namespace RoundHero
                             HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
                             HeroManager.Instance.UpdateCacheHPDelta();
                         }
-                        else
-                        {
-                            BattleBulletManager.Instance.UseTriggerData(triggerData);
-                            HeroManager.Instance.UpdateCacheHPDelta();
-                        }
+                        //攻击目标及其两侧单位，造成{0}点伤害；并给对方施加{1}层虚弱 重复执行虚弱了
+                        // else
+                        // {
+                        //     BattleBulletManager.Instance.UseTriggerData(triggerData);
+                        //     HeroManager.Instance.UpdateCacheHPDelta();
+                        // }
                             
                         continue;
                     }
