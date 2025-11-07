@@ -163,11 +163,12 @@ namespace RoundHero
             Unsubscribe();
             MoveGrids.Clear();
             MoveGridPosIdxs.Clear();
-            if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
-            {
-                GameEntry.Entity.HideEntity(TmpUnitEntity);
-                TmpUnitEntity = null;
-            }
+            HideTmpUnitEntity();
+            // if (TmpUnitEntity != null && GameEntry.Entity.HasEntity(TmpUnitEntity.Id))
+            // {
+            //     GameEntry.Entity.HideEntity(TmpUnitEntity);
+            //     TmpUnitEntity = null;
+            // }
             
             foreach (var kv in GridEntities)
             {
