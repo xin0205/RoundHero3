@@ -280,6 +280,7 @@ namespace RoundHero
 
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
             {
+                BattleEnemyManager.Instance.GenerateEnemies(false);
                 BattleManager.Instance.RefreshEnemyAttackData();
                 DataManager.Instance.Save();
             }
