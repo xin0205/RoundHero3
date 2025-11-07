@@ -736,6 +736,10 @@ namespace RoundHero
                     var targetGridPosIdx = GameUtility.GridCoordToPosIdx(targetCoord);
                     if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Obstacle)
                         break;
+
+                    var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(targetGridPosIdx);
+                    if (unit != null && unit.BattleUnitData.GetStateCount(EUnitState.UnBePass) > 0)
+                        break;
                     
                     if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Unit)
                         continue;
