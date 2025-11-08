@@ -1061,8 +1061,17 @@ namespace RoundHero
             BattleBuffManager.Instance.RecoverUseBuffState();
             BattleFightManager.Instance.UseCardTrigger();
             
-            GameUtility.DelayExcute(0.51f, () =>
+            // GameUtility.DelayExcute(0.51f, () =>
+            // {
+            //     BattleEnemyManager.Instance.GenerateEnemies(false);
+            //     HeroManager.Instance.UpdateCacheHPDelta();
+            //     BattleManager.Instance.RefreshEnemyAttackData();
+            //     
+            // });
+            
+            GameUtility.DelayExcute(2.5f, () =>
             {
+                BattleEnemyManager.Instance.GenerateEnemies(false);
                 HeroManager.Instance.UpdateCacheHPDelta();
                 BattleManager.Instance.RefreshEnemyAttackData();
                 
