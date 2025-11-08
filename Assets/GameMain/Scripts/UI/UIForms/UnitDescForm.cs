@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GameFramework;
 using UnityEngine;
-
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace RoundHero
@@ -32,8 +32,8 @@ namespace RoundHero
         [SerializeField] private GridDescItem gridDescItem;
         [SerializeField] private GameObject unitBattleData;
         
-        [SerializeField] private Text actionTimeStr;
-        
+        [SerializeField] private Text attackTimeStr;
+        [SerializeField] private Text moveTimeStr;
         
         
         [SerializeField]
@@ -167,13 +167,14 @@ namespace RoundHero
                 
                 unitDescItem.SetDesc(name, power, desc);
                 
-                var actionTime = (unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes +
-                                  unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes);
+                // var actionTime = (unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes +
+                //                   unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes);
+                //
+                attackTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_AttackTime,
+                    unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes);
                 
-                actionTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_ActionTime,
-                    actionTime);
-                
-                
+                moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
+                    unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes);
                 
                 var idx = 0;
                 foreach (var funeIdx in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.FuneIdxs)
@@ -224,11 +225,17 @@ namespace RoundHero
                     };
 
                     playerCardItem.SetItemData(playerCardData, false);
-                    var actionTime = (unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes +
-                                      unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes);
+                    // var actionTime = (unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes +
+                    //                   unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes);
+                    //
+                    // actionTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_ActionTime,
+                    //     actionTime);
+                    
+                    attackTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_AttackTime,
+                        unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes);
                 
-                    actionTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_ActionTime,
-                        actionTime);
+                    moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
+                        unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes);
 
                     
                     var idx = 0;

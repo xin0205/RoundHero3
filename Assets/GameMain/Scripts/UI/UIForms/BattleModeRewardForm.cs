@@ -317,15 +317,7 @@ namespace RoundHero
                     ContinueBattle();
                 }
             }
-            
-            
-            
-            
-            
-            
 
-            
-            
         }
 
         private void ContinueBattle()
@@ -471,6 +463,31 @@ namespace RoundHero
         {
             GameEntry.UI.OpenUIFormAsync(UIFormId.SettingForm, this);
 
+        }
+
+        public void ReSelect()
+        {
+            // foreach (var selectAcquireItemData in selectAcquireItemDatas)
+            // {
+            //     selectAcquireItemData.IsSelected = false;
+            // }
+            
+            Close();
+            DataManager.Instance.ReloadData();
+            
+            
+            
+            DataManager.Instance.DataGame.User.SetCurGamePlayData(EPVEType.BattleMode);
+            
+            GameEntry.Event.Fire(null,
+                GamePlayContinueGameEventArgs.Create());
+            
+             
+            // RefreshItems();
+            // SetTips();
+            // RefreshHP();
+            //
+            // RefreshUnEquipFuneTag();
         }
     }
 }

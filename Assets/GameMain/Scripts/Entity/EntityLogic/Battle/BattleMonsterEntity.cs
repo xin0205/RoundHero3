@@ -258,6 +258,11 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             //UnShowTags();
+            if (infoForm != null)
+            {
+                GameEntry.UI.CloseUIForm(infoForm);
+                infoForm = null;
+            }
         }
         
         // protected async override Task ShowBattleHurts(int hurt)

@@ -43,7 +43,7 @@ namespace RoundHero
         {
             base.Dead();
             
-            BattleManager.Instance.ShowGameOver();
+            //BattleManager.Instance.ShowGameOver();
             
         }
 
