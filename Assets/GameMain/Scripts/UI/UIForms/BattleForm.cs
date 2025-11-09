@@ -7,7 +7,6 @@ using TMPro;
 using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityGameFramework.Runtime;
 
 
 namespace RoundHero
@@ -43,6 +42,7 @@ namespace RoundHero
         
         [SerializeField] private Text battleSession;
         [SerializeField] private Text enemyCount;
+        [SerializeField] private Text roundEnemyCount;
         
         private ProcedureBattle procedureBattle;
         
@@ -303,7 +303,33 @@ namespace RoundHero
                 enemyCount.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_EnemyCount,
                     _enemyCount);
 
+                var nextRound = GetNextRound();
+                var roundGenerateUnitCount =
+                    BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount.ContainsKey(nextRound)
+                        ? BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount[nextRound]
+                        : -1;
+                roundEnemyCount.gameObject.SetActive(nextRound != -1 && roundGenerateUnitCount > 0);
+                if (nextRound != -1 && roundGenerateUnitCount > 0)
+                {
+                    roundEnemyCount.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_NextRoundEnemyCount,
+                        roundGenerateUnitCount);
+                }
+                
+                
             }
+        }
+
+        private int GetNextRound()
+        {
+            foreach (var kv in BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount)
+            {
+                if (kv.Key == BattleManager.Instance.BattleData.Round + 1)
+                {
+                    return kv.Key;
+                }
+            }
+
+            return -1;
         }
 
         // private void RefreshLinks()
