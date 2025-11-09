@@ -131,7 +131,7 @@ namespace RoundHero
                     [EGameDifficulty.Difficulty1] = new DiffcultySetting()
                     {
                         MaxBattleCount = 9,
-                        CoreHP = 115,
+                        CoreHP = 15,
                     },
                     [EGameDifficulty.Difficulty2] = new DiffcultySetting()
                     {
