@@ -143,13 +143,20 @@ namespace RoundHero
         public override async Task OnPointerEnter()
         {
             base.OnPointerEnter();
+            
+            var drEnemy = GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
 
-            if (BattleMonsterEntityData.BattleMonsterData.IsRoundStart == false)
+            var isSingle = drEnemy.AttackType == EAttackType.Single;
+            var isRoundStart = BattleMonsterEntityData.BattleMonsterData.IsRoundStart;
+            var desc = isSingle ? GameEntry.Localization.GetString(Constant.Localization.Tips_SwitchTarget) : "";
+            desc += !isRoundStart ? (isSingle ? "\n" : "") + GameEntry.Localization.GetString(Constant.Localization.Tips_RoundGenerateEenmy) : "";
+
+            if (isSingle || !isRoundStart)
             {
                 var infoFormParams = new InfoFormParams()
                 {
                     
-                    Desc = GameEntry.Localization.GetString(Constant.Localization.Tips_RoundGenerateEenmy),
+                    Desc = desc,
                     //Position = mousePosition + infoDelta,
                 };
                 

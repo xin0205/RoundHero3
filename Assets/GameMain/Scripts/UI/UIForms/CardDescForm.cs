@@ -28,6 +28,11 @@ namespace RoundHero
         [SerializeField]
         private GameObject unitStateListGO;
 
+        [SerializeField]
+        private Transform pos1;
+        [SerializeField]
+        private Transform pos2;
+
 
         private bool hasDetail;
         private bool hasFune;
@@ -44,7 +49,8 @@ namespace RoundHero
             var items = funeListGO.GetComponentsInChildren<PlayerCommonItem>(true);
             funeList.Clear();
             funeList.AddRange(items);
-            
+
+            hasFune = false;
             hasDetail = false;
 
             RefreshVideo();
@@ -124,6 +130,8 @@ namespace RoundHero
             }
             
             explainList.SetData(explainListData);
+            
+            explainList.gameObject.transform.localPosition = hasFune ? pos1.localPosition : pos2.localPosition;
         }
 
     }

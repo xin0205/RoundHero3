@@ -1074,7 +1074,7 @@ namespace RoundHero
                 BattleEnemyManager.Instance.GenerateEnemies(false);
                 HeroManager.Instance.UpdateCacheHPDelta();
                 BattleManager.Instance.RefreshEnemyAttackData();
-                
+                DataManager.Instance.Save();
             });
             
             

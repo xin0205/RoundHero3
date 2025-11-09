@@ -160,6 +160,8 @@ namespace RoundHero
             public const string Message_UnusedFune = "Message.UnusedFune";
 
             public const string DifficultyDesc = "DifficultyDesc.{0}";
+
+            public const string Tips_SwitchTarget = "Tips.SwitchTarget";
         }
     }
 }

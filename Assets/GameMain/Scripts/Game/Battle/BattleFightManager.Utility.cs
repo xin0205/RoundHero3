@@ -1268,10 +1268,11 @@ namespace RoundHero
                     //     continue;
                     // }
 
-                    // if (triggerData.EffectUnitIdx != effectUnitIdx)
-                    // {
-                    //     continue;
-                    // }
+                    //神力 攻击单位，造成{0}点伤害
+                    if (triggerData.EffectUnitIdx != effectUnitIdx)
+                    {
+                        continue;
+                    }
 
                     // if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                     // {

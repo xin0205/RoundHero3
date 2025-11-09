@@ -755,12 +755,24 @@ namespace RoundHero
         //     return valuelist;
         // }
 
-
+        
         public void ShowActionSort(bool isShow) 
         {
             var idx = 1;
             
-            
+            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            {
+                if (isShow)
+                {
+                    kv.Value.ShowRoundStartBuffIcon();
+                }
+                else
+                {
+                    kv.Value.UnShowDisplayIcons();
+                    kv.Value.UnShowDisplayValues();
+                }
+                
+            }
             
             foreach (var kv in BattleFightManager.Instance.RoundFightData.EnemyAttackDatas)
             {
@@ -776,10 +788,7 @@ namespace RoundHero
                 }
             }
 
-            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
-            {
-                kv.Value.ShowRoundStartBuffIcon();
-            }
+            
         }
         
         public List<CommonItemData> GetEnemyExplainList(int enemyID)

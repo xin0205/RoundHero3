@@ -95,8 +95,9 @@ MonoBehaviour:
   explainList: {fileID: 7303130447163372423}
   funeListGO: {fileID: 5584500990116992766}
   unitStateListGO: {fileID: 7505114628727312111}
+  pos1: {fileID: 3484337737525485487}
+  pos2: {fileID: 7240473604882412518}
   funeList: []
-  unitStateList: []
 --- !u!1 &68736589833380357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,7 +1759,7 @@ Transform:
   m_GameObject: {fileID: 6810965181058953711}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -360, y: 376, z: 0}
+  m_LocalPosition: {x: -889, y: 376, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

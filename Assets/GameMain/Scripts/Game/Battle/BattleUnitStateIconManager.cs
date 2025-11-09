@@ -98,9 +98,9 @@ namespace RoundHero
             foreach (var kv2 in triggerDataDict)
             {
                 ShowIcons(kv2.Value, _curUnitStateIconEntityIdx);
-                
+                ShowValues(kv2.Value);
             }
-            ShowDisplayValue(UnitIdx);
+            //ShowDisplayValue(UnitIdx);
    
 
         }

@@ -10,7 +10,7 @@ namespace RoundHero
 
         private void Awake()
         {
-            var explainItems = GetComponentsInChildren<ExplainItem>();
+            var explainItems = GetComponentsInChildren<ExplainItem>(true);
 
             foreach (var explainItem in explainItems)
             {
