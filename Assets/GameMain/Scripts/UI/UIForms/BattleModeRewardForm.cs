@@ -21,6 +21,8 @@ namespace RoundHero
         [SerializeField] private Text heroHP;
         
         [SerializeField] private GameObject unEquipFuneTag;
+        
+        [SerializeField] private Text battleSession;
 
         private Random random;
         
@@ -135,6 +137,10 @@ namespace RoundHero
             RefreshHP();
             
             RefreshUnEquipFuneTag();
+            
+            battleSession.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_BattleSession,
+                GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1, Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount);
+
         }
 
         public void RefreshUnEquipFuneTag()
