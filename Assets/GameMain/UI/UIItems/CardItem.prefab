@@ -71,6 +71,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2043804080050367782}
     m_Modifications:
+    - target: {fileID: 4485980703996723671, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 492bfde66b8315845828cb400743e276, type: 3}
     - target: {fileID: 4559589956139492282, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -159,6 +163,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TacticCardItem
       objectReference: {fileID: 0}
+    - target: {fileID: 6737811815257700014, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8599418486044627757, guid: 9df24c57097ddc342a1cccf2c08c1415, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8393ef487157dcc4192537700915a3cc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -388,6 +400,10 @@ PrefabInstance:
     - target: {fileID: 6737811815257700014, guid: 2f25b21eb3b59834fb08ff70d89b617a, type: 3}
       propertyPath: m_Name
       value: StateCardItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6737811815257700014, guid: 2f25b21eb3b59834fb08ff70d89b617a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
