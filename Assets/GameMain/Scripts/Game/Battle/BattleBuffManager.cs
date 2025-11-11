@@ -142,7 +142,7 @@ namespace RoundHero
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
             var newActionUnitIdx = actionUnitIdx;
-            //攻击带有 受击触发效果的单位，看不到预览
+            //攻击带有 受击触发效果的单位，选择攻击这 看不到受击者触发的预览
             // if (buffTriggerType == EBuffTriggerType.BePass || buffTriggerType == EBuffTriggerType.Hurt
             //                                                || buffTriggerType == EBuffTriggerType.Dead)
             // {
@@ -484,6 +484,13 @@ namespace RoundHero
             }
 
             triggerData.EffectUnitGridPosIdx = realEffectUnit != null ? realEffectUnit.GridPosIdx : -1;
+
+            if (buffData.FlyType == EFlyType.Exchange)
+            {
+                var _effectUnitGridPosIdx = triggerData.EffectUnitGridPosIdx;
+                triggerData.EffectUnitGridPosIdx = triggerData.ActionUnitGridPosIdx;
+                triggerData.ActionUnitGridPosIdx = _effectUnitGridPosIdx;
+            }
             
 
             triggerData.BuffValue = new BuffValue()

@@ -1944,6 +1944,7 @@ namespace RoundHero
 
         public async Task ShowTagsWithFlyUnitIdx(int actionUnitIdx, bool isShowAttackPos = true)
         {
+            RefreshFlyDirects(actionUnitIdx);
             await ShowTags(actionUnitIdx, isShowAttackPos);
             await ShowFlyUnitIdx(actionUnitIdx);
         }
@@ -1953,9 +1954,11 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
             
-            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
-            ShowAttackTag(actionUnitIdx, isShowAttackPos);
+            
             await ShowFlyDirect(actionUnitIdx);
+            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+ 
+            await ShowAttackTag(actionUnitIdx, isShowAttackPos);
             ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
             ShowDisplayValue(actionUnitIdx);
             ShowDisplayIcon(actionUnitIdx);
@@ -1967,11 +1970,12 @@ namespace RoundHero
                 return;
 
             UnShowTags();
+            RefreshFlyDirects(effectUnitIdx);
             ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
-            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
-            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
-            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
+             ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
+             ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
+             ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
         }
         
         public void UnShowTags()

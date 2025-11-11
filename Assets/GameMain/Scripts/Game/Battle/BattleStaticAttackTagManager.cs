@@ -55,8 +55,8 @@ namespace RoundHero
                         if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                             continue;
                         
-                        var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
-                        if(ownUnit == null)
+                        var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                        if(actionUnit == null)
                             continue;
                         
                         // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
@@ -115,18 +115,25 @@ namespace RoundHero
                         if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                             continue;
 
-                        var ownUnit = GameUtility.GetUnitByIdx(BattleFightManager.Instance.RoundFightData.GamePlayData,
-                            triggerData.OwnUnitIdx);
+                        // var ownUnit = GameUtility.GetUnitByIdx(BattleFightManager.Instance.RoundFightData.GamePlayData,
+                        //     triggerData.OwnUnitIdx);
+                        var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
                         //BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
                         
-                        if(ownUnit == null)
+                        if(actionUnit == null)
+                            continue;
+                        
+                        var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                        //BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
+                        
+                        if(effectUnit == null)
                             continue;
 
                         //Log.Debug("show before:" + entityIdx + "-" + triggerData.EffectUnitGridPosIdx);
                         //var _entityIdx = entityIdx;
                         //var battleAttackTagEntity = await 
                         //!effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx)
-                        var battleAttackTagEntity = await ShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
+                        var battleAttackTagEntity = await ShowTag(actionUnit.Position, effectUnit.Position,
                             triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
                             false,
                             triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, true);
@@ -227,16 +234,39 @@ namespace RoundHero
             var effectUnitPos = GameUtility.GridPosIdxToPos(effectUnitGridPosIdx);
             var actionUnitPos = GameUtility.GridPosIdxToPos(actionGridPosIdx);
 
+            
+            return await ShowTag(actionUnitPos, effectUnitPos, triggerData, entityIdx, showAttackLine, showAttackPos, isCollision, isStatic);
+        }
+        
+        public async Task<BattleAttackTagEntity> ShowTag(Vector3 actionUnitPos, Vector3 effectUnitPos, TriggerData triggerData,
+            int entityIdx, bool showAttackLine, bool showAttackPos, bool isCollision, bool isStatic)
+        {
+
+            var effectUnitGridPosIdx = GameUtility.GridPosToPosIdx(effectUnitPos);
+            var actionUnitGridPosIdx = GameUtility.GridPosToPosIdx(actionUnitPos);
+
             var effectUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(effectUnitGridPosIdx);
             if (effectUnit != null)
             {
-                effectUnitPos = effectUnit.Position;
+                var newEffectUnitGridPosIdx = GameUtility.GridPosToPosIdx(effectUnit.Position);
+                var newUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(newEffectUnitGridPosIdx);
+                if (newUnit == null || newUnit == effectUnit)
+                {
+                    effectUnitPos = effectUnit.Position;
+                }
+                //effectUnitPos = effectUnit.Position;
             }
             
-            var actionsUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(actionGridPosIdx);
-            if (actionsUnit != null)
+            var actionUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(actionUnitGridPosIdx);
+            if (actionUnit != null)
             {
-                actionUnitPos = actionsUnit.Position;
+                var newActionUnitGridPosIdx = GameUtility.GridPosToPosIdx(actionUnit.Position);
+                var newUnit = BattleUnitManager.Instance.GetUnitByGridPosIdx(newActionUnitGridPosIdx);
+                if (newUnit == null || newUnit == actionUnit)
+                {
+                    actionUnitPos = actionUnit.Position;
+                }
+                //actionUnitPos = actionsUnit.Position;
             }
             
 
@@ -262,28 +292,10 @@ namespace RoundHero
                 
             }
 
-            //Log.Debug("InternalShowTag:" + entityIdx);
             var battleAttackTagEntity = await GameEntry.Entity.ShowBattleAttackTagEntityAsync(actionUnitPos,
                 actionUnitPos,
                 effectUnitPos, attackTagType, unitState, triggerData.BuffValue, attackCastType, entityIdx, showAttackLine,
                 showAttackPos, isStatic);
-
-            //Log.Debug("Tag Show:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
-            
-            // if (battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx < _showAttackTagEntityIdx)
-            // {
-            //     Log.Debug("Tag hide:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + showAttackTagEntityIdx);
-            //     GameEntry.Entity.HideEntity(battleAttackTagEntity);
-            // }
-            // else
-            // {
-            //     
-            //     battleAttackTagEntities.Add(battleAttackTagEntity.Entity.Id, battleAttackTagEntity);
-            //     Log.Debug("Tag add:" + battleAttackTagEntity.BattleAttackTagEntityData.EntityIdx + "-" + _showAttackTagEntityIdx); 
-            // }
-            
-            //action.Invoke(battleAttackTagEntities, battleAttackTagEntity);
-            
 
             return battleAttackTagEntity;
         }

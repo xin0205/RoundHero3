@@ -7,6 +7,7 @@ using TMPro;
 using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityGameFramework.Runtime;
 
 
 namespace RoundHero
@@ -117,6 +118,7 @@ namespace RoundHero
 
             battleSession.gameObject.SetActive(false);
             enemyCount.gameObject.SetActive(false);
+            roundEnemyCount.gameObject.SetActive(false);
             
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
             {
@@ -162,18 +164,23 @@ namespace RoundHero
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
-            hpDeltaDatas.gameObject.SetActive(Input.GetKey(KeyCode.W));
+           
             if (Input.GetKeyDown(KeyCode.W))
             {
-            
+                hpDeltaDatas.gameObject.SetActive(true);
                 hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
                     .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
                 hpDeltaDatas.RefreshAllShownItem();
+            }
+            else if (Input.GetKeyUp(KeyCode.W))
+            {
+                hpDeltaDatas.gameObject.SetActive(false);
             }
         }
 
         public void ShowHPDeltaData(bool isShow)
         {
+            Log.Debug("AAA:" + isShow);
             hpDeltaDatas.gameObject.SetActive(isShow);
             if (isShow)
             {

@@ -144,6 +144,7 @@ namespace RoundHero
         {
             base.OnPointerEnter();
             
+            
             var drEnemy = GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
 
             var isSingle = drEnemy.AttackType == EAttackType.Single;
@@ -161,7 +162,11 @@ namespace RoundHero
                 };
                 
                 var uiForm = await GameEntry.UI.OpenInfoFormAsync(infoFormParams);
-            
+                if (infoForm != null)
+                {
+                    GameEntry.UI.CloseUIForm(infoForm);
+                    infoForm = null;
+                }
                 infoForm = uiForm.Logic as InfoForm;
             }
             

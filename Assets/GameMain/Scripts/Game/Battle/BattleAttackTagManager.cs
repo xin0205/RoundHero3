@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -21,8 +22,8 @@ namespace RoundHero
             }
         
             //BattleAttackTagEntities.Clear();
-            
-            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+
+            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx); //BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
         
             if (effectUnit == null)
                 return;
@@ -81,16 +82,25 @@ namespace RoundHero
                     if(exceptUnitIdxs != null && exceptUnitIdxs.Contains(triggerData.ActionUnitIdx))
                         continue;
                     
-                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    // if(actionUnit == null)
-                    //     continue;
+                    var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    if(actionUnit == null)
+                        continue;
+                    
+                    //actionUnit == null ? Vector3.one * -999 :
+                    if(actionUnit == null)
+                        continue;
                     
                     if(triggerData.ActionUnitGridPosIdx == -1)
                         continue;
+
+                    var actionPos = actionUnit != null
+                        ? actionUnit.Position
+                        : GameUtility.GridPosIdxToPos(triggerData.ActionUnitGridPosIdx);
+
                     
                     var _entityIdx = entityIdx;
                     var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(
-                        triggerData.ActionUnitGridPosIdx, effectUnit.GridPosIdx, triggerData, _entityIdx,
+                        actionPos, effectUnit.Position, triggerData, _entityIdx,
                         triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
                         !effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx),
                         triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, false);
@@ -162,8 +172,8 @@ namespace RoundHero
                     if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                         continue;
                     
-                    var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
-                    if(ownUnit == null)
+                    var _actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    if(_actionUnit == null)
                         continue;
                     
                     // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
@@ -192,13 +202,17 @@ namespace RoundHero
                     if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                         continue;
 
-                    var ownUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.OwnUnitIdx);
-                    if(ownUnit == null)
+                    var _actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    if(_actionUnit == null)
+                        continue;
+                    
+                    var _effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                    if(_effectUnit == null)
                         continue;
 
                     //var battleAttackTagEntity = await 
                     //!effectGridPosIdxs.Contains(triggerData.EffectUnitGridPosIdx)
-                    var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(ownUnit.GridPosIdx, triggerData.EffectUnitGridPosIdx,
+                    var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(_actionUnit.Position, _effectUnit.Position,
                         triggerData, entityIdx, triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx,
                         false,
                         triggerData.TriggerDataSubType == ETriggerDataSubType.Collision, false);

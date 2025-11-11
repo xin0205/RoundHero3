@@ -88,6 +88,41 @@ namespace RoundHero
 
         }
         
+        public void RefreshFlyDirects(int unitIdx)
+        {
+            var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
+            
+            foreach (var triggerDatas in triggerDataDict.Values)
+            {
+                var triggerData = triggerDatas[0];
+                var effectUnitIdx = triggerData.EffectUnitIdx;
+                var actionUnitIdx = triggerData.ActionUnitIdx;
+                
+                var flyPathDict =
+                    BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
+                
+                foreach (var kv in flyPathDict)
+                {
+                    if (kv.Value == null || kv.Value.Count <= 1)
+                    {
+                        continue;
+                    }
+
+                    var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                    if (moveUnit != null)
+                    {
+                        var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
+                        
+                        moveUnit.Position = pos;
+                        
+                    }
+
+                }
+
+            }
+
+        }
+        
         public async Task ShowFlyDirects(int unitIdx)
         {
             BattleFlyDirectEntities.Clear();
@@ -117,35 +152,13 @@ namespace RoundHero
                         continue;
                     }
 
-                    var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
-                    if (moveUnit != null)
-                    {
-                        var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
-                        moveUnit.Position = pos;
-                        
-                    }
-                    
-                    // var direct = GameUtility.GetRelativePos(kv.Value[0], kv.Value[1]);
-                    //
-                    // if (direct != null)
+                    // var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                    // if (moveUnit != null)
                     // {
-                    //     //(ERelativePos)direct
-                    //     var battleFlyDirectEntity =
-                    //         await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], kv.Value[1],
-                    //             entityIdx);
+                    //     var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
                     //     
-                    //     entityIdx++;
-                    //
-                    //     if (battleFlyDirectEntity.BattleFlyDirectEntityData.EntityIdx < showFlyDirectEntityIdx)
-                    //     {
-                    //
-                    //         GameEntry.Entity.HideEntity(battleFlyDirectEntity);
-                    //         //break;
-                    //     }
-                    //     else
-                    //     {
-                    //         BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
-                    //     }
+                    //     moveUnit.Position = pos;
+                    //     
                     // }
                     
                     var battleFlyDirectEntity =
@@ -191,32 +204,32 @@ namespace RoundHero
 
             
 
-            var flyPathDict =
-                BattleFightManager.Instance.GetAttackHurtFlyPaths(unitIdx);
-                
-            foreach (var kv in flyPathDict)
-            {
-                if (kv.Value == null || kv.Value.Count <= 1)
-                {
-                    continue;
-                }
-
-                var flyEffectUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
-                
-                if (flyEffectUnit != null)
-                {
-                    await flyEffectUnit.ShowHurtAttackTag(kv.Key, -1, new List<int>(){unitIdx});
-                    await flyEffectUnit.ShowAttackTag(kv.Key, false);
-                    
-                    //, new List<int>(){unitIdx}
-                    // await flyEffectUnit.ShowHurtTags(kv.Key, -1);
-                    // await flyEffectUnit.ShowTags(kv.Key, false);
-                    //
-                }
-
-                    
-                    
-            }
+            // var flyPathDict =
+            //     BattleFightManager.Instance.GetAttackHurtFlyPaths(unitIdx);
+            //     
+            // foreach (var kv in flyPathDict)
+            // {
+            //     if (kv.Value == null || kv.Value.Count <= 1)
+            //     {
+            //         continue;
+            //     }
+            //
+            //     var flyEffectUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+            //     
+            //     if (flyEffectUnit != null && flyEffectUnit.UnitIdx != BattleManager.Instance.TempTriggerData.UnitData.Idx)
+            //     {
+            //         await flyEffectUnit.ShowHurtAttackTag(kv.Key, -1, new List<int>(){unitIdx});
+            //         await flyEffectUnit.ShowAttackTag(kv.Key, false);
+            //         
+            //         //, new List<int>(){unitIdx}
+            //         // await flyEffectUnit.ShowHurtTags(kv.Key, -1);
+            //         // await flyEffectUnit.ShowTags(kv.Key, false);
+            //         //
+            //     }
+            //
+            //         
+            //         
+            // }
             
             
         }
