@@ -164,14 +164,15 @@ namespace RoundHero
                     if(exceptUnitIdxs != null && exceptUnitIdxs.Contains(triggerData.ActionUnitIdx))
                         continue;
                     
-                    var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    if(actionUnit == null)
-                        continue;
+                    // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    // if(actionUnit == null)
+                    //     continue;
                     
                     if(triggerData.ActionUnitGridPosIdx == -1)
                         continue;
 
-                    var actionPos = actionUnit != null ? actionUnit.Position : GameUtility.GridPosIdxToPos(triggerData.ActionUnitIdx);
+                    //actionUnit != null ? actionUnit.Position : 
+                    var actionPos = GameUtility.GridPosIdxToPos(triggerData.ActionUnitGridPosIdx);
                     var _entityIdx = entityIdx;
                     var battleAttackTagEntity = await BattleStaticAttackTagManager.Instance.ShowTag(
                         actionPos, effectUnit.Position, triggerData, _entityIdx,

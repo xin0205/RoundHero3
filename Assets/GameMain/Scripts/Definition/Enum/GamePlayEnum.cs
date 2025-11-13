@@ -239,6 +239,7 @@ namespace RoundHero
         LineExtend,
         DeBuff,
         Buff,
+        ParabolaExtend,
         //HeroDirect_Extend,
         //HeroDirect,
         //X_Extend,//X_发射
@@ -417,6 +418,7 @@ namespace RoundHero
         Hero,
         DeBuff,
         Empty,
+        ParabolaExtend,
     }
 
     public enum EUnitState

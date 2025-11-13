@@ -1763,7 +1763,7 @@ namespace RoundHero
 
                         case ECardTriggerType.AcquireCard:
                             BattleCardManager.Instance.CacheAcquireCards(triggerData, triggerDatas,
-                                (int)(triggerData.Value + triggerData.DeltaValue));
+                                (int)triggerValue);
                             break;
 
                         case ECardTriggerType.ToConsume:
@@ -1784,6 +1784,15 @@ namespace RoundHero
                             }
 
                             break;
+                        /*case ECardTriggerType.CardEnergy:
+                            if (triggerData.TriggerCardIdx != -1)
+                            {
+                                var cardData = GetCard(triggerData.TriggerCardIdx);
+                                cardData.EnergyDelta = (int)triggerValue;
+
+                            }
+
+                            break;*/
 
                     }
 

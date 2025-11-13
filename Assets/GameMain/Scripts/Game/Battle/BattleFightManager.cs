@@ -2937,48 +2937,36 @@ namespace RoundHero
                         
                         EUnitCamp actionUnitCamp;
                         ERelativeCamp relativeCamp;
-                        if (actionUnitIdx == Constant.Battle.UnUnitTriggerIdx)
+                        if (effectUnit != null)
                         {
-                            actionUnitCamp = EUnitCamp.Player1;
-                            relativeCamp = GameUtility.GetRelativeCamp(actionUnitCamp, effectUnit.UnitCamp);
-                            if (triggerUnitCamps.Contains(relativeCamp))
+                            if (actionUnitIdx == Constant.Battle.UnUnitTriggerIdx)
                             {
-                                realEffectUnitIdxs.Add(actionUnitIdx);
+                                actionUnitCamp = EUnitCamp.Player1;
+                                relativeCamp = GameUtility.GetRelativeCamp(actionUnitCamp, effectUnit.UnitCamp);
+                                if (triggerUnitCamps.Contains(relativeCamp))
+                                {
+                                    realEffectUnitIdxs.Add(actionUnitIdx);
 
-                            }  
-                        }
-                        else
-                        {
-                            actionUnitCamp = actionUnit.UnitCamp;
+                                }  
+                                
+                            }
+                            else
+                            {
+                                actionUnitCamp = actionUnit.UnitCamp;
                             
-                            relativeCamp = GameUtility.GetRelativeCamp(actionUnitCamp, effectUnit.UnitCamp);
-                            if (triggerUnitCamps.Contains(relativeCamp))
-                            {
-                                realEffectUnitIdxs.Add(actionUnitIdx);
+                                relativeCamp = GameUtility.GetRelativeCamp(actionUnitCamp, effectUnit.UnitCamp);
+                                if (triggerUnitCamps.Contains(relativeCamp))
+                                {
+                                    realEffectUnitIdxs.Add(actionUnitIdx);
 
+                                }
                             }
                         }
+                        else if (triggerUnitCamps.Count <= 0 || triggerUnitCamps.Contains(ERelativeCamp.Empty))
+                        {
+                            realEffectUnitIdxs.Add(actionUnitIdx);
+                        }
 
-                        // var Action_isEnemy = false;
-                        // if (actionUnitIdx != -1 && actionUnitIdx != Constant.Battle.UnUnitTriggerIdx && effectUnitIdx != -1)
-                        // {
-                        //     Action_isEnemy = IsEnemy(actionUnitIdx, effectUnitIdx);
-                        // }
-                        // else
-                        // {
-                        //     Action_isEnemy = true;
-                        // }
-                        //
-                        // if (Action_isEnemy && buffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy))
-                        // {
-                        //     realEffectUnitIdxs.Add(actionUnitIdx);
-                        // }
-                        // else if (!Action_isEnemy && buffData.TriggerUnitCamps.Contains(ERelativeCamp.Us))
-                        // {
-                        //     realEffectUnitIdxs.Add(actionUnitIdx);
-                        // }
-                
-                         
 
                         break;
                     case ETriggerTarget.Hero:
@@ -3011,7 +2999,26 @@ namespace RoundHero
                         }
                         break;
                     case ETriggerTarget.Vertical:
-                        // var actionUnitDirect = actionUnitCoord - actionUnitLastCoord;
+                        var relatedDirect2 = effectUnitCoord - actionUnitCoord;
+                        relatedDirect2 = GameUtility.GetDirect(relatedDirect2);
+
+                        var verticals = GameUtility.GetRelatedVerticalCoords(relatedDirect2, effectUnitCoord);
+                        var vertical1Coord = effectUnitCoord + verticals[0];
+                        var vertical2Coord = effectUnitCoord + verticals[1];
+                        var vertical1GridPosIdx = GameUtility.GridCoordToPosIdx(vertical1Coord);
+                        var vertical2GridPosIdx = GameUtility.GridCoordToPosIdx(vertical2Coord);
+                        var vertical1Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(vertical1GridPosIdx);
+                        if (GameUtility.InGridRange(vertical1Coord) && vertical1Unit != null)
+                        {
+                            realEffectUnitIdxs.Add(vertical1Unit.Idx);
+                        }
+                        var vertical2Unit = BattleFightManager.Instance.GetUnitByGridPosIdx(vertical2GridPosIdx);
+                        if (GameUtility.InGridRange(vertical2Coord) && vertical2Unit != null)
+                        {
+                            realEffectUnitIdxs.Add(vertical2Unit.Idx);
+                        }
+
+                        break;
                         // var vertical1 = new Vector2Int(-actionUnitDirect.y, actionUnitDirect.x);
                         // var vertical2 = new Vector2Int(actionUnitDirect.y, -actionUnitDirect.x);
                         // var vertical1GridPosIdx = GameUtility.GridCoordToPosIdx(actionUnitCoord + vertical1);

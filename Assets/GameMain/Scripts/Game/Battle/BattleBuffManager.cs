@@ -142,12 +142,12 @@ namespace RoundHero
         {
             var actionUnit = GameUtility.GetUnitDataByIdx(actionUnitIdx);
             var newActionUnitIdx = actionUnitIdx;
-            //攻击带有 受击触发效果的单位，选择攻击这 看不到受击者触发的预览
-            // if (buffTriggerType == EBuffTriggerType.BePass || buffTriggerType == EBuffTriggerType.Hurt
-            //                                                || buffTriggerType == EBuffTriggerType.Dead)
-            // {
-            //     newActionUnitIdx = effectUnitIdx;
-            // }
+            //攻击带有 受击触发效果的单位，选择攻击者 看不到受击者触发的预览
+            if (buffTriggerType == EBuffTriggerType.BePass || buffTriggerType == EBuffTriggerType.Hurt
+                                                           || buffTriggerType == EBuffTriggerType.Dead)
+            {
+                newActionUnitIdx = effectUnitIdx;
+            }
             
             // if (actionUnit != null && actionUnit.GetAllStateCount(EUnitState.UnAttack) > 0 &&
             //     !GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData, ECardID.RoundDeBuffUnEffect))
@@ -197,8 +197,12 @@ namespace RoundHero
 
                             break;
                         case ETriggerDataType.Atrb:
-                            triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitIdx, newActionUnitIdx,
-                                realEffectUnitIdx, buffData.UnitAttribute, buffValues[0], ETriggerDataSubType.Unit);
+                            if (buffValues[0] != 0)
+                            {
+                                triggerData = BattleFightManager.Instance.BattleRoleAttribute(ownUnitIdx, newActionUnitIdx,
+                                    realEffectUnitIdx, buffData.UnitAttribute, buffValues[0], ETriggerDataSubType.Unit);
+
+                            }
                             break;
                         case ETriggerDataType.State:
 

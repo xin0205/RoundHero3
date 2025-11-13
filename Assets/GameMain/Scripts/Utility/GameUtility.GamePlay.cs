@@ -2332,6 +2332,55 @@ namespace RoundHero
 
         }
         
+        public static List<Vector2Int> GetRelatedVerticalCoords(Vector2Int direct, Vector2Int targetCoord)
+        {
+            var coords = new List<Vector2Int>();
+            if (direct == new Vector2Int(1, 1))
+            {
+                coords.Add(new Vector2Int(1, 1));
+                coords.Add(new Vector2Int(-1, -1));
+            }
+            else if (direct == new Vector2Int(-1, 1))
+            {
+                coords.Add(new Vector2Int(-1, 1));
+                coords.Add(new Vector2Int(1, -1));
+            }
+            else if (direct == new Vector2Int(-1, -1))
+            {
+                coords.Add(new Vector2Int(-1, -1));
+                coords.Add(new Vector2Int(1, 1));
+            }
+            else if (direct == new Vector2Int(1, -1))
+            {
+                coords.Add(new Vector2Int(1, -1));
+                coords.Add(new Vector2Int(-1, 1));
+            }
+            else if (direct == new Vector2Int(0, 1))
+            {
+                coords.Add(new Vector2Int(0, 1));
+                coords.Add(new Vector2Int(0, -1));
+            }
+            else if (direct == new Vector2Int(-1, 0))
+            {
+                coords.Add(new Vector2Int(-1, 0));
+                coords.Add(new Vector2Int(1, 0));
+            }
+            else if (direct == new Vector2Int(0, -1))
+            {
+                coords.Add(new Vector2Int(0, -1));
+                coords.Add(new Vector2Int(0, 1));
+            }
+            else if (direct == new Vector2Int(1, 0))
+            {
+                coords.Add(new Vector2Int(1, 0));
+                coords.Add(new Vector2Int(-1, 0));
+            }
+
+            return coords;
+
+        }
+
+        
         public static EGridType GetGridType(int gridPosIdx, bool isBattleData)
         {
             if (isBattleData)

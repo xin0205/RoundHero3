@@ -666,7 +666,7 @@ namespace RoundHero
                         //BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.ActiveAtk;
                         
-                        await BattleManager.Instance.RefreshEnemyAttackData();
+                        BattleManager.Instance.RefreshEnemyAttackData();
                         
                         
                         // if (effectUnitEntity != null)
@@ -702,7 +702,7 @@ namespace RoundHero
                     {
                         //BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
                         
-                        await BattleManager.Instance.RefreshEnemyAttackData();
+                        BattleManager.Instance.RefreshEnemyAttackData();
                         if (attackUnitEntity != null)
                         {
                             attackUnitEntity.UnShowTags();
