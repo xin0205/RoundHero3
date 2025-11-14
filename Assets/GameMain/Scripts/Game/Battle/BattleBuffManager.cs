@@ -24,10 +24,11 @@ namespace RoundHero
         public EUnitState UnitState = EUnitState.Empty;
         public ECardTriggerType CardTriggerType = ECardTriggerType.Empty;
         public string BuffStr;
-        public EBuffEquipType BuffEquipType = EBuffEquipType.Normal;
-        public ETriggerTarget TriggerInitiator = ETriggerTarget.Empty;
+        
         public int CardIdx = -1;
         public int FuneIdx = -1;
+        public EBuffEquipType BuffEquipType = EBuffEquipType.Normal;
+        public ETriggerTarget TriggerInitiator = ETriggerTarget.Empty;
         public BuffData Copy()
         {
             var buffData = new BuffData();
@@ -45,6 +46,8 @@ namespace RoundHero
             buffData.BuffStr = BuffStr;
             buffData.CardIdx = CardIdx;
             buffData.FuneIdx = FuneIdx;
+            buffData.BuffEquipType = BuffEquipType;
+            buffData.TriggerInitiator = TriggerInitiator;
             
             return buffData;
         }

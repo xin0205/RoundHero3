@@ -283,6 +283,7 @@ namespace RoundHero
                 BattleEnemyManager.Instance.GenerateEnemies(false);
                 BattleManager.Instance.RefreshEnemyAttackData();
                 DataManager.Instance.Save();
+                BattleFightManager.Instance.IsAction = false;
             }
             
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.RoundStart)
@@ -300,8 +301,9 @@ namespace RoundHero
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStart;
-                
-            
+                BattleFightManager.Instance.IsAction = false;
+
+
             }
             else if (BattleFightManager.Instance.ActionProgress == EActionProgress.PreRoundStart)
             {

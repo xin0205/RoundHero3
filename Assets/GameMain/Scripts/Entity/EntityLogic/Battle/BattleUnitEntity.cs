@@ -502,16 +502,43 @@ namespace RoundHero
             //     bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, triggerActionData);
             // }
             
-            var iTriggerActionData =
-                BattleBulletManager.Instance.GetTriggerActionData(triggerData.Idx);
-
-            if (iTriggerActionData != null)
+            // var iTriggerActionData =
+            //     BattleBulletManager.Instance.GetTriggerActionData(triggerData.Idx);
+            //
+            // if (iTriggerActionData != null)
+            // {
+            //     bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, iTriggerActionData);
+            //
+            // }
+            
+            var triggerActionDatas =
+                BattleBulletManager.Instance.GetTriggerActionDatas(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+            if(triggerActionDatas == null)
+                return false;
+            
+            foreach (var triggerActionData in triggerActionDatas)
             {
-                bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, iTriggerActionData);
+                if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                {
+                    if (triggerActionTriggerData.TriggerData != null &&
+                        triggerActionTriggerData.TriggerData.BuffValue != null &&
+                        triggerActionTriggerData.TriggerData.BuffValue.BuffData.BuffEquipType == EBuffEquipType.Normal)
+                    {
+                        bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, triggerActionData);
 
+                    }
+                }
+
+                if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                {
+                    if (triggerActionMoveData.MoveUnitData != null)
+                    {
+                        bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, triggerActionData);
+                    }
+                }
             }
             
-            
+
             if (bulletData.TriggerActionDataDict.Count <= 0)
             {
                 bulletData.MoveGridPosIdxs.Clear();
@@ -525,19 +552,14 @@ namespace RoundHero
                 {
                     if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
                     {
-                        if (triggerActionTriggerData.TriggerData != null)
-                        {
-                            BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
+                        BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
 
-                        }
                     }
 
                     if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
                     {
-                        if (triggerActionMoveData.MoveUnitData != null)
-                        {
-                            BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
-                        }
+                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+
                     }
 
                     BattleManager.Instance.RefreshView();
@@ -582,7 +604,7 @@ namespace RoundHero
                             HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
                             HeroManager.Instance.UpdateCacheHPDelta();
                         }
-                        //注释前 攻击目标及其两侧单位，造成{0}点伤害；并给对方施加{1}层虚弱 重复执行虚弱了
+                        ////注释前 攻击目标及其两侧单位，造成{0}点伤害；并给对方施加{1}层虚弱 重复执行虚弱了
                         //注释后 死亡触发 不执行
                         else
                         {
@@ -676,20 +698,20 @@ namespace RoundHero
                 }
             }
             
-            var triggerActionDatas =
-                BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.Idx, -1);
-            
-            
-            foreach (var triggerActionData in triggerActionDatas)
-            {
-                if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
-                {
-                    if (triggerActionMoveData.MoveUnitData != null)
-                    {
-                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
-                    }
-                }
-            }
+            // var triggerActionDatas =
+            //     BattleBulletManager.Instance.GetTriggerActionDatas(BattleUnitData.Idx, -1);
+            //
+            //
+            // foreach (var triggerActionData in triggerActionDatas)
+            // {
+            //     if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+            //     {
+            //         if (triggerActionMoveData.MoveUnitData != null)
+            //         {
+            //             BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+            //         }
+            //     }
+            // }
             
             
                     
@@ -1991,6 +2013,9 @@ namespace RoundHero
         
         public void UnShowTags()
         {
+            if(BattleFightManager.Instance.IsAction)
+                return;
+            
             showEntityIdx = 0;
             UnShowAttackTags();
             UnShowFlyDirects();

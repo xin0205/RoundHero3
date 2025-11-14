@@ -229,7 +229,7 @@ namespace RoundHero
             }
 
             moveUnitData.MoveActionData.Clear();
-
+            ClearTriggerData();
         }
 
         public void ActionUnitTrigger(int actionUnitIdx, int effectUnitIdx = -1)

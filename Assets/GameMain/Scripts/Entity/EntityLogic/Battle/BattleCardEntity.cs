@@ -278,7 +278,8 @@ namespace RoundHero
                     return;
             }
             
-            
+            if(BattleFightManager.Instance.IsAction)
+                return;
             
             PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable);
             
@@ -501,6 +502,9 @@ namespace RoundHero
             }
             
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+            
+            if(BattleFightManager.Instance.IsAction)
                 return;
 
             DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);

@@ -433,6 +433,9 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
             
+            if(BattleFightManager.Instance.IsAction)
+                return;
+            
             BattleManager.Instance.RecordLastActionBattleData();
             BattleManager.Instance.EndRound();
             //ShowActionTips(false);
@@ -588,6 +591,9 @@ namespace RoundHero
                 return;
 
             }
+            
+            if(BattleFightManager.Instance.IsAction)
+                return;
 
             if (GamePlayManager.Instance.GamePlayData.BattleActionDataList.Count == 0)
             {

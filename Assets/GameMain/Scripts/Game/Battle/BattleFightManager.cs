@@ -429,6 +429,7 @@ namespace RoundHero
 
         private Dictionary<int, Data_BattleUnit> Roles;
         public EActionProgress ActionProgress;
+        public bool IsAction;
         public int AcitonUnitIdx;
 
         private Dictionary<int, Data_GridPropMoveDirect> MoveDirectPropUseDict =
@@ -1912,6 +1913,7 @@ namespace RoundHero
         
         public void RoundStartBuffTrigger()
         {
+            BattleFightManager.Instance.IsAction = true;
             if(ActionProgress != EActionProgress.RoundStartBuff)
                 return;
             
@@ -1983,6 +1985,7 @@ namespace RoundHero
         
         public void RoundEndTrigger()
         {
+            BattleFightManager.Instance.IsAction = true;
             if(ActionProgress != EActionProgress.RoundEnd)
                 return;
             
@@ -2016,7 +2019,7 @@ namespace RoundHero
         public void UnitAttack(Dictionary<int, ActionData> unitAttackDatas, EActionProgress actionProgress)
         {
             //var unitKeys = BattleUnitDatas.Keys.ToList();
-            
+            BattleFightManager.Instance.IsAction = true;
             var unitKeys = unitAttackDatas.Keys.ToList();
             while (true)
             {
@@ -2147,6 +2150,7 @@ namespace RoundHero
 
         private void UnitMove(Dictionary<int, List<int>> unitMovePaths, Dictionary<int, MoveActionData> unitMoveDatas, Dictionary<int, ActionData> unitAttackDatas, EActionProgress actionProgress)
         {
+            BattleFightManager.Instance.IsAction = true;
             var unitKeys = unitMovePaths.Keys.ToList();
             while (true)
             {
@@ -2220,7 +2224,6 @@ namespace RoundHero
         public void EnemyAttack()
         {
             UnitAttack(RoundFightData.EnemyAttackDatas, EActionProgress.EnemyAttack);
-            
         }
 
         
