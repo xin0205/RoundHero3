@@ -492,15 +492,25 @@ namespace RoundHero
              
             bulletData.MoveGridPosIdxs.AddRange(paths);
             
-            var triggerActionDatas =
-                BattleBulletManager.Instance.GetTriggerActionDatas(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
-            if(triggerActionDatas == null)
-                return false;
+            // var triggerActionDatas =
+            //     BattleBulletManager.Instance.GetTriggerActionDatas(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+            // if(triggerActionDatas == null)
+            //     return false;
+            //
+            // foreach (var triggerActionData in triggerActionDatas)
+            // {
+            //     bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, triggerActionData);
+            // }
             
-            foreach (var triggerActionData in triggerActionDatas)
+            var iTriggerActionData =
+                BattleBulletManager.Instance.GetTriggerActionData(triggerData.Idx);
+
+            if (iTriggerActionData != null)
             {
-                bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, triggerActionData);
+                bulletData.TriggerActionDataDict.Add(triggerData.EffectUnitGridPosIdx, iTriggerActionData);
+
             }
+            
             
             if (bulletData.TriggerActionDataDict.Count <= 0)
             {
@@ -572,12 +582,13 @@ namespace RoundHero
                             HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
                             HeroManager.Instance.UpdateCacheHPDelta();
                         }
-                        //攻击目标及其两侧单位，造成{0}点伤害；并给对方施加{1}层虚弱 重复执行虚弱了
-                        // else
-                        // {
-                        //     BattleBulletManager.Instance.UseTriggerData(triggerData);
-                        //     HeroManager.Instance.UpdateCacheHPDelta();
-                        // }
+                        //注释前 攻击目标及其两侧单位，造成{0}点伤害；并给对方施加{1}层虚弱 重复执行虚弱了
+                        //注释后 死亡触发 不执行
+                        else
+                        {
+                            BattleBulletManager.Instance.UseTriggerData(triggerData);
+                            HeroManager.Instance.UpdateCacheHPDelta();
+                        }
                             
                         continue;
                     }

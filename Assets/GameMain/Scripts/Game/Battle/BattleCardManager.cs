@@ -378,6 +378,20 @@ namespace RoundHero
             Log.Debug("AnimationAcquireCard:" + allCardCount);
             SetCardPosList(allCardCount);
             var startIdx = allCardCount - handCards.Count;
+            for (int i = 0; i < BattlePlayerData.HandCards.Count; i++)
+            {
+                
+                BattleCardEntity card;
+                if (CardEntities.ContainsKey(BattlePlayerData.HandCards[i]))
+                {
+                    card = CardEntities[BattlePlayerData.HandCards[i]];
+                    card.BattleCardEntityData.HandSortingIdx = i;
+                    card.MoveCard(
+                        new Vector3(CardPosList[i], BattleController.Instance.HandCardPos.localPosition.y, 0), 0.1f);
+                    card.SetSortingOrder(i * 10);
+                }
+            }
+
             for (int i = startIdx; i < allCardCount; i++)
             {
                 var sortIdx = i - startIdx;

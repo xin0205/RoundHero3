@@ -1700,7 +1700,7 @@ namespace RoundHero
                         case EUnitAttribute.MaxHP:
                             var recover = (int) (triggerData.Value + triggerData.DeltaValue);
                             effectUnitEntity.BattleUnitData.BaseMaxHP += recover;
-                            effectUnitEntity.ChangeCurHP(recover, true, true, true, true);
+                            effectUnitEntity.ChangeCurHP(recover, true, false, true, true);
                             break;
                         case EUnitAttribute.Empty:
                             break;

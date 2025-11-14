@@ -305,6 +305,31 @@ namespace RoundHero
             return list;
         }
 
+        public ITriggerActionData GetTriggerActionData(int triggerDataIdx)
+        {
+            foreach (var kv in TriggerActionDatas)
+            {
+                foreach (var kv2 in kv.Value)
+                {
+                    foreach (var data in kv2.Value)
+                    {
+                        if (data is TriggerActionTriggerData triggerActionTriggerData)
+                        {
+                            if (triggerActionTriggerData.TriggerData.Idx == triggerDataIdx)
+                            {
+                                return data;
+                            }
+                                
+                        }
+                    }
+                }
+            }
+
+            return null;
+            
+        }
+
+        
         // public List<TriggerActionData> GetTriggerActionDatasA(int actionUnitID)
         // {
         //     var triggerDatas = GetTriggerActionDatas(actionUnitID);
