@@ -338,7 +338,7 @@ namespace RoundHero
             uiLocalPoint.y += 50f;
 
             var entity = await GameEntry.Entity.ShowBattleValueEntityAsync(
-                uiLocalPoint, sort, _curValueEntityIdx++);
+                uiLocalPoint, sort, CurValueEntityIdx++);
 
             if ((entity as BattleValueEntity).BattleValueEntityData.EntityIdx <
                 ShowValueEntityIdx)

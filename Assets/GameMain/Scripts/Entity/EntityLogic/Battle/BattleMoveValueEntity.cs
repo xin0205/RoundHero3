@@ -54,11 +54,29 @@ namespace RoundHero
             var absStartValue = Mathf.Abs(BattleMoveValueEntityData.StartValue);
             var absEndValue = Mathf.Abs(BattleMoveValueEntityData.EndValue);
 
-            positiveStartValue = "+" + absStartValue;
-            positiveEndValue = "+" + absEndValue;
+            if (absStartValue == 0)
+            {
+                positiveStartValue = "0";
+                negativeStartValue = "0";
+            }
+            else
+            {
+                positiveStartValue = "+" + absStartValue;
+                negativeStartValue = "-" + Mathf.Abs(absStartValue);
+            }
             
-            negativeStartValue = "-" + Mathf.Abs(absStartValue);
-            negativeEndValue = "-" + Mathf.Abs(absEndValue);;
+            if (absEndValue == 0)
+            {
+                positiveEndValue = "0";
+                negativeEndValue = "0";
+            }
+            else
+            {
+                positiveEndValue = "+" + absEndValue;
+                negativeEndValue = "-" + Mathf.Abs(absEndValue);
+            }
+           
+            
             
             text.text = BattleMoveValueEntityData.StartValue < 0
                 ? negativeStartValue

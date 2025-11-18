@@ -848,8 +848,8 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 0.8
-  m_Text: "\u5BF9\u6240\u6709\u654C\u4EBA\u9020\u621010\u70B9\u4F24\u5BB31111111111111111111111111111111111111111111111111111"
+    m_LineSpacing: 0.68
+  m_Text: "\u5361\u724C\u63CF\u8FF0"
 --- !u!1 &8491217774439093300
 GameObject:
   m_ObjectHideFlags: 0

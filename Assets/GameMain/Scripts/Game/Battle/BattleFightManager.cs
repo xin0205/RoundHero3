@@ -58,6 +58,11 @@ namespace RoundHero
 
         public Dictionary<int, MoveUnitData> MoveUnitDatas = new Dictionary<int, MoveUnitData>();
 
+        public void Clear()
+        {
+            MoveUnitDatas.Clear();
+        }
+
     }
     
     public class PassCardData
@@ -136,6 +141,7 @@ namespace RoundHero
         public virtual void Clear()
         {
             TriggerDatas.Clear();
+            MoveData.Clear();
         }
     }
 
@@ -2385,6 +2391,15 @@ namespace RoundHero
                 }
   
             }
+            
+            foreach (var kv in RoundFightData.BuffData_Use.MoveData.MoveUnitDatas)
+            {
+                if(!(kv.Value.ActionUnitIdx == actionUnitIdx && kv.Value.EffectGridPosIdx == effectGridPosIdx))
+                    continue;
+                    
+                moveDatas.Add(kv.Key, kv.Value);
+  
+            }
 
             return moveDatas;
         }
@@ -2429,6 +2444,21 @@ namespace RoundHero
                         var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
                         unitFlyDict.Add(kv.Key, moveGridPosIdxs);
                     }
+
+                }
+            }
+            else if (actionUnitIdx == Constant.Battle.UnUnitTriggerIdx)
+            {
+                moveDataDict = RoundFightData.BuffData_Use.MoveData.MoveUnitDatas;
+                
+                foreach (var kv in moveDataDict)
+                {
+                    var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
+                
+                    // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
+                    //     continue;
+ 
+                    unitFlyDict.Add(kv.Key, moveGridPosIdxs);
 
                 }
             }

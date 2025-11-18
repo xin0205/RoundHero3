@@ -835,25 +835,40 @@ namespace RoundHero
         }
 
 
-        private void CacheUnitActiveMoveDatas(int actionUnitIdx, int effectGridPosIdx, BuffData buffData,
-            ActionData actionData, TriggerData triggerData)
+        public void CacheUnitActiveMoveDatas(int actionUnitIdx, int effectGridPosIdx, BuffData buffData,
+            ActionData actionData, TriggerData triggerData, int actionGridPosIdx = 0)
         {
             if (effectGridPosIdx == -1)
                 return;
 
+            var actionUnitCamp = EUnitCamp.Player1;
+            int _actionGridPosIdx;
             var actionUnit = GetUnitByIdx(actionUnitIdx);
+            if (actionUnit == null)
+            {
+                actionUnitCamp = EUnitCamp.Player1;
+                _actionGridPosIdx = actionGridPosIdx;
+            }
+            else
+            {
+                actionUnitCamp = actionUnit.UnitCamp;
+                _actionGridPosIdx = actionUnit.GridPosIdx;
+            }
+                
+
+            
             var effectUnit = GetUnitByGridPosIdx(effectGridPosIdx);
             if (effectUnit == null && !Constant.Battle.RelatedUnitFlyRanges.Contains(buffData.FlyRange))
                 return;
 
             if (effectUnit != null)
             {
-                var relativeCamp = GameUtility.GetRelativeCamp(actionUnit.UnitCamp, effectUnit.UnitCamp);
+                var relativeCamp = GameUtility.GetRelativeCamp(actionUnitCamp, effectUnit.UnitCamp);
                 if (!buffData.TriggerUnitCamps.Contains(relativeCamp))
                     return;
             }
 
-            var actionUnitCoord = GameUtility.GridPosIdxToCoord(actionUnit.GridPosIdx);
+            var actionUnitCoord = GameUtility.GridPosIdxToCoord(_actionGridPosIdx);
 
 
             var flyDirect = Vector2Int.zero;
@@ -879,7 +894,7 @@ namespace RoundHero
                 }
             }
 
-            if (buffData.FlyType == EFlyType.Exchange)
+            if (buffData.FlyType == EFlyType.Exchange && actionUnit != null)
             {
                 if(actionUnit.Idx == effectUnit.Idx)
                     return;
@@ -936,7 +951,7 @@ namespace RoundHero
             else if (Constant.Battle.RelatedUnitFlyRanges.Contains(buffData.FlyRange) ||
                      Constant.Battle.DynamicRelatedUnitFlyRanges.Contains(buffData.FlyRange))
             {
-                var relatedUnits = GetUnitByGridPosIdx(actionUnit.GridPosIdx, effectGridPosIdx, buffData.FlyRange);
+                var relatedUnits = GetUnitByGridPosIdx(_actionGridPosIdx, effectGridPosIdx, buffData.FlyRange);
                 foreach (var relatedUnit in relatedUnits)
                 {
                     var relatedUnitCoord = GameUtility.GridPosIdxToCoord(relatedUnit.GridPosIdx);
@@ -985,7 +1000,7 @@ namespace RoundHero
                 }
 
                 var relatedUnits =
-                    GameUtility.GetRelatedCoords(buffData.FlyRange, actionUnit.GridPosIdx, effectGridPosIdx);
+                    GameUtility.GetRelatedCoords(buffData.FlyRange, _actionGridPosIdx, effectGridPosIdx);
                 if (relatedUnits.Count > 0)
                 {
                     var relatedUnit = GetUnitByGridPosIdx(GameUtility.GridCoordToPosIdx(relatedUnits[0]));
@@ -1020,7 +1035,7 @@ namespace RoundHero
             else
             {
                 var unitActionState = EUnitActionState.Fly;
-                if (buffData.FlyRange == EActionType.Self)
+                if (buffData.FlyRange == EActionType.Self && actionUnit != null)
                 {
                     if (buffData.FlyType == EFlyType.Back)
                     {
@@ -1050,7 +1065,7 @@ namespace RoundHero
 
                     moveUnitIdx = effectUnit.Idx;
                 }
-                else if (buffData.FlyType == EFlyType.SelfPass)
+                else if (buffData.FlyType == EFlyType.SelfPass && actionUnit != null)
                 {
                     dis = 99;
                     flyDirect = effectUnitCoord - actionUnitCoord;

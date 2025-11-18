@@ -1024,6 +1024,11 @@ namespace RoundHero
         
         public void TriggerBuff()
         {
+            BattleFightManager.Instance.IsAction = true;
+            GameUtility.DelayExcute(2f, () => 
+            {
+                BattleFightManager.Instance.IsAction = false;
+            });
             foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas)
             {
 
@@ -1056,8 +1061,27 @@ namespace RoundHero
                     }
                 }
             }
+            
+            BattleBulletManager.Instance.AddMoveActionData(Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.RoundFightData.BuffData_Use.MoveData);
 
+            GameUtility.DelayExcute(1f, () => 
+            {
+                var triggerActionDatas =
+                    BattleBulletManager.Instance.GetTriggerActionDatas(Constant.Battle.UnUnitTriggerIdx, -1);
+                
+                foreach (var triggerActionData in triggerActionDatas)
+                {
+                    
 
+                    if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                    {
+                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                    }
+                }
+
+            });
+            
+            
         }
         
         public void UseBuff(int gridPosIdx, int unitID = -1)
@@ -1583,6 +1607,12 @@ namespace RoundHero
                     break;
                 default:
                     break;
+            }
+            
+            if (strList.Length >= 8)
+            {
+                buffData.FlyType = Enum.Parse<EFlyType>(strList[6]);
+                buffData.FlyRange = Enum.Parse<EActionType>(strList[7]);
             }
         }
         

@@ -95,6 +95,9 @@ namespace RoundHero
         [SerializeField] private Text tipsText;
         
         [SerializeField]
+        private GameObject bottomTipsGO;
+        
+        [SerializeField]
         private Text bottomTipsText;
         
         //[SerializeField] private ExplainTriggerItem explainTriggerItem;
@@ -171,7 +174,7 @@ namespace RoundHero
             // AttackText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectAttackUnit);
             // MoveText.text = GameEntry.Localization.GetString(Constant.Localization.Tips_SelectMoveUnit);
   
-            bottomTipsText.gameObject.SetActive(false);
+            bottomTipsGO.SetActive(false);
             
             //explainTriggerItem.gameObject.SetActive(false);
 
@@ -391,7 +394,7 @@ namespace RoundHero
             moveInfoTrigger.HideInfo();
             attackInfoTrigger.HideInfo();
             
-            bottomTipsText.gameObject.SetActive(false);
+            bottomTipsGO.SetActive(false);
         }
 
         private Tween moveTween;
@@ -518,7 +521,7 @@ namespace RoundHero
             BattleCardEntityData.CardData.CardUseType = ECardUseType.RawSelect;
             if (!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
             {
-                bottomTipsText.gameObject.SetActive(true);
+                bottomTipsGO.SetActive(true);
                 bottomTipsText.text =
                     GameEntry.Localization.GetString(Constant.Localization.Info_UnSelectCard);
                 return;

@@ -100,9 +100,13 @@ namespace RoundHero
             return "Assets/GameMain/Entities/Battles/BattleCardEntity.prefab";
         }
         
-        public static string GetBattleEnemyPrefab(int enemyTypeID)
+        public static string GetBattleEnemyPrefab(int monsterID)
         {
-            return Utility.Text.Format("Assets/GameMain/Entities/Enemies/BattleEnemyEntity_{0}.prefab", enemyTypeID);
+            var drEnemy = GameEntry.DataTable.GetEnemy(monsterID);
+
+            
+            return Utility.Text.Format("Assets/GameMain/Entities/Enemies/D{0}/BattleEnemyEntity_{1}.prefab", drEnemy.Level,
+                drEnemy.EntityIdx);
         }
         
         public static string GetBattleCorePrefab(int coreID)

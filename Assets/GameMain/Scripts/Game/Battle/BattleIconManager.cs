@@ -273,9 +273,55 @@ namespace RoundHero
                     {
                         var pos1 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
                         var pos2 = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 2]);
+                        
+                        var unit1 = GameUtility.GetUnitByGridPosIdx(kv.Value[kv.Value.Count - 1]);
+                        var unit2 = GameUtility.GetUnitByGridPosIdx(kv.Value[kv.Value.Count - 2]);
 
-                        //var centerPos = (pos1 + pos2) / 2.0f;
-                        var centerPos = pos2;
+                        if (unit1 != null )
+                        {
+                            var unit1Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
+                                unit2.Idx);
+                            foreach (var kv2 in unit1Dict)
+                            {
+                                var datas = new List<TriggerData>();
+                                foreach (var data in kv2.Value)
+                                {
+                                    if(data.ActionUnitIdx == actionUnitIdx)
+                                        continue;
+                                    datas.Add(data);
+                                }
+                                if (datas.Count > 0)
+                                {
+                                    ShowValues(datas);
+                                }
+                            
+                            }
+                        }
+                        
+                        if (unit2 != null)
+                        {
+                            var unit2Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
+                                unit1.Idx);
+                            foreach (var kv2 in unit2Dict)
+                            {
+                                var datas = new List<TriggerData>();
+                                foreach (var data in kv2.Value)
+                                {
+                                    if(data.ActionUnitIdx == actionUnitIdx)
+                                        continue;
+                                    datas.Add(data);
+                                }
+
+                                if (datas.Count > 0)
+                                {
+                                    ShowValues(datas);
+                                }
+                                
+                        
+                            }
+                        }
+
+                        var centerPos = (pos1 + pos2) / 2.0f;
                         centerPos.y += 1f;
                         
                         var battleIconEntity =

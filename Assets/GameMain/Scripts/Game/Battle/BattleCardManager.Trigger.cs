@@ -79,6 +79,15 @@ namespace RoundHero
                     {
                         BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
                             effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, -1, ETriggerDataSubType.Card);
+
+                        foreach (var triggerData in triggerDatas)
+                        {
+
+                            BattleFightManager.Instance.CacheUnitActiveMoveDatas(Constant.Battle.UnUnitTriggerIdx,
+                                triggerData.EffectUnitGridPosIdx, triggerData.BuffValue.BuffData,
+                                BattleFightManager.Instance.RoundFightData.BuffData_Use,
+                                triggerData, triggerData.ActionUnitGridPosIdx);
+                        }
                     }
 
                 }

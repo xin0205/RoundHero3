@@ -2003,12 +2003,28 @@ namespace RoundHero
                 return;
 
             UnShowTags();
-            RefreshFlyDirects(effectUnitIdx);
+            RefreshHurtFlyDirects(effectUnitIdx);
             ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
              ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
              ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
              ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
+        }
+        
+        public async Task ShowTacticHurtTags(int effectUnitIdx)
+        {
+            if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+                return;
+
+            UnShowTags();
+            
+            RefreshHurtFlyDirects(effectUnitIdx);
+            ShowTacticHurtAttackTag(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
+            ShowTacticHurtFlyDirect(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
+            ShowHurtBattleIcon(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx, EBattleIconType.Collision);
+            ShowTacticHurtDisplayValues(effectUnitIdx);
+            ShowTacticHurtDisplayIcons(effectUnitIdx);
+            
         }
         
         public void UnShowTags()

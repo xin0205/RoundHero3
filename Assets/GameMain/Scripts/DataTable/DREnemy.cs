@@ -163,6 +163,15 @@ namespace RoundHero
         }
 
         /// <summary>
+        /// 获取EntityIdx。
+        /// </summary>
+        public int EntityIdx
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 获取攻击类型。
         /// </summary>
         public EAttackType AttackType
@@ -215,6 +224,7 @@ namespace RoundHero
 			EnemyAttackType = Enum.Parse<EEnemyAttackType>(columnStrings[index++]);
 			EffectColor = Enum.Parse<EColor>(columnStrings[index++]);
             Level = int.Parse(columnStrings[index++]);
+            EntityIdx = int.Parse(columnStrings[index++]);
 			AttackType = Enum.Parse<EAttackType>(columnStrings[index++]);
             GIFIdx = int.Parse(columnStrings[index++]);
 			ExplainItems = DataTableExtension.ParseStringList(columnStrings[index++]);
@@ -244,6 +254,7 @@ namespace RoundHero
                     EnemyAttackType = Enum.Parse<EEnemyAttackType>(binaryReader.ReadString());
                     EffectColor = Enum.Parse<EColor>(binaryReader.ReadString());
                     Level = binaryReader.Read7BitEncodedInt32();
+                    EntityIdx = binaryReader.Read7BitEncodedInt32();
                     AttackType = Enum.Parse<EAttackType>(binaryReader.ReadString());
                     GIFIdx = binaryReader.Read7BitEncodedInt32();
 					ExplainItems = binaryReader.ReadStringList();

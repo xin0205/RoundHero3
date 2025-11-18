@@ -2112,6 +2112,14 @@ PrefabInstance:
       propertyPath: m_Text
       value: "\u7EE7\u7EED\u6218\u6597"
       objectReference: {fileID: 0}
+    - target: {fileID: 7953876016525079706, guid: a7303a7217f912d49aa447f0526db802, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8106931597950285223, guid: a7303a7217f912d49aa447f0526db802, type: 3}
+      propertyPath: m_Pivot.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8106931597950285223, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -2122,7 +2130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8106931597950285223, guid: a7303a7217f912d49aa447f0526db802, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 38.4
+      value: 148.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

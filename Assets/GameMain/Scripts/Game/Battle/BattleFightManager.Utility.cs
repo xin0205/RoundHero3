@@ -998,6 +998,35 @@ namespace RoundHero
                 }
 
             }
+            
+            var _triggerDataList = RoundFightData.BuffData_Use.MoveData.MoveUnitDatas.Values.ToList();
+            foreach (var moveUnitData in _triggerDataList)
+            {
+                foreach (var kv2 in moveUnitData.MoveActionData.TriggerDataDict)
+                {
+                    foreach (var triggerData in kv2.Value)
+                    {
+                        // if (triggerData.ActualValue == 0)
+                        // {
+                        //     continue;
+                        // }
+
+                        if (triggerData.EffectUnitIdx != effectUnitIdx && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx)
+                            continue;
+
+                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 &&
+                            triggerData.ActionUnitIdx != actionUnitIdx)
+                            continue;
+
+                        if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+                        {
+                            triggerDataDict.Add(triggerData.ActionUnitIdx, new List<TriggerData>());
+                        }
+
+                        triggerDataDict[triggerData.ActionUnitIdx].Add(triggerData);
+                    }
+                }
+            }
 
 
             return triggerDataDict;
