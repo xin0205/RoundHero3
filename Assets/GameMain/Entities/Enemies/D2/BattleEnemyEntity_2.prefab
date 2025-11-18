@@ -246,7 +246,7 @@ Transform:
   m_GameObject: {fileID: 1054622102301030155}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: -1}
-  m_LocalPosition: {x: -0.023474129, y: 1.391325, z: 0.006106913}
+  m_LocalPosition: {x: 0, y: 0.971, z: 0}
   m_LocalScale: {x: 0.68750006, y: 0.68750006, z: 0.68750006}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2327,7 +2327,7 @@ GameObject:
   - component: {fileID: 724266680814221818}
   - component: {fileID: 5062457304722505058}
   m_Layer: 8
-  m_Name: BattleEnemyEntity_29
+  m_Name: BattleEnemyEntity_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2389,6 +2389,7 @@ MonoBehaviour:
   multiStartAttackTrigger: 0
   multiEndAttackTrigger: 0
   IsPointer: 0
+  CurUnitStateIconEntityIdx: 0
   CurValueEntityIdx: 0
   ShowValueEntityIdx: 0
 --- !u!95 &724266680814221818

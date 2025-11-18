@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4107302258608099607}
   - component: {fileID: 3000782954099996916}
   m_Layer: 8
-  m_Name: BattleEnemyEntity_15
+  m_Name: BattleEnemyEntity_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,10 @@ MonoBehaviour:
   ValuePos: {fileID: 6519452076117006877}
   TargetPosIdx: 0
   UnitDescTriggerItem: {fileID: 3000782954099996916}
+  multiStartAttackTrigger: 0
+  multiEndAttackTrigger: 0
   IsPointer: 0
+  CurUnitStateIconEntityIdx: 0
   CurValueEntityIdx: 0
   ShowValueEntityIdx: 0
 --- !u!95 &4107302258608099607
@@ -203,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 2150513022608381231}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.021340117, y: 0.84375, z: 0.625}
+  m_LocalPosition: {x: 0, y: 0.971, z: 0}
   m_LocalScale: {x: 0.625, y: 0.625, z: 0.625}
   m_ConstrainProportionsScale: 0
   m_Children: []

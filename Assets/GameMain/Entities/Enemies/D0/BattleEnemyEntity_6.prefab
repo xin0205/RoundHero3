@@ -75,6 +75,7 @@ MonoBehaviour:
   multiStartAttackTrigger: 0
   multiEndAttackTrigger: 0
   IsPointer: 0
+  CurUnitStateIconEntityIdx: 0
   CurValueEntityIdx: 0
   ShowValueEntityIdx: 0
 --- !u!95 &4107302258608099607
@@ -205,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 2150513022608381231}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.021340119, y: 0.84375006, z: 0.625}
+  m_LocalPosition: {x: 0, y: 0.971, z: 0}
   m_LocalScale: {x: 0.625, y: 0.625, z: 0.625}
   m_ConstrainProportionsScale: 0
   m_Children: []
