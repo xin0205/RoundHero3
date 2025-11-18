@@ -1068,16 +1068,18 @@ namespace RoundHero
             {
                 var triggerActionDatas =
                     BattleBulletManager.Instance.GetTriggerActionDatas(Constant.Battle.UnUnitTriggerIdx, -1);
-                
-                foreach (var triggerActionData in triggerActionDatas)
+                if (triggerActionDatas != null)
                 {
-                    
-
-                    if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                    foreach (var triggerActionData in triggerActionDatas)
                     {
-                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                        if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                        {
+                            BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                        }
                     }
                 }
+                
+                
 
             });
             

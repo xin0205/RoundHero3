@@ -51,7 +51,7 @@ namespace RoundHero
             // }
 
             var triggerActionData = new TriggerActionTriggerData();
-            triggerActionData.TriggerData = triggerData.Copy();
+            triggerActionData.TriggerData = triggerData;//.Copy();
             TriggerActionDatas[triggerData.ActionUnitIdx].Add(triggerData.EffectUnitIdx, triggerActionData);
 
         }
@@ -97,7 +97,7 @@ namespace RoundHero
                 //     triggerActionData = TriggerActionDatas[actionUnitID][kv.Key];
                 // }
 
-                triggerActionData.MoveUnitData = kv.Value.Copy();
+                triggerActionData.MoveUnitData = kv.Value;//.Copy();
                 TriggerActionDatas[actionUnitIdx].Add(kv.Key, triggerActionData);
             }
 
@@ -431,6 +431,14 @@ namespace RoundHero
                             if (triggerActionTriggerData.TriggerData.IsTrigger)
                             {
                                 TriggerActionDatas[keys[i]].Remove(list[j].Key, triggerActionTriggerData);
+                            }
+                        }
+                        
+                        if (list2[k] is TriggerActionMoveData triggerActionMoveData)
+                        {
+                            if (triggerActionMoveData.MoveUnitData.IsTrigger)
+                            {
+                                TriggerActionDatas[keys[i]].Remove(list[j].Key, triggerActionMoveData);
                             }
                         }
                     }
