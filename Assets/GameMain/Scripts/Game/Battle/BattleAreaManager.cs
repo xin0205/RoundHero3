@@ -747,7 +747,7 @@ namespace RoundHero
             }
 
 
-            if (!pointerDownInRange)
+            if (!pointerDownInRange && !BattleFightManager.Instance.IsAction)
             {
                 //var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
 

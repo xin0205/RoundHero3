@@ -16,6 +16,9 @@ namespace RoundHero
         
         public async Task ShowStaticAttackTags()
         {
+            if (BattleFightManager.Instance.IsAction)
+                return;
+            
             // if (BattleManager.Instance.BattleState != EBattleState.UseCard &&
             //     BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
             //     return;

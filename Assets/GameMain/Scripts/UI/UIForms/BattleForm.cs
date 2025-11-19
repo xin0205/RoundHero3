@@ -438,6 +438,7 @@ namespace RoundHero
             
             BattleManager.Instance.RecordLastActionBattleData();
             BattleManager.Instance.EndRound();
+            BattleStaticAttackTagManager.Instance.UnshowStaticAttackTags();
             //ShowActionTips(false);
             //isEndRound = true;
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)

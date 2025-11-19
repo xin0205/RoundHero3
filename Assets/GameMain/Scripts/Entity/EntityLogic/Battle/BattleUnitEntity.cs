@@ -589,6 +589,7 @@ namespace RoundHero
                 {
                     if (triggerData.BuffValue == null)
                     {
+                        //BattleBulletManager.Instance.AddTriggerData(triggerData);
                         BattleBulletManager.Instance.UseTriggerData(triggerData);
                         HeroManager.Instance.UpdateCacheHPDelta();
                         continue;
@@ -608,6 +609,7 @@ namespace RoundHero
                         //注释后 死亡触发 不执行
                         else
                         {
+                            //BattleBulletManager.Instance.AddTriggerData(triggerData);
                             BattleBulletManager.Instance.UseTriggerData(triggerData);
                             HeroManager.Instance.UpdateCacheHPDelta();
                         }
@@ -2006,9 +2008,9 @@ namespace RoundHero
             RefreshHurtFlyDirects(effectUnitIdx);
             ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
             ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
-             ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
-             ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
-             ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
+            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
+            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
+            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
         }
         
         public async Task ShowTacticHurtTags(int effectUnitIdx)
