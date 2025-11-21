@@ -509,6 +509,10 @@ namespace RoundHero
             
             if(BattleFightManager.Instance.IsAction)
                 return;
+            
+            if(!isShow)
+                return;
+            
 
             DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
 

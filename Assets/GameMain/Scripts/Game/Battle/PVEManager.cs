@@ -301,7 +301,7 @@ namespace RoundHero
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStart;
-                BattleFightManager.Instance.IsAction = false;
+                //BattleFightManager.Instance.IsAction = false;
 
 
             }

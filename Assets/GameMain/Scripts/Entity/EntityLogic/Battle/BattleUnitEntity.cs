@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DG.Tweening;
 using GameFramework;
 using GameKit.Dependencies.Utilities;
+using JetBrains.Annotations;
 using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -1172,6 +1173,7 @@ namespace RoundHero
         public void Move(EUnitActionState unitActionState, MoveActionData moveActionData)
         {
             IsMove = true;
+            BattleFightManager.Instance.IsAction = true;
             //SetAction(unitActionState);
 
             var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
@@ -1264,7 +1266,7 @@ namespace RoundHero
                     
                 }
                 IsMove = false;
-
+                BattleFightManager.Instance.IsAction = false;
                 HeroManager.Instance.UpdateCacheHPDelta();
                 
                 if (BattleManager.Instance.BattleState == EBattleState.UseCard && unitActionState != EUnitActionState.Run)
@@ -1757,14 +1759,14 @@ namespace RoundHero
             unitStateIconValueList.Add(data);
         }
 
-        private float showMoveValueTime = 0.2f;
+        private float showMoveValueTime = 0.4f;
         protected async void ShowMoveValues()
         {
             if(moveValueList.Count <= 0)
                 return;
             
             showMoveValueTime += Time.deltaTime;
-            if (showMoveValueTime > 0.2f)
+            if (showMoveValueTime > 0.4f)
             {
                 showMoveValueTime = 0;
                 
@@ -1977,6 +1979,24 @@ namespace RoundHero
             UnitDescTriggerItem.OnPointerExit();
         }
 
+        public void ShowHurtTagByEffectUnit(int actionUnitIdx)
+        {
+            var triggerDataDict =
+                GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
+                    BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
+
+            var effectUnitIdxs = new List<int>();
+            foreach (var kv in triggerDataDict)
+            {
+                foreach (var triggerData in kv.Value)
+                {
+                    effectUnitIdxs.Add(triggerData.EffectUnitIdx);
+                }
+            }
+            
+            ShowHurtTags(actionUnitIdx, effectUnitIdxs);
+        }
+
         public async Task ShowTagsWithFlyUnitIdx(int actionUnitIdx, bool isShowAttackPos = true)
         {
             RefreshFlyDirects(actionUnitIdx);
@@ -1999,18 +2019,20 @@ namespace RoundHero
             ShowDisplayIcon(actionUnitIdx);
         }
 
-        public async Task ShowHurtTags(int effectUnitIdx, int actionUnitIdx = -1)
+        public async Task ShowHurtTags(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
         {
             if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
                 return;
 
             UnShowTags();
             RefreshHurtFlyDirects(effectUnitIdx);
-            ShowHurtAttackTag(effectUnitIdx, actionUnitIdx);
-            ShowHurtFlyDirect(effectUnitIdx, actionUnitIdx);
-            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdx, EBattleIconType.Collision);
-            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdx);
-            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdx);
+            ShowHurtAttackTag(effectUnitIdx, actionUnitIdxs);
+            ShowHurtFlyDirect(effectUnitIdx, actionUnitIdxs);
+            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdxs, EBattleIconType.Collision);
+            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdxs);
+            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdxs);
+            
+            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
         }
         
         public async Task ShowTacticHurtTags(int effectUnitIdx)
@@ -2023,10 +2045,11 @@ namespace RoundHero
             RefreshHurtFlyDirects(effectUnitIdx);
             ShowTacticHurtAttackTag(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
             ShowTacticHurtFlyDirect(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
-            ShowHurtBattleIcon(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx, EBattleIconType.Collision);
+            ShowHurtBattleIcon(effectUnitIdx, new List<int>(){Constant.Battle.UnUnitTriggerIdx}, EBattleIconType.Collision);
             ShowTacticHurtDisplayValues(effectUnitIdx);
             ShowTacticHurtDisplayIcons(effectUnitIdx);
             
+            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
         }
         
         public void UnShowTags()

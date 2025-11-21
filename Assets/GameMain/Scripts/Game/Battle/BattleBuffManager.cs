@@ -562,6 +562,20 @@ namespace RoundHero
             
             
             HurtTrigger(triggerData, triggerDatas);
+
+            foreach (var kv in BattleFightManager.Instance.BattleUnitDatas)
+            {
+                if (!kv.Value.Exist())
+                {
+                    // BattleCurseManager.Instance.CacheUnitDeadRecoverLessHPUnit(effectUnitOldHP, effectUnitData.CurHP,
+                    //     triggerDatas);
+                    BattleFightManager.Instance.DeadTrigger(triggerData, triggerDatas);
+                    BattleFightManager.Instance.KillTrigger(triggerData, triggerDatas);
+
+                
+                    BattleFightManager.Instance.CacheLinks();
+                }
+            }
         }
         
         public void AttackTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)

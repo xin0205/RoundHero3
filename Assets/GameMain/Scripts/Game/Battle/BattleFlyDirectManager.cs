@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityGameFramework.Runtime;
 
 
@@ -25,7 +26,7 @@ namespace RoundHero
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
             if(effectUnit == null)
                 return;
-            var triggerDataDict = BattleFightManager.Instance.GetHurtMoveDatas(actionUnitIdx, effectUnit.GridPosIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetHurtMoveDatas(new List<int>() { actionUnitIdx}, effectUnit.GridPosIdx);
             
             var entityIdx = curFlyDirectEntityIdx;
             // curFlyDirectEntityIdx += triggerDataDict.Count;
@@ -105,13 +106,13 @@ namespace RoundHero
             await ShowFlyDirects(unitIdx);
         }
         
-        public void ShowHurtFlyDirect(int effectUnitIdx, int actionUnitIdx)
+        public void ShowHurtFlyDirect(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
         {
             UnShowFlyDirects();
-            ShowHurtFlyDirects(effectUnitIdx, actionUnitIdx);
+            ShowHurtFlyDirects(effectUnitIdx, actionUnitIdxs);
         }
         
-        public async void ShowHurtFlyDirects(int effectUnitIdx, int actionUnitIdx)
+        public async void ShowHurtFlyDirects(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
         {
 
             BattleFlyDirectEntities.Clear();
@@ -120,7 +121,7 @@ namespace RoundHero
                 return;
             //var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(unitIdx);
             //BattleManager.Instance.TempTriggerData.UnitData.Idx, BattleManager.Instance.TempTriggerData.TargetGridPosIdx
-            var triggerDataDict = BattleFightManager.Instance.GetHurtMoveDatas(actionUnitIdx, effectUnit.GridPosIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetHurtMoveDatas(actionUnitIdxs, effectUnit.GridPosIdx);
             
             var entityIdx = curFlyDirectEntityIdx;
             // curFlyDirectEntityIdx += triggerDataDict.Count;
@@ -231,7 +232,7 @@ namespace RoundHero
         
         public void RefreshHurtFlyDirects(int unitIdx)
         {
-            var triggerDataDict = BattleFightManager.Instance.GetHurtDirectAttackDatas(unitIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetHurtDirectAttackDatas(unitIdx, null);
             
             foreach (var triggerDatas in triggerDataDict.Values)
             {

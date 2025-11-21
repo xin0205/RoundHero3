@@ -256,7 +256,7 @@ namespace RoundHero
                                 BattleManager.Instance.RefreshEnemyAttackData();
                             
                                 //showhurt
-                                await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
+                                await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
                                 //TmpUnitEntity.ShowTags(TmpUnitEntity.UnitIdx);
                             }
                         
@@ -427,7 +427,7 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx = tempUnitMovePaths[tempUnitMovePaths.Count - 1];
                         BattleManager.Instance.RefreshEnemyAttackData();
                         
-                        await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx);
+                        await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
                         
                         // var triggerDataDict =
                         //     GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(TmpUnitEntity.UnitIdx),
@@ -780,6 +780,7 @@ namespace RoundHero
                                 var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
                                 if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
                                 {
+                                    unit.ShowHurtTagByEffectUnit(unit.UnitIdx);
                                     await unit.ShowTagsWithFlyUnitIdx(unit.UnitIdx, true);
                                 }
                                 else
@@ -881,6 +882,7 @@ namespace RoundHero
                             {
                                 //showhurt
                                 //unit.ShowHurtTags(unit.UnitIdx);
+                                unit.ShowHurtTagByEffectUnit(unit.UnitIdx);
                                 await unit.ShowTagsWithFlyUnitIdx(unit.UnitIdx);
                                 //unit.ShowHurtTags(unit.UnitIdx);
                             }

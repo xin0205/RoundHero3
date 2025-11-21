@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,12 +14,12 @@ namespace RoundHero
         private int ShowUnitStateIconEntityIdx = 0;
         
         
-        public void ShowHurtDisplayIcon(int effectUnitIdx, int actionUnitIdx)
+        public void ShowHurtDisplayIcon(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
         {
             
             _curUnitStateIconEntityIdx = CurUnitStateIconEntityIdx;
-            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
-                BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
+            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdxs),
+                BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdxs));
 
             foreach (var kv in triggerDataDict)
             {

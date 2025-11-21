@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -13,7 +14,7 @@ namespace RoundHero
         private int curAttackTagEntityIdx = 0;
         private int showAttackTagEntityIdx = 0;
         
-        public async Task ShowHurtAttackTag(int effectUnitIdx, int actionUnitIdx, List<int> exceptUnitIdxs = null)
+        public async Task ShowHurtAttackTag(int effectUnitIdx, [CanBeNull] List<int>  actionUnitIdxs, List<int> exceptUnitIdxs = null)
         {
             // || BattleManager.Instance.BattleState == EBattleState.End
             if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
@@ -29,8 +30,8 @@ namespace RoundHero
                 return;
         
             var triggerDataDict =
-                GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
-                                      BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
+                GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdxs),
+                                      BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdxs));
         
             if (triggerDataDict.Values.Count <= 0)
             {
@@ -50,7 +51,7 @@ namespace RoundHero
             {
                 foreach (var triggerData in triggerDatas)
                 {
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                    if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                         continue;
                     
                     if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)
@@ -73,7 +74,7 @@ namespace RoundHero
             {
                 foreach (var triggerData in triggerDatas)
                 {
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                    if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                         continue;
                     
                     if(effectUnitIdx != -1 && triggerData.EffectUnitIdx != -1 && triggerData.EffectUnitIdx != effectUnitIdx)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace RoundHero
@@ -928,7 +929,7 @@ namespace RoundHero
         }
 
 
-        public Dictionary<int, List<TriggerData>> GetHurtInDirectAttackDatas(int effectUnitIdx, int actionUnitIdx = -1)
+        public Dictionary<int, List<TriggerData>> GetHurtInDirectAttackDatas(int effectUnitIdx, [CanBeNull] List<int>  actionUnitIdxs)
         {
             var triggerDataDict = new Dictionary<int, List<TriggerData>>();
 
@@ -950,8 +951,7 @@ namespace RoundHero
                             if (triggerData.EffectUnitIdx != effectUnitIdx && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx)
                                 continue;
 
-                            if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 &&
-                                triggerData.ActionUnitIdx != actionUnitIdx)
+                            if (actionUnitIdxs != null && actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                                 continue;
 
                             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -983,8 +983,7 @@ namespace RoundHero
                             if (triggerData.EffectUnitIdx != effectUnitIdx && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx)
                                 continue;
 
-                            if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 &&
-                                triggerData.ActionUnitIdx != actionUnitIdx)
+                            if (actionUnitIdxs != null && actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                                 continue;
 
                             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -1014,8 +1013,7 @@ namespace RoundHero
                         if (triggerData.EffectUnitIdx != effectUnitIdx && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx)
                             continue;
 
-                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 &&
-                            triggerData.ActionUnitIdx != actionUnitIdx)
+                        if (actionUnitIdxs != null && actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                             continue;
 
                         if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -1032,7 +1030,7 @@ namespace RoundHero
             return triggerDataDict;
         }
 
-        public Dictionary<int, List<TriggerData>> GetHurtDirectAttackDatas(int effectUnitIdx, int actionUnitIdx = -1)
+        public Dictionary<int, List<TriggerData>> GetHurtDirectAttackDatas(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
         {
             var triggerDataDict = new Dictionary<int, List<TriggerData>>();
 
@@ -1087,10 +1085,8 @@ namespace RoundHero
                         continue;
                     }
 
-                    if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                    {
+                    if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                         continue;
-                    }
 
                     if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                     {
@@ -1118,10 +1114,8 @@ namespace RoundHero
                             continue;
                         }
 
-                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                        {
+                        if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                             continue;
-                        }
 
                         if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                         {
@@ -1150,10 +1144,8 @@ namespace RoundHero
                             continue;
                         }
 
-                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                        {
+                        if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                             continue;
-                        }
 
                         if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                         {
@@ -1182,10 +1174,8 @@ namespace RoundHero
                             continue;
                         }
 
-                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                        {
+                        if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                             continue;
-                        }
 
                         if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
                         {
@@ -1212,8 +1202,7 @@ namespace RoundHero
                         if (triggerData.EffectUnitIdx != effectUnitIdx)
                             continue;
 
-                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 &&
-                            triggerData.ActionUnitIdx != actionUnitIdx)
+                        if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                             continue;
 
                         if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -1241,8 +1230,7 @@ namespace RoundHero
                         if (triggerData.EffectUnitIdx != effectUnitIdx)
                             continue;
 
-                        if (actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 &&
-                            triggerData.ActionUnitIdx != actionUnitIdx)
+                        if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                             continue;
 
                         if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))

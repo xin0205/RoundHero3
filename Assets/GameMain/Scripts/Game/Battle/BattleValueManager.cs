@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace RoundHero
@@ -12,10 +13,10 @@ namespace RoundHero
         private int _curValueEntityIdx = 0;
         public int ShowValueEntityIdx = 0;
         
-        public void ShowHurtDisplayValue(int effectUnitIdx, int actionUnitIdx)
+        public void ShowHurtDisplayValue(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
         {
             //UnShowDisplayValues();
-            ShowHurtDisplayValues(effectUnitIdx, actionUnitIdx);
+            ShowHurtDisplayValues(effectUnitIdx, actionUnitIdxs);
         }
 
         private void InternalShowHurtDisplayValue(int effectUnitIdx, Dictionary<int, List<TriggerData>> triggerDataDict)
@@ -202,11 +203,11 @@ namespace RoundHero
         }
         
         
-        public async void ShowHurtDisplayValues(int effectUnitIdx, int actionUnitIdx)
+        public async void ShowHurtDisplayValues(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
         {
 
-            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx),
-                BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
+            var triggerDataDict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdxs),
+                BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdxs));
 
 
             InternalShowHurtDisplayValue(effectUnitIdx, triggerDataDict);
@@ -526,7 +527,13 @@ namespace RoundHero
                 // {
                 //     
                 // });
-                InternalShowValue(effectUnit, startvalue, endValue, _curValueEntityIdx, triggerData.CoreHPDelta > 0, triggerData);
+                
+                var _effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                if (_effectUnit != null)
+                {
+                    InternalShowValue(_effectUnit, startvalue, endValue, _curValueEntityIdx, triggerData.CoreHPDelta > 0, triggerData);
+
+                }
                 //InternalShowValue(effectUnit, value, entityIdx++);
 
                 idx++;

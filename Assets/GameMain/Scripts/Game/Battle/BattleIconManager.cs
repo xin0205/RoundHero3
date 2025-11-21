@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 using Random = System.Random;
 
@@ -20,10 +21,10 @@ namespace RoundHero
             ShowBattleIcons(actionUnitIdx, battleIconType);
         }
         
-        public void ShowHurtBattleIcon(int effectUnitIdx, int actionUnitIdx, EBattleIconType battleIconType)
+        public void ShowHurtBattleIcon(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs, EBattleIconType battleIconType)
         {
             UnShowBattleIcons();
-            ShowHurtBattleIcons(effectUnitIdx, actionUnitIdx, battleIconType);
+            ShowHurtBattleIcons(effectUnitIdx, actionUnitIdxs, battleIconType);
         }
         
         public async void ShowBattleIcons(int unitIdx, EBattleIconType battleIconType)
@@ -65,7 +66,7 @@ namespace RoundHero
                         if (unit1 != null )
                         {
                             var unit1Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
-                                unit2.Idx);
+                                new List<int>(){unit2.Idx});
                             foreach (var kv2 in unit1Dict)
                             {
                                 var datas = new List<TriggerData>();
@@ -86,7 +87,7 @@ namespace RoundHero
                         if (unit2 != null)
                         {
                             var unit2Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
-                                unit1.Idx);
+                                new List<int>(){unit1.Idx});
                             foreach (var kv2 in unit2Dict)
                             {
                                 var datas = new List<TriggerData>();
@@ -233,7 +234,7 @@ namespace RoundHero
 
         }
         
-        public async void ShowHurtBattleIcons(int effectUnitIdx, int actionUnitIdx, EBattleIconType battleIconType)
+        public async void ShowHurtBattleIcons(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs, EBattleIconType battleIconType)
         {
             // ||BattleManager.Instance.BattleState == EBattleState.End
             if (BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
@@ -245,8 +246,8 @@ namespace RoundHero
 
 
             var triggerDataDict =
-                GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdx)
-                    ,BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdx));
+                GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(effectUnitIdx, actionUnitIdxs)
+                    ,BattleFightManager.Instance.GetHurtInDirectAttackDatas(effectUnitIdx, actionUnitIdxs));
             var entityIdx = curEntityIdx;
             curEntityIdx += triggerDataDict.Count;
             
@@ -280,13 +281,13 @@ namespace RoundHero
                         if (unit1 != null )
                         {
                             var unit1Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
-                                unit2.Idx);
+                                new List<int>(){unit2.Idx});
                             foreach (var kv2 in unit1Dict)
                             {
                                 var datas = new List<TriggerData>();
                                 foreach (var data in kv2.Value)
                                 {
-                                    if(data.ActionUnitIdx == actionUnitIdx)
+                                    if(actionUnitIdxs != null && actionUnitIdxs.Contains(data.ActionUnitIdx))
                                         continue;
                                     datas.Add(data);
                                 }
@@ -301,13 +302,13 @@ namespace RoundHero
                         if (unit2 != null)
                         {
                             var unit2Dict = BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
-                                unit1.Idx);
+                                new List<int>(){unit1.Idx});
                             foreach (var kv2 in unit2Dict)
                             {
                                 var datas = new List<TriggerData>();
                                 foreach (var data in kv2.Value)
                                 {
-                                    if(data.ActionUnitIdx == actionUnitIdx)
+                                    if(actionUnitIdxs!= null && actionUnitIdxs.Contains(data.ActionUnitIdx))
                                         continue;
                                     datas.Add(data);
                                 }

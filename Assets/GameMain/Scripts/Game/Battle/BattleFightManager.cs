@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 using Random = System.Random;
@@ -1307,10 +1308,10 @@ namespace RoundHero
             {
                 BattleCurseManager.Instance.CacheUnitDeadRecoverLessHPUnit(effectUnitOldHP, effectUnitData.CurHP,
                     triggerDatas);
-                DeadTrigger(triggerData, triggerDatas);
-                KillTrigger(triggerData, triggerDatas);
-
-                
+                // DeadTrigger(triggerData, triggerDatas);
+                // KillTrigger(triggerData, triggerDatas);
+                //
+                //
                 CacheLinks();
 
             }
@@ -2156,7 +2157,7 @@ namespace RoundHero
 
         private void UnitMove(Dictionary<int, List<int>> unitMovePaths, Dictionary<int, MoveActionData> unitMoveDatas, Dictionary<int, ActionData> unitAttackDatas, EActionProgress actionProgress)
         {
-            BattleFightManager.Instance.IsAction = true;
+            //BattleFightManager.Instance.IsAction = true;
             var unitKeys = unitMovePaths.Keys.ToList();
             while (true)
             {
@@ -2362,7 +2363,7 @@ namespace RoundHero
 
 
         
-        public Dictionary<int, MoveUnitData> GetHurtMoveDatas(int actionUnitIdx, int effectGridPosIdx)
+        public Dictionary<int, MoveUnitData> GetHurtMoveDatas([CanBeNull] List<int> actionUnitIdxs, int effectGridPosIdx)
         {
             var moveDatas = new Dictionary<int, MoveUnitData>();
 
@@ -2370,7 +2371,7 @@ namespace RoundHero
             {
                 foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
-                    if(!(kv2.Value.ActionUnitIdx == actionUnitIdx && kv2.Value.EffectGridPosIdx == effectGridPosIdx))
+                    if(!(actionUnitIdxs!= null && actionUnitIdxs.Contains(kv2.Value.ActionUnitIdx) && kv2.Value.EffectGridPosIdx == effectGridPosIdx))
                         continue;
                     
                     moveDatas.Add(kv2.Key, kv2.Value);
@@ -2383,7 +2384,7 @@ namespace RoundHero
             {
                 foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
-                    if(!(kv2.Value.ActionUnitIdx == actionUnitIdx && kv2.Value.EffectGridPosIdx == effectGridPosIdx))
+                    if(!(actionUnitIdxs!= null && actionUnitIdxs.Contains(kv2.Value.ActionUnitIdx) && kv2.Value.EffectGridPosIdx == effectGridPosIdx))
                         continue;
                     
                     moveDatas.Add(kv2.Key, kv2.Value);
@@ -2394,7 +2395,7 @@ namespace RoundHero
             
             foreach (var kv in RoundFightData.BuffData_Use.MoveData.MoveUnitDatas)
             {
-                if(!(kv.Value.ActionUnitIdx == actionUnitIdx && kv.Value.EffectGridPosIdx == effectGridPosIdx))
+                if(!(actionUnitIdxs!= null && actionUnitIdxs.Contains(kv.Value.ActionUnitIdx) && kv.Value.EffectGridPosIdx == effectGridPosIdx))
                     continue;
                     
                 moveDatas.Add(kv.Key, kv.Value);
