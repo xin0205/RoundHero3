@@ -811,10 +811,10 @@ namespace RoundHero
 
         public void UnShowTags()
         {
-            
+            BattleTagManager.Instance.UnShowTags();
             foreach (var kv in BattleUnitEntities)
             {
-                kv.Value.UnShowTags();
+                kv.Value.ResetPosition();
             }
             BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
         }

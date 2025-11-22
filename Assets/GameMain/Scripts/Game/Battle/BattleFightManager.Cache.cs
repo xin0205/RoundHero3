@@ -335,7 +335,7 @@ namespace RoundHero
                     {
                         RoundFightData.UseCardTriggerDatas.Add(kv.Value.Idx, actionData);
                     }
-
+                    CalculateHeroHPDelta(actionData);
                 }
 
 
@@ -393,11 +393,11 @@ namespace RoundHero
                 if (triggerDatas.Count > 0)
                 {
                     RoundFightData.RoundStartBuffDatas.Add(kv.Key, actionData);
-                    actionData.TriggerDatas.Add(kv.Key, triggerDatas);
+                    actionData.TriggerDataDict.Add(kv.Key, triggerDatas);
                 }
 
                 CalculateHeroHPDelta(actionData);
-
+                
             }
         }
         
@@ -452,7 +452,7 @@ namespace RoundHero
                 if (triggerDatas.Count > 0)
                 {
                     RoundFightData.PreRoundStartDatas.Add(kv.Key, actionData);
-                    actionData.TriggerDatas.Add(kv.Key, triggerDatas);
+                    actionData.TriggerDataDict.Add(kv.Key, triggerDatas);
                 }
 
                 CalculateHeroHPDelta(actionData);
@@ -510,7 +510,7 @@ namespace RoundHero
                 if (triggerDatas.Count > 0)
                 {
                     RoundFightData.RoundStartUnitDatas.Add(kv.Key, actionData);
-                    actionData.TriggerDatas.Add(kv.Key, triggerDatas);
+                    actionData.TriggerDataDict.Add(kv.Key, triggerDatas);
                 }
 
                 CalculateHeroHPDelta(actionData);
@@ -532,7 +532,7 @@ namespace RoundHero
         private void CacheRoundEndDatas()
         {
             var actionData = BattleCurseManager.Instance.CacheAttackMostUnit_Attack();
-            CalculateHeroHPDelta(actionData);
+            //CalculateHeroHPDelta(actionData);
         }
 
         private void CacheAttackData(EUnitCamp unitCamp, List<BuffValue> triggerBuffDatas, int gridPosIdx,
@@ -711,13 +711,13 @@ namespace RoundHero
                     }
 
                     var triggerDatas = new List<TriggerData>();
-                    if (!actionData.TriggerDatas.ContainsKey(effectUnit.Idx))
+                    if (!actionData.TriggerDataDict.ContainsKey(effectUnit.Idx))
                     {
-                        actionData.TriggerDatas.Add(effectUnit.Idx, triggerDatas);
+                        actionData.TriggerDataDict.Add(effectUnit.Idx, triggerDatas);
                     }
                     else
                     {
-                        triggerDatas = actionData.TriggerDatas[effectUnit.Idx];
+                        triggerDatas = actionData.TriggerDataDict[effectUnit.Idx];
 
                     }
 
@@ -726,6 +726,8 @@ namespace RoundHero
                         triggerBuffData.ValueList, attackUnitIdx,
                         attackUnitIdx,
                         effectUnit.Idx, triggerDatas);
+
+                    
 
                     foreach (var triggerData in _triggerDatas)
                     {
@@ -740,6 +742,8 @@ namespace RoundHero
                         CacheUnitActiveMoveDatas(attackUnitIdx, rangeGridPosIdx, triggerBuffData.BuffData, actionData,
                             triggerData);
                     }
+                    
+                    
 
                     isTrigger = true;
                     if (unitCamp == EUnitCamp.Enemy &&
@@ -770,10 +774,10 @@ namespace RoundHero
                 // }
             }
 
-            for (int j = actionData.TriggerDatas.Values.Count -1; j >= 0; j--)
+            for (int j = actionData.TriggerDataDict.Values.Count -1; j >= 0; j--)
             {
-                var keys = actionData.TriggerDatas.Keys.ToList();
-                var triggerDatas = actionData.TriggerDatas.Values.ToList()[j];
+                var keys = actionData.TriggerDataDict.Keys.ToList();
+                var triggerDatas = actionData.TriggerDataDict.Values.ToList()[j];
                 for (int i = triggerDatas.Count -1; i >= 0; i--)
                 {
                     var triggerData = triggerDatas[i];
@@ -782,8 +786,8 @@ namespace RoundHero
                         var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
                         if (_attackUnit != null)
                         {
-                            SubUnitState(_attackUnit, EUnitState.SubDmg, actionData.TriggerDatas[keys[j]]);
-                            SubUnitState(_attackUnit, EUnitState.AddDmg, actionData.TriggerDatas[keys[j]]);
+                            SubUnitState(_attackUnit, EUnitState.SubDmg, actionData.TriggerDataDict[keys[j]]);
+                            SubUnitState(_attackUnit, EUnitState.AddDmg, actionData.TriggerDataDict[keys[j]]);
                         }
                         
                     }
@@ -1154,7 +1158,6 @@ namespace RoundHero
                 CacheAttackData(BattleManager.Instance.CurUnitCamp, triggerBuffDatas, kv.Value.GridPosIdx, actionData,
                     soliderData.Idx, EBuffTriggerType.ActionEnd);
                 CalculateHeroHPDelta(actionData);
-
             }
 
         }
@@ -1217,7 +1220,6 @@ namespace RoundHero
 
 
             CalculateHeroHPDelta(actionData);
-
         }
 
         
@@ -1288,7 +1290,6 @@ namespace RoundHero
                 unitData.Idx, EBuffTriggerType.SelectUnit);
 
             CalculateHeroHPDelta(actionData);
-
         }
 
         private void CacheSoliderAutoAttackDatas()
@@ -1331,7 +1332,6 @@ namespace RoundHero
             CacheAttackData(BattleManager.Instance.CurUnitCamp, triggerBuffDatas, unitData.GridPosIdx, actionData,
                 unitData.Idx, EBuffTriggerType.AutoAttack);
             CalculateHeroHPDelta(actionData);
-
         }
 
         public List<int> CacheUnitMoveDatas(int unitIdx, List<int> movePaths,
@@ -2003,7 +2003,61 @@ namespace RoundHero
             if (!BattleFightManager.Instance.RoundFightData.SoliderActiveAttackDatas.ContainsKey(unitidx))
                 return false;
 
-            return BattleFightManager.Instance.RoundFightData.SoliderActiveAttackDatas[unitidx].TriggerDatas.Count > 0;
+            return BattleFightManager.Instance.RoundFightData.SoliderActiveAttackDatas[unitidx].TriggerDataDict.Count > 0;
+
+        }
+
+        public void CacheHurtTrigger(ActionData actionData)
+        {
+            foreach (var kv in actionData.TriggerDataDict)
+            {
+                InternalCacheHurtTrigger(kv.Value);
+            }
+
+            foreach (var kv in actionData.MoveData.MoveUnitDatas)
+            {
+                foreach (var kv2 in kv.Value.MoveActionData.TriggerDataDict)
+                {
+                    InternalCacheHurtTrigger(kv2.Value);
+                    
+                }
+            }
+
+        }
+        
+        public void CacheHurtTrigger(Dictionary<int, List<TriggerData>> triggerDatas)
+        {
+            foreach (var kv in triggerDatas)
+            {
+                InternalCacheHurtTrigger(kv.Value);
+            }
+
+
+        }
+
+        private void InternalCacheHurtTrigger(List<TriggerData> triggerDatas)
+        {
+            for (int i = triggerDatas.Count - 1; i >= 0; i--)
+            {
+                var triggerData = triggerDatas[i];
+                if (GameUtility.IsSubCurHPTrigger(triggerData))
+                {
+                    var _effectUnit = GameUtility.GetUnitDataByIdx(triggerData.EffectUnitIdx);
+                    if (_effectUnit != null )
+                    {
+                        // BattleCurseManager.Instance.CacheUnitDeadRecoverLessHPUnit(effectUnitOldHP, effectUnitData.CurHP,
+                        //     triggerDatas);
+                        BattleBuffManager.Instance.HurtTrigger(triggerData, triggerDatas);
+                        if (!_effectUnit.Exist())
+                        {
+                            BattleFightManager.Instance.DeadTrigger(triggerData, triggerDatas);
+                            BattleFightManager.Instance.KillTrigger(triggerData, triggerDatas);
+                        }
+                                
+
+                    }
+                }
+            }
 
         }
 

@@ -561,21 +561,19 @@ namespace RoundHero
             }
             
             
-            HurtTrigger(triggerData, triggerDatas);
-
-            foreach (var kv in BattleFightManager.Instance.BattleUnitDatas)
-            {
-                if (!kv.Value.Exist())
-                {
-                    // BattleCurseManager.Instance.CacheUnitDeadRecoverLessHPUnit(effectUnitOldHP, effectUnitData.CurHP,
-                    //     triggerDatas);
-                    BattleFightManager.Instance.DeadTrigger(triggerData, triggerDatas);
-                    BattleFightManager.Instance.KillTrigger(triggerData, triggerDatas);
-
-                
-                    BattleFightManager.Instance.CacheLinks();
-                }
-            }
+            // HurtTrigger(triggerData, triggerDatas);
+            //
+            // foreach (var kv in BattleFightManager.Instance.BattleUnitDatas)
+            // {
+            //     if (!kv.Value.Exist())
+            //     {
+            //         // BattleCurseManager.Instance.CacheUnitDeadRecoverLessHPUnit(effectUnitOldHP, effectUnitData.CurHP,
+            //         //     triggerDatas);
+            //         BattleFightManager.Instance.DeadTrigger(triggerData, triggerDatas);
+            //         BattleFightManager.Instance.KillTrigger(triggerData, triggerDatas);
+            //
+            //     }
+            // }
         }
         
         public void AttackTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
@@ -621,12 +619,10 @@ namespace RoundHero
                 EBuffTriggerType.Attack, triggerDatas);
         }
         
-        private void HurtTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
+        public void HurtTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
         {
             // + triggerData.DeltaValue
-            if (!(triggerData.TriggerDataType == ETriggerDataType.Atrb &&
-                  triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
-                  triggerData.Value < 0))
+            if (!GameUtility.IsSubCurHPTrigger(triggerData))
                 return;
 
             //var triggerUnitCamps = triggerData.BuffValue.BuffData.TriggerUnitCamps;
@@ -1043,7 +1039,7 @@ namespace RoundHero
             {
                 BattleFightManager.Instance.IsAction = false;
             });
-            foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas)
+            foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict)
             {
 
                 var gridPosIdxs = new List<int>();

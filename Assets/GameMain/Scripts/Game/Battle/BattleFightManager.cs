@@ -96,14 +96,14 @@ namespace RoundHero
     {
         public int ActionUnitIdx;
         public EActionDataType ActionDataType = EActionDataType.Unit;
-        public Dictionary<int, List<TriggerData>> TriggerDatas = new();
+        public Dictionary<int, List<TriggerData>> TriggerDataDict = new();
         public MoveData MoveData = new MoveData();
 
         public void AddEmptyTriggerDataList(int id)
         {
-            if (!TriggerDatas.ContainsKey(id))
+            if (!TriggerDataDict.ContainsKey(id))
             {
-                TriggerDatas.Add(id, new List<TriggerData>());
+                TriggerDataDict.Add(id, new List<TriggerData>());
 
             }
         }
@@ -113,13 +113,13 @@ namespace RoundHero
             if (triggerData == null)
                 return;
 
-            if (!TriggerDatas.ContainsKey(id))
+            if (!TriggerDataDict.ContainsKey(id))
             {
-                TriggerDatas.Add(id, new List<TriggerData>());
+                TriggerDataDict.Add(id, new List<TriggerData>());
 
             }
 
-            TriggerDatas[id].Add(triggerData);
+            TriggerDataDict[id].Add(triggerData);
 
             if (triggerData.TriggerDataType == ETriggerDataType.Atrb &&
                 triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
@@ -141,7 +141,7 @@ namespace RoundHero
 
         public virtual void Clear()
         {
-            TriggerDatas.Clear();
+            TriggerDataDict.Clear();
             MoveData.Clear();
         }
     }
@@ -1741,7 +1741,7 @@ namespace RoundHero
                     }
                     
                     
-                    effectUnitEntity.AnimtionChangeUnitState(triggerData.UnitStateDetail.UnitState, triggerValue,
+                    BattleIconValueManager.Instance.AnimtionChangeUnitState(triggerData.UnitStateDetail.UnitState, triggerValue,
                         triggerData,  -1, false);
 
                     effectUnitEntity.BattleUnitData.ChangeState(triggerData.UnitStateDetail.UnitState, triggerValue);
@@ -1952,7 +1952,7 @@ namespace RoundHero
             var actionData = RoundFightData.RoundStartBuffDatas[buffDataKeys[AcitonUnitIdx]];
             
             var isAttack = false;
-            foreach (var trigger in actionData.TriggerDatas)
+            foreach (var trigger in actionData.TriggerDataDict)
             {
                 foreach (var triggerData in trigger.Value)
                 {
@@ -1998,7 +1998,7 @@ namespace RoundHero
             
             foreach (var kv in RoundFightData.RoundEndDatas)
             {
-                foreach (var triggerDatas in kv.Value.TriggerDatas.Values)
+                foreach (var triggerDatas in kv.Value.TriggerDataDict.Values)
                 {
                     foreach (var triggerData in triggerDatas)
                     {
@@ -2055,7 +2055,7 @@ namespace RoundHero
             var actionData = unitAttackDatas[unitKeys[AcitonUnitIdx]];
             
             var isAttack = false;
-            foreach (var trigger in actionData.TriggerDatas)
+            foreach (var trigger in actionData.TriggerDataDict)
             {
                 foreach (var triggerData in trigger.Value)
                 {
@@ -2265,7 +2265,7 @@ namespace RoundHero
             var actionData = RoundFightData.UseCardTriggerDatas[unitKeys[AcitonUnitIdx]];
             
             var isAttack = false;
-            foreach (var trigger in actionData.TriggerDatas)
+            foreach (var trigger in actionData.TriggerDataDict)
             {
                 foreach (var triggerData in trigger.Value)
                 {

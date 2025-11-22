@@ -98,6 +98,9 @@ namespace RoundHero
             BattleCardManager.Instance.Update();
             BattleEnemyManager.Instance.Update();
             TutorialManager.Instance.Update();
+
+            BattleValueManager.Instance.Update();
+            BattleIconValueManager.Instance.Update();
             //ShowMoveValues();
         }
         

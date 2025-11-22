@@ -171,8 +171,8 @@ namespace RoundHero
         {
             base.OnShow(userData);
             IsMove = false;
-            showMoveValueTime = 0.8f;
-            showMoveValueIconTime = 0.8f;
+            // showMoveValueTime = 0.8f;
+            // showMoveValueIconTime = 0.8f;
 
             
         }
@@ -181,7 +181,7 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             UnitDescTriggerItem.CloseForm();
-            UnShowTags();
+            //UnShowTags();
         }
 
         
@@ -401,8 +401,8 @@ namespace RoundHero
             
             RefreshRoatation();
             //ShowHurts();
-            ShowMoveValues();
-            ShowMoveValueIcons();
+            // ShowMoveValues();
+            // ShowMoveValueIcons();
         }
         
         // public void SetAction(EUnitActionState actionState)
@@ -584,7 +584,7 @@ namespace RoundHero
         
         public void MultiHandleShoot(ActionData actionData)
         {
-            foreach (var kv in actionData.TriggerDatas)
+            foreach (var kv in actionData.TriggerDataDict)
             {
                 foreach (var triggerData in kv.Value)
                 {
@@ -1405,7 +1405,7 @@ namespace RoundHero
             
 
             var gridPosIdxs = new List<int>();
-            foreach (var kv in actionData.TriggerDatas)
+            foreach (var kv in actionData.TriggerDataDict)
             {
                 foreach (var triggerData in kv.Value)
                 {
@@ -1685,7 +1685,7 @@ namespace RoundHero
                 if (!changeHPInstantly)
                 {
                     //this is BattleSoliderEntity && changeHP < 0
-                    AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
+                    BattleValueManager.Instance.AddMoveValue(changeHP, changeHP, BattleValueManager.Instance.CurValueEntityIdx++, false,
                         addHeroHP, moveParams,
                         targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
                     //AddHurts(changeHP);
@@ -1694,7 +1694,7 @@ namespace RoundHero
                 else
                 {
                     //this is BattleSoliderEntity && changeHP < 0
-                    AddMoveValue(changeHP, changeHP, CurValueEntityIdx++, false,
+                    BattleValueManager.Instance.AddMoveValue(changeHP, changeHP, BattleValueManager.Instance.CurValueEntityIdx++, false,
                         addHeroHP, moveParams,
                         targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
                     //AddHurts(hpDelta);
@@ -1716,166 +1716,166 @@ namespace RoundHero
         //     hurtQueue.Enqueue(hurt);
         // }
         
-        public void AddMoveValue(int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
-            MoveParams moveParams = null, MoveParams targetMoveParams = null, int triggerDataIdx = -1)
-        {
-            if (triggerDataIdx != -1)
-            {
-                for (int i = moveValueList.Count - 1; i >= 0; i--)
-                {
-                    if (moveValueList[i].TriggerDataIdx == triggerDataIdx)
-                    {
-                        moveValueList.RemoveAt(i);
-                    }
-                }
-            }
-            
-            
-            var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
-            data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, entityIdx, isLoop,
-                isAdd, moveParams, targetMoveParams, triggerDataIdx);
-
-            moveValueList.Add(data);
-        }
-        
-        public void AddUnitStateMoveValue(EUnitState unitState, int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
-            MoveParams moveParams = null, MoveParams targetMoveParams = null, int triggerDataIdx = -1)
-        {
-            if (triggerDataIdx != -1)
-            {
-                for (int i = unitStateIconValueList.Count - 1; i >= 0; i--)
-                {
-                    if (unitStateIconValueList[i].TriggerDataIdx == triggerDataIdx)
-                    {
-                        unitStateIconValueList.RemoveAt(i);
-                    }
-                }
-            }
-
-            var data = ReferencePool.Acquire<BattleUnitStateValueEntityData>();
-            data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
-                targetMoveParams, triggerDataIdx);
-
-            unitStateIconValueList.Add(data);
-        }
-
-        private float showMoveValueTime = 0.4f;
-        protected async void ShowMoveValues()
-        {
-            if(moveValueList.Count <= 0)
-                return;
-            
-            showMoveValueTime += Time.deltaTime;
-            if (showMoveValueTime > 0.4f)
-            {
-                showMoveValueTime = 0;
-                
-                BattleMoveValueEntity entity = null;
-
-                BattleMoveValueEntityData data = null;
-                do
-                {
-                    data = null;
-                    if (moveValueList.Count > 0)
-                    {
-                        data = moveValueList[0];
-                        moveValueList.RemoveAt(0);
-                    }
-                    // if (moveValueQueue.Count <= 0)
-                    // {
-                    //     showMoveValueTime = 0.8f;
-                    // }
-                } while(data != null && data.EntityIdx < ShowValueEntityIdx);
-                
-                if(data == null)
-                    return;
-                
-                //var data = moveValueQueue.Dequeue();
-
-                entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
-                
-                // if (data is UnitStateIconValueEntityData unitStateIconValueEntityData)
-                // {
-                //     entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(unitStateIconValueEntityData);
-                // }
-                // else 
-                
-                if (GameEntry.Entity.HasEntity(entity.Id))
-                {
-                    var entityIdx = entity.BattleMoveValueEntityData.EntityIdx;
-                    if (entityIdx == -1)
-                    {
-                    }
-                    else if (entityIdx < ShowValueEntityIdx)
-                    {
-                
-                        GameEntry.Entity.HideEntity(entity);
-                    }
-                    else
-                    {
-                
-                        BattleValueEntities.Add(entity.Entity.Id, entity);
-                    }
-                }
-            }
-        }
-        
-        private float showMoveValueIconTime = 0.3f;
-        protected async void ShowMoveValueIcons()
-        {
-            if(unitStateIconValueList.Count <= 0)
-                return;
-            
-            showMoveValueIconTime += Time.deltaTime;
-            if (showMoveValueIconTime > 0.3f)
-            {
-                showMoveValueIconTime = 0;
-
-                BattleUnitStateValueEntity entity = null;
-                BattleUnitStateValueEntityData data = null;
-                do
-                {
-                    data = null;
-                    if (unitStateIconValueList.Count > 0)
-                    {
-                        data = unitStateIconValueList[0];
-                        unitStateIconValueList.RemoveAt(0);
-                    }
-                    
-                    // if (unitStateIconValueQueue.Count <= 0)
-                    // {
-                    //     showMoveValueIconTime = 0.8f;
-                    // }
-
-                } while(data != null && data.EntityIdx < ShowUnitStateIconEntityIdx);
-                
-                if(data == null)
-                    return;
-                
-                //var data = moveValueQueue.Dequeue();
-
-                entity = await GameEntry.Entity.ShowUnitStateIconValueEntityAsync(data);
-                
-                
-                if (GameEntry.Entity.HasEntity(entity.Id))
-                {
-                    var entityIdx = entity.BattleUnitStateValueEntityData.EntityIdx;
-                    if (entityIdx == -1)
-                    {
-                    }
-                    else if (entityIdx < ShowUnitStateIconEntityIdx)
-                    {
-                
-                        GameEntry.Entity.HideEntity(entity);
-                    }
-                    else
-                    {
-                
-                        BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
-                    }
-                }
-            }
-        }
+        // public void AddMoveValue(int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+        //     MoveParams moveParams = null, MoveParams targetMoveParams = null, int triggerDataIdx = -1)
+        // {
+        //     if (triggerDataIdx != -1)
+        //     {
+        //         for (int i = moveValueList.Count - 1; i >= 0; i--)
+        //         {
+        //             if (moveValueList[i].TriggerDataIdx == triggerDataIdx)
+        //             {
+        //                 moveValueList.RemoveAt(i);
+        //             }
+        //         }
+        //     }
+        //     
+        //     
+        //     var data = ReferencePool.Acquire<BattleMoveValueEntityData>();
+        //     data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, entityIdx, isLoop,
+        //         isAdd, moveParams, targetMoveParams, triggerDataIdx);
+        //
+        //     moveValueList.Add(data);
+        // }
+        //
+        // public void AddUnitStateMoveValue(EUnitState unitState, int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
+        //     MoveParams moveParams = null, MoveParams targetMoveParams = null, int triggerDataIdx = -1)
+        // {
+        //     if (triggerDataIdx != -1)
+        //     {
+        //         for (int i = unitStateIconValueList.Count - 1; i >= 0; i--)
+        //         {
+        //             if (unitStateIconValueList[i].TriggerDataIdx == triggerDataIdx)
+        //             {
+        //                 unitStateIconValueList.RemoveAt(i);
+        //             }
+        //         }
+        //     }
+        //
+        //     var data = ReferencePool.Acquire<BattleUnitStateValueEntityData>();
+        //     data.Init(GameEntry.Entity.GenerateSerialId(), startValue, endValue, unitState, entityIdx, isLoop, isAdd, moveParams,
+        //         targetMoveParams, triggerDataIdx);
+        //
+        //     unitStateIconValueList.Add(data);
+        // }
+        //
+        // private float showMoveValueTime = 0.4f;
+        // protected async void ShowMoveValues()
+        // {
+        //     if(moveValueList.Count <= 0)
+        //         return;
+        //     
+        //     showMoveValueTime += Time.deltaTime;
+        //     if (showMoveValueTime > 0.4f)
+        //     {
+        //         showMoveValueTime = 0;
+        //         
+        //         BattleMoveValueEntity entity = null;
+        //
+        //         BattleMoveValueEntityData data = null;
+        //         do
+        //         {
+        //             data = null;
+        //             if (moveValueList.Count > 0)
+        //             {
+        //                 data = moveValueList[0];
+        //                 moveValueList.RemoveAt(0);
+        //             }
+        //             // if (moveValueQueue.Count <= 0)
+        //             // {
+        //             //     showMoveValueTime = 0.8f;
+        //             // }
+        //         } while(data != null && data.EntityIdx < ShowValueEntityIdx);
+        //         
+        //         if(data == null)
+        //             return;
+        //         
+        //         //var data = moveValueQueue.Dequeue();
+        //
+        //         entity = await GameEntry.Entity.ShowBattleMoveValueEntityAsync(data);
+        //         
+        //         // if (data is UnitStateIconValueEntityData unitStateIconValueEntityData)
+        //         // {
+        //         //     entity = await GameEntry.Entity.ShowBattleUnitStateMoveValueEntityAsync(unitStateIconValueEntityData);
+        //         // }
+        //         // else 
+        //         
+        //         if (GameEntry.Entity.HasEntity(entity.Id))
+        //         {
+        //             var entityIdx = entity.BattleMoveValueEntityData.EntityIdx;
+        //             if (entityIdx == -1)
+        //             {
+        //             }
+        //             else if (entityIdx < ShowValueEntityIdx)
+        //             {
+        //         
+        //                 GameEntry.Entity.HideEntity(entity);
+        //             }
+        //             else
+        //             {
+        //         
+        //                 BattleValueEntities.Add(entity.Entity.Id, entity);
+        //             }
+        //         }
+        //     }
+        // }
+        //
+        // private float showMoveValueIconTime = 0.3f;
+        // protected async void ShowMoveValueIcons()
+        // {
+        //     if(unitStateIconValueList.Count <= 0)
+        //         return;
+        //     
+        //     showMoveValueIconTime += Time.deltaTime;
+        //     if (showMoveValueIconTime > 0.3f)
+        //     {
+        //         showMoveValueIconTime = 0;
+        //
+        //         BattleUnitStateValueEntity entity = null;
+        //         BattleUnitStateValueEntityData data = null;
+        //         do
+        //         {
+        //             data = null;
+        //             if (unitStateIconValueList.Count > 0)
+        //             {
+        //                 data = unitStateIconValueList[0];
+        //                 unitStateIconValueList.RemoveAt(0);
+        //             }
+        //             
+        //             // if (unitStateIconValueQueue.Count <= 0)
+        //             // {
+        //             //     showMoveValueIconTime = 0.8f;
+        //             // }
+        //
+        //         } while(data != null && data.EntityIdx < ShowUnitStateIconEntityIdx);
+        //         
+        //         if(data == null)
+        //             return;
+        //         
+        //         //var data = moveValueQueue.Dequeue();
+        //
+        //         entity = await GameEntry.Entity.ShowUnitStateIconValueEntityAsync(data);
+        //         
+        //         
+        //         if (GameEntry.Entity.HasEntity(entity.Id))
+        //         {
+        //             var entityIdx = entity.BattleUnitStateValueEntityData.EntityIdx;
+        //             if (entityIdx == -1)
+        //             {
+        //             }
+        //             else if (entityIdx < ShowUnitStateIconEntityIdx)
+        //             {
+        //         
+        //                 GameEntry.Entity.HideEntity(entity);
+        //             }
+        //             else
+        //             {
+        //         
+        //                 BattleUnitStateIconEntities.Add(entity.Entity.Id, entity);
+        //             }
+        //         }
+        //     }
+        // }
 
         //private float showHurtTime = 0f;
         // protected async void ShowHurts()
@@ -1979,93 +1979,98 @@ namespace RoundHero
             UnitDescTriggerItem.OnPointerExit();
         }
 
-        public void ShowHurtTagByEffectUnit(int actionUnitIdx)
-        {
-            var triggerDataDict =
-                GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
-                    BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
+        // public void ShowHurtTagByEffectUnit(int actionUnitIdx)
+        // {
+        //     var triggerDataDict =
+        //         GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(actionUnitIdx),
+        //             BattleFightManager.Instance.GetInDirectAttackDatas(actionUnitIdx));
+        //
+        //     var effectUnitIdxs = new List<int>();
+        //     foreach (var kv in triggerDataDict)
+        //     {
+        //         foreach (var triggerData in kv.Value)
+        //         {
+        //             effectUnitIdxs.Add(triggerData.EffectUnitIdx);
+        //         }
+        //     }
+        //     
+        //     ShowHurtTags(actionUnitIdx, effectUnitIdxs);
+        //     foreach (var effectUnitIdx in effectUnitIdxs)
+        //     {
+        //         var _effectUnit = BattleUnitManager.Instance.GetUnitByIdx(effectUnitIdx);
+        //         _effectUnit.ShowHurtTags(effectUnitIdx, null);
+        //     }
+        // }
 
-            var effectUnitIdxs = new List<int>();
-            foreach (var kv in triggerDataDict)
-            {
-                foreach (var triggerData in kv.Value)
-                {
-                    effectUnitIdxs.Add(triggerData.EffectUnitIdx);
-                }
-            }
-            
-            ShowHurtTags(actionUnitIdx, effectUnitIdxs);
-        }
-
-        public async Task ShowTagsWithFlyUnitIdx(int actionUnitIdx, bool isShowAttackPos = true)
-        {
-            RefreshFlyDirects(actionUnitIdx);
-            await ShowTags(actionUnitIdx, isShowAttackPos);
-            await ShowFlyUnitIdx(actionUnitIdx);
-        }
+        // public async Task ShowTagsWithFlyUnitIdx(int actionUnitIdx, bool isShowAttackPos = true)
+        // {
+        //     RefreshFlyDirects(actionUnitIdx);
+        //     await ShowTags(actionUnitIdx, isShowAttackPos);
+        //     await ShowFlyUnitIdx(actionUnitIdx);
+        // }
         
-        public async Task ShowTags(int actionUnitIdx, bool isShowAttackPos = true)
-        {
-            if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
-                return;
-            
-            
-            await ShowFlyDirect(actionUnitIdx);
-            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
- 
-            await ShowAttackTag(actionUnitIdx, isShowAttackPos);
-            ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
-            ShowDisplayValue(actionUnitIdx);
-            ShowDisplayIcon(actionUnitIdx);
-        }
+        // public async Task ShowTags(int actionUnitIdx, bool isShowAttackPos = true)
+        // {
+        //     if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+        //         return;
+        //     //
+        //     //
+        //     BattleFlyDirectManager.Instance.ShowFlyDirect(actionUnitIdx);
+        //     BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+        //     //
+        //     BattleAttackTagManager.Instance.ShowAttackTag(actionUnitIdx, isShowAttackPos);
+        //     BattleIconManager.Instance.ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
+        //     BattleValueManager.Instance.ShowDisplayValue(actionUnitIdx);
+        //     BattleIconValueManager.Instance.ShowDisplayIcon(actionUnitIdx);
+        // }
 
-        public async Task ShowHurtTags(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
-        {
-            if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
-                return;
-
-            UnShowTags();
-            RefreshHurtFlyDirects(effectUnitIdx);
-            ShowHurtAttackTag(effectUnitIdx, actionUnitIdxs);
-            ShowHurtFlyDirect(effectUnitIdx, actionUnitIdxs);
-            ShowHurtBattleIcon(effectUnitIdx, actionUnitIdxs, EBattleIconType.Collision);
-            ShowHurtDisplayValue(effectUnitIdx, actionUnitIdxs);
-            ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdxs);
-            
-            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
-        }
+        // public async Task ShowHurtTags(int effectUnitIdx, [CanBeNull] List<int> actionUnitIdxs)
+        // {
+        //     if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+        //         return;
+        //     
+        //     UnShowTags();
+        //     RefreshHurtFlyDirects(effectUnitIdx);
+        //     ShowHurtAttackTag(effectUnitIdx, actionUnitIdxs);
+        //     ShowHurtFlyDirect(effectUnitIdx, actionUnitIdxs);
+        //     ShowHurtBattleIcon(effectUnitIdx, actionUnitIdxs, EBattleIconType.Collision);
+        //     ShowHurtDisplayValue(effectUnitIdx, actionUnitIdxs);
+        //     ShowHurtDisplayIcon(effectUnitIdx, actionUnitIdxs);
+        //     
+        //     BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+        // }
         
-        public async Task ShowTacticHurtTags(int effectUnitIdx)
-        {
-            if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
-                return;
-
-            UnShowTags();
-            
-            RefreshHurtFlyDirects(effectUnitIdx);
-            ShowTacticHurtAttackTag(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
-            ShowTacticHurtFlyDirect(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
-            ShowHurtBattleIcon(effectUnitIdx, new List<int>(){Constant.Battle.UnUnitTriggerIdx}, EBattleIconType.Collision);
-            ShowTacticHurtDisplayValues(effectUnitIdx);
-            ShowTacticHurtDisplayIcons(effectUnitIdx);
-            
-            BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
-        }
+        // public async Task ShowTacticHurtTags(int effectUnitIdx)
+        // {
+        //     if(BattleManager.Instance.BattleState == EBattleState.ActionExcuting)
+        //         return;
+        //
+        //     UnShowTags();
+        //     
+        //     RefreshHurtFlyDirects(effectUnitIdx);
+        //     ShowTacticHurtAttackTag(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
+        //     ShowTacticHurtFlyDirect(effectUnitIdx, Constant.Battle.UnUnitTriggerIdx);
+        //     ShowHurtBattleIcon(effectUnitIdx, new List<int>(){Constant.Battle.UnUnitTriggerIdx}, EBattleIconType.Collision);
+        //     ShowTacticHurtDisplayValues(effectUnitIdx);
+        //     ShowTacticHurtDisplayIcons(effectUnitIdx);
+        //     
+        //     BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
+        // }
         
-        public void UnShowTags()
-        {
-            if(BattleFightManager.Instance.IsAction)
-                return;
-            
-            showEntityIdx = 0;
-            UnShowAttackTags();
-            UnShowFlyDirects();
-            UnShowBattleIcons();
-            UnShowDisplayValues();
-            UnShowDisplayIcons();
-
-            SetPosition(BattleUnitData.GridPosIdx);
-        }
+        // public void UnShowTags()
+        // {
+        //     if(BattleFightManager.Instance.IsAction)
+        //         return;
+        //     
+        //     showEntityIdx = 0;
+        //     BattleAttackTagManager.Instance.UnShowAttackTags();
+        //     BattleFlyDirectManager.Instance.UnShowFlyDirects();
+        //     BattleIconManager.Instance.UnShowBattleIcons();
+        //     BattleValueManager.Instance.UnShowDisplayValues();
+        //     BattleIconValueManager.Instance.UnShowDisplayIcons();
+        //
+        //     SetPosition(BattleUnitData.GridPosIdx);
+        // }
         
         // public void ShowCollider(bool isShow)
         // {
@@ -2077,6 +2082,11 @@ namespace RoundHero
         {
             this.Position = GameUtility.GridPosIdxToPos(gridPosIdx);
             
+        }
+
+        public void ResetPosition()
+        {
+            SetPosition(BattleUnitData.GridPosIdx);
         }
 
         public void LookAt(Vector3 pos)

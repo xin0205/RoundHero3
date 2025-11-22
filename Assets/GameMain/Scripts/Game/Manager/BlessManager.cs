@@ -58,7 +58,7 @@ namespace RoundHero
                 var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
                 if (blessIDs.Contains(drBless.BlessID) && BattleFightManager.Instance.RoundFightData.BlessTriggerDatas.ContainsKey(kv.Value.BlessIdx))
                 {
-                    foreach (var kv2 in BattleFightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.BlessIdx].TriggerDatas)
+                    foreach (var kv2 in BattleFightManager.Instance.RoundFightData.BlessTriggerDatas[kv.Value.BlessIdx].TriggerDataDict)
                     {
                         foreach (var triggerData in kv2.Value)
                         {
@@ -101,8 +101,8 @@ namespace RoundHero
                 //actionData.AddTriggerData(playerData.BattleHero.Idx, triggerBlessData, playerData.BattleHero);
                 BattleBuffManager.Instance.CacheTriggerData(triggerBlessData,
                     BattleFightManager.Instance.RoundFightData.RoundStartBuffDatas[unUseCardAddHeroHP.BlessIdx]
-                        .TriggerDatas[playerData.BattleHero.Idx]);
-
+                        .TriggerDataDict[playerData.BattleHero.Idx]);
+                BattleFightManager.Instance.CalculateHeroHPDelta(actionData);
             }
         }
         

@@ -85,11 +85,13 @@ namespace RoundHero
             effectUnit.ChangeState(unitState);
                 
             actionData.AddEmptyTriggerDataList(effectUnit.Idx);
-            var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[effectUnit.Idx], -1, -1,
+            var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDataDict[effectUnit.Idx], -1, -1,
                 effectUnit.Idx, unitState, 1, ETriggerDataType.State);
                 
                 
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDataDict[effectUnit.Idx]);
+            BattleFightManager.Instance.CalculateHeroHPDelta(actionData);
+            
         }
 
         public void CacheRandomUnitUnRecover(Data_GamePlay gamePlayData)
@@ -182,13 +184,15 @@ namespace RoundHero
                     if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(unitState))
                     {
                         actionData.AddEmptyTriggerDataList(randomUnit.Idx);
-                        var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDatas[randomUnit.Idx], -1, -1, randomUnit.Idx,
+                        var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDataDict[randomUnit.Idx], -1, -1, randomUnit.Idx,
                             unitState, -1, ETriggerDataType.State);
                         
-                        BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDatas[randomUnit.Idx]);
+                        BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDataDict[randomUnit.Idx]);
                     }
                 }
             }
+            
+            BattleFightManager.Instance.CalculateHeroHPDelta(actionData);
         }
 
         public void CacheAttackMostUnit_Select()
@@ -278,10 +282,10 @@ namespace RoundHero
             if (triggerDatas.Count > 0)
             {
                 BattleFightManager.Instance.RoundFightData.RoundEndDatas.Add(-1, actionData);
-                actionData.TriggerDatas.Add(-1, triggerDatas);
+                actionData.TriggerDataDict.Add(-1, triggerDatas);
                 
             }
-
+            BattleFightManager.Instance.CalculateHeroHPDelta(actionData);
             return actionData;
         }
 

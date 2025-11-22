@@ -408,25 +408,23 @@ namespace RoundHero
                     
             }
 
-            var enemyIdxs = MathUtility.GetRandomNum(
-                enemyGenerateCount, 0,
-                places.Count, new Random(GetRandomSeed()));
+            // var enemyIdxs = MathUtility.GetRandomNum(
+            //     enemyGenerateCount, 0,
+            //     places.Count, new Random(GetRandomSeed()));
                 
             
-            //10, 11, 12, 13, 14
-            //15, 16, 17, 18, 19
-            //30, 31, 32, 33, 34
-            // var test = new List<int>(){27,27};
-            //
-            //  var enemyIdxs = MathUtility.GetRandomNum(
-            //      test.Count, 0,
-            //      places.Count, new Random(GetRandomSeed()));
+
+            var test = new List<int>(){3, 3, 3};
+            
+             var enemyIdxs = MathUtility.GetRandomNum(
+                 test.Count, 0,
+                 places.Count, new Random(GetRandomSeed()));
             
             //enemyGenerateCount
             for (int i = 0; i < enemyGenerateCount; i++)
             {
                 //test[i];//EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];
-                var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];
+                var enemyID = test[i];
 
                 var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
                     places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round, isRoundStart);
@@ -760,17 +758,20 @@ namespace RoundHero
         {
             var idx = 1;
             
+            // BattleIconValueManager.Instance.UnShowDisplayIcons();
+            // BattleValueManager.Instance.UnShowDisplayValues();
+            BattleTagManager.Instance.UnShowTags();
             foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
             {
                 if (isShow)
                 {
-                    kv.Value.ShowRoundStartBuffIcon();
+                    ShowRoundStartBuffIcon(kv.Value.UnitIdx);
                 }
-                else
-                {
-                    kv.Value.UnShowDisplayIcons();
-                    kv.Value.UnShowDisplayValues();
-                }
+                // else
+                // {
+                //     kv.Value.UnShowDisplayIcons();
+                //     kv.Value.UnShowDisplayValues();
+                // }
                 
             }
             
@@ -780,15 +781,46 @@ namespace RoundHero
 
                 if (isShow)
                 {
-                    unit.ShowActionSort(idx++);
+                    BattleValueManager.Instance.ShowActionSort(kv.Key, idx++);
                 }
                 else
                 {
-                    unit.UnShowTags();
+                    //BattleTagManager.Instance.UnShowTags();
+                    //unit.UnShowTags();
                 }
             }
 
             
+        }
+        
+        public async void ShowRoundStartBuffIcon(int unitIdx)
+        {
+            
+             
+            var triggerDataDict = BattleFightManager.Instance.GetRounbStartBuffDatas(unitIdx);
+
+            foreach (var kv2 in triggerDataDict)
+            {
+                foreach (var triggerData in kv2.Value)
+                {
+                    if (triggerData.TriggerDataType != ETriggerDataType.State)
+                    {
+                        continue;
+                    }
+                    BattleIconValueManager.Instance.CurUnitStateIconEntityIdx += 1;
+                }
+                
+            }
+             
+            var idx = 0;
+            foreach (var kv2 in triggerDataDict)
+            {
+                BattleIconValueManager.Instance.ShowIcons(kv2.Value);
+                BattleValueManager.Instance.ShowValues(kv2.Value);
+            }
+             
+
+
         }
         
         public List<CommonItemData> GetEnemyExplainList(int enemyID)

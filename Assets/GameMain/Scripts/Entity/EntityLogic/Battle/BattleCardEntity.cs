@@ -316,12 +316,13 @@ namespace RoundHero
             RefreshCardRect();
             BattleManager.Instance.RefreshEnemyAttackData();
 
-            foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
-            {
-                
-                kv.Value.ShowTacticHurtDisplayValues(kv.Value.UnitIdx);
-                kv.Value.ShowTacticHurtDisplayIcons(kv.Value.UnitIdx);
-            }
+            BattleTagManager.Instance.ShowTags(Constant.Battle.UnUnitTriggerIdx);
+            // foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
+            // {
+            //     
+            //     kv.Value.ShowTacticHurtDisplayValues(kv.Value.UnitIdx);
+            //     kv.Value.ShowTacticHurtDisplayIcons(kv.Value.UnitIdx);
+            // }
             
             // var eachUseCardUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy, PlayerManager.Instance.PlayerData.UnitCamp);
             // if (eachUseCardUnUseEnergy != null)

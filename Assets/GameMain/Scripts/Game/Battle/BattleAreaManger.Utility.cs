@@ -13,7 +13,8 @@ namespace RoundHero
             if (TmpUnitEntity != null)
             {
                 Log.Debug("TmpUnitEntity != null:" + TmpUnitEntity.Id + "-" + TmpUnitEntity.BattleUnitData.Idx + "-" + BattleUnitManager.Instance.BattleUnitDatas.Count);
-                TmpUnitEntity.UnShowTags();
+                BattleTagManager.Instance.UnShowTags();
+                TmpUnitEntity.ResetPosition();
                             
                 BattleUnitManager.Instance.BattleUnitDatas.Remove(TmpUnitEntity.BattleUnitData.Idx);
                 Log.Debug("22:" + BattleUnitManager.Instance.BattleUnitDatas.Count);
@@ -73,16 +74,20 @@ namespace RoundHero
 
                 if (isShow)
                 {
-                    kv.Value.UnShowTags();
+                    kv.Value.ResetPosition();
+                    BattleTagManager.Instance.UnShowTags();
                     if(!MoveGridPosIdxs.ContainsValue(kv.Value.GridPosIdx))
                         continue;
                     
-                    await kv.Value.ShowTagsWithFlyUnitIdx(kv.Value.UnitIdx, false);
+                    BattleTagManager.Instance.ShowTags(kv.Value.UnitIdx);
+                    //await kv.Value.ShowTagsWithFlyUnitIdx(kv.Value.UnitIdx, false);
                     //kv.Value.ShowHurtTags(kv.Value.UnitIdx);
                 }
                 else
                 {
-                    kv.Value.UnShowTags();
+                    //kv.Value.UnShowTags();
+                    kv.Value.ResetPosition();
+                    BattleTagManager.Instance.UnShowTags();
                 }
                 
             }
@@ -634,7 +639,7 @@ namespace RoundHero
             if (TmpUnitEntity != null)
             {
                 TmpUnitEntity.SetPosition(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
-                TmpUnitEntity.UnShowTags();
+                BattleTagManager.Instance.UnShowTags();
                 BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
                     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
                 BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();

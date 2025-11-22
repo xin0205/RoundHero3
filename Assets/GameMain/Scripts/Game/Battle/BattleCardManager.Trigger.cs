@@ -151,8 +151,8 @@ namespace RoundHero
             
             if (triggerDatas.Count > 0)
             {
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas.Add(cardIdx, triggerDatas);
-                BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDatas);
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(cardIdx, triggerDatas);
+                BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict);
             }
 
             
