@@ -202,7 +202,7 @@ namespace RoundHero
             };
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
             
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
             
             foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
             {
@@ -219,7 +219,7 @@ namespace RoundHero
                     };
 
                     useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
                 }
                 
             }
@@ -244,7 +244,7 @@ namespace RoundHero
             };
             
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
 
         }
         
@@ -263,7 +263,7 @@ namespace RoundHero
             };
             
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
 
         }
         
@@ -289,7 +289,7 @@ namespace RoundHero
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
             }
 
         }
@@ -317,7 +317,7 @@ namespace RoundHero
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
             }
 
         }
@@ -348,7 +348,7 @@ namespace RoundHero
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
             }
 
         }
@@ -413,7 +413,7 @@ namespace RoundHero
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
             }
 
         }
@@ -443,7 +443,7 @@ namespace RoundHero
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
             }
 
         }
@@ -464,7 +464,7 @@ namespace RoundHero
             };
             
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
 
         }
         
@@ -487,7 +487,7 @@ namespace RoundHero
                     };
             
                     useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
-                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx]);
+                    BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
                 }
             }
             
@@ -516,7 +516,7 @@ namespace RoundHero
                 Value = -effectUnit.CurHP,
             };
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
         }
 
         private void State1AddState2(EUnitCamp unitCamp, EUnitState state1, EUnitState state2, List<float> value1s)
@@ -543,7 +543,7 @@ namespace RoundHero
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
             }
         }
         
@@ -580,7 +580,7 @@ namespace RoundHero
                 };
                 
                 useCardData.AddEmptyTriggerDataList(kv.Value.Idx);
-                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx]);
+                BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[kv.Value.Idx].TriggerDatas);
             }
 
         }
@@ -599,7 +599,7 @@ namespace RoundHero
             };
                 
             useCardData.AddEmptyTriggerDataList(triggerData.EffectUnitIdx);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[triggerData.EffectUnitIdx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[triggerData.EffectUnitIdx].TriggerDatas);
         }
         
         // private void AddStates(int buffID, Data_BattleUnit effectUnit, List<float> value1s)
@@ -670,7 +670,7 @@ namespace RoundHero
             };
             
             useCardData.AddEmptyTriggerDataList(effectUnit.Idx);
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, useCardData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
 
         }
         

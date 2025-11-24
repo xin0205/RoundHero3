@@ -33,7 +33,7 @@ namespace RoundHero
             
             
              var flyPathDict =
-                    BattleFightManager.Instance.GetAttackHurtFlyPaths(unitIdx);
+                    BattleFightManager.Instance.GetAttackHurtFlyPaths(unitIdx, -1);
              
              var entityIdx = curEntityIdx;
              curEntityIdx += flyPathDict.Count;

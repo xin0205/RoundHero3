@@ -29,23 +29,21 @@ namespace RoundHero
             var entityIdx = curAttackTagEntityIdx;
             foreach (var kv in BattleUnitManager.Instance.BattleUnitEntities)
             {
-                var triggerDataDict =
-                    GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(kv.Value.UnitIdx),
-                        BattleFightManager.Instance.GetInDirectAttackDatas(kv.Value.UnitIdx));
-                if (triggerDataDict.Values.Count <= 0)
-                {
-                    continue;
-                }
+                var triggerDataDict = BattleFightManager.Instance.GetAttackDatas(kv.Value.UnitIdx);
+                // if (triggerDataDict.Values.Count <= 0)
+                // {
+                //     continue;
+                // }
                 
-                var values = triggerDataDict.Values.ToList();
-                if (values[0].Count <= 0)
-                {
-                    return;
-                }
+                // var values = triggerDataDict.Values.ToList();
+                // if (values[0].Count <= 0)
+                // {
+                //     return;
+                // }
                 
-                foreach (var triggerDatas in values)
+                foreach (var kv2 in triggerDataDict)
                 {
-                    foreach (var triggerData in triggerDatas)
+                    foreach (var triggerData in kv2.Value.TriggerDatas)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
                         {
@@ -86,26 +84,24 @@ namespace RoundHero
                     continue;
                 
                 var value = BattleUnitManager.Instance.BattleUnitEntities[keys[i]];
-                var triggerDataDict =
-                    GameUtility.MergeDict(BattleFightManager.Instance.GetDirectAttackDatas(value.UnitIdx),
-                        BattleFightManager.Instance.GetInDirectAttackDatas(value.UnitIdx));
-                if (triggerDataDict.Values.Count <= 0)
-                {
-                    continue;
-                }
-                
-                var values = triggerDataDict.Values.ToList();
-                if (values[0].Count <= 0)
-                {
-                    return;
-                }
+                var triggerDataDict = BattleFightManager.Instance.GetAttackDatas(value.UnitIdx);
+                // if (triggerDataDict.Values.Count <= 0)
+                // {
+                //     continue;
+                // }
+                //
+                // var values = triggerDataDict.Values.ToList();
+                // if (values[0].Count <= 0)
+                // {
+                //     return;
+                // }
                 
                 //var entityIdx = curAttackTagEntityIdx;
                 
 
-                foreach (var triggerDatas in values)
+                foreach (var kv in triggerDataDict)
                 {
-                    foreach (var triggerData in triggerDatas)
+                    foreach (var triggerData in kv.Value.TriggerDatas)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
                         {

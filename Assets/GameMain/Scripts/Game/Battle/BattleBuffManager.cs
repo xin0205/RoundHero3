@@ -1043,7 +1043,7 @@ namespace RoundHero
             {
 
                 var gridPosIdxs = new List<int>();
-                foreach (var triggerData in kv.Value)
+                foreach (var triggerData in kv.Value.TriggerDatas)
                 {
                     if (GameUtility.InGridRange(GameUtility.GridPosIdxToCoord(triggerData.EffectUnitGridPosIdx)) &&
                         triggerData.BuffTriggerType.ToString().Contains("Tactic"))
@@ -1071,24 +1071,24 @@ namespace RoundHero
                     }
                 }
             }
-            
-            BattleBulletManager.Instance.AddMoveActionData(Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.RoundFightData.BuffData_Use.MoveData);
+            BattleBulletManager.Instance.AddActionData(BattleFightManager.Instance.RoundFightData.BuffData_Use);
+            //BattleBulletManager.Instance.AddMoveActionData(Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.RoundFightData.BuffData_Use.MoveData);
 
             GameUtility.DelayExcute(1f, () => 
             {
-                var triggerActionDatas =
-                    BattleBulletManager.Instance.GetTriggerActionDatas(Constant.Battle.UnUnitTriggerIdx, -1);
-                if (triggerActionDatas != null)
-                {
-                    foreach (var triggerActionData in triggerActionDatas)
-                    {
-                        if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
-                        {
-                            BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
-                        }
-                    }
-                }
-                
+                // var triggerActionDatas =
+                //     BattleBulletManager.Instance.GetTriggerActionDatas(Constant.Battle.UnUnitTriggerIdx, -1);
+                // if (triggerActionDatas != null)
+                // {
+                //     foreach (var triggerActionData in triggerActionDatas)
+                //     {
+                //         if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                //         {
+                //             BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                //         }
+                //     }
+                // }
+                BattleBulletManager.Instance.UseActionData(Constant.Battle.UnUnitTriggerIdx);
                 
 
             });

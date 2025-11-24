@@ -30,34 +30,47 @@ namespace RoundHero
         
         public void RefreshFlyDirects(int unitIdx)
         {
-            var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetAttackDatas(unitIdx);
             
-            foreach (var triggerDatas in triggerDataDict.Values)
+            foreach (var kv in triggerDataDict)
             {
-                var triggerData = triggerDatas[0];
-                var effectUnitIdx = triggerData.EffectUnitIdx;
-                var actionUnitIdx = triggerData.ActionUnitIdx;
-                
-                var flyPathDict =
-                    BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
-                
-                foreach (var kv in flyPathDict)
+                foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
-                    if (kv.Value == null || kv.Value.Count <= 1)
-                    {
-                        continue;
-                    }
-
-                    var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                    var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv2.Value.UnitIdx);
                     if (moveUnit != null)
                     {
-                        var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
+                        var pos = GameUtility.GridPosIdxToPos(
+                            kv2.Value.MoveActionData.MoveGridPosIdxs
+                                [kv2.Value.MoveActionData.MoveGridPosIdxs.Count - 1]);
                         
                         moveUnit.Position = pos;
                         
                     }
-
                 }
+                // var triggerData = triggerDatas[0];
+                // var effectUnitIdx = triggerData.EffectUnitIdx;
+                // var actionUnitIdx = triggerData.ActionUnitIdx;
+                //
+                // var flyPathDict =
+                //     BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
+                //
+                // foreach (var kv in flyPathDict)
+                // {
+                //     if (kv.Value == null || kv.Value.Count <= 1)
+                //     {
+                //         continue;
+                //     }
+                //
+                //     var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+                //     if (moveUnit != null)
+                //     {
+                //         var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
+                //         
+                //         moveUnit.Position = pos;
+                //         
+                //     }
+                //
+                // }
 
             }
 

@@ -76,40 +76,50 @@ namespace RoundHero
         // }
         public override void LookAtHero()
         {
-            var attackDatas = BattleFightManager.Instance.GetDirectAttackDatas(BattleMonsterEntityData.BattleMonsterData.Idx);
+            var attackDatas = BattleFightManager.Instance.GetAttackDatas(BattleMonsterEntityData.BattleMonsterData.Idx);
             var isLook = false;
             foreach (var kv in attackDatas)
             {
-                 var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
-                 if (unitEntity is BattleCoreEntity)
-                 {
-                     isLook = true;
-                     var pos = unitEntity.Position;
-                     roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
-                     break;
-                 }
+                foreach (var triggerData in kv.Value.TriggerDatas)
+                {
+                    var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                    if (unitEntity is BattleCoreEntity)
+                    {
+                        isLook = true;
+                        var pos = unitEntity.Position;
+                        roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                        break;
+                    }
+                }
+                 
             }
             foreach (var kv in attackDatas)
             {
-                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
-                if (unitEntity is BattleSoliderEntity)
+                foreach (var triggerData in kv.Value.TriggerDatas)
                 {
-                    isLook = true;
-                    var pos = unitEntity.Position;
-                    roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
-                    break;
+                    var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                    if (unitEntity is BattleSoliderEntity)
+                    {
+                        isLook = true;
+                        var pos = unitEntity.Position;
+                        roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                        break;
+                    }
                 }
             }
             
             foreach (var kv in attackDatas)
             {
-                var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
-                if (unitEntity.UnitIdx != UnitIdx)
+                foreach (var triggerData in kv.Value.TriggerDatas)
                 {
-                    isLook = true;
-                    var pos = unitEntity.Position;
-                    roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
-                    break;
+                    var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                    if (unitEntity.UnitIdx != UnitIdx)
+                    {
+                        isLook = true;
+                        var pos = unitEntity.Position;
+                        roleRoot.LookAt(new Vector3(pos.x, transform.position.y, pos.z));
+                        break;
+                    }
                 }
             }
 

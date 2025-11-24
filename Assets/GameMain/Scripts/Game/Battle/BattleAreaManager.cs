@@ -811,7 +811,7 @@ namespace RoundHero
                                 var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
                                 if (attackUnit != null)
                                 {
-                                    BattleTagManager.Instance.ShowTags(unit.UnitIdx);
+                                    BattleTagManager.Instance.ShowTags(attackUnit.UnitIdx);
                                     //await attackUnit.ShowTagsWithFlyUnitIdx(attackUnit.UnitIdx, true);
                                 }
                                 

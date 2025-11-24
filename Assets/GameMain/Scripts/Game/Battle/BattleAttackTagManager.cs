@@ -33,23 +33,26 @@ namespace RoundHero
                 return;
             }
 
-            var values = triggerDataDict.Values.ToList();
-            if (values[0].Count <= 0)
-            {
-                return;
-            }
+            // var values = triggerDataDict.Values.ToList();
+            // if (values[0].Count <= 0)
+            // {
+            //     return;
+            // }
             
             var entityIdx = curAttackTagEntityIdx;
             //var effectGridPosIdxs = new List<int>();
             
-            foreach (var triggerDatas in values)
+            foreach (var kv in triggerDataDict)
             {
-                foreach (var triggerData in triggerDatas)
+                foreach (var triggerData in kv.Value.TriggerDatas)
                 {
                     if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
                     {
                         continue;
                     }
+                    
+                    if(triggerData.ActionUnitGridPosIdx == -1)
+                        continue;
                     
                     if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;
@@ -76,14 +79,17 @@ namespace RoundHero
             }
             
             
-            foreach (var triggerDatas in values)
+            foreach (var kv in triggerDataDict)
             {
-                foreach (var triggerData in triggerDatas)
+                foreach (var triggerData in kv.Value.TriggerDatas)
                 {
                     if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
                     {
                         continue;
                     }
+                    
+                    if(triggerData.ActionUnitGridPosIdx == -1)
+                        continue;
                     
                     if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
                         continue;

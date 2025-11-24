@@ -14,6 +14,8 @@ namespace RoundHero
             var drCard = CardManager.Instance.GetCardTable(cardIdx);
             var card = BattleFightManager.Instance.GetCard(cardIdx);
             var triggerDatas = new List<TriggerData>();
+
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionUnitIdx = Constant.Battle.UnUnitTriggerIdx;
             
             var unComsumeCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.UnConsumeCard, PlayerManager.Instance.PlayerData.UnitCamp);
             
@@ -151,7 +153,10 @@ namespace RoundHero
             
             if (triggerDatas.Count > 0)
             {
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(cardIdx, triggerDatas);
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(cardIdx, new TriggerCollection()
+                {
+                    TriggerDatas = triggerDatas,
+                });
                 BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict);
             }
 

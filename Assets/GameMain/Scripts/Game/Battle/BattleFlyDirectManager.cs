@@ -21,64 +21,43 @@ namespace RoundHero
         {
             BattleFlyDirectEntities.Clear();
             
-            var triggerDataDict = BattleFightManager.Instance.GetDirectAttackDatas(unitIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetAttackDatas(unitIdx);
 
             var entityIdx = curFlyDirectEntityIdx;
             
-            foreach (var triggerDatas in triggerDataDict.Values)
+            foreach (var kv in triggerDataDict)
             {
-                var triggerData = triggerDatas[0];
-                
-                var effectUnitIdx = triggerData.EffectUnitIdx;
-                var actionUnitIdx = triggerData.ActionUnitIdx;
-                
-                var flyPathDict =
-                    BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
-                
-                foreach (var kv in flyPathDict)
+                foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
-                    if (kv.Value == null || kv.Value.Count <= 1)
-                    {
-                        continue;
-                    }
-
                     curFlyDirectEntityIdx++;
                 }
+                // var triggerData = triggerDatas[0];
+                //
+                // var effectUnitIdx = triggerData.EffectUnitIdx;
+                // var actionUnitIdx = triggerData.ActionUnitIdx;
+                //
+                // var flyPathDict =
+                //     BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
+                //
+                // foreach (var kv in flyPathDict)
+                // {
+                //     if (kv.Value == null || kv.Value.Count <= 1)
+                //     {
+                //         continue;
+                //     }
+                //
+                //     curFlyDirectEntityIdx++;
+                // }
 
             }
 
-            
-            foreach (var triggerDatas in triggerDataDict.Values)
+            foreach (var kv in triggerDataDict)
             {
-                var triggerData = triggerDatas[0];
-                
-                // if(triggerData.BuffValue.BuffData.FlyType == EFlyType.Exchange)
-                //     continue;
-
-                var effectUnitIdx = triggerData.EffectUnitIdx;
-                var actionUnitIdx = triggerData.ActionUnitIdx;
-                
-                var flyPathDict =
-                    BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
-                
-                foreach (var kv in flyPathDict)
+                foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
-                    if (kv.Value == null || kv.Value.Count <= 1)
-                    {
-                        continue;
-                    }
-
-                    // var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
-                    // if (moveUnit != null)
-                    // {
-                    //     var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
-                    //     
-                    //     moveUnit.Position = pos;
-                    //     
-                    // }
-                    
                     var battleFlyDirectEntity =
-                        await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], kv.Value[1],
+                        await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(
+                            kv2.Value.MoveActionData.MoveGridPosIdxs[0], kv2.Value.MoveActionData.MoveGridPosIdxs[1],
                             entityIdx++);
                         
                     //entityIdx++;
@@ -94,10 +73,60 @@ namespace RoundHero
                         BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
                     }
                 }
-                
-                
 
             }
+
+
+            // foreach (var triggerDatas in triggerDataDict.Values)
+            // {
+            //     var triggerData = triggerDatas[0];
+            //     
+            //     // if(triggerData.BuffValue.BuffData.FlyType == EFlyType.Exchange)
+            //     //     continue;
+            //
+            //     var effectUnitIdx = triggerData.EffectUnitIdx;
+            //     var actionUnitIdx = triggerData.ActionUnitIdx;
+            //     
+            //     var flyPathDict =
+            //         BattleFightManager.Instance.GetAttackHurtFlyPaths(actionUnitIdx, effectUnitIdx);
+            //     
+            //     foreach (var kv in flyPathDict)
+            //     {
+            //         if (kv.Value == null || kv.Value.Count <= 1)
+            //         {
+            //             continue;
+            //         }
+            //
+            //         // var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv.Key);
+            //         // if (moveUnit != null)
+            //         // {
+            //         //     var pos = GameUtility.GridPosIdxToPos(kv.Value[kv.Value.Count - 1]);
+            //         //     
+            //         //     moveUnit.Position = pos;
+            //         //     
+            //         // }
+            //         
+            //         var battleFlyDirectEntity =
+            //             await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(kv.Value[0], kv.Value[1],
+            //                 entityIdx++);
+            //             
+            //         //entityIdx++;
+            //
+            //         if (battleFlyDirectEntity.BattleFlyDirectEntityData.EntityIdx < showFlyDirectEntityIdx)
+            //         {
+            //         
+            //             GameEntry.Entity.HideEntity(battleFlyDirectEntity);
+            //             //break;
+            //         }
+            //         else
+            //         {
+            //             BattleFlyDirectEntities.Add(battleFlyDirectEntity.Entity.Id, battleFlyDirectEntity);
+            //         }
+            //     }
+            //     
+            //     
+            //
+            // }
 
         }
 

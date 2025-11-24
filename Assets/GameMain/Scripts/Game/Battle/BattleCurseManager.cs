@@ -85,11 +85,11 @@ namespace RoundHero
             effectUnit.ChangeState(unitState);
                 
             actionData.AddEmptyTriggerDataList(effectUnit.Idx);
-            var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDataDict[effectUnit.Idx], -1, -1,
+            var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDataDict[effectUnit.Idx].TriggerDatas, -1, -1,
                 effectUnit.Idx, unitState, 1, ETriggerDataType.State);
                 
                 
-            BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDataDict[effectUnit.Idx]);
+            BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDataDict[effectUnit.Idx].TriggerDatas);
             BattleFightManager.Instance.CalculateHeroHPDelta(actionData);
             
         }
@@ -184,10 +184,10 @@ namespace RoundHero
                     if (Constant.Battle.EffectUnitStates[EUnitStateEffectType.DeBuff].Contains(unitState))
                     {
                         actionData.AddEmptyTriggerDataList(randomUnit.Idx);
-                        var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDataDict[randomUnit.Idx], -1, -1, randomUnit.Idx,
+                        var triggerData = BattleFightManager.Instance.Unit_State(actionData.TriggerDataDict[randomUnit.Idx].TriggerDatas, -1, -1, randomUnit.Idx,
                             unitState, -1, ETriggerDataType.State);
                         
-                        BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDataDict[randomUnit.Idx]);
+                        BattleBuffManager.Instance.CacheTriggerData(triggerData, actionData.TriggerDataDict[randomUnit.Idx].TriggerDatas);
                     }
                 }
             }
@@ -282,7 +282,10 @@ namespace RoundHero
             if (triggerDatas.Count > 0)
             {
                 BattleFightManager.Instance.RoundFightData.RoundEndDatas.Add(-1, actionData);
-                actionData.TriggerDataDict.Add(-1, triggerDatas);
+                actionData.TriggerDataDict.Add(-1, new TriggerCollection()
+                {
+                    TriggerDatas = triggerDatas
+                });
                 
             }
             BattleFightManager.Instance.CalculateHeroHPDelta(actionData);

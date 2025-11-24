@@ -21,7 +21,7 @@ namespace RoundHero
 
             foreach (var kv in triggerDataDict)
             {
-                foreach (var triggerData in kv.Value)
+                foreach (var triggerData in kv.Value.TriggerDatas)
                 {
                     if (triggerData.TriggerDataType != ETriggerDataType.State)
                     {
@@ -35,7 +35,7 @@ namespace RoundHero
             var idx = 0;
             foreach (var kv in triggerDataDict)
             {
-                ShowIcons(kv.Value);
+                ShowIcons(kv.Value.TriggerDatas);
 
             }
    

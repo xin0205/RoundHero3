@@ -41,7 +41,7 @@ namespace RoundHero
                     //     
                     // }
                     
-                    foreach (var triggerData in kv.Value)
+                    foreach (var triggerData in kv.Value.TriggerDatas)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
                             triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
@@ -54,7 +54,7 @@ namespace RoundHero
                 }
                 else if (effectUnit is BattleSoliderEntity)
                 {
-                    foreach (var triggerData in kv.Value)
+                    foreach (var triggerData in kv.Value.TriggerDatas)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
                             triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
@@ -64,14 +64,14 @@ namespace RoundHero
                         //CurValueEntityIdx += 1;
                         
                     }
-                    ShowValues(kv.Value);
+                    ShowValues(kv.Value.TriggerDatas);
                     //entityIdx += kv.Value.Count;
                 }
                 else
                 {
                     //CurValueEntityIdx += 1;
                     
-                    foreach (var triggerData in kv.Value)
+                    foreach (var triggerData in kv.Value.TriggerDatas)
                     {
                         if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
                             triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
@@ -81,7 +81,7 @@ namespace RoundHero
                         //CurValueEntityIdx += 1;
                         
                     }
-                    ShowValues(kv.Value);
+                    ShowValues(kv.Value.TriggerDatas);
                     
                     // var startValue = 0;
                     // var endValue = 0;
