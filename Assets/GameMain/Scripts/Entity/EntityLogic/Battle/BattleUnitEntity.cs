@@ -458,16 +458,19 @@ namespace RoundHero
 
         }
 
-        private bool InternalSingleHandleShoot(TriggerData triggerData)
+        private bool InternalSingleHandleShoot(TriggerCollection triggerCollection)
         {
             var bulletData = new BulletData();
-            bulletData.ActionUnitIdx = triggerData.ActionUnitIdx;
-            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+            bulletData.ActionUnitIdx = triggerCollection.ActionUnitIdx;
+            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerCollection.ActionUnitIdx);
             if (actionUnit != null)
             {
                 bulletData.EffectColor = BattleUnitManager.Instance.GetEffectColor(actionUnit);
             }
-            
+
+            var triggerData = triggerCollection.GetNormalTriggerData();
+            if (triggerData == null)
+                return false;
             
             List<int> paths = new List<int>();
             var triggerRange = triggerData.BuffValue.BuffData.TriggerRange.ToString(); 
@@ -512,8 +515,6 @@ namespace RoundHero
             //
             // }
             
-            BattleBulletManager.Instance.UseActionData(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
-            
             // var triggerActionDatas =
             //     BattleBulletManager.Instance.GetTriggerActionDatas(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
             // if(triggerActionDatas == null)
@@ -540,33 +541,37 @@ namespace RoundHero
             //         }
             //     }
             // }
-            
+            bulletData.EffectUnitIdx = triggerData.EffectUnitIdx;
+            bulletData.TriggerCollections = triggerCollection;
+            //BattleBulletManager.Instance.AddTriggerCollection(triggerCollection);
 
-            if (bulletData.TriggerActionDataDict.Count <= 0)
-            {
-                bulletData.MoveGridPosIdxs.Clear();
-                return false;
-            }
+            // if (bulletData.TriggerCollections == null)
+            // {
+            //     bulletData.MoveGridPosIdxs.Clear();
+            //     return false;
+            // }
 
             
             if (UnitAttackCastType.ToString().Contains("Extend"))
             {
-                foreach (var triggerActionData in bulletData.TriggerActionDataDict[triggerData.EffectUnitGridPosIdx])
-                {
-                    if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
-                    {
-                        BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
-
-                    }
-
-                    if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
-                    {
-                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
-
-                    }
-
-                    BattleManager.Instance.RefreshView();
-                }
+                BattleBulletManager.Instance.UseTriggerCollection(bulletData.ActionUnitIdx, bulletData.EffectUnitIdx);
+                
+                // foreach (var triggerActionData in bulletData.TriggerActionDataDict[triggerData.EffectUnitGridPosIdx])
+                // {
+                //     if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                //     {
+                //         BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
+                //
+                //     }
+                //
+                //     if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                //     {
+                //         BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                //
+                //     }
+                //
+                //     BattleManager.Instance.RefreshView();
+                // }
                 GameEntry.Entity.ShowBattleBeamBulletEntityAsync(bulletData, ShootPos.position);
                 HeroManager.Instance.UpdateCacheHPDelta();
             }
@@ -589,44 +594,47 @@ namespace RoundHero
             var actionUnits = new List<int>();
             foreach (var kv in actionData.TriggerDataDict)
             {
-                foreach (var triggerData in kv.Value.TriggerDatas)
-                {
-                    actionUnits.Add(triggerData.EffectUnitIdx);
-                    if (triggerData.BuffValue == null)
-                    {
-                        //BattleBulletManager.Instance.AddTriggerData(triggerData);
-                        BattleBulletManager.Instance.UseTriggerData(triggerData);
-                        HeroManager.Instance.UpdateCacheHPDelta();
-                        continue;
-                    }
-                        
-                    
-                    if (triggerData.BuffValue.BuffData.BuffEquipType != EBuffEquipType.Normal)
-                    {
-                        //死亡，溢出的伤害，攻击对方 需要下行代码
-                        if (triggerData.TriggerDataType == ETriggerDataType.Atrb &&
-                            triggerData.BattleUnitAttribute == EUnitAttribute.HP)
-                        {
-                            HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
-                            HeroManager.Instance.UpdateCacheHPDelta();
-                        }
-                        ////注释前 攻击目标及其两侧单位，造成{0}点伤害；并给对方施加{1}层虚弱 重复执行虚弱了
-                        //注释后 死亡触发 不执行
-                        else
-                        {
-                            //BattleBulletManager.Instance.AddTriggerData(triggerData);
-                            BattleBulletManager.Instance.UseTriggerData(triggerData);
-                            HeroManager.Instance.UpdateCacheHPDelta();
-                        }
-                            
-                        continue;
-                    }
-                    
-                    if(!InternalSingleHandleShoot(triggerData))
-                        continue;
-                    
-                    
-                }
+                // foreach (var triggerData in kv.Value.TriggerDatas)
+                // {
+                //     actionUnits.Add(triggerData.EffectUnitIdx);
+                //     if (triggerData.BuffValue == null)
+                //     {
+                //         //BattleBulletManager.Instance.AddTriggerData(triggerData);
+                //         BattleBulletManager.Instance.UseTriggerData(triggerData);
+                //         HeroManager.Instance.UpdateCacheHPDelta();
+                //         continue;
+                //     }
+                //         
+                //     
+                //     if (triggerData.BuffValue.BuffData.BuffEquipType != EBuffEquipType.Normal)
+                //     {
+                //         //死亡，溢出的伤害，攻击对方 需要下行代码
+                //         if (triggerData.TriggerDataType == ETriggerDataType.Atrb &&
+                //             triggerData.BattleUnitAttribute == EUnitAttribute.HP)
+                //         {
+                //             HandleHit(triggerData.ActionUnitIdx, triggerData.EffectUnitIdx);
+                //             HeroManager.Instance.UpdateCacheHPDelta();
+                //         }
+                //         ////注释前 攻击目标及其两侧单位，造成{0}点伤害；并给对方施加{1}层虚弱 重复执行虚弱了
+                //         //注释后 死亡触发 不执行
+                //         else
+                //         {
+                //             //BattleBulletManager.Instance.AddTriggerData(triggerData);
+                //             BattleBulletManager.Instance.UseTriggerData(triggerData);
+                //             HeroManager.Instance.UpdateCacheHPDelta();
+                //         }
+                //             
+                //         continue;
+                //     }
+                //     
+                //     if(!InternalSingleHandleShoot(triggerData))
+                //         continue;
+                //     
+                //     
+                // }
+                
+                if(!InternalSingleHandleShoot(kv.Value))
+                    continue;
             }
             
             // var triggerActionDatas =
@@ -806,11 +814,11 @@ namespace RoundHero
             //BattleBulletManager.Instance.ActionUnitTrigger(this.BattleUnitData.Idx);
             if (effectUnitIdx == -1)
             {
-                BattleBulletManager.Instance.UseActionData(this.BattleUnitData.Idx);
+                BattleBulletManager.Instance.UseTriggerCollection(this.BattleUnitData.Idx);
             }
             else
             {
-                BattleBulletManager.Instance.UseActionData(this.BattleUnitData.Idx, effectUnitIdx);
+                BattleBulletManager.Instance.UseTriggerCollection(this.BattleUnitData.Idx, effectUnitIdx);
             }
             
         }
@@ -821,7 +829,7 @@ namespace RoundHero
 
             //BattleBulletManager.Instance.ActionUnitTrigger(actionUnitIdx, effectUnitIx);
             
-            BattleBulletManager.Instance.UseActionData(actionUnitIdx, effectUnitIx);
+            BattleBulletManager.Instance.UseTriggerCollection(actionUnitIdx, effectUnitIx);
         }
 
         public void GetHit()
@@ -848,7 +856,7 @@ namespace RoundHero
         //private EffectEntity effectAttackEntity;
         private async Task ShowEffectAttackEntity(EAttackCastType unitAttackCastType)
         {
-            var triggerActionDataDict = BattleBulletManager.Instance.GetActionData(this.BattleUnitData.Idx);
+            var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerCollectionDict(this.BattleUnitData.Idx);
             switch (unitAttackCastType)
             {
                 case EAttackCastType.CloseSingle:
@@ -933,12 +941,12 @@ namespace RoundHero
 
         }
         
-        private async void ShowEffectAttackEntity_CloseSingle(ActionData actionData)
+        private async void ShowEffectAttackEntity_CloseSingle(Dictionary<int, TriggerCollection> triggerCollectionDict)
         {
             var effectName = "EffectCloseSingleAttackEntity";
             var effectPos = EffectHurtPos.position;
 
-            foreach (var kv in actionData.TriggerDataDict)
+            foreach (var kv in triggerCollectionDict)
             {
                 foreach (var triggerData in kv.Value.TriggerDatas)
                 {
@@ -969,6 +977,8 @@ namespace RoundHero
                     
                 }
             }
+            
+            
         }
         
         private async void ShowEffectAttackEntity_LineMulti(GameFrameworkMultiDictionary<int, ITriggerActionData> triggerActionDataDict)
@@ -1004,14 +1014,14 @@ namespace RoundHero
 
         }
 
-        private async void ShowEffectAttackEntity_CloseMulti(ActionData actionData)
+        private async void ShowEffectAttackEntity_CloseMulti(Dictionary<int, TriggerCollection> triggerCollectionDict)
         {
             var effectName = "EffectCloseMultiAttackEntity";
             var effectPos = EffectHurtPos.position;
 
-            foreach (var kv in actionData.TriggerDataDict)
+            foreach (var kv in triggerCollectionDict.Values)
             {
-                foreach (var triggerData in kv.Value.TriggerDatas)
+                foreach (var triggerData in kv.TriggerDatas)
                 {
                     var effectUnit =
                         BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
@@ -1038,7 +1048,7 @@ namespace RoundHero
             }
         }
 
-        private async void ShowEffectAttackEntity_Empty(ActionData actionData)
+        private async void ShowEffectAttackEntity_Empty(Dictionary<int, TriggerCollection> triggerCollectionDict)
         {
             
         }
@@ -1350,7 +1360,7 @@ namespace RoundHero
             {
                 var effectName = "EffectLineMultiAttackEntity";
                 GameEntry.Entity.ShowLineMultiEffectEntityAsync(effectName, transform.position, BattleUnitManager.Instance.GetEffectColor(this), gridPosIdxs);
-                BattleBulletManager.Instance.UseActionData(this.BattleUnitData.Idx);
+                BattleBulletManager.Instance.UseTriggerCollection(this.BattleUnitData.Idx);
                 HeroManager.Instance.UpdateCacheHPDelta();
                 //MultiHandleShoot(actionData);
             });

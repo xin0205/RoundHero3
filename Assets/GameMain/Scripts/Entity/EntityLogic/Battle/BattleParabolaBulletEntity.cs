@@ -132,31 +132,36 @@ namespace RoundHero
             {
                      
                 ShowExplodeParticle();
+                
+                BattleBulletManager.Instance.UseTriggerCollection(BattleBulletEntityData.BulletData.ActionUnitIdx, BattleBulletEntityData.BulletData.EffectUnitIdx);
 
-                if (BattleBulletEntityData.BulletData.TriggerActionDataDict.Contains(endIdx))
-                {
-                    foreach (var triggerActionData in BattleBulletEntityData.BulletData.TriggerActionDataDict[endIdx])
-                    {
-                        if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
-                        {
-                            if (triggerActionTriggerData.TriggerData != null)
-                            {
-                                BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
-
-                            }
-                        }
-
-                        if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
-                        {
-                            if (triggerActionMoveData.MoveUnitData != null)
-                            {
-                                BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
-                            }
-                        }
-
-                        HeroManager.Instance.UpdateCacheHPDelta();
-                    }
-                }
+                // if (BattleBulletEntityData.BulletData.TriggerCollections.ContainsKey(endIdx))
+                // {
+                //     foreach (var kv in BattleBulletEntityData.BulletData.TriggerCollections[endIdx])
+                //     {
+                //         BattleBulletManager.Instance.UseTriggerCollection(kv.Value);
+                //         
+                //         
+                //         // if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                //         // {
+                //         //     if (triggerActionTriggerData.TriggerData != null)
+                //         //     {
+                //         //         BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
+                //         //
+                //         //     }
+                //         // }
+                //         //
+                //         // if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                //         // {
+                //         //     if (triggerActionMoveData.MoveUnitData != null)
+                //         //     {
+                //         //         BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                //         //     }
+                //         // }
+                //
+                //         HeroManager.Instance.UpdateCacheHPDelta();
+                //     }
+                // }
 
             });
         }

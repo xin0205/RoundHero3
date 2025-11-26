@@ -26,7 +26,7 @@ namespace RoundHero
             if (actionUnit == null && actionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
                 return;
 
-            var triggerDataDict =BattleFightManager.Instance.GetAttackDatas(actionUnitIdx);
+            var triggerDataDict = BattleFightManager.Instance.GetAttackDatas(actionUnitIdx);
 
             if (triggerDataDict.Values.Count <= 0)
             {

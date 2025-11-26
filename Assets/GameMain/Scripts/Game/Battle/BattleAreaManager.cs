@@ -1193,11 +1193,11 @@ namespace RoundHero
                     MoveActionData moveActionData = null;
                     if (BattleFightManager.Instance.RoundFightData.SoliderMoveDatas.ContainsKey(unit.UnitIdx))
                     {
-                        moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx];
+                        moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx].Copy();
                     }
                     else if(BattleFightManager.Instance.RoundFightData.EnemyMoveDatas.ContainsKey(unit.UnitIdx))
                     {
-                        moveActionData = BattleFightManager.Instance.RoundFightData.EnemyMoveDatas[unit.UnitIdx];
+                        moveActionData = BattleFightManager.Instance.RoundFightData.EnemyMoveDatas[unit.UnitIdx].Copy();;
                     }
                     
 
@@ -1242,7 +1242,7 @@ namespace RoundHero
                     var unit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
                         .Idx);
                     
-                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx];
+                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx].Copy();
                     
 
                     var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);

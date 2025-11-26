@@ -395,6 +395,8 @@ namespace RoundHero
                     RoundFightData.RoundStartBuffDatas.Add(kv.Key, actionData);
                     actionData.TriggerDataDict.Add(kv.Key, new TriggerCollection()
                     {
+                        ActionUnitIdx = kv.Key,
+                        EffectUnitIdx = kv.Key,
                         TriggerDatas = triggerDatas
                     });
                 }
@@ -457,6 +459,8 @@ namespace RoundHero
                     RoundFightData.PreRoundStartDatas.Add(kv.Key, actionData);
                     actionData.TriggerDataDict.Add(kv.Key, new TriggerCollection()
                     {
+                        ActionUnitIdx = kv.Key,
+                        EffectUnitIdx = kv.Key,
                         TriggerDatas = triggerDatas
                     });
                 }
@@ -518,6 +522,8 @@ namespace RoundHero
                     RoundFightData.RoundStartUnitDatas.Add(kv.Key, actionData);
                     actionData.TriggerDataDict.Add(kv.Key, new TriggerCollection()
                     {
+                        ActionUnitIdx = kv.Key,
+                        EffectUnitIdx = kv.Key,
                         TriggerDatas = triggerDatas
                     });
                 }
@@ -724,6 +730,8 @@ namespace RoundHero
                     {
                         actionData.TriggerDataDict.Add(effectUnit.Idx, new TriggerCollection()
                         {
+                            ActionUnitIdx = attackUnitIdx,
+                            EffectUnitIdx = effectUnit.Idx,
                             TriggerDatas = triggerDatas
                         });
                     }
@@ -847,8 +855,8 @@ namespace RoundHero
             {
                 foreach (var kv in kv3.Value.MoveData.MoveUnitDatas)
                 {
-                    kv.Value.MoveActionData.InterrelatedActionUnitIdx = attackUnitIdx;
-                    kv.Value.MoveActionData.InterrelatedEffectUnitIdx = kv3.Key;
+                    // kv.Value.MoveActionData.InterrelatedActionUnitIdx = attackUnitIdx;
+                    // kv.Value.MoveActionData.InterrelatedEffectUnitIdx = kv3.Key;
                 
                     foreach (var kv2 in kv.Value.MoveActionData.TriggerDataDict)
                     {
@@ -901,7 +909,11 @@ namespace RoundHero
             TriggerCollection actionTriggerCollection;
             if (!actionData.TriggerDataDict.ContainsKey(effectUnit.Idx))
             {
-                actionData.TriggerDataDict.Add(effectUnit.Idx, new TriggerCollection());
+                actionData.TriggerDataDict.Add(effectUnit.Idx, new TriggerCollection()
+                {
+                    ActionUnitIdx = actionUnitIdx,
+                    EffectUnitIdx = effectUnit.Idx,
+                });
             }
 
             actionTriggerCollection = actionData.TriggerDataDict[effectUnit.Idx];
@@ -1149,7 +1161,11 @@ namespace RoundHero
             TriggerCollection actionTriggerCollection;
             if (!actionData.TriggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
             {
-                actionData.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection());
+                actionData.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
+                {
+                    ActionUnitIdx = triggerData.ActionUnitIdx,
+                    EffectUnitIdx = triggerData.EffectUnitIdx,
+                });
             }
 
             actionTriggerCollection = actionData.TriggerDataDict[triggerData.EffectUnitIdx];
@@ -1617,6 +1633,8 @@ namespace RoundHero
                 {
                     moveActionData.TriggerDataDict.Add(i, new TriggerCollection()
                     {
+                        ActionUnitIdx = passUnit != null ? passUnit.Idx : -1,
+                        EffectUnitIdx = bePassUnit != null ? bePassUnit.Idx : -1,
                         TriggerDatas = triggerDatas
                     });
                 }

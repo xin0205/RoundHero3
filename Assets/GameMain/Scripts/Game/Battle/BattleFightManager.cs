@@ -106,9 +106,13 @@ namespace RoundHero
 
     public class TriggerCollection
     {
+        public int ActionUnitIdx;
+        public int EffectUnitIdx;
         public List<TriggerData> TriggerDatas = new List<TriggerData>();
             
         public MoveData MoveData = new MoveData();
+        
+        public bool IsTrigger;
 
         public TriggerCollection Copy()
         {
@@ -120,7 +124,25 @@ namespace RoundHero
 
             _triggerCollection.MoveData = MoveData.Copy();
             
+            _triggerCollection.ActionUnitIdx = ActionUnitIdx;
+            _triggerCollection.EffectUnitIdx = EffectUnitIdx;
+            _triggerCollection.IsTrigger = IsTrigger;
+            
             return _triggerCollection;
+        }
+
+        public TriggerData GetNormalTriggerData()
+        {
+            foreach (var triggerData in TriggerDatas)
+            {
+                if (triggerData.BuffValue != null &&
+                    triggerData.BuffValue.BuffData.BuffEquipType == EBuffEquipType.Normal)
+                {
+                    return triggerData;
+                }
+            }
+
+            return null;
         }
         
         public void Clear()
@@ -190,8 +212,8 @@ namespace RoundHero
         public List<int> MoveGridPosIdxs = new();
         public Dictionary<int, TriggerCollection> TriggerDataDict = new();
 
-        public int InterrelatedActionUnitIdx;
-        public int InterrelatedEffectUnitIdx;
+        // public int InterrelatedActionUnitIdx;
+        // public int InterrelatedEffectUnitIdx;
         
         public MoveActionData Copy()
         {
@@ -2095,7 +2117,7 @@ namespace RoundHero
             var actionData = unitAttackDatas[unitKeys[AcitonUnitIdx]];
             
             var isAttack = false;
-            BattleBulletManager.Instance.AddActionData(actionData);
+            BattleBulletManager.Instance.AddTriggerCollection(actionData);
             
             foreach (var triggerCollection in actionData.TriggerDataDict)
             {
@@ -2128,7 +2150,7 @@ namespace RoundHero
             }
             
             //|| maxMoveTime > 0
-            if (isAttack  || actionProgress == EActionProgress.SoliderActiveAttack)
+            if (isAttack  || maxMoveTime > 0 || actionProgress == EActionProgress.SoliderActiveAttack)
             {
                 time += 2f;
                 
@@ -2230,7 +2252,7 @@ namespace RoundHero
                 return;
             
             var unitID = unitKeys[AcitonUnitIdx];
-            var moveActionData = unitMoveDatas[unitKeys[AcitonUnitIdx]];
+            var moveActionData = unitMoveDatas[unitKeys[AcitonUnitIdx]].Copy();
 
             var runTime = 0f;
 
@@ -2302,7 +2324,7 @@ namespace RoundHero
             var actionData = RoundFightData.UseCardTriggerDatas[unitKeys[AcitonUnitIdx]];
             
             var isAttack = false;
-            BattleBulletManager.Instance.AddActionData(actionData);
+            //BattleBulletManager.Instance.AddTriggerCollection(actionData);
             foreach (var triggerCollection in actionData.TriggerDataDict)
             {
                 foreach (var triggerData in triggerCollection.Value.TriggerDatas)
@@ -2330,28 +2352,42 @@ namespace RoundHero
             });
         }
 
-        public List<TriggerData> GetMoveTriggerDatas(MoveActionData moveActionData, int moveIdx)
+        // public List<TriggerData> GetMoveTriggerDatas(MoveActionData moveActionData, int moveIdx)
+        // {
+        //     if(moveActionData == null)
+        //         return null;
+        //     
+        //     if(moveActionData.TriggerDataDict.ContainsKey(moveIdx))
+        //         return moveActionData.TriggerDataDict[moveIdx].TriggerDatas;
+        //     
+        //     return null;
+        // }
+        
+        public TriggerCollection GetMoveTriggerCollection(MoveActionData moveActionData, int moveIdx)
         {
             if(moveActionData == null)
                 return null;
             
             if(moveActionData.TriggerDataDict.ContainsKey(moveIdx))
-                return moveActionData.TriggerDataDict[moveIdx].TriggerDatas;
+                return moveActionData.TriggerDataDict[moveIdx];
             
             return null;
         }
 
         public void MoveEffectAction(EUnitActionState unitActionState, MoveActionData moveActionData, int moveIdx, int moveUnitID)
         {
-            var triggerDatas = GetMoveTriggerDatas(moveActionData, moveIdx);//unitActionState == EUnitActionState.Run ? GetRunTriggerDatas(effectID, moveIdx) : GetFlyTriggerDatas(actionID, effectID, moveIdx));
-            if(triggerDatas == null)
+            var triggerCollection = GetMoveTriggerCollection(moveActionData, moveIdx);//unitActionState == EUnitActionState.Run ? GetRunTriggerDatas(effectID, moveIdx) : GetFlyTriggerDatas(actionID, effectID, moveIdx));
+            if(triggerCollection == null)
                 return;
             
-            foreach (var triggerData in triggerDatas)
+            BattleBulletManager.Instance.AddTriggerCollection(triggerCollection);
+            
+            //var normalTriggerData = triggerCollection.GetNormalTriggerData();
+
+            foreach (var triggerData in triggerCollection.TriggerDatas)
             {
-                //
-                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerCollection.ActionUnitIdx);
+                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerCollection.EffectUnitIdx);
                 //Log.Debug("ActionUnitID:" + triggerData.ActionUnitIdx);
                 //!(!triggerData.ChangeHPInstantly && HeroManager.Instance.IsHero(triggerData.EffectUnitID))
                 if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
@@ -2363,7 +2399,7 @@ namespace RoundHero
                     actionUnit.BattleUnitData.CollideCount += 1;
                     effectUnit.BattleUnitData.CollideCount += 1;
                 }
-                
+            
                 else if (triggerData.TriggerDataSubType == ETriggerDataSubType.State)
                 {
                     triggerData.IsTrigger = true;
@@ -2373,28 +2409,27 @@ namespace RoundHero
                 {
                     if (triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
                     {
+                        
+                    
                         //BattleBulletManager.Instance.AddTriggerData(triggerData); 
                         actionUnit?.MoveAttack(triggerData.EffectUnitIdx);
                         //effectUnit.Hurt();
-                        
+                    
                     }
                     else
                     {
                         triggerData.IsTrigger = true;
-                            
+                        
                         BattleFightManager.Instance.TriggerAction(triggerData.Copy());
                     }
-                           
+                       
                 }
-                // if (triggerData.EffectUnitIdx != triggerData.ActionUnitIdx)
-                // {
-                //     
-                //     
-                // }
-                HeroManager.Instance.UpdateCacheHPDelta();
-                
-                
             }
+            
+
+            HeroManager.Instance.UpdateCacheHPDelta();
+            
+ 
             GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
             GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
         }
@@ -2522,17 +2557,21 @@ namespace RoundHero
             else if (actionUnitIdx == Constant.Battle.UnUnitTriggerIdx)
             {
                 moveDataDict = RoundFightData.BuffData_Use.TriggerDataDict;
-                
-                foreach (var kv in moveDataDict[actionUnitIdx].MoveData.MoveUnitDatas)
-                {
-                    var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
-                
-                    // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
-                    //     continue;
- 
-                    unitFlyDict.Add(kv.Key, moveGridPosIdxs);
 
+                foreach (var kv2 in moveDataDict)
+                {
+                    foreach (var kv in kv2.Value.MoveData.MoveUnitDatas)
+                    {
+                        var moveGridPosIdxs = kv.Value.MoveActionData.MoveGridPosIdxs;
+                
+                        // if(effectUnitIdx != kv.Value.MoveActionData.MoveUnitIdx)
+                        //     continue;
+ 
+                        unitFlyDict.Add(kv.Key, moveGridPosIdxs);
+
+                    }
                 }
+                
             }
 
             return unitFlyDict;

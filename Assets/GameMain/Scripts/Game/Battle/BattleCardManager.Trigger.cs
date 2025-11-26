@@ -155,6 +155,7 @@ namespace RoundHero
             {
                 BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(cardIdx, new TriggerCollection()
                 {
+                    ActionUnitIdx = Constant.Battle.UnUnitTriggerIdx,
                     TriggerDatas = triggerDatas,
                 });
                 BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict);

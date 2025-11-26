@@ -37,7 +37,7 @@ namespace RoundHero
                 foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
                     var moveUnit = BattleUnitManager.Instance.GetUnitByIdx(kv2.Value.UnitIdx);
-                    if (moveUnit != null)
+                    if (moveUnit != null && kv2.Value.MoveActionData.MoveGridPosIdxs.Count > 0)
                     {
                         var pos = GameUtility.GridPosIdxToPos(
                             kv2.Value.MoveActionData.MoveGridPosIdxs

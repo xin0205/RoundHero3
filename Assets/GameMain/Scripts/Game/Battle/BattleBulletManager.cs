@@ -24,84 +24,345 @@ namespace RoundHero
 
     public class BattleBulletManager : Singleton<BattleBulletManager>
     {
-        public Dictionary<int, GameFrameworkMultiDictionary<int, ITriggerActionData>> TriggerActionDatas2 =
-            new();
+        // public Dictionary<int, GameFrameworkMultiDictionary<int, ITriggerActionData>> TriggerActionDatas2 =
+        //     new();
 
-        public Dictionary<int, ActionData> TriggerActionDatas =
+        // public Dictionary<int, ActionData> TriggerActionDatas =
+        //     new();
+        
+        public Dictionary<int, Dictionary<int, TriggerCollection>> TriggerCollections =
             new();
         
-        public void AddActionData(ActionData actionData)
+        public void AddTriggerCollection(TriggerCollection triggerCollection)
         {
 
-            if (!TriggerActionDatas.ContainsKey(actionData.ActionUnitIdx))
+            if (!TriggerCollections.ContainsKey(triggerCollection.ActionUnitIdx))
             {
-                TriggerActionDatas.Add(actionData.ActionUnitIdx,
-                    actionData);
+                TriggerCollections.Add(triggerCollection.ActionUnitIdx, new Dictionary<int, TriggerCollection>());
+
             }
+            
+            TriggerCollections[triggerCollection.ActionUnitIdx].Add(triggerCollection.EffectUnitIdx,
+                triggerCollection.Copy());
 
         }
         
-        public ActionData GetActionData(int actionUnitIdx)
+        public void AddTriggerCollection(ActionData actionData)
         {
 
-            if (TriggerActionDatas.ContainsKey(actionUnitIdx))
+            foreach (var kv in actionData.TriggerDataDict)
             {
-                return TriggerActionDatas[actionUnitIdx];
+                if (!TriggerCollections.ContainsKey(kv.Value.ActionUnitIdx))
+                {
+                    TriggerCollections.Add(kv.Value.ActionUnitIdx, new Dictionary<int, TriggerCollection>());
+
+                }
+            
+                TriggerCollections[kv.Value.ActionUnitIdx].Add(kv.Value.EffectUnitIdx,
+                    kv.Value.Copy());
+            }
+            
+            
+
+        }
+        
+        public Dictionary<int, TriggerCollection> GetTriggerCollectionDict(int actionUnitIdx)
+        {
+
+            if (TriggerCollections.ContainsKey(actionUnitIdx))
+            {
+                return TriggerCollections[actionUnitIdx];
             }
 
             return null;
         }
-
-        public void UseActionData(int actionUnitIdx)
+        
+        public TriggerCollection GetTriggerCollection(int actionUnitIdx, int effectUnitIdx)
         {
-            if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
+
+            if (TriggerCollections.ContainsKey(actionUnitIdx))
+            {
+                if (TriggerCollections[actionUnitIdx].ContainsKey(effectUnitIdx))
+                {
+
+                    return TriggerCollections[actionUnitIdx][effectUnitIdx];
+                }
+            }
+
+            return null;
+        }
+        
+        public void UseTriggerCollection(int actionUnitIdx, int effectUnitIdx)
+        {
+            if (!TriggerCollections.ContainsKey(actionUnitIdx))
+            {
+                return;
+            }
+            
+            if (!TriggerCollections[actionUnitIdx].ContainsKey(effectUnitIdx))
+            {
+
+                return;
+            }
+
+            TriggerCollections[actionUnitIdx][effectUnitIdx].IsTrigger = true;
+
+            foreach (var triggerData in TriggerCollections[actionUnitIdx][effectUnitIdx].TriggerDatas)
+            {
+                UseTriggerData(triggerData);
+            }
+            
+            foreach (var kv in TriggerCollections[actionUnitIdx][effectUnitIdx].MoveData.MoveUnitDatas)
+            {
+                UseMoveActionData(kv.Value);
+            }
+            
+            ClearTriggerCollection();
+        }
+        
+        public void UseTriggerCollection(int actionUnitIdx)
+        {
+            if (!TriggerCollections.ContainsKey(actionUnitIdx))
             {
                 return;
             }
 
-            foreach (var kv in TriggerActionDatas[actionUnitIdx].TriggerDataDict)
+            foreach (var kv in TriggerCollections[actionUnitIdx])
             {
+                kv.Value.IsTrigger = true;
                 foreach (var triggerData in kv.Value.TriggerDatas)
                 {
                     UseTriggerData(triggerData);
                 }
             }
             
-            foreach (var kv in TriggerActionDatas[actionUnitIdx].TriggerDataDict)
+            foreach (var kv in TriggerCollections[actionUnitIdx])
             {
                 foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
                     UseMoveActionData(kv2.Value);
                 }
-            }
-        }
-
-        public void UseActionData(int actionUnitIdx, int effectUnitIdx)
-        {
-
-            if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
-            {
-                return;
-            }
-            
-            if (!TriggerActionDatas[actionUnitIdx].TriggerDataDict.ContainsKey(effectUnitIdx))
-            {
-                return;
-            }
-            
-            foreach (var triggerData in TriggerActionDatas[actionUnitIdx].TriggerDataDict[effectUnitIdx].TriggerDatas)
-            {
-                UseTriggerData(triggerData);
+                
                 
             }
-            
-            foreach (var kv in TriggerActionDatas[actionUnitIdx].TriggerDataDict[effectUnitIdx].MoveData.MoveUnitDatas)
+
+            ClearTriggerCollection();
+        }
+        
+        public void UseTriggerData(TriggerData triggerData)
+        {
+            if (triggerData.IsTrigger)
             {
-                UseMoveActionData(kv.Value);
+                return;
+            }
+            
+            triggerData.IsTrigger = true;
+            BattleFightManager.Instance.TriggerAction(triggerData.Copy());
+            //ClearTriggerData();
+        }
+        
+        public void UseMoveActionData(MoveUnitData moveUnitData)
+        {
+            if(moveUnitData.IsTrigger)
+                return;
+            
+            moveUnitData.IsTrigger = true;
+            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(moveUnitData.UnitIdx);
+
+            if (moveUnitData.UnitActionState == EUnitActionState.Fly)
+            {
+                effectUnitEntity.Fly(moveUnitData.MoveActionData.Copy());
+            }
+            else if (moveUnitData.UnitActionState == EUnitActionState.Run)
+            {
+                effectUnitEntity.Run(moveUnitData.MoveActionData.Copy());
+            }
+            else if (moveUnitData.UnitActionState == EUnitActionState.Rush)
+            {
+                effectUnitEntity.Rush(moveUnitData.MoveActionData.Copy());
+            }
+            else if (moveUnitData.UnitActionState == EUnitActionState.Throw)
+            {
+                effectUnitEntity.Rush(moveUnitData.MoveActionData.Copy());
             }
 
-   
+            //moveUnitData.MoveActionData.Clear();
+            //ClearTriggerData();
         }
+        
+        public void ClearTriggerCollection()
+        {
+            var keys = TriggerCollections.Keys.ToList();
+            var values = TriggerCollections.Values.ToList();
+            for (int i = TriggerCollections.Count - 1; i >= 0; i--)
+            {
+                var keys2 = values[i].Keys.ToList();
+                var values2 = values[i].Values.ToList();
+                for (int j = values2.Count - 1; j >= 0; j--)
+                {
+                    var triggerCollection = values2[j];
+                    if (triggerCollection.IsTrigger)
+                    {
+                        TriggerCollections[keys[i]].Remove(keys2[j]);
+                    }
+                }
+
+                if (TriggerCollections[keys[i]].Count <= 0)
+                {
+                    TriggerCollections.Remove(keys[i]);
+                }
+            }
+        }
+        
+        // public void ClearTriggerData()
+        // {
+        //     
+        //     // var keys = TriggerActionDatas2.Keys.ToList();
+        //     // var values = TriggerActionDatas2.Values.ToList();
+        //     //
+        //     // for (int i = values.Count - 1; i >= 0; i--)
+        //     // {
+        //     //     var list = values[i].ToList();
+        //     //     
+        //     //     for (int j = list.Count - 1; j >= 0; j--)
+        //     //     {
+        //     //         var list2 = list[j].Value.ToList();
+        //     //         
+        //     //         for (int k = list2.Count - 1; k >= 0; k--)
+        //     //         {
+        //     //             
+        //     //             if (list2[k] is TriggerActionTriggerData triggerActionTriggerData)
+        //     //             {
+        //     //                 if (triggerActionTriggerData.TriggerData.IsTrigger)
+        //     //                 {
+        //     //                     TriggerActionDatas2[keys[i]].Remove(list[j].Key, triggerActionTriggerData);
+        //     //                 }
+        //     //             }
+        //     //             
+        //     //             if (list2[k] is TriggerActionMoveData triggerActionMoveData)
+        //     //             {
+        //     //                 if (triggerActionMoveData.MoveUnitData.IsTrigger)
+        //     //                 {
+        //     //                     TriggerActionDatas2[keys[i]].Remove(list[j].Key, triggerActionMoveData);
+        //     //                 }
+        //     //             }
+        //     //         }
+        //     //         
+        //     //     }
+        //     // }
+        //     
+        //     // foreach (var kv in TriggerActionDatas)
+        //     // {
+        //     //     var list = kv.Value.ToList();
+        //     //     for (int i = list.Count - 1; i >= 0; i--)
+        //     //     {
+        //     //         var list2 = list[i].Value.ToList();
+        //     //         for (int j = list2.Count - 1; j >= 0; j--)
+        //     //         {
+        //     //             var triggerActionData = list2[j];
+        //     //
+        //     //             if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+        //     //             {
+        //     //                 if (triggerActionTriggerData.TriggerData.IsTrigger)
+        //     //                 {
+        //     //                     TriggerActionDatas[kv.Key].Remove(list[i].Key, triggerActionTriggerData);
+        //     //                 }
+        //     //             }
+        //     //     
+        //     //         }
+        //     //     }
+        //     //
+        //     // }
+        // }
+        //
+        // public void ClearMoveData(int actionUnitIdx)
+        // {
+        //     // if (TriggerActionDatas2.ContainsKey(actionUnitIdx))
+        //     // {
+        //     //     TriggerActionDatas2[actionUnitIdx].Clear();
+        //     // }
+        // }
+
+        public void Destory()
+        {
+            TriggerCollections.Clear();
+            //TriggerActionDatas2.Clear();
+        }
+        
+        // public void AddActionData(ActionData actionData)
+        // {
+        //
+        //     if (!TriggerActionDatas.ContainsKey(actionData.ActionUnitIdx))
+        //     {
+        //         TriggerActionDatas.Add(actionData.ActionUnitIdx,
+        //             actionData);
+        //     }
+        //
+        // }
+        //
+        //
+        //
+        // public ActionData GetActionData(int actionUnitIdx)
+        // {
+        //
+        //     if (TriggerActionDatas.ContainsKey(actionUnitIdx))
+        //     {
+        //         return TriggerActionDatas[actionUnitIdx];
+        //     }
+        //
+        //     return null;
+        // }
+        //
+        // public void UseActionData(int actionUnitIdx)
+        // {
+        //     if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
+        //     {
+        //         return;
+        //     }
+        //
+        //     foreach (var kv in TriggerActionDatas[actionUnitIdx].TriggerDataDict)
+        //     {
+        //         foreach (var triggerData in kv.Value.TriggerDatas)
+        //         {
+        //             UseTriggerData(triggerData);
+        //         }
+        //     }
+        //     
+        //     foreach (var kv in TriggerActionDatas[actionUnitIdx].TriggerDataDict)
+        //     {
+        //         foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
+        //         {
+        //             UseMoveActionData(kv2.Value);
+        //         }
+        //     }
+        // }
+        //
+        // public void UseActionData(int actionUnitIdx, int effectUnitIdx)
+        // {
+        //
+        //     if (!TriggerActionDatas.ContainsKey(actionUnitIdx))
+        //     {
+        //         return;
+        //     }
+        //     
+        //     if (!TriggerActionDatas[actionUnitIdx].TriggerDataDict.ContainsKey(effectUnitIdx))
+        //     {
+        //         return;
+        //     }
+        //     
+        //     foreach (var triggerData in TriggerActionDatas[actionUnitIdx].TriggerDataDict[effectUnitIdx].TriggerDatas)
+        //     {
+        //         UseTriggerData(triggerData);
+        //         
+        //     }
+        //     
+        //     foreach (var kv in TriggerActionDatas[actionUnitIdx].TriggerDataDict[effectUnitIdx].MoveData.MoveUnitDatas)
+        //     {
+        //         UseMoveActionData(kv.Value);
+        //     }
+        //
+        //
+        // }
         
         // public void AddTriggerData(TriggerData triggerData)
         // {
@@ -234,17 +495,7 @@ namespace RoundHero
         //
         // }
 
-        public void UseTriggerData(TriggerData triggerData)
-        {
-            if (triggerData.IsTrigger)
-            {
-                return;
-            }
-            
-            triggerData.IsTrigger = true;
-            BattleFightManager.Instance.TriggerAction(triggerData.Copy());
-            ClearTriggerData();
-        }
+        
 
         // public void UseMoveActionData(int actionUnitIdx, int effectUnitIdx)
         // {
@@ -281,34 +532,7 @@ namespace RoundHero
         //
         // }
 
-        public void UseMoveActionData(MoveUnitData moveUnitData)
-        {
-            if(moveUnitData.IsTrigger)
-                return;
-            
-            moveUnitData.IsTrigger = true;
-            var effectUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(moveUnitData.UnitIdx);
-
-            if (moveUnitData.UnitActionState == EUnitActionState.Fly)
-            {
-                effectUnitEntity.Fly(moveUnitData.MoveActionData.Copy());
-            }
-            else if (moveUnitData.UnitActionState == EUnitActionState.Run)
-            {
-                effectUnitEntity.Run(moveUnitData.MoveActionData.Copy());
-            }
-            else if (moveUnitData.UnitActionState == EUnitActionState.Rush)
-            {
-                effectUnitEntity.Rush(moveUnitData.MoveActionData.Copy());
-            }
-            else if (moveUnitData.UnitActionState == EUnitActionState.Throw)
-            {
-                effectUnitEntity.Rush(moveUnitData.MoveActionData.Copy());
-            }
-
-            moveUnitData.MoveActionData.Clear();
-            ClearTriggerData();
-        }
+        
 
         // public void ActionUnitTrigger(int actionUnitIdx, int effectUnitIdx = -1)
         // {
@@ -499,109 +723,37 @@ namespace RoundHero
         
         public void ClearMoveData()
         {
-            var keys = TriggerActionDatas2.Keys.ToList();
-            var values = TriggerActionDatas2.Values.ToList();
-
-            for (int i = values.Count - 1; i >= 0; i--)
-            {
-                var list = values[i].ToList();
-                
-                for (int j = list.Count - 1; j >= 0; j--)
-                {
-                    var list2 = list[j].Value.ToList();
-                    
-                    
-                    for (int k = list2.Count - 1; k >= 0; k--)
-                    {
-                        
-                        if (list2[k] is TriggerActionMoveData triggerActioMoveData)
-                        {
-                            if (triggerActioMoveData.MoveUnitData.IsTrigger)
-                            {
-                                TriggerActionDatas2[keys[i]].Remove(list[j].Key, triggerActioMoveData);
-                            }
-                        }
-                    }
-                    
-                }
-            }
+            // var keys = TriggerActionDatas2.Keys.ToList();
+            // var values = TriggerActionDatas2.Values.ToList();
+            //
+            // for (int i = values.Count - 1; i >= 0; i--)
+            // {
+            //     var list = values[i].ToList();
+            //     
+            //     for (int j = list.Count - 1; j >= 0; j--)
+            //     {
+            //         var list2 = list[j].Value.ToList();
+            //         
+            //         
+            //         for (int k = list2.Count - 1; k >= 0; k--)
+            //         {
+            //             
+            //             if (list2[k] is TriggerActionMoveData triggerActioMoveData)
+            //             {
+            //                 if (triggerActioMoveData.MoveUnitData.IsTrigger)
+            //                 {
+            //                     TriggerActionDatas2[keys[i]].Remove(list[j].Key, triggerActioMoveData);
+            //                 }
+            //             }
+            //         }
+            //         
+            //     }
+            // }
    
         }
         
 
-        public void ClearTriggerData()
-        {
-            
-            var keys = TriggerActionDatas2.Keys.ToList();
-            var values = TriggerActionDatas2.Values.ToList();
-
-            for (int i = values.Count - 1; i >= 0; i--)
-            {
-                var list = values[i].ToList();
-                
-                for (int j = list.Count - 1; j >= 0; j--)
-                {
-                    var list2 = list[j].Value.ToList();
-                    
-                    for (int k = list2.Count - 1; k >= 0; k--)
-                    {
-                        
-                        if (list2[k] is TriggerActionTriggerData triggerActionTriggerData)
-                        {
-                            if (triggerActionTriggerData.TriggerData.IsTrigger)
-                            {
-                                TriggerActionDatas2[keys[i]].Remove(list[j].Key, triggerActionTriggerData);
-                            }
-                        }
-                        
-                        if (list2[k] is TriggerActionMoveData triggerActionMoveData)
-                        {
-                            if (triggerActionMoveData.MoveUnitData.IsTrigger)
-                            {
-                                TriggerActionDatas2[keys[i]].Remove(list[j].Key, triggerActionMoveData);
-                            }
-                        }
-                    }
-                    
-                }
-            }
-            
-            // foreach (var kv in TriggerActionDatas)
-            // {
-            //     var list = kv.Value.ToList();
-            //     for (int i = list.Count - 1; i >= 0; i--)
-            //     {
-            //         var list2 = list[i].Value.ToList();
-            //         for (int j = list2.Count - 1; j >= 0; j--)
-            //         {
-            //             var triggerActionData = list2[j];
-            //
-            //             if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
-            //             {
-            //                 if (triggerActionTriggerData.TriggerData.IsTrigger)
-            //                 {
-            //                     TriggerActionDatas[kv.Key].Remove(list[i].Key, triggerActionTriggerData);
-            //                 }
-            //             }
-            //     
-            //         }
-            //     }
-            //
-            // }
-        }
-
-        public void ClearMoveData(int actionUnitIdx)
-        {
-            if (TriggerActionDatas2.ContainsKey(actionUnitIdx))
-            {
-                TriggerActionDatas2[actionUnitIdx].Clear();
-            }
-        }
-
-        public void Destory()
-        {
-            TriggerActionDatas2.Clear();
-        }
+        
     }
 
 }

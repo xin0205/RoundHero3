@@ -1071,7 +1071,7 @@ namespace RoundHero
                     }
                 }
             }
-            BattleBulletManager.Instance.AddActionData(BattleFightManager.Instance.RoundFightData.BuffData_Use);
+            BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
             //BattleBulletManager.Instance.AddMoveActionData(Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.RoundFightData.BuffData_Use.MoveData);
 
             GameUtility.DelayExcute(1f, () => 
@@ -1088,7 +1088,7 @@ namespace RoundHero
                 //         }
                 //     }
                 // }
-                BattleBulletManager.Instance.UseActionData(Constant.Battle.UnUnitTriggerIdx);
+                BattleBulletManager.Instance.UseTriggerCollection(Constant.Battle.UnUnitTriggerIdx);
                 
 
             });

@@ -113,32 +113,35 @@ namespace RoundHero
 
                     bulletParticle.transform.DOMove(movePos, moveTIdx == 0 ? 0 : Constant.Battle.LineBulletShootTime).SetEase(Ease.Linear).OnComplete(() =>
                     {
-                        if (BattleBulletEntityData.BulletData.TriggerActionDataDict.Contains(moveGridPosIdx))
+                        if (BattleBulletEntityData.BulletData.TriggerCollections != null)
                         {
                             ShowExplodeParticle();
-      
-                            foreach (var triggerActionData in BattleBulletEntityData.BulletData.TriggerActionDataDict[moveGridPosIdx])
-                            {
-                                if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
-                                {
-                                    if (triggerActionTriggerData.TriggerData != null)
-                                    {
-                                        BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
+                            BattleBulletManager.Instance.UseTriggerCollection(
+                                BattleBulletEntityData.BulletData.ActionUnitIdx,
+                                BattleBulletEntityData.BulletData.EffectUnitIdx);
 
-                                    }
-                                }
-
-                                if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
-                                {
-                                    if (triggerActionMoveData.MoveUnitData != null)
-                                    {
-                                        BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
-                                    }
-                                }
-
-                                BattleManager.Instance.RefreshView();
-                            }
-                            
+                            // foreach (var triggerActionData in BattleBulletEntityData.BulletData.TriggerActionDataDict[moveGridPosIdx])
+                            // {
+                            //     if (triggerActionData is TriggerActionTriggerData triggerActionTriggerData)
+                            //     {
+                            //         if (triggerActionTriggerData.TriggerData != null)
+                            //         {
+                            //             BattleBulletManager.Instance.UseTriggerData(triggerActionTriggerData.TriggerData);
+                            //
+                            //         }
+                            //     }
+                            //
+                            //     if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+                            //     {
+                            //         if (triggerActionMoveData.MoveUnitData != null)
+                            //         {
+                            //             BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+                            //         }
+                            //     }
+                            //
+                            //     BattleManager.Instance.RefreshView();
+                            // }
+                            //
                         }
                         
                     });

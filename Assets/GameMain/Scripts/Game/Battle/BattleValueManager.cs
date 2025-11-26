@@ -54,16 +54,16 @@ namespace RoundHero
                 }
                 else if (effectUnit is BattleSoliderEntity)
                 {
-                    foreach (var triggerData in kv.Value.TriggerDatas)
-                    {
-                        if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
-                            triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
-                        {
-                            continue;
-                        }
-                        //CurValueEntityIdx += 1;
-                        
-                    }
+                    // foreach (var triggerData in kv.Value.TriggerDatas)
+                    // {
+                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                    //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
+                    //     {
+                    //         continue;
+                    //     }
+                    //     //CurValueEntityIdx += 1;
+                    //     
+                    // }
                     ShowValues(kv.Value.TriggerDatas);
                     //entityIdx += kv.Value.Count;
                 }
@@ -71,16 +71,16 @@ namespace RoundHero
                 {
                     //CurValueEntityIdx += 1;
                     
-                    foreach (var triggerData in kv.Value.TriggerDatas)
-                    {
-                        if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
-                            triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
-                        {
-                            continue;
-                        }
-                        //CurValueEntityIdx += 1;
-                        
-                    }
+                    // foreach (var triggerData in kv.Value.TriggerDatas)
+                    // {
+                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                    //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
+                    //     {
+                    //         continue;
+                    //     }
+                    //     //CurValueEntityIdx += 1;
+                    //     
+                    // }
                     ShowValues(kv.Value.TriggerDatas);
                     
                     // var startValue = 0;
@@ -229,6 +229,9 @@ namespace RoundHero
 
         public async void ShowValues(List<TriggerData> triggerDatas)
         {
+            if(triggerDatas.Count <= 0)
+                return;
+            
             var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].ActionUnitIdx);
             var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].EffectUnitIdx);
             
