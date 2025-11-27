@@ -756,6 +756,9 @@ namespace RoundHero
         
         public void ShowActionSort(bool isShow) 
         {
+            if(BattleFightManager.Instance.IsAction)
+                return;
+            
             var idx = 1;
             
             // BattleIconValueManager.Instance.UnShowDisplayIcons();

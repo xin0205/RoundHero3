@@ -52,6 +52,8 @@ namespace RoundHero
             
             this.randomSeed = randomSeed;
             Random = new Random(randomSeed);
+            
+            
 
         }
 
@@ -321,13 +323,17 @@ namespace RoundHero
 
                     if (propID != -1)
                     {
+                        
+                        var idx = BattleUnitManager.Instance.GetIdx();
+                        Log.Debug("A:" + ne.GridPosIdx + "-" + idx);
                         BattleManager.Instance.TempTriggerData.PropData = new Data_GridProp(propID,
-                            BattleUnitManager.Instance.GetIdx(),
+                            idx,
                             ne.GridPosIdx, BattleManager.Instance.CurUnitCamp);
                         
                         var gridPropData = BattleManager.Instance.TempTriggerData.PropData.Copy();
                         
-                        gridPropData.Idx = BattleUnitManager.Instance.GetIdx();
+                        HideTmpPropEntity();
+                        //gridPropData.Idx = idx;
                         var tmpEntity =
                             await GameEntry.Entity.ShowBattleGridPropEntityAsync(gridPropData);
 
@@ -335,9 +341,10 @@ namespace RoundHero
                         {
                             Log.Debug("tmpEntity == null");
                         }
-
+                        Log.Debug("B:" + ne.GridPosIdx + "-" + tmpEntity.GridPropData.Idx );
                         if(BattleManager.Instance.TempTriggerData.PropData == null || tmpEntity.GridPropData.Idx < BattleManager.Instance.TempTriggerData.PropData.Idx)
                         {
+                            Log.Debug("C:");
                             BattleGridPropManager.Instance.GridPropDatas.Remove(tmpEntity.GridPropData.Idx);
 
                             GameEntry.Entity.HideEntity(tmpEntity);
@@ -345,6 +352,7 @@ namespace RoundHero
                         }
                         else
                         {
+                            Log.Debug("D");
                             TmpPropEntity = tmpEntity;
                             //TmpUnitEntity.ShowCollider(false);
                             
@@ -362,10 +370,12 @@ namespace RoundHero
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
-                    if (BattleManager.Instance.TempTriggerData.PropData != null &&
-                        BattleManager.Instance.TempTriggerData.PropData.GridPosIdx == ne.GridPosIdx)
+                    Log.Debug("E:" + ne.GridPosIdx);
+                    // &&
+                    //BattleManager.Instance.TempTriggerData.PropData.GridPosIdx == ne.GridPosIdx
+                    if (BattleManager.Instance.TempTriggerData.PropData != null)
                     {
-
+                        Log.Debug("F:"+ BattleManager.Instance.TempTriggerData.PropData.Idx);
                         BattleManager.Instance.TempTriggerData.PropData = null;
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                         HideTmpPropEntity();
