@@ -1280,37 +1280,39 @@ namespace RoundHero
             if (unitIdx == Constant.Battle.UnUnitTriggerIdx)
             {
                 triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.BuffData_Use.TriggerDataDict));
+                //triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.BuffData_Use.TriggerDataDict));
                 foreach (var kv in RoundFightData.BuffData_Use.TriggerDataDict)
                 {
                     foreach (var kv3 in kv.Value.MoveData.MoveUnitDatas)
                     {
-
-                        foreach (var kv2 in kv3.Value.MoveActionData.TriggerDataDict)
-                        {
-                            foreach (var triggerData in kv2.Value.TriggerDatas)
-                            {
-                                // if (triggerData.ActualValue == 0)
-                                // {
-                                //     continue;
-                                // }
-                                // if (triggerData.ActionUnitIdx != unitIdx && triggerData.InterrelatedActionUnitIdx != unitIdx)
-                                // {
-                                //     continue;
-                                // }
-
-                                if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
-                                {
-                                    triggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
-                                    {
-                                        ActionUnitIdx = unitIdx,
-                                        EffectUnitIdx = kv.Key,
-                                    });
-                                }
-
-                                triggerDataDict[triggerData.EffectUnitIdx].TriggerDatas.Add(triggerData);
-                            }
-
-                        }
+                        triggerDataDict.AddRange(AddTriggerDatas(kv3.Value.MoveActionData.TriggerDataDict));
+                        
+                        // foreach (var kv2 in kv3.Value.MoveActionData.TriggerDataDict)
+                        // {
+                        //     foreach (var triggerData in kv2.Value.TriggerDatas)
+                        //     {
+                        //         // if (triggerData.ActualValue == 0)
+                        //         // {
+                        //         //     continue;
+                        //         // }
+                        //         // if (triggerData.ActionUnitIdx != unitIdx && triggerData.InterrelatedActionUnitIdx != unitIdx)
+                        //         // {
+                        //         //     continue;
+                        //         // }
+                        //
+                        //         if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                        //         {
+                        //             triggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
+                        //             {
+                        //                 ActionUnitIdx = unitIdx,
+                        //                 EffectUnitIdx = kv.Key,
+                        //             });
+                        //         }
+                        //
+                        //         triggerDataDict[triggerData.EffectUnitIdx].TriggerDatas.Add(triggerData);
+                        //     }
+                        //
+                        // }
                     }
                 }
                 

@@ -906,17 +906,16 @@ namespace RoundHero
                     return;
             }
             
-            TriggerCollection actionTriggerCollection;
+            
             if (!actionData.TriggerDataDict.ContainsKey(effectUnit.Idx))
             {
-                actionData.TriggerDataDict.Add(effectUnit.Idx, new TriggerCollection()
-                {
-                    ActionUnitIdx = actionUnitIdx,
-                    EffectUnitIdx = effectUnit.Idx,
-                });
+                actionData.TriggerDataDict.Add(effectUnit.Idx, new TriggerCollection());
             }
 
-            actionTriggerCollection = actionData.TriggerDataDict[effectUnit.Idx];
+            var actionTriggerCollection = actionData.TriggerDataDict[effectUnit.Idx];
+
+            actionTriggerCollection.ActionUnitIdx = actionUnitIdx;
+            actionTriggerCollection.EffectUnitIdx = effectUnit.Idx;
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(_actionGridPosIdx);
 

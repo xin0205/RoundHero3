@@ -84,6 +84,15 @@ namespace RoundHero
 
                         foreach (var triggerData in triggerDatas)
                         {
+                            if (!BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.ContainsKey(
+                                    triggerData.EffectUnitIdx))
+                            {
+                                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection());
+                            }
+
+                            BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict[triggerData.EffectUnitIdx]
+                                .TriggerDatas.Add(triggerData);                          
+                            
 
                             BattleFightManager.Instance.CacheUnitActiveMoveDatas(Constant.Battle.UnUnitTriggerIdx,
                                 triggerData.EffectUnitGridPosIdx, triggerData.BuffValue.BuffData,
@@ -153,13 +162,21 @@ namespace RoundHero
             
             if (triggerDatas.Count > 0)
             {
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(cardIdx, new TriggerCollection()
-                {
-                    ActionUnitIdx = Constant.Battle.UnUnitTriggerIdx,
-                    TriggerDatas = triggerDatas,
-                });
-                BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict);
+                // if (!BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.ContainsKey(effectUnit.Idx))
+                // {
+                //     BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(effectUnit.Idx, new TriggerCollection());
+                // }
+                //
+                // var triggerCollection =
+                //     BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict[effectUnit.Idx];
+                //
+                // triggerCollection.ActionUnitIdx = Constant.Battle.UnUnitTriggerIdx;
+                // triggerCollection.EffectUnitIdx = effectUnit.Idx;
+                // triggerCollection.TriggerDatas = triggerDatas;
+                
+                //BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict);
             }
+            BattleFightManager.Instance.CalculateHeroHPDelta(BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict);
 
             
             

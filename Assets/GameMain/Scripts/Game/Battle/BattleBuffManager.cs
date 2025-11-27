@@ -1052,10 +1052,10 @@ namespace RoundHero
                     }
                     
 
-                    GameUtility.DelayExcute(0.5f, () =>
-                    {
-                        BattleFightManager.Instance.TriggerAction(triggerData);
-                    });
+                    // GameUtility.DelayExcute(0.5f, () =>
+                    // {
+                    //     BattleFightManager.Instance.TriggerAction(triggerData);
+                    // });
                     
                 }
                 
