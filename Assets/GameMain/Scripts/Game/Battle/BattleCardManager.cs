@@ -952,8 +952,6 @@ namespace RoundHero
 
             var card = BattleManager.Instance.GetCard(cardIdx);
 
-            
-            
             BattlePlayerData.RoundUseCardCount += 1;
 
             //var card = BattleManager.Instance.GetCard(cardIdx);

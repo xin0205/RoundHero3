@@ -1039,10 +1039,10 @@ namespace RoundHero
             {
                 BattleFightManager.Instance.IsAction = false;
             });
+            
+            var gridPosIdxs = new List<int>();
             foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict)
             {
-
-                var gridPosIdxs = new List<int>();
                 foreach (var triggerData in kv.Value.TriggerDatas)
                 {
                     if (GameUtility.InGridRange(GameUtility.GridPosIdxToCoord(triggerData.EffectUnitGridPosIdx)) &&
@@ -1051,7 +1051,6 @@ namespace RoundHero
                         gridPosIdxs.Add(triggerData.EffectUnitGridPosIdx);
                     }
                     
-
                     // GameUtility.DelayExcute(0.5f, () =>
                     // {
                     //     BattleFightManager.Instance.TriggerAction(triggerData);
@@ -1059,18 +1058,21 @@ namespace RoundHero
                     
                 }
                 
-                var drCard = CardManager.Instance.GetCardTable(kv.Key);
-                if (drCard != null)
+             }
+
+            var drCard =
+                CardManager.Instance.GetCardTable(BattleFightManager.Instance.RoundFightData.BuffData_Use.CardIdx);
+            if (drCard != null)
+            {
+                switch (drCard.AttackCastType)
                 {
-                    switch (drCard.AttackCastType)
-                    {
-                        case EAttackCastType.TacticDownMulti:
-                            BattleCardManager.Instance.ShowTacticDownMulti(gridPosIdxs);
-                            break;
+                    case EAttackCastType.TacticDownMulti:
+                        BattleCardManager.Instance.ShowTacticDownMulti(gridPosIdxs);
+                        break;
                             
-                    }
                 }
             }
+            
             BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
             //BattleBulletManager.Instance.AddMoveActionData(Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.RoundFightData.BuffData_Use.MoveData);
 

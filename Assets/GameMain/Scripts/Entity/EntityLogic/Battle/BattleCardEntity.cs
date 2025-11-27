@@ -514,6 +514,7 @@ namespace RoundHero
             if(!isShow)
                 return;
             
+            BattleUnitManager.Instance.UnShowTags();
 
             DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
 
@@ -522,7 +523,6 @@ namespace RoundHero
             if(BattleCardEntityData.CardData.UnUse)
                 return;
 
-            
             BattleCardEntityData.CardData.CardUseType = ECardUseType.RawSelect;
             if (!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
             {
@@ -531,9 +531,6 @@ namespace RoundHero
                     GameEntry.Localization.GetString(Constant.Localization.Info_UnSelectCard);
                 return;
             }
-                
-
-            BattleUnitManager.Instance.UnShowTags();
 
             UseCardAnimation();
             BattleCardEntityData.CardData.CardUseType = ECardUseType.RawUnSelect;

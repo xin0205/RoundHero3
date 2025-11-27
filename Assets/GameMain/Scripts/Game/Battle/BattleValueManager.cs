@@ -283,7 +283,7 @@ namespace RoundHero
         //
         public void  UnShowDisplayValues()
         {
-            
+            moveValueList.Clear();
             ShowValueEntityIdx = CurValueEntityIdx;
             //Log.Debug("UnShowDisplayValues:" + showValueEntityIdx);
             foreach (var kv in BattleValueEntities)

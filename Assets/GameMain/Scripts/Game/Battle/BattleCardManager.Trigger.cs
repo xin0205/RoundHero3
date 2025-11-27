@@ -16,6 +16,7 @@ namespace RoundHero
             var triggerDatas = new List<TriggerData>();
 
             BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionUnitIdx = Constant.Battle.UnUnitTriggerIdx;
+            BattleFightManager.Instance.RoundFightData.BuffData_Use.CardIdx = cardIdx;
             
             var unComsumeCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.UnConsumeCard, PlayerManager.Instance.PlayerData.UnitCamp);
             

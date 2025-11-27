@@ -92,6 +92,7 @@ namespace RoundHero
     
     public class CardActionData : ActionData
     {
+        public int CardIdx;
         public int CardEnergy;
         public ECardDestination CardDestination;
         public Dictionary<int, List<TriggerData>> ConsumeCardDatas = new();
