@@ -2413,7 +2413,7 @@ namespace RoundHero
                         
                     
                         //BattleBulletManager.Instance.AddTriggerData(triggerData); 
-                        actionUnit?.MoveAttack(triggerData.EffectUnitIdx);
+                        actionUnit?.MoveAttack(triggerData.EffectUnitGridPosIdx);
                         //effectUnit.Hurt();
                     
                     }

@@ -1633,7 +1633,7 @@ namespace RoundHero
                     moveActionData.TriggerDataDict.Add(i, new TriggerCollection()
                     {
                         ActionUnitIdx = passUnit != null ? passUnit.Idx : -1,
-                        EffectUnitIdx = bePassUnit != null ? bePassUnit.Idx : -1,
+                        EffectUnitIdx = gridPosIdx,//bePassUnit != null ? bePassUnit.Idx : -1,
                         TriggerDatas = triggerDatas
                     });
                 }
