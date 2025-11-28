@@ -1254,38 +1254,38 @@ namespace RoundHero
 
             if (RoundFightData.EnemyMoveDatas.ContainsKey(unitIdx))
             {
-                triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.EnemyMoveDatas[unitIdx].TriggerDataDict));
+                AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.EnemyMoveDatas[unitIdx].TriggerDataDict));
             }
             
             if (RoundFightData.SoliderMoveDatas.ContainsKey(unitIdx))
             {
-                triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.SoliderMoveDatas[unitIdx].TriggerDataDict));
+                AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.SoliderMoveDatas[unitIdx].TriggerDataDict));
             }
             
             if (RoundFightData.EnemyAttackDatas.ContainsKey(unitIdx))
             {
-                triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.EnemyAttackDatas[unitIdx].TriggerDataDict));
+                AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.EnemyAttackDatas[unitIdx].TriggerDataDict));
             }
             
             if (RoundFightData.SoliderActiveAttackDatas.ContainsKey(unitIdx))
             {
-                triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.SoliderActiveAttackDatas[unitIdx].TriggerDataDict));
+                AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.SoliderActiveAttackDatas[unitIdx].TriggerDataDict));
             }
             
             if (RoundFightData.SoliderAttackDatas.ContainsKey(unitIdx))
             {
-                triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.SoliderAttackDatas[unitIdx].TriggerDataDict));
+                AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.SoliderAttackDatas[unitIdx].TriggerDataDict));
             }
 
             if (unitIdx == Constant.Battle.UnUnitTriggerIdx)
             {
-                triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.BuffData_Use.TriggerDataDict));
+                AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.BuffData_Use.TriggerDataDict));
                 //triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.BuffData_Use.TriggerDataDict));
                 foreach (var kv in RoundFightData.BuffData_Use.TriggerDataDict)
                 {
                     foreach (var kv3 in kv.Value.MoveData.MoveUnitDatas)
                     {
-                        triggerDataDict.AddRange(AddTriggerDatas(kv3.Value.MoveActionData.TriggerDataDict));
+                        AddRange(triggerDataDict, AddTriggerDatas(kv3.Value.MoveActionData.TriggerDataDict));
                         
                         // foreach (var kv2 in kv3.Value.MoveActionData.TriggerDataDict)
                         // {
@@ -1326,28 +1326,29 @@ namespace RoundHero
                 {
                     foreach (var kv3 in kv2.Value.MoveData.MoveUnitDatas)
                     {
-                        foreach (var kv4 in kv3.Value.MoveActionData.TriggerDataDict)
-                        {
-                            triggerDataDict.Add(kv4.Key, kv4.Value);
-                            // foreach (var triggerData in kv4.Value.TriggerDatas)
-                            // {
-                            //     if (triggerData.ActionUnitIdx != unitIdx && triggerData.InterrelatedActionUnitIdx != unitIdx)
-                            //     {
-                            //         continue;
-                            //     }
-                            //
-                            //     if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
-                            //     {
-                            //         triggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
-                            //         {
-                            //             ActionUnitIdx = triggerData.ActionUnitIdx,
-                            //             EffectUnitIdx = triggerData.EffectUnitIdx,
-                            //         });
-                            //     }
-                            //
-                            //     triggerDataDict[triggerData.EffectUnitIdx].TriggerDatas.Add(triggerData);
-                            // }
-                        }
+                        AddRange(triggerDataDict, kv3.Value.MoveActionData.TriggerDataDict);
+                        // foreach (var kv4 in kv3.Value.MoveActionData.TriggerDataDict)
+                        // {
+                        //     triggerDataDict.Add(kv4.Key, kv4.Value);
+                        //     // foreach (var triggerData in kv4.Value.TriggerDatas)
+                        //     // {
+                        //     //     if (triggerData.ActionUnitIdx != unitIdx && triggerData.InterrelatedActionUnitIdx != unitIdx)
+                        //     //     {
+                        //     //         continue;
+                        //     //     }
+                        //     //
+                        //     //     if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                        //     //     {
+                        //     //         triggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
+                        //     //         {
+                        //     //             ActionUnitIdx = triggerData.ActionUnitIdx,
+                        //     //             EffectUnitIdx = triggerData.EffectUnitIdx,
+                        //     //         });
+                        //     //     }
+                        //     //
+                        //     //     triggerDataDict[triggerData.EffectUnitIdx].TriggerDatas.Add(triggerData);
+                        //     // }
+                        // }
                     }
 
                     // foreach (var triggerDatas in kv2.Value.MoveActionData.TriggerDataDict)
@@ -1381,29 +1382,29 @@ namespace RoundHero
                 {
                     foreach (var kv3 in kv2.Value.MoveData.MoveUnitDatas)
                     {
-                        foreach (var kv4 in kv3.Value.MoveActionData.TriggerDataDict)
-                        {
-                            triggerDataDict.Add(kv4.Key, kv4.Value);
-                            
-                            // foreach (var triggerData in kv4.Value.TriggerDatas)
-                            // {
-                            //     if (triggerData.ActionUnitIdx != unitIdx && triggerData.InterrelatedActionUnitIdx != unitIdx)
-                            //     {
-                            //         continue;
-                            //     }
-                            //
-                            //     if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
-                            //     {
-                            //         triggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
-                            //         {
-                            //             ActionUnitIdx = triggerData.ActionUnitIdx,
-                            //             EffectUnitIdx = triggerData.EffectUnitIdx,
-                            //         });
-                            //     }
-                            //
-                            //     triggerDataDict[triggerData.EffectUnitIdx].TriggerDatas.Add(triggerData);
-                            // }
-                        }
+                        AddRange(triggerDataDict, kv3.Value.MoveActionData.TriggerDataDict);
+                        // foreach (var kv4 in kv3.Value.MoveActionData.TriggerDataDict)
+                        // {
+                        //
+                        //     // foreach (var triggerData in kv4.Value.TriggerDatas)
+                        //     // {
+                        //     //     if (triggerData.ActionUnitIdx != unitIdx && triggerData.InterrelatedActionUnitIdx != unitIdx)
+                        //     //     {
+                        //     //         continue;
+                        //     //     }
+                        //     //
+                        //     //     if (!triggerDataDict.ContainsKey(triggerData.EffectUnitIdx))
+                        //     //     {
+                        //     //         triggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
+                        //     //         {
+                        //     //             ActionUnitIdx = triggerData.ActionUnitIdx,
+                        //     //             EffectUnitIdx = triggerData.EffectUnitIdx,
+                        //     //         });
+                        //     //     }
+                        //     //
+                        //     //     triggerDataDict[triggerData.EffectUnitIdx].TriggerDatas.Add(triggerData);
+                        //     // }
+                        // }
                     }
 
                     
@@ -1436,6 +1437,19 @@ namespace RoundHero
             }
 
             return triggerDataDict;
+        }
+
+
+        public void AddRange(Dictionary<int, TriggerCollection> a, Dictionary<int, TriggerCollection> b)
+        {
+            foreach (var kv in b)
+            {
+                if (!a.ContainsKey(kv.Key))
+                {
+                    a.Add(kv.Key, kv.Value);
+                }
+
+            }
         }
     }
 }
