@@ -24,6 +24,18 @@ namespace RoundHero
 
         public void CalculateHeroHPDelta(ActionData actionData)
         {
+            var values = actionData.TriggerDataDict.Values.ToList();
+            var keys = actionData.TriggerDataDict.Keys.ToList();
+            
+            for (int i = values.Count - 1; i >= 0; i--)
+            {
+                var value = values[i];
+                if (value.TriggerDatas.Count <= 0 && value.MoveData.MoveUnitDatas.Count <= 0)
+                {
+                    actionData.TriggerDataDict.Remove(keys[i]);
+                }
+                
+            }
             // foreach (var kv in actionData.MoveData.MoveUnitDatas)
             // {
             //     CalculateHeroHPDelta(kv.Value.MoveActionData);

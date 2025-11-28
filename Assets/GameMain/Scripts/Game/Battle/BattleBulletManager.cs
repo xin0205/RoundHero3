@@ -42,7 +42,7 @@ namespace RoundHero
 
             }
             
-            TriggerCollections[triggerCollection.ActionUnitIdx].Add(triggerCollection.EffectUnitIdx,
+            TriggerCollections[triggerCollection.ActionUnitIdx].Add(triggerCollection.EffectTagIdx,
                 triggerCollection.Copy());
 
         }
@@ -58,7 +58,7 @@ namespace RoundHero
 
                 }
             
-                TriggerCollections[kv.Value.ActionUnitIdx].Add(kv.Value.EffectUnitIdx,
+                TriggerCollections[kv.Value.ActionUnitIdx].Add(kv.Value.EffectTagIdx,
                     kv.Value.Copy());
             }
             

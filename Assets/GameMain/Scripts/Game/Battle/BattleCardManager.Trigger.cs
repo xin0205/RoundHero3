@@ -83,29 +83,28 @@ namespace RoundHero
                         BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
                             effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, -1, ETriggerDataSubType.Card);
 
-                        foreach (var triggerData in triggerDatas)
-                        {
-                            if (!BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.ContainsKey(
-                                    triggerData.EffectUnitIdx))
-                            {
-                                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection());
-                            }
-
-                            BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict[triggerData.EffectUnitIdx]
-                                .TriggerDatas.Add(triggerData);                          
-                            
-
-                            BattleFightManager.Instance.CacheUnitActiveMoveDatas(Constant.Battle.UnUnitTriggerIdx,
-                                triggerData.EffectUnitGridPosIdx, triggerData.BuffValue.BuffData,
-                                BattleFightManager.Instance.RoundFightData.BuffData_Use,
-                                triggerData, triggerData.ActionUnitGridPosIdx);
-                        }
                     }
 
                 }
             }
             
+            foreach (var triggerData in triggerDatas)
+            {
+                if (!BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.ContainsKey(
+                        triggerData.EffectUnitIdx))
+                {
+                    BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection());
+                }
 
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict[triggerData.EffectUnitIdx]
+                    .TriggerDatas.Add(triggerData);                          
+                            
+
+                BattleFightManager.Instance.CacheUnitActiveMoveDatas(Constant.Battle.UnUnitTriggerIdx,
+                    triggerData.EffectUnitGridPosIdx, triggerData.BuffValue.BuffData,
+                    BattleFightManager.Instance.RoundFightData.BuffData_Use,
+                    triggerData, triggerData.ActionUnitGridPosIdx);
+            }
             //CacheUseCard(cardIdx, effectUnit, actionUnitGridPosidx, actionUnitIdx, triggerDatas);
             
             //var drCard = CardManager.Instance.GetCardTable(cardIdx);

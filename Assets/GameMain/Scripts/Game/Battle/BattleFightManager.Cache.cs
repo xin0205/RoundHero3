@@ -396,7 +396,7 @@ namespace RoundHero
                     actionData.TriggerDataDict.Add(kv.Key, new TriggerCollection()
                     {
                         ActionUnitIdx = kv.Key,
-                        EffectUnitIdx = kv.Key,
+                        EffectTagIdx = kv.Key,
                         TriggerDatas = triggerDatas
                     });
                 }
@@ -460,7 +460,7 @@ namespace RoundHero
                     actionData.TriggerDataDict.Add(kv.Key, new TriggerCollection()
                     {
                         ActionUnitIdx = kv.Key,
-                        EffectUnitIdx = kv.Key,
+                        EffectTagIdx = kv.Key,
                         TriggerDatas = triggerDatas
                     });
                 }
@@ -523,7 +523,7 @@ namespace RoundHero
                     actionData.TriggerDataDict.Add(kv.Key, new TriggerCollection()
                     {
                         ActionUnitIdx = kv.Key,
-                        EffectUnitIdx = kv.Key,
+                        EffectTagIdx = kv.Key,
                         TriggerDatas = triggerDatas
                     });
                 }
@@ -731,7 +731,7 @@ namespace RoundHero
                         actionData.TriggerDataDict.Add(effectUnit.Idx, new TriggerCollection()
                         {
                             ActionUnitIdx = attackUnitIdx,
-                            EffectUnitIdx = effectUnit.Idx,
+                            EffectTagIdx = effectUnit.Idx,
                             TriggerDatas = triggerDatas
                         });
                     }
@@ -915,7 +915,7 @@ namespace RoundHero
             var actionTriggerCollection = actionData.TriggerDataDict[effectUnit.Idx];
 
             actionTriggerCollection.ActionUnitIdx = actionUnitIdx;
-            actionTriggerCollection.EffectUnitIdx = effectUnit.Idx;
+            actionTriggerCollection.EffectTagIdx = effectUnit.Idx;
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(_actionGridPosIdx);
 
@@ -1146,8 +1146,8 @@ namespace RoundHero
 
 
             }
-            
 
+            
             //CalculateUnitPaths(EUnitCamp.Third, RoundFightData.ThirdUnitMovePaths);
         }
 
@@ -1163,7 +1163,7 @@ namespace RoundHero
                 actionData.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
                 {
                     ActionUnitIdx = triggerData.ActionUnitIdx,
-                    EffectUnitIdx = triggerData.EffectUnitIdx,
+                    EffectTagIdx = triggerData.EffectUnitIdx,
                 });
             }
 
@@ -1633,7 +1633,7 @@ namespace RoundHero
                     moveActionData.TriggerDataDict.Add(i, new TriggerCollection()
                     {
                         ActionUnitIdx = passUnit != null ? passUnit.Idx : -1,
-                        EffectUnitIdx = gridPosIdx,//bePassUnit != null ? bePassUnit.Idx : -1,
+                        EffectTagIdx = gridPosIdx,//bePassUnit != null ? bePassUnit.Idx : -1,
                         TriggerDatas = triggerDatas
                     });
                 }

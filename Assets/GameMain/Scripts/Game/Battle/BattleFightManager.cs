@@ -108,7 +108,7 @@ namespace RoundHero
     public class TriggerCollection
     {
         public int ActionUnitIdx;
-        public int EffectUnitIdx;
+        public int EffectTagIdx;
         public List<TriggerData> TriggerDatas = new List<TriggerData>();
             
         public MoveData MoveData = new MoveData();
@@ -126,7 +126,7 @@ namespace RoundHero
             _triggerCollection.MoveData = MoveData.Copy();
             
             _triggerCollection.ActionUnitIdx = ActionUnitIdx;
-            _triggerCollection.EffectUnitIdx = EffectUnitIdx;
+            _triggerCollection.EffectTagIdx = EffectTagIdx;
             _triggerCollection.IsTrigger = IsTrigger;
             
             return _triggerCollection;
@@ -2387,15 +2387,15 @@ namespace RoundHero
 
             foreach (var triggerData in triggerCollection.TriggerDatas)
             {
-                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerCollection.ActionUnitIdx);
-                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerCollection.EffectUnitIdx);
+                var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
                 //Log.Debug("ActionUnitID:" + triggerData.ActionUnitIdx);
                 //!(!triggerData.ChangeHPInstantly && HeroManager.Instance.IsHero(triggerData.EffectUnitID))
                 if (triggerData.TriggerDataSubType == ETriggerDataSubType.Collision)
                 {
                     //effectUnit?.Hurt();
-                    triggerData.IsTrigger = true;
-                    TriggerAction(triggerData);
+                    //triggerData.IsTrigger = true;
+                    BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
                     BattleEffectManager.Instance.ShowCollideEffect(effectUnit.EffectHurtPos.position);
                     actionUnit.BattleUnitData.CollideCount += 1;
                     effectUnit.BattleUnitData.CollideCount += 1;
@@ -2403,8 +2403,9 @@ namespace RoundHero
             
                 else if (triggerData.TriggerDataSubType == ETriggerDataSubType.State)
                 {
-                    triggerData.IsTrigger = true;
-                    TriggerAction(triggerData);
+                    //triggerData.IsTrigger = true;
+                    BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
+
                 }
                 else
                 {
@@ -2419,9 +2420,11 @@ namespace RoundHero
                     }
                     else
                     {
-                        triggerData.IsTrigger = true;
-                        
-                        BattleFightManager.Instance.TriggerAction(triggerData.Copy());
+                        BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
+
+                        // triggerData.IsTrigger = true;
+                        //
+                        // BattleFightManager.Instance.TriggerAction(triggerData.Copy());
                     }
                        
                 }

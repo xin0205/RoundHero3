@@ -839,7 +839,7 @@ namespace RoundHero
         
         public async void HandleGetHit(BattleUnitEntity actionUnitEntity)
         {
-            Log.Debug("GetHit");
+            //Log.Debug("GetHit");
             ShowEffectHurtEntity(actionUnitEntity);
         }
 
