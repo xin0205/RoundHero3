@@ -408,23 +408,23 @@ namespace RoundHero
                     
             }
 
-            // var enemyIdxs = MathUtility.GetRandomNum(
-            //     enemyGenerateCount, 0,
-            //     places.Count, new Random(GetRandomSeed()));
+            var enemyIdxs = MathUtility.GetRandomNum(
+                enemyGenerateCount, 0,
+                places.Count, new Random(GetRandomSeed()));
                 
             
 
-            var test = new List<int>(){3, 3, 3};
-            
-             var enemyIdxs = MathUtility.GetRandomNum(
-                 test.Count, 0,
-                 places.Count, new Random(GetRandomSeed()));
+            // var test = new List<int>(){3, 3, 3};
+            //
+            // var enemyIdxs = MathUtility.GetRandomNum(
+            //      test.Count, 0,
+            //      places.Count, new Random(GetRandomSeed()));
             
             //enemyGenerateCount
             for (int i = 0; i < enemyGenerateCount; i++)
             {
                 //test[i];//EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];
-                var enemyID = test[i];
+                var enemyID = EnemyGenerateData.UnitList[EnemyGenerateData.UnitIdx++];
 
                 var battleEnemyData = new Data_BattleMonster(BattleUnitManager.Instance.GetIdx(), enemyID,
                     places[enemyIdxs[i]], EUnitCamp.Enemy, new List<int>(), BattleManager.Instance.BattleData.Round, isRoundStart);

@@ -856,30 +856,35 @@ namespace RoundHero
         //private EffectEntity effectAttackEntity;
         private async Task ShowEffectAttackEntity(EAttackCastType unitAttackCastType)
         {
-            var triggerActionDataDict = BattleBulletManager.Instance.GetTriggerCollectionDict(this.BattleUnitData.Idx);
+            var triggerCollectionDict = BattleBulletManager.Instance.GetTriggerCollectionDict(this.BattleUnitData.Idx);
+            if (triggerCollectionDict == null)
+            {
+                return;
+            }
+            
             switch (unitAttackCastType)
             {
                 case EAttackCastType.CloseSingle:
-                    ShowEffectAttackEntity_CloseSingle(triggerActionDataDict);
+                    ShowEffectAttackEntity_CloseSingle(triggerCollectionDict);
                     break;
                 case EAttackCastType.ExtendSingle:
-                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
+                    ShowEffectAttackEntity_Empty(triggerCollectionDict);
                     break;
                 case EAttackCastType.ParabolaSingle:
-                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
+                    ShowEffectAttackEntity_Empty(triggerCollectionDict);
                     break;
                 case EAttackCastType.CloseMulti:
-                    ShowEffectAttackEntity_CloseMulti(triggerActionDataDict);
+                    ShowEffectAttackEntity_CloseMulti(triggerCollectionDict);
                     break;
                 
                 case EAttackCastType.ExtendMulti:
-                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
+                    ShowEffectAttackEntity_Empty(triggerCollectionDict);
                     break;
                 case EAttackCastType.ParabolaMulti:
-                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
+                    ShowEffectAttackEntity_Empty(triggerCollectionDict);
                     break;
                 case EAttackCastType.LineMulti:
-                    ShowEffectAttackEntity_Empty(triggerActionDataDict);
+                    ShowEffectAttackEntity_Empty(triggerCollectionDict);
                     break;
                 case EAttackCastType.Empty:
                 default:
@@ -945,6 +950,10 @@ namespace RoundHero
         {
             var effectName = "EffectCloseSingleAttackEntity";
             var effectPos = EffectHurtPos.position;
+            if (triggerCollectionDict == null)
+            {
+                return;
+            }
 
             foreach (var kv in triggerCollectionDict)
             {
@@ -1018,7 +1027,10 @@ namespace RoundHero
         {
             var effectName = "EffectCloseMultiAttackEntity";
             var effectPos = EffectHurtPos.position;
-
+            if (triggerCollectionDict == null)
+            {
+                return;
+            }
             foreach (var kv in triggerCollectionDict.Values)
             {
                 foreach (var triggerData in kv.TriggerDatas)
@@ -1050,7 +1062,10 @@ namespace RoundHero
 
         private async void ShowEffectAttackEntity_Empty(Dictionary<int, TriggerCollection> triggerCollectionDict)
         {
-            
+            if (triggerCollectionDict == null)
+            {
+                return;
+            }
         }
 
         

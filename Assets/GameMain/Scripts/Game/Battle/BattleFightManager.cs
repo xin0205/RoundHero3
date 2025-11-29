@@ -1186,7 +1186,7 @@ namespace RoundHero
                         triggerData.ChangeHPInstantly, triggerData);
                     
                     var counterAtkCount = effectUnitData.GetAllStateCount(EUnitState.CounterAtk);
-                    if (counterAtkCount > 0 && actionUnitData != null)
+                    if (counterAtkCount > 0 && actionUnitData != null && actionUnitData.Idx != effectUnitData.Idx)
                     {
                         var counterValue = -counterAtkCount;
                         
@@ -1198,7 +1198,7 @@ namespace RoundHero
                             counterValue = -actionUnitData.CurHP;
                         }
                         
-                        if (actualCounterAtkCount > 0)
+                        if (actualCounterAtkCount > 0 )
                         {
                             if (effectUnitData.FuneCount(EBuffID.Spec_UnitStateSubOne) > 0  && actualCounterAtkCount > 1)
                             {
@@ -2856,11 +2856,15 @@ namespace RoundHero
 
                 var unit = GameUtility.GetUnitByGridPosIdx(gridPosIdx);
                 // && unit.GetStateCount(EUnitState.UnBePass) > 0
-                if (unitActionState != EUnitActionState.Throw && (unit != null ||
+                if (unitActionState != EUnitActionState.Throw && ((unit != null && unit.Exist()) ||
                                                                   RoundFightData.GamePlayData.BattleData.GridTypes[
                                                                       gridPosIdx] == EGridType.Obstacle))
                 {
                     flyPosIdxs.Add(lastGridPosIdx);
+                    break;
+                }
+                if (unitActionState != EUnitActionState.Throw && unit != null && !unit.Exist())
+                {
                     break;
                 }
                 else if (unitActionState == EUnitActionState.Throw &&

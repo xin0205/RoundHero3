@@ -896,6 +896,8 @@ namespace RoundHero
 
             
             var effectUnit = GetUnitByGridPosIdx(effectGridPosIdx);
+            
+            
             if (effectUnit == null && !Constant.Battle.RelatedUnitFlyRanges.Contains(buffData.FlyRange))
                 return;
 
