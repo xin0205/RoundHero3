@@ -917,7 +917,7 @@ namespace RoundHero
             var actionTriggerCollection = actionData.TriggerDataDict[effectUnit.Idx];
 
             // actionTriggerCollection.ActionUnitIdx = actionUnitIdx;
-            // actionTriggerCollection.EffectTagIdx = effectUnit.Idx;
+            actionTriggerCollection.EffectTagIdx = effectUnit.Idx;
 
             var actionUnitCoord = GameUtility.GridPosIdxToCoord(_actionGridPosIdx);
 

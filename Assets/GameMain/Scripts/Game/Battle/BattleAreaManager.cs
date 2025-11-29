@@ -261,6 +261,7 @@ namespace RoundHero
                                 BattleTagManager.Instance.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
                                 //await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
                                 //TmpUnitEntity.ShowTags(TmpUnitEntity.UnitIdx);
+                                
                             }
                         
                         
@@ -845,7 +846,8 @@ namespace RoundHero
                             }
                             else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
                             {
-                                BattleTagManager.Instance.ShowHurtTags(unit.UnitIdx, null);
+                                BattleTagManager.Instance.ShowTags(Constant.Battle.UnUnitTriggerIdx);
+                                //BattleTagManager.Instance.ShowHurtTags(unit.UnitIdx, null);
                                 // var hurtTriggerDataDict =
                                 //     GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(unit.UnitIdx),
                                 //         BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit.UnitIdx));
