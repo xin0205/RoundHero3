@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 22498214}
   - component: {fileID: -4254083809414324525}
-  - component: {fileID: 2488501609636075810}
   m_Layer: 6
   m_Name: GridPropEntity_65
   m_TagString: Untagged
@@ -55,20 +54,6 @@ MonoBehaviour:
     m_TypeId: 0
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0, w: 1}
---- !u!114 &2488501609636075810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d3b32cf89d487e4ca4ec08f700dadf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 2
-  go: {fileID: 6140976801844750306}
 --- !u!1 &5696579092624962625
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,6 +95,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 2765857079221491677}
     m_Modifications:
     - target: {fileID: 887614428558414039, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 887614428558414039, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
       propertyPath: moveWithTransform
       value: 1
       objectReference: {fileID: 0}
@@ -118,7 +107,15 @@ PrefabInstance:
       value: -0.7853981
       objectReference: {fileID: 0}
     - target: {fileID: 2596099032161501893, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
+      propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2596099032161501893, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
       propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4080752560459120346, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
+      propertyPath: looping
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4080752560459120346, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
@@ -185,6 +182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShieldDefenseBlue
       objectReference: {fileID: 0}
+    - target: {fileID: 4080752560459120357, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 703add5034f68d940a8bdd44c2437b0e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -193,10 +194,5 @@ PrefabInstance:
 --- !u!4 &6140976801844750301 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4080752560459120347, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
-  m_PrefabInstance: {fileID: 7897236804673247494}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6140976801844750306 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4080752560459120356, guid: ea81be6dedf29f544b61dd4e8b5044ae, type: 3}
   m_PrefabInstance: {fileID: 7897236804673247494}
   m_PrefabAsset: {fileID: 0}
