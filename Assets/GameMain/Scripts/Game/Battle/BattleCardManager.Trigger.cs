@@ -88,23 +88,7 @@ namespace RoundHero
                 }
             }
             
-            foreach (var triggerData in triggerDatas)
-            {
-                if (!BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.ContainsKey(
-                        triggerData.EffectUnitIdx))
-                {
-                    BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection());
-                }
-
-                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict[triggerData.EffectUnitIdx]
-                    .TriggerDatas.Add(triggerData);                          
-                            
-
-                BattleFightManager.Instance.CacheUnitActiveMoveDatas(Constant.Battle.UnUnitTriggerIdx,
-                    triggerData.EffectUnitGridPosIdx, triggerData.BuffValue.BuffData,
-                    BattleFightManager.Instance.RoundFightData.BuffData_Use,
-                    triggerData, triggerData.ActionUnitGridPosIdx);
-            }
+            
             //CacheUseCard(cardIdx, effectUnit, actionUnitGridPosidx, actionUnitIdx, triggerDatas);
             
             //var drCard = CardManager.Instance.GetCardTable(cardIdx);
@@ -132,7 +116,7 @@ namespace RoundHero
                     var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
                     var values = drBuff.GetValues(idx++);
 
-                    BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, actionUnitIdx,
+                    BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, Constant.Battle.UnUnitTriggerIdx,
                         effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, funeIdx, ETriggerDataSubType.Fune);
   
                     BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Fune;
@@ -159,6 +143,27 @@ namespace RoundHero
             }
             
             BlessManager.Instance.CacheUseCardData(EBlessID.EachRoundUseCardAttackAllEnemy, triggerDatas);
+            
+            foreach (var triggerData in triggerDatas)
+            {
+                if (!BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.ContainsKey(
+                        triggerData.EffectUnitIdx))
+                {
+                    BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
+                    {
+                        ActionUnitIdx = Constant.Battle.UnUnitTriggerIdx,
+                    });
+                }
+
+                BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict[triggerData.EffectUnitIdx]
+                    .TriggerDatas.Add(triggerData);                          
+                            
+
+                BattleFightManager.Instance.CacheUnitActiveMoveDatas(Constant.Battle.UnUnitTriggerIdx,
+                    triggerData.EffectUnitGridPosIdx, triggerData.BuffValue.BuffData,
+                    BattleFightManager.Instance.RoundFightData.BuffData_Use,
+                    triggerData, triggerData.ActionUnitGridPosIdx);
+            }
             
             if (triggerDatas.Count > 0)
             {
