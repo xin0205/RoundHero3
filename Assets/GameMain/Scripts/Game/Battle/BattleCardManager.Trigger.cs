@@ -116,7 +116,7 @@ namespace RoundHero
                     var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
                     var values = drBuff.GetValues(idx++);
 
-                    BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, actionUnitIdx, Constant.Battle.UnUnitTriggerIdx,
+                    BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, Constant.Battle.UnUnitTriggerIdx, actionUnitIdx,
                         effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, funeIdx, ETriggerDataSubType.Fune);
   
                     BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Fune;

@@ -58,9 +58,11 @@ namespace RoundHero
 
             if (BattleManager.Instance.TempTriggerData.TriggerType == ETempTriggerType.NewUnit)
             {
+                var effectUnit = GetUnitByGridPosIdx(BattleManager.Instance.TempTriggerData.TargetGridPosIdx);
+
                 BattleCardManager.Instance.CacheUseCardData(
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx,
-                    null, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
+                    effectUnit, BattleManager.Instance.TempTriggerData.TargetGridPosIdx,
                     BattleManager.Instance.TempTriggerData.UnitData.Idx);
 
                 // RoundFightData.GamePlayData.BattleData.GridTypes[RoundFightData.TempTriggerData.UnitData.GridPosIdx] =

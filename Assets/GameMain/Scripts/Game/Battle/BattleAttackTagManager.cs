@@ -54,15 +54,15 @@ namespace RoundHero
                     if(triggerData.ActionUnitGridPosIdx == -1)
                         continue;
                     
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                        continue;
+                    // if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                    //     continue;
                     
                     if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                         continue;
                     
-                    var _actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    if(_actionUnit == null && triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
-                        continue;
+                    // var _actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    // if(_actionUnit == null && triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
+                    //     continue;
                     
                     var _effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
                     if(_effectUnit == null)
@@ -91,15 +91,15 @@ namespace RoundHero
                     if(triggerData.ActionUnitGridPosIdx == -1)
                         continue;
                     
-                    if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
-                        continue;
+                    // if(actionUnitIdx != -1 && triggerData.ActionUnitIdx != -1 && triggerData.ActionUnitIdx != actionUnitIdx)
+                    //     continue;
 
                     if(triggerData.EffectUnitIdx == PlayerManager.Instance.PlayerData.BattleHero.Idx)
                         continue;
 
-                    var _actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-                    if(_actionUnit == null && triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
-                        continue;
+                    // var _actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    // if(_actionUnit == null && triggerData.ActionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
+                    //     continue;
                     
                     var _effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
                     if(_effectUnit == null)

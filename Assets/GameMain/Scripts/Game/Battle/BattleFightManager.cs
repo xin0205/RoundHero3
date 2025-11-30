@@ -2932,10 +2932,15 @@ namespace RoundHero
         
         private bool IsEnemy(int unit1Idx, int unit2Idx)
         {
-            var unit1 = BattleFightManager.Instance.GetUnitByIdx(unit1Idx);
-            var unit2 = BattleFightManager.Instance.GetUnitByIdx(unit2Idx);
+            var unit1Camp = unit1Idx == Constant.Battle.UnUnitTriggerIdx
+                ? EUnitCamp.Player1
+                : BattleFightManager.Instance.GetUnitByIdx(unit1Idx).UnitCamp;
+            
+            var unit2Camp = unit2Idx == Constant.Battle.UnUnitTriggerIdx
+                ? EUnitCamp.Player1
+                : BattleFightManager.Instance.GetUnitByIdx(unit2Idx).UnitCamp;
 
-            return unit1.UnitCamp != unit2.UnitCamp;
+            return unit1Camp != unit2Camp;
         }
         
         public List<int> GetEffectUnitIdxs(BuffData buffData, int ownUnitIdx, int actionUnitIdx, int effectUnitIdx, int actionUnitGridPosIdx, int actionUnitPreGridPosIdx)
@@ -3018,7 +3023,7 @@ namespace RoundHero
                         if (effectUnitIdx != -1)
                         {
                             var isEnemy = false;
-                            if (actionUnitIdx != -1 && actionUnitIdx != Constant.Battle.UnUnitTriggerIdx)
+                            if (actionUnitIdx != -1)
                             {
                                 isEnemy = IsEnemy(actionUnitIdx, effectUnitIdx);
                             }
