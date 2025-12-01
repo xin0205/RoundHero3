@@ -79,7 +79,9 @@ namespace RoundHero
                             var triggerValue = triggerData.Value + triggerData.DeltaValue;
 
                             //triggerData.TriggerDataType == ETriggerDataType.RoleAttribute &&
-                            if (!(triggerData.BattleUnitAttribute == EUnitAttribute.HP && triggerValue < 0))
+                            if (!(triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
+                                  ((effectUnit is Data_BattleSolider && triggerValue < 0) ||
+                                   effectUnit is Data_BattleCore)))
                                 continue;
 
                             if (effectUnit.UnitCamp == EUnitCamp.Enemy)

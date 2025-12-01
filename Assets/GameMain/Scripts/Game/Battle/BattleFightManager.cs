@@ -1363,8 +1363,17 @@ namespace RoundHero
             }
             else
             {
+                if (triggerValue > effectUnitData.MaxHP - effectUnitData.CurHP)
+                {
+                    triggerData.ActualValue = effectUnitData.MaxHP - effectUnitData.CurHP;
+                }
+                else
+                {
+                    triggerData.ActualValue = triggerValue;
+                }
                 
-                triggerData.ActualValue = effectUnitData.CurHP - effectUnitOldHP;
+                
+                //triggerData.ActualValue = effectUnitData.CurHP - effectUnitOldHP;
             }
             
             if (!effectUnitData.Exist())
