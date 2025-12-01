@@ -134,7 +134,7 @@ namespace RoundHero
                 ShowExplodeParticle();
                 
                 BattleBulletManager.Instance.UseTriggerCollection(BattleBulletEntityData.BulletData.ActionUnitIdx, BattleBulletEntityData.BulletData.EffectUnitIdx);
-
+                HeroManager.Instance.UpdateCacheHPDelta();
                 // if (BattleBulletEntityData.BulletData.TriggerCollections.ContainsKey(endIdx))
                 // {
                 //     foreach (var kv in BattleBulletEntityData.BulletData.TriggerCollections[endIdx])
