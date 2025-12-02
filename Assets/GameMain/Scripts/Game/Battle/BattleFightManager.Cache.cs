@@ -796,55 +796,55 @@ namespace RoundHero
                 // }
             }
 
-            for (int j = actionData.TriggerDataDict.Values.Count -1; j >= 0; j--)
-            {
-                var keys = actionData.TriggerDataDict.Keys.ToList();
-                var triggerDatas = actionData.TriggerDataDict.Values.ToList()[j].TriggerDatas;
-                for (int i = triggerDatas.Count -1; i >= 0; i--)
-                {
-                    var triggerData = triggerDatas[i];
-                    if (GameUtility.IsSubCurHPTrigger(triggerData))
-                    {
-                        var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
-                        if (_attackUnit != null)
-                        {
-                            SubUnitState(_attackUnit, EUnitState.SubDmg, actionData.TriggerDataDict[keys[j]].TriggerDatas);
-                            SubUnitState(_attackUnit, EUnitState.AddDmg, actionData.TriggerDataDict[keys[j]].TriggerDatas);
-                        }
-                        
-                    }
-                }
-            }
-
-            for (int l = actionData.TriggerDataDict.Values.Count -1 ; l >= 0; l--)
-            {
-                var triggerCollection = actionData.TriggerDataDict.Values.ToList()[l];
-                for (int k = triggerCollection.MoveData.MoveUnitDatas.Values.Count -1; k >= 0; k--)
-                {
-
-                    var moveUnitData = triggerCollection.MoveData.MoveUnitDatas.Values.ToList()[k];
-                    for (int i = moveUnitData.MoveActionData.TriggerDataDict.Count -1; i >= 0; i--)
-                    {
-                        var keys = moveUnitData.MoveActionData.TriggerDataDict.Keys.ToList();
-                        var moveTriggerCollection = moveUnitData.MoveActionData.TriggerDataDict.Values.ToList()[i];
-                        for (int j = moveTriggerCollection.TriggerDatas.Count -1; j >= 0; j--)
-                        {
-                            var triggerData = moveTriggerCollection.TriggerDatas[j];
-                            if (GameUtility.IsSubCurHPTrigger(triggerData))
-                            {
-                                var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
-                                if (_attackUnit != null)
-                                {
-                                    SubUnitState(_attackUnit, EUnitState.SubDmg, moveUnitData.MoveActionData.TriggerDataDict[keys[i]].TriggerDatas);
-                                    SubUnitState(_attackUnit, EUnitState.AddDmg, moveUnitData.MoveActionData.TriggerDataDict[keys[i]].TriggerDatas);
-                                }
-                        
-                            }
-                        }
-                    }
-                }
-            }
-            
+            // for (int j = actionData.TriggerDataDict.Values.Count -1; j >= 0; j--)
+            // {
+            //     var keys = actionData.TriggerDataDict.Keys.ToList();
+            //     var triggerDatas = actionData.TriggerDataDict.Values.ToList()[j].TriggerDatas;
+            //     for (int i = triggerDatas.Count -1; i >= 0; i--)
+            //     {
+            //         var triggerData = triggerDatas[i];
+            //         if (GameUtility.IsSubCurHPTrigger(triggerData))
+            //         {
+            //             var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
+            //             if (_attackUnit != null)
+            //             {
+            //                 SubUnitState(_attackUnit, EUnitState.SubDmg, actionData.TriggerDataDict[keys[j]].TriggerDatas);
+            //                 SubUnitState(_attackUnit, EUnitState.AddDmg, actionData.TriggerDataDict[keys[j]].TriggerDatas);
+            //             }
+            //             
+            //         }
+            //     }
+            // }
+            //
+            // for (int l = actionData.TriggerDataDict.Values.Count -1 ; l >= 0; l--)
+            // {
+            //     var triggerCollection = actionData.TriggerDataDict.Values.ToList()[l];
+            //     for (int k = triggerCollection.MoveData.MoveUnitDatas.Values.Count -1; k >= 0; k--)
+            //     {
+            //
+            //         var moveUnitData = triggerCollection.MoveData.MoveUnitDatas.Values.ToList()[k];
+            //         for (int i = moveUnitData.MoveActionData.TriggerDataDict.Count -1; i >= 0; i--)
+            //         {
+            //             var keys = moveUnitData.MoveActionData.TriggerDataDict.Keys.ToList();
+            //             var moveTriggerCollection = moveUnitData.MoveActionData.TriggerDataDict.Values.ToList()[i];
+            //             for (int j = moveTriggerCollection.TriggerDatas.Count -1; j >= 0; j--)
+            //             {
+            //                 var triggerData = moveTriggerCollection.TriggerDatas[j];
+            //                 if (GameUtility.IsSubCurHPTrigger(triggerData))
+            //                 {
+            //                     var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
+            //                     if (_attackUnit != null)
+            //                     {
+            //                         SubUnitState(_attackUnit, EUnitState.SubDmg, moveUnitData.MoveActionData.TriggerDataDict[keys[i]].TriggerDatas);
+            //                         SubUnitState(_attackUnit, EUnitState.AddDmg, moveUnitData.MoveActionData.TriggerDataDict[keys[i]].TriggerDatas);
+            //                     }
+            //             
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+            //
             
 
             // if (isTrigger)
@@ -2136,6 +2136,7 @@ namespace RoundHero
 
         public void SubUnitState(Dictionary<int, TriggerCollection> triggerDataDict)
         {
+            var attackUnitIdxs = new List<int>(); 
             for (int j = triggerDataDict.Values.Count -1; j >= 0; j--)
             {
                 var keys = triggerDataDict.Keys.ToList();
@@ -2146,8 +2147,10 @@ namespace RoundHero
                     if (GameUtility.IsSubCurHPTrigger(triggerData))
                     {
                         var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
-                        if (_attackUnit != null)
+                        if (_attackUnit != null && !attackUnitIdxs.Contains(_attackUnit.Idx))
                         {
+                            attackUnitIdxs.Add(_attackUnit.Idx);
+                            
                             SubUnitState(_attackUnit, EUnitState.SubDmg, triggerDataDict[keys[j]].TriggerDatas);
                             SubUnitState(_attackUnit, EUnitState.AddDmg, triggerDataDict[keys[j]].TriggerDatas);
                         }
@@ -2173,8 +2176,9 @@ namespace RoundHero
                             if (GameUtility.IsSubCurHPTrigger(triggerData))
                             {
                                 var _attackUnit = GameUtility.GetUnitDataByIdx(triggerData.ActionUnitIdx);
-                                if (_attackUnit != null)
+                                if (_attackUnit != null && !attackUnitIdxs.Contains(_attackUnit.Idx))
                                 {
+                                    attackUnitIdxs.Add(_attackUnit.Idx);
                                     SubUnitState(_attackUnit, EUnitState.SubDmg, moveUnitData.MoveActionData.TriggerDataDict[keys[i]].TriggerDatas);
                                     SubUnitState(_attackUnit, EUnitState.AddDmg, moveUnitData.MoveActionData.TriggerDataDict[keys[i]].TriggerDatas);
                                 }
