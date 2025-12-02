@@ -50,7 +50,8 @@ namespace RoundHero
         public void CalculateHeroHPDelta(Dictionary<int, TriggerCollection> triggerCollections,
             bool isMoveTriggerData = false)
         {
-
+            SubUnitState(triggerCollections);
+            
             var hpDeltaList = new List<HPDeltaData>();
 
             foreach (var kv in triggerCollections)

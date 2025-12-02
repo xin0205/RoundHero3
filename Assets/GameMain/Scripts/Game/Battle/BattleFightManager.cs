@@ -1299,7 +1299,7 @@ namespace RoundHero
                     
                     if (addDmgToRecover != null && hpDelta > 0)
                     {
-                        var addDmgCount = effectUnitData.GetAllStateCount(EUnitState.AddDmg);
+                        var addDmgCount = actionUnitData.GetAllStateCount(EUnitState.AddDmg);
                     
                         if (addDmgCount > 0)
                         {
@@ -1316,8 +1316,8 @@ namespace RoundHero
                                         actualAddDmgCount = 1;
                                     }
                         
-                                    var subAddDmgCountData = BattleFightManager.Instance.Unit_State(triggerDatas, effectUnitData.Idx,
-                                        effectUnitData.Idx, effectUnitData.Idx, EUnitState.AddDmg, -actualAddDmgCount,
+                                    var subAddDmgCountData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
+                                        actionUnitData.Idx, actionUnitData.Idx, EUnitState.AddDmg, -actualAddDmgCount,
                                         ETriggerDataType.State);
                                     SimulateTriggerData(subAddDmgCountData, triggerDatas);
                                     triggerDatas.Add(subAddDmgCountData);
