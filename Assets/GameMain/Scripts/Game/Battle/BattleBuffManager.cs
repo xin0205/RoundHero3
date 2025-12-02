@@ -643,8 +643,8 @@ namespace RoundHero
             //         return;
             // }
             
-            if(actionUnit == null)
-                return;
+            // if(actionUnit == null)
+            //     return;
             
             // actionUnitCamp = actionUnit.UnitCamp;
             //

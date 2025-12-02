@@ -2059,7 +2059,17 @@ namespace RoundHero
         public void PreRoundStartUnitTrigger()
         {
             BattleFightManager.Instance.ActionProgress = EActionProgress.PreRoundStart;
-            UnitAttack(RoundFightData.PreRoundStartDatas, EActionProgress.PreRoundStart);
+            if (RoundFightData.PreRoundStartDatas.Count > 0)
+            {
+                
+                UnitAttack(RoundFightData.PreRoundStartDatas, EActionProgress.PreRoundStart);
+            }
+            else
+            {
+                BattleManager.Instance.NextAction();
+                BattleManager.Instance.ContinueAction();
+            }
+            
         }
         
         public void RoundEndTrigger()
@@ -2127,7 +2137,17 @@ namespace RoundHero
             var actionData = unitAttackDatas[unitKeys[AcitonUnitIdx]];
             
             var isAttack = false;
-            BattleBulletManager.Instance.AddTriggerCollection(actionData);
+            if (actionProgress == EActionProgress.PreRoundStart)
+            {
+                BattleBulletManager.Instance.AddTriggerCollection(actionData);
+                BattleBulletManager.Instance.UseTriggerCollection(unitKeys[AcitonUnitIdx]);
+            }
+            else
+            {
+                BattleBulletManager.Instance.AddTriggerCollection(actionData);
+            }
+                
+            
             
             foreach (var triggerCollection in actionData.TriggerDataDict)
             {
@@ -2163,12 +2183,15 @@ namespace RoundHero
             if (isAttack  || maxMoveTime > 0 || actionProgress == EActionProgress.SoliderActiveAttack)
             {
                 time += 2f;
-                
-                var unit = GetUnitByIdx(unitKeys[AcitonUnitIdx]);
-                unit.AttackInRound = true;
-                BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack(actionData);
-                GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
-                GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
+               
+                if (actionProgress != EActionProgress.PreRoundStart)
+                {
+                    var unit = GetUnitByIdx(unitKeys[AcitonUnitIdx]);
+                    unit.AttackInRound = true;
+                    BattleUnitManager.Instance.BattleUnitEntities[unitKeys[AcitonUnitIdx]].Attack(actionData);
+                    GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
+                    GameEntry.Event.Fire(null, RefreshUnitDataEventArgs.Create());
+                }
 
             }
             
