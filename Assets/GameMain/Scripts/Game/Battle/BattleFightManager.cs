@@ -2414,6 +2414,10 @@ namespace RoundHero
                 return;
             
             BattleBulletManager.Instance.AddTriggerCollection(triggerCollection);
+            BattleBulletManager.Instance.UseTriggerCollection(triggerCollection.ActionUnitIdx);
+
+            
+            
             
             //var normalTriggerData = triggerCollection.GetNormalTriggerData();
 
@@ -2427,7 +2431,7 @@ namespace RoundHero
                 {
                     //effectUnit?.Hurt();
                     //triggerData.IsTrigger = true;
-                    BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
+                    //BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
                     BattleEffectManager.Instance.ShowCollideEffect(effectUnit.EffectHurtPos.position);
                     actionUnit.BattleUnitData.CollideCount += 1;
                     effectUnit.BattleUnitData.CollideCount += 1;
@@ -2436,7 +2440,7 @@ namespace RoundHero
                 else if (triggerData.TriggerDataSubType == ETriggerDataSubType.State)
                 {
                     //triggerData.IsTrigger = true;
-                    BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
+                    //BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
 
                 }
                 else
@@ -2446,13 +2450,13 @@ namespace RoundHero
                         
                     
                         //BattleBulletManager.Instance.AddTriggerData(triggerData); 
-                        actionUnit?.MoveAttack(triggerData.EffectUnitGridPosIdx);
+                        //actionUnit?.MoveAttack(triggerData.EffectUnitGridPosIdx);
                         //effectUnit.Hurt();
-                    
+                        actionUnit?.MoveAttack();
                     }
                     else
                     {
-                        BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
+                        //BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
 
                         // triggerData.IsTrigger = true;
                         //

@@ -1443,6 +1443,16 @@ namespace RoundHero
             HandleHit(EAttackCastType.CloseSingle, effectUnitIdx);
         }
         
+        public void MoveAttack()
+        {
+            animator.SetInteger(AnimationParameters.TriggerNumber, (int)AnimatorTrigger.AttackTrigger);
+            animator.SetTrigger(AnimationParameters.Trigger);
+            animator.SetInteger(AnimationParameters.Action, (int)AttackCastType.Cast1);
+
+            ShowEffectAttackEntity(EAttackCastType.CloseSingle);
+
+        }
+        
         public void RunAttack()
         {
             CloseSingleAttack();
