@@ -1363,7 +1363,7 @@ namespace RoundHero
             }
             else
             {
-                if (triggerValue > effectUnitData.MaxHP - effectUnitData.CurHP)
+                if (triggerValue > effectUnitData.MaxHP - effectUnitOldHP)
                 {
                     triggerData.ActualValue = effectUnitData.MaxHP - effectUnitData.CurHP;
                 }

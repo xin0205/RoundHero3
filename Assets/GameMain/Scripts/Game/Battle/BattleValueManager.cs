@@ -232,18 +232,19 @@ namespace RoundHero
             if(triggerDatas.Count <= 0)
                 return;
             
-            var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].ActionUnitIdx);
-            var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].EffectUnitIdx);
-            
-            if (effectUnit == null)
-            {
-                return;
-            }
+            // var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].ActionUnitIdx);
+            // var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerDatas[0].EffectUnitIdx);
+            //
+            // if (effectUnit == null)
+            // {
+            //     return;
+            // }
         
             var idx = 0;
             foreach (var triggerData in triggerDatas)
             {
-                if (triggerData.TriggerDataType != ETriggerDataType.Atrb)
+                if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                    triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
                 {
                     continue;
                 }
@@ -265,10 +266,33 @@ namespace RoundHero
                 //     
                 // });
                 
-                var _effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
-                if (_effectUnit != null)
+                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                
+                if (triggerData.EffectUnitIdx == BattlePlayerManager.Instance.PlayerData.BattleHero.Idx)
                 {
-                    InternalShowValue(_effectUnit, startvalue, endValue, triggerData.CoreHPDelta > 0, triggerData);
+                    var attackUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
+                    var moveParams = new MoveParams()
+                    {
+                        FollowGO = triggerData.ActionUnitIdx == Constant.Battle.UnUnitTriggerIdx ? BattleController.Instance.HandCardPos.gameObject :  attackUnit?.gameObject,
+                        DeltaPos = new Vector2(0, 25f),
+                        IsUIGO = triggerData.ActionUnitIdx == Constant.Battle.UnUnitTriggerIdx,
+                    };
+            
+                    var targetMoveParams = new MoveParams()
+                    {
+                        FollowGO = AreaController.Instance.UICore,
+                        DeltaPos = new Vector2(0, -25f),
+                        IsUIGO = true,
+                    };
+                
+                    AddMoveValue(startvalue, endValue, CurValueEntityIdx++, true,
+                        triggerData.CoreHPDelta > 0,
+                        moveParams,
+                        targetMoveParams, triggerData.Idx);
+                }
+                else if (effectUnit != null)
+                {
+                    InternalShowValue(effectUnit, startvalue, endValue, triggerData.CoreHPDelta > 0, triggerData);
         
                 }
                 //InternalShowValue(effectUnit, value, entityIdx++);
