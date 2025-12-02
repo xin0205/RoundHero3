@@ -177,7 +177,7 @@ namespace RoundHero
                 GameEntry.Event.Fire(null, RefreshActionCampEventArgs.Create(false));
 
                 BattleFightManager.Instance.PreRoundStartUnitTrigger();
-                BattleManager.Instance.ContinueAction();
+                //BattleManager.Instance.ContinueAction();
                 //BattleFightManager.Instance.EnemyMove();
             });
  
