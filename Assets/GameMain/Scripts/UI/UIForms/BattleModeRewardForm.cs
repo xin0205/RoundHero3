@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using GameFramework.Event;
 using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
@@ -140,9 +141,9 @@ namespace RoundHero
             
             battleSession.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_BattleSession,
                 GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1, Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount);
-
+            GameEntry.Event.Subscribe(RefreshEquipFuneEventArgs.EventId, OnRefreshEquipFune);
         }
-
+        
         public void RefreshUnEquipFuneTag()
         {
             unEquipFuneTag.SetActive(BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Count > 0);
@@ -195,7 +196,13 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             GameEntry.Entity.HideEntity(startSelectEntity);
-            //GameEntry.UI.CloseUIForm(playerInfoForm);
+            GameEntry.Event.Unsubscribe(RefreshEquipFuneEventArgs.EventId, OnRefreshEquipFune);
+
+        }
+
+        public async void OnRefreshEquipFune(object sender, GameEventArgs e)
+        {
+            RefreshUnEquipFuneTag();
         }
 
         private void SelectItem(int selectIdx)
@@ -458,7 +465,10 @@ namespace RoundHero
                     SelectItem(selectIdx);
                     
                     GameEntry.UI.CloseUIForm(cardsForm);
-
+                },
+                
+                OnClose = () =>
+                {
                 }
             });
             

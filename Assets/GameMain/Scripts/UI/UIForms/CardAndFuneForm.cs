@@ -52,6 +52,7 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshCardsFormEventArgs.EventId, OnRefreshCardsForm);
             GameEntry.Event.Unsubscribe(UnEquipFuneEventArgs.EventId, OnUnEquipFune);
             GameManager.Instance.CardsForm_EquipFuneIdxs.Clear();
+            GameEntry.Event.Fire(null, RefreshEquipFuneEventArgs.Create());
         }
         
         public void OnUnEquipFune(object sender, GameEventArgs e)

@@ -272,7 +272,7 @@ namespace RoundHero
         public void OnRefreshActionCamp(object sender, GameEventArgs e)
         {
             var ne = e as RefreshActionCampEventArgs;
-            //ShowActionTips(ne.IsUs);
+            ShowActionTips(ne.IsUs);
 
             endRoundNode.SetActive(ne.IsUs);
             reactionNode.SetActive(ne.IsUs);
@@ -280,7 +280,7 @@ namespace RoundHero
         
         public void OnRefreshRound(object sender, GameEventArgs e)
         {
-            //ShowRoundTips(BattleManager.Instance.BattleData.Round + 1);
+            ShowRoundTips(BattleManager.Instance.BattleData.Round + 1);
         }
 
         private void RefreshUI()
@@ -439,7 +439,7 @@ namespace RoundHero
             BattleManager.Instance.RecordLastActionBattleData();
             BattleManager.Instance.EndRound();
             BattleStaticAttackTagManager.Instance.UnshowStaticAttackTags();
-            //ShowActionTips(false);
+            ShowActionTips(false);
             //isEndRound = true;
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
@@ -548,6 +548,7 @@ namespace RoundHero
                 OnConfirm = () =>
                 {
                     DataManager.Instance.Save();
+                    BattleManager.Instance.Destory();
                     BattleManager.Instance.EndBattle(EBattleResult.Empty);
 
                 },

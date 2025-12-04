@@ -432,7 +432,7 @@ namespace RoundHero
             
             if(gameResult == EBattleResult.Success)
             {
- 
+                BattleManager.Instance.Destory();
                 BattleManager.Instance.BattleSuccess();
                 BattlePlayerManager.Instance.PlayerData.BattleHero.CurHP =
                     BattlePlayerManager.Instance.PlayerData.BattleHero.MaxHP;
@@ -451,6 +451,13 @@ namespace RoundHero
                     }
 
                 }
+                if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 ==
+                    Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount)
+                {
+                    GamePlayManager.Instance.GamePlayData.IsGamePlaying = false;
+                        
+                }
+                
                 
                 DataManager.Instance.Save();
                 
@@ -471,6 +478,7 @@ namespace RoundHero
 
             else if (gameResult == EBattleResult.Failed)
             {
+                BattleManager.Instance.Destory();
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
                 {
                     IsShowCancel = false,

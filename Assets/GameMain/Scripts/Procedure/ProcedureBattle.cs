@@ -150,7 +150,7 @@ namespace RoundHero
             }
             //GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(battleForm);
-            BattleManager.Instance.Destory();
+            
             //BattleManager.Instance.SetBattleState(EBattleState.EndBattle);
             var sceneName = "Scene0";// + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
             GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
@@ -183,7 +183,7 @@ namespace RoundHero
             
             //GameEntry.UI.CloseUIForm(playerInfoForm);
             GameEntry.UI.CloseUIForm(battleForm);
-            BattleManager.Instance.Destory();
+            //BattleManager.Instance.Destory();
 
             var sceneName = "Scene0";// + BattleMapManager.Instance.MapData.CurMapStageIdx.MapIdx;
             GameEntry.Scene.UnloadScene(AssetUtility.GetSceneAsset(sceneName));
@@ -208,7 +208,7 @@ namespace RoundHero
                     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1 ==
                         Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount)
                     {
-                        GamePlayManager.Instance.GamePlayData.IsGamePlaying = false;
+                        //GamePlayManager.Instance.GamePlayData.IsGamePlaying = false;
                         procedureStart.Start();
                     }
                     else
