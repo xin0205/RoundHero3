@@ -132,18 +132,19 @@ namespace RoundHero
             return _triggerCollection;
         }
 
-        public TriggerData GetNormalTriggerData()
+        public List<TriggerData> GetNormalTriggerDatas()
         {
+            var triggerDatas = new List<TriggerData>();
             foreach (var triggerData in TriggerDatas)
             {
                 if (triggerData.BuffValue != null &&
                     triggerData.BuffValue.BuffData.BuffEquipType == EBuffEquipType.Normal)
                 {
-                    return triggerData;
+                    triggerDatas.Add(triggerData);
                 }
             }
 
-            return null;
+            return triggerDatas;
         }
         
         public void Clear()
