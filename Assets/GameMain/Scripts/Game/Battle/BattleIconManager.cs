@@ -62,8 +62,8 @@ namespace RoundHero
                                 var datas = new List<TriggerData>();
                                 foreach (var data in kv2.Value)
                                 {
-                                    if(data.ActionUnitIdx == unitIdx)
-                                        continue;
+                                    // if(data.ActionUnitIdx == unitIdx)
+                                    //     continue;
                                     datas.Add(data);
                                 }
                                 if (datas.Count > 0)
@@ -83,8 +83,8 @@ namespace RoundHero
                                 var datas = new List<TriggerData>();
                                 foreach (var data in kv2.Value)
                                 {
-                                    if(data.ActionUnitIdx == unitIdx)
-                                        continue;
+                                    // if(data.ActionUnitIdx == unitIdx)
+                                    //     continue;
                                     datas.Add(data);
                                 }
 

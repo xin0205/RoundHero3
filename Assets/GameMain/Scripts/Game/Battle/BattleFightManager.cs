@@ -2565,7 +2565,7 @@ namespace RoundHero
                 {
                     foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                     {
-                        if (effectUnitIdx != kv2.Value.MoveActionData.MoveUnitIdx)
+                        if (effectUnitIdx != -1 && effectUnitIdx != kv2.Value.MoveActionData.MoveUnitIdx)
                             continue;
 
                         unitFlyDict.Add(kv2.Key, kv2.Value.MoveActionData.MoveGridPosIdxs);
@@ -2838,10 +2838,25 @@ namespace RoundHero
             var startCoord = GameUtility.GridPosIdxToCoord(startPosIdx);
             var endCoord = GameUtility.GridPosIdxToCoord(endPosIdx);
             var direct = endCoord - startCoord;
+            direct = GameUtility.GetDirect(direct);
+            var idx = 0;
+            var newEndPosIdx = endPosIdx;
+            // while (true)
+            // {
+            //     newEndPosIdx = GameUtility.GridCoordToPosIdx(endCoord);
+            //     if(newEndPosIdx == startPosIdx && idx != 0)
+            //         break;
+            //     var gridType = RoundFightData.GamePlayData.BattleData.GridTypes[newEndPosIdx];
+            //     if(gridType == EGridType.Empty)
+            //         break;
+            //     idx++;
+            //     endCoord += -direct;
+            // }
+            var newEndCoord = GameUtility.GridPosIdxToCoord(newEndPosIdx);
             
             var flyPosIdxs = new List<int>();
 
-            if (startPosIdx == endPosIdx)
+            if (startPosIdx == newEndPosIdx)
             {
                 return flyPosIdxs;
             }
@@ -2870,10 +2885,10 @@ namespace RoundHero
             //     signY = 1;
             // }
             
-            direct = GameUtility.GetDirect(direct);
+            
 
 
-            var idx = 0;
+            idx = 0;
             //var isMoveDirect = false;
             var targetCoord = startCoord;
             var lastGridPosIdx = startPosIdx;
@@ -2921,7 +2936,7 @@ namespace RoundHero
 
                 }
 
-                if (targetCoord == endCoord && !isMoveDirect)
+                if (targetCoord == newEndCoord && !isMoveDirect)
                 {
                     var gridType = RoundFightData.GamePlayData.BattleData.GridTypes[gridPosIdx];
                     if (gridType == EGridType.Obstacle)
@@ -2943,6 +2958,19 @@ namespace RoundHero
                     
                 lastGridPosIdx = gridPosIdx;   
                 idx++;
+            }
+
+            idx = 0;
+            for (int i = flyPosIdxs.Count - 1; i >= 0; i--)
+            {
+                var posIdx = flyPosIdxs[i];
+                if(posIdx == startPosIdx)
+                    break;
+                var gridType = RoundFightData.GamePlayData.BattleData.GridTypes[posIdx];
+                if(gridType == EGridType.Empty)
+                    break;
+                idx++;
+                flyPosIdxs.RemoveAt(i);
             }
 
             return flyPosIdxs;
@@ -3236,6 +3264,12 @@ namespace RoundHero
                         relatedDirect = GameUtility.GetDirect(relatedDirect);
 
                         var horizontals = GameUtility.GetRelatedHorizontalCoords(relatedDirect, effectUnitCoord);
+                        if (horizontals == null)
+                            return realEffectUnitIdxs;
+                        
+                        if (horizontals.Count < 2)
+                            return realEffectUnitIdxs;
+                        
                         var horizontal1Coord = effectUnitCoord + horizontals[0];
                         var horizontal2Coord = effectUnitCoord + horizontals[1];
                         var horizontal1GridPosIdx = GameUtility.GridCoordToPosIdx(horizontal1Coord);

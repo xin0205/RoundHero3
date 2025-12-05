@@ -700,76 +700,76 @@ namespace RoundHero
                     {
                         var realEffectUnit = GetUnitByIdx(realEffectUnitIdx);
                         if (triggerRangeStr.Contains("Parabola") || triggerRangeStr.Contains("Long"))
-                    {
-                        var direct = GameUtility.GetRelativePos(gridPosIdx, realEffectUnit.GridPosIdx);
-                        if (direct != null)
                         {
-                            if (directs.Contains((ERelativePos)direct))
+                            var direct = GameUtility.GetRelativePos(gridPosIdx, realEffectUnit.GridPosIdx);
+                            if (direct != null)
                             {
-                                continue;
+                                if (directs.Contains((ERelativePos)direct))
+                                {
+                                    continue;
+                                }
+
+                                directs.Add((ERelativePos)direct);
                             }
 
-                            directs.Add((ERelativePos)direct);
                         }
 
-                    }
+                        //var effectUnit = GetUnitByGridPosIdx(rangeGridPosIdx);
+                        if (realEffectUnit == null)
+                            continue;
 
-                    //var effectUnit = GetUnitByGridPosIdx(rangeGridPosIdx);
-                    if (realEffectUnit == null)
-                        continue;
+                        if (!realEffectUnit.Exist())
+                            continue;
 
-                    if (!realEffectUnit.Exist())
-                        continue;
-
-                    if (!triggerBuffData.BuffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy) &&
-                        realEffectUnit.UnitCamp != attackUnit.UnitCamp)
-                    {
-                        continue;
-                    }
-
-                    if (!triggerBuffData.BuffData.TriggerUnitCamps.Contains(ERelativeCamp.Us) &&
-                        realEffectUnit.UnitCamp == attackUnit.UnitCamp)
-                    {
-                        continue;
-                    }
-
-                    var triggerDatas = new List<TriggerData>();
-                    if (!actionData.TriggerDataDict.ContainsKey(realEffectUnit.Idx))
-                    {
-                        actionData.TriggerDataDict.Add(realEffectUnit.Idx, new TriggerCollection()
+                        if (!triggerBuffData.BuffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy) &&
+                            realEffectUnit.UnitCamp != attackUnit.UnitCamp)
                         {
-                            ActionUnitIdx = attackUnitIdx,
-                            EffectTagIdx = realEffectUnit.Idx,
-                            TriggerDatas = triggerDatas
-                        });
-                    }
-                    else
-                    {
-                        triggerDatas = actionData.TriggerDataDict[realEffectUnit.Idx].TriggerDatas;
+                            continue;
+                        }
 
-                    }
+                        if (!triggerBuffData.BuffData.TriggerUnitCamps.Contains(ERelativeCamp.Us) &&
+                            realEffectUnit.UnitCamp == attackUnit.UnitCamp)
+                        {
+                            continue;
+                        }
 
-                    var _triggerDatas = BattleBuffManager.Instance.BuffTrigger(buffTriggerType,
-                        triggerBuffData.BuffData,
-                        triggerBuffData.ValueList, attackUnitIdx,
-                        attackUnitIdx,
-                        realEffectUnit.Idx, triggerDatas);
+                        var triggerDatas = new List<TriggerData>();
+                        if (!actionData.TriggerDataDict.ContainsKey(realEffectUnit.Idx))
+                        {
+                            actionData.TriggerDataDict.Add(realEffectUnit.Idx, new TriggerCollection()
+                            {
+                                ActionUnitIdx = attackUnitIdx,
+                                EffectTagIdx = realEffectUnit.Idx,
+                                TriggerDatas = triggerDatas
+                            });
+                        }
+                        else
+                        {
+                            triggerDatas = actionData.TriggerDataDict[realEffectUnit.Idx].TriggerDatas;
 
-                    
+                        }
 
-                    foreach (var triggerData in _triggerDatas)
-                    {
-                        // triggerData.BuffValue = triggerBuffData.Copy();
-                        // if (GameUtility.IsSubCurHPTrigger(triggerData))
-                        // {
-                        //     //isSubCurHP = true;
-                        //     BattleBuffManager.Instance.AttackTrigger(triggerDatas[0], triggerDatas);
-                        //     BattleUnitStateManager.Instance.CheckUnitState(attackUnitIdx, triggerDatas);
-                        // }
+                        var _triggerDatas = BattleBuffManager.Instance.BuffTrigger(buffTriggerType,
+                            triggerBuffData.BuffData,
+                            triggerBuffData.ValueList, attackUnitIdx,
+                            attackUnitIdx,
+                            realEffectUnit.Idx, triggerDatas);
 
-                        CacheUnitActiveMoveDatas(attackUnitIdx, rangeGridPosIdx, triggerBuffData.BuffData, actionData,
-                            triggerData);
-                    }
+                        
+
+                        foreach (var triggerData in _triggerDatas)
+                        {
+                            // triggerData.BuffValue = triggerBuffData.Copy();
+                            // if (GameUtility.IsSubCurHPTrigger(triggerData))
+                            // {
+                            //     //isSubCurHP = true;
+                            //     BattleBuffManager.Instance.AttackTrigger(triggerDatas[0], triggerDatas);
+                            //     BattleUnitStateManager.Instance.CheckUnitState(attackUnitIdx, triggerDatas);
+                            // }
+
+                            CacheUnitActiveMoveDatas(attackUnitIdx, rangeGridPosIdx, triggerBuffData.BuffData, actionData,
+                                triggerData);
+                        }
                     
                     
 
@@ -791,7 +791,17 @@ namespace RoundHero
                     //     break;
                     }
                     
+                    if (unitCamp == EUnitCamp.Enemy &&
+                        triggerBuffData.BuffData.BuffTriggerType == EBuffTriggerType.SelectUnit)
+                    {
+                        var attackUnitEntity = BattleUnitManager.Instance.GetUnitByIdx(attackUnitIdx);
+                        if (attackUnitEntity != null)
+                        {
+                            attackUnitEntity.TargetPosIdx = rangeGridPosIdx;
+                        }
                     
+                        break;
+                    }
                     
                 }
                 //}
@@ -1504,10 +1514,19 @@ namespace RoundHero
                         {
                             foreach (var triggerBuffData in passUnitTriggerBuffDatas)
                             {
-                                BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Pass,
-                                    triggerBuffData.BuffData, triggerBuffData.ValueList, unitIdx, unitIdx,
-                                    bePassUnit.Idx,
-                                    triggerDatas, gridPosIdx, preGridPosIdx);
+                                if (triggerBuffData.BuffData.BuffTriggerType != EBuffTriggerType.Pass)
+                                    continue;
+                                
+                                var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(triggerBuffData.BuffData, unitIdx, unitIdx, bePassUnit.Idx ,-1, -1);
+
+                                foreach (var realEffectUnitIdx in realEffectUnitIdxs)
+                                {
+                                    BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Pass,
+                                        triggerBuffData.BuffData, triggerBuffData.ValueList, unitIdx, unitIdx,
+                                        realEffectUnitIdx,
+                                        triggerDatas, gridPosIdx, preGridPosIdx);
+                                }
+                                
                             }
                         }
 

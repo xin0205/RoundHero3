@@ -80,9 +80,18 @@ namespace RoundHero
                     //
                     if (drCard.CardType == ECardType.Tactic)
                     {
-                        BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, actionUnitIdx, actionUnitIdx,
-                            effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, -1, ETriggerDataSubType.Card);
+                        
+                        var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData,
+                            Constant.Battle.UnUnitTriggerIdx, actionUnitIdx, effectUnit != null ? effectUnit.Idx : -1,
+                            actionUnitGridPosidx, -1);
 
+                        foreach (var realEffectUnitIdx in realEffectUnitIdxs)
+                        {
+                            BattleBuffManager.Instance.BuffTrigger(buffData.BuffTriggerType, buffData, values, Constant.Battle.UnUnitTriggerIdx, actionUnitIdx,
+                                realEffectUnitIdx, triggerDatas, actionUnitGridPosidx, -1, cardIdx, -1, ETriggerDataSubType.Card);
+
+                        }
+                        
                     }
 
                 }
@@ -116,9 +125,18 @@ namespace RoundHero
                     var buffData = BattleBuffManager.Instance.GetBuffData(buffIDStr);
                     var values = drBuff.GetValues(idx++);
 
-                    BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, Constant.Battle.UnUnitTriggerIdx, actionUnitIdx,
-                        effectUnit != null ? effectUnit.Idx : -1, triggerDatas, actionUnitGridPosidx, -1, cardIdx, funeIdx, ETriggerDataSubType.Fune);
-  
+                    var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(buffData,
+                        Constant.Battle.UnUnitTriggerIdx, actionUnitIdx, effectUnit != null ? effectUnit.Idx : -1,
+                        actionUnitGridPosidx, -1);
+
+                    foreach (var realEffectUnitIdx in realEffectUnitIdxs)
+                    {
+                        BattleBuffManager.Instance.BuffTrigger(EBuffTriggerType.Use, buffData, values, Constant.Battle.UnUnitTriggerIdx, actionUnitIdx,
+                            realEffectUnitIdx, triggerDatas, actionUnitGridPosidx, -1, cardIdx, funeIdx, ETriggerDataSubType.Fune);
+
+                    }
+
+                    
                     BattleFightManager.Instance.RoundFightData.BuffData_Use.ActionDataType = EActionDataType.Fune;
 
                 }

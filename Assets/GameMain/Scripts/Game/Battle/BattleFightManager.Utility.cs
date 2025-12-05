@@ -797,10 +797,11 @@ namespace RoundHero
                         {
                             foreach (var triggerData in kv4.TriggerDatas)
                             {
-                                if (triggerData.EffectUnitIdx != effectUnitIdx && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx)
+                                // && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx
+                                if (triggerData.EffectUnitIdx != effectUnitIdx)
                                     continue;
 
-                                if (actionUnitIdxs != null && actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
+                                if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                                     continue;
 
                                 if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -853,10 +854,11 @@ namespace RoundHero
                         {
                             foreach (var triggerData in kv4.TriggerDatas)
                             {
-                                if (triggerData.EffectUnitIdx != effectUnitIdx && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx)
+                                // && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx
+                                if (triggerData.EffectUnitIdx != effectUnitIdx)
                                     continue;
 
-                                if (actionUnitIdxs != null && actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
+                                if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                                     continue;
 
                                 if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
@@ -914,11 +916,11 @@ namespace RoundHero
                             // {
                             //     continue;
                             // }
-
-                            if (triggerData.EffectUnitIdx != effectUnitIdx && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx)
+                            // && triggerData.InterrelatedEffectUnitIdx != effectUnitIdx
+                            if (triggerData.EffectUnitIdx != effectUnitIdx)
                                 continue;
 
-                            if (actionUnitIdxs != null && actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
+                            if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
                                 continue;
 
                             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
