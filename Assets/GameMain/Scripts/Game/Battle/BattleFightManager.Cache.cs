@@ -694,6 +694,9 @@ namespace RoundHero
                 foreach (var rangeGridPosIdx in range2)
                 {
                     var effectUnit = GetUnitByGridPosIdx(rangeGridPosIdx);
+                    if (effectUnit == null)
+                        continue;
+                    
                     var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(triggerBuffData.BuffData, attackUnitIdx, attackUnitIdx, effectUnit.Idx ,-1, -1);
 
                     foreach (var realEffectUnitIdx in realEffectUnitIdxs)
