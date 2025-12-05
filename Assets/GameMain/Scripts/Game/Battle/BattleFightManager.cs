@@ -2545,7 +2545,7 @@ namespace RoundHero
                 {
                     foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                     {
-                        if(effectUnitIdx != kv2.Value.MoveActionData.MoveUnitIdx)
+                        if (effectUnitIdx != -1 && effectUnitIdx != kv2.Value.MoveActionData.MoveUnitIdx)
                             continue;
                         
                         unitFlyDict.Add(kv2.Key, kv2.Value.MoveActionData.MoveGridPosIdxs);
