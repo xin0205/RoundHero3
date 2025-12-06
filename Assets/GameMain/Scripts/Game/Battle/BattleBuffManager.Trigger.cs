@@ -13,7 +13,6 @@ namespace RoundHero
             if (buffTriggerType != buffData.BuffTriggerType)
                 return null;
 
-
             var _triggerDatas = BattleBuffManager.Instance.InternalBuffTrigger(buffTriggerType, buffData, buffValues, ownUnitIdx, actionUnitIdx,
                 effectUnitIdx, triggerDatas, actionUnitGridPosIdx, actionUnitLastGridPosIdx, cardIdx, funeIdx, triggerDataSubType, preTriggerData);
 

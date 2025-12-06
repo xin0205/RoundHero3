@@ -607,10 +607,16 @@ namespace RoundHero
                 if(triggerBuffData.BuffData.RangeTrigger)
                     continue;
 
+                var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(triggerBuffData.BuffData, triggerData.EffectUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx ,-1, -1);
+
+                foreach (var realEffectUnitIdx in realEffectUnitIdxs)
+                {
+                    BuffTrigger(buffTriggerType,
+                        triggerBuffData.BuffData, triggerBuffData.ValueList, triggerData.EffectUnitIdx, triggerData.ActionUnitIdx, realEffectUnitIdx,
+                        triggerDatas, -1, -1, triggerData);
+                }
+
                 
-                BuffTrigger(buffTriggerType,
-                    triggerBuffData.BuffData, triggerBuffData.ValueList, triggerData.EffectUnitIdx, triggerData.ActionUnitIdx, triggerData.EffectUnitIdx,
-                    triggerDatas, -1, -1, triggerData);
     
             }
            

@@ -1254,10 +1254,17 @@ namespace RoundHero
             var _triggerDataDict = new Dictionary<int, TriggerCollection>();
             foreach (var kv in triggerDataDict)
             {
-                if (!_triggerDataDict.ContainsKey(kv.Key))
-                {
-                    _triggerDataDict.Add(kv.Key, kv.Value);
-                }
+                _triggerDataDict.Add(kv.Key, kv.Value);
+                // if (!_triggerDataDict.ContainsKey(kv.Key))
+                // {
+                //     _triggerDataDict.Add(kv.Key, kv.Value);
+                // }
+                // else
+                // {
+                //     _triggerDataDict[kv.Key].TriggerDatas.AddRange(kv.Value.TriggerDatas);
+                //     
+                //     //_triggerDataDict[kv.Key].MoveData.MoveUnitDatas.
+                // }
 
             }
 
@@ -1294,7 +1301,7 @@ namespace RoundHero
                 AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.SoliderAttackDatas[unitIdx].TriggerDataDict));
             }
 
-            if (unitIdx == Constant.Battle.UnUnitTriggerIdx)
+            if (RoundFightData.BuffData_Use.TriggerDataDict.Count > 0)
             {
                 AddRange(triggerDataDict, AddTriggerDatas(RoundFightData.BuffData_Use.TriggerDataDict));
                 //triggerDataDict.AddRange(AddTriggerDatas(RoundFightData.BuffData_Use.TriggerDataDict));
@@ -1464,6 +1471,11 @@ namespace RoundHero
                 if (!a.ContainsKey(kv.Key))
                 {
                     a.Add(kv.Key, kv.Value);
+                }
+                else
+                {
+                    a[kv.Key].TriggerDatas.AddRange(kv.Value.TriggerDatas);
+
                 }
 
             }
