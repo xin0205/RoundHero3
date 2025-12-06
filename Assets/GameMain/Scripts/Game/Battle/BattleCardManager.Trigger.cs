@@ -178,7 +178,7 @@ namespace RoundHero
                             
 
                 BattleFightManager.Instance.CacheUnitActiveMoveDatas(Constant.Battle.UnUnitTriggerIdx,
-                    triggerData.EffectUnitGridPosIdx, triggerData.BuffValue.BuffData,
+                    triggerData.EffectUnitGridPosIdx, triggerData?.BuffValue?.BuffData,
                     BattleFightManager.Instance.RoundFightData.BuffData_Use,
                     triggerData, triggerData.ActionUnitGridPosIdx);
             }

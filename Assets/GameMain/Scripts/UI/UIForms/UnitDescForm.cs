@@ -475,7 +475,14 @@ namespace RoundHero
                 keyshortcutGO.SetActive(false);
                 //explainList.gameObject.SetActive(false);
                 RefreshExplain(true);
-                explainList.transform.localPosition = explainPos2.localPosition;
+                if (hasFune)
+                {
+                    explainList.transform.localPosition = explainPos2.localPosition;
+                }
+                else
+                {
+                    explainList.transform.localPosition = explainPos1.localPosition;
+                }
             }
             
             if (hasDetail && Input.GetKeyUp(KeyCode.Q))

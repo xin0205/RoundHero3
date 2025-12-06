@@ -900,6 +900,9 @@ namespace RoundHero
         public void CacheUnitActiveMoveDatas(int actionUnitIdx, int effectGridPosIdx, BuffData buffData,
             ActionData actionData, TriggerData triggerData, int actionGridPosIdx = 0)
         {
+            if (buffData == null)
+                return;
+            
             if (effectGridPosIdx == -1)
                 return;
 
