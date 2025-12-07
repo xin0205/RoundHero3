@@ -55,13 +55,14 @@ namespace RoundHero
 
                         if (unit1 != null )
                         {
-                            var unit1Dict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(
-                                    unit1.Idx,
-                                    new List<int>() { unit2.Idx, unit1.Idx })
-                                , BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
-                                    new List<int>() { unit2.Idx, unit1.Idx }));
-                                // BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
-                                // new List<int>(){unit2.Idx, unit1.Idx});
+                            var unit1Dict = 
+                                // GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(
+                                //     unit1.Idx,
+                                //     new List<int>() { unit2.Idx, unit1.Idx })
+                                // , BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
+                                //     new List<int>() { unit2.Idx, unit1.Idx }));
+                                BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit1.Idx,
+                                new List<int>(){unit2.Idx, unit1.Idx});
                             foreach (var kv2 in unit1Dict)
                             {
                                 var datas = new List<TriggerData>();
@@ -81,13 +82,14 @@ namespace RoundHero
                         
                         if (unit2 != null)
                         {
-                            var unit2Dict = GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(
-                                    unit2.Idx,
-                                    new List<int>() { unit2.Idx, unit1.Idx })
-                                , BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
-                                    new List<int>() { unit2.Idx, unit1.Idx }));
-                            //BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
-                                //new List<int>(){unit1.Idx, unit2.Idx});
+                            var unit2Dict = 
+                                // GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(
+                                //     unit2.Idx,
+                                //     new List<int>() { unit2.Idx, unit1.Idx })
+                                // , BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
+                                //     new List<int>() { unit2.Idx, unit1.Idx }));
+                            BattleFightManager.Instance.GetHurtInDirectAttackDatas(unit2.Idx,
+                                new List<int>(){unit1.Idx, unit2.Idx});
                             foreach (var kv2 in unit2Dict)
                             {
                                 var datas = new List<TriggerData>();
