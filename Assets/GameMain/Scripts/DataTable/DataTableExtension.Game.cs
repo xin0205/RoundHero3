@@ -140,7 +140,7 @@ namespace RoundHero
             var drBuffs = GameEntry.DataTable.GetDataTable<DRBuff>();
             return drBuffs.GetDataRows((t) =>
             {
-                return t.BuffTypes.Contains(buffType);
+                return t.BuffTypes.Contains(buffType) && t.IsUse;
             }).ToList();
         }
         

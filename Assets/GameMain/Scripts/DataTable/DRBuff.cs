@@ -90,6 +90,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取是否使用。
+        /// </summary>
+        public bool IsUse
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -108,6 +117,7 @@ namespace RoundHero
 			BuffTypes = DataTableExtension.ParseEBuffTypeList(columnStrings[index++]);
 			AdapteCardType = DataTableExtension.ParseECardTypeList(columnStrings[index++]);
 			ExplainItems = DataTableExtension.ParseStringList(columnStrings[index++]);
+            IsUse = bool.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -126,6 +136,7 @@ namespace RoundHero
 					BuffTypes = binaryReader.ReadEBuffTypeList();
 					AdapteCardType = binaryReader.ReadECardTypeList();
 					ExplainItems = binaryReader.ReadStringList();
+                    IsUse = binaryReader.ReadBoolean();
                 }
             }
 

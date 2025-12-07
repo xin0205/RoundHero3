@@ -520,7 +520,7 @@ namespace RoundHero
             
             if (TutorialManager.Instance.IsTutorial())
             {
-                if (BattleManager.Instance.BattleData.Round == 0)
+                if (BattleManager.Instance.BattleData.Round == 0 && isRoundStart)
                 {
                     EnemyGenerateData.RoundGenerateUnitCount[BattleManager.Instance.BattleData.Round] -=
                         Constant.Tutorial.Enemies.Count;
