@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GameFramework;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -29,6 +30,22 @@ namespace RoundHero
                     }
                     CurUnitStateIconEntityIdx += 1;
                 }
+                
+                foreach (var moveUnitData in kv.Value.MoveData.MoveUnitDatas.Values.ToList())
+                {
+                    foreach (var kv2 in moveUnitData.MoveActionData.TriggerDataDict)
+                    {
+                        foreach (var triggerData in kv2.Value.TriggerDatas)
+                        {
+                            if (triggerData.TriggerDataType != ETriggerDataType.State)
+                            {
+                                continue;
+                            }
+
+                            CurUnitStateIconEntityIdx += 1;
+                        }
+                    }
+                }
                
             }
             
@@ -37,6 +54,14 @@ namespace RoundHero
             {
                 ShowIcons(kv.Value.TriggerDatas);
 
+                foreach (var moveUnitData in kv.Value.MoveData.MoveUnitDatas.Values.ToList())
+                {
+                    foreach (var kv2 in moveUnitData.MoveActionData.TriggerDataDict)
+                    {
+                        ShowIcons(kv2.Value.TriggerDatas);
+                        
+                    }
+                }
             }
    
 

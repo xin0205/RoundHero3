@@ -1124,33 +1124,33 @@ namespace RoundHero
                 }
             }
             
-            foreach (var kv in RoundFightData.EnemyMoveDatas)
-            {
-
-                foreach (var kv2 in kv.Value.TriggerDataDict)
-                {
-                    foreach (var triggerData in kv2.Value.TriggerDatas)
-                    {
-                        // if (triggerData.ActualValue == 0)
-                        // {
-                        //     continue;
-                        // }
-
-                        if (triggerData.EffectUnitIdx != effectUnitIdx)
-                            continue;
-
-                        if (actionUnitIdxs != null && !actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
-                            continue;
-
-                        if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
-                        {
-                            triggerDataDict.Add(triggerData.ActionUnitIdx, new List<TriggerData>());
-                        }
-
-                        triggerDataDict[triggerData.ActionUnitIdx].Add(triggerData);
-                    }
-                }
-            }
+            // foreach (var kv in RoundFightData.EnemyMoveDatas)
+            // {
+            //
+            //     foreach (var kv2 in kv.Value.TriggerDataDict)
+            //     {
+            //         foreach (var triggerData in kv2.Value.TriggerDatas)
+            //         {
+            //             // if (triggerData.ActualValue == 0)
+            //             // {
+            //             //     continue;
+            //             // }
+            //
+            //             if (triggerData.EffectUnitIdx != effectUnitIdx)
+            //                 continue;
+            //
+            //             if (actionUnitIdxs != null && actionUnitIdxs.Contains(triggerData.ActionUnitIdx))
+            //                 continue;
+            //
+            //             if (!triggerDataDict.ContainsKey(triggerData.ActionUnitIdx))
+            //             {
+            //                 triggerDataDict.Add(triggerData.ActionUnitIdx, new List<TriggerData>());
+            //             }
+            //
+            //             triggerDataDict[triggerData.ActionUnitIdx].Add(triggerData);
+            //         }
+            //     }
+            // }
 
             // foreach (var kv in RoundFightData.BuffData_Use.TriggerDatas)
             // {
