@@ -334,6 +334,7 @@ namespace RoundHero
         public void AddMoveValue(int startValue, int endValue, int entityIdx = -1, bool isLoop = false, bool isAdd = false,
             MoveParams moveParams = null, MoveParams targetMoveParams = null, int triggerDataIdx = -1)
         {
+            
             if (triggerDataIdx != -1)
             {
                 for (int i = moveValueList.Count - 1; i >= 0; i--)
