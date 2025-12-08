@@ -72,11 +72,10 @@ namespace RoundHero
             //battleEnemyData.UnitRole = EUnitRole.Staff;
             
             //battleMonsterData.ChangeState(EUnitState.HurtRoundStart, 2);
-            // battleMonsterData.ChangeState(EUnitState.HurtSubDmg, 2);
+            //battleMonsterData.ChangeState(EUnitState.HurtSubDmg, 2);
             // battleMonsterData.ChangeState(EUnitState.HurtAddDmg, 1);
-            // battleMonsterData.ChangeState(EUnitState.SubDmg, 2);
-            // battleMonsterData.ChangeState(EUnitState.AddDmg, 1);
-
+            //battleMonsterData.ChangeState(EUnitState.AddDmg, 2);
+            //battleMonsterData.ChangeState(EUnitState.HurtSubDmg, 2);
             
             data.Init(entityComponent.GenerateSerialId(), pos, battleMonsterData);
 
@@ -195,15 +194,15 @@ namespace RoundHero
             
             var card = BattleManager.Instance.GetCard(battleSoliderData.CardIdx);
             // battleSoliderData.CurHP = 5;
-            // battleSoliderData.ChangeState(EUnitState.CounterAtk, 3);
-            // battleSoliderData.ChangeState(EUnitState.SubHPAddSelfHP, 2);
+            //battleSoliderData.ChangeState(EUnitState.CounterAtk, 2);
+            //battleSoliderData.ChangeState(EUnitState.AtkAddSelfHP, 2);
             //
             //
-            //  battleSoliderData.ChangeState(EUnitState.HurtAddDmg, 1);
-            //  battleSoliderData.ChangeState(EUnitState.SubDmg, 2);
+            //battleSoliderData.ChangeState(EUnitState.HurtRoundStart, 2);
+            //battleSoliderData.ChangeState(EUnitState.AddDmg, 3);
             //battleSoliderData.ChangeState(EUnitState.SubDmg, 1);
             //BattleUnitStateManager.Instance.AddActiveAttack(newBattleSoliderData);
-            //battleSoliderData.ChangeState(EUnitState.HurtRoundStart, 1);
+            //battleSoliderData.ChangeState(EUnitState.HurtRoundStart, 3);
             var pos = GameUtility.GridPosIdxToPos(battleSoliderData.GridPosIdx);
             data.Init(entityComponent.GenerateSerialId(), pos, battleSoliderData);
 

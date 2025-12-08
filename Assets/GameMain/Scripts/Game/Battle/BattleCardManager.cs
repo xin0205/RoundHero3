@@ -79,13 +79,32 @@ namespace RoundHero
         
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
             //             
-            //  var funeIdx = FuneManager.Instance.GetIdx();
-            //  FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 26));
-            //  BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
-            //  
-             // funeIdx = FuneManager.Instance.GetIdx();
-             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 26));
+             // var funeIdx = FuneManager.Instance.GetIdx();
+             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
              // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             //
+             // funeIdx = FuneManager.Instance.GetIdx();
+             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 22));
+             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             //
+             //
+             // funeIdx = FuneManager.Instance.GetIdx();
+             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 22));
+             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             
+             // funeIdx = FuneManager.Instance.GetIdx();
+             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
+             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
+             //
+             //
+             // funeIdx = FuneManager.Instance.GetIdx();
+             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 12));
+             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
+             //
+             //
+             // funeIdx = FuneManager.Instance.GetIdx();
+             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 12));
+             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[1]].FuneIdxs.Add(funeIdx);
              
              //BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].CardDestination = ECardDestination.Consume;
              // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].MaxHPDelta += 10;

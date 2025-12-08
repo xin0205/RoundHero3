@@ -411,15 +411,13 @@ namespace RoundHero
             var enemyIdxs = MathUtility.GetRandomNum(
                 enemyGenerateCount, 0,
                 places.Count, new Random(GetRandomSeed()));
-                
-            
 
-            // var test = new List<int>(){3, 3, 3};
-            //
+            // var test = new List<int>(){4, 4};
+            // //
             // var enemyIdxs = MathUtility.GetRandomNum(
             //      test.Count, 0,
             //      places.Count, new Random(GetRandomSeed()));
-            
+            //
             //enemyGenerateCount
             for (int i = 0; i < enemyGenerateCount; i++)
             {
