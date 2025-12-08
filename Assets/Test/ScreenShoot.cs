@@ -1,14 +1,20 @@
 using System;
 using UnityEngine;
 using System.IO;
+using UnityEditor;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class ScreenShoot : MonoBehaviour
 {
     
     public Camera cropCamera; //待截图的目标摄像机
     RenderTexture renderTexture;
     Texture2D texture2D;
+
+    // public ScreenShoot()
+    // {
+    //     EditorApplication.update += Update;
+    // }
     
     void Start()
     {
