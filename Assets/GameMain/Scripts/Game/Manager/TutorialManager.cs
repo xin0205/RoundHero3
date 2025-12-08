@@ -433,8 +433,9 @@ namespace RoundHero
             
             if (Input.GetMouseButtonDown(0))
             {
+                
                 var tutorialStep = BattleManager.Instance.TutorialStep;
-                Log.Debug("AE");
+                //Log.Debug("AE:" +BattleManager.Instance.TutorialStep);
                 // SwitchStep(ETutorialStep.CoreHP);
                 // if(tutorialStep != BattleManager.Instance.TutorialStep)
                 //     return;

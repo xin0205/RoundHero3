@@ -35,7 +35,7 @@ namespace RoundHero
             
             public static List<int> Enemies = new List<int>()
             {
-               0, 7
+               0, 6
             };
             
             public static List<int> EnemyPos = new List<int>()
@@ -57,7 +57,7 @@ namespace RoundHero
                 ETutorialStep.CardSwitchMove,
                 ETutorialStep.SelectMoveUnit,
                 ETutorialStep.SelectMovePos,
-                ETutorialStep.SwitchTarget,
+                //ETutorialStep.SwitchTarget,
                 ETutorialStep.SelectAttackCard,
                 ETutorialStep.CardSwitchAttack,
                 ETutorialStep.SelectAttackUnit,

@@ -254,24 +254,12 @@ namespace RoundHero
         { 
             //explainTriggerItem.gameObject.SetActive(true);
             //isShow && 
-            cardInfoTrigger.SetNameDesc("",
-                BattleManager.Instance.BattleState != EBattleState.UseCard
-                    ? Constant.Localization.Info_UnSelectCard
-                    : Constant.Localization.Info_SelectCard);
-            
-            
-            if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
-              TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
-              TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
-            {
-                return;
-            }
-
             if (isUsing)
                 return;
-
-
-            //Log.Debug("Enter");
+            
+            if(BattleFightManager.Instance.IsAction)
+                return;
+            
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
 
@@ -281,9 +269,19 @@ namespace RoundHero
                     return;
             }
             
-            if(BattleFightManager.Instance.IsAction)
-                return;
+            cardInfoTrigger.SetNameDesc("",
+                BattleManager.Instance.BattleState != EBattleState.UseCard
+                    ? Constant.Localization.Info_UnSelectCard
+                    : Constant.Localization.Info_SelectCard);
             
+            if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
+              TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
+              TutorialManager.Instance.Check_SelectAttackCard(this) == ETutorialState.UnMatch)
+            {
+                return;
+            }
+            
+            //Log.Debug("Enter");
             PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable);
             
             var passCardAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.PassCardAcquireCard,
@@ -339,6 +337,39 @@ namespace RoundHero
         
         public void OnPointerExit()
         {
+            if(isUsing)
+                return;
+            
+            if(BattleFightManager.Instance.IsAction)
+                return;
+            
+            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            {
+                if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
+                    return;
+            }
+            
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+            
+            if(!isShow)
+                return;
+            
+            if(BattleCardEntityData.CardData.UnUse)
+                return;
+
+            // if (isUsing)
+            //     return;
+            //
+            // if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+            //     return;
+            //
+            // if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
+            // {
+            //     if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
+            //         return;
+            // }
+            
             //explainTriggerItem.gameObject.SetActive(false);
             if (TutorialManager.Instance.Check_SelectUnitCard(this) == ETutorialState.UnMatch &&
                 TutorialManager.Instance.Check_SelectMoveCard(this) == ETutorialState.UnMatch &&
@@ -347,14 +378,7 @@ namespace RoundHero
                 return;
             }
             
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-                return;
-
-            if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
-            {
-                if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
-                    return;
-            }
+            
 
 
             //PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable); 
@@ -488,10 +512,10 @@ namespace RoundHero
         
         public async void UseCard()
         {
+            if(isUsing)
+                return;
             
-            if(TutorialManager.Instance.Switch_SelectUnitCard(this) == ETutorialState.UnMatch &&
-               TutorialManager.Instance.Switch_SelectMoveCard(this) == ETutorialState.UnMatch &&
-               TutorialManager.Instance.Switch_SelectAttackCard(this) == ETutorialState.UnMatch)
+            if(BattleFightManager.Instance.IsAction)
                 return;
             
             if (!Input.GetMouseButtonUp(0))
@@ -508,21 +532,21 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
             
-            if(BattleFightManager.Instance.IsAction)
+            if(!isShow)
                 return;
             
-            if(!isShow)
+            if(BattleCardEntityData.CardData.UnUse)
+                return;
+            
+            if(TutorialManager.Instance.Switch_SelectUnitCard(this) == ETutorialState.UnMatch &&
+               TutorialManager.Instance.Switch_SelectMoveCard(this) == ETutorialState.UnMatch &&
+               TutorialManager.Instance.Switch_SelectAttackCard(this) == ETutorialState.UnMatch)
                 return;
             
             BattleUnitManager.Instance.UnShowTags();
 
-            DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
-
+            //DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
             
-            
-            if(BattleCardEntityData.CardData.UnUse)
-                return;
-
             BattleCardEntityData.CardData.CardUseType = ECardUseType.RawSelect;
             if (!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
             {
