@@ -55,6 +55,9 @@ namespace RoundHero
             {
                 foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
                 {
+                    if (kv2.Value.MoveActionData.MoveGridPosIdxs.Count < 2)
+                        continue;
+                    
                     var battleFlyDirectEntity =
                         await GameEntry.Entity.ShowBattleFlyDirectEntityAsync(
                             kv2.Value.MoveActionData.MoveGridPosIdxs[0], kv2.Value.MoveActionData.MoveGridPosIdxs[1],
