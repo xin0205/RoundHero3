@@ -98,8 +98,7 @@ namespace RoundHero
                             //     triggerData.HeroHPDelta = value;
                             // }
                             
-                            if (RoundFightData.GamePlayData.BlessCount(EBlessID.AddCurHPByAttackDamage,
-                                    BattleManager.Instance.CurUnitCamp) > 0)
+                            if (BlessManager.Instance.AddCurHPByAttackDamage())
                             {
                                 value = Math.Abs((int)triggerValue);
                             }

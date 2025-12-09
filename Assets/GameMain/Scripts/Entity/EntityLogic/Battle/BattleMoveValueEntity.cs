@@ -203,11 +203,11 @@ namespace RoundHero
                     text.text = positiveEndValue;
                     text.color = recoverColor;
                 }
-                else
-                {
-                    text.text = negativeEndValue;
-                    text.color = hurtColor;
-                }
+                // else
+                // {
+                //     text.text = negativeEndValue;
+                //     text.color = hurtColor;
+                // }
   
             }
             

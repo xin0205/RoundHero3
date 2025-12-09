@@ -1699,8 +1699,8 @@ namespace RoundHero
                     switch (triggerData.BattleUnitAttribute)
                     {
                         case EUnitAttribute.HP:
-                            
-                            var hpDelta = effectUnitEntity.ChangeCurHP(triggerValue, true, triggerData.CoreHPDelta > 0, triggerData.ChangeHPInstantly, true);
+    
+                            var hpDelta = effectUnitEntity.ChangeCurHP(triggerValue, true, triggerData.CoreHPDelta > 0, triggerData.ChangeHPInstantly, true, triggerData);
                             
                             if (triggerData.BattleUnitAttribute == EUnitAttribute.HP &&
                                 !triggerData.ChangeHPInstantly && hpDelta != 0)
@@ -1781,7 +1781,7 @@ namespace RoundHero
                         case EUnitAttribute.MaxHP:
                             var recover = (int) (triggerData.Value + triggerData.DeltaValue);
                             effectUnitEntity.BattleUnitData.BaseMaxHP += recover;
-                            effectUnitEntity.ChangeCurHP(recover, true, false, true, true);
+                            effectUnitEntity.ChangeCurHP(recover, true, false, true, true, triggerData);
                             break;
                         case EUnitAttribute.Empty:
                             break;
@@ -1939,7 +1939,7 @@ namespace RoundHero
                     break;
                 case ETriggerDataType.RemoveUnit:
                     effectUnitEntity.BattleUnitData.RemoveAllState();
-                    effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly, true);
+                    effectUnitEntity.ChangeCurHP(triggerValue, true, true, triggerData.ChangeHPInstantly, true, triggerData);
                     if (triggerValue < 0)
                     {
                         effectUnitEntity.BattleUnitData.HurtTimes += 1;

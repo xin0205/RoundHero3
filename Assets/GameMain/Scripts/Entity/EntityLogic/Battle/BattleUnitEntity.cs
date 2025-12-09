@@ -1582,25 +1582,32 @@ namespace RoundHero
                     DeltaPos = isAddHP ? new Vector2(0, -25f) : new Vector2(0, 100f),
                     IsUIGO = isAddHP,
                 };
+                
+                var endValue = triggerData != null && BlessManager.Instance.AddCurHPByAttackDamage()
+                    ? (int)(triggerData.Value + triggerData.DeltaValue)
+                    : (int)changeHP;
+                
+                BattleValueManager.Instance.AddMoveValue(changeHP, endValue, BattleValueManager.Instance.CurValueEntityIdx++, false,
+                    addHeroHP, moveParams,
+                    targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
 
-
-                if (!changeHPInstantly)
-                {
-                    //this is BattleSoliderEntity && changeHP < 0
-                    BattleValueManager.Instance.AddMoveValue(changeHP, changeHP, BattleValueManager.Instance.CurValueEntityIdx++, false,
-                        addHeroHP, moveParams,
-                        targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
-                    //AddHurts(changeHP);
-                }
-                // if (hpDelta != 0)
-                else
-                {
-                    //this is BattleSoliderEntity && changeHP < 0
-                    BattleValueManager.Instance.AddMoveValue(changeHP, changeHP, BattleValueManager.Instance.CurValueEntityIdx++, false,
-                        addHeroHP, moveParams,
-                        targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
-                    //AddHurts(hpDelta);
-                }
+                // if (!changeHPInstantly)
+                // {
+                //     //this is BattleSoliderEntity && changeHP < 0
+                //     BattleValueManager.Instance.AddMoveValue(changeHP, changeHP, BattleValueManager.Instance.CurValueEntityIdx++, false,
+                //         addHeroHP, moveParams,
+                //         targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
+                //     //AddHurts(changeHP);
+                // }
+                // // if (hpDelta != 0)
+                // else
+                // {
+                //     //this is BattleSoliderEntity && changeHP < 0
+                //     BattleValueManager.Instance.AddMoveValue(changeHP, changeHP, BattleValueManager.Instance.CurValueEntityIdx++, false,
+                //         addHeroHP, moveParams,
+                //         targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
+                //     //AddHurts(hpDelta);
+                // }
                         
             }
             

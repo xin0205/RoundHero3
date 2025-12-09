@@ -625,7 +625,7 @@ namespace RoundHero
         public bool AddCurHPByAttackDamage(int actionUnitIdx = -1)
         {
             var actionUnit = BattleUnitManager.Instance.GetUnitByIdx(actionUnitIdx);
-            var unitCamp = BattleManager.Instance.CurUnitCamp;
+            var unitCamp = PlayerManager.Instance.PlayerData.UnitCamp;
             if (actionUnit != null)
             {
                 unitCamp = actionUnit.UnitCamp;
