@@ -331,8 +331,7 @@ namespace RoundHero
             //         BattleCardManager.Instance.RefreshCurCardEnergy(0);
             //     }
             // }
-            BattleCardManager.Instance.RefreshCurCardEnergy(BattleFightManager.Instance.RoundFightData.BuffData_Use
-                .CardEnergy);
+            BattleCardManager.Instance.RefreshCurCardEnergy();
         }
         
         public void OnPointerExit()
@@ -772,6 +771,7 @@ namespace RoundHero
         public void RefreshInfo()
         {
             CardItem.SetCard(BattleCardEntityData.CardData.CardID, BattleCardEntityData.CardData.CardIdx);
+            BattleCardManager.Instance.RefreshCurCardEnergy();
         }
 
         public void OnRefreshInfo(object sender, GameEventArgs e)

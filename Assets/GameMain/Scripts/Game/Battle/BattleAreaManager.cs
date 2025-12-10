@@ -553,7 +553,7 @@ namespace RoundHero
                             }
                             
                             var actionTimes = relativeUnit.BattleUnitData.RoundAttackTimes;
-                            BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
+                            BattleCardManager.Instance.RefreshCurCardEnergy();
                             var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(relativeUnit.BattleUnitData);
                             foreach (var unitBuffData in unitBuffDatas)
                             {
@@ -595,7 +595,7 @@ namespace RoundHero
                             }
                             
                             var actionTimes = relativeUnit.BattleUnitData.RoundMoveTimes;
-                            BattleCardManager.Instance.RefreshCurCardEnergy(actionTimes);
+                            BattleCardManager.Instance.RefreshCurCardEnergy();
                         }
                         
                         else

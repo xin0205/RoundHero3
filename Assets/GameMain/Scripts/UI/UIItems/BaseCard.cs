@@ -63,23 +63,7 @@ namespace RoundHero
 
             //var card = BattleManager.Instance.GetCard(CardID);
             var drCard = GameEntry.DataTable.GetCard(CardID);
-            if (drCard.CardType == ECardType.Unit)
-            {
-                Icon.sprite = await AssetUtility.GetFollowerIcon(CardID);
-
-                var maxHP = BattleCardManager.Instance.GetCardMaxHP(CardID, CardIdx);
-                
-                hp.text = maxHP.ToString();
-                
-            }
-            else if (drCard.CardType == ECardType.Tactic)
-            {
-                Icon.sprite = await AssetUtility.GetTacticIcon(CardID);
-            }
-            else if (drCard.CardType == ECardType.Prop)
-            {
-                Icon.sprite = await AssetUtility.GetTacticIcon(CardID);
-            }
+            
             
 
             var cardName = "";
@@ -117,6 +101,26 @@ namespace RoundHero
             
 
             energy.text = _energy < 0 ? "X" : _energy.ToString();
+            
+            if (drCard.CardType == ECardType.Unit)
+            {
+                var maxHP = BattleCardManager.Instance.GetCardMaxHP(CardID, CardIdx);
+                
+                hp.text = maxHP.ToString();
+                
+                Icon.sprite = await AssetUtility.GetFollowerIcon(CardID);
+
+                
+                
+            }
+            else if (drCard.CardType == ECardType.Tactic)
+            {
+                Icon.sprite = await AssetUtility.GetTacticIcon(CardID);
+            }
+            else if (drCard.CardType == ECardType.Prop)
+            {
+                Icon.sprite = await AssetUtility.GetTacticIcon(CardID);
+            }
 
             //var maxHP = BattleUnitManager.Instance.GetUnitHP(CardID);
 

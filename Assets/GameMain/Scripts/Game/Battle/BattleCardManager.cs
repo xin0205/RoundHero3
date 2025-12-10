@@ -1874,6 +1874,12 @@ namespace RoundHero
             }
         }
         
+        public void RefreshCurCardEnergy()
+        {
+            BattleCardManager.Instance.RefreshCurCardEnergy(BattleFightManager.Instance.RoundFightData.BuffData_Use
+                .CardEnergy);
+        }
+        
         public void UnSelectCard()
         {
             
