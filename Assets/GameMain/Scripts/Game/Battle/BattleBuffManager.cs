@@ -469,12 +469,13 @@ namespace RoundHero
         {
             if(triggerData == null)
                 return;
-   
-            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
+            
             if (isAddTriggerData)
             {
                 triggerDatas.Add(triggerData);
             }
+            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
+            
             
             
             // HurtTrigger(triggerData, triggerDatas);
