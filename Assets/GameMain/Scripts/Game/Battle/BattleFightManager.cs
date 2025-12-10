@@ -1366,7 +1366,7 @@ namespace RoundHero
             {
                 if (triggerValue > effectUnitData.MaxHP - effectUnitOldHP)
                 {
-                    triggerData.ActualValue = effectUnitData.MaxHP - effectUnitData.CurHP;
+                    triggerData.ActualValue = effectUnitData.MaxHP - effectUnitOldHP;
                 }
                 else
                 {
@@ -1463,7 +1463,7 @@ namespace RoundHero
                 //BattleCurseManager.Instance.CurseIDs.Contains(ECurseID.AddDebuffRecoverHP)
                 var addDebuffAddCurHP = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.AddDebuffAddCurHP,
                     effectUnit.UnitCamp);
-                if (addDebuffAddCurHP != null && value > 0)
+                if (addDebuffAddCurHP != null && value > 0 && effectUnit is not Data_BattleCore)
                 {
                     var triggerData = BattleFightManager.Instance.BattleRoleAttribute(effectUnit.Idx, effectUnit.Idx,
                         effectUnit.Idx, EUnitAttribute.HP, 1, ETriggerDataSubType.Bless);

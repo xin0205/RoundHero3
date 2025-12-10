@@ -203,11 +203,16 @@ namespace RoundHero
                     text.text = positiveEndValue;
                     text.color = recoverColor;
                 }
-                // else
-                // {
-                //     text.text = negativeEndValue;
-                //     text.color = hurtColor;
-                // }
+                else
+                {
+                    // text.text = negativeEndValue;
+                    // text.color = hurtColor;
+                    text.text = BattleMoveValueEntityData.StartValue < 0
+                        ? negativeStartValue
+                        : BattleMoveValueEntityData.StartValue > 0 ? positiveStartValue: negativeStartValue;
+
+                    text.color = BattleMoveValueEntityData.StartValue < 0 ? hurtColor : recoverColor;
+                }
   
             }
             

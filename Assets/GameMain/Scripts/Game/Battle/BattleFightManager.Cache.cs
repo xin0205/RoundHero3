@@ -1599,23 +1599,26 @@ namespace RoundHero
                         var collideUnDead = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CollideUnDead,
                             bePassUnit.UnitCamp);
 
-                        if (!(firstCollideUnHurt != null && bePassUnit.CollideCount == 0) &&
-                            !(collideUnDead != null && bePassUnit.CurHP <= Mathf.Abs(collideHurt)))
+                        var bePassCollideHurt = collideHurt;
+                        if ((firstCollideUnHurt != null && bePassUnit.CollideCount == 0) ||
+                            (collideUnDead != null && bePassUnit.CurHP <= Mathf.Abs(collideHurt)))
                         {
-                            bePassUnitIdx = bePassUnit.Idx;
-                            var collisionTriggerData = BattleFightManager.Instance.BattleRoleAttribute(unitIdx, unitIdx,
-                                bePassUnit.Idx, EUnitAttribute.HP, collideHurt, ETriggerDataSubType.Collision);
-                            collisionTriggerData.ActionUnitGridPosIdx = gridPosIdx;
-                            collisionTriggerData.EffectUnitGridPosIdx = gridPosIdx;
-
-                            if (BattleCoreManager.Instance.IsCoreIdx(bePassUnit.Idx))
-                            {
-                                collisionTriggerData.ChangeHPInstantly = false;
-                            }
-
-                            CollideTrigger(collisionTriggerData, triggerDatas);
-                            BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData, triggerDatas);
+                            bePassCollideHurt = 0;
                         }
+                        
+                        bePassUnitIdx = bePassUnit.Idx;
+                        var collisionTriggerData = BattleFightManager.Instance.BattleRoleAttribute(unitIdx, unitIdx,
+                            bePassUnit.Idx, EUnitAttribute.HP, bePassCollideHurt, ETriggerDataSubType.Collision);
+                        collisionTriggerData.ActionUnitGridPosIdx = gridPosIdx;
+                        collisionTriggerData.EffectUnitGridPosIdx = gridPosIdx;
+
+                        if (BattleCoreManager.Instance.IsCoreIdx(bePassUnit.Idx))
+                        {
+                            collisionTriggerData.ChangeHPInstantly = false;
+                        }
+
+                        CollideTrigger(collisionTriggerData, triggerDatas);
+                        BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData, triggerDatas);
 
                         BattleUnitStateManager.Instance.HurtRoundStartMoveTrigger(passUnit.Idx, bePassUnit.Idx,
                             triggerDatas);
@@ -1634,28 +1637,26 @@ namespace RoundHero
                         passUnit.UnitCamp);
                     var collideUnDead2 = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CollideUnDead,
                         passUnit.UnitCamp);
-                    if (!(firstCollideUnHurt2 != null && passUnit.CollideCount == 0) &&
-                        !(collideUnDead2 != null && passUnit.CurHP <= Mathf.Abs(collideHurt)))
+                    
+                    var passCollideHurt = collideHurt;
+                    if ((firstCollideUnHurt2 != null && passUnit.CollideCount == 0) ||
+                        (collideUnDead2 != null && passUnit.CurHP <= Mathf.Abs(collideHurt)))
                     {
-                        var collisionTriggerData2 = BattleFightManager.Instance.BattleRoleAttribute(bePassUnitIdx,
-                            bePassUnitIdx,
-                            unitIdx, EUnitAttribute.HP, collideHurt, ETriggerDataSubType.Collision);
-                        collisionTriggerData2.ActionUnitGridPosIdx = gridPosIdx;
-                        collisionTriggerData2.EffectUnitGridPosIdx = gridPosIdx;
-
-                        // var passUnitHeroEntity = HeroManager.Instance.GetHeroEntity(passUnit.UnitCamp);
-                        // if (passUnitHeroEntity!= null && passUnitHeroEntity.BattleHeroEntityData.BattleHeroData.Idx == passUnit.Idx)
-                        // {
-                        //     collisionTriggerData2.ChangeHPInstantly = false;
-                        // }
-
-                        if (BattleCoreManager.Instance.IsCoreIdx(passUnit.Idx))
-                        {
-                            collisionTriggerData2.ChangeHPInstantly = false;
-                        }
-
-                        BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData2, triggerDatas);
+                        passCollideHurt = 0;
                     }
+                    
+                    var collisionTriggerData2 = BattleFightManager.Instance.BattleRoleAttribute(bePassUnitIdx,
+                        bePassUnitIdx,
+                        unitIdx, EUnitAttribute.HP, passCollideHurt, ETriggerDataSubType.Collision);
+                    collisionTriggerData2.ActionUnitGridPosIdx = gridPosIdx;
+                    collisionTriggerData2.EffectUnitGridPosIdx = gridPosIdx;
+
+                    if (BattleCoreManager.Instance.IsCoreIdx(passUnit.Idx))
+                    {
+                        collisionTriggerData2.ChangeHPInstantly = false;
+                    }
+
+                    BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData2, triggerDatas);
 
 
 
