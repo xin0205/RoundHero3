@@ -180,14 +180,19 @@ namespace RoundHero
 
         public void ShowHPDeltaData(bool isShow)
         {
-            Log.Debug("AAA:" + isShow);
+            
             hpDeltaDatas.gameObject.SetActive(isShow);
             if (isShow)
             {
 
-                hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
-                    .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
-                hpDeltaDatas.RefreshAllShownItem();
+                if (BattleFightManager.Instance.RoundFightData
+                    .HPDeltaDict.ContainsKey(PlayerManager.Instance.PlayerData.UnitCamp))
+                {
+                    hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
+                        .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
+                    hpDeltaDatas.RefreshAllShownItem();
+                }
+                
             }
         }
 

@@ -342,15 +342,15 @@ namespace RoundHero
             if(BattleFightManager.Instance.IsAction)
                 return;
             
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
+                return;
+            
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
                 if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
                     return;
             }
-            
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-                return;
-            
+
             if(!isShow)
                 return;
             
@@ -511,32 +511,32 @@ namespace RoundHero
         
         public async void UseCard()
         {
+            if (!Input.GetMouseButtonUp(0))
+            {
+                return;
+            }
+            
+            if(BattleCardEntityData.CardData.UnUse)
+                return;
+            
             if(isUsing)
                 return;
             
             if(BattleFightManager.Instance.IsAction)
                 return;
-            
-            if (!Input.GetMouseButtonUp(0))
-            {
+
+            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
                 return;
-            }
             
             if (GamePlayManager.Instance.GamePlayData.GameMode == EGamMode.PVE)
             {
                 if(BattleManager.Instance.CurUnitCamp == EUnitCamp.Enemy)
                     return;
             }
-            
-            if(BattleManager.Instance.BattleState != EBattleState.UseCard)
-                return;
-            
+
             if(!isShow)
                 return;
-            
-            if(BattleCardEntityData.CardData.UnUse)
-                return;
-            
+
             if(TutorialManager.Instance.Switch_SelectUnitCard(this) == ETutorialState.UnMatch &&
                TutorialManager.Instance.Switch_SelectMoveCard(this) == ETutorialState.UnMatch &&
                TutorialManager.Instance.Switch_SelectAttackCard(this) == ETutorialState.UnMatch)

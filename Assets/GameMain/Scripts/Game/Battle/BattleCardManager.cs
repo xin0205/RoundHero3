@@ -282,12 +282,12 @@ namespace RoundHero
             //     }
             //    
             // }
-            
+            var beforeHandCard = new List<int>(BattlePlayerData.HandCards);
             var beforeHandCardCount = BattlePlayerData.HandCards.Count;
             var handCards = CacheAcquireHandCards(GamePlayManager.Instance.GamePlayData, cardCount, firstRound);
 
             BattlePlayerManager.Instance.BattlePlayerData.RoundAcquireCardCount += handCards.Count - beforeHandCardCount;
-            var newCards = handCards.Except(BattlePlayerData.HandCards).ToList();
+            var newCards = handCards.Except(beforeHandCard).ToList();
             AnimationAcquireCard(newCards, handCards.Count, unuseCount);
 
             //GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
