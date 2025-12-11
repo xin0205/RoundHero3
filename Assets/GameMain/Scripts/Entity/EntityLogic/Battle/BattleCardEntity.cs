@@ -292,6 +292,10 @@ namespace RoundHero
                 PassCardGO.SetActive(true);
 
             }
+            else
+            {
+                PassCardGO.SetActive(BattleCardEntityData.CardData.IsPassable);
+            }
             
             isShow = true;
             moveGO.SetActive(true);

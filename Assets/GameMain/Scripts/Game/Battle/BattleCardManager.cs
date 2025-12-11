@@ -413,7 +413,7 @@ namespace RoundHero
                     if(CardEntities.ContainsKey(card.BattleCardEntityData.CardIdx))
                         continue;
                     
-                    card.transform.position = BattleController.Instance.StandByCardPos.position;
+                    card.transform.localPosition = BattleController.Instance.StandByCardPos.localPosition;
                     card.SetSortingOrder(idx * 10);
                     card.AcquireCard(new Vector2(CardPosList[idx], BattleController.Instance.HandCardPos.localPosition.y),
                         idx * 0.15f + 0.15f);
@@ -584,9 +584,10 @@ namespace RoundHero
         public List<int> CacheAcquireHandCards(Data_GamePlay gamePlayData, int cardCount, bool firstRound = false)
         {
             var battlePlayerData = gamePlayData.BattleData.GetBattlePlayerData(gamePlayData.PlayerData.UnitCamp);
+            var _firstRound = BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.Round == 0;
 
             
-            if (firstRound)
+            if (_firstRound)
             {
                 var startFightAcquireCardCount =
                     gamePlayData.BlessCount(EBlessID.BattleStartAcquireCard,
@@ -633,19 +634,29 @@ namespace RoundHero
                 }
 
                 var cardIdx = battlePlayerData.StandByCards[0];
-                var card = BattleFightManager.Instance.GetCard(cardIdx);
+                var card = CardManager.Instance.GetCard(cardIdx);
                 var firstRoundPassCardAcquireCard =
                     BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
                         EBlessID.FirstRoundPassCardAcquireCard,
                         BattlePlayerManager.Instance.PlayerData.UnitCamp);
-                if (firstRound && firstRoundPassCardAcquireCard != null)
+                
+                if (_firstRound)
                 {
-                    card.IsPassable = true;
+                    if (firstRoundPassCardAcquireCard != null)
+                    {
+                        card.IsPassable = true;
+                    }
+                    else
+                    {
+                        card.IsPassable = false;
+                    }
                 }
                 else
                 {
                     card.IsPassable = false;
                 }
+
+                
                 
                 
                 // if (card.FuneCount(EFuneID.InHand_AcquireCard) > 0)

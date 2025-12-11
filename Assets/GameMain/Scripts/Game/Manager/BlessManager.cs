@@ -193,6 +193,8 @@ namespace RoundHero
             if(drCard == null)
                 return;
             
+            NoHandCardAcquireCard(gamePlayData, cardID);
+            
             if (drCard.CardType == ECardType.Unit)
             {
                 EachRoundUseCardAttackAllEnemy(gamePlayData, EBlessID.EachRoundUseFightCardAttackAllEnemy);
@@ -212,7 +214,7 @@ namespace RoundHero
             
             UseCardSubOtherCardEnergy(gamePlayData, cardID);
             
-            NoHandCardAcquireCard(gamePlayData, cardID);
+            
             
             EachUseCardUnUseEnergy(gamePlayData, cardID, unitID);
             
@@ -348,7 +350,7 @@ namespace RoundHero
                         {
                             var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
                                 kv.Value.Idx, EUnitAttribute.HP, int.Parse(drBless.Values0[1]), ETriggerDataSubType.Bless);
-                            
+                            triggerData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
                             BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
                         }
                     }

@@ -1988,7 +1988,7 @@ namespace RoundHero
 
             // var unuseCount =
             //     BattleManager.Instance.GetUnUseCardCount();
-
+            
             if (BattleCardManager.Instance.IsShuffleCard(cardCount, RoundFightData.GamePlayData))
             {
                 var addHP = BlessManager.Instance.ShuffleCardAddCurHP(RoundFightData.GamePlayData);

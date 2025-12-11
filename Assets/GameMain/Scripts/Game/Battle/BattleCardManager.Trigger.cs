@@ -170,6 +170,7 @@ namespace RoundHero
                     BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Add(triggerData.EffectUnitIdx, new TriggerCollection()
                     {
                         ActionUnitIdx = Constant.Battle.UnUnitTriggerIdx,
+                        EffectTagIdx = triggerData.EffectUnitIdx,
                     });
                 }
 
