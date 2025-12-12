@@ -72,6 +72,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取是否使用。
+        /// </summary>
+        public bool IsUse
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -88,6 +97,7 @@ namespace RoundHero
 			Values0 = DataTableExtension.ParseStringList(columnStrings[index++]);
             Overlay = bool.Parse(columnStrings[index++]);
 			ExplainItems = DataTableExtension.ParseStringList(columnStrings[index++]);
+            IsUse = bool.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -104,6 +114,7 @@ namespace RoundHero
 					Values0 = binaryReader.ReadStringList();
                     Overlay = binaryReader.ReadBoolean();
 					ExplainItems = binaryReader.ReadStringList();
+                    IsUse = binaryReader.ReadBoolean();
                 }
             }
 

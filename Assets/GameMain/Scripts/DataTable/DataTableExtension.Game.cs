@@ -199,7 +199,7 @@ namespace RoundHero
             var drLinks = GameEntry.DataTable.GetDataTable<DRBless>();
             return drLinks.GetDataRow((t) =>
             {
-                return t.Id == ID;
+                return t.Id == ID  && t.IsUse;
             });
         }
 
