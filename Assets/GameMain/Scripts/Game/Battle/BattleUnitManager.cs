@@ -540,8 +540,8 @@ namespace RoundHero
         {
             triggerBuffDatas = new List<BuffValue>();
             
-            if(unit == null)
-                return;
+            // if(unit == null)
+            //     return;
 
             InternalGetBuffValue(unit, out List<BuffData> buffDatas, out List<List<float>> valueList, preTriggerData);
             var idx = 0;
@@ -551,7 +551,7 @@ namespace RoundHero
                 {
                     BuffData = buffData,
                     ValueList = new List<float>(valueList[idx++]),
-                    UnitIdx = unit.Idx,
+                    UnitIdx = unit == null ? -1 : unit.Idx,
                     TargetGridPosIdx = targetGridPosIdx,
                 });
             };
@@ -592,6 +592,20 @@ namespace RoundHero
             {
                 buffDatas = BattleEnemyManager.Instance.GetBuffData(monster.Idx);
                 valueList = BattleEnemyManager.Instance.GetBuffValues(monster.Idx);
+            }
+            else if (preTriggerData != null && preTriggerData.TriggerCardIdx != -1)
+            {
+                var card = CardManager.Instance.GetCard(preTriggerData.TriggerCardIdx);
+                if (card != null)
+                {
+                    buffDatas = CardManager.Instance.GetBuffData(card.CardIdx);
+                    valueList = CardManager.Instance.GetCardBuffValues(-1, card.CardIdx, preTriggerData);
+                }
+                else
+                {
+                    buffDatas = new List<BuffData>();
+                    valueList = new List<List<float>>();
+                }
             }
             // else if (unit is Data_BattleHero hero)
             // {

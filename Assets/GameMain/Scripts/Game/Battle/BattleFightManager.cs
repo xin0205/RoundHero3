@@ -1630,7 +1630,7 @@ namespace RoundHero
                             
                                 var moveParams = new MoveParams()
                                 {
-                                    FollowGO = actionUnitEntity.gameObject,
+                                    FollowGO = triggerData.ActionUnitIdx == Constant.Battle.UnUnitTriggerIdx ? BattleController.Instance.HandCardPos.gameObject :  actionUnitEntity?.gameObject,
                                     DeltaPos = new Vector2(0, 25f),
                                     IsUIGO = false,
                                 };

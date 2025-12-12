@@ -103,7 +103,15 @@ namespace RoundHero
                 Log.Debug("AA");
             }
             
-            var drCard = CardManager.Instance.GetCardTable(soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+            return GetCardBuffValues(soliderIdx, soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx, preTriggerData);
+            
+            
+        }
+
+        public List<List<float>> GetCardBuffValues(int soliderIdx, int cardIdx, TriggerData preTriggerData = null)
+        {
+            
+            var drCard = CardManager.Instance.GetCardTable(cardIdx);
             
             var valuelist = new List<List<float>>();
 
@@ -113,7 +121,7 @@ namespace RoundHero
                 var values = new List<float>();
                 foreach (var value in drCard.GetValues(idx++))
                 {
-                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx, soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx, preTriggerData);
+                    var targetValue = BattleBuffManager.Instance.GetBuffValue(value, soliderIdx, cardIdx, preTriggerData);
                     values.Add(targetValue);
   
                 }
@@ -121,7 +129,7 @@ namespace RoundHero
                 valuelist.Add(values);
             }
             idx = 0;
-            var cardData = GetCard(soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+            var cardData = GetCard(cardIdx);
             
             foreach (var funeIdx in cardData.FuneIdxs)
             {
@@ -132,7 +140,7 @@ namespace RoundHero
                     foreach (var buffValue in drBuff.GetValues(idx))
                     {
                         var value = BattleBuffManager.Instance.GetBuffValue(buffValue, soliderIdx,
-                            soliderUnit.BattleSoliderEntityData.BattleSoliderData.CardIdx, preTriggerData);
+                            cardIdx, preTriggerData);
                         funeValues.Add(value);
 
                     }
@@ -148,8 +156,6 @@ namespace RoundHero
             
             
         }
-
-        
 
         public float GetBuffValue(int cardID, int buffIdx, int valueIdx)
         {
