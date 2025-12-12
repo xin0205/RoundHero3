@@ -520,8 +520,7 @@ namespace RoundHero
             //         return;
             // }
             
-            if(actionUnit == null || !actionUnit.Exist())
-                return;
+           
             
             // actionUnitCamp = actionUnit.UnitCamp;
             //
@@ -531,6 +530,10 @@ namespace RoundHero
             
             
             BuffsTrigger(BattleFightManager.Instance.RoundFightData.GamePlayData, actionUnit, triggerData, triggerDatas, EBuffTriggerType.Attack);
+            
+            if(actionUnit == null || !actionUnit.Exist())
+                return;
+            
             BattleGridPropManager.Instance.AttackTrigger(actionUnit.GridPosIdx, triggerData, triggerDatas);
             BattleFightManager.Instance.TriggerUnitData(actionUnit.Idx, triggerData.EffectUnitIdx, actionUnit.GridPosIdx,
                 EBuffTriggerType.Attack, triggerDatas);
