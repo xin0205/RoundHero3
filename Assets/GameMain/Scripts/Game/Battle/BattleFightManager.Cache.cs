@@ -972,6 +972,15 @@ namespace RoundHero
                 }
             }
 
+            var card = CardManager.Instance.GetCard(triggerData.TriggerCardIdx);
+            if (card != null)
+            {
+                if (card.FuneCount(EBuffID.Spec_AddFlyRange) > 0)
+                {
+                    dis = 99;
+                }
+            }
+
             if (buffData.FlyType == EFlyType.Exchange && actionUnit != null)
             {
                 if(actionUnit.Idx == effectUnit.Idx)

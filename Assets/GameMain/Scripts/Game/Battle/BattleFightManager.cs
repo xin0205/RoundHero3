@@ -3454,7 +3454,7 @@ namespace RoundHero
                 // BlessDeadTransferUnitState(otherEnemies, effectUnit, triggerDatas);
                 if (otherEnemies.Count > 0)
                 {
-                    var randomEnemyIdx = Random.Next(0, otherEnemies.Count);
+                    var randomEnemyIdx = 0;//otherEnemies[];//Random.Next(0, otherEnemies.Count);
                     foreach (var kv in effectUnit.UnitStateData.UnitStates)
                     {
                         if (Constant.Battle.EffectUnitStates[unitStateEffectType].Contains(kv.Value.UnitState))
