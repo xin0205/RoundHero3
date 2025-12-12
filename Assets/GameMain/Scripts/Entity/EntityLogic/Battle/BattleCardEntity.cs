@@ -1157,6 +1157,12 @@ namespace RoundHero
             {
                 BattleFightManager.Instance.TriggerAction(triggerData);
             }
+            
+            GameUtility.DelayExcute(0.5f, () =>
+            {
+                BattleCardManager.Instance.ResetCardsPos(true);
+            });
+            
             //BattleCardManager.Instance.SetCardsPos();
         }
         
@@ -1169,7 +1175,7 @@ namespace RoundHero
             isUsing = true;
             
             BattleCardManager.Instance.SelectPassCardIdx = -1;
-            
+            BattleCardManager.Instance.SelectCardHandOrder = -1;
             
             MoveCard(ECardPos.Default, ECardPos.Pass);
 
