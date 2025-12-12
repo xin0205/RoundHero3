@@ -2000,6 +2000,10 @@ namespace RoundHero
 
         public void LookAt(Vector3 pos)
         {
+            var posIdx = GameUtility.GridPosToPosIdx(pos);
+            if(posIdx == BattleUnitData.GridPosIdx)
+                return;
+            
             roleRoot.LookAt(pos);
         }
 

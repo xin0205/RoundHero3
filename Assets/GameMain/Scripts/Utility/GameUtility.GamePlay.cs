@@ -559,8 +559,8 @@ namespace RoundHero
                     if (unitCamps.Contains(ERelativeCamp.Enemy) && !unitCamps.Contains(ERelativeCamp.Us) && kv.Value.UnitCamp == selfUnitCamp)
                         continue;
                     
-                    if(gridPosIdx == kv.Value.GridPosIdx)
-                        continue;
+                    // if(gridPosIdx == kv.Value.GridPosIdx)
+                    //     continue;
                     
                     retGetRange.Add(kv.Value.GridPosIdx);
                 }
