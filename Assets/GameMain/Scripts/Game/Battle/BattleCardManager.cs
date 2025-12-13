@@ -1101,24 +1101,30 @@ namespace RoundHero
                 BattleManager.Instance.RefreshEnemyAttackData();
                 DataManager.Instance.Save();
             });
-            
-            
-            
-            
+
             BattleCardManager.Instance.SetCardsPos();
-            
-            var eachUseCardUnUseEnergy = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.EachUseCardUnUseEnergy, PlayerManager.Instance.PlayerData.UnitCamp);
-            if (eachUseCardUnUseEnergy != null)
+
+            var eachUseCardUnUseEnergys =
+                GamePlayManager.Instance.GamePlayData.GetUsefulBlesses(EBlessID.EachUseCardUnUseEnergy,
+                    PlayerManager.Instance.PlayerData.UnitCamp);
+            if (eachUseCardUnUseEnergys != null)
             {
-                if (eachUseCardUnUseEnergy.Value <= 0)
+                foreach (var eachUseCardUnUseEnergy in eachUseCardUnUseEnergys)
                 {
-                    var drBless = GameEntry.DataTable.GetBless(EBlessID.EachUseCardUnUseEnergy);
-                    eachUseCardUnUseEnergy.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
+                    eachUseCardUnUseEnergy.Value -= 1;
+                    if (eachUseCardUnUseEnergy.Value <= 0)
+                    {
+                        var drBless = GameEntry.DataTable.GetBless(EBlessID.EachUseCardUnUseEnergy);
+                        eachUseCardUnUseEnergy.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
+                    
+                    }
                     
                 }
-                eachUseCardUnUseEnergy.Value -= 1;
+                
             }
             
+            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
+  
             return true;
 
         }
