@@ -1377,6 +1377,8 @@ namespace RoundHero
                 
        
             }
+            
+            
         }
 
         public void ExchangeGrid(int gridPosIdx1, int gridPosIdx2)

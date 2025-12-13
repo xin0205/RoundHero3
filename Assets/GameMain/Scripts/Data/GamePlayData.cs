@@ -1601,6 +1601,23 @@ namespace RoundHero
             return null;
         }
         
+        public List<Data_Bless> GetUsefulBlesses(EBlessID blessID)
+        {
+            var drBless = GameEntry.DataTable.GetBless(blessID);
+            if (drBless == null)
+                return null;
+
+            var drBlesses = new List<Data_Bless>();
+            foreach (var kv in BlessDatas)
+            {
+                if (kv.Value.BlessID == drBless.BlessID && kv.Value.Value >= 0)
+                    drBlesses.Add(kv.Value);
+            }
+            
+            return drBlesses;
+        }
+
+        
     }
 
     public class Data_Enemy
@@ -1923,7 +1940,14 @@ namespace RoundHero
             return PlayerDataCampDict[unitCamp].GetUsefulBless(blessID);
         }
         
-        
+        public List<Data_Bless> GetUsefulBlesses(EBlessID blessID, EUnitCamp unitCamp)
+        {
+            var drBlesses = new List<Data_Bless>();
+            if (!PlayerDataCampDict.ContainsKey(unitCamp))
+                return null;
+            
+            return PlayerDataCampDict[unitCamp].GetUsefulBlesses(blessID);
+        }
         
     }
 

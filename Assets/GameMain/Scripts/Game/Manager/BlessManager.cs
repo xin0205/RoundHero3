@@ -247,22 +247,34 @@ namespace RoundHero
 
         public void EachUseCardAcquireCard(Data_GamePlay gamePlayData, int cardID)
         {
-            var eachUseCardAcquireCard = gamePlayData.GetUsefulBless(EBlessID.EachUseCardAcquireCard, BattleManager.Instance.CurUnitCamp);
-            if (eachUseCardAcquireCard != null)
+            var eachUseCardAcquireCards =
+                GamePlayManager.Instance.GamePlayData.GetUsefulBlesses(EBlessID.EachUseCardAcquireCard,
+                    PlayerManager.Instance.PlayerData.UnitCamp);
+            if (eachUseCardAcquireCards != null)
             {
-                if (eachUseCardAcquireCard.Value > 0)
+                foreach (var eachUseCardUnUseEnergy in eachUseCardAcquireCards)
                 {
-                    eachUseCardAcquireCard.Value -= 1;
-
-                    if (eachUseCardAcquireCard.Value <= 0)
+                    if (eachUseCardUnUseEnergy != null)
                     {
-                        var drBless = GameEntry.DataTable.GetBless(EBlessID.EachUseCardAcquireCard);
-                        eachUseCardAcquireCard.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
-                        BattleCardManager.Instance.AcquireCards((int)BattleBuffManager.Instance.GetBuffValue(drBless.Values0[1]));
+                        if (eachUseCardUnUseEnergy.Value > 0)
+                        {
+                            eachUseCardUnUseEnergy.Value -= 1;
+
+                            if (eachUseCardUnUseEnergy.Value <= 0)
+                            {
+                                var drBless = GameEntry.DataTable.GetBless(EBlessID.EachUseCardAcquireCard);
+                                eachUseCardUnUseEnergy.Value =
+                                    BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
+                                BattleCardManager.Instance.AcquireCards(
+                                    (int)BattleBuffManager.Instance.GetBuffValue(drBless.Values0[1]));
+                            }
+
+                        }
                     }
-                    
+
                 }
 
+                
                 GameEntry.Event.Fire(null, RefreshCardInfoEventArgs.Create());
                 
             }
@@ -308,57 +320,102 @@ namespace RoundHero
 
         public void EachRoundUseCardAttackAllEnemy(Data_GamePlay gamePlayData, EBlessID blessID)
         {
-            var eachRoundUseCardAttackAllEnemy =gamePlayData.GetUsefulBless(blessID, BattleManager.Instance.CurUnitCamp);
-            var drBless = GameEntry.DataTable.GetBless(blessID);
-            if (eachRoundUseCardAttackAllEnemy != null)
+            var blessDatas = GamePlayManager.Instance.GamePlayData.GetUsefulBlesses(blessID, PlayerManager.Instance.PlayerData.UnitCamp);
+            if (blessDatas != null)
             {
-                if (eachRoundUseCardAttackAllEnemy.Value <= 0)
+                foreach (var blessData in blessDatas)
                 {
-                    eachRoundUseCardAttackAllEnemy.Value = int.Parse(drBless.Values0[0]);
-                }
-                
-                if (eachRoundUseCardAttackAllEnemy.Value > 0)
-                {
-                    eachRoundUseCardAttackAllEnemy.Value -= 1;
-                }
-                // else
-                // {
-                //     foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
-                //     {
-                //         if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp)
-                //         {
-                //             BattleManager.Instance.ChangeHP(kv.Value, (int)BattleBuffManager.Instance.GetBuffValue(drBless.Values0[1]), gamePlayData, EHPChangeType.Unit);
-                //         }
-                //     }
-                // }
+                    blessData.Value -= 1;
+                    if (blessData.Value <= 0)
+                    {
+                        var drBless = GameEntry.DataTable.GetBless(blessID);
+                        blessData.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
 
+                    }
+
+                }
             }
+
+
+
+            // var eachRoundUseCardAttackAllEnemy =gamePlayData.GetUsefulBless(blessID, BattleManager.Instance.CurUnitCamp);
+            // var drBless = GameEntry.DataTable.GetBless(blessID);
+            // if (eachRoundUseCardAttackAllEnemy != null)
+            // {
+            //     if (eachRoundUseCardAttackAllEnemy.Value <= 0)
+            //     {
+            //         eachRoundUseCardAttackAllEnemy.Value = int.Parse(drBless.Values0[0]);
+            //     }
+            //     
+            //     if (eachRoundUseCardAttackAllEnemy.Value > 0)
+            //     {
+            //         eachRoundUseCardAttackAllEnemy.Value -= 1;
+            //     }
+            //     // else
+            //     // {
+            //     //     foreach (var kv in gamePlayData.BattleData.BattleUnitDatas)
+            //     //     {
+            //     //         if (kv.Value.UnitCamp != BattleManager.Instance.CurUnitCamp)
+            //     //         {
+            //     //             BattleManager.Instance.ChangeHP(kv.Value, (int)BattleBuffManager.Instance.GetBuffValue(drBless.Values0[1]), gamePlayData, EHPChangeType.Unit);
+            //     //         }
+            //     //     }
+            //     // }
+            //
+            // }
         }
 
-        public void CacheUseCardData(EBlessID blessID, List<TriggerData> triggerDatas)
+        public void CacheEachRoundUseCardAttackAllEnemy(EBlessID blessID, List<TriggerData> triggerDatas)
         {
-            var eachRoundUseCardAttackAllEnemy = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(blessID, BattleManager.Instance.CurUnitCamp);
-            var drBless = GameEntry.DataTable.GetBless(blessID);
-            if (eachRoundUseCardAttackAllEnemy != null)
+            var blessDatas = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBlesses(blessID, BattleManager.Instance.CurUnitCamp);
+            foreach (var blessData in blessDatas)
             {
-                if (eachRoundUseCardAttackAllEnemy.Value == 1)
+                // var eachRoundUseCardAttackAllEnemy = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(blessID, BattleManager.Instance.CurUnitCamp);
+                var drBless = GameEntry.DataTable.GetBless(blessID);
+                if (blessData != null)
                 {
-
-                    foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+                    if (blessData.Value == 1)
                     {
-                        if (kv.Value.UnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
-                        {
-                            var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
-                                kv.Value.Idx, EUnitAttribute.HP, int.Parse(drBless.Values0[1]), ETriggerDataSubType.Bless);
-                            triggerData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
-                            BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
-                        }
-                    }
-                    
-                    
-                }
 
+                        foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+                        {
+                            if (kv.Value.UnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
+                            {
+                                var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
+                                    kv.Value.Idx, EUnitAttribute.HP, int.Parse(drBless.Values0[1]), ETriggerDataSubType.Bless);
+                                triggerData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
+                                BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
+                            }
+                        }
+                    
+                    
+                    }
+
+                }
             }
+            
+            // var eachRoundUseCardAttackAllEnemy = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(blessID, BattleManager.Instance.CurUnitCamp);
+            // var drBless = GameEntry.DataTable.GetBless(blessID);
+            // if (eachRoundUseCardAttackAllEnemy != null)
+            // {
+            //     if (eachRoundUseCardAttackAllEnemy.Value == 1)
+            //     {
+            //
+            //         foreach (var kv in BattleFightManager.Instance.RoundFightData.GamePlayData.BattleData.BattleUnitDatas)
+            //         {
+            //             if (kv.Value.UnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
+            //             {
+            //                 var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
+            //                     kv.Value.Idx, EUnitAttribute.HP, int.Parse(drBless.Values0[1]), ETriggerDataSubType.Bless);
+            //                 triggerData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
+            //                 BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);
+            //             }
+            //         }
+            //         
+            //         
+            //     }
+            //
+            // }
         }
 
         public void EachRoundUseUnitCardAddDefense(Data_GamePlay gamePlayData, int cardID)

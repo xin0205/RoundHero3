@@ -25,6 +25,17 @@ namespace RoundHero
         
         public async void SetItemData(Data_Bless blessData, int itemIndex,int row,int column)
         {
+            
+
+            var drBless = GameEntry.DataTable.GetBless(blessData.BlessID);
+            //BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]) - 
+            var deltaValue = blessData.Value;
+            Value.gameObject.SetActive(deltaValue != 0);
+            if (deltaValue != 0)
+            {
+                Value.text = deltaValue.ToString();
+            }
+
             if (blessIdx != blessData.BlessIdx)
             {
                 blessIdx = blessData.BlessIdx;
@@ -32,16 +43,6 @@ namespace RoundHero
                 BlessIcon.sprite = await AssetUtility.GetBlessIcon(blessData.BlessID);
                 
             }
-
-            var drBless = GameEntry.DataTable.GetBless(blessData.BlessID);
-            var deltaValue = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]) - blessData.Value;
-            Value.gameObject.SetActive(deltaValue != 0);
-            if (deltaValue != 0)
-            {
-                Value.text = deltaValue.ToString();
-            }
-
-            
             
         }
 

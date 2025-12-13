@@ -113,7 +113,7 @@ namespace RoundHero
                 foreach (var triggerData in kv.Value.TriggerDatas)
                 {
                     var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
-                    if (unitEntity.UnitIdx != UnitIdx)
+                    if (unitEntity != null && unitEntity.UnitIdx != UnitIdx)
                     {
                         isLook = true;
                         var pos = unitEntity.Position;

@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GameFramework;
+using UnityEngine;
+using UnityGameFramework.Runtime;
 using Random = System.Random;
 
 namespace RoundHero
@@ -102,6 +104,11 @@ namespace RoundHero
             BattleValueManager.Instance.Update();
             BattleIconValueManager.Instance.Update();
             //ShowMoveValues();
+
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+            {
+                GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
+            }
         }
         
 
