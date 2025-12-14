@@ -74,8 +74,8 @@ namespace RoundHero
         
         public override void RefreshHP()
         {
-            hpAndDamageNode.SetActive(false);
-            damageNode.SetActive(false);
+            // hpAndDamageNode.SetActive(false);
+            // damageNode.SetActive(false);
 
             
 

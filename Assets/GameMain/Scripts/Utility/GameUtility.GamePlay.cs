@@ -550,8 +550,8 @@ namespace RoundHero
                     if(unitCamps == null)
                         continue;
                     
-                    if(!kv.Value.Exist())
-                        continue;
+                    // if(!kv.Value.Exist())
+                    //     continue;
                     
                     if (unitCamps.Contains(ERelativeCamp.Us) && !unitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != selfUnitCamp)
                         continue;
@@ -575,8 +575,8 @@ namespace RoundHero
                     if(unitCamps == null)
                         continue;
                     
-                    if(!kv.Value.Exist())
-                        continue;
+                    // if(!kv.Value.Exist())
+                    //     continue;
                     
                     if (unitCamps.Contains(ERelativeCamp.Us) && !unitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != selfUnitCamp)
                         continue;
@@ -600,8 +600,8 @@ namespace RoundHero
                     if(unitCamps == null)
                         continue;
                     
-                    if(!kv.Value.Exist())
-                        continue;
+                    // if(!kv.Value.Exist())
+                    //     continue;
                     
                     if (unitCamps.Contains(ERelativeCamp.Us) && !unitCamps.Contains(ERelativeCamp.Enemy) && kv.Value.UnitCamp != selfUnitCamp)
                         continue;
@@ -636,8 +636,8 @@ namespace RoundHero
                         if(unit == null)
                             continue;
                         
-                        if(!unit.Exist())
-                            continue;
+                        // if(!unit.Exist())
+                        //     continue;
                         
                         if(unitCamps.Contains(ERelativeCamp.Us) && selfUnitCamp != unit.UnitCamp)
                             continue;
@@ -686,8 +686,8 @@ namespace RoundHero
                          if(unit == null)
                              continue;
                          
-                         if(!unit.Exist())
-                             continue;
+                         // if(!unit.Exist())
+                         //     continue;
                          
                          // if(unit is not Data_BattleCore)
                          //     continue;
@@ -897,8 +897,8 @@ namespace RoundHero
                                  if (unit == null)
                                      continue;
                             
-                                 if (!unit.Exist())
-                                     continue;
+                                 // if (!unit.Exist())
+                                 //     continue;
                                  
                                  if(unitCamps.Contains(ERelativeCamp.Us) && !unitCamps.Contains(ERelativeCamp.Enemy) && selfUnitCamp != unit.UnitCamp)
                                      continue;
@@ -935,7 +935,8 @@ namespace RoundHero
                                      unit = GetUnitByGridPosIdx(posIdx, isBattleData);
                                  }
 
-                                 if (unit != null && unit.Exist())
+                                 // && unit.Exist()
+                                 if (unit != null)
                                  {
                                      // if (unit.ID == HeroManager.Instance.BattleHeroData.ID)
                                      // {

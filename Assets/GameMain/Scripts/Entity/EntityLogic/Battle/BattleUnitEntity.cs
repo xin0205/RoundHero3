@@ -10,6 +10,7 @@ using JetBrains.Annotations;
 using RPGCharacterAnims.Lookups;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -17,12 +18,12 @@ namespace RoundHero
     public partial class BattleUnitEntity : Entity, IMoveGrid
     {
         [SerializeField] protected Transform roleRoot;
-        [SerializeField] protected TextMesh hp;
-        [SerializeField] protected TextMesh damage;
+        // [SerializeField] protected TextMesh hp;
+        // [SerializeField] protected TextMesh damage;
         
         [SerializeField] protected GameObject uiNode;
-        [SerializeField] protected GameObject hpAndDamageNode;
-        [SerializeField] protected GameObject damageNode;
+        // [SerializeField] protected GameObject hpAndDamageNode;
+        // [SerializeField] protected GameObject damageNode;
         [SerializeField] protected TextMesh damage2;
         [SerializeField] private BoxCollider boxCollider;
         //[SerializeField] protected RPGCharacterController Controller;
@@ -49,7 +50,7 @@ namespace RoundHero
         protected List<BattleUnitStateValueEntityData> unitStateIconValueList = new();
 
         public int TargetPosIdx;
-        
+        [SerializeField] protected Text hpText;
         
         public Vector3 Position
         {
@@ -173,7 +174,7 @@ namespace RoundHero
             IsMove = false;
             // showMoveValueTime = 0.8f;
             // showMoveValueIconTime = 0.8f;
-
+            
             
         }
 
@@ -1427,18 +1428,18 @@ namespace RoundHero
 
         public virtual void RefreshHP()
         {
-            hpAndDamageNode.SetActive(true);
-            damageNode.SetActive(false);
-
+            // hpAndDamageNode.SetActive(true);
+            // damageNode.SetActive(false);
+            hpText.gameObject.SetActive(true);
             var curHP = BattleUnitData.CurHP;
             curHP = curHP < 0 && BattleUnitData.FuneCount(EBuffID.Spec_UnDead) <= 0 ? 0 : curHP;
-            hp.text = curHP.ToString();
+            hpText.text = curHP.ToString();
             // hp.text = curHP + "/" +
             //           BattleUnitData.MaxHP;
             
             //var hurt = BattleFightManager.Instance.GetTotalDelta(this.UnitIdx, EHeroAttribute.CurHP);
             //damage.text = hurt > 0 ? "+" + hurt : hurt.ToString();
-            damage.text = "";
+            //damage.text = "";
             // if (hurt != 0)
             // {
             //     
@@ -1447,13 +1448,21 @@ namespace RoundHero
             // {
             //     damage.text = "";
             // }
-
+            var pos = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), transform.localPosition);
+            if (hpText != null)
+            {
+                var delta = -45f + 7f / 100f * pos.y;
+                
+                hpText.transform.localPosition = new Vector3(pos.x, pos.y + delta, 0);
+            }
         }
 
         public void RefreshDamageState()
         {
-            hpAndDamageNode.SetActive(false);
-            damageNode.SetActive(false);
+            hpText.gameObject.SetActive(false);
+            // hpAndDamageNode.SetActive(false);
+            // damageNode.SetActive(false);
             
             // hpAndDamageNode.SetActive(false);
             // damageNode.SetActive(true);

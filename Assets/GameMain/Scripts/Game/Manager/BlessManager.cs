@@ -381,7 +381,7 @@ namespace RoundHero
                         {
                             if (kv.Value.UnitCamp != PlayerManager.Instance.PlayerData.UnitCamp)
                             {
-                                var triggerData = BattleFightManager.Instance.BattleRoleAttribute(-1, -1,
+                                var triggerData = BattleFightManager.Instance.BattleRoleAttribute(Constant.Battle.UnUnitTriggerIdx, Constant.Battle.UnUnitTriggerIdx,
                                     kv.Value.Idx, EUnitAttribute.HP, int.Parse(drBless.Values0[1]), ETriggerDataSubType.Bless);
                                 triggerData.EffectUnitGridPosIdx = kv.Value.GridPosIdx;
                                 BattleBuffManager.Instance.CacheTriggerData(triggerData, triggerDatas);

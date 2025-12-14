@@ -683,10 +683,6 @@ namespace RoundHero
 
                 var isSubCurHP = false;
 
-
-
-
-
                 // if (unitCamp == EUnitCamp.Player1 || unitCamp == EUnitCamp.Player2 || rangeContainFirstCamp)
                 // {
                 var triggerRangeStr = triggerBuffData.BuffData.TriggerRange.ToString();
@@ -721,8 +717,8 @@ namespace RoundHero
                         if (realEffectUnit == null)
                             continue;
 
-                        if (!realEffectUnit.Exist())
-                            continue;
+                        // if (!realEffectUnit.Exist())
+                        //     continue;
 
                         if (!triggerBuffData.BuffData.TriggerUnitCamps.Contains(ERelativeCamp.Enemy) &&
                             realEffectUnit.UnitCamp != attackUnit.UnitCamp)

@@ -1961,11 +1961,7 @@ MonoBehaviour:
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0, w: 1}
   roleRoot: {fileID: 8820577177318614218}
-  hp: {fileID: 2741339457671713794}
-  damage: {fileID: 6959348961771500532}
   uiNode: {fileID: 175087306450733963}
-  hpAndDamageNode: {fileID: 8870350651871873727}
-  damageNode: {fileID: 5215116472268014210}
   damage2: {fileID: 5896251765905992218}
   boxCollider: {fileID: 0}
   animator: {fileID: 4525250011595830683}
@@ -1979,13 +1975,11 @@ MonoBehaviour:
   UnitAttackCastType: 0
   ValuePos: {fileID: 8312217752476743561}
   TargetPosIdx: 0
+  hpText: {fileID: 5859747873091061470}
   UnitDescTriggerItem: {fileID: 4347577885375820027}
   multiStartAttackTrigger: 0
   multiEndAttackTrigger: 0
   IsPointer: 0
-  CurUnitStateIconEntityIdx: 0
-  CurValueEntityIdx: 0
-  ShowValueEntityIdx: 0
 --- !u!95 &4525250011595830683
 Animator:
   serializedVersion: 5
@@ -5343,28 +5337,19 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5613525845362263443, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
   m_PrefabInstance: {fileID: 5819837149855704655}
   m_PrefabAsset: {fileID: 0}
---- !u!102 &2741339457671713794 stripped
-TextMesh:
-  m_CorrespondingSourceObject: {fileID: 8561068820784853581, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
+--- !u!114 &5859747873091061470 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114338942156071057, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
   m_PrefabInstance: {fileID: 5819837149855704655}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5215116472268014210 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1773265696429941965, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-  m_PrefabInstance: {fileID: 5819837149855704655}
-  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!102 &5896251765905992218 stripped
 TextMesh:
   m_CorrespondingSourceObject: {fileID: 78679610096471125, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-  m_PrefabInstance: {fileID: 5819837149855704655}
-  m_PrefabAsset: {fileID: 0}
---- !u!102 &6959348961771500532 stripped
-TextMesh:
-  m_CorrespondingSourceObject: {fileID: 3481462899000137147, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
-  m_PrefabInstance: {fileID: 5819837149855704655}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8870350651871873727 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3160937489489669360, guid: a6b6dfde46ff19048be672174db2d750, type: 3}
   m_PrefabInstance: {fileID: 5819837149855704655}
   m_PrefabAsset: {fileID: 0}
