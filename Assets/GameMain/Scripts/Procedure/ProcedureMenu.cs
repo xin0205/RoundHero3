@@ -23,7 +23,7 @@ namespace RoundHero
             
             
             
-            GameEntry.Sound.PlayMusic(0);
+            //GameEntry.Sound.PlayMusic(0);
 
             InitSuccess = false;
             GameEntry.UI.OpenUIForm(UIFormId.LobbyForm, this);

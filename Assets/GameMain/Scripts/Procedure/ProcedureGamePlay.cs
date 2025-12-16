@@ -20,7 +20,7 @@ namespace RoundHero
             
             //GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             
-            GameEntry.Sound.PlayMusic(0);
+            //GameEntry.Sound.PlayMusic(0);
             
             ;
 

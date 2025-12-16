@@ -57,7 +57,7 @@ namespace RoundHero
                 ETutorialStep.CardSwitchMove,
                 ETutorialStep.SelectMoveUnit,
                 ETutorialStep.SelectMovePos,
-                //ETutorialStep.SwitchTarget,
+                ETutorialStep.SwitchTarget,
                 ETutorialStep.SelectAttackCard,
                 ETutorialStep.CardSwitchAttack,
                 ETutorialStep.SelectAttackUnit,

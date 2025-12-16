@@ -212,6 +212,15 @@ namespace RoundHero
             });
         }
         
+        public static List<DRBless> GetBlesses(this DataTableComponent dataTableComponent)
+        {
+            var drBlesses = GameEntry.DataTable.GetDataTable<DRBless>();
+            return drBlesses.GetDataRows((t) =>
+            {
+                return t.IsUse;
+            }).ToList();
+        }
+        
         public static DRGridProp GetGridProp(this DataTableComponent dataTableComponent, int gridPropID)
         {
             var drGridProps = GameEntry.DataTable.GetDataTable<DRGridProp>();

@@ -25,7 +25,7 @@ namespace RoundHero
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             GameEntry.Event.Subscribe(GamePlayStartGameEventArgs.EventId, OnGamePlayStartGame);
             GameEntry.Event.Subscribe(GamePlayContinueGameEventArgs.EventId, OnGamePlayContinueGame);
-            GameEntry.Sound.PlayMusic(0);
+            //GameEntry.Sound.PlayMusic(0);
 
             //InitSuccess = false;
 
