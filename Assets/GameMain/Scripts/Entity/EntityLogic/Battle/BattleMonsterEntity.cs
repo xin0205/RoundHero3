@@ -141,7 +141,7 @@ namespace RoundHero
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
-            if (infoForm != null && !IsPointer)
+            if (infoForm != null && (!IsPointer|| BattleAreaManager.Instance.CurPointGridPosIdx == -1))
             {
                 GameEntry.UI.CloseUIForm(infoForm);
                 infoForm = null;

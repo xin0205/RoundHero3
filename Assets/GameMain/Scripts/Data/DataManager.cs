@@ -51,7 +51,8 @@ namespace RoundHero
         
         public void  Init(string userID)
         {
-            if (DataGame.User == null || DataGame.User.UserID != userID)
+            //DataGame.User == null || DataGame.User.UserID != userID || 
+            if (!DataGame.DataUsers.ContainsKey(userID))
             {
                 DataGame.DataUsers.Add(userID, new Data_User(userID));
 

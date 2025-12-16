@@ -24,7 +24,7 @@ namespace RoundHero
         
         private void Update()
         {
-            if (infoForm != null && !isShowInfo)
+            if (infoForm != null && (!isShowInfo || BattleCardManager.Instance.SelectCardIdx == -1))
             {
                 GameEntry.UI.CloseUIForm(infoForm);
                 infoForm = null;

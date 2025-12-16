@@ -51,6 +51,7 @@ namespace RoundHero
 
         public int TargetPosIdx;
         [SerializeField] protected Text hpText;
+        protected BattleValueEntity hpValueEntity;
         
         public Vector3 Position
         {
@@ -130,6 +131,9 @@ namespace RoundHero
             //     }
             //     
             // }
+            hpValueEntity = transform.Find("Root/UnitUI/BattleValueEntity")
+                .GetComponent<BattleValueEntity>();
+            hpValueEntity.gameObject.SetActive(false);
         }
 
         // public void AfterRunAction()
@@ -174,14 +178,21 @@ namespace RoundHero
             IsMove = false;
             // showMoveValueTime = 0.8f;
             // showMoveValueIconTime = 0.8f;
-            
-            
+
+            RefreshData();
         }
 
         protected override void OnHide(bool isShutdown, object userData)
         {
             base.OnHide(isShutdown, userData);
             UnitDescTriggerItem.CloseForm();
+            hpValueEntity.gameObject.SetActive(false);
+            // if (hpValueEntity != null)
+            // {
+            //     GameEntry.Entity.HideEntity(hpValueEntity);
+            //     hpValueEntity = null;
+            // }
+            
             //UnShowTags();
         }
 
@@ -400,10 +411,17 @@ namespace RoundHero
             if(BattleManager.Instance.BattleState == EBattleState.EndBattle)
                 return;
             
-            RefreshRoatation();
+            //RefreshRoatation();
             //ShowHurts();
             // ShowMoveValues();
             // ShowMoveValueIcons();
+            if (hpValueEntity != null && (!IsPointer || BattleAreaManager.Instance.CurPointGridPosIdx == -1))
+            {
+                hpValueEntity.gameObject.SetActive(false);
+                // GameEntry.Entity.HideEntity(hpValueEntity);
+                // hpValueEntity = null;
+            }
+            
         }
         
         // public void SetAction(EUnitActionState actionState)
@@ -1430,10 +1448,10 @@ namespace RoundHero
         {
             // hpAndDamageNode.SetActive(true);
             // damageNode.SetActive(false);
-            hpText.gameObject.SetActive(true);
+            //hpText.gameObject.SetActive(true);
             var curHP = BattleUnitData.CurHP;
             curHP = curHP < 0 && BattleUnitData.FuneCount(EBuffID.Spec_UnDead) <= 0 ? 0 : curHP;
-            hpText.text = curHP.ToString();
+            //hpText.text = curHP.ToString();
             // hp.text = curHP + "/" +
             //           BattleUnitData.MaxHP;
             
@@ -1449,18 +1467,25 @@ namespace RoundHero
             //     damage.text = "";
             // }
             var pos = PositionConvert.WorldPointToUILocalPoint(
-                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), transform.localPosition);
-            if (hpText != null)
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), Root.position);
+            
+            var delta = (-30f + 7f / 100f * pos.y);
+            pos += new Vector2(0, delta);
+            
+            // var data = ReferencePool.Acquire<BattleDisplayValueEntityData>();
+            // data.Init(GameEntry.Entity.GenerateSerialId(), pos, -1);
+            if (hpValueEntity != null)
             {
-                var delta = -45f + 7f / 100f * pos.y;
-                
-                hpText.transform.localPosition = new Vector3(pos.x, pos.y + delta, 0);
+                hpValueEntity.gameObject.SetActive(true);
+                hpValueEntity.SetData(pos, curHP);
             }
+           
         }
 
         public void RefreshDamageState()
         {
-            hpText.gameObject.SetActive(false);
+            hpValueEntity.gameObject.SetActive(false);
+            //hpText.gameObject.SetActive(false);
             // hpAndDamageNode.SetActive(false);
             // damageNode.SetActive(false);
             
@@ -1500,12 +1525,12 @@ namespace RoundHero
         
         public void RefreshRoatation()
         {
-            cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
-            uiNode.transform.rotation = cameraQuaternion;
-
-            var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(uiNode.transform.position));
-            
-            uiNode.transform.localScale = Vector3.one *  dis / 12f;
+            // cameraQuaternion.SetLookRotation(Camera.main.transform.forward, Camera.main.transform.up);
+            // uiNode.transform.rotation = cameraQuaternion;
+            //
+            // var dis = Mathf.Abs(AreaController.Instance.GetDistanceToPoint(uiNode.transform.position));
+            //
+            // uiNode.transform.localScale = Vector3.one *  dis / 12f;
             
         }
         
