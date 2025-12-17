@@ -59,7 +59,7 @@ namespace RoundHero
             var unitDescFormData = GetComponent<UnitDescTriggerItem>().UnitDescFormData;
             unitDescFormData.GridType = BattleGridEntityData.GridType;
             unitDescFormData.UnitCamp = EUnitCamp.Empty;
-
+            posTag.gameObject.SetActive(false);
         }
 
         public void Show(bool active)

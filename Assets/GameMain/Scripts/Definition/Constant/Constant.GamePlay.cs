@@ -35,7 +35,7 @@ namespace RoundHero
             
             public static List<int> Enemies = new List<int>()
             {
-               0, 6
+               0, 2
             };
             
             public static List<int> EnemyPos = new List<int>()
@@ -161,12 +161,12 @@ namespace RoundHero
         {
             public static Dictionary<EItemType, int> BattleModeRewardRatios = new ()
             {
-                [EItemType.UnitCard] = 25,
-                [EItemType.TacticCard] = 25,
-                [EItemType.Fune] = 25,
-                [EItemType.Bless] = 0,
+                [EItemType.UnitCard] = 20,
+                [EItemType.TacticCard] = 20,
+                [EItemType.Fune] = 20,
+                [EItemType.Bless] = 20,
                 [EItemType.RemoveCard] = 10,
-                [EItemType.AddCardFuneSlot] = 10,
+                [EItemType.AddCardFuneSlot] = 5,
                 [EItemType.AddMaxHP] = 5,
                 
                 // [EItemType.UnitCard] = 20,

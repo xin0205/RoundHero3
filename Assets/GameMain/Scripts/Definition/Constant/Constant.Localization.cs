@@ -164,6 +164,9 @@ namespace RoundHero
             public const string DifficultyDesc = "DifficultyDesc.{0}";
 
             public const string Tips_SwitchTarget = "Tips.SwitchTarget";
+            public const string Url_Advise = "Url.Advise";
+
+            
         }
     }
 }

@@ -78,7 +78,7 @@ namespace RoundHero
         {
             base.OnClose(isShutdown, userData);
             GameEntry.Event.Unsubscribe(RefreshCardsFormEventArgs.EventId, OnRefreshCardsForm);
-            
+            GameEntry.Event.Fire(null, RefreshEquipFuneEventArgs.Create());
         }
         
         

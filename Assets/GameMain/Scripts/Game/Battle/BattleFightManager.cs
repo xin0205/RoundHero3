@@ -422,7 +422,11 @@ namespace RoundHero
             BuffData_Use.Clear();
             BlessTriggerDatas.Clear();
             UseCardTriggerDatas.Clear();
-            HPDeltaDict.Clear();
+            foreach (var kv in HPDeltaDict)
+            {
+                kv.Value.Clear();
+            }
+            
             PassCardData.Clear();
         }
     }

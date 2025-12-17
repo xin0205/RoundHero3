@@ -30,8 +30,10 @@ namespace RoundHero
             var drBless = GameEntry.DataTable.GetBless(blessData.BlessID);
             //BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]) - 
             var deltaValue = blessData.Value;
-            Value.gameObject.SetActive(deltaValue != 0);
-            if (deltaValue != 0)
+            
+            
+            Value.gameObject.SetActive(drBless.IsCount && deltaValue != 0);
+            if (drBless.IsCount && deltaValue != 0)
             {
                 Value.text = deltaValue.ToString();
             }
@@ -40,10 +42,10 @@ namespace RoundHero
             {
                 blessIdx = blessData.BlessIdx;
 
-                BlessIcon.sprite = await AssetUtility.GetBlessIcon(blessData.BlessID);
-                
             }
             
+            BlessIcon.sprite = await AssetUtility.GetBlessIcon(blessData.BlessID);
+
         }
 
         private void Update()

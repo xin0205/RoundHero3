@@ -81,6 +81,15 @@ namespace RoundHero
             private set;
         }
 
+        /// <summary>
+        /// 获取是否计数类型。
+        /// </summary>
+        public bool IsCount
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -98,6 +107,7 @@ namespace RoundHero
             Overlay = bool.Parse(columnStrings[index++]);
 			ExplainItems = DataTableExtension.ParseStringList(columnStrings[index++]);
             IsUse = bool.Parse(columnStrings[index++]);
+            IsCount = bool.Parse(columnStrings[index++]);
 
             GeneratePropertyArray();
             return true;
@@ -115,6 +125,7 @@ namespace RoundHero
                     Overlay = binaryReader.ReadBoolean();
 					ExplainItems = binaryReader.ReadStringList();
                     IsUse = binaryReader.ReadBoolean();
+                    IsCount = binaryReader.ReadBoolean();
                 }
             }
 

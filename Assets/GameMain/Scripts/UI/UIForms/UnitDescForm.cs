@@ -65,6 +65,14 @@ namespace RoundHero
             base.OnOpen(userData);
             UnitDescFormData = (UnitDescFormData)userData;
             
+            var unitEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx);
+            if (unitEntity == null)
+            {
+                Close();
+                return;
+            }
+                
+            
             // if(BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) == null)
             //     return;
             
@@ -110,6 +118,8 @@ namespace RoundHero
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
                 var enemyEntity = BattleUnitManager.Instance.GetUnitByIdx(UnitDescFormData.Idx) as BattleMonsterEntity;
+                if (enemyEntity == null)
+                    return;
                 //animationPlayData.GifType = EGIFType.Enemy;
                 var drEnemy =
                     GameEntry.DataTable.GetEnemy(enemyEntity.BattleMonsterEntityData.BattleMonsterData.MonsterID);

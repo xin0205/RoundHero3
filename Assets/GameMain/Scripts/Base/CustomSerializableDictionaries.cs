@@ -1,4 +1,5 @@
 ﻿using System;
+using GameFramework.Localization;
 using GifImporter;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,6 +56,11 @@ namespace RoundHero
     
     [Serializable]
     public class EColorGODictionary : SerializableDictionary<EColor, GameObject>
+    {
+    }
+    
+    [Serializable]
+    public class LocalizationSpriteDictionary : SerializableDictionary<Language, Sprite>
     {
     }
     

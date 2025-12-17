@@ -27,6 +27,7 @@ namespace RoundHero
     {
         [SerializeField] private CardItem cardItem;
         [SerializeField] private CommonDescItem funeDescItem;
+        [SerializeField] private CommonDescItem blessDescItem;
         [SerializeField] private CommonDescItem commonDescItem;
         //[SerializeField] private GameObject selectIcon;
         [SerializeField] private ScaleGameObject scaleGameObject;
@@ -85,9 +86,11 @@ namespace RoundHero
             cardItem.gameObject.SetActive(false);
             funeDescItem.gameObject.SetActive(false);
             commonDescItem.gameObject.SetActive(false);
+            blessDescItem.gameObject.SetActive(false);
             
             cardItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.TacticCard || selectAcquireItemData.ItemType == EItemType.UnitCard);
             funeDescItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.Fune);
+            blessDescItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.Bless);
             commonDescItem.gameObject.SetActive(selectAcquireItemData.ItemType == EItemType.RemoveCard ||
                                                  selectAcquireItemData.ItemType == EItemType.AddMaxHP ||
                                                  selectAcquireItemData.ItemType == EItemType.AddCardFuneSlot);
@@ -109,6 +112,15 @@ namespace RoundHero
             else if (selectAcquireItemData.ItemType == EItemType.Fune)
             {
                 funeDescItem.SetItemData(new CommonItemData()
+                {
+                    ItemType = this.selectAcquireItemData.ItemType,
+                    ItemID = this.selectAcquireItemData.ItemID,
+                });
+                
+            }
+            else if (selectAcquireItemData.ItemType == EItemType.Bless)
+            {
+                blessDescItem.SetItemData(new CommonItemData()
                 {
                     ItemType = this.selectAcquireItemData.ItemType,
                     ItemID = this.selectAcquireItemData.ItemID,

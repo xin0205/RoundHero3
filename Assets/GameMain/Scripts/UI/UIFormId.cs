@@ -110,5 +110,7 @@ namespace RoundHero
         GridDescForm = 142,
         
         CardDescForm = 143,
+        
+        AdviseForm = 144,
     }
 }

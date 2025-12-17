@@ -51,26 +51,26 @@ namespace RoundHero
                     ratio += kv.Value;
                     RewardRatios.Add(kv.Key, ratio);
                 }
-                // var drBlesses = GameEntry.DataTable.GetDataTable<DRBless>();
-                // var blessIDs = new List<int>();
-                // foreach (var drBless in drBlesses)
-                // {
-                //     bool isContinue = false;
-                //     foreach (var kv in PlayerManager.Instance.PlayerData.BlessDatas)
-                //     {
-                //         if (kv.Value.BlessID == drBless.BlessID)
-                //         {
-                //             isContinue = true;
-                //             break;
-                //         }
-                //             
-                //     }
-                //
-                //     if(isContinue)
-                //         continue;
-                //     
-                //     blessIDs.Add(drBless.Id);
-                // }
+                var drBlesses = GameEntry.DataTable.GetBlesses();;
+                var blessIDs = new List<int>();
+                foreach (var drBless in drBlesses)
+                {
+                    bool isContinue = false;
+                    foreach (var kv in PlayerManager.Instance.PlayerData.BlessDatas)
+                    {
+                        if (kv.Value.BlessID == drBless.BlessID && !drBless.Overlay)
+                        {
+                            isContinue = true;
+                            break;
+                        }
+                            
+                    }
+                
+                    if(isContinue)
+                        continue;
+                    
+                    blessIDs.Add(drBless.Id);
+                }
                 
     
                 
@@ -100,9 +100,9 @@ namespace RoundHero
                                     selectAcquireItemData.ItemID = drTacticCards[randomIdx].Id;
                                     break;
                                 case EItemType.Bless:
-                                    var drBlesses = GameEntry.DataTable.GetBlesses();
-                                    randomIdx = random.Next(0, drBlesses.Count);
-                                    selectAcquireItemData.ItemID = drBlesses[randomIdx].Id;
+                                    //var drBlesses = GameEntry.DataTable.GetBlesses();
+                                    randomIdx = random.Next(0, blessIDs.Count);
+                                    selectAcquireItemData.ItemID = blessIDs[randomIdx];
                                     //blessIDs.RemoveAt(randomIdx);
                                     break;
                                 case EItemType.Fune:

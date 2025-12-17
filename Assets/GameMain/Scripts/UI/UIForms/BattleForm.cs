@@ -388,13 +388,18 @@ namespace RoundHero
             //HeroManager.Instance.BattleHeroData.CurHP;
             var afterHP = HeroManager.Instance.BattleHeroData.CurHP;
 
-            foreach (var hpDeltaData in BattleFightManager.Instance.RoundFightData
-                         .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp])
+            if (BattleFightManager.Instance.RoundFightData
+                .HPDeltaDict.ContainsKey(PlayerManager.Instance.PlayerData.UnitCamp))
             {
-                afterHP += hpDeltaData.HPDelta;
-                if(afterHP <= 0)
-                    break;
+                foreach (var hpDeltaData in BattleFightManager.Instance.RoundFightData
+                             .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp])
+                {
+                    afterHP += hpDeltaData.HPDelta;
+                    if(afterHP <= 0)
+                        break;
+                }
             }
+            
             var hpDelta = afterHP - HeroManager.Instance.BattleHeroData.CurHP;
                           
             coreHPDelta.text = "   " + ((hpDelta > 0) ? "+" + hpDelta : hpDelta);

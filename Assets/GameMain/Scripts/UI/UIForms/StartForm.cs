@@ -210,5 +210,11 @@ namespace RoundHero
             GameEntry.UI.OpenUIFormAsync(UIFormId.SettingForm, this);
 
         }
+        
+        public void Advise()
+        {
+            GameEntry.UI.OpenUIFormAsync(UIFormId.AdviseForm, this);
+
+        }
     }
 }
