@@ -215,9 +215,11 @@
       <Asset Guid="38b93e3f94579314ea85b1858fc92ef2" ResourceName="Shaders" />
       <Asset Guid="38daaf0dd6e867647a0efd994482940a" ResourceName="Entities" />
       <Asset Guid="3917c6f5a18520e499e47dd8364840a0" ResourceName="Entities" />
+      <Asset Guid="395b9e45c675daa4c80a45c4d1f70676" ResourceName="UIForms" />
       <Asset Guid="397086111c3b9be43a5d219681cc6ea8" ResourceName="Entities" />
       <Asset Guid="39a13f60a6e640b428ce7cd31176b973" ResourceName="Entities" />
       <Asset Guid="39b2ffb6ea795114c8305f154ee4580c" ResourceName="Entities" />
+      <Asset Guid="3a94bb9ace3db3540bcff9af25bd3de9" ResourceName="UIForms" />
       <Asset Guid="3ab3f524879b33842bccd5d4f92db691" ResourceName="GIF" />
       <Asset Guid="3ad71e3ff1cc13e4096d08751151ccf6" ResourceName="GIF" />
       <Asset Guid="3b58c6686bab26b41919132e1ae1cb31" ResourceName="UIForms" />
@@ -281,6 +283,7 @@
       <Asset Guid="4bcc281a75ba8064fb65ce86f1ae89c7" ResourceName="GIF" />
       <Asset Guid="4cc906de70ac5624b9b10b53b2b6fb9b" ResourceName="Scenes" />
       <Asset Guid="4d34201f074d37546a9f39079716bd3f" ResourceName="DataTable" />
+      <Asset Guid="4d91c7038f19e174e8579dd508d52e1e" ResourceName="UIForms" />
       <Asset Guid="4da0e6d88c877574a938d93b306522cb" ResourceName="UIForms" />
       <Asset Guid="4dcab18ea69c31c4498e21e8313fbc96" ResourceName="UIForms" />
       <Asset Guid="4e0c950bbed76874c8883dfae23ad7b1" ResourceName="Entities" />
@@ -342,6 +345,7 @@
       <Asset Guid="5ba057497b9f6874fb56742e7ed4866c" ResourceName="Effect" />
       <Asset Guid="5ba2be15886f28846bfabf0a862d82b1" ResourceName="Scenes" />
       <Asset Guid="5bff634c291a0d74b978039e2e7f54c1" ResourceName="UIForms" />
+      <Asset Guid="5c5d5a46d0c84924a922e8e572ca6444" ResourceName="UIForms" />
       <Asset Guid="5c5e4216cae33d049b713bab3faca551" ResourceName="GIF" />
       <Asset Guid="5ca1d11b5b3efb54c8db8477775a5c00" ResourceName="GIF" />
       <Asset Guid="5cf187e93faf95f4886f8bf67124444a" ResourceName="Effect" />
@@ -437,6 +441,7 @@
       <Asset Guid="748bb2239cf3ab4428bd0a0f53382897" ResourceName="Effect" />
       <Asset Guid="7493bf06825eb3d4cb817c5d5d6574d2" ResourceName="UIForms" />
       <Asset Guid="7495d869529d1cb4fad20d095ba03f26" ResourceName="UIForms" />
+      <Asset Guid="750f7f9a0e458d246898a6a00a42d4fd" ResourceName="UIForms" />
       <Asset Guid="75ee891b86cdcf444ba2cd187bb11ae9" ResourceName="UIForms" />
       <Asset Guid="75fa2378250dbe4459e576d99f9bbc79" ResourceName="Scenes" />
       <Asset Guid="76986802173301347a60eae98d17be0a" ResourceName="GIF" />
@@ -622,7 +627,6 @@
       <Asset Guid="ae37301d88eda2546ab15202d0880fd7" ResourceName="GIF" />
       <Asset Guid="af31c041947ce964b9b23a9bc188e150" ResourceName="Entities" />
       <Asset Guid="af560727ebc3ca043ba82135a57a832d" ResourceName="UIForms" />
-      <Asset Guid="af6257810e13e0b4b9df3c637d39a7f6" ResourceName="UIForms" />
       <Asset Guid="af8d8d60807c5ae419cd0636ed32e156" ResourceName="GIF" />
       <Asset Guid="b025b65349351914fbf341945d599075" ResourceName="UIForms" />
       <Asset Guid="b03eb7b39fb898c41b8df9e2cfccce30" ResourceName="UIForms" />
@@ -651,6 +655,7 @@
       <Asset Guid="b5d299e79f655e64993551f979cfb7cc" ResourceName="Scenes" />
       <Asset Guid="b69174d668ba02d44b14a084b217670a" ResourceName="Entities" />
       <Asset Guid="b6e0ad134d4e11e47b20853f227c6ebc" ResourceName="UIForms" />
+      <Asset Guid="b74e63f4c4f4fd94b99f37437ab643fc" ResourceName="UIForms" />
       <Asset Guid="b75a595f7278601468295ffbc32c3374" ResourceName="UIForms" />
       <Asset Guid="b7b009414fb74844e838c1eda38f6f48" ResourceName="Entities" />
       <Asset Guid="b7c99d2809eef7741a379bbc99f9065a" ResourceName="Effect" />
@@ -762,6 +767,7 @@
       <Asset Guid="d2e5bab1162072d4e816e0d586d09d4f" ResourceName="Scenes" />
       <Asset Guid="d3419999f0f6f0147a8b946f33001987" ResourceName="UIForms" />
       <Asset Guid="d382a100385de7d40aa5887a7a7e795f" ResourceName="UIForms" />
+      <Asset Guid="d3d30f68e161ab944867856469ecbe91" ResourceName="UIForms" />
       <Asset Guid="d3f3136d43821524bae403d17a762d4f" ResourceName="Effect" />
       <Asset Guid="d413b64d60894e8488a8b06a3ab1c8f6" ResourceName="Scenes" />
       <Asset Guid="d48512a9f5fdc4749a5b21f1f46933a4" ResourceName="GIF" />

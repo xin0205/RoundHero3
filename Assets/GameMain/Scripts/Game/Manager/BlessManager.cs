@@ -197,14 +197,14 @@ namespace RoundHero
             
             if (drCard.CardType == ECardType.Unit)
             {
-                EachRoundUseCardAttackAllEnemy(gamePlayData, EBlessID.EachRoundUseFightCardAttackAllEnemy);
+                EachUseCardAttackAllEnemy(gamePlayData, EBlessID.EachUseFightCardAttackAllEnemy);
             }
             else if (drCard.CardType == ECardType.Tactic)
             {
-                EachRoundUseCardAttackAllEnemy(gamePlayData, EBlessID.EachRoundUseTacticCardAttackAllEnemy);
+                EachUseCardAttackAllEnemy(gamePlayData, EBlessID.EachUseTacticCardAttackAllEnemy);
             }
             
-            EachRoundUseCardAttackAllEnemy(gamePlayData, EBlessID.EachRoundUseCardAttackAllEnemy);
+            EachUseCardAttackAllEnemy(gamePlayData, EBlessID.EachUseCardAttackAllEnemy);
             
             EachRoundUseUnitCardAddDefense(gamePlayData, cardID);
             
@@ -318,7 +318,7 @@ namespace RoundHero
             }
         }
 
-        public void EachRoundUseCardAttackAllEnemy(Data_GamePlay gamePlayData, EBlessID blessID)
+        public void EachUseCardAttackAllEnemy(Data_GamePlay gamePlayData, EBlessID blessID)
         {
             var blessDatas = GamePlayManager.Instance.GamePlayData.GetUsefulBlesses(blessID, PlayerManager.Instance.PlayerData.UnitCamp);
             if (blessDatas != null)
@@ -365,7 +365,7 @@ namespace RoundHero
             // }
         }
 
-        public void CacheEachRoundUseCardAttackAllEnemy(EBlessID blessID, List<TriggerData> triggerDatas)
+        public void CacheEachUseCardAttackAllEnemy(EBlessID blessID, List<TriggerData> triggerDatas)
         {
             var blessDatas = BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBlesses(blessID, BattleManager.Instance.CurUnitCamp);
             foreach (var blessData in blessDatas)
@@ -705,6 +705,18 @@ namespace RoundHero
             }
 
             return datas;
+        }
+
+        public void ResetCountBless()
+        {
+            foreach (var kv in BlessDatas)
+            {
+                var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
+                if (drBless.IsCount)
+                {
+                    kv.Value.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
+                }
+            }
         }
         
         // public void RoundEnd()

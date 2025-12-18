@@ -840,7 +840,7 @@
         TacticKillUnUseEnergy,
         AcquireCardSubEnergy,
         EachUseCardAcquireCard,
-        EachRoundUseCardAttackAllEnemy,
+        EachUseCardAttackAllEnemy,
         ConsumeCardAttackAllEnemy,
         HurtSubDmgCounterAtk,
         EnemyDeadDeBuffToEnemy,
@@ -879,8 +879,8 @@
         UseSameUnitAddMaxHP,
         
         UseCardSubOtherCardEnergy,
-        EachRoundUseFightCardAttackAllEnemy,
-        EachRoundUseTacticCardAttackAllEnemy,
+        EachUseFightCardAttackAllEnemy,
+        EachUseTacticCardAttackAllEnemy,
         EachUseCardDoubleHPDelta,
         EachRoundDoubleDamage,
         ConsumeCardAttackEnemy,
@@ -940,7 +940,7 @@
         Empty,
         
         EachRoundAcquireCard,
-        
+        EachConsumeCardAttackAllEnemy,
     }
 
     public enum EHPChangeType

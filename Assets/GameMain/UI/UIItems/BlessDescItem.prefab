@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4f3c8eae66490a9d8c422b1baaebb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Localization: UI.Fune
+  Localization: UI.Bless
 --- !u!1 &4219347781944537513
 GameObject:
   m_ObjectHideFlags: 0

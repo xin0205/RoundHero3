@@ -586,8 +586,15 @@ namespace RoundHero
 
         public void BattleSuccess()
         {
+            BlessManager.Instance.ResetCountBless();
             GamePlayManager.Instance.GamePlayData.BattleClear();
             BattleManager.Instance.BattleData.IsNewBattle = true;
+        }
+        
+        public void BattleFailed()
+        {
+            BlessManager.Instance.ResetCountBless();
+            GamePlayManager.Instance.GamePlayData.BattleClear();
         }
         
         public void EndBattleMode()

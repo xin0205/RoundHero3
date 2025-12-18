@@ -160,7 +160,7 @@ namespace RoundHero
                 }
             }
             
-            BlessManager.Instance.CacheEachRoundUseCardAttackAllEnemy(EBlessID.EachRoundUseCardAttackAllEnemy, triggerDatas);
+            BlessManager.Instance.CacheEachUseCardAttackAllEnemy(EBlessID.EachUseCardAttackAllEnemy, triggerDatas);
             
             foreach (var triggerData in triggerDatas)
             {

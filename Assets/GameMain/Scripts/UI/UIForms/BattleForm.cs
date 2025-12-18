@@ -655,6 +655,8 @@ namespace RoundHero
             GamePlayManager.Instance.GamePlayData.BattleActionDataList.Remove(battleActionData);
 
             DataManager.Instance.Save();
+            
+            GameEntry.Event.Fire(null, RefreshPlayerInfoEventArgs.Create());
         }
         
         public void Setting()

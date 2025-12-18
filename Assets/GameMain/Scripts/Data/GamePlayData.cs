@@ -1547,8 +1547,8 @@ namespace RoundHero
             {
                 var drBless = GameEntry.DataTable.GetBless(kv.Value.BlessID);
                 if (drBless.BlessID == EBlessID.EachRoundUseUnitCardAddDefense ||
-                    drBless.BlessID == EBlessID.EachRoundUseFightCardAttackAllEnemy ||
-                    drBless.BlessID == EBlessID.EachRoundUseTacticCardAttackAllEnemy)
+                    drBless.BlessID == EBlessID.EachUseFightCardAttackAllEnemy ||
+                    drBless.BlessID == EBlessID.EachUseTacticCardAttackAllEnemy)
                 {
                     
                     kv.Value.Value = BattleBuffManager.Instance.GetBuffValue(drBless.Values0[0]);
@@ -1803,7 +1803,6 @@ namespace RoundHero
         {
             BattleActionDataList.Clear();
             LastRoundBattleData.Clear();
-            
         }
         public Data_GamePlay()
         {

@@ -479,6 +479,7 @@ namespace RoundHero
             else if (gameResult == EBattleResult.Failed)
             {
                 BattleManager.Instance.Destory();
+                BattleManager.Instance.BattleFailed();
                 GameEntry.UI.OpenConfirm(new ConfirmFormParams()
                 {
                     IsShowCancel = false,
