@@ -14,7 +14,8 @@ namespace RoundHero
         
         [SerializeField] private Vector2 infoDelta = new Vector2(0.5f, 0.5f);
         
-        private bool isShowInfo = false;
+        private bool isShow = false;
+        private bool isClose = true;
         
         private InfoForm infoForm;
 
@@ -25,10 +26,9 @@ namespace RoundHero
         private void Update()
         {
             // || BattleCardManager.Instance.SelectCardIdx == -1
-            if (infoForm != null && (!isShowInfo))
+            if (infoForm != null && !isShow)
             {
-                GameEntry.UI.CloseUIForm(infoForm);
-                infoForm = null;
+                HideInfo();
             }
         }
 
@@ -43,7 +43,6 @@ namespace RoundHero
             this.name = name;
             this.desc = desc;
 
-            
         }
 
 
@@ -53,7 +52,16 @@ namespace RoundHero
             if(string.IsNullOrEmpty(name) && string.IsNullOrEmpty(desc))
                 return;
             
-            isShowInfo = true;
+            if (infoForm != null)
+            {
+                CloseForm();
+            }
+            
+            if(!isClose)
+                return;
+            
+            isShow = true;
+            isClose = false;
             // var mousePosition = Vector2.zero;
             // RectTransformUtility.ScreenPointToLocalPointInRectangle(AreaController.Instance.Canvas.transform as RectTransform,
             //         Input.mousePosition, AreaController.Instance.UICamera, out mousePosition);
@@ -73,15 +81,16 @@ namespace RoundHero
                 infoParams.Invoke(infoFormParams);
             }
             
-            if (infoForm != null)
-            {
-                GameEntry.UI.CloseUIForm(infoForm);
-                infoForm = null;
-            }
+            
 
             var uiForm = await GameEntry.UI.OpenInfoFormAsync(infoFormParams);
-            
-            infoForm = uiForm.Logic as InfoForm;
+            if (uiForm != null)
+            {
+                infoForm = uiForm.Logic as InfoForm;
+                
+            }
+
+
         }
 
         // public async void ShowInfoInWorld()
@@ -108,9 +117,18 @@ namespace RoundHero
         
         public void HideInfo()
         {
-            isShowInfo = false;
-            if (infoForm != null && !isShowInfo)
+            isShow = false;
+            // && isShowInfo
+            CloseForm();
+        }
+        
+        public void CloseForm()
+        {
+
+            if (infoForm != null)
             {
+                
+                isClose = true;
                 GameEntry.UI.CloseUIForm(infoForm);
                 infoForm = null;
             }
@@ -118,6 +136,7 @@ namespace RoundHero
 
         private void OnDisable()
         {
+            
             HideInfo();
         }
     }
