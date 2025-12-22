@@ -1176,7 +1176,7 @@ namespace RoundHero
             
             BattleCardManager.Instance.SelectPassCardIdx = -1;
             BattleCardManager.Instance.SelectCardHandOrder = -1;
-            
+            BattleCardEntityData.CardData.IsPassable = false;
             MoveCard(ECardPos.Default, ECardPos.Pass);
 
 

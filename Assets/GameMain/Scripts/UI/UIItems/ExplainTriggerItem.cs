@@ -18,8 +18,12 @@ namespace RoundHero
                 return;
 
             isOpen = true;
-            var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.ExplainForm, ExplainData);
-            explainForm = formAsync?.Logic as ExplainForm;
+            if (ExplainData != null)
+            {
+                var formAsync = await GameEntry.UI.OpenUIFormAsync(UIFormId.ExplainForm, ExplainData);
+                explainForm = formAsync?.Logic as ExplainForm;
+            }
+            
         }
 
         public void OnPointerExit()

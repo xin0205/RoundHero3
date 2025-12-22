@@ -633,28 +633,28 @@ namespace RoundHero
 
                 }
 
-                var cardIdx = battlePlayerData.StandByCards[0];
-                var card = CardManager.Instance.GetCard(cardIdx);
-                var firstRoundPassCardAcquireCard =
-                    BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
-                        EBlessID.FirstRoundPassCardAcquireCard,
-                        BattlePlayerManager.Instance.PlayerData.UnitCamp);
-                
-                if (_firstRound)
-                {
-                    if (firstRoundPassCardAcquireCard != null)
-                    {
-                        card.IsPassable = true;
-                    }
-                    else
-                    {
-                        card.IsPassable = false;
-                    }
-                }
-                else
-                {
-                    card.IsPassable = false;
-                }
+                // var cardIdx = battlePlayerData.StandByCards[0];
+                // var card = CardManager.Instance.GetCard(cardIdx);
+                // var firstRoundPassCardAcquireCard =
+                //     BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
+                //         EBlessID.FirstRoundPassCardAcquireCard,
+                //         BattlePlayerManager.Instance.PlayerData.UnitCamp);
+                //
+                // if (_firstRound)
+                // {
+                //     if (firstRoundPassCardAcquireCard != null)
+                //     {
+                //         card.IsPassable = true;
+                //     }
+                //     else
+                //     {
+                //         card.IsPassable = false;
+                //     }
+                // }
+                // else
+                // {
+                //     card.IsPassable = false;
+                // }
 
                 
                 
@@ -1327,6 +1327,7 @@ namespace RoundHero
                 var time = (cardCount - i) * 0.15f + 0.15f;
                 //CardEntities[passCards[i]].ToPassCard();
                 var cardEntity = CardEntities[cardEntityKeys[i]];
+                cardEntity.BattleCardEntityData.CardData.IsPassable = false;
                 RemoveHandCard(cardEntityKeys[i]);
                 cardEntity.MoveCard(ECardPos.Default, ECardPos.Pass, time);
                

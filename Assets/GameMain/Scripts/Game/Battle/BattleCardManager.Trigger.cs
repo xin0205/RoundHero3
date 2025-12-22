@@ -352,6 +352,18 @@ namespace RoundHero
                     int.Parse(drPassCardAcquireCard.GetValues(0)[0]));
 
             }
+            
+            var firstRoundPassCardAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.FirstRoundPassCardAcquireCard,
+                PlayerManager.Instance.PlayerData.UnitCamp);
+
+            if (firstRoundPassCardAcquireCard != null) 
+            {
+                var drFirstRoundPassCardAcquireCard = GameEntry.DataTable.GetBless(EBlessID.FirstRoundPassCardAcquireCard);
+
+                BattleCardManager.Instance.CacheAcquireCards(triggerData, BattleFightManager.Instance.RoundFightData.PassCardData.PassCardDatas,
+                    int.Parse(drFirstRoundPassCardAcquireCard.GetValues(0)[0]));
+
+            }
 
             battlePlayerData.RoundPassCardCount += 1;
 

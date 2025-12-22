@@ -1594,10 +1594,10 @@ namespace RoundHero
             //SetAction(EUnitActionState.Recover);
         }
         
-        public virtual int  ChangeCurHP(int changeHP, bool useDefense, bool addHeroHP, bool changeHPInstantly, bool showValue = true, TriggerData triggerData = null)
+        public virtual int  ChangeCurHP(int changeHP, bool useDefense, bool addCoreHP, bool changeHPInstantly, bool showValue = true, TriggerData triggerData = null)
         {
             var hpDelta = BattleManager.Instance.ChangeHP(BattleUnitData, changeHP, GamePlayManager.Instance.GamePlayData,
-                EHPChangeType.Action, useDefense, addHeroHP, changeHPInstantly, triggerData);
+                EHPChangeType.Action, useDefense, addCoreHP && triggerData.CoreHPDelta <= 0, changeHPInstantly, triggerData);
 
             if (showValue)
             {
@@ -1608,7 +1608,7 @@ namespace RoundHero
                     IsUIGO = false,
                 };
 
-                var isAddHP = addHeroHP || this is BattleCoreEntity;
+                var isAddHP = addCoreHP || this is BattleCoreEntity;
             
                 var targetMoveParams = new MoveParams()
                 {
@@ -1622,7 +1622,7 @@ namespace RoundHero
                     : (int)changeHP;
                 
                 BattleValueManager.Instance.AddMoveValue(changeHP, endValue, BattleValueManager.Instance.CurValueEntityIdx++, false,
-                    addHeroHP, moveParams,
+                    addCoreHP, moveParams,
                     targetMoveParams, triggerData == null ? -1 : triggerData.Idx);
 
                 // if (!changeHPInstantly)

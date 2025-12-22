@@ -2042,6 +2042,30 @@ namespace RoundHero
             RoundFightData.RoundAcquireCardCirculation.HandCards = new List<int>(battlePlayerData.HandCards);
             RoundFightData.RoundAcquireCardCirculation.ConsumeCards = new List<int>(battlePlayerData.ConsumeCards);
             RoundFightData.RoundAcquireCardCirculation.StandByCards = new List<int>(battlePlayerData.StandByCards);
+            
+            
+            
+            if (isFirstRound)
+            {
+                var firstRoundPassCardAcquireCard =
+                    BattleFightManager.Instance.RoundFightData.GamePlayData.GetUsefulBless(
+                        EBlessID.FirstRoundPassCardAcquireCard,
+                        BattlePlayerManager.Instance.PlayerData.UnitCamp);
+
+                if (firstRoundPassCardAcquireCard != null)
+                {
+
+                    for (int i = 0; i < RoundFightData.RoundAcquireCardCirculation.HandCards.Count; i++)
+                    {
+                        var card = CardManager.Instance.GetCard(RoundFightData.RoundAcquireCardCirculation
+                            .HandCards[i]);
+                        card.IsPassable = true;
+                    }
+
+                }
+                
+            }
+
         }
 
 

@@ -238,7 +238,7 @@ namespace RoundHero
         }
 
         public int ChangeHP(Data_BattleUnit unit, int value, Data_GamePlay gamePlayData, EHPChangeType hpChangeType,
-            bool useDefense = true, bool addHeroHP = true, bool changeHPInstantly = false, TriggerData triggerData = null)
+            bool useDefense = true, bool addCoreHP = true, bool changeHPInstantly = false, TriggerData triggerData = null)
 
         {
             if(unit == null)
@@ -324,7 +324,7 @@ namespace RoundHero
             // - useDefenseCount
             var deltaHPNoDefense = deltaHP;
             
-            if (unit is Data_BattleSolider && addHeroHP && deltaHPNoDefense < 0)
+            if (unit is Data_BattleSolider && addCoreHP && deltaHPNoDefense < 0)
             {
                 var addHP = -deltaHPNoDefense;
                 // if (unit.UnitCamp == BattleManager.Instance.CurUnitCamp &&
