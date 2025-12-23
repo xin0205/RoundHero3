@@ -81,7 +81,7 @@ namespace RoundHero
         {
             GameEntry.Sound.Mute("Music", !isOn);
             musicSlider.gameObject.SetActive(isOn);
-            GameEntry.Sound.PlayUISound(EUISound.CommonButton);
+            //GameEntry.Sound.PlayUISound(EUISound.CommonButton);
         }
         
         public void OnMusicVolumeChanged(float volume)
@@ -93,7 +93,7 @@ namespace RoundHero
         {
             GameEntry.Sound.Mute("UISound", !isOn);
             uiSoundSlider.gameObject.SetActive(isOn);
-            GameEntry.Sound.PlayUISound(EUISound.CommonButton);
+            //GameEntry.Sound.PlayUISound(EUISound.CommonButton);
         }
 
         public void OnUISoundVolumeChanged(float volume)
@@ -106,12 +106,12 @@ namespace RoundHero
             Screen.fullScreen = isOn;
             GameEntry.Setting.SetBool("FullScreen", isOn);
             GameEntry.Setting.Save();
-            GameEntry.Sound.PlayUISound(EUISound.CommonButton);
+            //GameEntry.Sound.PlayUISound(EUISound.CommonButton);
         }
 
         protected override void OnClose(bool isShutdown, object userData)
         {
-            GameEntry.Sound.PlayUISound(EUISound.CommonButton);
+            //GameEntry.Sound.PlayUISound(EUISound.CommonButton);
             base.OnClose(isShutdown, userData);
             
         }

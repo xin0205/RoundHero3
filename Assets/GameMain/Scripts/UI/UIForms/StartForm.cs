@@ -24,7 +24,8 @@ namespace RoundHero
 
         [SerializeField] private Text userName;
         [SerializeField] private Text version;
-
+        
+        [SerializeField] private GameObject testGO;
         protected override async void OnOpen(object userData)
         {
             base.OnOpen(userData);
@@ -52,6 +53,11 @@ namespace RoundHero
             version.text= Application.version.ToString();
             
             DataManager.Instance.ReloadData();
+            
+            testGO.SetActive(true);
+            #if DEVELOPMENT_BUILD
+                testGO.SetActive(true);
+            #endif
         }
 
         public void BattleModeOnPointerEnter()

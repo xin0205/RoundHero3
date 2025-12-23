@@ -101,6 +101,7 @@ MonoBehaviour:
   battleMode_restartGame: {fileID: 2951794728007598197}
   userName: {fileID: 3941479223883065591}
   version: {fileID: 671844091056512171}
+  testGO: {fileID: 118653856476001437}
 --- !u!1 &118653856476001437
 GameObject:
   m_ObjectHideFlags: 0
