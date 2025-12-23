@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -108,6 +109,11 @@ namespace RoundHero
 
         //protected int TopLayerIdx;
 
+        private void Awake()
+        {
+            hpValueEntity = transform.Find("Root/UnitUI/BattleValueEntity")
+                .GetComponent<BattleValueEntity>();
+        }
 
         protected override void OnInit(object userData)
         {
@@ -131,8 +137,9 @@ namespace RoundHero
             //     }
             //     
             // }
-            hpValueEntity = transform.Find("Root/UnitUI/BattleValueEntity")
-                .GetComponent<BattleValueEntity>();
+            
+            
+            
             hpValueEntity.gameObject.SetActive(false);
         }
 
