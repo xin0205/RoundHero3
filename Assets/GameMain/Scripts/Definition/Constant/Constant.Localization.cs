@@ -166,7 +166,9 @@ namespace RoundHero
             public const string Tips_SwitchTarget = "Tips.SwitchTarget";
             public const string Url_Advise = "Url.Advise";
 
-            
+            public const string Card_Tactic = "Card_Tactic";
+            public const string Card_Unit = "Card_Unit";
+
         }
     }
 }

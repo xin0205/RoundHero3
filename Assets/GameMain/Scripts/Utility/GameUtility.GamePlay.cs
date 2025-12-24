@@ -39,7 +39,22 @@ namespace RoundHero
             var buffDesc =
                 Utility.Text.Format(Constant.Localization.FuneDesc, funeID.ToString());
 
-            desc = GetStrByValues(GameEntry.Localization.GetString(buffDesc), values);
+            var preDesc = "";
+            foreach (var cardType in drBuff.AdapteCardType)
+            {
+                if (cardType == ECardType.Unit)
+                {
+                    preDesc += "[" + GameEntry.Localization.GetString(Constant.Localization.Card_Unit) +"]";
+                }
+                else if (cardType == ECardType.Tactic)
+                {
+                    preDesc += "[" + GameEntry.Localization.GetString(Constant.Localization.Card_Tactic) +"]";
+                }
+            }
+
+            
+
+            desc = GetStrByValues(GameEntry.Localization.GetString(buffDesc), values) + "\n" + preDesc;
         }
         
         // public static void GetItemText(EBlessID blessID, ref string name, ref string desc)
