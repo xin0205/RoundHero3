@@ -153,8 +153,13 @@ namespace RoundHero
             
             public static List<int> InitCards = new List<int>()
             {
-                0, 0, 1, 1, 6, 6, 10000, 10000, 10009, 10009
+                1, 1, 1, 6, 6, 6, 10000, 10000, 10020, 10020
             };
+            
+            // public static List<int> InitCards = new List<int>()
+            // {
+            //     10009, 10009, 10009, 10009, 10009, 10009, 10009, 10009, 10009, 10009
+            // };
         }
 
         public static class Battle
@@ -165,9 +170,9 @@ namespace RoundHero
                 [EItemType.TacticCard] = 20,
                 [EItemType.Fune] = 20,
                 [EItemType.Bless] = 20,
-                [EItemType.RemoveCard] = 10,
-                [EItemType.AddCardFuneSlot] = 5,
-                [EItemType.AddMaxHP] = 5,
+                [EItemType.RemoveCard] = 7,
+                [EItemType.AddCardFuneSlot] = 7,
+                [EItemType.AddMaxHP] = 6,
                 
                 // [EItemType.UnitCard] = 20,
                 // [EItemType.TacticCard] = 20,
