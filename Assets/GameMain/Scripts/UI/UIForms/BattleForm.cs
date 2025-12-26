@@ -203,7 +203,9 @@ namespace RoundHero
             GameEntry.Event.Unsubscribe(RefreshBattleUIEventArgs.EventId, OnRefreshBattleUI);
             GameEntry.Event.Unsubscribe(RefreshRoundEventArgs.EventId, OnRefreshRound);
             GameEntry.Event.Unsubscribe(RefreshActionCampEventArgs.EventId, OnRefreshActionCamp);
-           //GameEntry.Event.Unsubscribe(ShowUnitActionUIEventArgs.EventId, OnShowUnitActionUI);
+
+            ResetInstanceRoot();
+            //GameEntry.Event.Unsubscribe(ShowUnitActionUIEventArgs.EventId, OnShowUnitActionUI);
             //GameEntry.Event.Unsubscribe(SwitchActionCampEventArgs.EventId, OnSwitchActionCamp);
         }
 
@@ -663,6 +665,23 @@ namespace RoundHero
         {
             GameEntry.UI.OpenUIFormAsync(UIFormId.SettingForm, this);
 
+        }
+        
+        public void ResetInstanceRoot()
+        {
+            var childs = new List<BattleCardEntity>();
+            foreach (var kv in BattleController.Instance.Root)
+            {
+                if (kv is Transform t)
+                {
+                    childs.Add(t.GetComponent<BattleCardEntity>());
+                }
+            }
+
+            foreach (var battleCardEntity in childs)
+            {
+                battleCardEntity.ResetParent();
+            }
         }
     }
 }

@@ -54,7 +54,7 @@ namespace RoundHero
             
             DataManager.Instance.ReloadData();
             
-            testGO.SetActive(true);
+            testGO.SetActive(false);
             #if DEVELOPMENT_BUILD
                 testGO.SetActive(true);
             #endif

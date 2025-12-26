@@ -52,7 +52,7 @@ namespace RoundHero
 
         public int TargetPosIdx;
         [SerializeField] protected Text hpText;
-        protected BattleValueEntity hpValueEntity;
+        protected BattleValue hpValueEntity;
         
         public Vector3 Position
         {
@@ -102,17 +102,21 @@ namespace RoundHero
         }
 
         [SerializeField] protected UnitDescTriggerItem UnitDescTriggerItem;
+
+        private BattleValue BattleValueEntityTemp;
         
         //[SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
 
         //public EUnitActionState UnitActionState { get; set; }
 
         //protected int TopLayerIdx;
+        
 
         private void Awake()
         {
-            hpValueEntity = transform.Find("Root/UnitUI/BattleValueEntity")
-                .GetComponent<BattleValueEntity>();
+            BattleValueEntityTemp = transform.Find("Root/UnitUI/BattleValue")
+                .GetComponent<BattleValue>();
+            BattleValueEntityTemp.gameObject.SetActive(false);
         }
 
         protected override void OnInit(object userData)
@@ -139,8 +143,6 @@ namespace RoundHero
             // }
             
             
-            
-            hpValueEntity.gameObject.SetActive(false);
         }
 
         // public void AfterRunAction()
@@ -185,7 +187,10 @@ namespace RoundHero
             IsMove = false;
             // showMoveValueTime = 0.8f;
             // showMoveValueIconTime = 0.8f;
-
+            
+            hpValueEntity = GameObject.Instantiate(BattleValueEntityTemp);
+            hpValueEntity.gameObject.SetActive(false);
+            
             RefreshData();
         }
 

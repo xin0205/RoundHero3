@@ -29,6 +29,12 @@ namespace RoundHero
             get;
             private set;
         }
+        
+        public Transform InitParent
+        {
+                get;
+                private set;
+        }
 
 #if UNITY_2017_3_OR_NEWER
         protected override void OnInit(object userData)
@@ -38,6 +44,7 @@ namespace RoundHero
         {
             base.OnInit(userData);
             CachedAnimation = GetComponent<Animation>();
+            InitParent = transform.parent;
         }
 
 #if UNITY_2017_3_OR_NEWER
@@ -122,6 +129,11 @@ namespace RoundHero
 #endif
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
+        }
+
+        public void ResetParent()
+        {
+                transform.parent = InitParent;
         }
     }
 }
