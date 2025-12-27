@@ -55,30 +55,38 @@ namespace RoundHero
             DataManager.Instance.ReloadData();
             
             testGO.SetActive(false);
-            #if DEVELOPMENT_BUILD
+            #if DEVELOPMENT_BUILD || UNITY_EDITOR
                 testGO.SetActive(true);
             #endif
         }
 
         public void BattleModeOnPointerEnter()
         {
-            var gamePlayData = DataManager.Instance.DataGame.User.GamePlayDatas[DataManager.Instance.DataGame.User.CurFileIdx][
-                EPVEType.BattleMode];
-
-            if (gamePlayData != null)
+            GameUtility.DelayExcute(0.1f, () =>
             {
-                battleMode_startGame.SetActive(!gamePlayData.IsGamePlaying);
-                battleMode_continueGame.SetActive(gamePlayData.IsGamePlaying);
-                battleMode_restartGame.SetActive(gamePlayData.IsGamePlaying);
+                var gamePlayData = DataManager.Instance.DataGame.User.GamePlayDatas[DataManager.Instance.DataGame.User.CurFileIdx][
+                    EPVEType.BattleMode];
 
-            }
+                if (gamePlayData != null)
+                {
+                    battleMode_startGame.SetActive(!gamePlayData.IsGamePlaying);
+                    battleMode_continueGame.SetActive(gamePlayData.IsGamePlaying);
+                    battleMode_restartGame.SetActive(gamePlayData.IsGamePlaying);
+
+                }
+            });
+            
         }
         
         public void BattleModeOnPointerExit()
         {
-            battleMode_startGame.SetActive(true);
-            battleMode_continueGame.SetActive(false);
-            battleMode_restartGame.SetActive(false);
+            GameUtility.DelayExcute(0.1f, () =>
+            {
+                battleMode_startGame.SetActive(true);
+                battleMode_continueGame.SetActive(false);
+                battleMode_restartGame.SetActive(false);
+            });
+            
         }
 
         protected override void OnClose(bool isShutdown, object userData)

@@ -133,7 +133,7 @@ namespace RoundHero
 
         public void ResetParent()
         {
-                transform.parent = InitParent;
+                transform.SetParent(InitParent);
         }
     }
 }
