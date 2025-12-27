@@ -9,7 +9,7 @@ namespace RoundHero
     {
         public static class Game
         {
-            public const string GameDataKey = "GameData";
+            public const string GameDataKey = "EndlessLoopTest";
             public const string VersionKey = "Version";
             public const int RandomRange = 99999999;
             public const string VersionListKey = "VersionList";
