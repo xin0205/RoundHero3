@@ -669,19 +669,19 @@ namespace RoundHero
         
         public void ResetInstanceRoot()
         {
-            var childs = new List<BattleCardEntity>();
-            foreach (var kv in BattleController.Instance.Root)
-            {
-                if (kv is Transform t)
-                {
-                    childs.Add(t.GetComponent<BattleCardEntity>());
-                }
-            }
-
-            foreach (var battleCardEntity in childs)
-            {
-                battleCardEntity.ResetParent();
-            }
+            // var childs = new List<BattleCardEntity>();
+            // foreach (var kv in BattleController.Instance.Root)
+            // {
+            //     if (kv is Transform t)
+            //     {
+            //         childs.Add(t.GetComponent<BattleCardEntity>());
+            //     }
+            // }
+            //
+            // foreach (var battleCardEntity in childs)
+            // {
+            //     battleCardEntity.ResetParent();
+            // }
         }
     }
 }

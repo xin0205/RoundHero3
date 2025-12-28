@@ -84,6 +84,7 @@ namespace RoundHero
 #endif
         {
             base.OnHide(isShutdown, userData);
+            ResetParent();
         }
 
 #if UNITY_2017_3_OR_NEWER
