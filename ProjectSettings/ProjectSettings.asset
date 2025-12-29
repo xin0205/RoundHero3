@@ -141,7 +141,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 0.2_1
+  bundleVersion: 0.1_1
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -291,7 +291,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 5057c1a0fa94ffc49a43c61a2cb89d49, type: 3}
+      m_Icon: {fileID: 2800000, guid: 4c64d328072d7c54482c6e1f76be022e, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
