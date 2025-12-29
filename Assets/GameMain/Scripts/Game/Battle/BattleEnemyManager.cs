@@ -545,7 +545,7 @@ namespace RoundHero
             }
             
             
-            
+            BattleManager.Instance.RefreshEnemyAttackData();
             //BattleSoliderManager.Instance.CacheSoliderActionRange();
         }
 
