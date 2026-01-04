@@ -7,7 +7,6 @@
 
 using GameFramework.Localization;
 using CatJson;
-using Steamworks;
 using UGFExtensions.Await;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
