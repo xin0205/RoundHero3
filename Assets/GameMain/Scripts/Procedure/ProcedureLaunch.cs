@@ -11,6 +11,7 @@ using UGFExtensions.Await;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 using UnityEngine;
+using Steamworks;
 
 namespace RoundHero
 {
@@ -56,7 +57,7 @@ namespace RoundHero
 
             
             
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && ENABLE_STEAM
             if (!initUserData && GlobalManager.Instance.SteamInitialized)
             {
                 var steamID = SteamUser.GetSteamID().m_SteamID.ToString();
