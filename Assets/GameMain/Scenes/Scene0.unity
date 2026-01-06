@@ -1463,8 +1463,8 @@ MonoBehaviour:
   _sharpenClamp: 0.45
   _sharpenMotionSensibility: 0.5
   _sharpenMotionRestoreSpeed: 0.5
-  _saturate: 1
-  _contrast: 1.02
+  _saturate: -1
+  _contrast: 1
   _brightness: 1.05
   _daltonize: 0
   _hardLightIntensity: 0.5
@@ -1615,9 +1615,9 @@ MonoBehaviour:
   _purkinje: 0
   _purkinjeAmount: 1
   _purkinjeLuminanceThreshold: 0.15
-  _tonemap: 0
+  _tonemap: 10
   _tonemapGamma: 2.5
-  _tonemapExposurePre: 1
+  _tonemapExposurePre: 0.7
   _tonemapBrightnessPost: 1
   _sunFlares: 0
   _sun: {fileID: 0}
