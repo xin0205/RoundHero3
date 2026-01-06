@@ -551,6 +551,7 @@ namespace RoundHero
             //DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
             
             BattleCardEntityData.CardData.CardUseType = ECardUseType.RawSelect;
+            OnPointerEnter();
             if (!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
             {
                 bottomTipsGO.SetActive(true);
