@@ -1,6 +1,7 @@
 ﻿using System;
 using GameFramework;
 using RoundHero;
+using UGFExtensions.Await;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ namespace RoundHero
         public string ConfirmStr { get; set; }
         public string CancelStr { get; set; }
 
-
+        public bool IsShowSetting { get; set; } = false;
         public Action OnConfirm
         {
             get;
@@ -34,6 +35,7 @@ namespace RoundHero
         [SerializeField] private Text message;
         private ConfirmFormParams confirmFormParams;
         [SerializeField] private GameObject cancelButtonGO;
+        [SerializeField] private GameObject settingGO;
         
         [SerializeField] private Text confirmStr;
         [SerializeField] private Text cancelStr;
@@ -65,7 +67,7 @@ namespace RoundHero
             }
             
             cancelButtonGO.SetActive(confirmFormParams.IsShowCancel);
-
+            settingGO.SetActive(confirmFormParams.IsShowSetting);
         }
         public void OnConfirmButtonClick()
         {
@@ -96,6 +98,12 @@ namespace RoundHero
                 return;
             
             Close();
+        }
+        
+        public void Setting()
+        {
+            GameEntry.UI.OpenUIFormAsync(UIFormId.SettingForm, this);
+
         }
 
     }

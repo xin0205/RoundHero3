@@ -122,7 +122,7 @@ namespace RoundHero
             
             if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
             {
-                battleSession.gameObject.SetActive(true);
+                //battleSession.gameObject.SetActive(true);
 
                 battleSession.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_BattleSession,
                     GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session + 1, Constant.BattleMode.DiffcultySettings[BattleManager.Instance.BattleData.GameDifficulty].MaxBattleCount);
@@ -556,6 +556,7 @@ namespace RoundHero
             
             GameEntry.UI.OpenConfirm(new ConfirmFormParams()
             {
+                IsShowSetting = true,
                 Message = GameEntry.Localization.GetString(Constant.Localization.Message_ConfirmExitBattle),
                 OnConfirm = () =>
                 {
