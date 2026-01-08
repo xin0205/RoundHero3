@@ -1303,7 +1303,7 @@ namespace RoundHero
                     }
 
                     BattleManager.Instance.RefreshEnemyAttackData();
-                    
+                    BattleUnitManager.Instance.ShowAttackTag(false);
                 }
             }
         }

@@ -52,7 +52,9 @@ namespace RoundHero
 
         public int TargetPosIdx;
         [SerializeField] protected Text hpText;
-        protected BattleValue hpValueEntity;
+        protected BattleValue hpValue;
+        
+        protected AttackTag attackTag;
         
         public Vector3 Position
         {
@@ -103,8 +105,8 @@ namespace RoundHero
 
         [SerializeField] protected UnitDescTriggerItem UnitDescTriggerItem;
 
-        private BattleValue BattleValueEntityTemp;
-        
+        private BattleValue BattleValueTemp;
+        private AttackTag AttackTagTemp;
         //[SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
 
         //public EUnitActionState UnitActionState { get; set; }
@@ -114,9 +116,13 @@ namespace RoundHero
 
         private void Awake()
         {
-            BattleValueEntityTemp = transform.Find("Root/UnitUI/BattleValue")
+            BattleValueTemp = transform.Find("Root/UnitUI/BattleValue")
                 .GetComponent<BattleValue>();
-            BattleValueEntityTemp.gameObject.SetActive(false);
+            BattleValueTemp.gameObject.SetActive(false);
+            
+            AttackTagTemp = transform.Find("Root/UnitUI/AttackTag")
+                .GetComponent<AttackTag>();
+            AttackTagTemp.gameObject.SetActive(false);
         }
 
         protected override void OnInit(object userData)
@@ -188,8 +194,11 @@ namespace RoundHero
             // showMoveValueTime = 0.8f;
             // showMoveValueIconTime = 0.8f;
             
-            hpValueEntity = GameObject.Instantiate(BattleValueEntityTemp);
-            hpValueEntity.gameObject.SetActive(false);
+            hpValue = GameObject.Instantiate(BattleValueTemp);
+            hpValue.gameObject.SetActive(false);
+            
+            attackTag = GameObject.Instantiate(AttackTagTemp);
+            attackTag.gameObject.SetActive(false);
             
             RefreshData();
         }
@@ -198,7 +207,8 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             UnitDescTriggerItem.CloseForm();
-            hpValueEntity.gameObject.SetActive(false);
+            hpValue.gameObject.SetActive(false);
+            attackTag.gameObject.SetActive(false);
             // if (hpValueEntity != null)
             // {
             //     GameEntry.Entity.HideEntity(hpValueEntity);
@@ -427,9 +437,9 @@ namespace RoundHero
             //ShowHurts();
             // ShowMoveValues();
             // ShowMoveValueIcons();
-            if (hpValueEntity != null && (!IsPointer || BattleAreaManager.Instance.CurPointGridPosIdx == -1))
+            if (hpValue != null && (!IsPointer || BattleAreaManager.Instance.CurPointGridPosIdx == -1))
             {
-                hpValueEntity.gameObject.SetActive(false);
+                hpValue.gameObject.SetActive(false);
                 // GameEntry.Entity.HideEntity(hpValueEntity);
                 // hpValueEntity = null;
             }
@@ -1481,22 +1491,35 @@ namespace RoundHero
             var pos = PositionConvert.WorldPointToUILocalPoint(
                 AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), Root.position);
             
-            var delta = (-30f + 7f / 100f * pos.y);
+            var delta = ( 7f / 100f * (pos.y + -400f));
             pos += new Vector2(0, delta);
             
             // var data = ReferencePool.Acquire<BattleDisplayValueEntityData>();
             // data.Init(GameEntry.Entity.GenerateSerialId(), pos, -1);
-            if (hpValueEntity != null)
+            if (hpValue != null)
             {
-                hpValueEntity.gameObject.SetActive(true);
-                hpValueEntity.SetData(pos, curHP);
+                hpValue.gameObject.SetActive(true);
+                hpValue.SetData(pos, curHP);
             }
            
         }
 
+        public void ShowAttackTag(bool isShow)
+        {
+            var pos = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), Root.position + new Vector3(0, 0, 0));
+            
+            var delta = (7f / 100f * (pos.y + 1350f));
+            pos += new Vector2(0, delta);
+            
+            attackTag.gameObject.SetActive(isShow);
+            attackTag.SetData(pos, BattleUnitData.RoundAttackTimes);
+        }
+        
+
         public void RefreshDamageState()
         {
-            hpValueEntity.gameObject.SetActive(false);
+            hpValue.gameObject.SetActive(false);
             //hpText.gameObject.SetActive(false);
             // hpAndDamageNode.SetActive(false);
             // damageNode.SetActive(false);

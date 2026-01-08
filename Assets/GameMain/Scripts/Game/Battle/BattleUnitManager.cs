@@ -870,6 +870,34 @@ namespace RoundHero
                 
             }    
         }
-        
+
+
+        public void ShowAttackTag(bool isShow)
+        {
+            foreach (var kv in BattleUnitEntities)
+            {
+                if(kv.Value.UnitCamp != EUnitCamp.Player1)
+                    continue;
+                    
+                var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(kv.Value.BattleUnitData);
+
+                var isContinue = true;
+                foreach (var unitBuffData in unitBuffDatas)
+                {
+                    if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
+                    {
+                        isContinue = false;
+                    }
+                }
+                
+                if(isContinue)
+                    continue;
+
+                
+                kv.Value.ShowAttackTag(isShow);
+            }
+        }
     }
 }

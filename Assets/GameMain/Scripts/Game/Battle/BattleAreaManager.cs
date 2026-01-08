@@ -1166,7 +1166,7 @@ namespace RoundHero
                     
                         
                     
-                    
+                    BattleUnitManager.Instance.ShowAttackTag(false);
                 }
                 else
                 {
