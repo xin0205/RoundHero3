@@ -287,31 +287,44 @@ namespace RoundHero
                     battleSoliderEntity.ShowMoveRange(true);
                     
                 }
-                
+                BattleGridManager.Instance.ShowRedGrids(null);
             }
             else if (Input.GetKeyUp(KeyCode.A)) {
-                BattleAreaManager.Instance.ShowBackupGrids(null);
-            } 
-            
-            if (Input.GetKeyDown(KeyCode.S))
-            {
                 var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
                     .CurPointGridPosIdx);
 
                 if (unit is BattleMonsterEntity battleMonsterEntity )
                 {
                     battleMonsterEntity.ShowAttackRange(true);
+                    
                 }
                 else if (unit is BattleSoliderEntity battleSoliderEntity )
                 {
                     battleSoliderEntity.ShowAttackRange(true);
                     
                 }
-                
-            }
-            else if (Input.GetKeyUp(KeyCode.S)) {
-                BattleAreaManager.Instance.ShowBackupGrids(null);
+                BattleGridManager.Instance.ShowGreenGrids(null);
             } 
+            
+            // if (Input.GetKeyDown(KeyCode.S))
+            // {
+            //     var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
+            //         .CurPointGridPosIdx);
+            //
+            //     if (unit is BattleMonsterEntity battleMonsterEntity )
+            //     {
+            //         battleMonsterEntity.ShowAttackRange(true);
+            //     }
+            //     else if (unit is BattleSoliderEntity battleSoliderEntity )
+            //     {
+            //         battleSoliderEntity.ShowAttackRange(true);
+            //         
+            //     }
+            //     
+            // }
+            // else if (Input.GetKeyUp(KeyCode.S)) {
+            //     BattleGridManager.Instance.ShowGreenGrids(null);
+            // } 
         }
         
         // public int GetEnemyID(int posIdx)

@@ -161,7 +161,7 @@ namespace RoundHero
             {
                 
                 lastMoveCount = moveCount;
-                RefreshGirdEntities();
+                BattleGridManager.Instance.RefreshGirdEntities();
                 RefreshObstacles();
                 BattleManager.Instance.RefreshEnemyAttackData();
                 ShowMoveUnitTags(true);

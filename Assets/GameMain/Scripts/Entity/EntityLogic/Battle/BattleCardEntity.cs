@@ -1028,6 +1028,7 @@ namespace RoundHero
                     
                     CardItem.SetIconVisible(true);
                     BattleUnitManager.Instance.ShowAttackTag(false);
+                    BattleUnitManager.Instance.ShowMoveTag(false);
                     break;
                 case ECardUseType.Attack:
                     moveCheckMark.SetActive(false);
@@ -1044,7 +1045,7 @@ namespace RoundHero
                     CardItem.SetIconVisible(false);
                     
                     BattleUnitManager.Instance.ShowAttackTag(true);
-                    
+                    BattleUnitManager.Instance.ShowMoveTag(false);
                     break;
                 case ECardUseType.Move:
                     attackCheckMark.SetActive(false);
@@ -1060,6 +1061,7 @@ namespace RoundHero
                     CardItem.SetIconVisible(false);
                     
                     BattleUnitManager.Instance.ShowAttackTag(false);
+                    BattleUnitManager.Instance.ShowMoveTag(true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(cardUseType), cardUseType, null);

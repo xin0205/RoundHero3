@@ -3,6 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityGameFramework.Runtime;
 
 namespace RoundHero
@@ -16,8 +17,11 @@ namespace RoundHero
         [SerializeField] private GameObject selectionGrid_us;
         [SerializeField] private GameObject selectionGrid_enemy;
         
-        [SerializeField] private GameObject backupGrid;
+        [SerializeField] private GameObject greenGrid;
         [SerializeField] private GameObject grid;
+        [SerializeField] private GameObject redGrid;
+        [SerializeField] private GameObject yellowGrid;
+        [SerializeField] private GameObject attackGrid;
         
         [SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
 
@@ -52,7 +56,7 @@ namespace RoundHero
             }
 
             Show(false);
-            backupGrid.SetActive(false);
+            greenGrid.SetActive(false);
             SetSelectionGridActive(false);
             Refresh();
             
@@ -65,7 +69,7 @@ namespace RoundHero
         public void Show(bool active)
         {
             // && (backupGrid.activeSelf || selectionGrid.activeSelf)
-            if (active && (backupGrid.activeSelf || selectionGrid_empty.activeSelf || selectionGrid_us.activeSelf ||
+            if (active && (greenGrid.activeSelf || selectionGrid_empty.activeSelf || selectionGrid_us.activeSelf ||
                            selectionGrid_enemy.activeSelf))
                 return;
             //BattleGridEntityData.GridType != EGridType.Obstacle && 
@@ -79,18 +83,43 @@ namespace RoundHero
             posTag.text = coord.x + "," + coord.y + "-" + BattleGridEntityData.GridPosIdx;
         }
 
-        public void ShowBackupGrid(bool isShow)
+        public void UnshowGrid()
         {
-            if (isShow)
-            {
-                grid.SetActive(false);
-            }
-            else
-            {
-                grid.SetActive(true);
-            }
+            redGrid.SetActive(false);
+            yellowGrid.SetActive(false);
+            greenGrid.SetActive(false);
+            attackGrid.SetActive(false);
+            //grid.SetActive(false);
+        }
+
+        public void ShowGreenGrid(bool isShow)
+        {
+            greenGrid.SetActive(isShow);
             
-            backupGrid.SetActive(isShow);
+        }
+        
+        public void ShowAttackGrid(bool isShow)
+        {
+            attackGrid.SetActive(isShow);
+ 
+        }
+        
+        public void ShowGrid(bool isShow)
+        {
+            grid.SetActive(isShow);
+ 
+        }
+        
+        public void ShowRedGrid(bool isShow)
+        {
+            redGrid.SetActive(isShow);
+            
+            
+        }
+        
+        public void ShowYellowGrid(bool isShow)
+        {
+            yellowGrid.SetActive(isShow);
             
             
         }

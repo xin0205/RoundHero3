@@ -22,9 +22,6 @@ namespace RoundHero
         public Random Random;
         private int randomSeed;
 
-        public List<BattleGridEntity> GridEntities = new();
-        public Dictionary<int, BattleGridEntity> GridEntitiesMap = new();
-
         private bool pointerDownInRange;
         private Vector3 lastMousePosition;
         private Vector3 mousePositionDelta;
@@ -82,14 +79,7 @@ namespace RoundHero
             //     GameEntry.Entity.HideEntity(TmpUnitEntity);
             //     TmpUnitEntity = null;
             // }
-            
-            foreach (var kv in GridEntities)
-            {
-                GameEntry.Entity.HideEntity(kv);
-                            
-            }
-            GridEntities.Clear();
-            GridEntitiesMap.Clear();
+
             BattleAreaManager.Instance.CurPointGridPosIdx = -1;
         }
         
@@ -130,37 +120,61 @@ namespace RoundHero
         public async void OnShowGridDetail(object sender, GameEventArgs e)
         {
             var ne = e as ShowGridDetailEventArgs;
-
-
+            
+            var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx,
+                BattleManager.Instance.CurUnitCamp, ERelativeCamp.Us, EUnitRole.Staff);
+            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
+            
             if (ne.ShowState == EShowState.Show)
             {
                 await GameEntry.UI.OpenUIFormAsync(UIFormId.GridDescForm, new GridDescData()
                 {
                     GridPosIdx = ne.GridPosIdx,
                 });
-                ShowAllGrid(true);
+                BattleGridManager.Instance.ShowAllGrid(true);
                 BattleAreaManager.Instance.CurPointGridPosIdx = ne.GridPosIdx;
                 BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;
-            }
-            else if (ne.ShowState == EShowState.Unshow)
-            {
-                BattleUnitManager.Instance.UnShowTags();
-                ShowAllGrid(false);
-                BattleAreaManager.Instance.CurPointGridPosIdx = -1;
-                BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
-            }
-
-            var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx,
-                BattleManager.Instance.CurUnitCamp, ERelativeCamp.Us, EUnitRole.Staff);
-
-            if (ne.ShowState == EShowState.Show)
-            {
                 if (soliderEntityID != -1)
                 {
                     GameEntry.Event.Fire(null, RefreshBattleUIEventArgs.Create());
                 }
-            }
+                
+                //var curUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+                var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
 
+                if (unit != null)
+                {
+                    if (unit.UnitCamp == EUnitCamp.Player1 && buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+                    {
+                        unit.ShowAttackRange(true);
+                    
+                    }
+                    else if (unit.UnitCamp == EUnitCamp.Player1 && buffData.BuffStr == EBuffID.Spec_MoveUs.ToString())
+                    {
+                        unit.ShowMoveRange(true);
+                    
+                    }
+                    else if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                    {
+                        unit.ShowAttackRange(true);
+                    }
+                }
+                
+            }
+            else if (ne.ShowState == EShowState.Unshow)
+            {
+                BattleUnitManager.Instance.UnShowTags();
+                BattleGridManager.Instance.ShowAllGrid(false);
+                BattleAreaManager.Instance.CurPointGridPosIdx = -1;
+                BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
+                
+                if (BattleManager.Instance.BattleState != EBattleState.SelectHurtUnit)
+                {
+                    BattleGridManager.Instance.UnshowGrids();
+                    //unit.ShowAttackRange(false);
+                }
+            }
 
             if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
             {
@@ -231,38 +245,38 @@ namespace RoundHero
                         //battleSoliderData.Idx = BattleUnitManager.Instance.GetIdx();
                         
                         HideTmpUnitEntity();
-                            var tmpEntity =
-                                await GameEntry.Entity.ShowBattleSoliderEntityAsync(battleSoliderData);
-                            Log.Debug("ShowBattleSolider2:" + tmpEntity.UnitIdx + "-" + ne.GridPosIdx);
+                        var tmpEntity =
+                            await GameEntry.Entity.ShowBattleSoliderEntityAsync(battleSoliderData);
+                        //Log.Debug("ShowBattleSolider2:" + tmpEntity.UnitIdx + "-" + ne.GridPosIdx);
+                        
+                        if(BattleManager.Instance.TempTriggerData.UnitData == null || tmpEntity.UnitIdx < BattleManager.Instance.TempTriggerData.UnitData.Idx)
+                        {
+                            Log.Debug("HideEntity:");
+                            BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpEntity.BattleSoliderEntityData
+                                .BattleSoliderData.Idx);
+                            // BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpEntity.BattleSoliderEntityData
+                            //     .BattleSoliderData.Idx);
+                            GameEntry.Entity.HideEntity(tmpEntity);
+                            BattleManager.Instance.RefreshEnemyAttackData();
+                        }
+                        else
+                        {
+                            Log.Debug("AddEntity：" + BattleManager.Instance.TempTriggerData.UnitData.Idx);
+                            TmpUnitEntity = tmpEntity;
+                            //TmpUnitEntity.ShowCollider(false);
                             
-                            if(BattleManager.Instance.TempTriggerData.UnitData == null || tmpEntity.UnitIdx < BattleManager.Instance.TempTriggerData.UnitData.Idx)
-                            {
-                                Log.Debug("HideEntity:");
-                                BattleUnitManager.Instance.BattleUnitDatas.Remove(tmpEntity.BattleSoliderEntityData
-                                    .BattleSoliderData.Idx);
-                                // BattleUnitManager.Instance.BattleUnitEntities.Remove(tmpEntity.BattleSoliderEntityData
-                                //     .BattleSoliderData.Idx);
-                                GameEntry.Entity.HideEntity(tmpEntity);
-                                BattleManager.Instance.RefreshEnemyAttackData();
-                            }
-                            else
-                            {
-                                Log.Debug("AddEntity：" + BattleManager.Instance.TempTriggerData.UnitData.Idx);
-                                TmpUnitEntity = tmpEntity;
-                                //TmpUnitEntity.ShowCollider(false);
-                            
-                                BattleUnitManager.Instance.BattleUnitDatas.Add(battleSoliderData.Idx, battleSoliderData);
-                                BattleUnitManager.Instance.BattleUnitEntities.Add(
-                                    TmpUnitEntity.BattleUnitData.Idx, TmpUnitEntity);
-                            
-                                BattleManager.Instance.RefreshEnemyAttackData();
-                            
-                                //showhurt
-                                BattleTagManager.Instance.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
-                                //await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
-                                //TmpUnitEntity.ShowTags(TmpUnitEntity.UnitIdx);
-                                
-                            }
+                            BattleUnitManager.Instance.BattleUnitDatas.Add(battleSoliderData.Idx, battleSoliderData);
+                            BattleUnitManager.Instance.BattleUnitEntities.Add(
+                                TmpUnitEntity.BattleUnitData.Idx, TmpUnitEntity);
+                        
+                            BattleManager.Instance.RefreshEnemyAttackData();
+                            tmpEntity.OnPointerEnter();
+                            //showhurt
+                            BattleTagManager.Instance.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
+                            //await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
+                            //TmpUnitEntity.ShowTags(TmpUnitEntity.UnitIdx);
+                            tmpEntity.ShowAttackRange(true);
+                        }
                         
                         
 
@@ -401,30 +415,31 @@ namespace RoundHero
             if (BattleManager.Instance.BattleState == EBattleState.MoveUnit ||
                 BattleManager.Instance.BattleState == EBattleState.FuneMoveUnit)
             {
-
+                if (ne.ShowState == EShowState.Show)
+                {
+                    TmpUnitEntity.ShowMoveRange(true);
+                }
+                else if (ne.ShowState == EShowState.Unshow)
+                {
+                    TmpUnitEntity.ShowMoveRange(false);
+                }
                 
                 var moveRanges =
                     BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
                 if (!moveRanges.Contains(ne.GridPosIdx))
                 {
+                    BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
                     Log.Debug("moveC" + ne.GridPosIdx + ne.ShowState);
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
                     BattleManager.Instance.TempTriggerData.TempUnitMovePaths.Clear();
                     BattleManager.Instance.RefreshEnemyAttackData();
-                    if (ne.ShowState == EShowState.Show)
-                    {
-                        //BattleEnemyManager.Instance.ShowEnemyRoutes();
-                    }
-                    else if (ne.ShowState == EShowState.Unshow)
-                    {
-                        //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-                    }
-
+                    
                 }
                 else
                 {
+                    BattleController.Instance.UnShowUnAttackTag();
                     if (ne.ShowState == EShowState.Show)
                     {
                         TmpUnitEntity.SetPosition(ne.GridPosIdx);
@@ -489,7 +504,7 @@ namespace RoundHero
                 }
 
                 
-
+                
                 
 
             }
@@ -524,9 +539,23 @@ namespace RoundHero
 
             if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
             {
+                if (!CheckTacticSelectUnit(ne.GridPosIdx, false))
+                {
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
+                    }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        BattleController.Instance.UnShowUnAttackTag();
+                    }
+
+                    return;
+                }
+                    
+                
                 if (ne.ShowState == EShowState.Show)
                 {
-
                     var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
                     
                     var drBuff = BattleBuffManager.Instance.GetBuffData(buffStr);
@@ -547,10 +576,10 @@ namespace RoundHero
                         var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
                         if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
                         {
-                            if (BattleManager.Instance.TempTriggerData.UnitData.CurHP <= 0)
-                            {
-                                return;
-                            }
+                            // if (BattleManager.Instance.TempTriggerData.UnitData.CurHP <= 0)
+                            // {
+                            //     return;
+                            // }
                             
                             var actionTimes = relativeUnit.BattleUnitData.RoundAttackTimes;
                             //BattleCardManager.Instance.RefreshCurCardEnergy();
@@ -575,12 +604,12 @@ namespace RoundHero
                                 {
                                     var attackRanges = BattleUnitManager.Instance.GetAttackRanges(relativeUnit.UnitIdx, ne.GridPosIdx);
                                     
-                                    ShowBackupGrids(attackRanges);
+                                    //BattleGridManager.Instance.ShowGreenGrids(attackRanges);
                                 }
                                 else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                                 {
                                     var attackRanges = BattleUnitManager.Instance.GetAttackRanges(relativeUnit.UnitIdx, ne.GridPosIdx);
-                                    ShowBackupGrids(attackRanges);
+                                    //BattleGridManager.Instance.ShowGreenGrids(attackRanges);
                                 }
                         
                                 BattleManager.Instance.RefreshEnemyAttackData();
@@ -589,19 +618,19 @@ namespace RoundHero
                         } 
                         else if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString())
                         {
-                            if (BattleManager.Instance.TempTriggerData.UnitData.CurHP <= 0)
-                            {
-                                return;
-                            }
-                            
-                            var actionTimes = relativeUnit.BattleUnitData.RoundMoveTimes;
-                            //BattleCardManager.Instance.RefreshCurCardEnergy();
+                            // if (BattleManager.Instance.TempTriggerData.UnitData.CurHP <= 0)
+                            // {
+                            //     return;
+                            // }
+                            //
+                            // var actionTimes = relativeUnit.BattleUnitData.RoundMoveTimes;
+                            // //BattleCardManager.Instance.RefreshCurCardEnergy();
                         }
                         
                         else
                         {
                             BattleManager.Instance.RefreshEnemyAttackData();
-                            ShowBackupGrids(null);
+                            //BattleGridManager.Instance.ShowGreenGrids(null);
                             //BattleCardManager.Instance.RefreshCurCardEnergy();
                             //BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.ID);
                         }
@@ -611,7 +640,7 @@ namespace RoundHero
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
-                    ShowBackupGrids(null);
+
                     BattleManager.Instance.TempTriggerData.UnitData = null;
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.Empty;
                     //BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
@@ -624,14 +653,6 @@ namespace RoundHero
 
             if (BattleManager.Instance.BattleState == EBattleState.TacticSelectGrid)
             {
-                if (ne.ShowState == EShowState.Show)
-                {
-                    //BattleManager.Instance.TempTriggerData.TargetGridPosIdx = ne.GridPosIdx;
-                }
-                else
-                {
-                    //BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
-                }
                 BattleManager.Instance.RefreshEnemyAttackData();
                 
                 var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
@@ -650,10 +671,23 @@ namespace RoundHero
                 if (ne.ShowState == EShowState.Show)
                 {
                     BattleTagManager.Instance.ShowTags(Constant.Battle.UnUnitTriggerIdx);
+                    BattleGridManager.Instance.ShowRedGrids(range);
+                    
+                    if (!BattleFightManager.Instance.ExistUseCardData())
+                    {
+                        BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
+                    }
+                    else
+                    {
+                        BattleController.Instance.UnShowUnAttackTag();
+                    }
                 }
                 else
                 {
                     BattleTagManager.Instance.UnShowTags();
+                    BattleGridManager.Instance.ShowRedGrids(null);
+                    
+                    BattleController.Instance.UnShowUnAttackTag();
                 }
                 
                 // foreach (var gridPosIdx in range)
@@ -737,16 +771,30 @@ namespace RoundHero
                             effectUnitEntity.ResetPosition();
                         }
                     }
+                    BattleController.Instance.UnShowUnAttackTag();
                     
+                }
+                else
+                {
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
+                    }
                     
                 }
 
+
                 if (ne.ShowState == EShowState.Show)
                 {
+                    if (!BattleFightManager.Instance.ExistSoliderAutoAttackData(BattleManager.Instance.TempTriggerData.UnitData.Idx))
+                    {
+                        BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
+                    }
                     //BattleEnemyManager.Instance.ShowEnemyRoutes();
                 }
                 else if (ne.ShowState == EShowState.Unshow)
                 {
+                    BattleController.Instance.UnShowUnAttackTag();
                     //BattleEnemyManager.Instance.UnShowEnemyRoutes();
                 }
             }
@@ -756,7 +804,6 @@ namespace RoundHero
                 BattleUnitManager.Instance.UnShowTags();
             }
             
-            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
             if (unit != null)
             {
                 if (ne.ShowState == EShowState.Show)
@@ -949,9 +996,9 @@ namespace RoundHero
         public void OnSelectGrid(object sender, GameEventArgs e)
         {
             var ne = e as SelectGridEventArgs;
-            if(GridEntitiesMap.ContainsKey(ne.GridPosIdx))
+            if(BattleGridManager.Instance.GridEntitiesMap.ContainsKey(ne.GridPosIdx))
             {
-                GridEntitiesMap[ne.GridPosIdx].ShowSelectGrid(ne.IsSelect);
+                BattleGridManager.Instance.GridEntitiesMap[ne.GridPosIdx].ShowSelectGrid(ne.IsSelect);
             }
         }
 
@@ -971,6 +1018,7 @@ namespace RoundHero
             //var cardIndexs = BattleCardManager.Instance.GetCardIndexs(ne.GridPosIdx);
             var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(ne.GridPosIdx,
                 BattleManager.Instance.CurUnitCamp, ERelativeCamp.Us, EUnitRole.Staff);
+            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
 
             if (soliderEntityID != -1)
             {
@@ -981,7 +1029,7 @@ namespace RoundHero
 
             if (BattleManager.Instance.BattleState == EBattleState.UseCard)
             {
-                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
+                //var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(ne.GridPosIdx);
                 if (unit == null)
                     return;
                     
@@ -1058,40 +1106,14 @@ namespace RoundHero
                 
                 var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
-                List<ERelativeCamp> relativeCamps = buffData.TriggerUnitCamps;
                 
-                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(ne.GridPosIdx,
-                    BattleManager.Instance.CurUnitCamp,
-                    relativeCamps);
-                
-                if (unit == null)
-                {
+                if(!CheckTacticSelectUnit(ne.GridPosIdx, true))
                     return;
-                }
 
                 
                 if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString() || buffData.BuffStr == EBuffID.Spec_MoveEnemy.ToString())
                 {
-                    //|| unit.BattleUnit.GetStateCount(EUnitState.UnAction) > 0
-                    // if ((unit.BattleUnit.GetStateCount(EUnitState.UnMove) > 0 ) &&
-                    //     !GameUtility.ContainRoundState(GamePlayManager.Instance.GamePlayData, ECardID.RoundDeBuffUnEffect))
-                    // {
-                    //     return;
-                    // }
-
-                    if (unit.BattleUnitData.CurHP <= 0)
-                    {
-                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToMove);
-                        return;
-                    }
-
-                    var relativeCamp =
-                        GameUtility.GetRelativeCamp(PlayerManager.Instance.PlayerData.UnitCamp, unit.UnitCamp);
-                    if (!buffData.TriggerUnitCamps.Contains(relativeCamp))
-                    {
-                        return;
-                    }
-
+                    
                     TmpUnitEntity = unit;
                     BattleManager.Instance.TempTriggerData.UnitData =
                         BattleUnitManager.Instance.GetBattleUnitData(unit);
@@ -1100,17 +1122,14 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx;
 
                     var moveRanges = BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx, ne.GridPosIdx);
-                    ShowBackupGrids(moveRanges);
+                    BattleGridManager.Instance.ShowGreenGrids(moveRanges);
                     BattleManager.Instance.SetBattleState(EBattleState.MoveUnit);
+                    
+                    BattleUnitManager.Instance.ShowMoveTag(false);
+                    BattleUnitManager.Instance.ShowAttackTag(false);
                 }
                 else if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
                 {
-                    if (unit.BattleUnitData.CurHP <= 0)
-                    {
-                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToAttack);
-                        return;
-                    }
-                    
                     var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(unit.BattleUnitData);
 
                     foreach (var unitBuffData in unitBuffDatas)
@@ -1127,12 +1146,6 @@ namespace RoundHero
 
                         if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
                         {  
-                            if (!BattleFightManager.Instance.IsSoliderAutoAttackData(unit.UnitIdx))
-                            {
-                                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
-                                return;
-                            }
-
                             BattleManager.Instance.RecordLastActionBattleData();
                             BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.AutoAtk;
                             
@@ -1140,7 +1153,7 @@ namespace RoundHero
                             BattleFightManager.Instance.SoliderAutoAttack();
                             BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.UnitIdx);
                             
-                            ShowBackupGrids(null);
+                            //BattleGridManager.Instance.ShowGreenGrids(null);
                             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
                             BattleManager.Instance.TempTriggerData.Reset();
                             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
@@ -1151,21 +1164,21 @@ namespace RoundHero
                         {
                             BattleManager.Instance.SetBattleState(EBattleState.SelectHurtUnit);
                             var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.UnitIdx, ne.GridPosIdx);
-                            ShowBackupGrids(attackRanges);
+                            //BattleGridManager.Instance.ShowGreenGrids(attackRanges);
                         }
                         else if (unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid)
                         {
                             GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(EBattleState.SelectHurtUnit));
                             BattleManager.Instance.SetBattleState(EBattleState.SelectHurtUnit);
                             var attackRanges = BattleUnitManager.Instance.GetAttackRanges(unit.UnitIdx, ne.GridPosIdx);
-                            ShowBackupGrids(attackRanges);
+                            //BattleGridManager.Instance.ShowGreenGrids(attackRanges);
                         }
                     
                         BattleUnitManager.Instance.UnShowTags();                          
                     }
                     
                         
-                    
+                    BattleUnitManager.Instance.ShowMoveTag(false);
                     BattleUnitManager.Instance.ShowAttackTag(false);
                 }
                 else
@@ -1183,6 +1196,12 @@ namespace RoundHero
             }
             else if (BattleManager.Instance.BattleState == EBattleState.TacticSelectGrid)
             {
+                if (!BattleFightManager.Instance.ExistUseCardData())
+                {
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                    return;
+                }
+                
                 BattleManager.Instance.RecordLastActionBattleData();
                 BattleBuffManager.Instance.UseBuff(ne.GridPosIdx);
                 
@@ -1198,19 +1217,19 @@ namespace RoundHero
                 if (moveRanges.Contains(ne.GridPosIdx))
                 {
                     
-                    ShowBackupGrids(null);
+                    BattleGridManager.Instance.ShowGreenGrids(null);
 
-                    var unit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
+                    var unit2 = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
                         .Idx);
 
                     MoveActionData moveActionData = null;
-                    if (BattleFightManager.Instance.RoundFightData.SoliderMoveDatas.ContainsKey(unit.UnitIdx))
+                    if (BattleFightManager.Instance.RoundFightData.SoliderMoveDatas.ContainsKey(unit2.UnitIdx))
                     {
-                        moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx].Copy();
+                        moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit2.UnitIdx].Copy();
                     }
-                    else if(BattleFightManager.Instance.RoundFightData.EnemyMoveDatas.ContainsKey(unit.UnitIdx))
+                    else if(BattleFightManager.Instance.RoundFightData.EnemyMoveDatas.ContainsKey(unit2.UnitIdx))
                     {
-                        moveActionData = BattleFightManager.Instance.RoundFightData.EnemyMoveDatas[unit.UnitIdx].Copy();;
+                        moveActionData = BattleFightManager.Instance.RoundFightData.EnemyMoveDatas[unit2.UnitIdx].Copy();;
                     }
                     
 
@@ -1220,10 +1239,10 @@ namespace RoundHero
                         var moveGridPosIdxs = moveActionData.MoveGridPosIdxs;
             
                         
-                        unit.Position = moveGridPosIdxs.Count > 0 ? GameUtility.GridPosIdxToPos(moveGridPosIdxs[0]) : unit.Position;
+                        unit2.Position = moveGridPosIdxs.Count > 0 ? GameUtility.GridPosIdxToPos(moveGridPosIdxs[0]) : unit.Position;
                         
-                        var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
-                        unit.Run(moveActionData);
+                        var time = unit2.GetMoveTime(EUnitActionState.Run, moveActionData);
+                        unit2.Run(moveActionData);
                         GameUtility.DelayExcute(time, () =>
                         {
                             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
@@ -1235,12 +1254,16 @@ namespace RoundHero
                     BattleManager.Instance.RecordLastActionBattleData();
                     RefreshObstacles();
                     //BattleEnemyManager.Instance.UnShowEnemyRoutes();
-                    BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.BattleUnitData.Idx);
-                    unit.BattleUnitData.RoundMoveTimes += 1;
+                    BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit2.BattleUnitData.Idx);
+                    unit2.BattleUnitData.RoundMoveTimes += 1;
                     BattleManager.Instance.TempTriggerData.Reset();
                     TmpUnitEntity = null;
                     BattleManager.Instance.SetBattleState(EBattleState.Animation);
                     
+                }
+                else
+                {
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotMoveRange);
                 }
             }
             else if (BattleManager.Instance.BattleState == EBattleState.FuneMoveUnit)
@@ -1250,16 +1273,16 @@ namespace RoundHero
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
                 if (moveRanges.Contains(ne.GridPosIdx))
                 {
-                    ShowBackupGrids(null);
+                    BattleGridManager.Instance.ShowGreenGrids(null);
 
-                    var unit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
+                    var unit2 = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData
                         .Idx);
                     
-                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit.UnitIdx].Copy();
+                    var moveActionData = BattleFightManager.Instance.RoundFightData.SoliderMoveDatas[unit2.UnitIdx].Copy();
                     
 
-                    var time = unit.GetMoveTime(EUnitActionState.Run, moveActionData);
-                    unit.Run(moveActionData);
+                    var time = unit2.GetMoveTime(EUnitActionState.Run, moveActionData);
+                    unit2.Run(moveActionData);
                     GameUtility.DelayExcute(time, () => { BattleManager.Instance.RefreshEnemyAttackData(); });
 
                     RefreshObstacles();
@@ -1281,7 +1304,7 @@ namespace RoundHero
                 var card = BattleManager.Instance.GetCard(BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx);
                 if (CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_ExchangeGrid))
                 {
-                    var gridEntity = GetGridEntityByGridPosIdx(ne.GridPosIdx);
+                    var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(ne.GridPosIdx);
                     var tempExchangeGridData = BattleAreaManager.Instance.TempExchangeGridData;
 
                     if (ne.GridPosIdx == tempExchangeGridData.GridPosIdx1)
@@ -1289,37 +1312,37 @@ namespace RoundHero
                         if (tempExchangeGridData.GridPosIdx2 != -1)
                         {
                             ExchangeGrid(tempExchangeGridData.GridPosIdx1, tempExchangeGridData.GridPosIdx2);
-                            var grid2Entity = GetGridEntityByGridPosIdx(tempExchangeGridData.GridPosIdx2);
-                            grid2Entity.ShowBackupGrid(false);
+                            var grid2Entity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(tempExchangeGridData.GridPosIdx2);
+                            //grid2Entity.ShowGreenGrid(false);
                             tempExchangeGridData.GridPosIdx2 = -1;
                         }
 
                         tempExchangeGridData.GridPosIdx1 = -1;
-                        gridEntity.ShowBackupGrid(false);
+                        //gridEntity.ShowGreenGrid(false);
                     }
                     else if (ne.GridPosIdx == tempExchangeGridData.GridPosIdx2)
                     {
                         if (tempExchangeGridData.GridPosIdx1 != -1)
                         {
                             ExchangeGrid(tempExchangeGridData.GridPosIdx1, tempExchangeGridData.GridPosIdx2);
-                            var grid1Entity = GetGridEntityByGridPosIdx(tempExchangeGridData.GridPosIdx1);
-                            grid1Entity.ShowBackupGrid(false);
+                            var grid1Entity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(tempExchangeGridData.GridPosIdx1);
+                            //grid1Entity.ShowGreenGrid(false);
                             tempExchangeGridData.GridPosIdx1 = -1;
                             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
                         }
 
                         tempExchangeGridData.GridPosIdx2 = -1;
-                        gridEntity.ShowBackupGrid(false);
+                        //gridEntity.ShowGreenGrid(false);
                     }
                     else if (tempExchangeGridData.GridPosIdx1 == -1)
                     {
                         tempExchangeGridData.GridPosIdx1 = ne.GridPosIdx;
-                        gridEntity.ShowBackupGrid(true);
+                        //gridEntity.ShowGreenGrid(true);
                     }
                     else if (tempExchangeGridData.GridPosIdx2 == -1)
                     {
                         tempExchangeGridData.GridPosIdx2 = ne.GridPosIdx;
-                        gridEntity.ShowBackupGrid(true);
+                        //gridEntity.ShowGreenGrid(true);
                         //BattleEnemyManager.Instance.UnShowEnemyRoutes();
                     }
 
@@ -1332,17 +1355,30 @@ namespace RoundHero
                 var attackRanges = BattleUnitManager.Instance.GetAttackRanges(
                     BattleManager.Instance.TempTriggerData.UnitData.Idx,
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx);
+
+                var curUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
                 
+                List<int> allAttackRange = new List<int>();
+                if (curUnit != null)
+                {
+                    allAttackRange = curUnit.GetAttackRange();
+                }
+                
+                if (!BattleFightManager.Instance.ExistSoliderAutoAttackData(BattleManager.Instance.TempTriggerData.UnitData.Idx))
+                {
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                //}
+  
                 if (attackRanges.Contains(ne.GridPosIdx))
                 {
                     BattleManager.Instance.RecordLastActionBattleData();
-                    ShowBackupGrids(null);
+                    //BattleGridManager.Instance.ShowGreenGrids(null);
                     
                     var unitData = GameUtility.GetUnitDataByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx, false);
-                    var unit = BattleUnitManager.Instance.GetUnitByIdx(unitData.Idx);
-                    if (unit != null)
+                    var unit2 = BattleUnitManager.Instance.GetUnitByIdx(unitData.Idx);
+                    if (unit2 != null)
                     {
-                        unit.TargetPosIdx = ne.GridPosIdx;
+                        unit2.TargetPosIdx = ne.GridPosIdx;
                     }
                     if (unitData != null)
                     {
@@ -1374,6 +1410,14 @@ namespace RoundHero
                     BattleManager.Instance.SetBattleState(EBattleState.UseCard);
                     //BattleManager.Instance.TempTriggerData.UnitData.RemoveState(EUnitState.ActiveAtk);
                 }
+                if (allAttackRange.Contains(ne.GridPosIdx))
+                {
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                }
+                else
+                {
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotAttackRange);
+                }
                 
        
             }
@@ -1381,6 +1425,117 @@ namespace RoundHero
             
         }
 
+
+        private bool CheckTacticSelectUnit(int gridPosIdx, bool isShowMessage)
+        {
+            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
+
+            
+            var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+            var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+            List<ERelativeCamp> relativeCamps = buffData.TriggerUnitCamps;
+            
+            var unit2 = BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx,
+                BattleManager.Instance.CurUnitCamp,
+                relativeCamps);
+            
+            if (unit2 == null)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+
+            
+            if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString() || buffData.BuffStr == EBuffID.Spec_MoveEnemy.ToString())
+            {
+
+                if (unit.BattleUnitData.CurHP <= 0)
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToMove);
+                    return false;
+                }
+
+                var relativeCamp =
+                    GameUtility.GetRelativeCamp(PlayerManager.Instance.PlayerData.UnitCamp, unit.UnitCamp);
+                if (!buffData.TriggerUnitCamps.Contains(relativeCamp))
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                    return false;
+                }
+                //
+                // TmpUnitEntity = unit;
+                // BattleManager.Instance.TempTriggerData.UnitData =
+                //     BattleUnitManager.Instance.GetBattleUnitData(unit);
+                // BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.MoveUnit;
+                // BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx =
+                //     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx;
+                //
+                // var moveRanges = BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx, ne.GridPosIdx);
+                // BattleGridManager.Instance.ShowGreenGrids(moveRanges);
+                // BattleManager.Instance.SetBattleState(EBattleState.MoveUnit);
+                //
+                // BattleUnitManager.Instance.ShowMoveTag(false);
+                // BattleUnitManager.Instance.ShowAttackTag(false);
+            }
+            else if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+            {
+                if (unit.BattleUnitData.CurHP <= 0)
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToAttack);
+                    return false;
+                }
+
+                // if (unit != null)
+                // {
+                //     unit.ShowAttackRange(true);
+                // }
+
+                var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(unit.BattleUnitData);
+
+                foreach (var unitBuffData in unitBuffDatas)
+                {
+                    if (!(unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid))
+                    {
+                        continue;
+                    }
+
+                    BattleManager.Instance.TempTriggerData.UnitData =
+                        BattleUnitManager.Instance.GetBattleUnitData(unit);
+
+                    if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
+                    {
+                        if (!BattleFightManager.Instance.ExistSoliderAutoAttackData(unit.UnitIdx))
+                        {
+                            if(isShowMessage)
+                                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                            return false;
+                        }
+
+                        // BattleManager.Instance.RecordLastActionBattleData();
+                        // BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.AutoAtk;
+                        //
+                        // BattleManager.Instance.RefreshEnemyAttackData();
+                        // BattleFightManager.Instance.SoliderAutoAttack();
+                        // BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.UnitIdx);
+                        //
+                        // BattleManager.Instance.TempTriggerData.Reset();
+                        // BattleManager.Instance.SetBattleState(EBattleState.UseCard);
+                        // unit.BattleUnitData.RoundAttackTimes += 1;
+
+                    }
+                    
+                }
+            }
+
+            return true;
+        }
+        
         public void ExchangeGrid(int gridPosIdx1, int gridPosIdx2)
         {
             if (gridPosIdx1 == -1 || gridPosIdx2 == -1)
@@ -1417,8 +1572,8 @@ namespace RoundHero
                 gridProp2.Position = pos1;
             }
 
-            var grid1 = GetGridEntityByGridPosIdx(gridPosIdx1);
-            var grid2 = GetGridEntityByGridPosIdx(gridPosIdx2);
+            var grid1 = BattleGridManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx1);
+            var grid2 = BattleGridManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx2);
             if (grid1 != null)
             {
                 grid1.Show(true);
@@ -1438,39 +1593,6 @@ namespace RoundHero
 
             BattleManager.Instance.RefreshEnemyAttackData();
         }
-
-        
-        public void RefreshGirdEntities()
-        {
-            GridEntitiesMap.Clear();
-            foreach (var kv in GridEntities)
-            {
-                kv.Refresh();
-                GridEntitiesMap.Add(kv.GridPosIdx, kv);
-            }
-
-        }
-
-        public void ShowBackupGrids(List<int> gridPosIdxs)
-        {
-            foreach (var kv in GridEntities)
-            {
-                if (gridPosIdxs == null)
-                {
-                    kv.ShowBackupGrid(false);
-                }
-                else if (gridPosIdxs.Contains(kv.GridPosIdx))
-                {
-                    kv.ShowBackupGrid(true);
-                }
-                else
-                {
-                    kv.ShowBackupGrid(false);
-                }
-
-            }
-        }
-
         public async void PlaceProp(int propID, int gridPosIdx, EUnitCamp playerUnitCamp)
         {
             var isStayProp = BattleGridPropManager.Instance.IsStayProp(propID);
@@ -1547,13 +1669,7 @@ namespace RoundHero
         }
 
         
-        public void ShowAllGrid(bool show)
-        {
-            foreach (var kv in GridEntities)
-            {
-                kv.Show(show);
-            }
-        }
+        
         
         
     }

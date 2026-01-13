@@ -2131,12 +2131,18 @@ namespace RoundHero
         }
 
 
-        public bool IsSoliderAutoAttackData(int unitidx)
+        public bool ExistSoliderAutoAttackData(int unitidx)
         {
             if (!BattleFightManager.Instance.RoundFightData.SoliderActiveAttackDatas.ContainsKey(unitidx))
                 return false;
 
             return BattleFightManager.Instance.RoundFightData.SoliderActiveAttackDatas[unitidx].TriggerDataDict.Count > 0;
+
+        }
+        
+        public bool ExistUseCardData()
+        {
+            return BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict.Count > 0;
 
         }
 

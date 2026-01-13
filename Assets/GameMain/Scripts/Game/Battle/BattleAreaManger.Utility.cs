@@ -159,7 +159,7 @@ namespace RoundHero
 
                 ClearMoveGrid();
             
-                RefreshGirdEntities();
+                BattleGridManager.Instance.RefreshGirdEntities();
                 RefreshObstacles();
                 BattleManager.Instance.RefreshEnemyAttackData();
             }
@@ -181,7 +181,7 @@ namespace RoundHero
         {
             TempExchangeGridData.GridPosIdx1 = -1;
             TempExchangeGridData.GridPosIdx2 = -1;
-            ShowBackupGrids(null);
+            //BattleGridManager.Instance.ShowGreenGrids(null);
             //BattleEnemyManager.Instance.UnShowEnemyRoutes();
         }
         
@@ -244,19 +244,7 @@ namespace RoundHero
             return propEntity;
         }
 
-        public BattleGridEntity GetGridEntityByGridPosIdx(int gridPosIdx)
-        {
-            foreach (var kv in GridEntities)
-            {
-                if (kv.BattleGridEntityData.GridPosIdx == gridPosIdx)
-                {
-                    return kv;
-                }
-            }
-
-            return null;
-        }
-
+        
         public async Task GenerateArea()
         {
             BattleAreaManager.Instance.RefreshObstacles();
@@ -301,41 +289,14 @@ namespace RoundHero
             {
                 var isObstacle = obstacleIdxs.Contains(i);
                 
-                await GenerateGridEntity(i, isObstacle ? EGridType.Obstacle : EGridType.Empty);
+                await BattleGridManager.Instance.GenerateGridEntity(i, isObstacle ? EGridType.Obstacle : EGridType.Empty);
 
             }
 
         }
 
 
-        public async Task GenerateGridEntity(int gridPosIdx, EGridType gridType)
-        {
-            var gridEntity = await GameEntry.Entity.ShowGridEntityAsync(gridPosIdx,
-                gridType);
-                
-            GridEntities.Add(gridEntity);
-            GridEntitiesMap.Add(gridPosIdx, gridEntity);
-
-            if (gridEntity is IMoveGrid moveGrid)
-            {
-                MoveGrids.Add(gridEntity.BattleGridEntityData.Id, moveGrid);
-            }
-
-            if (gridType == EGridType.Obstacle)
-            {
-                var obstacleEntity =
-                    await GameEntry.Entity.ShowGridPropObstacleEntityAsync(Constant.Battle.ObstacleGridID, gridPosIdx);
-                if (obstacleEntity is IMoveGrid moveGrid2)
-                {
-                    MoveGrids.Add(obstacleEntity.GridPropEntityData.Id, moveGrid2);
-                }
-                    
-                BattleGridPropManager.Instance.GridPropDatas.Add(obstacleEntity.GridPropData.Idx, obstacleEntity.GridPropData);
-                BattleGridPropManager.Instance.GridPropEntities.Add(obstacleEntity.GridPropEntityData.Id,
-                    obstacleEntity);
-            }
-        }
-
+        
         public void UpdateMoveGrid()
         {
             if (!IsMoveGrid)

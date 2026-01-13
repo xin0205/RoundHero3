@@ -899,5 +899,19 @@ namespace RoundHero
                 kv.Value.ShowAttackTag(isShow);
             }
         }
+        
+        public void ShowMoveTag(bool isShow)
+        {
+            foreach (var kv in BattleUnitEntities)
+            {
+                if(kv.Value.UnitCamp != EUnitCamp.Player1)
+                    continue;
+                
+                if(kv.Value.UnitRole != EUnitRole.Staff)
+                    continue;
+  
+                kv.Value.ShowMoveTag(isShow);
+            }
+        }
     }
 }

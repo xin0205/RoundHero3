@@ -381,6 +381,12 @@ namespace RoundHero
             return point.x >= 0 && point.y >= 0 && point.x <= Constant.Area.GridSize.x - 1 &&
                    point.y <= Constant.Area.GridSize.y - 1;
         }
+        
+        public static bool IsGridRange(Vector2Int point)
+        {
+            return point.x == 0 || point.y == 0 || point.x == Constant.Area.GridSize.x - 1 ||
+                   point.y == Constant.Area.GridSize.y - 1;
+        }
 
         //private static List<int> rangeList = new(25);
         
@@ -858,7 +864,7 @@ namespace RoundHero
                 
                 var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
 
-                var idx = 0;
+                
                 foreach (var points in Constant.Battle.ActionTypePoints[actionType])
                 {
                     // List<int> range;
@@ -873,8 +879,10 @@ namespace RoundHero
                     // }
                     // idx++;
                     
-                    foreach (var point in points)
+
+                    for (int i = 0; i < points.Count; i++)
                     {
+                        var point = points[i];
                         if(actionType != EActionType.Self && point == Vector2Int.zero)
                             continue;
 
@@ -887,19 +895,76 @@ namespace RoundHero
                         {
                             targetCoord = new Vector2Int(coord.x, point.y);
                         }
-
-                        if (!GameUtility.InGridRange(targetCoord))
-                            continue;
                         
                         var posIdx = GameUtility.GridCoordToPosIdx(targetCoord);
+     
+                        if (!GameUtility.InGridRange(targetCoord))
+                        {
+                            // if (isExtendActionType)
+                            // {
+                            //     if (i > 0)
+                            //     {
+                            //         var prePoint = points[i - 1];
+                            //         var preCoord = coord + prePoint;
+                            //         retGetRange.Add(GameUtility.GridCoordToPosIdx(preCoord));   
+                            //     }
+                            //     
+                            // }
+                            break;
+                        }
+
+                        // if (GameUtility.IsGridRange(targetCoord))
+                        // {
+                        //     if (i + 1 <= points.Count - 1)
+                        //     {
+                        //         var nextPoint = points[i + 1];
+                        //         var nextCoord = coord + nextPoint;
+                        //         if (!GameUtility.InGridRange(nextCoord))
+                        //         {
+                        //             retGetRange.Add(posIdx);    
+                        //             break;
+                        //         }
+                        //     }
+                        //     
+                        //    
+                        // }
                         
                         if(exceptGridPosIdxs != null && exceptGridPosIdxs.Contains(posIdx))
                             continue;
 
                         if (unitCamps == null || allRange)
                         {
-                            //range.Add(GridCoordToPosIdx(targetCoord));
-                            retGetRange.Add(posIdx);
+                            if (isExtendActionType)
+                            {
+                                var gridType = GameUtility.GetGridType(posIdx, isBattleData);
+                                if(gridType == EGridType.Obstacle)
+                                    break;
+                                 
+                                Data_BattleUnit unit;
+                                 
+                                if (isBattleData)
+                                {
+                                    unit = GetUnitByGridPosIdx(posIdx, isBattleData);
+                                }
+                                else
+                                {
+                                    unit = GetUnitByGridPosIdx(posIdx, isBattleData);
+                                }
+
+                                if (unit != null)
+                                {
+                                    retGetRange.Add(posIdx);    
+                                    break;
+                                }
+                                else
+                                {
+                                    retGetRange.Add(posIdx);  
+                                }
+                            }
+                            else
+                            {
+                                retGetRange.Add(posIdx);  
+                            }
                         }
                         else
                         {
@@ -959,6 +1024,10 @@ namespace RoundHero
                                      // }
                                      retGetRange.Add(posIdx);    
                                      break;
+                                 }
+                                 else
+                                 {
+                                     retGetRange.Add(posIdx);
                                  }
                                  
                                  // if (unit == null)

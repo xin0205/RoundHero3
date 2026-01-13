@@ -13,7 +13,7 @@ namespace RoundHero
         [SerializeField] public Transform HandCardPos;
         [SerializeField] public Transform CenterPos;
         [SerializeField] public Transform ConsumeCardPos;
-
+        [SerializeField] public GameObject UnAttackTag;
         public void Awake()
         {
             Constant.Battle.CardPos = new Dictionary<ECardPos, Vector3>()
@@ -24,6 +24,21 @@ namespace RoundHero
                 [ECardPos.Hand] = BattleController.Instance.HandCardPos.localPosition,
                 [ECardPos.Consume] = BattleController.Instance.ConsumeCardPos.localPosition,
             };
+        }
+
+        public void ShowUnAttackTag(int gridPosIdx)
+        {
+            var gridPos = GameUtility.GridPosIdxToPos(gridPosIdx);
+            var pos = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), gridPos);
+
+            UnAttackTag.transform.localPosition = pos;
+            UnAttackTag.SetActive(true);
+        }
+        
+        public void UnShowUnAttackTag()
+        {
+            UnAttackTag.SetActive(false);
         }
     }
 }

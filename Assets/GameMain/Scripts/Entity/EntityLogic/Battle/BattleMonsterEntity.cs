@@ -327,7 +327,7 @@ namespace RoundHero
         //
         // }
         
-        public void ShowMoveRange(bool isShow)
+        public override void ShowMoveRange(bool isShow)
         {
             var drEnemy =
                 GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
@@ -340,8 +340,8 @@ namespace RoundHero
                 if(gridType != EGridType.Empty)
                     continue;
                 
-                var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
-                gridEntity.ShowBackupGrid(isShow);
+                var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
+                gridEntity.ShowGreenGrid(isShow);
                     
             }
             
@@ -349,7 +349,7 @@ namespace RoundHero
             
         }
         
-        public void ShowAttackRange(bool isShow)
+        public override void ShowAttackRange(bool isShow)
         {
             var drEnemy =
                 GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
@@ -365,8 +365,8 @@ namespace RoundHero
                 {
                     var gridType = GameUtility.GetGridType(gridPosIdx, false);
        
-                    var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
-                    gridEntity.ShowBackupGrid(isShow);
+                    var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
+                    gridEntity.ShowRedGrid(isShow);
                     
                 }
             }

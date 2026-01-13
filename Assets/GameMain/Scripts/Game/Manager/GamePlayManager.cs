@@ -109,7 +109,7 @@ namespace RoundHero
         {
             foreach (var kv in battleData.GridTypes)
             {
-                BattleAreaManager.Instance.GenerateGridEntity(kv.Key, kv.Value);
+                BattleGridManager.Instance.GenerateGridEntity(kv.Key, kv.Value);
             }
             
             GamePlayManager.Instance.GamePlayData.BattleData.BattleUnitDatas.Clear();

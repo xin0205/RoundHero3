@@ -1257,7 +1257,7 @@ namespace RoundHero
                             BattleAreaManager.Instance.ResetTmpUnitEntity();
                             BattleManager.Instance.TempTriggerData.Reset();
                             BattleAreaManager.Instance.TmpUnitEntity = null;
-                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                            //BattleGridManager.Instance.ShowGreenGrids(null);
 
                         }
                         else if (BattleManager.Instance.BattleState == EBattleState.ExchangeSelectGrid)
@@ -1274,7 +1274,7 @@ namespace RoundHero
                             BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx1 = -1;
                             BattleAreaManager.Instance.TempExchangeGridData.GridPosIdx2 = -1;
                         
-                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                            //BattleGridManager.Instance.ShowGreenGrids(null);
                             
                             BattleManager.Instance.SetBattleState(EBattleState.UseCard);
                             RefreshCardConfirm();
@@ -1283,27 +1283,28 @@ namespace RoundHero
                         else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
                         {
                             BattleManager.Instance.TempTriggerData.Reset();
-                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                            //BattleGridManager.Instance.ShowGreenGrids(null);
                         }
                         else if (BattleManager.Instance.BattleState == EBattleState.UnitSelectGrid)
                         {
                             BattleAreaManager.Instance.HideTmpUnitEntity();
                             BattleManager.Instance.TempTriggerData.Reset();
-                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                            //BattleGridManager.Instance.ShowGreenGrids(null);
                         }
                         else if (BattleManager.Instance.BattleState == EBattleState.PropSelectGrid)
                         {
                             BattleAreaManager.Instance.HideTmpPropEntity();
                             BattleManager.Instance.TempTriggerData.Reset();
-                            BattleAreaManager.Instance.ShowBackupGrids(null);
+                            //BattleGridManager.Instance.ShowGreenGrids(null);
                         }
-                        
                         BattleBuffManager.Instance.RecoverUseBuffState();
 
                     }
-
+                    BattleGridManager.Instance.UnshowGrids();
                     BattleManager.Instance.RefreshEnemyAttackData();
                     BattleUnitManager.Instance.ShowAttackTag(false);
+                    BattleUnitManager.Instance.ShowAttackTag(false);
+                    BattleController.Instance.UnShowUnAttackTag();
                 }
             }
         }

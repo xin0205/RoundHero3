@@ -147,7 +147,7 @@ namespace RoundHero
         private async Task ShowHeroValue(int gridPosIdx, int value, TriggerData triggerData)
         {
         
-            var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
+            var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
             var moveParams = new MoveParams()
             {
                 FollowGO = gridEntity.gameObject,

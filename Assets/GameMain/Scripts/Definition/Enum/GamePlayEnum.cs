@@ -820,6 +820,7 @@ namespace RoundHero
         ParabolaMulti,
         LineMulti,
         TacticDownMulti,
+        TacticBeamMulti,
         Empty,
         ParabolaSingle,
     }

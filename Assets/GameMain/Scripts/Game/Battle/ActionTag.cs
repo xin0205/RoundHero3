@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace RoundHero
 {
-    public class AttackTag : MonoBehaviour
+    public class ActionTag : MonoBehaviour
     {
         [SerializeField] private Text text;
         

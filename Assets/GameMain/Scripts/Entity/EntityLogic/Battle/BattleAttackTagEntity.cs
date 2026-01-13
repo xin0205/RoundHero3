@@ -44,15 +44,15 @@ namespace RoundHero
             // spriteRenderer.transform.position = centerPoint;
             //
             //spriteRenderer.color = 
-            spriteRenderer.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackPos);
+            //spriteRenderer.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackPos);
             line.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackLine);
 
-            spriteRenderer.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackPos);
+            //spriteRenderer.gameObject.SetActive(BattleAttackTagEntityData.ShowAttackPos);
             if (BattleAttackTagEntityData.ShowAttackPos)
             {
-                spriteRenderer.transform.position = new Vector3(BattleAttackTagEntityData.TargetPos.x,
-                    BattleAttackTagEntityData.TargetPos.y + 0.1f, BattleAttackTagEntityData.TargetPos.z);
-                
+                // spriteRenderer.transform.position = new Vector3(BattleAttackTagEntityData.TargetPos.x,
+                //     BattleAttackTagEntityData.TargetPos.y + 0.1f, BattleAttackTagEntityData.TargetPos.z);
+                //
                 // var gridType = GameUtility.GetGridType(targetGridPosIdx, false);
                 // if (gridType == EGridType.Unit || gridType == EGridType.TemporaryUnit)
                 // {
@@ -70,9 +70,9 @@ namespace RoundHero
                 // }
                 var gridType = GameUtility.GetGridType(targetGridPosIdx, false);
                 
-                spriteRenderer.gameObject.SetActive(gridType != EGridType.Obstacle);
-                
-                spriteRenderer.color =  BattleAttackTagEntityData.ShowAttackLine ? red : yellow;
+                // spriteRenderer.gameObject.SetActive(gridType != EGridType.Obstacle);
+                //
+                // spriteRenderer.color =  BattleAttackTagEntityData.ShowAttackLine ? red : yellow;
             }
 
             
@@ -187,7 +187,7 @@ namespace RoundHero
                 line.startWidth = 0.08f;
                 line.endWidth = 0.08f;
                 
-                line.material.SetColor("_Color", BattleAttackTagEntityData.IsStatic ? gray : yellow); 
+                line.material.SetColor("_Color", BattleAttackTagEntityData.IsStatic ? gray : red); 
                 line.material.SetInt("_Speed", BattleAttackTagEntityData.IsStatic ? 25 : 50);
             }
             

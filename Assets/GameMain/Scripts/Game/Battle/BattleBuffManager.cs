@@ -994,32 +994,84 @@ namespace RoundHero
                 {
                     case EAttackCastType.TacticDownMulti:
                         BattleCardManager.Instance.ShowTacticDownMulti(gridPosIdxs);
+                        
+                        BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
+      
+                        GameUtility.DelayExcute(1f, () => 
+                        {
+                            BattleBulletManager.Instance.UseTriggerCollection(Constant.Battle.UnUnitTriggerIdx);
+                            HeroManager.Instance.UpdateCacheHPDelta();
+                        });
+                        
                         break;
-                            
+                    case EAttackCastType.TacticBeamMulti:
+                        foreach (var kv in BattleFightManager.Instance.RoundFightData.BuffData_Use.TriggerDataDict)
+                        {
+                            var bulletData = new BulletData();
+                            bulletData.ActionUnitIdx = kv.Value.ActionUnitIdx;
+                            var triggerDatas = kv.Value.GetNormalTriggerDatas();
+                            foreach (var triggerData in triggerDatas)
+                            {
+                                List<int> paths = new List<int>();
+                                var triggerRange = triggerData.BuffValue.BuffData.TriggerRange.ToString(); 
+                                if (triggerRange.Contains("Extend"))
+                                {
+                                    paths = GameUtility.GetMoveIdxs(triggerData.ActionUnitGridPosIdx, triggerData.EffectUnitGridPosIdx);
+                                }
+                
+                                if(paths.Count == 0)
+                                {
+                                    paths = new List<int>();
+                                    paths.Add(triggerData.ActionUnitGridPosIdx);
+                                    paths.Add(triggerData.EffectUnitGridPosIdx);
+                                }
+
+                                var effectUnit = BattleUnitManager.Instance.GetUnitByIdx(triggerData.EffectUnitIdx);
+                                if (effectUnit != null)
+                                {
+                                    bulletData.EffectUnitGO = effectUnit.gameObject;
+                                }
+                 
+                                bulletData.MoveGridPosIdxs.AddRange(paths);
+
+                                bulletData.EffectUnitIdx = triggerData.EffectUnitIdx;
+                                bulletData.TriggerCollections = kv.Value;
+                                var pos = GameUtility.GridPosIdxToPos(triggerData.ActionUnitGridPosIdx);
+                                GameEntry.Entity.ShowBattleBeamBulletEntityAsync(bulletData, pos);
+
+                            }
+
+                        }
+
+                        
+                        BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
+                        BattleBulletManager.Instance.UseTriggerCollection(Constant.Battle.UnUnitTriggerIdx);
+                        HeroManager.Instance.UpdateCacheHPDelta();
+                        break;     
                 }
             }
             
-            BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
-            //BattleBulletManager.Instance.AddMoveActionData(Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.RoundFightData.BuffData_Use.MoveData);
-
-            GameUtility.DelayExcute(1f, () => 
-            {
-                // var triggerActionDatas =
-                //     BattleBulletManager.Instance.GetTriggerActionDatas(Constant.Battle.UnUnitTriggerIdx, -1);
-                // if (triggerActionDatas != null)
-                // {
-                //     foreach (var triggerActionData in triggerActionDatas)
-                //     {
-                //         if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
-                //         {
-                //             BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
-                //         }
-                //     }
-                // }
-                BattleBulletManager.Instance.UseTriggerCollection(Constant.Battle.UnUnitTriggerIdx);
-                
-
-            });
+            // BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
+            // //BattleBulletManager.Instance.AddMoveActionData(Constant.Battle.UnUnitTriggerIdx, BattleFightManager.Instance.RoundFightData.BuffData_Use.MoveData);
+            //
+            // GameUtility.DelayExcute(1f, () => 
+            // {
+            //     // var triggerActionDatas =
+            //     //     BattleBulletManager.Instance.GetTriggerActionDatas(Constant.Battle.UnUnitTriggerIdx, -1);
+            //     // if (triggerActionDatas != null)
+            //     // {
+            //     //     foreach (var triggerActionData in triggerActionDatas)
+            //     //     {
+            //     //         if (triggerActionData is TriggerActionMoveData triggerActionMoveData)
+            //     //         {
+            //     //             BattleBulletManager.Instance.UseMoveActionData(triggerActionMoveData.MoveUnitData);
+            //     //         }
+            //     //     }
+            //     // }
+            //     BattleBulletManager.Instance.UseTriggerCollection(Constant.Battle.UnUnitTriggerIdx);
+            //     
+            //
+            // });
             
             
         }
@@ -1070,6 +1122,9 @@ namespace RoundHero
             var buffData = new BuffData();
 
             buffData.BuffStr = buffKey;
+            if (string.IsNullOrEmpty(buffKey))
+                return buffData;
+            
             buffData.BuffTriggerType = Enum.Parse<EBuffTriggerType>(strList[0]);
             //buffData.DrBuff = GameEntry.DataTable.GetBuff(buffKey);
             

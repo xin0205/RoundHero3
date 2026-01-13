@@ -86,7 +86,7 @@ namespace RoundHero
         public static class Area
         {
             public static Vector2Int GridSize = new Vector2Int(7, 7);
-            public static int ObstacleCount = 0;
+            public static int ObstacleCount = 3;
             public static int MaxRoleInGrid = 1;
 
             public static Vector2 GridInterval = new Vector2()
@@ -299,6 +299,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -308,6 +309,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         
                         
@@ -319,6 +321,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -328,6 +331,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
                         
                         
@@ -378,6 +382,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -387,6 +392,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         
                         
@@ -398,6 +404,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -407,6 +414,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
                         
                     },
@@ -424,6 +432,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -432,7 +441,10 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
+                        
+                        
                         new List<Vector2Int>()
                         {
                             new Vector2Int(0, -2),
@@ -440,6 +452,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -448,6 +461,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
                         
                     },
@@ -466,6 +480,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -475,7 +490,9 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
+                        
                         
                         new List<Vector2Int>()
                         {
@@ -485,6 +502,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -494,6 +512,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
 
                         
@@ -567,6 +586,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -576,6 +596,7 @@ namespace RoundHero
                             new Vector2Int(4, 4),
                             new Vector2Int(5, 5),
                             new Vector2Int(6, 6),
+                            new Vector2Int(7, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -585,6 +606,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         new List<Vector2Int>()
                         {
@@ -594,6 +616,7 @@ namespace RoundHero
                             new Vector2Int(4, -4),
                             new Vector2Int(5, -5),
                             new Vector2Int(6, -6),
+                            new Vector2Int(7, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -603,6 +626,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -612,6 +636,7 @@ namespace RoundHero
                             new Vector2Int(-4, -4),
                             new Vector2Int(-5, -5),
                             new Vector2Int(-6, -6),
+                            new Vector2Int(-7, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -621,6 +646,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
 
                         new List<Vector2Int>()
@@ -631,6 +657,8 @@ namespace RoundHero
                             new Vector2Int(-4, 4),
                             new Vector2Int(-5, 5),
                             new Vector2Int(-6, 6),
+                            new Vector2Int(-6, 6),
+                            new Vector2Int(-7, 7)
                         },
                         
                     },
@@ -648,6 +676,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -656,6 +685,7 @@ namespace RoundHero
                             new Vector2Int(4, 4),
                             new Vector2Int(5, 5),
                             new Vector2Int(6, 6),
+                            new Vector2Int(7, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -664,6 +694,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         new List<Vector2Int>()
                         {
@@ -672,6 +703,7 @@ namespace RoundHero
                             new Vector2Int(4, -4),
                             new Vector2Int(5, -5),
                             new Vector2Int(6, -6),
+                            new Vector2Int(7, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -680,6 +712,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -688,8 +721,8 @@ namespace RoundHero
                             new Vector2Int(-4, -4),
                             new Vector2Int(-5, -5),
                             new Vector2Int(-6, -6),
+                            new Vector2Int(-7, -7),
                         },
-                        
                         new List<Vector2Int>()
                         {
                             new Vector2Int(-2, 0),
@@ -697,7 +730,9 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
+
                         new List<Vector2Int>()
                         {
                             new Vector2Int(-2, 2),
@@ -705,6 +740,8 @@ namespace RoundHero
                             new Vector2Int(-4, 4),
                             new Vector2Int(-5, 5),
                             new Vector2Int(-6, 6),
+                            new Vector2Int(-6, 6),
+                            new Vector2Int(-7, 7)
                         },
                         
                     },
@@ -723,6 +760,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -732,6 +770,7 @@ namespace RoundHero
                             new Vector2Int(4, 4),
                             new Vector2Int(5, 5),
                             new Vector2Int(6, 6),
+                            new Vector2Int(7, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -741,6 +780,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         new List<Vector2Int>()
                         {
@@ -750,6 +790,7 @@ namespace RoundHero
                             new Vector2Int(4, -4),
                             new Vector2Int(5, -5),
                             new Vector2Int(6, -6),
+                            new Vector2Int(7, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -759,6 +800,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -768,8 +810,8 @@ namespace RoundHero
                             new Vector2Int(-4, -4),
                             new Vector2Int(-5, -5),
                             new Vector2Int(-6, -6),
+                            new Vector2Int(-7, -7),
                         },
-                        
                         new List<Vector2Int>()
                         {
                             new Vector2Int(-1, 0),
@@ -778,7 +820,9 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
+
                         new List<Vector2Int>()
                         {
                             new Vector2Int(-1, 1),
@@ -787,6 +831,8 @@ namespace RoundHero
                             new Vector2Int(-4, 4),
                             new Vector2Int(-5, 5),
                             new Vector2Int(-6, 6),
+                            new Vector2Int(-6, 6),
+                            new Vector2Int(-7, 7)
                         },
                     },
                     
@@ -804,6 +850,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -813,6 +860,7 @@ namespace RoundHero
                             new Vector2Int(4, 4),
                             new Vector2Int(5, 5),
                             new Vector2Int(6, 6),
+                            new Vector2Int(7, 7),
                         },
                         new List<Vector2Int>()
                         {
@@ -822,6 +870,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         new List<Vector2Int>()
                         {
@@ -831,6 +880,7 @@ namespace RoundHero
                             new Vector2Int(4, -4),
                             new Vector2Int(5, -5),
                             new Vector2Int(6, -6),
+                            new Vector2Int(7, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -840,6 +890,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -849,6 +900,7 @@ namespace RoundHero
                             new Vector2Int(-4, -4),
                             new Vector2Int(-5, -5),
                             new Vector2Int(-6, -6),
+                            new Vector2Int(-7, -7),
                         },
                         new List<Vector2Int>()
                         {
@@ -858,6 +910,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
 
                         new List<Vector2Int>()
@@ -868,6 +921,8 @@ namespace RoundHero
                             new Vector2Int(-4, 4),
                             new Vector2Int(-5, 5),
                             new Vector2Int(-6, 6),
+                            new Vector2Int(-6, 6),
+                            new Vector2Int(-7, 7)
                         },
                     },
                     
@@ -886,6 +941,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                     },
                     
@@ -900,6 +956,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                     },
                     
@@ -937,6 +994,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         
                         new List<Vector2Int>()
@@ -947,6 +1005,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
                     },
                     
@@ -966,6 +1025,7 @@ namespace RoundHero
                             new Vector2Int(4, 0),
                             new Vector2Int(5, 0),
                             new Vector2Int(6, 0),
+                            new Vector2Int(7, 0),
                         },
                         
                         new List<Vector2Int>()
@@ -976,6 +1036,7 @@ namespace RoundHero
                             new Vector2Int(-4, 0),
                             new Vector2Int(-5, 0),
                             new Vector2Int(-6, 0),
+                            new Vector2Int(-7, 0),
                         },
                     },
                     
@@ -1013,6 +1074,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         
                         new List<Vector2Int>()
@@ -1023,6 +1085,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                     },
                     
@@ -1042,6 +1105,7 @@ namespace RoundHero
                             new Vector2Int(0, 4),
                             new Vector2Int(0, 5),
                             new Vector2Int(0, 6),
+                            new Vector2Int(0, 7),
                         },
                         
                         new List<Vector2Int>()
@@ -1052,6 +1116,7 @@ namespace RoundHero
                             new Vector2Int(0, -4),
                             new Vector2Int(0, -5),
                             new Vector2Int(0, -6),
+                            new Vector2Int(0, -7),
                         },
                     }
                     

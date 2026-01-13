@@ -80,6 +80,13 @@ namespace RoundHero
                 beamStart.transform.position = startPos;
                 line.SetPosition(0,  startPos);
             }
+            else if (BattleBulletEntityData.BulletData.MoveGridPosIdxs.Count > 0)
+            {
+                var startPos = GameUtility.GridPosIdxToPos(BattleBulletEntityData.BulletData.MoveGridPosIdxs[0]);
+                startPos.y += 1;
+                beamStart.transform.position = startPos;
+                line.SetPosition(0,  startPos);
+            }
             
             if (BattleBulletEntityData.BulletData.EffectUnitGO != null)
             {

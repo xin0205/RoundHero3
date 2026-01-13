@@ -168,7 +168,10 @@ namespace RoundHero
 
             public const string Card_Tactic = "Card_Tactic";
             public const string Card_Unit = "Card_Unit";
+            public const string Message_NotAttackRange = "Message.NotAttackRange";
+            public const string Message_NotMoveRange = "Message.NotMoveRange";
 
+            
         }
     }
 }

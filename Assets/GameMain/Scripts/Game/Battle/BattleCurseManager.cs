@@ -457,7 +457,7 @@ namespace RoundHero
             var randomEmptyGridPosIdx = Random.Next(0, emptyGrids.Count);
 
             BattleManager.Instance.BattleData.GridTypes[emptyGrids[randomEmptyGridPosIdx]] = EGridType.Obstacle;
-            var gridEntity = BattleAreaManager.Instance.GetGridEntityByGridPosIdx(emptyGrids[randomEmptyGridPosIdx]);
+            var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(emptyGrids[randomEmptyGridPosIdx]);
             gridEntity.BattleGridEntityData.GridType = EGridType.Obstacle;
             gridEntity.Show(true);
             

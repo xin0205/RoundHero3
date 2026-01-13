@@ -54,7 +54,8 @@ namespace RoundHero
         [SerializeField] protected Text hpText;
         protected BattleValue hpValue;
         
-        protected AttackTag attackTag;
+        protected ActionTag AttackTag;
+        protected ActionTag MoveTag;
         
         public Vector3 Position
         {
@@ -106,7 +107,8 @@ namespace RoundHero
         [SerializeField] protected UnitDescTriggerItem UnitDescTriggerItem;
 
         private BattleValue BattleValueTemp;
-        private AttackTag AttackTagTemp;
+        private ActionTag _attackTagTemp;
+        private ActionTag _moveTagTemp;
         //[SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
 
         //public EUnitActionState UnitActionState { get; set; }
@@ -120,9 +122,13 @@ namespace RoundHero
                 .GetComponent<BattleValue>();
             BattleValueTemp.gameObject.SetActive(false);
             
-            AttackTagTemp = transform.Find("Root/UnitUI/AttackTag")
-                .GetComponent<AttackTag>();
-            AttackTagTemp.gameObject.SetActive(false);
+            _attackTagTemp = transform.Find("Root/UnitUI/AttackTag")
+                .GetComponent<ActionTag>();
+            _attackTagTemp.gameObject.SetActive(false);
+            
+            _moveTagTemp = transform.Find("Root/UnitUI/MoveTag")
+                .GetComponent<ActionTag>();
+            _moveTagTemp.gameObject.SetActive(false);
         }
 
         protected override void OnInit(object userData)
@@ -197,8 +203,11 @@ namespace RoundHero
             hpValue = GameObject.Instantiate(BattleValueTemp);
             hpValue.gameObject.SetActive(false);
             
-            attackTag = GameObject.Instantiate(AttackTagTemp);
-            attackTag.gameObject.SetActive(false);
+            AttackTag = GameObject.Instantiate(_attackTagTemp);
+            AttackTag.gameObject.SetActive(false);
+            
+            MoveTag = GameObject.Instantiate(_moveTagTemp);
+            MoveTag.gameObject.SetActive(false);
             
             RefreshData();
         }
@@ -208,7 +217,8 @@ namespace RoundHero
             base.OnHide(isShutdown, userData);
             UnitDescTriggerItem.CloseForm();
             hpValue.gameObject.SetActive(false);
-            attackTag.gameObject.SetActive(false);
+            AttackTag.gameObject.SetActive(false);
+            MoveTag.gameObject.SetActive(false);
             // if (hpValueEntity != null)
             // {
             //     GameEntry.Entity.HideEntity(hpValueEntity);
@@ -1512,8 +1522,20 @@ namespace RoundHero
             var delta = (7f / 100f * (pos.y + 1350f));
             pos += new Vector2(0, delta);
             
-            attackTag.gameObject.SetActive(isShow);
-            attackTag.SetData(pos, BattleUnitData.RoundAttackTimes);
+            AttackTag.gameObject.SetActive(isShow);
+            AttackTag.SetData(pos, BattleUnitData.RoundAttackTimes);
+        }
+        
+        public void ShowMoveTag(bool isShow)
+        {
+            var pos = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), Root.position + new Vector3(0, 0, 0));
+            
+            var delta = (7f / 100f * (pos.y + 1350f));
+            pos += new Vector2(0, delta);
+            
+            MoveTag.gameObject.SetActive(isShow);
+            MoveTag.SetData(pos, BattleUnitData.RoundMoveTimes);
         }
         
 
@@ -2076,5 +2098,19 @@ namespace RoundHero
             roleRoot.LookAt(pos);
         }
 
+        public virtual void ShowAttackRange(bool isShow)
+        {
+            
+        }
+
+        public virtual List<int> GetAttackRange()
+        {
+            return new List<int>();
+        }
+        
+        public virtual void ShowMoveRange(bool isShow)
+        {
+            
+        }
     }
 }

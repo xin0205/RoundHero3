@@ -160,7 +160,7 @@ namespace RoundHero
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
                 unitDescItem.gameObject.SetActive(true);
-                unitBattleData.SetActive(true);
+                //unitBattleData.SetActive(true);
                 
                 
                 var name = "";
@@ -180,11 +180,14 @@ namespace RoundHero
                 // var actionTime = (unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes +
                 //                   unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes);
                 //
-                attackTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_AttackTime,
-                    unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes);
-                
-                moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
-                    unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes);
+                // attackTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_AttackTime,
+                //     unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes);
+                //
+                // moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
+                //     unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes);
+
+                attackTimeStr.text = unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes + "";
+                moveTimeStr.text = unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes + "";
                 
                 var idx = 0;
                 foreach (var funeIdx in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.FuneIdxs)
@@ -211,7 +214,7 @@ namespace RoundHero
             }
             else if (UnitDescFormData.UnitCamp == EUnitCamp.Player1 || UnitDescFormData.UnitCamp == EUnitCamp.Player2)
             {
-                unitBattleData.SetActive(true);
+                //unitBattleData.SetActive(true);
                 
                 if (UnitDescFormData.UnitRole == EUnitRole.Core)
                 {
@@ -241,12 +244,13 @@ namespace RoundHero
                     // actionTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_ActionTime,
                     //     actionTime);
                     
-                    attackTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_AttackTime,
-                        unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes);
-                
-                    moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
-                        unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes);
-
+                    // attackTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_AttackTime,
+                    //     unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes);
+                    // moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
+                    //     unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes);
+                    
+                    attackTimeStr.text =  unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes + "";
+                    moveTimeStr.text = unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes + "";
                     
                     var idx = 0;
                     foreach (var funeIdx in cardData.FuneIdxs)
@@ -481,7 +485,7 @@ namespace RoundHero
             {
                 funeListGO.SetActive(true);
                 unitStateListGO.SetActive(true);
-                unitStateIconListGO.SetActive(false);
+                //unitStateIconListGO.SetActive(false);
                 keyshortcutGO.SetActive(false);
                 //explainList.gameObject.SetActive(false);
                 RefreshExplain(true);
