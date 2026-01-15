@@ -423,13 +423,23 @@ namespace RoundHero
                 {
                     TmpUnitEntity.ShowMoveRange(false);
                 }
-                
-                var moveRanges =
-                    BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
-                        BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+
+                var moveRanges = TmpUnitEntity.GetMoveRange(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+                    // BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
+                    //     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
                 if (!moveRanges.Contains(ne.GridPosIdx))
                 {
-                    BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
+
+                    }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        BattleController.Instance.UnShowUnAttackTag();
+
+                    }
+                    
                     Log.Debug("moveC" + ne.GridPosIdx + ne.ShowState);
                     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx;
@@ -539,19 +549,7 @@ namespace RoundHero
 
             if (BattleManager.Instance.BattleState == EBattleState.TacticSelectUnit)
             {
-                if (!CheckTacticSelectUnit(ne.GridPosIdx, false))
-                {
-                    if (ne.ShowState == EShowState.Show)
-                    {
-                        BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
-                    }
-                    else if (ne.ShowState == EShowState.Unshow)
-                    {
-                        BattleController.Instance.UnShowUnAttackTag();
-                    }
-
-                    return;
-                }
+                
                     
                 
                 if (ne.ShowState == EShowState.Show)
@@ -564,7 +562,7 @@ namespace RoundHero
                     var relativeUnit = BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(ne.GridPosIdx,
                         BattleManager.Instance.CurUnitCamp,
                         relativeCamps);
-                    if (relativeUnit != null)
+                    if (relativeUnit != null && relativeUnit.UnitRole == EUnitRole.Staff)
                     {
                         BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.UseBuff;
                         //BattleManager.Instance.TempTriggerData.TargetGridPosIdx = relativeUnit.BattleUnitData.GridPosIdx;
@@ -615,6 +613,8 @@ namespace RoundHero
                                 BattleManager.Instance.RefreshEnemyAttackData();
                                 
                             }
+                            BattleCardManager.Instance.RefreshCurCardEnergy(BattleManager.Instance.TempTriggerData
+                                .UnitData.RoundAttackTimes);
                         } 
                         else if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString())
                         {
@@ -625,6 +625,8 @@ namespace RoundHero
                             //
                             // var actionTimes = relativeUnit.BattleUnitData.RoundMoveTimes;
                             // //BattleCardManager.Instance.RefreshCurCardEnergy();
+                            BattleCardManager.Instance.RefreshCurCardEnergy(BattleManager.Instance.TempTriggerData
+                                .UnitData.RoundMoveTimes);
                         }
                         
                         else
@@ -633,8 +635,13 @@ namespace RoundHero
                             //BattleGridManager.Instance.ShowGreenGrids(null);
                             //BattleCardManager.Instance.RefreshCurCardEnergy();
                             //BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.ID);
+                            BattleCardManager.Instance.RefreshCurCardEnergy();
                         }
 
+                    }
+                    else
+                    {
+                        BattleCardManager.Instance.RefreshCurCardEnergy(-1);
                     }
 
                 }
@@ -647,6 +654,18 @@ namespace RoundHero
                     //BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.CardID = -1;
                     BattleManager.Instance.RefreshEnemyAttackData();
                     //BattleCardManager.Instance.RefreshCurCardEnergy();
+                }
+                
+                if (!CheckTacticSelectUnit(ne.GridPosIdx, false))
+                {
+                    if (ne.ShowState == EShowState.Show)
+                    {
+                        BattleController.Instance.ShowUnAttackTag(ne.GridPosIdx);
+                    }
+                    else if (ne.ShowState == EShowState.Unshow)
+                    {
+                        BattleController.Instance.UnShowUnAttackTag();
+                    }
                 }
                 
             }
@@ -980,7 +999,7 @@ namespace RoundHero
             }
             
             
-            BattleCardManager.Instance.RefreshCurCardEnergy();
+            //BattleCardManager.Instance.RefreshCurCardEnergy();
         }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 
@@ -1120,9 +1139,9 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.MoveUnit;
                     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx =
                         BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx;
-
-                    var moveRanges = BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx, ne.GridPosIdx);
-                    BattleGridManager.Instance.ShowGreenGrids(moveRanges);
+                    TmpUnitEntity.ShowMoveRange(true);
+                    // var moveRanges = TmpUnitEntity.GetMoveRange();//BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx, ne.GridPosIdx);
+                    // BattleGridManager.Instance.ShowGreenGrids(moveRanges);
                     BattleManager.Instance.SetBattleState(EBattleState.MoveUnit);
                     
                     BattleUnitManager.Instance.ShowMoveTag(false);
@@ -1211,9 +1230,9 @@ namespace RoundHero
                 if(TutorialManager.Instance.Switch_SelectMovePos(ne.GridPosIdx) == ETutorialState.UnMatch)
                     return;
                 
-                var moveRanges =
-                    BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
-                        BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+                var moveRanges = TmpUnitEntity.GetMoveRange(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+                    // BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
+                    //     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
                 if (moveRanges.Contains(ne.GridPosIdx))
                 {
                     
@@ -1268,9 +1287,9 @@ namespace RoundHero
             }
             else if (BattleManager.Instance.BattleState == EBattleState.FuneMoveUnit)
             {
-                var moveRanges =
-                    BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
-                        BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+                var moveRanges = TmpUnitEntity.GetMoveRange(BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
+                    // BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx,
+                    //     BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx);
                 if (moveRanges.Contains(ne.GridPosIdx))
                 {
                     BattleGridManager.Instance.ShowGreenGrids(null);
@@ -1352,24 +1371,29 @@ namespace RoundHero
             }
             else if (BattleManager.Instance.BattleState == EBattleState.SelectHurtUnit)
             {
-                var attackRanges = BattleUnitManager.Instance.GetAttackRanges(
-                    BattleManager.Instance.TempTriggerData.UnitData.Idx,
-                    BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx);
+                // var attackRanges = BattleUnitManager.Instance.GetAttackRanges(
+                //     BattleManager.Instance.TempTriggerData.UnitData.Idx,
+                //     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx);
 
                 var curUnit = BattleUnitManager.Instance.GetUnitByIdx(BattleManager.Instance.TempTriggerData.UnitData.Idx);
                 
-                List<int> allAttackRange = new List<int>();
-                if (curUnit != null)
+                 List<int> attackRanges = new List<int>();
+                 if (curUnit != null)
+                 {
+                     attackRanges = curUnit.GetAttackRange();
+                 }
+
+                if (!attackRanges.Contains(ne.GridPosIdx))
                 {
-                    allAttackRange = curUnit.GetAttackRange();
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotAttackRange);
+
                 }
-                
-                if (!BattleFightManager.Instance.ExistSoliderAutoAttackData(BattleManager.Instance.TempTriggerData.UnitData.Idx))
+                else if (!BattleFightManager.Instance.ExistSoliderAutoAttackData(BattleManager.Instance.TempTriggerData.UnitData.Idx))
                 {
                     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
-                //}
-  
-                if (attackRanges.Contains(ne.GridPosIdx))
+                }
+                // if (attackRanges.Contains(ne.GridPosIdx))
+                else
                 {
                     BattleManager.Instance.RecordLastActionBattleData();
                     //BattleGridManager.Instance.ShowGreenGrids(null);
@@ -1410,14 +1434,11 @@ namespace RoundHero
                     BattleManager.Instance.SetBattleState(EBattleState.UseCard);
                     //BattleManager.Instance.TempTriggerData.UnitData.RemoveState(EUnitState.ActiveAtk);
                 }
-                if (allAttackRange.Contains(ne.GridPosIdx))
-                {
-                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
-                }
-                else
-                {
-                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotAttackRange);
-                }
+                // if (allAttackRange.Contains(ne.GridPosIdx))
+                // {
+                //     GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                // }
+                
                 
        
             }
@@ -1505,8 +1526,8 @@ namespace RoundHero
                         continue;
                     }
 
-                    BattleManager.Instance.TempTriggerData.UnitData =
-                        BattleUnitManager.Instance.GetBattleUnitData(unit);
+                    // BattleManager.Instance.TempTriggerData.UnitData =
+                    //     BattleUnitManager.Instance.GetBattleUnitData(unit);
 
                     if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
                     {

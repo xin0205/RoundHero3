@@ -34,7 +34,7 @@ namespace RoundHero
         
         [SerializeField] private Text attackTimeStr;
         [SerializeField] private Text moveTimeStr;
-        
+        [SerializeField] private GameObject actionGO;
         
         [SerializeField]
         private GameObject funeListGO;
@@ -98,18 +98,17 @@ namespace RoundHero
             unitStateIconList.Clear();
             unitStateIconList.AddRange(items3);
             
-            
-            
             hasDetail = false;
 
+            explainList.transform.localPosition = explainPos1.localPosition;
+            
+            keyshortcutGO.SetActive(hasDetail);
+            actionGO.SetActive(false);
+            
             RefreshVideo();
             RefreshDesc();
             RefreshUnitStates();
             RefreshExplain(false);
-            
-            explainList.transform.localPosition = explainPos1.localPosition;
-            
-            keyshortcutGO.SetActive(hasDetail);
         }
 
         private void RefreshVideo()
@@ -156,6 +155,7 @@ namespace RoundHero
             {
                 playerCommonItem.gameObject.SetActive(false);
             }
+            actionGO.SetActive(false);
             
             if (UnitDescFormData.UnitCamp == EUnitCamp.Enemy)
             {
@@ -186,9 +186,11 @@ namespace RoundHero
                 // moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
                 //     unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes);
 
-                attackTimeStr.text = unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes + "";
-                moveTimeStr.text = unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes + "";
+                actionGO.SetActive(false);
                 
+                // attackTimeStr.text = unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundAttackTimes + "";
+                // moveTimeStr.text = unitEntity.BattleMonsterEntityData.BattleMonsterData.RoundMoveTimes + "";
+                //
                 var idx = 0;
                 foreach (var funeIdx in  enemyEntity.BattleMonsterEntityData.BattleMonsterData.FuneIdxs)
                 {
@@ -249,6 +251,7 @@ namespace RoundHero
                     // moveTimeStr.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.UI_MoveTime,
                     //     unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes);
                     
+                    actionGO.SetActive(true);
                     attackTimeStr.text =  unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundAttackTimes + "";
                     moveTimeStr.text = unitEntity.BattleSoliderEntityData.BattleSoliderData.RoundMoveTimes + "";
                     

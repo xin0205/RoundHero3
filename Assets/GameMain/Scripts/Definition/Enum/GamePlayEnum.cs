@@ -253,6 +253,7 @@ namespace RoundHero
         //Select,
         //UnitMaxXExtend,
         //LessCurHPUnit,
+        AllExceptSelf,
     }
 
     public enum EActionTarget

@@ -216,15 +216,24 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             UnitDescTriggerItem.CloseForm();
-            hpValue.gameObject.SetActive(false);
-            AttackTag.gameObject.SetActive(false);
-            MoveTag.gameObject.SetActive(false);
+            //hpValue.gameObject.SetActive(true);
+            GameObject.DestroyImmediate(hpValue.gameObject, true);
+            hpValue = null;
+            //hpValue.gameObject.SetActive(false);
+            //AttackTag.gameObject.SetActive(true);
+            GameObject.DestroyImmediate(AttackTag.gameObject, true);
+            AttackTag = null;
+            //AttackTag.gameObject.SetActive(false);
+            //MoveTag.gameObject.SetActive(true);
+            GameObject.DestroyImmediate(MoveTag.gameObject, true);
+            MoveTag = null;
+            //MoveTag.gameObject.SetActive(false);
             // if (hpValueEntity != null)
             // {
             //     GameEntry.Entity.HideEntity(hpValueEntity);
             //     hpValueEntity = null;
             // }
-            
+
             //UnShowTags();
         }
 
@@ -1521,9 +1530,13 @@ namespace RoundHero
             
             var delta = (7f / 100f * (pos.y + 1350f));
             pos += new Vector2(0, delta);
+
+            if (AttackTag != null)
+            {
+                AttackTag?.gameObject.SetActive(isShow);
+                AttackTag?.SetData(pos, BattleUnitData.RoundAttackTimes);
+            }
             
-            AttackTag.gameObject.SetActive(isShow);
-            AttackTag.SetData(pos, BattleUnitData.RoundAttackTimes);
         }
         
         public void ShowMoveTag(bool isShow)
@@ -1533,15 +1546,22 @@ namespace RoundHero
             
             var delta = (7f / 100f * (pos.y + 1350f));
             pos += new Vector2(0, delta);
-            
-            MoveTag.gameObject.SetActive(isShow);
-            MoveTag.SetData(pos, BattleUnitData.RoundMoveTimes);
+
+            if (MoveTag != null)
+            {
+                MoveTag.gameObject.SetActive(isShow);
+                MoveTag.SetData(pos, BattleUnitData.RoundMoveTimes);
+            }
         }
         
 
         public void RefreshDamageState()
         {
-            hpValue.gameObject.SetActive(false);
+            if (hpValue != null)
+            {
+                hpValue?.gameObject.SetActive(false);
+            }
+            
             //hpText.gameObject.SetActive(false);
             // hpAndDamageNode.SetActive(false);
             // damageNode.SetActive(false);
@@ -2111,6 +2131,11 @@ namespace RoundHero
         public virtual void ShowMoveRange(bool isShow)
         {
             
+        }
+
+        public virtual List<int> GetMoveRange(int gridPosIdx)
+        {
+            return new List<int>();
         }
     }
 }

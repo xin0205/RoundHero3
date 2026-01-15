@@ -265,46 +265,8 @@ namespace RoundHero
 
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                ShowActionSort(true);
-            }
-            else if (Input.GetKeyUp(KeyCode.Space)) {
-                ShowActionSort(false);
-            }
             
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
-                    .CurPointGridPosIdx);
-
-                if (unit is BattleMonsterEntity battleMonsterEntity )
-                {
-                    battleMonsterEntity.ShowMoveRange(true);
-                    
-                }
-                else if (unit is BattleSoliderEntity battleSoliderEntity )
-                {
-                    battleSoliderEntity.ShowMoveRange(true);
-                    
-                }
-                BattleGridManager.Instance.ShowRedGrids(null);
-            }
-            else if (Input.GetKeyUp(KeyCode.A)) {
-                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
-                    .CurPointGridPosIdx);
-
-                if (unit is BattleMonsterEntity battleMonsterEntity )
-                {
-                    battleMonsterEntity.ShowAttackRange(true);
-                    
-                }
-                else if (unit is BattleSoliderEntity battleSoliderEntity )
-                {
-                    battleSoliderEntity.ShowAttackRange(true);
-                    
-                }
-                BattleGridManager.Instance.ShowGreenGrids(null);
-            } 
+            
             
             // if (Input.GetKeyDown(KeyCode.S))
             // {

@@ -161,6 +161,18 @@ namespace RoundHero
             // });
         }
 
+        private void ShowEnemyCountInfo(bool isShow)
+        {
+            enemyCount.gameObject.SetActive(isShow);
+            
+            var nextRound = GetNextRound();
+            var roundGenerateUnitCount =
+                BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount.ContainsKey(nextRound)
+                    ? BattleEnemyManager.Instance.EnemyGenerateData.RoundGenerateUnitCount[nextRound]
+                    : -1;
+            roundEnemyCount.gameObject.SetActive(nextRound != -1 && roundGenerateUnitCount > 0);
+        }
+
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
@@ -176,6 +188,50 @@ namespace RoundHero
             {
                 hpDeltaDatas.gameObject.SetActive(false);
             }
+            
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ShowEnemyCountInfo(true);
+                BattleEnemyManager.Instance.ShowActionSort(true);
+            }
+            else if (Input.GetKeyUp(KeyCode.Space)) {
+                ShowEnemyCountInfo(false);
+                BattleEnemyManager.Instance.ShowActionSort(false);
+            }
+            
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
+                    .CurPointGridPosIdx);
+
+                if (unit is BattleMonsterEntity battleMonsterEntity )
+                {
+                    battleMonsterEntity.ShowMoveRange(true);
+                    
+                }
+                else if (unit is BattleSoliderEntity battleSoliderEntity )
+                {
+                    battleSoliderEntity.ShowMoveRange(true);
+                    
+                }
+                BattleGridManager.Instance.ShowRedGrids(null);
+            }
+            else if (Input.GetKeyUp(KeyCode.A)) {
+                var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(BattleAreaManager.Instance
+                    .CurPointGridPosIdx);
+
+                if (unit is BattleMonsterEntity battleMonsterEntity )
+                {
+                    battleMonsterEntity.ShowAttackRange(true);
+                    
+                }
+                else if (unit is BattleSoliderEntity battleSoliderEntity )
+                {
+                    battleSoliderEntity.ShowAttackRange(true);
+                    
+                }
+                BattleGridManager.Instance.ShowGreenGrids(null);
+            } 
         }
 
         public void ShowHPDeltaData(bool isShow)
@@ -313,7 +369,7 @@ namespace RoundHero
                     _enemyCount += kv.Value;
                 }
                 
-                enemyCount.gameObject.SetActive(true);
+                //enemyCount.gameObject.SetActive(true);
                 enemyCount.text = GameEntry.Localization.GetLocalizedString(Constant.Localization.Tips_EnemyCount,
                     _enemyCount);
 

@@ -142,6 +142,7 @@ namespace RoundHero
             {
                 BattleValueEntities.Add(entity.Entity.Id, entity);
             }
+            
         }
         
         private async Task ShowHeroValue(int gridPosIdx, int value, TriggerData triggerData)

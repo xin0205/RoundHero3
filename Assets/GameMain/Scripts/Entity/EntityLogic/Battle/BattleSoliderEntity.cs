@@ -154,13 +154,13 @@ namespace RoundHero
             var drCard =
                 CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
 
-            var range = GameUtility.GetRange(GridPosIdx, drCard.MoveType, EUnitCamp.Empty, null);
+            var range = GetMoveRange(GridPosIdx);
 
             foreach (var gridPosIdx in range)
             {
-                var gridType = GameUtility.GetGridType(gridPosIdx, false);
-                if(gridType != EGridType.Empty)
-                    continue;
+                // var gridType = GameUtility.GetGridType(gridPosIdx, false);
+                // if(gridType != EGridType.Empty)
+                //     continue;
                 
                 var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
                 gridEntity.ShowGreenGrid(isShow);
@@ -170,6 +170,38 @@ namespace RoundHero
             
             
         }
+        
+        public override List<int> GetMoveRange(int gridPosIdx)
+        {
+            var drCard =
+                CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
+
+            var range = GameUtility.GetRangeNest(gridPosIdx, drCard.MoveType, EUnitCamp.Empty, null, false);
+            var retRange = new List<int>();
+            foreach (var ranges in range)
+            {
+                foreach (var _gridPosIdx in ranges)
+                {
+                    var gridType = GameUtility.GetGridType(_gridPosIdx, false);
+                    if(gridType == EGridType.Obstacle)
+                        break;
+                    
+                    if(!(gridType == EGridType.Empty || gridType == EGridType.TemporaryUnit))
+                        continue;
+                    
+                    
+                
+                    retRange.Add(_gridPosIdx);
+                }
+                
+                    
+            }
+            
+            return retRange;
+            
+            
+        }
+
         
         public override void ShowAttackRange(bool isShow)
         {
@@ -200,7 +232,7 @@ namespace RoundHero
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
                 range.AddRange(GameUtility.GetRange(GridPosIdx,
                     buffData.TriggerRange == EActionType.HeroDirect ? EActionType.Direct82Long : buffData.TriggerRange,
-                    EUnitCamp.Empty, null));
+                    EUnitCamp.Empty, null, false));
 
             }
             

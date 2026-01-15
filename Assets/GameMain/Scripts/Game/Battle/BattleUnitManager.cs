@@ -730,41 +730,41 @@ namespace RoundHero
             return EActionType.Empty;
         }
         
-        public List<int> GetMoveRanges(int unitID, int gridPosIdx)
-        {
-            var rangeList = new List<int>();
-            var actionType = BattleUnitManager.Instance.GetMoveType(unitID);
-            
-            var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
-            foreach (var points in Constant.Battle.ActionTypePoints[actionType])
-            {
-                foreach (var point in points)
-                {
-                    if(point == Vector2Int.zero)
-                        continue;
-                    
-                    var targetCoord = coord + point;
-                    if (!GameUtility.InGridRange(targetCoord))
-                        break;
-
-                    var targetGridPosIdx = GameUtility.GridCoordToPosIdx(targetCoord);
-                    if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Obstacle)
-                        break;
-
-                    var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(targetGridPosIdx);
-                    if (unit != null && unit.BattleUnitData.GetStateCount(EUnitState.UnBePass) > 0)
-                        break;
-                    
-                    if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Unit)
-                        continue;
-
-                    rangeList.Add(GameUtility.GridCoordToPosIdx(targetCoord));
-                }
-
-            }
-
-            return rangeList;
-        }
+        // public List<int> GetMoveRanges(int unitID, int gridPosIdx)
+        // {
+        //     var rangeList = new List<int>();
+        //     var actionType = BattleUnitManager.Instance.GetMoveType(unitID);
+        //     
+        //     var coord = GameUtility.GridPosIdxToCoord(gridPosIdx);
+        //     foreach (var points in Constant.Battle.ActionTypePoints[actionType])
+        //     {
+        //         foreach (var point in points)
+        //         {
+        //             if(point == Vector2Int.zero)
+        //                 continue;
+        //             
+        //             var targetCoord = coord + point;
+        //             if (!GameUtility.InGridRange(targetCoord))
+        //                 break;
+        //
+        //             var targetGridPosIdx = GameUtility.GridCoordToPosIdx(targetCoord);
+        //             if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Obstacle)
+        //                 break;
+        //
+        //             var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(targetGridPosIdx);
+        //             if (unit != null && unit.BattleUnitData.GetStateCount(EUnitState.UnBePass) > 0)
+        //                 break;
+        //             
+        //             if(GamePlayManager.Instance.GamePlayData.BattleData.GridTypes[targetGridPosIdx] == EGridType.Unit)
+        //                 continue;
+        //
+        //             rangeList.Add(GameUtility.GridCoordToPosIdx(targetCoord));
+        //         }
+        //
+        //     }
+        //
+        //     return rangeList;
+        // }
         
         public List<int> GetAttackRanges(int unitIdx, int gridPosIdx)
         {

@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 4525250011595830683}
   - component: {fileID: 4347577885375820027}
   m_Layer: 6
-  m_Name: BattleSoliderEntity_13
+  m_Name: BattleSoliderEntity_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
