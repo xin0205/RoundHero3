@@ -913,5 +913,33 @@ namespace RoundHero
                 kv.Value.ShowMoveTag(isShow);
             }
         }
+        
+        public void ShowTargetTag(bool isShow)
+        {
+            foreach (var kv in BattleUnitEntities)
+            {
+                if (isShow)
+                {
+                    BattleManager.Instance.TempTriggerData.TargetGridPosIdx = kv.Value.GridPosIdx;
+                    BattleManager.Instance.RefreshEnemyAttackData(); 
+                }
+                
+                if (GameUtility.CheckTacticCanSelectUnit(kv.Value.GridPosIdx, false))
+                {
+                    kv.Value.ShowTargetTag(isShow);
+                }
+                else
+                {
+                    kv.Value.ShowTargetTag(false);
+                }
+                
+            }
+
+            if (isShow)
+            {
+                BattleManager.Instance.TempTriggerData.TargetGridPosIdx = -1;
+                BattleManager.Instance.RefreshEnemyAttackData();
+            }
+        }
     }
 }

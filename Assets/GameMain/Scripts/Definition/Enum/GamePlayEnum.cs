@@ -336,6 +336,7 @@ namespace RoundHero
         Stay,
         Use,
         StartMove,
+        OnceAttack,
     }
 
     public enum EBuffEquipType

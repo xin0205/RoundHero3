@@ -1972,6 +1972,13 @@ namespace RoundHero
 
         }
         
+        public static bool IsCurHPTrigger(TriggerData triggerData)
+        {
+
+            return  IsSubCurHPTrigger(triggerData) || IsAddCurHPTrigger(triggerData);
+
+        }
+        
         public static bool IsSubCurHPBuffValue(BuffValue buffValue)
         {
             if (buffValue == null)
@@ -2619,6 +2626,370 @@ namespace RoundHero
             return commonItemData;
         }
         
+        public static void ShowAttackRange(int cardIdx, int gridPosIdx, bool isShow)
+        {
+            var drCard =
+                CardManager.Instance.GetCardTable(cardIdx);
+            var range  = GetAttackRange(cardIdx, gridPosIdx);
+            
+            foreach (var _gridPosIdx in range)
+            {
+                var gridType = GameUtility.GetGridType(_gridPosIdx, false);
+       
+                var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(_gridPosIdx);
+                gridEntity.ShowRedGrid(isShow);
+                    
+            }
+
+            
+        }
+        
+        public static List<int> GetAttackRange(int cardIdx, int gridPosIdx)
+        {
+            var drCard =
+                CardManager.Instance.GetCardTable(cardIdx);
+
+            var range  = new List<int>();
+            foreach (var buffID in drCard.BuffIDs)
+            {
+                var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
+                range.AddRange(GameUtility.GetRange(gridPosIdx,
+                    buffData.TriggerRange == EActionType.HeroDirect ? EActionType.Direct82Long : buffData.TriggerRange,
+                    EUnitCamp.Empty, null, false));
+
+            }
+            
+            
+            return range;
+            
+            
+        }
+        
+        public static bool CheckTacticSelectUnit(int gridPosIdx, bool isShowMessage)
+        {
+            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
+            
+            var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+            if (string.IsNullOrEmpty(buffStr))
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+            var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+            if (buffData == null)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+            List<ERelativeCamp> relativeCamps = buffData.TriggerUnitCamps;
+            
+            var unit2 = BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx,
+                BattleManager.Instance.CurUnitCamp,
+                relativeCamps);
+            
+            if (unit2 == null)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+
+            
+            if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString() || buffData.BuffStr == EBuffID.Spec_MoveEnemy.ToString())
+            {
+
+                if (unit.BattleUnitData.CurHP <= 0)
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToMove);
+                    return false;
+                }
+
+                var relativeCamp =
+                    GameUtility.GetRelativeCamp(PlayerManager.Instance.PlayerData.UnitCamp, unit.UnitCamp);
+                if (!buffData.TriggerUnitCamps.Contains(relativeCamp))
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                    return false;
+                }
+                //
+                // TmpUnitEntity = unit;
+                // BattleManager.Instance.TempTriggerData.UnitData =
+                //     BattleUnitManager.Instance.GetBattleUnitData(unit);
+                // BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.MoveUnit;
+                // BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx =
+                //     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx;
+                //
+                // var moveRanges = BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx, ne.GridPosIdx);
+                // BattleGridManager.Instance.ShowGreenGrids(moveRanges);
+                // BattleManager.Instance.SetBattleState(EBattleState.MoveUnit);
+                //
+                // BattleUnitManager.Instance.ShowMoveTag(false);
+                // BattleUnitManager.Instance.ShowAttackTag(false);
+            }
+            else if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+            {
+                if (unit.BattleUnitData.CurHP <= 0)
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToAttack);
+                    return false;
+                }
+
+                // if (unit != null)
+                // {
+                //     unit.ShowAttackRange(true);
+                // }
+
+                var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(unit.BattleUnitData);
+
+                foreach (var unitBuffData in unitBuffDatas)
+                {
+                    if (!(unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid))
+                    {
+                        continue;
+                    }
+
+                    // BattleManager.Instance.TempTriggerData.UnitData =
+                    //     BattleUnitManager.Instance.GetBattleUnitData(unit);
+
+                    if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
+                    {
+                        if (!BattleFightManager.Instance.ExistSoliderAutoAttackData(unit.UnitIdx))
+                        {
+                            if(isShowMessage)
+                                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                            return false;
+                        }
+
+                        // BattleManager.Instance.RecordLastActionBattleData();
+                        // BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.AutoAtk;
+                        //
+                        // BattleManager.Instance.RefreshEnemyAttackData();
+                        // BattleFightManager.Instance.SoliderAutoAttack();
+                        // BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.UnitIdx);
+                        //
+                        // BattleManager.Instance.TempTriggerData.Reset();
+                        // BattleManager.Instance.SetBattleState(EBattleState.UseCard);
+                        // unit.BattleUnitData.RoundAttackTimes += 1;
+
+                    }
+                    
+                }
+            }
+            else if (!BattleFightManager.Instance.ExistUseCardData())
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+
+            return true;
+        }
+        
+        public static bool CheckTacticCanSelectUnit(int gridPosIdx, bool isShowMessage)
+        {
+            var unit = BattleUnitManager.Instance.GetUnitByGridPosIdx(gridPosIdx);
+            
+            var buffStr = BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr;
+            if (string.IsNullOrEmpty(buffStr))
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+            var buffData = BattleBuffManager.Instance.GetBuffData(buffStr);
+            if (buffData == null)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+            List<ERelativeCamp> relativeCamps = buffData.TriggerUnitCamps;
+            
+            var unit2 = BattleUnitManager.Instance.GetUnitByGridPosIdxMoreCamps(gridPosIdx,
+                BattleManager.Instance.CurUnitCamp,
+                relativeCamps);
+            
+            if (unit2 == null)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+            
+            if (unit2.UnitRole == EUnitRole.Core)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+            
+
+            if (buffData.BuffStr == EBuffID.Spec_MoveUs.ToString() || buffData.BuffStr == EBuffID.Spec_MoveEnemy.ToString())
+            {
+
+                if (unit.BattleUnitData.CurHP <= 0)
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToMove);
+                    return false;
+                }
+
+                var relativeCamp =
+                    GameUtility.GetRelativeCamp(PlayerManager.Instance.PlayerData.UnitCamp, unit.UnitCamp);
+                if (!buffData.TriggerUnitCamps.Contains(relativeCamp))
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                    return false;
+                }
+                //
+                // TmpUnitEntity = unit;
+                // BattleManager.Instance.TempTriggerData.UnitData =
+                //     BattleUnitManager.Instance.GetBattleUnitData(unit);
+                // BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.MoveUnit;
+                // BattleManager.Instance.TempTriggerData.UnitOriGridPosIdx =
+                //     BattleManager.Instance.TempTriggerData.UnitData.GridPosIdx;
+                //
+                // var moveRanges = BattleUnitManager.Instance.GetMoveRanges(BattleManager.Instance.TempTriggerData.UnitData.Idx, ne.GridPosIdx);
+                // BattleGridManager.Instance.ShowGreenGrids(moveRanges);
+                // BattleManager.Instance.SetBattleState(EBattleState.MoveUnit);
+                //
+                // BattleUnitManager.Instance.ShowMoveTag(false);
+                // BattleUnitManager.Instance.ShowAttackTag(false);
+            }
+            else if (buffData.BuffStr == EBuffID.Spec_AttackUs.ToString())
+            {
+                if (unit.BattleUnitData.CurHP <= 0)
+                {
+                    if(isShowMessage)
+                        GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NoHPToAttack);
+                    return false;
+                }
+
+                // if (unit != null)
+                // {
+                //     unit.ShowAttackRange(true);
+                // }
+
+                var unitBuffDatas = BattleUnitManager.Instance.GetBuffDatas(unit.BattleUnitData);
+
+                foreach (var unitBuffData in unitBuffDatas)
+                {
+                    if (!(unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectUnit ||
+                          unitBuffData.BuffTriggerType == EBuffTriggerType.SelectGrid))
+                    {
+                        continue;
+                    }
+
+                    // BattleManager.Instance.TempTriggerData.UnitData =
+                    //     BattleUnitManager.Instance.GetBattleUnitData(unit);
+
+                    if (unitBuffData.BuffTriggerType == EBuffTriggerType.AutoAttack)
+                    {
+                        if (!BattleFightManager.Instance.ExistSoliderAutoAttackData(unit.UnitIdx))
+                        {
+                            if(isShowMessage)
+                                GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_NotTarget);
+                            return false;
+                        }
+
+                        // BattleManager.Instance.RecordLastActionBattleData();
+                        // BattleManager.Instance.TempTriggerData.TriggerType = ETempTriggerType.AutoAtk;
+                        //
+                        // BattleManager.Instance.RefreshEnemyAttackData();
+                        // BattleFightManager.Instance.SoliderAutoAttack();
+                        // BattleBuffManager.Instance.UseBuff(ne.GridPosIdx, unit.UnitIdx);
+                        //
+                        // BattleManager.Instance.TempTriggerData.Reset();
+                        // BattleManager.Instance.SetBattleState(EBattleState.UseCard);
+                        // unit.BattleUnitData.RoundAttackTimes += 1;
+
+                    }
+                    
+                }
+            }
+            else if (!BattleFightManager.Instance.ExistUseCardData())
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+                return false;
+            }
+            
+            
+            return true;
+        }
+        
+        public static bool CheckPropSelectGrid(int gridPosIdx, bool isShowMessage)
+        {
+            var heroID = BattleUnitManager.Instance.GetUnitIdx(gridPosIdx, BattleManager.Instance.CurUnitCamp,
+                ERelativeCamp.Us, EUnitRole.Core);
+            var enemyEntityID = BattleUnitManager.Instance.GetUnitIdx(gridPosIdx, BattleManager.Instance.CurUnitCamp,
+                ERelativeCamp.Enemy);
+            //var cardIndexs = BattleCardManager.Instance.GetCardIndexs(ne.GridPosIdx);
+            var soliderEntityID = BattleUnitManager.Instance.GetUnitIdx(gridPosIdx,
+                BattleManager.Instance.CurUnitCamp, ERelativeCamp.Us, EUnitRole.Staff);
+            
+            var isStayProp = false;
+            var prop = BattleGridPropManager.Instance.GetGridProp(gridPosIdx);
+            if (prop != null)
+            {
+                   
+                isStayProp = BattleGridPropManager.Instance.IsStayProp(prop.GridPropID);
+            }
+                
+            if (enemyEntityID != -1 && !isStayProp)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
+                return false;
+            }
+                
+            if (soliderEntityID != -1 && !isStayProp)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
+                return false;
+            }
+                
+            if (heroID != -1 && !isStayProp)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
+                return false;
+            }
+            
+            var unPlacePosIdxs = BattleBuffManager.Instance.GetUnPlacePosIdxs(GamePlayManager.Instance.GamePlayData);
+            if (unPlacePosIdxs.Contains(gridPosIdx) && !isStayProp)
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
+                return false;
+            }
+                
+            
+            return true;
+        }
+
+        public static bool CheckUnitSelectGrid(int gridPosIdx, bool isShowMessage)
+        {
+            var unPlacePosIdxs = BattleBuffManager.Instance.GetUnPlacePosIdxs(GamePlayManager.Instance.GamePlayData);
+            if (unPlacePosIdxs.Contains(gridPosIdx))
+            {
+                if(isShowMessage)
+                    GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_UnPlaceUnit);
+                return false;
+            }
+
+            return true;
+        }
         
     }
 }

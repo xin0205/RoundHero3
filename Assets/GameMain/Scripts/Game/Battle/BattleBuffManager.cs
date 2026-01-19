@@ -250,6 +250,7 @@ namespace RoundHero
                     triggerData = BattleFightManager.Instance.Hero_Card(ownUnitIdx, newActionUnitIdx, realEffectUnitIdx,
                         buffValues[0], buffData.CardTriggerType);
                     triggerData.EffectUnitIdx = realEffectUnitIdx;
+                    triggerData.ActionUnitIdx = actionUnitIdx;
                     break;
                 case ETriggerDataType.ClearBuff:
                     // triggerData = new TriggerData();
@@ -352,6 +353,11 @@ namespace RoundHero
             if (triggerData != null)
             {
                 triggerData.ActionUnitGridPosIdx = actionUnitGridPosIdx;
+                if (realEffectUnit != null)
+                {
+                    triggerData.EffectUnitGridPosIdx = realEffectUnit.GridPosIdx;
+                }
+                
                 CacheTriggerData(triggerData, triggerDatas, realEffectUnitIdx, buffTriggerType, buffData, values,
                     ownUnitIdx, newActionUnitIdx, cardIdx, funeIdx, triggerDataSubType);
                 _triggerDatas.Add(triggerData);
@@ -470,12 +476,12 @@ namespace RoundHero
             if(triggerData == null)
                 return;
             
-            if (isAddTriggerData)
+            
+            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
+            if (isAddTriggerData && (!GameUtility.IsCurHPTrigger(triggerData) || (GameUtility.IsCurHPTrigger(triggerData) && triggerData.ActualValue != 0)))
             {
                 triggerDatas.Add(triggerData);
             }
-            BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
-            
             
             
             // HurtTrigger(triggerData, triggerDatas);
@@ -1047,6 +1053,11 @@ namespace RoundHero
                         BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
                         BattleBulletManager.Instance.UseTriggerCollection(Constant.Battle.UnUnitTriggerIdx);
                         HeroManager.Instance.UpdateCacheHPDelta();
+                        break;
+                    default:
+                        BattleBulletManager.Instance.AddTriggerCollection(BattleFightManager.Instance.RoundFightData.BuffData_Use);
+                        BattleBulletManager.Instance.UseTriggerCollection(Constant.Battle.UnUnitTriggerIdx);
+                        HeroManager.Instance.UpdateCacheHPDelta();
                         break;     
                 }
             }
@@ -1234,7 +1245,9 @@ namespace RoundHero
                 case EBuffTriggerType.TacticProp:
                     BuffParse_TacticProp(strList, buffData);
                     break;
-                    
+                case EBuffTriggerType.OnceAttack:
+                    BuffParse_Normal(strList, buffData);
+                    break; 
                 default:
                     throw new ArgumentOutOfRangeException();
             }

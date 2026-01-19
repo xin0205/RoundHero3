@@ -31,7 +31,7 @@ namespace RoundHero
             var gridPos = GameUtility.GridPosIdxToPos(gridPosIdx);
             var pos = PositionConvert.WorldPointToUILocalPoint(
                 AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), gridPos);
-
+            pos.y += 25;
             UnAttackTag.transform.localPosition = pos;
             UnAttackTag.SetActive(true);
         }

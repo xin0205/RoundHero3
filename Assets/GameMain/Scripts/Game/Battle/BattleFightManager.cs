@@ -1844,11 +1844,16 @@ namespace RoundHero
                             
                             break;
                         case ECardTriggerType.ToHand:
-                            
-                            if (actionUnitEntity is BattleSoliderEntity ToHand_solider)
+                            if (triggerData.TriggerCardIdx != -1)
                             {
-                                BattleCardManager.Instance.AnimationToHandCards(ToHand_solider.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                                BattleCardManager.Instance.AnimationToHandCards(triggerData.TriggerCardIdx);
+
                             }
+                            
+                            // if (actionUnitEntity is BattleSoliderEntity ToHand_solider)
+                            // {
+                            //     BattleCardManager.Instance.AnimationToHandCards(ToHand_solider.BattleSoliderEntityData.BattleSoliderData.CardIdx);
+                            // }
                             
                             break;
                         case ECardTriggerType.ToConsume:
@@ -2438,8 +2443,15 @@ namespace RoundHero
                     //triggerData.IsTrigger = true;
                     //BattleBulletManager.Instance.UseTriggerCollection(triggerData.ActionUnitIdx, triggerData.EffectUnitGridPosIdx);
                     BattleEffectManager.Instance.ShowCollideEffect(effectUnit.EffectHurtPos.position);
-                    actionUnit.BattleUnitData.CollideCount += 1;
-                    effectUnit.BattleUnitData.CollideCount += 1;
+                    if (actionUnit != null)
+                    {
+                        actionUnit.BattleUnitData.CollideCount += 1;
+                    }
+                    if (effectUnit != null)
+                    {
+                        effectUnit.BattleUnitData.CollideCount += 1;
+                    }
+                    
                 }
             
                 else if (triggerData.TriggerDataSubType == ETriggerDataSubType.State)

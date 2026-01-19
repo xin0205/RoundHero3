@@ -87,17 +87,17 @@ namespace RoundHero
              else
              {
                  var coreCount = Constant.Battle.CoreCount;
-                 if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
-                 {
-                     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session == 0)
-                     {
-                         coreCount = 1;
-                     }
-                     else if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session == 1)
-                     {
-                         coreCount = 2;
-                     }
-                 }
+                 // if (GamePlayManager.Instance.GamePlayData.PVEType == EPVEType.BattleMode)
+                 // {
+                 //     if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session == 0)
+                 //     {
+                 //         coreCount = 1;
+                 //     }
+                 //     else if (GamePlayManager.Instance.GamePlayData.BattleModeProduce.Session == 1)
+                 //     {
+                 //         coreCount = 2;
+                 //     }
+                 // }
                  
                  var randomList = MathUtility.GetRandomNum(coreCount                             , 0,
                      places2.Count, new Random(GetRandomSeed()));

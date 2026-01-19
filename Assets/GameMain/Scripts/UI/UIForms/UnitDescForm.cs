@@ -102,13 +102,14 @@ namespace RoundHero
 
             explainList.transform.localPosition = explainPos1.localPosition;
             
-            keyshortcutGO.SetActive(hasDetail);
+            keyshortcutGO.SetActive(false);
             actionGO.SetActive(false);
             
             RefreshVideo();
             RefreshDesc();
             RefreshUnitStates();
-            RefreshExplain(false);
+            RefreshExplain(hasDetail);
+            keyshortcutGO.SetActive(hasDetail);
         }
 
         private void RefreshVideo()
@@ -284,7 +285,6 @@ namespace RoundHero
             {
                 
             }
-            
             // gridDescItem.gameObject.SetActive(true);
             //     
             // var gridTypeName =
@@ -489,7 +489,7 @@ namespace RoundHero
                 funeListGO.SetActive(true);
                 unitStateListGO.SetActive(true);
                 //unitStateIconListGO.SetActive(false);
-                keyshortcutGO.SetActive(false);
+                //keyshortcutGO.SetActive(false);
                 //explainList.gameObject.SetActive(false);
                 RefreshExplain(true);
                 if (hasFune)
@@ -507,7 +507,7 @@ namespace RoundHero
                 funeListGO.SetActive(false);
                 unitStateListGO.SetActive(false);
                 unitStateIconListGO.SetActive(hasDetail);
-                keyshortcutGO.SetActive(true);
+                //keyshortcutGO.SetActive(true);
                 //explainList.gameObject.SetActive(true);
                 RefreshExplain(false);
                 explainList.transform.localPosition = explainPos1.localPosition;

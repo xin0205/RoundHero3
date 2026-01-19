@@ -82,7 +82,7 @@ namespace RoundHero
                 //var funeData = FuneManager.Instance.GetFuneData(funeIdx);
                 PlayerFuneItems[idx].gameObject.SetActive(true);
                 PlayerFuneItems[idx].SetFune(CardIdx, funeIdx);
-                PlayerFuneItems[idx].ShowUnEquip(isTmpEquipFune && IsShowFuneDownTag);
+                PlayerFuneItems[idx].ShowUnEquip(IsShowFuneDownTag);
                 idx++;
             }
 

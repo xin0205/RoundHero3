@@ -315,8 +315,8 @@ namespace RoundHero
 
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.ActionEnd)
             {
-                
-                GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(BattleManager.Instance.BattleState));
+                BattleManager.Instance.SetBattleState(BattleManager.Instance.BattleState);
+                //GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(BattleManager.Instance.BattleState));
             }
         }
         

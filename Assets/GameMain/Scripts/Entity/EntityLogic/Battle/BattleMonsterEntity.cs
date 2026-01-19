@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameFramework;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityGameFramework.Runtime;
@@ -332,7 +333,7 @@ namespace RoundHero
             var drEnemy =
                 GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
 
-            var range = GameUtility.GetRange(GridPosIdx, drEnemy.MoveType, EUnitCamp.Empty, null);
+            var range = GetMoveRange(GridPosIdx);
 
             foreach (var gridPosIdx in range)
             {
@@ -348,18 +349,18 @@ namespace RoundHero
             
             
         }
+ 
         
         public override void ShowAttackRange(bool isShow)
         {
+            
             var drEnemy =
                 GameEntry.DataTable.GetEnemy(BattleMonsterEntityData.BattleMonsterData.MonsterID);
             
             foreach (var buffID in drEnemy.OwnBuffs)
             {
                 var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
-                var range = GameUtility.GetRange(GridPosIdx,
-                    buffData.TriggerRange == EActionType.HeroDirect ? EActionType.Direct82Long : buffData.TriggerRange,
-                    EUnitCamp.Empty, null);
+                var range = GetAttackRange();
 
                 foreach (var gridPosIdx in range)
                 {
@@ -384,11 +385,11 @@ namespace RoundHero
                 foreach (var _gridPosIdx in ranges)
                 {
                     var gridType = GameUtility.GetGridType(_gridPosIdx, false);
-                    if(!(gridType == EGridType.Empty || gridType == EGridType.TemporaryUnit))
-                        continue;
-                    
                     if(gridType == EGridType.Obstacle)
                         break;
+                    
+                    if(!(gridType == EGridType.Empty || gridType == EGridType.TemporaryUnit))
+                        continue;
                 
                     retRange.Add(_gridPosIdx);
                 }

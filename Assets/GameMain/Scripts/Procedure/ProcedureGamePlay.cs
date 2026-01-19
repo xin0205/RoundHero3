@@ -106,9 +106,9 @@ namespace RoundHero
         {
             var random = new System.Random(randomSeed);
             GamePlayManager.Instance.Start(random.Next());
-            BattleManager.Instance.Start(random.Next());
+            
             PVEManager.Instance.Start(random.Next());
-
+            BattleManager.Instance.Start(random.Next());
 
             ChangeState<ProcedureBattle>(procedureOwner);
         }

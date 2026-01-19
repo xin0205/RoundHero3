@@ -70,6 +70,7 @@ namespace RoundHero
         public void Start(int randomSeed)
         {
             BattleManager.Instance.Init(randomSeed);
+            BattleManager.Instance.SetBattleState(EBattleState.Empty);
             BattleManager.Instance.BattleData.Round = 0;
             BattleAreaManager.Instance.Start();
             BattleEnemyManager.Instance.Start();
@@ -630,6 +631,10 @@ namespace RoundHero
 
         public void SetBattleState(EBattleState battleState)
         {
+            if(BattleManager.Instance.BattleState == EBattleState.EndBattle &&
+               battleState != EBattleState.Empty)
+                return;
+            
             BattleManager.Instance.BattleState = battleState;
             GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(battleState));
             

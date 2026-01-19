@@ -137,7 +137,7 @@ namespace RoundHero
             
             
             ClearDrop();
-            GameManager.Instance.CardsForm_EquipFuneIdxs.Add(funeIdx);
+            //GameManager.Instance.CardsForm_EquipFuneIdxs.Add(funeIdx);
             cardData.FuneIdxs.Add(funeIdx);
             BattlePlayerManager.Instance.PlayerData.UnusedFuneIdxs.Remove(funeIdx);
 

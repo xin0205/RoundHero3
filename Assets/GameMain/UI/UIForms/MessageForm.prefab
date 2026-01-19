@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 22269018}
   - component: {fileID: 6584196290791421672}
   - component: {fileID: 7648298573613479543}
+  - component: {fileID: 1310263527834198352}
   m_Layer: 5
   m_Name: MessageForm
   m_TagString: Untagged
@@ -84,6 +85,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   message: {fileID: 2120781393986367690}
   root: {fileID: 0}
+--- !u!114 &1310263527834198352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb6054a9cf0456ea85dd8bfa5e9761e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  go: {fileID: 5071982606379663486}
 --- !u!1 &257037594669096163
 GameObject:
   m_ObjectHideFlags: 0

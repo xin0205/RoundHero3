@@ -45,6 +45,7 @@ namespace RoundHero
 
         public void Init(int randomSeed)
         {
+            Destory();
             this.randomSeed = randomSeed;
             var random = new Random(this.randomSeed);
 
@@ -79,13 +80,13 @@ namespace RoundHero
         
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
             //             
-             // var funeIdx = FuneManager.Instance.GetIdx();
-             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
-             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
-             //
-             // funeIdx = FuneManager.Instance.GetIdx();
-             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 22));
-             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             var funeIdx = FuneManager.Instance.GetIdx();
+             FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
+             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             
+             funeIdx = FuneManager.Instance.GetIdx();
+             FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 2));
+             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
              //
              //
              // funeIdx = FuneManager.Instance.GetIdx();
@@ -516,12 +517,13 @@ namespace RoundHero
 
                 var randomIdx = random.Next(0, BattlePlayerData.PassCards.Count);
                 var cardIdx = BattlePlayerData.PassCards[randomIdx];
-            
+                BattlePlayerData.PassCards.Remove(cardIdx);
+                BattlePlayerData.HandCards.Add(cardIdx);
+                
                 var card = await GameEntry.Entity.ShowBattleCardEntityAsync(cardIdx);
                 AddHandCard(card);
             
-                BattlePlayerData.PassCards.Remove(cardIdx);
-                BattlePlayerData.HandCards.Add(cardIdx);
+                
                 card.MoveCard(ECardPos.Pass, ECardPos.Hand, 0.5f); 
 
                 GameUtility.DelayExcute(0.5f, () =>
@@ -751,7 +753,8 @@ namespace RoundHero
             //     return false;
             // }
             
-            if (cardEnergy ==
+            
+            if (cardEnergy >=
                 HeroManager.Instance.GetAllCurHP())
             {
                 GameEntry.UI.OpenMessage(GameEntry.Localization.GetString(Constant.Localization.Message_HPNotUseAll));
@@ -791,6 +794,7 @@ namespace RoundHero
             }
             else if (cardType == ECardType.Tactic)
             {
+
                 var buffData = BattleBuffManager.Instance.GetBuffData(drCard.BuffIDs[0]);
                 var value = BattleBuffManager.Instance.GetBuffValue(drCard.Values0[0]);
                 BuffData buffData2 = null;
@@ -814,7 +818,7 @@ namespace RoundHero
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.TriggerBuffType = TriggerBuffType.Card;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.CardIdx = cardIdx;
                     BattleManager.Instance.TempTriggerData.TriggerBuffData.EnergyBuffData.BuffStr = buffData.BuffStr;
-                    
+                    BattleUnitManager.Instance.ShowTargetTag(true);
                     return false;
                 }
                 else if (buffData.BuffTriggerType == EBuffTriggerType.TacticSelectGrid)
@@ -981,13 +985,28 @@ namespace RoundHero
             var cardEnergy = BattleFightManager.Instance.RoundFightData.BuffData_Use.CardEnergy;
 
             var card = BattleManager.Instance.GetCard(cardIdx);
+            DRCard drCard = GameEntry.DataTable.GetCard(card.CardID);
+            
 
             BattlePlayerData.RoundUseCardCount += 1;
 
             //var card = BattleManager.Instance.GetCard(cardIdx);
 
-            var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
-            
+            // var cardEntity = BattleCardManager.Instance.GetCardEntity(cardIdx);
+            // if (cardEntity.BattleCardEntityData.CardData.CardUseType == ECardUseType.RawSelect ||
+            //     cardEntity.BattleCardEntityData.CardData.CardUseType == ECardUseType.RawUnSelect)
+            // {
+            //     if (!CardManager.Instance.Contain(card.CardIdx, EBuffID.spe) &&
+            //         !CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_AttackUs) && 
+            //         !CardManager.Instance.Contain(card.CardIdx, EBuffID.Spec_MoveEnemy) && drCard.CardType == ECardType.Tactic)
+            //     {
+            //         if (!BattleFightManager.Instance.ExistUseCardData())
+            //         {
+            //             GameEntry.UI.OpenLocalizationMessage(Constant.Localization.Message_MissTargetUnit);
+            //             return false;
+            //         }
+            //     }
+            // }
             RemoveHandCard(cardIdx);
             
             if (BattleManager.Instance.CurUnitCamp == PlayerManager.Instance.PlayerData.UnitCamp)
@@ -1160,7 +1179,8 @@ namespace RoundHero
 
         public void ResetCardsPos(bool forceSortingOrder = false)
         {
-            SetCardPosList(BattlePlayerData.HandCards.Count);
+            //BattlePlayerData.HandCards
+            SetCardPosList(HandCardIdxs.Count);
 
             var idx = 0;
 
@@ -1189,7 +1209,8 @@ namespace RoundHero
         
         public void SetCardsPos()
         {
-            SetCardPosList(BattlePlayerData.HandCards.Count);
+            //BattlePlayerData.HandCards.
+            SetCardPosList(HandCardIdxs.Count);
 
             var idx = 0;
 
@@ -1303,7 +1324,8 @@ namespace RoundHero
                     BattleGridManager.Instance.UnshowGrids();
                     BattleManager.Instance.RefreshEnemyAttackData();
                     BattleUnitManager.Instance.ShowAttackTag(false);
-                    BattleUnitManager.Instance.ShowAttackTag(false);
+                    BattleUnitManager.Instance.ShowMoveTag(false);
+                    BattleUnitManager.Instance.ShowTargetTag(false);
                     BattleController.Instance.UnShowUnAttackTag();
                 }
             }
@@ -1963,6 +1985,7 @@ namespace RoundHero
         {
             return RandomCaches[RandomIdx++ % RandomCaches.Count];
         }
+        
         
     }
 }

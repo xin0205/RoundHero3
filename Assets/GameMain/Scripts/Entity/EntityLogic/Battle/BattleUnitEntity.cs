@@ -56,6 +56,7 @@ namespace RoundHero
         
         protected ActionTag AttackTag;
         protected ActionTag MoveTag;
+        protected TargetTag TargetTag;
         
         public Vector3 Position
         {
@@ -109,6 +110,7 @@ namespace RoundHero
         private BattleValue BattleValueTemp;
         private ActionTag _attackTagTemp;
         private ActionTag _moveTagTemp;
+        private TargetTag _targetTagTemp;
         //[SerializeField] private UnitDescTriggerItem UnitDescTriggerItem;
 
         //public EUnitActionState UnitActionState { get; set; }
@@ -129,6 +131,10 @@ namespace RoundHero
             _moveTagTemp = transform.Find("Root/UnitUI/MoveTag")
                 .GetComponent<ActionTag>();
             _moveTagTemp.gameObject.SetActive(false);
+            
+            _targetTagTemp = transform.Find("Root/UnitUI/TargetTag")
+                .GetComponent<TargetTag>();
+            _targetTagTemp.gameObject.SetActive(false);
         }
 
         protected override void OnInit(object userData)
@@ -209,6 +215,9 @@ namespace RoundHero
             MoveTag = GameObject.Instantiate(_moveTagTemp);
             MoveTag.gameObject.SetActive(false);
             
+            TargetTag = GameObject.Instantiate(_targetTagTemp);
+            TargetTag.gameObject.SetActive(false);
+            
             RefreshData();
         }
 
@@ -216,25 +225,27 @@ namespace RoundHero
         {
             base.OnHide(isShutdown, userData);
             UnitDescTriggerItem.CloseForm();
-            //hpValue.gameObject.SetActive(true);
-            GameObject.DestroyImmediate(hpValue.gameObject, true);
-            hpValue = null;
-            //hpValue.gameObject.SetActive(false);
-            //AttackTag.gameObject.SetActive(true);
-            GameObject.DestroyImmediate(AttackTag.gameObject, true);
-            AttackTag = null;
-            //AttackTag.gameObject.SetActive(false);
-            //MoveTag.gameObject.SetActive(true);
-            GameObject.DestroyImmediate(MoveTag.gameObject, true);
-            MoveTag = null;
-            //MoveTag.gameObject.SetActive(false);
-            // if (hpValueEntity != null)
-            // {
-            //     GameEntry.Entity.HideEntity(hpValueEntity);
-            //     hpValueEntity = null;
-            // }
+            if (hpValue != null && !hpValue.gameObject.IsDestroyed())
+            {
+                GameObject.DestroyImmediate(hpValue.gameObject, true);
+                hpValue = null;
+            }
+            if (AttackTag != null && !AttackTag.gameObject.IsDestroyed())
+            {
+                GameObject.DestroyImmediate(AttackTag.gameObject, true);
+                AttackTag = null;
+            }
+            if (MoveTag != null && !MoveTag.gameObject.IsDestroyed())
+            {
+                GameObject.DestroyImmediate(MoveTag.gameObject, true);
+                MoveTag = null;
+            }
+            if (TargetTag != null && !TargetTag.gameObject.IsDestroyed())
+            {
+                GameObject.DestroyImmediate(TargetTag.gameObject, true);
+                TargetTag = null;
+            }
 
-            //UnShowTags();
         }
 
         
@@ -1551,6 +1562,21 @@ namespace RoundHero
             {
                 MoveTag.gameObject.SetActive(isShow);
                 MoveTag.SetData(pos, BattleUnitData.RoundMoveTimes);
+            }
+        }
+        
+        public void ShowTargetTag(bool isShow)
+        {
+            var pos = PositionConvert.WorldPointToUILocalPoint(
+                AreaController.Instance.BattleFormRoot.GetComponent<RectTransform>(), Root.position + new Vector3(0, 0, 0));
+            
+            var delta = (7f / 100f * (pos.y + 1350f));
+            pos += new Vector2(0, delta);
+
+            if (TargetTag != null)
+            {
+                TargetTag.gameObject.SetActive(isShow);
+                TargetTag.SetData(pos);
             }
         }
         

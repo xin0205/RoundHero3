@@ -489,6 +489,8 @@ namespace RoundHero
 
         public async Task GenerateEnemies(bool isRoundStart = true)
         {
+            if(BattleManager.Instance.BattleState == EBattleState.EndBattle)
+                return;
             
             if (TutorialManager.Instance.IsTutorial())
             {

@@ -205,40 +205,17 @@ namespace RoundHero
         
         public override void ShowAttackRange(bool isShow)
         {
-            var drCard =
-                CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
-            var range  = GetAttackRange();
+            GameUtility.ShowAttackRange(BattleSoliderEntityData.BattleSoliderData.CardIdx,
+                BattleSoliderEntityData.BattleSoliderData.GridPosIdx, isShow);
             
-            foreach (var gridPosIdx in range)
-            {
-                var gridType = GameUtility.GetGridType(gridPosIdx, false);
-       
-                var gridEntity = BattleGridManager.Instance.GetGridEntityByGridPosIdx(gridPosIdx);
-                gridEntity.ShowRedGrid(isShow);
-                    
-            }
 
             
         }
         
         public override List<int> GetAttackRange()
         {
-            var drCard =
-                CardManager.Instance.GetCardTable(BattleSoliderEntityData.BattleSoliderData.CardIdx);
-
-            var range  = new List<int>();
-            foreach (var buffID in drCard.BuffIDs)
-            {
-                var buffData = BattleBuffManager.Instance.GetBuffData(buffID);
-                range.AddRange(GameUtility.GetRange(GridPosIdx,
-                    buffData.TriggerRange == EActionType.HeroDirect ? EActionType.Direct82Long : buffData.TriggerRange,
-                    EUnitCamp.Empty, null, false));
-
-            }
-            
-            
-            return range;
-            
+            return GameUtility.GetAttackRange(BattleSoliderEntityData.BattleSoliderData.CardIdx,
+                BattleSoliderEntityData.BattleSoliderData.GridPosIdx);
             
         }
         

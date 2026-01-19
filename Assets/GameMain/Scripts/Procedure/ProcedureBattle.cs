@@ -74,7 +74,7 @@ namespace RoundHero
                 await BattleCoreManager.Instance.GenerateCores();
                 await BattleEnemyManager.Instance.GenerateEnemies();
             
-                PVEManager.Instance.BattleState = EBattleState.UseCard;
+                BattleManager.Instance.SetBattleState(EBattleState.UseCard);
             
                 
                 BattleAreaManager.Instance.RefreshObstacles();

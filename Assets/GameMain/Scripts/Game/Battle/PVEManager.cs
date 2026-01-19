@@ -113,7 +113,11 @@ namespace RoundHero
         private void OnRefreshBattleState(object sender, GameEventArgs e)
         {
             var ne = e as RefreshBattleStateEventArgs;
-            BattleState = ne.BattleState;
+            // if (!(BattleManager.Instance.BattleState == EBattleState.EndBattle &&
+            //     ne.BattleState == EBattleState.Empty))
+            // {
+            //     BattleState = ne.BattleState;
+            // }
 
             if (BattleState == EBattleState.EndRound)
             {
@@ -158,7 +162,7 @@ namespace RoundHero
             BattleManager.Instance.RoundEndTrigger();
             
             BattleData.Round += 1;
-            BattleState = EBattleState.UseCard;
+            BattleManager.Instance.SetBattleState(EBattleState.UseCard);
 
             BattleEnemyManager.Instance.RefreshRoundStartTag();
             await BattleEnemyManager.Instance.GenerateEnemies();
@@ -272,8 +276,8 @@ namespace RoundHero
                 // {
                 //     GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(EBattleState.EndRound));
                 // });
-
-                GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(EBattleState.EndRound));
+                BattleManager.Instance.SetBattleState(EBattleState.EndRound);
+                //GameEntry.Event.Fire(null, RefreshBattleStateEventArgs.Create(EBattleState.EndRound));
 
 
             }

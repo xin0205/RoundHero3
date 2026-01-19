@@ -405,7 +405,7 @@ namespace RoundHero
         public void UnSelectCard()
         {
             
-            //isShow = false;
+            isShow = false;
             //ActionGO.SetActive(false);
             tipsGO.SetActive(false);
             moveGO.SetActive(false);
@@ -551,7 +551,7 @@ namespace RoundHero
             //DRCard drCard = CardManager.Instance.GetCardTable(BattleCardEntityData.CardIdx);
             
             BattleCardEntityData.CardData.CardUseType = ECardUseType.RawSelect;
-            OnPointerEnter();
+            //OnPointerEnter();
             if (!BattleCardManager.Instance.PreUseCard(BattleCardEntityData.CardIdx))
             {
                 bottomTipsGO.SetActive(true);
@@ -1023,12 +1023,14 @@ namespace RoundHero
                     attackIcon.SetActive(false);
                     moveGO.SetActive(true);
                     attackGO.SetActive(true);
+                    bottomTipsGO.SetActive(true);
                     moveGO.GetComponent<Animation>().Play();
                     attackGO.GetComponent<Animation>().Play();
                     
                     CardItem.SetIconVisible(true);
                     BattleUnitManager.Instance.ShowAttackTag(false);
                     BattleUnitManager.Instance.ShowMoveTag(false);
+                    
                     break;
                 case ECardUseType.Attack:
                     moveCheckMark.SetActive(false);
@@ -1043,9 +1045,10 @@ namespace RoundHero
                     moveIcon.SetActive(false);
                     attackIcon.SetActive(true);
                     CardItem.SetIconVisible(false);
-                    
+                    bottomTipsGO.SetActive(true);
                     BattleUnitManager.Instance.ShowAttackTag(true);
                     BattleUnitManager.Instance.ShowMoveTag(false);
+                    BattleUnitManager.Instance.ShowTargetTag(false);
                     break;
                 case ECardUseType.Move:
                     attackCheckMark.SetActive(false);
@@ -1059,8 +1062,9 @@ namespace RoundHero
                     moveIcon.SetActive(true);
                     attackIcon.SetActive(false);
                     CardItem.SetIconVisible(false);
-                    
+                    bottomTipsGO.SetActive(true);
                     BattleUnitManager.Instance.ShowAttackTag(false);
+                    BattleUnitManager.Instance.ShowTargetTag(false);
                     BattleUnitManager.Instance.ShowMoveTag(true);
                     break;
                 default:
