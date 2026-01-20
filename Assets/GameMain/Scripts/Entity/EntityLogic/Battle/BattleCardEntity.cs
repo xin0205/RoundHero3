@@ -156,7 +156,8 @@ namespace RoundHero
             //
             //
             // attackCheckMark.SetActive(false);
-            // moveCheckMark.SetActive(false);                                                                                                                                                                                                                                                                    
+            // moveCheckMark.SetActive(false);
+            PlayerCardFuneList.gameObject.SetActive(true);
             PlayerCardFuneList.Init(this.BattleCardEntityData.CardIdx, false);
             
             //videoTriggerItem.VideoFormData.AnimationPlayData.ShowPosition = EShowPosition.Right;
