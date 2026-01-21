@@ -286,6 +286,7 @@ namespace RoundHero
                             tmpEntity.OnPointerEnter();
                             //showhurt
                             BattleTagManager.Instance.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
+                            BattleTagManager.Instance.ShowTags(TmpUnitEntity.UnitIdx);
                             //await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
                             //TmpUnitEntity.ShowTags(TmpUnitEntity.UnitIdx);
                             tmpEntity.ShowAttackRange(true);

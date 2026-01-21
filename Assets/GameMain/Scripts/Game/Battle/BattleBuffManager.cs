@@ -478,7 +478,8 @@ namespace RoundHero
             
             
             BattleFightManager.Instance.SimulateTriggerData(triggerData, triggerDatas);
-            if (isAddTriggerData && (!GameUtility.IsCurHPTrigger(triggerData) || (GameUtility.IsCurHPTrigger(triggerData) && triggerData.ActualValue != 0)))
+            // && (!GameUtility.IsCurHPTrigger(triggerData) || (GameUtility.IsCurHPTrigger(triggerData) && triggerData.ActualValue != 0))
+            if (isAddTriggerData)
             {
                 triggerDatas.Add(triggerData);
             }
