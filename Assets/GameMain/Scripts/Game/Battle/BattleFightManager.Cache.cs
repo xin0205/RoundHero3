@@ -1237,6 +1237,9 @@ namespace RoundHero
 
                 if (!kv.Value.Exist())
                     continue;
+                
+                if (kv.Value.CurHP <= 0)
+                    continue;
 
                 //kv.Value.GetAllStateCount(EUnitState.UnAction) > 0 ||
                 if (kv.Value.GetAllStateCount(EUnitState.UnAtk) > 0 &&
@@ -1262,6 +1265,9 @@ namespace RoundHero
                 return;
 
             if (!enemyData.Exist())
+                return;
+            
+            if (enemyData.CurHP <= 0)
                 return;
 
             if ((enemyData.GetAllStateCount(EUnitState.UnAtk) > 0) &&
@@ -1329,6 +1335,9 @@ namespace RoundHero
                 if (!kv.Value.Exist())
                     continue;
                 
+                if (kv.Value.CurHP <= 0)
+                    return;
+                
                 if (!(kv.Value as Data_BattleMonster).IsRoundStart)
                     continue;
 
@@ -1357,6 +1366,9 @@ namespace RoundHero
 
             RoundFightData.SoliderActiveAttackDatas.Clear();
             if (!unitData.Exist())
+                return;
+            
+            if (unitData.CurHP <= 0)
                 return;
 
             if (RoundFightData.TempTriggerData.TriggerType != ETempTriggerType.ActiveAtk)
@@ -1408,6 +1420,9 @@ namespace RoundHero
             //     return;
 
             if (!unitData.Exist())
+                return;
+            
+            if (unitData.CurHP <= 0)
                 return;
 
             if ((unitData.GetAllStateCount(EUnitState.UnAtk) > 0) &&

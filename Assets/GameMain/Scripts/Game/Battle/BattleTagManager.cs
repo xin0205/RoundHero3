@@ -16,8 +16,8 @@ namespace RoundHero
             BattleFlyDirectManager.Instance.ShowFlyDirect(actionUnitIdx);
             BattleStaticAttackTagManager.Instance.ShowStaticAttackTags();
             BattleAttackTagManager.Instance.ShowAttackTag(actionUnitIdx, isShowAttackPos);
-            BattleIconManager.Instance.ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
             BattleValueManager.Instance.ShowDisplayValue(actionUnitIdx);
+            BattleIconManager.Instance.ShowBattleIcon(actionUnitIdx, EBattleIconType.Collision);
             BattleIconValueManager.Instance.ShowDisplayIcon(actionUnitIdx);
         }
         

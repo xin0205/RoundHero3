@@ -108,7 +108,7 @@ namespace RoundHero
             RefreshVideo();
             RefreshDesc();
             RefreshUnitStates();
-            RefreshExplain(hasDetail);
+            RefreshExplain(false);
             keyshortcutGO.SetActive(hasDetail);
         }
 

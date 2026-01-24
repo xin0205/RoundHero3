@@ -80,16 +80,16 @@ namespace RoundHero
         
             var keyList = BattlePlayerManager.Instance.PlayerData.CardDatas.Keys.ToList();
             //             
-             // var funeIdx = FuneManager.Instance.GetIdx();
-             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
-             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
-             //
+             var funeIdx = FuneManager.Instance.GetIdx();
+             FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 0));
+             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             
+             funeIdx = FuneManager.Instance.GetIdx();
+             FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 7));
+             BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
+             
              // funeIdx = FuneManager.Instance.GetIdx();
-             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 36));
-             // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
-             //
-             // funeIdx = FuneManager.Instance.GetIdx();
-             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 37));
+             // FuneManager.Instance.FuneDatas.Add(funeIdx,new Data_Fune(funeIdx, 14));
              // BattlePlayerManager.Instance.PlayerData.CardDatas[keyList[0]].FuneIdxs.Add(funeIdx);
              //
              //
