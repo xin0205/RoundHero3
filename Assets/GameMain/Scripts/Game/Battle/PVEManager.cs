@@ -302,6 +302,7 @@ namespace RoundHero
 
         public void NextAction()
         {
+            BattleManager.Instance.ShowGameOver();
             if (BattleFightManager.Instance.ActionProgress == EActionProgress.EnemyMove)
             {
                 BattleFightManager.Instance.ActionProgress = EActionProgress.RoundStart;

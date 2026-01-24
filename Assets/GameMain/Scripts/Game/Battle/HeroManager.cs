@@ -34,7 +34,8 @@ namespace RoundHero
         //public EHPDeltaOwnerType HPDeltaOwnerType;
         public EHPDeltaType HPDeltaType;
         public int HPDelta;
-            
+        public int AddHPDetlaIdx;
+
     }
     public class EnemyHPDeltaData : HPDeltaData
     {
@@ -323,7 +324,7 @@ namespace RoundHero
             BattleHeroData.CacheHPDelta = 0;
             
             BattleManager.Instance.RefreshView();
-            BattleManager.Instance.ShowGameOver();
+            
         }
 
         public HPDeltaData AddHPDelta(TriggerData triggerData)

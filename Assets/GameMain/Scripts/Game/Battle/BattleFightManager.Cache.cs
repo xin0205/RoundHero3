@@ -10,6 +10,8 @@ namespace RoundHero
 
     public partial class BattleFightManager : Singleton<BattleFightManager>
     {
+        public int AddHPDetlaIdx;
+        
         private void CachePreData()
         {
             RoundFightData.Clear();
@@ -217,7 +219,7 @@ namespace RoundHero
             //Log.Debug("CacheRoundFightData");
 
             //BattleAreaManager.Instance.RefreshObstacles();
-
+            AddHPDetlaIdx = 0;
 
             CachePreData();
 
@@ -294,7 +296,7 @@ namespace RoundHero
                 HPDelta = -cardEnergy,
             };
 
-
+            AddHPDetlaIdx += 1;
             AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, cardHpDeltaData);
             //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(cardHpDeltaData);
             BattleFightManager.Instance.ChangeHP(BattleFightManager.Instance.PlayerData.BattleHero, -cardEnergy,
@@ -2020,6 +2022,7 @@ namespace RoundHero
                         HPDeltaType = EHPDeltaType.Bless,
 
                     };
+                    AddHPDetlaIdx += 1;
                     AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, hpDeltaData);
 
                     //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
@@ -2128,7 +2131,7 @@ namespace RoundHero
         {
             // var coreHurtAcquireCard = GamePlayManager.Instance.GamePlayData.GetUsefulBless(EBlessID.CoreHurtAcquireCard,
             //     PlayerManager.Instance.PlayerData.UnitCamp);
-
+            hpDeltaData.AddHPDetlaIdx = BattleFightManager.Instance.AddHPDetlaIdx;
             RoundFightData.HPDeltaDict[unitCamp].Add(hpDeltaData);
             // if (hpDeltaData is not CardHPDeltaData && coreHurtAcquireCard != null && hpDeltaData.HPDelta < 0)
             // {

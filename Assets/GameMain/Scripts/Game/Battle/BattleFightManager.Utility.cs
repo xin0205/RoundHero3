@@ -17,13 +17,14 @@ namespace RoundHero
 
         public void CalculateHeroHPDelta(MoveActionData moveActionData)
         {
-
+            AddHPDetlaIdx += 1;
             //moveActionData.MoveUnitIdx, 
             CalculateHeroHPDelta(moveActionData.TriggerDataDict, true);
         }
 
         public void CalculateHeroHPDelta(ActionData actionData)
         {
+            AddHPDetlaIdx += 1;
             var values = actionData.TriggerDataDict.Values.ToList();
             var keys = actionData.TriggerDataDict.Keys.ToList();
             
@@ -165,7 +166,7 @@ namespace RoundHero
                         //hpDeltaDict[effectUnit.UnitCamp].Key = isMoveTriggerData ? kv.Key : playerData.BattleHero.Idx;
 
                         var hpDeltaData = HeroManager.Instance.AddHPDelta(triggerData);
-                        hpDeltaData.HPDelta = (int)(isCoreUnit ? triggerValue : value);
+                        hpDeltaData.HPDelta = (int)(isCoreUnit ? hpDeltaData.HPDelta : value);
                         //RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Add(hpDeltaData);
                         AddHPDetlaData(PlayerManager.Instance.PlayerData.UnitCamp, hpDeltaData);
                         hpDeltaList.Add(hpDeltaData);

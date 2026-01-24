@@ -1122,7 +1122,9 @@ namespace RoundHero
                 BattleEnemyManager.Instance.GenerateEnemies(false);
                 HeroManager.Instance.UpdateCacheHPDelta();
                 BattleManager.Instance.RefreshEnemyAttackData();
+                BattleManager.Instance.ShowGameOver();
                 DataManager.Instance.Save();
+                
             });
 
             BattleCardManager.Instance.SetCardsPos();

@@ -491,7 +491,7 @@ namespace RoundHero
                         BattleManager.Instance.RefreshEnemyAttackData();
                         
                         BattleTagManager.Instance.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
-                        //await TmpUnitEntity.ShowHurtTags(TmpUnitEntity.UnitIdx, null);
+                        BattleTagManager.Instance.ShowTags(TmpUnitEntity.UnitIdx);
                         
                         // var triggerDataDict =
                         //     GameUtility.MergeDict(BattleFightManager.Instance.GetHurtDirectAttackDatas(TmpUnitEntity.UnitIdx),

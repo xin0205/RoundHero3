@@ -53,6 +53,7 @@ namespace RoundHero
         
         
         public LoopGridView hpDeltaDatas;
+        private List<HPDeltaData> hpDeltaDataList = new List<HPDeltaData>();
         
         protected override void OnInit(object userData)
         {
@@ -72,9 +73,9 @@ namespace RoundHero
                 itemScript.Init();
                 
             }
-
+            //BattleFightManager.Instance.RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp]
             itemScript.SetItemData(
-                BattleFightManager.Instance.RoundFightData.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp][itemIndex],
+                hpDeltaDataList[itemIndex],
                 itemIndex, row, column);
             return item;
         }
@@ -179,9 +180,11 @@ namespace RoundHero
            
             if (Input.GetKeyDown(KeyCode.W))
             {
+                RefreshHeroHP();
                 hpDeltaDatas.gameObject.SetActive(true);
-                hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
-                    .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
+                //BattleFightManager.Instance.RoundFightData
+                //.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp]
+                hpDeltaDatas.SetListItemCount(hpDeltaDataList.Count);
                 hpDeltaDatas.RefreshAllShownItem();
             }
             else if (Input.GetKeyUp(KeyCode.W))
@@ -241,13 +244,16 @@ namespace RoundHero
             if (isShow)
             {
 
-                if (BattleFightManager.Instance.RoundFightData
-                    .HPDeltaDict.ContainsKey(PlayerManager.Instance.PlayerData.UnitCamp))
-                {
-                    hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
-                        .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
-                    hpDeltaDatas.RefreshAllShownItem();
-                }
+                // if (BattleFightManager.Instance.RoundFightData
+                //     .HPDeltaDict.ContainsKey(PlayerManager.Instance.PlayerData.UnitCamp))
+                // {
+                //     hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
+                //         .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
+                //     hpDeltaDatas.RefreshAllShownItem();
+                // }
+                
+                hpDeltaDatas.SetListItemCount(hpDeltaDataList.Count);
+                hpDeltaDatas.RefreshAllShownItem();
                 
             }
         }
@@ -268,8 +274,9 @@ namespace RoundHero
         public void OnRefreshBattleUI(object sender, GameEventArgs e)
         {
             RefreshUI();
-            hpDeltaDatas.SetListItemCount(BattleFightManager.Instance.RoundFightData
-                                .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp].Count);
+            //BattleFightManager.Instance.RoundFightData
+            //.HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp]
+            hpDeltaDatas.SetListItemCount(hpDeltaDataList.Count);
                             hpDeltaDatas.RefreshAllShownItem();
         }
         
@@ -445,16 +452,25 @@ namespace RoundHero
             //BattleFightManager.Instance.PlayerData.BattleHero.CurHP -
             //HeroManager.Instance.BattleHeroData.CurHP;
             var afterHP = HeroManager.Instance.BattleHeroData.CurHP;
-
+            hpDeltaDataList.Clear(); 
+            var addHPDetlaIdx = -1;
             if (BattleFightManager.Instance.RoundFightData
                 .HPDeltaDict.ContainsKey(PlayerManager.Instance.PlayerData.UnitCamp))
             {
                 foreach (var hpDeltaData in BattleFightManager.Instance.RoundFightData
                              .HPDeltaDict[PlayerManager.Instance.PlayerData.UnitCamp])
                 {
-                    afterHP += hpDeltaData.HPDelta;
-                    if(afterHP <= 0)
+                    if (addHPDetlaIdx != -1 && hpDeltaData.AddHPDetlaIdx != addHPDetlaIdx && afterHP <= 0)
+                    {
                         break;
+                    }
+                    
+                    afterHP += hpDeltaData.HPDelta;
+                    if (afterHP <= 0)
+                    {
+                        addHPDetlaIdx = hpDeltaData.AddHPDetlaIdx;
+                    }
+                    hpDeltaDataList.Add(hpDeltaData);    
                 }
             }
             
