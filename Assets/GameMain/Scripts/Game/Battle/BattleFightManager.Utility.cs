@@ -24,6 +24,8 @@ namespace RoundHero
 
         public void CalculateHeroHPDelta(ActionData actionData)
         {
+            BattleFightManager.Instance.SubUnitState(actionData.TriggerDataDict);
+            
             AddHPDetlaIdx += 1;
             var values = actionData.TriggerDataDict.Values.ToList();
             var keys = actionData.TriggerDataDict.Keys.ToList();

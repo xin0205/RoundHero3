@@ -29,6 +29,7 @@ namespace RoundHero
         public int FuneIdx = -1;
         public EBuffEquipType BuffEquipType = EBuffEquipType.Normal;
         public ETriggerTarget TriggerInitiator = ETriggerTarget.Empty;
+        public ETransferType TransferType = ETransferType.Empty;
         public BuffData Copy()
         {
             var buffData = new BuffData();
@@ -295,17 +296,18 @@ namespace RoundHero
                     //
                     // triggerData.EffectUnitIdx = realEffectUnitIdx;
 
-                    var _actionUnitIdx = 0;
-                    var _effectUnitIdx = 0;
-                    if (buffData.TriggerInitiator == ETriggerTarget.Effect)
-                    {
-                        _actionUnitIdx = effectUnitIdx;
-                        _effectUnitIdx = actionUnitIdx;
-                    }
-                    else if (buffData.TriggerInitiator == ETriggerTarget.Action)
+                    var _actionUnitIdx = actionUnitIdx;
+                    var _effectUnitIdx = effectUnitIdx;
+                    if (buffData.TransferType == ETransferType.Action2Effect)
                     {
                         _actionUnitIdx = actionUnitIdx;
                         _effectUnitIdx = effectUnitIdx;
+                    }
+                    else if (buffData.TransferType == ETransferType.Effect2Action)
+                    {
+                        
+                        _actionUnitIdx = effectUnitIdx;
+                        _effectUnitIdx = actionUnitIdx;
                     }
                     var _actionUnit = GameUtility.GetUnitDataByIdx(_actionUnitIdx);    
                     
@@ -632,6 +634,39 @@ namespace RoundHero
             }
            
         }
+        
+        public void BuffsTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit, int actionUnitIdx, int effectUnitIdx, List<TriggerData> triggerDatas, EBuffTriggerType buffTriggerType)
+        {
+            BattleUnitManager.Instance.GetBuffValue(gamePlayData, unit, out List<BuffValue> triggerBuffDatas, -1);
+            
+            if(triggerBuffDatas == null)
+                return;
+            
+            var idx = -1;
+            foreach (var triggerBuffData in triggerBuffDatas)
+            {
+                idx++;
+                if(triggerBuffData.BuffData.BuffTriggerType != buffTriggerType)
+                    continue;
+                
+                if(triggerBuffData.BuffData.RangeTrigger)
+                    continue;
+
+                var realEffectUnitIdxs = BattleFightManager.Instance.GetEffectUnitIdxs(triggerBuffData.BuffData, effectUnitIdx, actionUnitIdx, effectUnitIdx ,-1, -1);
+
+                foreach (var realEffectUnitIdx in realEffectUnitIdxs)
+                {
+                    BuffTrigger(buffTriggerType,
+                        triggerBuffData.BuffData, triggerBuffData.ValueList, effectUnitIdx, actionUnitIdx, realEffectUnitIdx,
+                        triggerDatas, -1, -1, null);
+                }
+
+                
+    
+            }
+           
+        }
+
         
         public void BuffsTrigger(Data_GamePlay gamePlayData, Data_BattleUnit unit, List<TriggerData> triggerDatas, EBuffTriggerType buffTriggerType)
         {
@@ -1318,14 +1353,16 @@ namespace RoundHero
                 buffData.TriggerUnitCamps.Add(Enum.Parse<ERelativeCamp>(unitCamp));
             }
             
-            buffData.TriggerInitiator = Enum.Parse<ETriggerTarget>(strList[2]);
+            //buffData.TriggerInitiator = Enum.Parse<ETriggerTarget>(strList[2]);
 
             
-            var triggerTargets = strList[3].Split("|");
+            var triggerTargets = strList[2].Split("|");
             foreach (var triggerTarget in triggerTargets)
             {
                 buffData.TriggerTargets.Add(Enum.Parse<ETriggerTarget>(triggerTarget));
             }
+            
+            buffData.TransferType = Enum.Parse<ETransferType>(strList[3]);
             
             buffData.TriggerDataType = Enum.Parse<ETriggerDataType>(strList[4]);
             

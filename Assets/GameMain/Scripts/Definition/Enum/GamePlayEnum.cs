@@ -488,6 +488,13 @@ namespace RoundHero
         
         Empty,
     }
+
+    public enum ETransferType
+    {
+        Action2Effect,
+        Effect2Action,
+        Empty,
+    }
     
     public enum ETriggerDataSubType
     {

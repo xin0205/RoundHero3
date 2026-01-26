@@ -1321,11 +1321,11 @@ namespace RoundHero
                                         actualAddDmgCount = 1;
                                     }
                         
-                                    var subAddDmgCountData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
-                                        actionUnitData.Idx, actionUnitData.Idx, EUnitState.AddDmg, -actualAddDmgCount,
-                                        ETriggerDataType.State);
-                                    SimulateTriggerData(subAddDmgCountData, triggerDatas);
-                                    triggerDatas.Add(subAddDmgCountData);
+                                    // var subAddDmgCountData = BattleFightManager.Instance.Unit_State(triggerDatas, actionUnitData.Idx,
+                                    //     actionUnitData.Idx, actionUnitData.Idx, EUnitState.AddDmg, -actualAddDmgCount,
+                                    //     ETriggerDataType.State);
+                                    // SimulateTriggerData(subAddDmgCountData, triggerDatas);
+                                    // triggerDatas.Add(subAddDmgCountData);
                                 }
                             }
                             
@@ -3505,11 +3505,12 @@ namespace RoundHero
             }
         }
 
-        public void CollideTrigger(TriggerData triggerData, List<TriggerData> triggerDatas)
+        public void CollideTrigger(int actionUnitIdx, int effectUnitIdx, List<TriggerData> triggerDatas)
         {
-            var unit = BattleFightManager.Instance.GetUnitByIdx(triggerData.ActionUnitIdx);
-  
-            BattleBuffManager.Instance.BuffsTrigger(RoundFightData.GamePlayData, unit, triggerData, triggerDatas, EBuffTriggerType.Collide);
+            var unit = BattleFightManager.Instance.GetUnitByIdx(actionUnitIdx);
+
+            BattleBuffManager.Instance.BuffsTrigger(RoundFightData.GamePlayData, unit, actionUnitIdx, effectUnitIdx,
+                triggerDatas, EBuffTriggerType.Collide);
 
         }
 

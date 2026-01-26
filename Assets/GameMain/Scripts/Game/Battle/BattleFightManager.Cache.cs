@@ -755,7 +755,7 @@ namespace RoundHero
                             triggerBuffData.ValueList, attackUnitIdx,
                             attackUnitIdx,
                             realEffectUnit.Idx, triggerDatas);
-                        BattleFightManager.Instance.SubUnitState(triggerDatas);
+                        
                         
 
                         foreach (var triggerData in _triggerDatas)
@@ -1615,6 +1615,8 @@ namespace RoundHero
                     var bePassUnitIdx = -1;
                     if (bePassUnit != null)
                     {
+                        CollideTrigger(passUnit.Idx, bePassUnit.Idx, triggerDatas);
+                        
                         var firstCollideUnHurt = GamePlayManager.Instance.GamePlayData.GetUsefulBless(
                             EBlessID.FirstCollideUnHurt,
                             bePassUnit.UnitCamp);
@@ -1639,7 +1641,7 @@ namespace RoundHero
                             collisionTriggerData.ChangeHPInstantly = false;
                         }
 
-                        CollideTrigger(collisionTriggerData, triggerDatas);
+                        
                         BattleBuffManager.Instance.CacheTriggerData(collisionTriggerData, triggerDatas);
 
                         BattleUnitStateManager.Instance.HurtRoundStartMoveTrigger(passUnit.Idx, bePassUnit.Idx,

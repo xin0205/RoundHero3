@@ -1156,7 +1156,7 @@ namespace RoundHero
                 
                 
                 }
-                //newRetGetRange.Reverse();
+                newRetGetRange.Reverse();
             }
             
 

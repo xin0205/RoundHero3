@@ -50,61 +50,73 @@ namespace RoundHero
                     }
 
                 }
-                else if (effectUnit is BattleSoliderEntity)
-                {
-                    // foreach (var triggerData in kv.Value.TriggerDatas)
-                    // {
-                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
-                    //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
-                    //     {
-                    //         continue;
-                    //     }
-                    //     //CurValueEntityIdx += 1;
-                    //     
-                    // }
-                    ShowValues(kv.Value.TriggerDatas);
-                    //entityIdx += kv.Value.Count;
-                }
                 else
                 {
-                    //CurValueEntityIdx += 1;
-                    
-                    // foreach (var triggerData in kv.Value.TriggerDatas)
-                    // {
-                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
-                    //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
-                    //     {
-                    //         continue;
-                    //     }
-                    //     //CurValueEntityIdx += 1;
-                    //     
-                    // }
+                    foreach (var kv2 in kv.Value.MoveData.MoveUnitDatas)
+                    {
+                        foreach (var kv3 in kv2.Value.MoveActionData.TriggerDataDict)
+                        {
+                            ShowValues(kv3.Value.TriggerDatas);
+                        }
+                    }
                     ShowValues(kv.Value.TriggerDatas);
-                    
-                    // var startValue = 0;
-                    // var endValue = 0;
-                    // var isShow = false;
-                    // foreach (var triggerData in kv.Value)
-                    // {
-                    //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
-                    //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
-                    //     {
-                    //         continue;
-                    //     }
-                    //     isShow = true;
-                    //     startValue += (int)triggerData.ActualValue;
-                    //     endValue += BlessManager.Instance.AddCurHPByAttackDamage()
-                    //         ? (int)(triggerData.Value + triggerData.DeltaValue)
-                    //         : (int)triggerData.ActualValue;
-                    // }
-                    //
-                    //
-                    // if (isShow)
-                    // {
-                    //     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
-                    // }
-                    
                 }
+                // else if (effectUnit is BattleSoliderEntity)
+                // {
+                //     // foreach (var triggerData in kv.Value.TriggerDatas)
+                //     // {
+                //     //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                //     //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
+                //     //     {
+                //     //         continue;
+                //     //     }
+                //     //     //CurValueEntityIdx += 1;
+                //     //     
+                //     // }
+                //
+                //     ShowValues(kv.Value.TriggerDatas);
+                //     //entityIdx += kv.Value.Count;
+                // }
+                // else
+                // {
+                //     //CurValueEntityIdx += 1;
+                //     
+                //     // foreach (var triggerData in kv.Value.TriggerDatas)
+                //     // {
+                //     //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                //     //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
+                //     //     {
+                //     //         continue;
+                //     //     }
+                //     //     //CurValueEntityIdx += 1;
+                //     //     
+                //     // }
+                //     ShowValues(kv.Value.TriggerDatas);
+                //     
+                //     // var startValue = 0;
+                //     // var endValue = 0;
+                //     // var isShow = false;
+                //     // foreach (var triggerData in kv.Value)
+                //     // {
+                //     //     if (triggerData.TriggerDataType != ETriggerDataType.Atrb &&
+                //     //         triggerData.TriggerDataType != ETriggerDataType.HeroAtrb)
+                //     //     {
+                //     //         continue;
+                //     //     }
+                //     //     isShow = true;
+                //     //     startValue += (int)triggerData.ActualValue;
+                //     //     endValue += BlessManager.Instance.AddCurHPByAttackDamage()
+                //     //         ? (int)(triggerData.Value + triggerData.DeltaValue)
+                //     //         : (int)triggerData.ActualValue;
+                //     // }
+                //     //
+                //     //
+                //     // if (isShow)
+                //     // {
+                //     //     InternalShowValue(effectUnit, startValue, endValue, _curValueEntityIdx);
+                //     // }
+                //     
+                // }
 
             }
    
